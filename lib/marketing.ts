@@ -17,7 +17,7 @@ export const ROTATING_WORDS = [
 export const NAV_LINKS = [
   { href: "/features", label: "Features" },
   { href: "/how-it-works", label: "How it works" },
-  { href: "/samples", label: "Templates" },
+  { href: "/samples", label: "Samples" },
   { href: "/pricing", label: "Pricing" },
 ];
 

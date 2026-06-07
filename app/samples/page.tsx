@@ -8,8 +8,8 @@ import Footer from "../(marketing)/Footer";
 export const dynamic = "force-static";
 
 export const metadata: Metadata = {
-  title: "Templates — Kovasite",
-  description: "Browse website templates for over 150 types of local business.",
+  title: "Samples — Kovasite",
+  description: "Browse sample websites for over 150 types of local business.",
 };
 
 const styleOf = (key: string) => BUILDS.find((b) => b.key === key)?.style ?? "classic";
@@ -34,7 +34,7 @@ export default function SamplesIndex() {
 
       <header className="mx-auto max-w-6xl px-6 pt-14 pb-2">
         <h1 className="text-3xl font-medium tracking-tight sm:text-4xl" style={{ fontFamily: "var(--font-fraunces)" }}>
-          Website templates
+          Sample sites
         </h1>
         <p className="mt-3 max-w-xl text-white/55">
           {BUILDS.length}+ designs, organised by trade. Pick a category, open a live sample, then make it your own.

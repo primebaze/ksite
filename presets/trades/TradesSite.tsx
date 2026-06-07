@@ -3,7 +3,7 @@ import {
   AboutSection,
   ContactFooter,
   GallerySection,
-  HeroButtons,
+  Hero,
   NavItem,
   SectionHeading,
   SiteHeader,
@@ -38,34 +38,17 @@ export default function TradesSite({ site }: { site: TenantSite }) {
       <SiteSmoothScroll />
       <SiteHeader site={site} tokens={tokens} nav={nav} cta={phone ? { label: `Call ${phone}`, href: `tel:${phone}` } : { label: cta, href: ctaUrl }} />
 
-      {/* Hero */}
-      <section className={cx("relative isolate flex min-h-[88vh] items-center overflow-hidden", tokens.heroBase)}>
-        {hero && (
-          <>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={hero} alt="" className="absolute inset-0 h-full w-full object-cover" />
-            <div className={cx("absolute inset-0", tokens.heroOverlay)} />
-          </>
-        )}
-        <div className={cx("relative mx-auto w-full max-w-6xl px-6 py-28 text-white", tokens.heroAlign === "center" && "text-center")}>
-          <h1 data-edit="content.tagline" className={cx("font-display max-w-3xl text-5xl text-white sm:text-6xl", tokens.heading, tokens.heroAlign === "center" && "mx-auto")}>
-            {content.tagline ?? tenant.business_name}
-          </h1>
-          <p data-edit="tenant.business_name" className={cx("mt-4 text-lg text-white/75", tokens.heroAlign === "center" && "mx-auto")}>{tenant.business_name}</p>
-          <HeroButtons
-            tokens={tokens}
-            primary={{ label: cta, href: ctaUrl }}
-            secondary={content.phone ? { label: `Call ${content.phone}`, href: `tel:${content.phone}` } : undefined}
-          />
-          {content.accreditations && content.accreditations.length > 0 && (
-            <div className={cx("mt-10 flex flex-wrap gap-2", tokens.heroAlign === "center" && "justify-center")}>
-              {content.accreditations.map((a) => (
-                <span key={a} className="rounded-full border border-white/25 bg-white/10 px-3 py-1 text-xs font-medium backdrop-blur">✓ {a}</span>
-              ))}
-            </div>
-          )}
-        </div>
-      </section>
+      <Hero
+        tokens={tokens}
+        title={content.tagline ?? tenant.business_name}
+        titleEdit="content.tagline"
+        subtitle={tenant.business_name}
+        subtitleEdit="tenant.business_name"
+        image={hero}
+        badges={content.accreditations}
+        primary={{ label: cta, href: ctaUrl }}
+        secondary={content.phone ? { label: `Call ${content.phone}`, href: `tel:${content.phone}` } : undefined}
+      />
 
       <AboutSection tokens={tokens} about={content.about} kicker="About us" />
 

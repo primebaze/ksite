@@ -3,7 +3,7 @@ import {
   AboutSection,
   ContactFooter,
   GallerySection,
-  HeroButtons,
+  Hero,
   NavItem,
   SectionHeading,
   SiteHeader,
@@ -35,34 +35,18 @@ export default function RestaurantSite({ site }: { site: TenantSite }) {
       <SiteSmoothScroll />
       <SiteHeader site={site} tokens={tokens} nav={nav} cta={book && cta ? { label: cta, href: book } : undefined} />
 
-      {/* Hero */}
-      <section className={cx("relative isolate flex min-h-[88vh] items-center overflow-hidden", tokens.heroBase)}>
-        {hero && (
-          <>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={hero} alt="" className="absolute inset-0 h-full w-full object-cover" />
-            <div className={cx("absolute inset-0", tokens.heroOverlay)} />
-          </>
-        )}
-        <div className={cx("relative mx-auto w-full max-w-6xl px-6 py-28 text-white", tokens.heroAlign === "center" && "text-center")}>
-          {content.cuisine_type && (
-            <p className={cx("mb-5", tokens.label === "serif" ? "font-display text-lg italic text-white/85" : "text-xs font-semibold uppercase tracking-[0.35em] text-white/80")}>
-              {content.cuisine_type}
-            </p>
-          )}
-          <h1 data-edit="tenant.business_name" className={cx("font-display max-w-3xl text-5xl text-white sm:text-7xl", tokens.heading, tokens.heroAlign === "center" && "mx-auto")}>
-            {tenant.business_name}
-          </h1>
-          {content.tagline && (
-            <p data-edit="content.tagline" className={cx("mt-5 max-w-xl text-lg text-white/80 sm:text-xl", tokens.heroAlign === "center" && "mx-auto")}>{content.tagline}</p>
-          )}
-          <HeroButtons
-            tokens={tokens}
-            primary={book && cta ? { label: cta, href: book } : sections.length ? { label: "View the menu", href: "#menu" } : undefined}
-            secondary={content.phone ? { label: `Call ${content.phone}`, href: `tel:${content.phone}` } : undefined}
-          />
-        </div>
-      </section>
+      <Hero
+        tokens={tokens}
+        kicker={content.cuisine_type}
+        kickerEdit="content.cuisine_type"
+        title={tenant.business_name}
+        titleEdit="tenant.business_name"
+        subtitle={content.tagline}
+        subtitleEdit="content.tagline"
+        image={hero}
+        primary={book && cta ? { label: cta, href: book } : sections.length ? { label: "View the menu", href: "#menu" } : undefined}
+        secondary={content.phone ? { label: `Call ${content.phone}`, href: `tel:${content.phone}` } : undefined}
+      />
 
       <AboutSection tokens={tokens} about={content.about} kicker="Our story" />
 

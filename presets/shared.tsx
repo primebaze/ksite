@@ -33,7 +33,10 @@ export interface StyleTokens {
   card: string;
   /** A faint section background tint. */
   tint: string;
-  /** Whether the hero kicker (tagline) sits above the headline. */
+  /** Hero layout structure — drives a genuinely different arrangement. */
+  hero: "bold" | "luxe" | "editorial" | "classic" | "warm" | "minimal";
+  /** Whether the hero sits on dark imagery (white overlay nav) or light. */
+  heroDark: boolean;
 }
 
 const defaultSerif: Record<SiteStyle, boolean> = {
@@ -60,22 +63,24 @@ export function tokensFor(content: SiteContent, theme: Theme): StyleTokens {
     btn: "rounded-lg",
     card: "rounded-2xl",
     tint: "bg-neutral-50",
+    hero: "classic",
+    heroDark: false,
   };
 
   switch (style) {
     case "editorial":
-      return { ...base, heading: "font-medium tracking-tight leading-[1.03]", label: "serif", heroAlign: "left", btn: "rounded-none", card: "rounded-none", tint: "bg-[#faf8f4]" };
+      return { ...base, heading: "font-medium tracking-tight leading-[1.03]", label: "serif", heroAlign: "left", btn: "rounded-none", card: "rounded-none", tint: "bg-[#faf8f4]", hero: "editorial", heroDark: false };
     case "bold":
-      return { ...base, heading: "font-bold tracking-[-0.03em] leading-[0.95]", label: "caps", heroAlign: "left", heroOverlay: "bg-gradient-to-r from-black/90 via-black/55 to-black/10", btn: "rounded-md", card: "rounded-xl", tint: "bg-neutral-100" };
+      return { ...base, heading: "font-bold tracking-[-0.03em] leading-[0.95]", label: "caps", heroAlign: "left", heroOverlay: "bg-gradient-to-r from-black/90 via-black/55 to-black/10", btn: "rounded-md", card: "rounded-xl", tint: "bg-neutral-100", hero: "bold", heroDark: true };
     case "minimal":
-      return { ...base, heading: "font-semibold tracking-tight", label: "caps", heroAlign: "center", heroOverlay: "bg-gradient-to-t from-black/70 via-black/30 to-black/20", btn: "rounded-full", card: "rounded-2xl", tint: "bg-neutral-50" };
+      return { ...base, heading: "font-semibold tracking-tight", label: "caps", heroAlign: "center", btn: "rounded-full", card: "rounded-2xl", tint: "bg-neutral-50", hero: "minimal", heroDark: false };
     case "warm":
-      return { ...base, heading: "font-medium tracking-tight leading-[1.05]", label: "serif", heroAlign: "center", heroOverlay: "bg-gradient-to-t from-black/80 via-black/35 to-black/25", btn: "rounded-full", card: "rounded-[1.75rem]", tint: "bg-[#fbf7f2]" };
+      return { ...base, heading: "font-medium tracking-tight leading-[1.05]", label: "serif", heroAlign: "center", btn: "rounded-full", card: "rounded-[1.75rem]", tint: "bg-[#fbf7f2]", hero: "warm", heroDark: false };
     case "luxe":
-      return { ...base, heading: "font-medium tracking-[0.01em] leading-[1.04]", label: "caps", heroAlign: "center", heroOverlay: "bg-gradient-to-t from-black/90 via-black/55 to-black/40", heroBase: "bg-gradient-to-b from-neutral-900 via-black to-black", btn: "rounded-none", card: "rounded-none", tint: "bg-[#f5f2ec]" };
+      return { ...base, heading: "font-medium tracking-[0.01em] leading-[1.04]", label: "caps", heroAlign: "center", heroOverlay: "bg-gradient-to-t from-black/90 via-black/55 to-black/40", heroBase: "bg-gradient-to-b from-neutral-900 via-black to-black", btn: "rounded-none", card: "rounded-none", tint: "bg-[#f5f2ec]", hero: "luxe", heroDark: true };
     case "classic":
     default:
-      return base;
+      return { ...base, hero: "classic", heroDark: false };
   }
 }
 
@@ -201,19 +206,27 @@ export function SiteHeader({
   cta?: { label: string; href: string };
 }) {
   const { tenant, theme } = site;
+  const dark = tokens.heroDark;
   return (
-    <header className="absolute inset-x-0 top-0 z-50 bg-gradient-to-b from-black/35 to-transparent">
+    <header
+      className={cx(
+        "z-50",
+        dark
+          ? "absolute inset-x-0 top-0 bg-gradient-to-b from-black/35 to-transparent"
+          : "relative border-b border-black/5 bg-white",
+      )}
+    >
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-6 px-6 py-5">
         <a href="#top" className="flex items-center gap-2.5">
           {theme.logo_url ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img src={theme.logo_url} alt={tenant.business_name} className="h-8 w-auto object-contain" />
           ) : null}
-          <span className="font-display text-lg font-semibold tracking-tight text-white [text-shadow:0_1px_12px_rgba(0,0,0,0.55)]">{tenant.business_name}</span>
+          <span className={cx("font-display text-lg font-semibold tracking-tight", dark ? "text-white [text-shadow:0_1px_12px_rgba(0,0,0,0.55)]" : "text-neutral-900")}>{tenant.business_name}</span>
         </a>
         <nav className="hidden items-center gap-8 md:flex">
           {nav.map((n) => (
-            <a key={n.href} href={n.href} className="text-sm font-medium text-white/80 transition hover:text-white [text-shadow:0_1px_10px_rgba(0,0,0,0.5)]">
+            <a key={n.href} href={n.href} className={cx("text-sm font-medium transition", dark ? "text-white/80 hover:text-white [text-shadow:0_1px_10px_rgba(0,0,0,0.5)]" : "text-neutral-600 hover:text-neutral-900")}>
               {n.label}
             </a>
           ))}
@@ -222,7 +235,8 @@ export function SiteHeader({
           <a
             href={cta.href}
             className={cx(
-              "hidden shrink-0 border border-white/40 px-5 py-2.5 text-sm font-semibold text-white backdrop-blur-sm transition active:scale-[0.98] hover:bg-white/10 sm:inline-flex",
+              "hidden shrink-0 px-5 py-2.5 text-sm font-semibold transition active:scale-[0.98] sm:inline-flex",
+              dark ? "border border-white/40 text-white backdrop-blur-sm hover:bg-white/10" : "bg-[var(--primary)] text-white hover:opacity-90",
               tokens.btn,
             )}
           >
@@ -348,28 +362,230 @@ export function ContactFooter({
   );
 }
 
-/** Primary/secondary hero buttons, contrast-safe on the dark hero. */
+/** Primary/secondary hero buttons. `onLight` switches to dark-on-light styling. */
 export function HeroButtons({
   tokens,
   primary,
   secondary,
+  onLight,
+  center,
 }: {
   tokens: StyleTokens;
   primary?: { label: string; href: string };
   secondary?: { label: string; href: string };
+  onLight?: boolean;
+  center?: boolean;
 }) {
   return (
-    <div className={cx("mt-9 flex flex-wrap gap-3", tokens.heroAlign === "center" && "justify-center")}>
+    <div className={cx("mt-9 flex flex-wrap gap-3", center && "justify-center")}>
       {primary && (
-        <a href={primary.href} className={cx("inline-flex bg-white px-7 py-3.5 text-sm font-semibold text-neutral-900 shadow-lg transition active:scale-[0.98] hover:bg-white/90", tokens.btn)}>
+        <a
+          href={primary.href}
+          className={cx(
+            "inline-flex px-7 py-3.5 text-sm font-semibold shadow-lg transition active:scale-[0.98]",
+            onLight ? "bg-[var(--primary)] text-white hover:opacity-90" : "bg-white text-neutral-900 hover:bg-white/90",
+            tokens.btn,
+          )}
+        >
           {primary.label}
         </a>
       )}
       {secondary && (
-        <a href={secondary.href} className={cx("inline-flex border border-white/40 px-7 py-3.5 text-sm font-medium text-white backdrop-blur transition active:scale-[0.98] hover:bg-white/10", tokens.btn)}>
+        <a
+          href={secondary.href}
+          className={cx(
+            "inline-flex px-7 py-3.5 text-sm font-medium transition active:scale-[0.98]",
+            onLight ? "border border-neutral-300 text-neutral-800 hover:bg-neutral-100" : "border border-white/40 text-white backdrop-blur hover:bg-white/10",
+            tokens.btn,
+          )}
+        >
           {secondary.label}
         </a>
       )}
     </div>
+  );
+}
+
+export interface HeroProps {
+  tokens: StyleTokens;
+  kicker?: string;
+  title: string;
+  subtitle?: string;
+  image?: string;
+  primary?: { label: string; href: string };
+  secondary?: { label: string; href: string };
+  badges?: string[];
+  /** data-edit keys for on-screen inline editing. */
+  titleEdit?: string;
+  subtitleEdit?: string;
+  kickerEdit?: string;
+}
+
+function Badges({ badges, onLight, center }: { badges?: string[]; onLight?: boolean; center?: boolean }) {
+  if (!badges || !badges.length) return null;
+  return (
+    <div className={cx("mt-10 flex flex-wrap gap-2", center && "justify-center")}>
+      {badges.map((b) => (
+        <span key={b} className={cx("rounded-full border px-3 py-1 text-xs font-medium backdrop-blur", onLight ? "border-neutral-300 text-neutral-600" : "border-white/25 bg-white/10 text-white")}>✓ {b}</span>
+      ))}
+    </div>
+  );
+}
+
+/**
+ * Hero with genuinely different structural layouts per design style:
+ *  - bold:      full-bleed image, content bottom-left, huge headline
+ *  - luxe:      full-bleed dark, centered, framed, serif
+ *  - editorial: split — text left, image right (light, magazine)
+ *  - classic:   split — image left, text right (light)
+ *  - warm:      centered text on cream, large rounded inset image
+ *  - minimal:   text-first light hero, full-width image band below
+ */
+export function Hero(props: HeroProps) {
+  const { tokens, kicker, title, subtitle, image, primary, secondary, badges, titleEdit, subtitleEdit, kickerEdit } = props;
+
+  const Kicker = ({ light }: { light?: boolean }) =>
+    kicker ? (
+      tokens.label === "serif" ? (
+        <p data-edit={kickerEdit} className={cx("font-display text-lg italic", light ? "text-white/85" : "text-[var(--primary)]")}>{kicker}</p>
+      ) : (
+        <p data-edit={kickerEdit} className={cx("text-xs font-semibold uppercase tracking-[0.35em]", light ? "text-white/80" : "text-[var(--primary)]")}>{kicker}</p>
+      )
+    ) : null;
+  const H1 = ({ cls }: { cls: string }) => <h1 data-edit={titleEdit} className={cls}>{title}</h1>;
+  const Sub = ({ cls }: { cls: string }) => (subtitle ? <p data-edit={subtitleEdit} className={cls}>{subtitle}</p> : null);
+
+  // ---- BOLD: full-bleed, content bottom-left ----
+  if (tokens.hero === "bold") {
+    return (
+      <section className={cx("relative isolate flex min-h-[92vh] items-end overflow-hidden", tokens.heroBase)}>
+        {image && (
+          <>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={image} alt="" className="absolute inset-0 h-full w-full object-cover" />
+            <div className={cx("absolute inset-0", tokens.heroOverlay)} />
+          </>
+        )}
+        <div className="relative mx-auto w-full max-w-6xl px-6 pb-20 pt-40 text-white">
+          <Kicker light />
+          <H1 cls={cx("font-display mt-4 max-w-4xl text-6xl text-white sm:text-8xl", tokens.heading)} />
+          <Sub cls="mt-5 max-w-xl text-lg text-white/80" />
+          <HeroButtons tokens={tokens} primary={primary} secondary={secondary} />
+          <Badges badges={badges} />
+        </div>
+      </section>
+    );
+  }
+
+  // ---- LUXE: full-bleed dark, centered, framed ----
+  if (tokens.hero === "luxe") {
+    return (
+      <section className={cx("relative isolate flex min-h-[92vh] items-center justify-center overflow-hidden", tokens.heroBase)}>
+        {image && (
+          <>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={image} alt="" className="absolute inset-0 h-full w-full object-cover opacity-70" />
+            <div className={cx("absolute inset-0", tokens.heroOverlay)} />
+          </>
+        )}
+        <div className="relative mx-auto max-w-3xl px-6 text-center text-white">
+          <div className="mx-auto mb-7 h-px w-14 bg-[var(--accent)]" />
+          <Kicker light />
+          <H1 cls={cx("font-display mt-5 text-5xl text-white sm:text-7xl", tokens.heading)} />
+          <Sub cls="mx-auto mt-5 max-w-xl text-white/75" />
+          <HeroButtons tokens={tokens} primary={primary} secondary={secondary} center />
+          <Badges badges={badges} center />
+        </div>
+      </section>
+    );
+  }
+
+  // ---- EDITORIAL: split, text left / image right ----
+  if (tokens.hero === "editorial") {
+    return (
+      <section className="grid min-h-[86vh] lg:grid-cols-2">
+        <div className={cx("flex items-center px-6 py-24 lg:px-16", tokens.tint)}>
+          <div className="max-w-md">
+            <Kicker />
+            <H1 cls={cx("font-display mt-4 text-5xl text-neutral-900 sm:text-6xl", tokens.heading)} />
+            <Sub cls="mt-5 text-lg text-neutral-600" />
+            <HeroButtons tokens={tokens} primary={primary} secondary={secondary} onLight />
+            <Badges badges={badges} onLight />
+          </div>
+        </div>
+        <div className="relative min-h-[42vh] bg-neutral-200">
+          {image ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={image} alt="" className="absolute inset-0 h-full w-full object-cover" />
+          ) : (
+            <div className={cx("absolute inset-0", tokens.heroBase)} />
+          )}
+        </div>
+      </section>
+    );
+  }
+
+  // ---- CLASSIC: split, image left / text right ----
+  if (tokens.hero === "classic") {
+    return (
+      <section className="grid min-h-[86vh] lg:grid-cols-2">
+        <div className="relative order-last min-h-[42vh] bg-neutral-200 lg:order-first">
+          {image ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={image} alt="" className="absolute inset-0 h-full w-full object-cover" />
+          ) : (
+            <div className={cx("absolute inset-0", tokens.heroBase)} />
+          )}
+        </div>
+        <div className="flex items-center bg-white px-6 py-24 lg:px-16">
+          <div className="max-w-md">
+            <div className="mb-5 h-1 w-12 bg-[var(--accent)]" />
+            <Kicker />
+            <H1 cls={cx("font-display mt-3 text-5xl text-neutral-900 sm:text-6xl", tokens.heading)} />
+            <Sub cls="mt-5 text-lg text-neutral-600" />
+            <HeroButtons tokens={tokens} primary={primary} secondary={secondary} onLight />
+            <Badges badges={badges} onLight />
+          </div>
+        </div>
+      </section>
+    );
+  }
+
+  // ---- WARM: centered text on cream, large rounded inset image ----
+  if (tokens.hero === "warm") {
+    return (
+      <section className={cx("px-6 pt-28 pb-14", tokens.tint)}>
+        <div className="mx-auto max-w-3xl text-center">
+          <Kicker />
+          <H1 cls={cx("font-display mt-4 text-5xl text-neutral-900 sm:text-6xl", tokens.heading)} />
+          <Sub cls="mx-auto mt-5 max-w-xl text-lg text-neutral-600" />
+          <HeroButtons tokens={tokens} primary={primary} secondary={secondary} onLight center />
+          <Badges badges={badges} onLight center />
+        </div>
+        {image && (
+          <div className="mx-auto mt-14 max-w-5xl">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={image} alt="" className={cx("aspect-[16/8] w-full object-cover", tokens.card)} />
+          </div>
+        )}
+      </section>
+    );
+  }
+
+  // ---- MINIMAL: text-first light hero, full-width image band below ----
+  return (
+    <section className="bg-white">
+      <div className="mx-auto max-w-2xl px-6 pt-32 pb-14 text-center">
+        <Kicker />
+        <H1 cls={cx("font-display mt-5 text-5xl text-neutral-900 sm:text-7xl", tokens.heading)} />
+        <Sub cls="mx-auto mt-5 max-w-lg text-lg text-neutral-500" />
+        <HeroButtons tokens={tokens} primary={primary} secondary={secondary} onLight center />
+        <Badges badges={badges} onLight center />
+      </div>
+      {image && (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img src={image} alt="" className="h-[52vh] w-full object-cover" />
+      )}
+    </section>
   );
 }
