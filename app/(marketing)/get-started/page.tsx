@@ -5,6 +5,7 @@ import { Reveal } from "@/components/motion/Reveal";
 import { SubmitButton } from "@/components/SubmitButton";
 import { Turnstile } from "@/components/Turnstile";
 import { buildGroups } from "@/lib/builds";
+import { BusinessTypePicker } from "@/components/BusinessTypePicker";
 import { startOnboarding } from "./actions";
 
 const GROUPS = buildGroups();
@@ -37,18 +38,7 @@ export default async function GetStartedPage({
             </div>
             <div>
               <label className="text-sm font-medium">Type of business</label>
-              <select name="preset" className={input} defaultValue="restaurant">
-                {GROUPS.map((g) => (
-                  <optgroup key={g.group} label={g.group} className="bg-zinc-900">
-                    {g.builds.map((b) => (
-                      <option key={b.key} value={b.key} className="bg-zinc-900">{b.label}</option>
-                    ))}
-                  </optgroup>
-                ))}
-                <optgroup label="Something else" className="bg-zinc-900">
-                  <option value="other" className="bg-zinc-900">Other (type below)</option>
-                </optgroup>
-              </select>
+              <BusinessTypePicker groups={GROUPS} />
             </div>
             <div>
               <label className="text-sm font-medium">If you chose “Other”, what kind of business?</label>
