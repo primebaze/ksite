@@ -119,6 +119,14 @@ export async function updateMyContent(content: SiteContent) {
   await bust(ref);
 }
 
+export async function updateMyCustomDomain(custom_domain: string | null, domain_status: string) {
+  const supabase = await db();
+  const ref = await myRef();
+  if (!ref) return;
+  await supabase.from("tenants").update({ custom_domain, domain_status }).eq("id", ref.id);
+  await bust(ref);
+}
+
 export async function updateMyTheme(theme: Partial<Theme>) {
   const supabase = await db();
   const ref = await myRef();

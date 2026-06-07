@@ -82,10 +82,15 @@ export default async function DashboardHome({
       )}
 
       {/* Custom domain */}
-      <div className="rounded-2xl border border-dashed border-white/10 p-6 text-sm text-white/40">
-        <h2 className="font-medium text-white/70">Connect your own domain</h2>
-        <p className="mt-1">Coming soon — point your own domain (like yourbusiness.co.uk) at your site.</p>
-      </div>
+      <Link href="/dashboard/domains" className="block rounded-2xl border border-white/10 bg-white/[0.02] p-6 transition hover:border-white/25">
+        <h2 className="font-semibold">Your own domain</h2>
+        <p className="mt-1 text-sm text-white/45">
+          {tenant.custom_domain
+            ? `${tenant.custom_domain} — ${tenant.domain_status === "active" ? "live" : "finishing setup"}`
+            : "Claim a domain (included in your plan) — live in a minute, no setup. Or connect one you own."}
+        </p>
+        <p className="mt-4 text-sm text-emerald-400/90">Manage domains →</p>
+      </Link>
 
       {/* Next steps */}
       <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-6">

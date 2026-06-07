@@ -2,6 +2,9 @@ import type Stripe from "stripe";
 import { getStripe } from "@/lib/stripe";
 import { getServiceClient } from "@/lib/supabase";
 import { revalidateSiteHost, revalidateTenant } from "@/lib/tenant";
+import { addProjectDomain, isVercelConfigured } from "@/lib/vercel";
+
+const APP_DOMAIN = process.env.NEXT_PUBLIC_APP_DOMAIN ?? "localhost";
 
 // Stripe webhook. Runs on the Node runtime (needs the raw body + crypto).
 export const runtime = "nodejs";
@@ -49,6 +52,12 @@ export async function POST(req: Request) {
           stripe_subscription_id: typeof s.subscription === "string" ? s.subscription : null,
         });
         await bust(tenantId);
+
+        // Attach this tenant's subdomain to Vercel so it routes + gets SSL.
+        if (isVercelConfigured() && APP_DOMAIN !== "localhost") {
+          const { data: t } = await svc.from("tenants").select("subdomain").eq("id", tenantId).maybeSingle();
+          if (t?.subdomain) await addProjectDomain(`${t.subdomain}.${APP_DOMAIN}`).catch(() => {});
+        }
       }
       break;
     }
