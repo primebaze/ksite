@@ -4,6 +4,7 @@ import { getMyTenantFull } from "@/lib/my-site";
 import { archetypeFor, catalogLabelFor, stepsFor, stepIndexIn, FIRST_STEP, type StepField } from "@/lib/verticals";
 import { addMenuItem, removeMenuItem, saveStep } from "../actions";
 import { SubmitButton } from "@/components/SubmitButton";
+import { ImageUploader } from "@/components/ImageUploader";
 import type { TenantSite } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
@@ -108,6 +109,37 @@ export default async function SetupStep({ params }: { params: Promise<{ step: st
             <SubmitButton className="mt-3 rounded-lg border border-white/15 px-4 py-2 text-sm font-medium hover:bg-white/5" pendingText="Adding…">+ Add item</SubmitButton>
           </form>
 
+          <NavButtons prevKey={prev?.key} nextKey={next?.key} nextLabel="Continue" />
+        </div>
+      )}
+
+      {step.kind === "photos" && (
+        <div className="mt-8 space-y-8">
+          <div>
+            <p className="text-sm font-medium">Hero image</p>
+            <p className="mt-1 text-xs text-white/40">The big photo at the top of your site. A wide, high-quality landscape shot works best.</p>
+            <div className="mt-3">
+              <ImageUploader field="hero" current={site.content.hero_image_url} label="Upload your hero image" aspect="aspect-[16/9]" />
+            </div>
+          </div>
+          <div>
+            <p className="text-sm font-medium">Gallery (optional)</p>
+            <p className="mt-1 text-xs text-white/40">A few photos of your work, space or team.</p>
+            <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3">
+              {site.gallery.map((g) => (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img key={g.id} src={g.image_url} alt="" className="aspect-square w-full rounded-xl object-cover" />
+              ))}
+              <ImageUploader field="gallery" label="Add a photo" aspect="aspect-square" />
+            </div>
+          </div>
+          <div>
+            <p className="text-sm font-medium">Video hero</p>
+            <p className="mt-1 text-xs text-white/40">A short looping video at the top — even more premium.</p>
+            <div className="mt-3">
+              <ImageUploader field="hero" locked label="Video hero" lockedNote="Available on the Premium plan." aspect="aspect-[16/9]" />
+            </div>
+          </div>
           <NavButtons prevKey={prev?.key} nextKey={next?.key} nextLabel="Continue" />
         </div>
       )}

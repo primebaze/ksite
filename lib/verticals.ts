@@ -52,7 +52,7 @@ export interface Step {
   key: string;
   title: string;
   intro: string;
-  kind: "fields" | "menu" | "review";
+  kind: "fields" | "menu" | "review" | "photos";
   fields?: StepField[];
 }
 
@@ -95,6 +95,13 @@ const CONTACT: Step = {
     { name: "email", label: "Email address", placeholder: "hello@yourbusiness.com", source: "content" },
     { name: "address", label: "Address", help: "Where you're based.", placeholder: "12 High Street, Leeds", source: "content" },
   ],
+};
+
+const PHOTOS: Step = {
+  key: "photos",
+  title: "Your photos",
+  intro: "A great hero image makes your site feel premium. Add one now — you can add gallery photos too.",
+  kind: "photos",
 };
 
 const REVIEW: Step = { key: "review", title: "Review your site", intro: "Here's how it looks. Happy with it? Publish to go live.", kind: "review" };
@@ -148,7 +155,7 @@ const SERVICES_ACTION: Step = {
 
 export function stepsFor(archetype: Archetype, catalogLabel = "Services"): Step[] {
   const action = archetype === "menu" ? MENU_ACTION : archetype === "bookings" ? BOOKINGS_ACTION : SERVICES_ACTION;
-  return [LOOK, STORY, CONTACT, menuStep(catalogLabel), action, REVIEW];
+  return [LOOK, STORY, PHOTOS, CONTACT, menuStep(catalogLabel), action, REVIEW];
 }
 
 export function stepIndexIn(steps: Step[], key: string): number {
