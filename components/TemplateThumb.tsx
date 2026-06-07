@@ -2,9 +2,10 @@
 
 import { useEffect, useRef, useState } from "react";
 
-// Renders a live sample site as a crisp, full-width desktop "screenshot":
-// a 1280px-wide render scaled to fit the card, measured responsively.
-export function TemplateThumb({ src, base = 1280, aspect = 0.66 }: { src: string; base?: number; aspect?: number }) {
+// Renders a live sample site as a crisp desktop "screenshot", cropped to the
+// hero so every card is uniform and stylish. The site renders at `base` wide
+// into a tall frame; we show only the top `aspect` slice, scaled to fit.
+export function TemplateThumb({ src, base = 1280, frame = 1180, aspect = 0.62 }: { src: string; base?: number; frame?: number; aspect?: number }) {
   const ref = useRef<HTMLDivElement>(null);
   const [scale, setScale] = useState(0);
 
@@ -19,7 +20,7 @@ export function TemplateThumb({ src, base = 1280, aspect = 0.66 }: { src: string
   }, [base]);
 
   return (
-    <div ref={ref} className="relative w-full overflow-hidden bg-neutral-100" style={{ aspectRatio: `1 / ${aspect}` }}>
+    <div ref={ref} className="relative w-full overflow-hidden bg-neutral-900" style={{ aspectRatio: `1 / ${aspect}` }}>
       {scale > 0 && (
         <iframe
           src={src}
@@ -28,7 +29,7 @@ export function TemplateThumb({ src, base = 1280, aspect = 0.66 }: { src: string
           scrolling="no"
           aria-hidden="true"
           className="pointer-events-none absolute left-0 top-0 origin-top-left border-0"
-          style={{ width: `${base}px`, height: `${base * aspect}px`, transform: `scale(${scale})` }}
+          style={{ width: `${base}px`, height: `${frame}px`, transform: `scale(${scale})` }}
         />
       )}
     </div>

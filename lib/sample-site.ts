@@ -1,4 +1,4 @@
-import { buildFor } from "./builds";
+import { buildFor, heroFor } from "./builds";
 import { starterContent } from "./starter";
 import type { TenantSite } from "./types";
 
@@ -34,6 +34,7 @@ export function sampleSiteFor(key: string): TenantSite | null {
     },
     content: {
       ...starter.content,
+      hero_image_url: heroFor(key),
       phone: "01234 567890",
       email: "hello@example.com",
       address: "12 High Street, Yourtown",
