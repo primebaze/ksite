@@ -60,8 +60,8 @@ export function BusinessTypePicker({ groups, defaultKey = "restaurant" }: { grou
       </button>
 
       {open && (
-        <div className="absolute z-30 mt-2 w-full overflow-hidden rounded-xl border border-white/10 bg-zinc-900 shadow-2xl">
-          <div className="border-b border-white/10 p-2">
+        <div className="absolute z-30 mt-2 flex w-full flex-col overflow-hidden rounded-xl border border-white/10 bg-zinc-900 shadow-2xl" style={{ maxHeight: "min(60vh, 380px)" }}>
+          <div className="shrink-0 border-b border-white/10 p-2">
             {/* eslint-disable-next-line jsx-a11y/no-autofocus */}
             <input
               autoFocus
@@ -71,7 +71,7 @@ export function BusinessTypePicker({ groups, defaultKey = "restaurant" }: { grou
               className="w-full rounded-lg bg-white/[0.05] px-3 py-2 text-sm text-white placeholder-white/30 outline-none"
             />
           </div>
-          <div className="max-h-72 overflow-y-auto py-1">
+          <div className="min-h-0 flex-1 overflow-y-auto py-1">
             {filtered.map((g) => (
               <div key={g.group}>
                 <p className="px-3 pb-1 pt-2 text-[11px] font-semibold uppercase tracking-wider text-white/35">{g.group}</p>
