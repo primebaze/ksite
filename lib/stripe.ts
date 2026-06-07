@@ -1,0 +1,28 @@
+import "server-only";
+import Stripe from "stripe";
+
+let client: Stripe | null = null;
+
+export function getStripe(): Stripe | null {
+  const key = process.env.STRIPE_SECRET_KEY;
+  if (!key) return null;
+  if (!client) client = new Stripe(key);
+  return client;
+}
+
+export type Plan = "basic" | "standard" | "premium";
+
+export const PLAN_LABELS: Record<Plan, { name: string; price: string; tagline: string }> = {
+  basic: { name: "Basic", price: "£99", tagline: "Get online and take bookings." },
+  standard: { name: "Standard", price: "£199", tagline: "Get found and grow." },
+  premium: { name: "Premium", price: "£349", tagline: "Hands-off marketing for growth." },
+};
+
+export function priceForPlan(plan: Plan): string | undefined {
+  const map: Record<Plan, string | undefined> = {
+    basic: process.env.STRIPE_PRICE_BASIC,
+    standard: process.env.STRIPE_PRICE_STANDARD,
+    premium: process.env.STRIPE_PRICE_PREMIUM,
+  };
+  return map[plan];
+}

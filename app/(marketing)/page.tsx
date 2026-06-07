@@ -1,0 +1,122 @@
+import Link from "next/link";
+import { Reveal } from "@/components/motion/Reveal";
+import { RotatingWord } from "@/components/motion/RotatingWord";
+import { EXAMPLES, FEATURES, ROTATING_WORDS, SITE_BASE } from "@/lib/marketing";
+
+export default function Home() {
+  return (
+    <>
+      {/* Hero */}
+      <section className="relative border-b border-white/5">
+        <div className="mx-auto max-w-4xl px-6 py-32 text-center sm:py-40">
+          <Reveal>
+            <h1 className="text-5xl font-semibold leading-[1.02] tracking-tight sm:text-7xl">
+              Websites for
+              <br />
+              <RotatingWord words={ROTATING_WORDS} />
+            </h1>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <p className="mx-auto mt-7 max-w-xl text-lg text-white/55">
+              Tell us what you want, and you go live on your own custom domain — design, hosting, booking, reviews
+              and SEO all set up for you. Most sites are online in under a day, and they&apos;re built to convert.
+            </p>
+          </Reveal>
+          <Reveal delay={0.18}>
+            <div className="mt-9 flex flex-wrap justify-center gap-3">
+              <Link href="/get-started" className="group relative overflow-hidden rounded-lg bg-white px-6 py-3 text-sm font-semibold text-black transition hover:bg-white/90">
+                Get your site
+              </Link>
+              <Link href="/examples" className="rounded-lg border border-white/15 px-6 py-3 text-sm font-medium text-white/80 transition hover:bg-white/5">
+                View live examples
+              </Link>
+            </div>
+            <p className="mt-6 text-sm text-white/35">From £99/mo · No setup fee · No contract · Online in under a day</p>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* What you get */}
+      <section className="mx-auto max-w-6xl px-6 py-24">
+        <Reveal>
+          <p className="text-xs font-medium uppercase tracking-widest text-emerald-400/80">What you get</p>
+          <h2 className="mt-3 max-w-2xl text-3xl font-semibold tracking-tight sm:text-4xl">
+            A website that brings in customers.
+          </h2>
+        </Reveal>
+        <div className="mt-12 grid gap-px overflow-hidden rounded-2xl border border-white/10 bg-white/10 sm:grid-cols-2 lg:grid-cols-3">
+          {FEATURES.slice(0, 3).map((f, i) => (
+            <Reveal key={f.title} delay={i * 0.05} className="bg-black">
+              <div className="h-full p-7 transition hover:bg-white/[0.02]">
+                <h3 className="text-base font-semibold">{f.title}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-white/50">{f.body}</p>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+        <Reveal delay={0.1}>
+          <Link href="/features" className="mt-6 inline-block text-sm text-emerald-400/90 transition hover:text-emerald-300">
+            All features →
+          </Link>
+        </Reveal>
+      </section>
+
+      {/* Examples */}
+      <section className="border-t border-white/5 bg-white/[0.015]">
+        <div className="mx-auto max-w-6xl px-6 py-24">
+          <Reveal>
+            <p className="text-xs font-medium uppercase tracking-widest text-emerald-400/80">Live examples</p>
+            <h2 className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">Real sites, one engine.</h2>
+          </Reveal>
+          <div className="mt-12 grid gap-5 sm:grid-cols-3">
+            {EXAMPLES.map((e, i) => (
+              <Reveal key={e.sub} delay={i * 0.06}>
+                <a
+                  href={`http://${e.sub}.${SITE_BASE}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="group block rounded-2xl border border-white/10 bg-white/[0.02] p-6 transition hover:border-white/25 hover:bg-white/[0.04]"
+                >
+                  <div className="flex aspect-[16/10] items-center justify-center rounded-lg border border-white/10 bg-gradient-to-br from-white/[0.06] to-transparent text-2xl font-semibold text-white/70">
+                    {e.name.charAt(0)}
+                  </div>
+                  <p className="mt-4 text-xs uppercase tracking-widest text-white/30">{e.label}</p>
+                  <p className="mt-1 font-medium">{e.name}</p>
+                  <p className="mt-3 text-sm text-emerald-400/90 transition group-hover:text-emerald-300">View live →</p>
+                </a>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Pricing teaser */}
+      <section className="mx-auto max-w-6xl px-6 py-24">
+        <Reveal>
+          <div className="flex flex-col items-center justify-between gap-6 rounded-2xl border border-white/10 bg-black p-10 text-center sm:flex-row sm:text-left">
+            <div>
+              <h2 className="text-2xl font-semibold tracking-tight">One price, everything included.</h2>
+              <p className="mt-2 text-white/55">Site, hosting, domain, SSL and booking. From £99/month.</p>
+            </div>
+            <Link href="/pricing" className="shrink-0 rounded-lg border border-white/15 px-6 py-3 text-sm font-medium transition hover:bg-white/5">
+              See pricing →
+            </Link>
+          </div>
+        </Reveal>
+      </section>
+
+      {/* Final CTA */}
+      <section className="border-t border-white/5">
+        <div className="mx-auto max-w-2xl px-6 py-24 text-center">
+          <Reveal>
+            <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">Ready to get online?</h2>
+            <p className="mt-4 text-white/55">Tell us about your business and we&apos;ll get you live on your own custom domain, usually in under a day.</p>
+            <Link href="/get-started" className="mt-8 inline-block rounded-lg bg-white px-6 py-3 text-sm font-semibold text-black transition hover:bg-white/90">
+              Get your site
+            </Link>
+          </Reveal>
+        </div>
+      </section>
+    </>
+  );
+}
