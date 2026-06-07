@@ -116,10 +116,17 @@ export default async function SetupStep({ params }: { params: Promise<{ step: st
       {step.kind === "photos" && (
         <div className="mt-8 space-y-8">
           <div>
-            <p className="text-sm font-medium">Hero image</p>
-            <p className="mt-1 text-xs text-white/40">The big photo at the top of your site. A wide, high-quality landscape shot works best.</p>
+            <p className="text-sm font-medium">Cover photo</p>
+            <p className="mt-1 text-xs text-white/40">A wide, real photo of your food, space or work — <span className="text-white/60">not your logo</span>. Leave blank for a clean branded cover.</p>
             <div className="mt-3">
-              <ImageUploader field="hero" current={site.content.hero_image_url} label="Upload your hero image" aspect="aspect-[16/9]" />
+              <ImageUploader field="hero" current={site.content.hero_image_url} label="Upload a cover photo" aspect="aspect-[16/9]" />
+            </div>
+          </div>
+          <div>
+            <p className="text-sm font-medium">Logo (optional)</p>
+            <p className="mt-1 text-xs text-white/40">Shown in the header. A square PNG with a transparent background works best.</p>
+            <div className="mt-3 max-w-[160px]">
+              <ImageUploader field="logo" current={site.theme.logo_url} label="Upload your logo" aspect="aspect-square" />
             </div>
           </div>
           <div>

@@ -21,15 +21,19 @@ export default function TradesSite({ site }: { site: TenantSite }) {
       </header>
 
       {/* Hero */}
-      <section className="relative isolate flex min-h-[88vh] items-center overflow-hidden">
-        {hero ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img src={hero} alt="" className="absolute inset-0 h-full w-full object-cover" />
-        ) : (
-          <div className="absolute inset-0 bg-[var(--primary)]" />
+      <section className="relative isolate flex min-h-[85vh] items-center overflow-hidden bg-gradient-to-br from-[var(--primary)] via-neutral-900 to-black">
+        {hero && (
+          <>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={hero} alt="" className="absolute inset-0 h-full w-full object-cover" />
+            <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/55 to-black/20" />
+          </>
         )}
-        <div className="absolute inset-0 bg-gradient-to-r from-black/85 via-black/55 to-black/20" />
         <div className="relative mx-auto w-full max-w-6xl px-6 text-white">
+          {theme.logo_url && (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={theme.logo_url} alt="" className="mb-8 h-14 w-auto object-contain" />
+          )}
           <h1 className="max-w-2xl text-5xl font-bold leading-[1.05] sm:text-6xl">{content.tagline ?? tenant.business_name}</h1>
           {content.tagline && <p className="mt-3 text-lg text-white/70">{tenant.business_name}</p>}
           <div className="mt-9 flex flex-wrap gap-3">

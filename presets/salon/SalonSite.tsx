@@ -21,15 +21,19 @@ export default function SalonSite({ site }: { site: TenantSite }) {
       </header>
 
       {/* Hero */}
-      <section className="relative isolate flex min-h-[92vh] items-end overflow-hidden">
-        {hero ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img src={hero} alt="" className="absolute inset-0 h-full w-full object-cover" />
-        ) : (
-          <div className="absolute inset-0 bg-[var(--primary)]" />
+      <section className="relative isolate flex min-h-[85vh] items-center overflow-hidden bg-gradient-to-br from-[var(--primary)] via-neutral-900 to-black">
+        {hero && (
+          <>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={hero} alt="" className="absolute inset-0 h-full w-full object-cover" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-black/40" />
+          </>
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-black/40" />
-        <div className="relative mx-auto w-full max-w-6xl px-6 pb-20 text-white">
+        <div className="relative mx-auto w-full max-w-6xl px-6 py-24 text-white">
+          {theme.logo_url && (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={theme.logo_url} alt="" className="mb-8 h-16 w-auto object-contain" />
+          )}
           {content.tagline && <p className="text-xs uppercase tracking-[0.3em] text-white/70">{content.tagline}</p>}
           <h1 className="mt-4 max-w-3xl text-5xl font-semibold leading-[1.02] sm:text-7xl">{tenant.business_name}</h1>
           <div className="mt-9 flex flex-wrap gap-3">
