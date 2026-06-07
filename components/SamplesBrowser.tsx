@@ -21,7 +21,7 @@ export function SamplesBrowser({ groups }: { groups: BrowserGroup[] }) {
   return (
     <div className="mx-auto flex max-w-6xl flex-col gap-8 px-6 py-12 lg:flex-row lg:gap-12">
       {/* Sidebar / category filter */}
-      <aside className="lg:w-52 lg:shrink-0">
+      <aside className="lg:sticky lg:top-24 lg:w-52 lg:shrink-0 lg:self-start">
         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white/40">Category</p>
         <ul className="mt-4 flex gap-2 overflow-x-auto pb-1 lg:flex-col lg:gap-0.5 lg:overflow-visible [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {groups.map((g) => {

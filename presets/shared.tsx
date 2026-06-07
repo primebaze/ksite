@@ -202,18 +202,18 @@ export function SiteHeader({
 }) {
   const { tenant, theme } = site;
   return (
-    <header className="sticky top-0 z-50 border-b border-black/5 bg-white/80 backdrop-blur-md">
-      <div className="mx-auto flex max-w-6xl items-center justify-between gap-6 px-6 py-3.5">
+    <header className="absolute inset-x-0 top-0 z-50 bg-gradient-to-b from-black/35 to-transparent">
+      <div className="mx-auto flex max-w-6xl items-center justify-between gap-6 px-6 py-5">
         <a href="#top" className="flex items-center gap-2.5">
           {theme.logo_url ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img src={theme.logo_url} alt={tenant.business_name} className="h-8 w-auto object-contain" />
           ) : null}
-          <span className="font-display text-lg font-semibold tracking-tight text-neutral-900">{tenant.business_name}</span>
+          <span className="font-display text-lg font-semibold tracking-tight text-white [text-shadow:0_1px_12px_rgba(0,0,0,0.55)]">{tenant.business_name}</span>
         </a>
         <nav className="hidden items-center gap-8 md:flex">
           {nav.map((n) => (
-            <a key={n.href} href={n.href} className="text-sm font-medium text-neutral-600 transition hover:text-neutral-900">
+            <a key={n.href} href={n.href} className="text-sm font-medium text-white/80 transition hover:text-white [text-shadow:0_1px_10px_rgba(0,0,0,0.5)]">
               {n.label}
             </a>
           ))}
@@ -222,7 +222,7 @@ export function SiteHeader({
           <a
             href={cta.href}
             className={cx(
-              "hidden shrink-0 bg-[var(--primary)] px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition active:scale-[0.98] hover:opacity-90 sm:inline-flex",
+              "hidden shrink-0 border border-white/40 px-5 py-2.5 text-sm font-semibold text-white backdrop-blur-sm transition active:scale-[0.98] hover:bg-white/10 sm:inline-flex",
               tokens.btn,
             )}
           >
