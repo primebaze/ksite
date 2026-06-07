@@ -1,14 +1,15 @@
 import Link from "next/link";
 import { Reveal } from "@/components/motion/Reveal";
 import { RotatingWord } from "@/components/motion/RotatingWord";
+import { TemplateThumb } from "@/components/TemplateThumb";
 import { EXAMPLES, FEATURES, ROTATING_WORDS, SITE_BASE } from "@/lib/marketing";
 
 export default function Home() {
   return (
     <>
       {/* Hero */}
-      <section className="relative border-b border-white/5">
-        <div className="mx-auto max-w-4xl px-6 py-32 text-center sm:py-40">
+      <section className="relative overflow-hidden border-b border-white/5">
+        <div className="mx-auto max-w-3xl px-6 pt-24 text-center sm:pt-28">
           <Reveal>
             <h1 className="text-5xl font-semibold leading-[1.02] tracking-tight sm:text-7xl">
               Websites for
@@ -17,23 +18,38 @@ export default function Home() {
             </h1>
           </Reveal>
           <Reveal delay={0.1}>
-            <p className="mx-auto mt-7 max-w-xl text-lg text-white/55">
+            <p className="mx-auto mt-6 max-w-xl text-lg text-white/55">
               Tell us what you want, and you go live on your own custom domain — design, hosting, booking, reviews
               and SEO all set up for you. Most sites are online in under a day, and they&apos;re built to convert.
             </p>
           </Reveal>
           <Reveal delay={0.18}>
-            <div className="mt-9 flex flex-wrap justify-center gap-3">
-              <Link href="/get-started" className="group relative overflow-hidden rounded-lg bg-white px-6 py-3 text-sm font-semibold text-black transition hover:bg-white/90">
+            <div className="mt-8 flex flex-wrap justify-center gap-3">
+              <Link href="/get-started" className="rounded-lg bg-white px-6 py-3 text-sm font-semibold text-black transition hover:bg-white/90">
                 Get your site
               </Link>
-              <Link href="/examples" className="rounded-lg border border-white/15 px-6 py-3 text-sm font-medium text-white/80 transition hover:bg-white/5">
-                View live examples
+              <Link href="/samples" className="rounded-lg border border-white/15 px-6 py-3 text-sm font-medium text-white/80 transition hover:bg-white/5">
+                Browse samples
               </Link>
             </div>
-            <p className="mt-6 text-sm text-white/35">From £99/mo · No setup fee · No contract · Online in under a day</p>
+            <p className="mt-5 text-sm text-white/35">From £99/mo · No setup fee · No contract · Online in under a day</p>
           </Reveal>
         </div>
+
+        {/* Product shot — a real, live sample site */}
+        <Reveal delay={0.26}>
+          <div className="mx-auto mt-16 max-w-5xl px-6 pb-24">
+            <div className="overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02] shadow-[0_40px_120px_-25px_rgba(0,0,0,0.85)]">
+              <div className="flex items-center gap-2 border-b border-white/10 px-4 py-3">
+                <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
+                <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
+                <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
+                <span className="ml-2 rounded-md bg-white/[0.06] px-3 py-1 text-xs text-white/40">yourbusiness.kovasite.com</span>
+              </div>
+              <TemplateThumb src="/samples/restaurant?embed=1" aspect={0.56} />
+            </div>
+          </div>
+        </Reveal>
       </section>
 
       {/* What you get */}
