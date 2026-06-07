@@ -161,3 +161,10 @@ export function stepsFor(archetype: Archetype, catalogLabel = "Services"): Step[
 export function stepIndexIn(steps: Step[], key: string): number {
   return steps.findIndex((s) => s.key === key);
 }
+
+// Example placeholders for the "add an item" step, matched to the business.
+export function itemExamples(archetype: Archetype): { name: string; price: string } {
+  if (archetype === "menu") return { name: "e.g. Margherita pizza", price: "e.g. £12" };
+  if (archetype === "bookings") return { name: "e.g. Cut & blow dry", price: "e.g. £35" };
+  return { name: "e.g. Boiler service", price: "e.g. from £90" };
+}

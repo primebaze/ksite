@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getMyTenantFull } from "@/lib/my-site";
-import { archetypeFor, catalogLabelFor, stepsFor, stepIndexIn, FIRST_STEP, type StepField } from "@/lib/verticals";
+import { archetypeFor, catalogLabelFor, itemExamples, stepsFor, stepIndexIn, FIRST_STEP, type StepField } from "@/lib/verticals";
 import { addMenuItem, removeMenuItem, saveStep } from "../actions";
 import { SubmitButton } from "@/components/SubmitButton";
 import { ImageUploader } from "@/components/ImageUploader";
@@ -101,8 +101,8 @@ export default async function SetupStep({ params }: { params: Promise<{ step: st
 
           <form action={addMenuItem} className="mt-4 rounded-xl border border-dashed border-white/15 bg-white/[0.02] p-4">
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-[1fr_auto]">
-              <input name="name" required placeholder="Item name (e.g. Haircut)" className={`${inputCls} mt-0`} />
-              <input name="price" placeholder="Price (e.g. £18)" className={`${inputCls} mt-0 sm:w-32`} />
+              <input name="name" required placeholder={itemExamples(archetypeFor(site.tenant.preset)).name} className={`${inputCls} mt-0`} />
+              <input name="price" placeholder={itemExamples(archetypeFor(site.tenant.preset)).price} className={`${inputCls} mt-0 sm:w-32`} />
             </div>
             <input name="description" placeholder="Short description (optional)" className={`${inputCls}`} />
             <input type="hidden" name="sort_order" value={site.catalog.length + 1} />
