@@ -14,10 +14,27 @@ interface Group {
 const FIELD =
   "mt-1 flex w-full items-center justify-between rounded-lg border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-white outline-none transition focus:border-white/30";
 
+// A short, friendly default list — not all 150+.
+const POPULAR = [
+  "restaurant",
+  "cafe",
+  "barber",
+  "hair_salon",
+  "beauty_salon",
+  "gym",
+  "plumber",
+  "electrician",
+  "photographer",
+  "dentist",
+  "cleaner",
+];
+
 export function BusinessTypePicker({ groups, defaultKey = "restaurant" }: { groups: Group[]; defaultKey?: string }) {
   const flat = useMemo(() => groups.flatMap((g) => g.builds), [groups]);
+  const byKey = useMemo(() => new Map(flat.map((b) => [b.key, b])), [flat]);
+
   const [selKey, setSelKey] = useState(defaultKey);
-  const [selLabel, setSelLabel] = useState(flat.find((b) => b.key === defaultKey)?.label ?? "Restaurant");
+  const [selLabel, setSelLabel] = useState(byKey.get(defaultKey)?.label ?? "Restaurant");
   const [q, setQ] = useState("");
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
@@ -31,16 +48,10 @@ export function BusinessTypePicker({ groups, defaultKey = "restaurant" }: { grou
   }, []);
 
   const ql = q.trim().toLowerCase();
-  const filtered = useMemo(
-    () =>
-      groups
-        .map((g) => ({
-          group: g.group,
-          builds: ql ? g.builds.filter((b) => b.label.toLowerCase().includes(ql) || g.group.toLowerCase().includes(ql)) : g.builds,
-        }))
-        .filter((g) => g.builds.length),
-    [groups, ql],
-  );
+  const results: Item[] = useMemo(() => {
+    if (ql) return flat.filter((b) => b.label.toLowerCase().includes(ql)).slice(0, 40);
+    return POPULAR.map((k) => byKey.get(k)).filter(Boolean) as Item[];
+  }, [ql, flat, byKey]);
 
   const isOther = selKey === "other";
 
@@ -60,40 +71,44 @@ export function BusinessTypePicker({ groups, defaultKey = "restaurant" }: { grou
       </button>
 
       {open && (
-        <div className="absolute z-30 mt-2 flex w-full flex-col overflow-hidden rounded-xl border border-white/10 bg-zinc-900 shadow-2xl" style={{ maxHeight: "min(60vh, 380px)" }}>
-          <div className="shrink-0 border-b border-white/10 p-2">
+        <div className="absolute z-30 mt-2 flex w-full flex-col overflow-hidden rounded-xl border border-white/10 bg-zinc-900 shadow-2xl" style={{ maxHeight: "min(60vh, 420px)" }}>
+          {/* Search */}
+          <div className="flex shrink-0 items-center gap-3 border-b border-white/10 px-4 py-3">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" className="shrink-0 text-white/40">
+              <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="2" />
+              <path d="M20 20l-3.2-3.2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+            </svg>
             {/* eslint-disable-next-line jsx-a11y/no-autofocus */}
             <input
               autoFocus
               value={q}
               onChange={(e) => setQ(e.target.value)}
-              placeholder="Search 150+ business types…"
-              className="w-full rounded-lg bg-white/[0.05] px-3 py-2 text-sm text-white placeholder-white/30 outline-none"
+              placeholder="Search for your business type"
+              className="w-full bg-transparent text-base text-white placeholder-white/35 outline-none"
             />
           </div>
-          <div className="min-h-0 flex-1 overflow-y-auto py-1">
-            {filtered.map((g) => (
-              <div key={g.group}>
-                <p className="px-3 pb-1 pt-2 text-[11px] font-semibold uppercase tracking-wider text-white/35">{g.group}</p>
-                {g.builds.map((b) => (
-                  <button
-                    key={b.key}
-                    type="button"
-                    onClick={() => choose(b.key, b.label)}
-                    className={`flex w-full items-center px-3 py-2 text-left text-sm transition hover:bg-white/10 ${b.key === selKey ? "text-white" : "text-white/80"}`}
-                  >
-                    {b.label}
-                  </button>
-                ))}
-              </div>
+
+          <div className="min-h-0 flex-1 overflow-y-auto px-2 py-2">
+            <p className="px-2 pb-1 pt-1 text-[11px] font-semibold uppercase tracking-wider text-white/35">
+              {ql ? "Results" : "Popular"}
+            </p>
+            {results.map((b) => (
+              <button
+                key={b.key}
+                type="button"
+                onClick={() => choose(b.key, b.label)}
+                className={`flex w-full items-center rounded-lg px-2 py-2.5 text-left text-[15px] transition hover:bg-white/10 ${b.key === selKey ? "text-white" : "text-white/80"}`}
+              >
+                {b.label}
+              </button>
             ))}
-            {filtered.length === 0 && (
-              <p className="px-3 py-3 text-sm text-white/40">No matches — pick “Other” below to type your own.</p>
+            {ql && results.length === 0 && (
+              <p className="px-2 py-3 text-sm text-white/40">No matches — pick “Other” below to type your own.</p>
             )}
             <button
               type="button"
               onClick={() => choose("other", "Other")}
-              className="mt-1 flex w-full items-center border-t border-white/10 px-3 py-2.5 text-left text-sm text-white/60 transition hover:bg-white/10 hover:text-white"
+              className="mt-1 flex w-full items-center rounded-lg border-t border-white/10 px-2 py-2.5 text-left text-[15px] text-white/55 transition hover:bg-white/10 hover:text-white"
             >
               Other — type your own
             </button>
