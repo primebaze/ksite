@@ -64,3 +64,12 @@ export async function removeMenuItem(formData: FormData) {
   await deleteMyCatalogItem(String(formData.get("item_id")));
   revalidatePath("/dashboard/setup/menu");
 }
+
+export async function clearCoverPhoto() {
+  const site = await getMyTenantFull();
+  if (!site) return;
+  const next = { ...site.content };
+  delete next.hero_image_url;
+  await updateMyContent(next);
+  revalidatePath("/dashboard/setup/photos");
+}

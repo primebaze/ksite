@@ -2,7 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getMyTenantFull } from "@/lib/my-site";
 import { archetypeFor, catalogLabelFor, itemExamples, stepsFor, stepIndexIn, FIRST_STEP, type StepField } from "@/lib/verticals";
-import { addMenuItem, removeMenuItem, saveStep } from "../actions";
+import { addMenuItem, clearCoverPhoto, removeMenuItem, saveStep } from "../actions";
 import { SubmitButton } from "@/components/SubmitButton";
 import { ImageUploader } from "@/components/ImageUploader";
 import type { TenantSite } from "@/lib/types";
@@ -121,6 +121,11 @@ export default async function SetupStep({ params }: { params: Promise<{ step: st
             <div className="mt-3">
               <ImageUploader field="hero" current={site.content.hero_image_url} label="Upload a cover photo" aspect="aspect-[16/9]" />
             </div>
+            {site.content.hero_image_url && (
+              <form action={clearCoverPhoto} className="mt-2">
+                <button className="text-xs text-white/40 hover:text-red-300">Remove cover photo</button>
+              </form>
+            )}
           </div>
           <div>
             <p className="text-sm font-medium">Logo (optional)</p>
