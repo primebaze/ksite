@@ -3,29 +3,24 @@
 import { useEffect, useState } from "react";
 import { TemplateThumb } from "./TemplateThumb";
 
-// A rotating product shot: cycles through different business types every 2s,
-// some with a photo hero, some with a looping video hero. All slides preload
-// and crossfade so there's no reload flicker.
-const SLIDES: { key: string; img?: string; video?: string }[] = [
-  { key: "spa", video: "/hero/hero1.mp4" },
-  { key: "restaurant", img: "1517248135467-4c7edcad34c4" },
-  { key: "hair_salon", img: "1560066984-138dadb4c035" },
-  { key: "steakhouse", video: "/hero/hero2.mp4" },
-  { key: "bakery", img: "1509440159596-0249088772ff" },
-  { key: "aesthetics_clinic", video: "/hero/hero3.mp4" },
+// A rotating product reel: best-selling business types, each shown with a
+// looping video hero. Slides preload and crossfade so there's no flicker.
+const SLIDES: { key: string; video: string }[] = [
+  { key: "restaurant", video: "/hero/hero1.mp4" },
+  { key: "hair_salon", video: "/hero/hero2.mp4" },
+  { key: "gym", video: "/hero/hero3.mp4" },
+  { key: "beauty_salon", video: "/hero/hero4.mp4" },
 ];
 
 function srcFor(s: (typeof SLIDES)[number]) {
-  let u = `/samples/${s.key}?embed=1`;
-  if (s.img) u += `&img=${s.img}`;
-  if (s.video) u += `&video=${encodeURIComponent(s.video)}`;
-  return u;
+  // Force the luxe full-bleed layout so the video hero fills the frame.
+  return `/samples/${s.key}?embed=1&style=luxe&video=${encodeURIComponent(s.video)}`;
 }
 
 export function HeroShowcase() {
   const [i, setI] = useState(0);
   useEffect(() => {
-    const t = setInterval(() => setI((x) => (x + 1) % SLIDES.length), 2600);
+    const t = setInterval(() => setI((x) => (x + 1) % SLIDES.length), 7000);
     return () => clearInterval(t);
   }, []);
 

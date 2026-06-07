@@ -2,14 +2,15 @@ import Link from "next/link";
 import { Reveal } from "@/components/motion/Reveal";
 import { RotatingWord } from "@/components/motion/RotatingWord";
 import { HeroShowcase } from "@/components/HeroShowcase";
+import { ScrollZoom } from "@/components/ScrollZoom";
 import { EXAMPLES, FEATURES, ROTATING_WORDS, SITE_BASE } from "@/lib/marketing";
 
 export default function Home() {
   return (
     <>
       {/* Hero */}
-      <section className="relative overflow-hidden border-b border-white/5">
-        <div className="mx-auto max-w-3xl px-6 pt-24 text-center sm:pt-28">
+      <section className="relative border-b border-white/5">
+        <div className="mx-auto max-w-3xl px-6 pt-24 pb-20 text-center sm:pt-28">
           <Reveal>
             <h1 className="text-5xl font-semibold leading-[1.02] tracking-tight sm:text-7xl">
               Websites for
@@ -35,14 +36,12 @@ export default function Home() {
             <p className="mt-5 text-sm text-white/35">From £99/mo · No setup fee · No contract · Online in under a day</p>
           </Reveal>
         </div>
-
-        {/* Product shot — rotating live sample sites (photos + video) */}
-        <Reveal delay={0.26}>
-          <div className="mx-auto mt-16 max-w-5xl px-6 pb-24">
-            <HeroShowcase />
-          </div>
-        </Reveal>
       </section>
+
+      {/* Rotating video reel that zooms to fill the screen on scroll */}
+      <ScrollZoom>
+        <HeroShowcase />
+      </ScrollZoom>
 
       {/* What you get */}
       <section className="mx-auto max-w-6xl px-6 py-24">
