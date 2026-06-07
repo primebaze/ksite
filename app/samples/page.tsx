@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { BUILDS, buildGroups } from "@/lib/builds";
+import { BUILDS, sampleGroups } from "@/lib/builds";
 
 export const dynamic = "force-static";
 
@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 };
 
 export default function SamplesIndex() {
-  const groups = buildGroups();
+  const groups = sampleGroups(10);
 
   return (
     <main className="min-h-screen bg-neutral-950 text-white">
@@ -19,7 +19,7 @@ export default function SamplesIndex() {
           <Link href="/" className="text-sm text-white/50 transition hover:text-white">← Kovasite</Link>
           <h1 className="mt-6 text-4xl font-semibold tracking-tight sm:text-5xl">Sample sites</h1>
           <p className="mt-4 max-w-2xl text-lg text-white/60">
-            {BUILDS.length} ready-made designs, tailored to your trade. Pick the closest match — your site starts here, then you make it yours.
+            A taste of our {BUILDS.length}+ designs, tailored to your trade. Here are ten favourites per category — pick the closest match and your site starts there, then you make it yours.
           </p>
           <Link href="/get-started" className="mt-8 inline-flex rounded-full bg-white px-6 py-3 text-sm font-semibold text-black transition hover:bg-white/90">
             Build mine →

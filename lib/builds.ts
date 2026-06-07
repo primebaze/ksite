@@ -70,6 +70,28 @@ const GROUP_ORDER = [
   "Education",
 ];
 
+// A curated, style-diverse subset per group for the samples gallery, so the
+// visible designs look distinct from one another (round-robin across styles).
+export function sampleGroups(perGroup = 10): BuildGroup[] {
+  return buildGroups().map((g) => {
+    const buckets = new Map<string, { key: string; label: string }[]>();
+    for (const b of g.builds) {
+      const style = byKey.get(b.key)?.style ?? "classic";
+      if (!buckets.has(style)) buckets.set(style, []);
+      buckets.get(style)!.push(b);
+    }
+    const lists = [...buckets.values()];
+    const picked: { key: string; label: string }[] = [];
+    let i = 0;
+    while (picked.length < perGroup && lists.some((l) => l.length)) {
+      const list = lists[i % lists.length];
+      if (list.length) picked.push(list.shift()!);
+      i++;
+    }
+    return { group: g.group, builds: picked };
+  });
+}
+
 export function buildGroups(): BuildGroup[] {
   const map = new Map<string, { key: string; label: string }[]>();
   for (const b of BUILDS) {
