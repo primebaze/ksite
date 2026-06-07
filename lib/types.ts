@@ -13,7 +13,7 @@ export type PlanStatus =
   | "suspended"
   | "canceled";
 
-export type DomainStatus = "pending" | "verifying" | "active" | "error";
+export type DomainStatus = "pending" | "registering" | "verifying" | "active" | "error";
 
 export interface Theme {
   logo_url: string | null;
