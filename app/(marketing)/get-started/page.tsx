@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { PageHero } from "@/components/PageHero";
 import { Reveal } from "@/components/motion/Reveal";
+import { SubmitButton } from "@/components/SubmitButton";
 import { startOnboarding } from "./actions";
 
 export const metadata: Metadata = { title: "Get started — Kovasite" };
@@ -60,9 +61,9 @@ export default async function GetStartedPage({
 
             {error && <p className="rounded-lg bg-red-500/10 px-4 py-3 text-sm text-red-300">{error}</p>}
 
-            <button className="w-full rounded-lg bg-white px-5 py-3 text-sm font-semibold text-black transition hover:bg-white/90">
+            <SubmitButton className="w-full rounded-lg bg-white px-5 py-3 text-sm font-semibold text-black transition hover:bg-white/90" pendingText="Creating your account…">
               Create my site
-            </button>
+            </SubmitButton>
             <p className="text-center text-xs text-white/30">
               Already have an account? <Link href="/login" className="text-white/60 hover:text-white">Sign in</Link>
             </p>

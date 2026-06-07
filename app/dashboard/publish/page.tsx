@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { getMyTenant } from "@/lib/my-site";
 import { PLAN_LABELS, type Plan } from "@/lib/stripe";
 import { TIERS } from "@/lib/marketing";
+import { SubmitButton } from "@/components/SubmitButton";
 import { startCheckout } from "../actions";
 
 export const dynamic = "force-dynamic";
@@ -53,11 +54,12 @@ export default async function PublishPage({
               </p>
               <form action={startCheckout} className="mt-6">
                 <input type="hidden" name="plan" value={plan} />
-                <button
+                <SubmitButton
                   className={`w-full rounded-lg py-2.5 text-sm font-semibold transition ${highlight ? "bg-white text-black hover:bg-white/90" : "border border-white/15 text-white hover:bg-white/5"}`}
+                  pendingText="Starting checkout…"
                 >
                   Subscribe &amp; publish
-                </button>
+                </SubmitButton>
               </form>
               <ul className="mt-7 space-y-3 text-sm text-white/65">
                 {tier.features.map((f) => (

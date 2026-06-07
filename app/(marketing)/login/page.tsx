@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { PageHero } from "@/components/PageHero";
 import { Reveal } from "@/components/motion/Reveal";
+import { SubmitButton } from "@/components/SubmitButton";
 import { clientLogin } from "./actions";
 
 export const metadata: Metadata = { title: "Sign in — Kovasite" };
@@ -33,9 +34,9 @@ export default async function LoginPage({
               <input name="password" type="password" required className={input} autoComplete="current-password" />
             </div>
             {error && <p className="rounded-lg bg-red-500/10 px-4 py-3 text-sm text-red-300">{error}</p>}
-            <button className="w-full rounded-lg bg-white px-5 py-3 text-sm font-semibold text-black transition hover:bg-white/90">
+            <SubmitButton className="w-full rounded-lg bg-white px-5 py-3 text-sm font-semibold text-black transition hover:bg-white/90" pendingText="Signing in…">
               Sign in
-            </button>
+            </SubmitButton>
             <p className="text-center text-xs text-white/30">
               New here? <Link href="/get-started" className="text-white/60 hover:text-white">Create your site</Link>
             </p>

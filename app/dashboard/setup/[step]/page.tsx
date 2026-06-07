@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { getMyTenantFull } from "@/lib/my-site";
 import { STEPS, FIRST_STEP, stepIndex, menuLabel, type StepField } from "../steps";
 import { addMenuItem, removeMenuItem, saveStep } from "../actions";
+import { SubmitButton } from "@/components/SubmitButton";
 import type { TenantSite } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
@@ -102,7 +103,7 @@ export default async function SetupStep({ params }: { params: Promise<{ step: st
             </div>
             <input name="description" placeholder="Short description (optional)" className={`${inputCls}`} />
             <input type="hidden" name="sort_order" value={site.catalog.length + 1} />
-            <button className="mt-3 rounded-lg border border-white/15 px-4 py-2 text-sm font-medium hover:bg-white/5">+ Add item</button>
+            <SubmitButton className="mt-3 rounded-lg border border-white/15 px-4 py-2 text-sm font-medium hover:bg-white/5" pendingText="Adding…">+ Add item</SubmitButton>
           </form>
 
           <NavButtons prevKey={prev?.key} nextKey={next?.key} nextLabel="Continue" />
@@ -158,7 +159,7 @@ function NavButtons({
         <Link href="/dashboard" className="text-sm text-white/45 hover:text-white">← Dashboard</Link>
       )}
       {submit ? (
-        <button className="rounded-lg bg-white px-6 py-3 text-sm font-semibold text-black transition hover:bg-white/90">{nextLabel} →</button>
+        <SubmitButton className="rounded-lg bg-white px-6 py-3 text-sm font-semibold text-black transition hover:bg-white/90" pendingText="Saving…">{nextLabel} →</SubmitButton>
       ) : (
         <Link href={`/dashboard/setup/${nextKey}`} className="rounded-lg bg-white px-6 py-3 text-sm font-semibold text-black transition hover:bg-white/90">{nextLabel} →</Link>
       )}

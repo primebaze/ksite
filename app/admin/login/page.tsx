@@ -1,3 +1,4 @@
+import { SubmitButton } from "@/components/SubmitButton";
 import { login } from "./actions";
 
 export default async function LoginPage({
@@ -32,9 +33,9 @@ export default async function LoginPage({
 
         {error && <p className="mt-4 rounded-md bg-red-50 px-3 py-2 text-sm text-red-700">{error}</p>}
 
-        <button className="mt-6 w-full rounded-md bg-stone-900 py-2.5 text-sm font-medium text-white">
+        <SubmitButton className="mt-6 w-full rounded-md bg-stone-900 py-2.5 text-sm font-medium text-white" pendingText="Signing in…">
           Sign in
-        </button>
+        </SubmitButton>
       </form>
     </main>
   );
