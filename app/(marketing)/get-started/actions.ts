@@ -2,6 +2,7 @@
 
 import { redirect } from "next/navigation";
 import { createSupabaseServerClient } from "@/lib/supabase-server";
+import { getServiceClient } from "@/lib/supabase";
 import type { Preset } from "@/lib/types";
 
 const PRESETS: Preset[] = ["restaurant", "trades", "salon"];
@@ -38,6 +39,20 @@ export async function startOnboarding(formData: FormData) {
     },
   });
   if (error) err(error.message);
+
+  // Supabase won't update metadata on a repeat signup of an existing email, so
+  // force the latest business details onto the user via the admin client. This
+  // is read at confirm time to create the right site.
+  const svc = getServiceClient();
+  if (svc) {
+    const { data: list } = await svc.auth.admin.listUsers();
+    const u = list?.users?.find((x) => x.email?.toLowerCase() === email.toLowerCase());
+    if (u) {
+      await svc.auth.admin.updateUserById(u.id, {
+        user_metadata: { business_name, preset, subdomain },
+      });
+    }
+  }
 
   redirect(`/get-started/check-email?email=${encodeURIComponent(email)}`);
 }
