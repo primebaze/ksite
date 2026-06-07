@@ -34,7 +34,9 @@ export async function sendAuthEmail({ to, data }: { to: string; data: SupabaseEm
   if (!apiKey) throw new Error("RESEND_API_KEY is not set");
 
   const type = data.email_action_type;
-  const base = data.site_url || process.env.NEXT_PUBLIC_SITE_URL || "https://kovasite.com";
+  // Always point the link at OUR app, not the payload's site_url (Supabase
+  // fills that with its own API base). NEXT_PUBLIC_SITE_URL is set in prod.
+  const base = (process.env.NEXT_PUBLIC_SITE_URL || "https://kovasite.com").replace(/\/$/, "");
   const link = `${base}/auth/confirm?token_hash=${encodeURIComponent(data.token_hash)}&type=${encodeURIComponent(type)}`;
   const subject = SUBJECTS[type] ?? "Kovasite";
 
