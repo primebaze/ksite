@@ -240,7 +240,7 @@ export function AboutSection({ tokens, about, kicker = "About" }: { tokens: Styl
   return (
     <section id="about" className="mx-auto max-w-3xl px-6 py-24 text-center">
       <Label tokens={tokens}>{kicker}</Label>
-      <p className={cx("font-display mt-6 text-2xl leading-relaxed text-neutral-800 sm:text-[2rem] sm:leading-[1.45]", tokens.serif ? "font-normal" : "font-light")}>
+      <p data-edit="content.about" className={cx("font-display mt-6 text-2xl leading-relaxed text-neutral-800 sm:text-[2rem] sm:leading-[1.45]", tokens.serif ? "font-normal" : "font-light")}>
         {about}
       </p>
     </section>

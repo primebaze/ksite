@@ -2,9 +2,10 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getMyTenantFull } from "@/lib/my-site";
 import { archetypeFor, catalogLabelFor, itemExamples, stepsFor, stepIndexIn, FIRST_STEP, type StepField } from "@/lib/verticals";
-import { addMenuItem, clearCoverPhoto, removeMenuItem, saveStep } from "../actions";
+import { addMenuItem, clearCoverPhoto, removeMenuItem, saveStep, setSiteStyle } from "../actions";
 import { SubmitButton } from "@/components/SubmitButton";
 import { ImageUploader } from "@/components/ImageUploader";
+import { StylePicker } from "@/components/StylePicker";
 import type { TenantSite } from "@/lib/types";
 
 export const dynamic = "force-dynamic";
@@ -78,6 +79,10 @@ export default async function SetupStep({ params }: { params: Promise<{ step: st
           })}
           <NavButtons prevKey={prev?.key} nextLabel={next ? "Continue" : "Finish"} submit />
         </form>
+      )}
+
+      {step.kind === "design" && (
+        <StylePicker presetKey={site.tenant.preset} current={site.content.style} action={setSiteStyle} />
       )}
 
       {step.kind === "menu" && (

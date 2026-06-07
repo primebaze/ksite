@@ -50,11 +50,11 @@ export default function RestaurantSite({ site }: { site: TenantSite }) {
               {content.cuisine_type}
             </p>
           )}
-          <h1 className={cx("font-display max-w-3xl text-5xl text-white sm:text-7xl", tokens.heading, tokens.heroAlign === "center" && "mx-auto")}>
+          <h1 data-edit="tenant.business_name" className={cx("font-display max-w-3xl text-5xl text-white sm:text-7xl", tokens.heading, tokens.heroAlign === "center" && "mx-auto")}>
             {tenant.business_name}
           </h1>
           {content.tagline && (
-            <p className={cx("mt-5 max-w-xl text-lg text-white/80 sm:text-xl", tokens.heroAlign === "center" && "mx-auto")}>{content.tagline}</p>
+            <p data-edit="content.tagline" className={cx("mt-5 max-w-xl text-lg text-white/80 sm:text-xl", tokens.heroAlign === "center" && "mx-auto")}>{content.tagline}</p>
           )}
           <HeroButtons
             tokens={tokens}
@@ -82,11 +82,11 @@ export default function RestaurantSite({ site }: { site: TenantSite }) {
                         {catg.items.map((item) => (
                           <li key={item.id}>
                             <div className="flex items-baseline gap-3">
-                              <span className="font-display text-lg text-neutral-900">{item.name}</span>
+                              <span data-edit={`item:${item.id}:name`} className="font-display text-lg text-neutral-900">{item.name}</span>
                               <span className="mb-1 flex-1 border-b border-dotted border-neutral-300" />
-                              {item.price && <span className="font-medium text-[var(--primary)]">{item.price}</span>}
+                              {item.price && <span data-edit={`item:${item.id}:price`} className="font-medium text-[var(--primary)]">{item.price}</span>}
                             </div>
-                            {item.description && <p className="mt-1 max-w-md text-sm text-neutral-500">{item.description}</p>}
+                            {item.description && <p data-edit={`item:${item.id}:description`} className="mt-1 max-w-md text-sm text-neutral-500">{item.description}</p>}
                           </li>
                         ))}
                       </ul>

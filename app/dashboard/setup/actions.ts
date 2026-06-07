@@ -65,6 +65,17 @@ export async function removeMenuItem(formData: FormData) {
   revalidatePath("/dashboard/setup/menu");
 }
 
+export async function setSiteStyle(formData: FormData) {
+  const style = String(formData.get("style") ?? "").trim();
+  const allowed = ["editorial", "bold", "minimal", "warm", "luxe", "classic"];
+  const site = await getMyTenantFull();
+  if (!site) redirect("/get-started");
+  if (allowed.includes(style)) {
+    await updateMyContent({ ...site.content, style } as SiteContent);
+  }
+  redirect("/dashboard/setup/story");
+}
+
 export async function clearCoverPhoto() {
   const site = await getMyTenantFull();
   if (!site) return;

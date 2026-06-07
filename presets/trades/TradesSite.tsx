@@ -48,10 +48,10 @@ export default function TradesSite({ site }: { site: TenantSite }) {
           </>
         )}
         <div className={cx("relative mx-auto w-full max-w-6xl px-6 py-28 text-white", tokens.heroAlign === "center" && "text-center")}>
-          <h1 className={cx("font-display max-w-3xl text-5xl text-white sm:text-6xl", tokens.heading, tokens.heroAlign === "center" && "mx-auto")}>
+          <h1 data-edit="content.tagline" className={cx("font-display max-w-3xl text-5xl text-white sm:text-6xl", tokens.heading, tokens.heroAlign === "center" && "mx-auto")}>
             {content.tagline ?? tenant.business_name}
           </h1>
-          <p className={cx("mt-4 text-lg text-white/75", tokens.heroAlign === "center" && "mx-auto")}>{tenant.business_name}</p>
+          <p data-edit="tenant.business_name" className={cx("mt-4 text-lg text-white/75", tokens.heroAlign === "center" && "mx-auto")}>{tenant.business_name}</p>
           <HeroButtons
             tokens={tokens}
             primary={{ label: cta, href: ctaUrl }}
@@ -77,9 +77,9 @@ export default function TradesSite({ site }: { site: TenantSite }) {
             <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {services.map((s) => (
                 <div key={s.id} className={cx("border border-black/5 bg-white p-7 transition hover:-translate-y-1 hover:shadow-xl", tokens.card)}>
-                  <h3 className="font-display text-lg font-semibold text-[var(--primary)]">{s.name}</h3>
-                  {s.description && <p className="mt-2 text-sm text-neutral-600">{s.description}</p>}
-                  {s.price && <p className="mt-4 text-sm font-semibold text-neutral-900">{s.price}</p>}
+                  <h3 data-edit={`item:${s.id}:name`} className="font-display text-lg font-semibold text-[var(--primary)]">{s.name}</h3>
+                  {s.description && <p data-edit={`item:${s.id}:description`} className="mt-2 text-sm text-neutral-600">{s.description}</p>}
+                  {s.price && <p data-edit={`item:${s.id}:price`} className="mt-4 text-sm font-semibold text-neutral-900">{s.price}</p>}
                 </div>
               ))}
             </div>

@@ -54,7 +54,7 @@ export interface Step {
   key: string;
   title: string;
   intro: string;
-  kind: "fields" | "menu" | "review" | "photos";
+  kind: "fields" | "menu" | "review" | "photos" | "design";
   fields?: StepField[];
 }
 
@@ -67,14 +67,6 @@ const LOOK: Step = {
   kind: "fields",
   fields: [
     { name: "business_name", label: "Business name", help: "What your business is called.", source: "tenant" },
-    { name: "style", label: "Design style", help: "The overall look and feel. We've picked one to suit your business — change it any time.", type: "select", source: "content", options: [
-      { value: "editorial", label: "Editorial — elegant & magazine-like" },
-      { value: "bold", label: "Bold — big, high-energy" },
-      { value: "minimal", label: "Minimal — clean & calm" },
-      { value: "warm", label: "Warm — soft & welcoming" },
-      { value: "luxe", label: "Luxe — dark & premium" },
-      { value: "classic", label: "Classic — balanced & timeless" },
-    ] },
     { name: "primary_color", label: "Main colour", help: "Your main brand colour.", type: "color", source: "theme" },
     { name: "accent_color", label: "Highlight colour", help: "Used for buttons and accents.", type: "color", source: "theme" },
     { name: "font", label: "Font style", type: "select", source: "theme", options: [
@@ -82,6 +74,13 @@ const LOOK: Step = {
       { value: "serif", label: "Classic (elegant)" },
     ] },
   ],
+};
+
+const DESIGN: Step = {
+  key: "design",
+  title: "Choose your design",
+  intro: "Here's your site in a few different looks. Pick the one you love — you can change it any time.",
+  kind: "design",
 };
 
 const STORY: Step = {
@@ -165,7 +164,7 @@ const SERVICES_ACTION: Step = {
 
 export function stepsFor(archetype: Archetype, catalogLabel = "Services"): Step[] {
   const action = archetype === "menu" ? MENU_ACTION : archetype === "bookings" ? BOOKINGS_ACTION : SERVICES_ACTION;
-  return [LOOK, STORY, PHOTOS, CONTACT, menuStep(catalogLabel), action, REVIEW];
+  return [LOOK, DESIGN, STORY, PHOTOS, CONTACT, menuStep(catalogLabel), action, REVIEW];
 }
 
 export function stepIndexIn(steps: Step[], key: string): number {

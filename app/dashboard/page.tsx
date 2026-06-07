@@ -54,10 +54,16 @@ export default async function DashboardHome({
         </a>
       )}
 
-      <div className="grid gap-4 sm:grid-cols-2">
+      <div className="grid gap-4 sm:grid-cols-3">
+        <a href="/preview?edit=1" className="rounded-2xl border border-emerald-400/30 bg-emerald-400/[0.06] p-6 transition hover:border-emerald-400/60">
+          <h2 className="font-semibold">Edit text on your site</h2>
+          <p className="mt-1 text-sm text-white/45">Click any text on the live page and type — changes save as you go.</p>
+          <p className="mt-4 text-sm text-emerald-400/90">Edit on page →</p>
+        </a>
+
         <Link href="/dashboard/setup/look" className="rounded-2xl border border-white/10 bg-white/[0.02] p-6 transition hover:border-white/25">
-          <h2 className="font-semibold">Build &amp; edit your site</h2>
-          <p className="mt-1 text-sm text-white/45">Step-by-step — look, story, photos, contact, menu and more.</p>
+          <h2 className="font-semibold">Design, photos &amp; details</h2>
+          <p className="mt-1 text-sm text-white/45">Step-by-step — choose a design, add photos, menu, contact and more.</p>
           <p className="mt-4 text-sm text-emerald-400/90">Open setup →</p>
         </Link>
 

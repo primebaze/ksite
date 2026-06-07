@@ -47,11 +47,11 @@ export default function SalonSite({ site }: { site: TenantSite }) {
         )}
         <div className={cx("relative mx-auto w-full max-w-6xl px-6 py-28 text-white", tokens.heroAlign === "center" && "text-center")}>
           {content.tagline && (
-            <p className={cx("mb-5", tokens.label === "serif" ? "font-display text-lg italic text-white/85" : "text-xs font-semibold uppercase tracking-[0.35em] text-white/80")}>
+            <p data-edit="content.tagline" className={cx("mb-5", tokens.label === "serif" ? "font-display text-lg italic text-white/85" : "text-xs font-semibold uppercase tracking-[0.35em] text-white/80")}>
               {content.tagline}
             </p>
           )}
-          <h1 className={cx("font-display max-w-3xl text-5xl text-white sm:text-7xl", tokens.heading, tokens.heroAlign === "center" && "mx-auto")}>
+          <h1 data-edit="tenant.business_name" className={cx("font-display max-w-3xl text-5xl text-white sm:text-7xl", tokens.heading, tokens.heroAlign === "center" && "mx-auto")}>
             {tenant.business_name}
           </h1>
           <HeroButtons
@@ -80,10 +80,10 @@ export default function SalonSite({ site }: { site: TenantSite }) {
                         {catg.items.map((item) => (
                           <li key={item.id} className="flex items-baseline justify-between gap-6 py-4">
                             <div>
-                              <p className="font-medium text-neutral-900">{item.name}</p>
-                              {item.description && <p className="mt-0.5 text-sm text-neutral-500">{item.description}</p>}
+                              <p data-edit={`item:${item.id}:name`} className="font-medium text-neutral-900">{item.name}</p>
+                              {item.description && <p data-edit={`item:${item.id}:description`} className="mt-0.5 text-sm text-neutral-500">{item.description}</p>}
                             </div>
-                            {item.price && <span className="whitespace-nowrap font-medium text-[var(--primary)]">{item.price}</span>}
+                            {item.price && <span data-edit={`item:${item.id}:price`} className="whitespace-nowrap font-medium text-[var(--primary)]">{item.price}</span>}
                           </li>
                         ))}
                       </ul>
