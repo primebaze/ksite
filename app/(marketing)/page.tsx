@@ -44,9 +44,12 @@ export default function Home() {
                 <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
                 <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
                 <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
-                <span className="ml-2 rounded-md bg-white/[0.06] px-3 py-1 text-xs text-white/40">yourbusiness.kovasite.com</span>
+                <span className="ml-2 flex items-center gap-1.5 rounded-md bg-white/[0.06] px-3 py-1 text-xs text-white/40">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M6 10V8a6 6 0 1112 0v2m-9 0h6a3 3 0 013 3v5a3 3 0 01-3 3H9a3 3 0 01-3-3v-5a3 3 0 013-3z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+                  your custom domain
+                </span>
               </div>
-              <TemplateThumb src="/samples/restaurant?embed=1" aspect={0.56} />
+              <TemplateThumb src="/samples/spa?embed=1" aspect={0.56} />
             </div>
           </div>
         </Reveal>
