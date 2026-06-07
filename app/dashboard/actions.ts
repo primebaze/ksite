@@ -132,6 +132,8 @@ export async function startCheckout(formData: FormData) {
   } = await supabase.auth.getUser();
   const tenant = await getMyTenant();
   if (!user || !tenant) redirect("/login");
+  // Already subscribed — never start a second checkout.
+  if (tenant.plan_status === "active" || tenant.published) redirect("/dashboard");
 
   const base = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
   let url: string | null = null;

@@ -14,7 +14,8 @@ export default async function DashboardHome({
   const tenant = await getMyTenant();
   if (!tenant) redirect("/get-started");
 
-  const live = tenant.published;
+  const live = tenant.published || tenant.plan_status === "active";
+  const finishing = checkout === "success" && !live;
   const url = `http://${tenant.subdomain}.${SITE_BASE}`;
 
   return (
@@ -31,9 +32,9 @@ export default async function DashboardHome({
         </span>
       </div>
 
-      {checkout === "success" && !live && (
-        <p className="rounded-lg border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-white/60">
-          Payment received — finishing setup. Your site will flip to Live in a moment; refresh shortly.
+      {finishing && (
+        <p className="rounded-lg border border-emerald-400/30 bg-emerald-400/5 px-4 py-3 text-sm text-emerald-200">
+          ✓ Payment received — putting your site together. It&apos;ll go Live in a moment; refresh shortly.
         </p>
       )}
 
@@ -59,11 +60,12 @@ export default async function DashboardHome({
             ? "Your subscription is active and your site is online."
             : "Subscribe to publish your site and keep it live, hosted on your subdomain. Connect your own domain anytime after."}
         </p>
-        {!live && (
+        {!live && !finishing && (
           <Link href="/dashboard/publish" className="mt-4 inline-block rounded-lg bg-white px-5 py-2.5 text-sm font-semibold text-black transition hover:bg-white/90">
             Publish — choose a plan
           </Link>
         )}
+        {finishing && <p className="mt-4 text-sm text-emerald-300">Finishing setup…</p>}
       </div>
 
       {/* Custom domain (next phase) */}
