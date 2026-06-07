@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getMyTenantFull } from "@/lib/my-site";
-import { STEPS, FIRST_STEP, stepIndex, menuLabel, type StepField } from "../steps";
+import { archetypeFor, catalogLabelFor, stepsFor, stepIndexIn, FIRST_STEP, type StepField } from "@/lib/verticals";
 import { addMenuItem, removeMenuItem, saveStep } from "../actions";
 import { SubmitButton } from "@/components/SubmitButton";
 import type { TenantSite } from "@/lib/types";
@@ -14,28 +14,32 @@ const inputCls =
 function valueFor(f: StepField, site: TenantSite): string {
   const src =
     f.source === "tenant" ? site.tenant : f.source === "theme" ? site.theme : site.content;
-  return String((src as unknown as Record<string, unknown>)[f.name] ?? "");
+  const v = (src as unknown as Record<string, unknown>)[f.name];
+  if (Array.isArray(v)) return v.join(", ");
+  return String(v ?? "");
 }
 
 export default async function SetupStep({ params }: { params: Promise<{ step: string }> }) {
   const { step: stepKey } = await params;
-  const idx = stepIndex(stepKey);
-  if (idx === -1) redirect(`/dashboard/setup/${FIRST_STEP}`);
-  const step = STEPS[idx];
 
   const site = await getMyTenantFull();
   if (!site) redirect("/get-started");
 
-  const prev = STEPS[idx - 1];
-  const next = STEPS[idx + 1];
-  const progress = Math.round(((idx + 1) / STEPS.length) * 100);
+  const catalogLabel = catalogLabelFor(site.tenant.preset);
+  const steps = stepsFor(archetypeFor(site.tenant.preset), catalogLabel);
+  const idx = stepIndexIn(steps, stepKey);
+  if (idx === -1) redirect(`/dashboard/setup/${FIRST_STEP}`);
+  const step = steps[idx];
+
+  const prev = steps[idx - 1];
+  const next = steps[idx + 1];
+  const progress = Math.round(((idx + 1) / steps.length) * 100);
 
   return (
     <div className="mx-auto max-w-xl">
-      {/* progress */}
       <div className="mb-8">
         <div className="flex items-center justify-between text-xs text-white/40">
-          <span>Step {idx + 1} of {STEPS.length}</span>
+          <span>Step {idx + 1} of {steps.length}</span>
           <span>{progress}%</span>
         </div>
         <div className="mt-2 h-1 w-full overflow-hidden rounded-full bg-white/10">
@@ -46,7 +50,6 @@ export default async function SetupStep({ params }: { params: Promise<{ step: st
       <h1 className="text-3xl font-semibold tracking-tight">{step.title}</h1>
       <p className="mt-3 text-white/55">{step.intro}</p>
 
-      {/* FIELDS */}
       {step.kind === "fields" && (
         <form action={saveStep} className="mt-8 space-y-6">
           <input type="hidden" name="__step" value={step.key} />
@@ -76,10 +79,9 @@ export default async function SetupStep({ params }: { params: Promise<{ step: st
         </form>
       )}
 
-      {/* MENU */}
       {step.kind === "menu" && (
         <div className="mt-8">
-          <h2 className="text-sm font-medium text-white/70">Your {menuLabel(site.tenant.preset)}</h2>
+          <h2 className="text-sm font-medium text-white/70">Your {catalogLabel.toLowerCase()}</h2>
           <div className="mt-3 space-y-2">
             {site.catalog.length === 0 && <p className="text-sm text-white/35">Nothing added yet — add your first item below.</p>}
             {site.catalog.map((it) => (
@@ -110,7 +112,6 @@ export default async function SetupStep({ params }: { params: Promise<{ step: st
         </div>
       )}
 
-      {/* REVIEW */}
       {step.kind === "review" && (
         <div className="mt-8">
           <div className="overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02]">

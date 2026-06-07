@@ -2,19 +2,17 @@
 
 import { redirect } from "next/navigation";
 import { createTenant } from "@/lib/admin";
-import type { Preset } from "@/lib/types";
-
-const PRESETS: Preset[] = ["restaurant", "trades", "salon"];
+import { isVertical } from "@/lib/verticals";
 
 export async function createTenantAction(formData: FormData) {
   const business_name = String(formData.get("business_name") ?? "").trim();
-  const preset = String(formData.get("preset") ?? "") as Preset;
+  const preset = String(formData.get("preset") ?? "");
   const subdomain = String(formData.get("subdomain") ?? "")
     .trim()
     .toLowerCase()
     .replace(/[^a-z0-9-]/g, "");
 
-  if (!business_name || !subdomain || !PRESETS.includes(preset)) {
+  if (!business_name || !subdomain || !isVertical(preset)) {
     redirect("/admin/new?error=Please+fill+in+all+fields");
   }
 

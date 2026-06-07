@@ -3,7 +3,10 @@ import Link from "next/link";
 import { PageHero } from "@/components/PageHero";
 import { Reveal } from "@/components/motion/Reveal";
 import { SubmitButton } from "@/components/SubmitButton";
+import { VERTICALS } from "@/lib/verticals";
 import { startOnboarding } from "./actions";
+
+const GROUPS = Array.from(new Set(VERTICALS.map((v) => v.group)));
 
 export const metadata: Metadata = { title: "Get started — Kovasite" };
 
@@ -33,10 +36,14 @@ export default async function GetStartedPage({
             <div className="grid gap-4 sm:grid-cols-2">
               <div>
                 <label className="text-sm font-medium">Type</label>
-                <select name="preset" className={input} defaultValue="restaurant">
-                  <option value="restaurant" className="bg-zinc-900">Restaurant / café</option>
-                  <option value="trades" className="bg-zinc-900">Trade</option>
-                  <option value="salon" className="bg-zinc-900">Salon / beauty</option>
+                <select name="preset" className={input} defaultValue="salon">
+                  {GROUPS.map((g) => (
+                    <optgroup key={g} label={g} className="bg-zinc-900">
+                      {VERTICALS.filter((v) => v.group === g).map((v) => (
+                        <option key={v.key} value={v.key} className="bg-zinc-900">{v.label}</option>
+                      ))}
+                    </optgroup>
+                  ))}
                 </select>
               </div>
               <div>

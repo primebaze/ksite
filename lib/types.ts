@@ -2,7 +2,9 @@
 // The engine is preset-driven: one set of generic tables serves every vertical.
 // Preset-specific meaning lives in `site_content` (JSON) and the templates.
 
-export type Preset = "restaurant" | "trades" | "salon";
+// A tenant's vertical key (e.g. "salon", "restaurant", "plumber"). The full
+// list + their template archetypes live in lib/verticals.ts.
+export type Preset = string;
 
 export type PlanStatus =
   | "trialing"

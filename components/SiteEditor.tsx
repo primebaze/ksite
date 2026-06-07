@@ -1,4 +1,5 @@
-import type { Preset, TenantSite } from "@/lib/types";
+import type { TenantSite } from "@/lib/types";
+import { catalogLabelFor } from "@/lib/verticals";
 
 // Dark, client-facing editor. Reused on the self-serve dashboard. Each form
 // posts to a server action passed in via `actions`, so the same UI works for
@@ -14,12 +15,6 @@ export interface EditorActions {
   teamSave: (formData: FormData) => Promise<void>;
   teamDelete: (formData: FormData) => Promise<void>;
 }
-
-const CATALOG_LABEL: Record<Preset, string> = {
-  restaurant: "Menu",
-  trades: "Services",
-  salon: "Treatments",
-};
 
 const input =
   "mt-1 w-full rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2 text-sm text-white placeholder-white/30 outline-none focus:border-white/30";
@@ -42,7 +37,7 @@ function Card({ title, desc, children }: { title: string; desc?: string; childre
 export function SiteEditor({ site, actions }: { site: TenantSite; actions: EditorActions }) {
   const { tenant, theme, content, catalog, gallery, team } = site;
   const id = tenant.id;
-  const catalogLabel = CATALOG_LABEL[tenant.preset];
+  const catalogLabel = catalogLabelFor(tenant.preset);
 
   return (
     <div className="space-y-6">

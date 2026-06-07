@@ -2,9 +2,10 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
-import { STEPS, stepIndex } from "./steps";
+import { archetypeFor, catalogLabelFor, stepsFor, stepIndexIn } from "@/lib/verticals";
 import {
   deleteMyCatalogItem,
+  getMyTenant,
   getMyTenantFull,
   updateMyContent,
   updateMyTenant,
@@ -16,32 +17,36 @@ import type { SiteContent } from "@/lib/types";
 // Save a "fields" step, then move to the next screen.
 export async function saveStep(formData: FormData) {
   const key = String(formData.get("__step"));
-  const idx = stepIndex(key);
-  const step = STEPS[idx];
+  const tenant = await getMyTenant();
+  if (!tenant) redirect("/get-started");
+
+  const steps = stepsFor(archetypeFor(tenant.preset), catalogLabelFor(tenant.preset));
+  const idx = stepIndexIn(steps, key);
+  const step = steps[idx];
 
   if (step?.kind === "fields") {
-    const tenant: Record<string, string> = {};
-    const theme: Record<string, string> = {};
-    const content: Record<string, string | undefined> = {};
+    const tenantFields: Record<string, string> = {};
+    const themeFields: Record<string, string> = {};
+    const content: Record<string, unknown> = {};
     for (const f of step.fields ?? []) {
-      const v = String(formData.get(f.name) ?? "").trim();
-      if (f.source === "tenant") tenant[f.name] = v;
-      else if (f.source === "theme") theme[f.name] = v || (f.name === "font" ? "sans-serif" : "#111111");
-      else content[f.name] = v || undefined;
+      const raw = String(formData.get(f.name) ?? "").trim();
+      if (f.source === "tenant") tenantFields[f.name] = raw;
+      else if (f.source === "theme") themeFields[f.name] = raw || (f.name === "font" ? "sans-serif" : "#111111");
+      else if (f.list) content[f.name] = raw ? raw.split(",").map((s) => s.trim()).filter(Boolean) : [];
+      else content[f.name] = raw || undefined;
     }
-    if (Object.keys(tenant).length) await updateMyTenant(tenant as never);
-    if (Object.keys(theme).length) await updateMyTheme(theme as never);
+    if (Object.keys(tenantFields).length) await updateMyTenant(tenantFields as never);
+    if (Object.keys(themeFields).length) await updateMyTheme(themeFields as never);
     if (Object.keys(content).length) {
       const site = await getMyTenantFull();
       await updateMyContent({ ...(site?.content ?? {}), ...content } as SiteContent);
     }
   }
 
-  const next = STEPS[idx + 1];
+  const next = steps[idx + 1];
   redirect(next ? `/dashboard/setup/${next.key}` : "/dashboard");
 }
 
-// Menu step — add / remove an item, stay on the menu step.
 export async function addMenuItem(formData: FormData) {
   await upsertMyCatalogItem({
     section: null,

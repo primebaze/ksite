@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getTenantFull } from "@/lib/admin";
-import type { Preset } from "@/lib/types";
+import { catalogLabelFor } from "@/lib/verticals";
 import {
   catalogDelete,
   catalogSave,
@@ -16,12 +16,6 @@ import {
 } from "./actions";
 
 export const dynamic = "force-dynamic";
-
-const CATALOG_LABEL: Record<Preset, string> = {
-  restaurant: "Menu",
-  trades: "Services",
-  salon: "Treatments",
-};
 
 const input = "mt-1 w-full rounded-md border border-stone-300 px-3 py-2 text-sm";
 const card = "rounded-xl border border-stone-200 bg-white p-6";
@@ -49,7 +43,7 @@ export default async function EditTenant({
   const site = await getTenantFull(id);
   if (!site) notFound();
   const { tenant, theme, content, catalog, gallery, team } = site;
-  const catalogLabel = CATALOG_LABEL[tenant.preset];
+  const catalogLabel = catalogLabelFor(tenant.preset);
 
   return (
     <div>

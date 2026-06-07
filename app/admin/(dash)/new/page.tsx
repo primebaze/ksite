@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { VERTICALS } from "@/lib/verticals";
 import { createTenantAction } from "../actions";
 
 export default async function NewClientPage({
@@ -24,9 +25,9 @@ export default async function NewClientPage({
         <div>
           <label className="block text-sm font-medium">Preset</label>
           <select name="preset" className="mt-1 w-full rounded-md border border-stone-300 px-3 py-2 text-sm">
-            <option value="restaurant">Restaurant</option>
-            <option value="trades">Trades</option>
-            <option value="salon">Salon</option>
+            {VERTICALS.map((v) => (
+              <option key={v.key} value={v.key}>{v.label}</option>
+            ))}
           </select>
         </div>
 
