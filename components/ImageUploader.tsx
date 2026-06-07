@@ -1,12 +1,9 @@
 "use client";
 
-import { useActionState } from "react";
-import { uploadTenantImage, type UploadState } from "@/app/dashboard/upload-actions";
+import { useState } from "react";
 
-const initial: UploadState = { ok: false };
-
-// Drag/select an image; it auto-uploads (sanitised server-side) and shows a
-// live preview. `locked` shows an upsell instead (e.g. video on Premium).
+// Pick an image; it uploads to /api/upload (sanitised + resized server-side)
+// and shows a live preview. `locked` shows an upsell instead (e.g. video).
 export function ImageUploader({
   field,
   current,
@@ -22,8 +19,29 @@ export function ImageUploader({
   locked?: boolean;
   lockedNote?: string;
 }) {
-  const [state, action, pending] = useActionState(uploadTenantImage, initial);
-  const url = state.url ?? current ?? null;
+  const [url, setUrl] = useState<string | null>(current ?? null);
+  const [pending, setPending] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  async function onChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setPending(true);
+    setError(null);
+    try {
+      const fd = new FormData();
+      fd.set("field", field);
+      fd.set("file", file);
+      const res = await fetch("/api/upload", { method: "POST", body: fd });
+      const data = await res.json();
+      if (data.ok) setUrl(data.url);
+      else setError(data.error ?? "Upload failed.");
+    } catch {
+      setError("Upload failed — please try again.");
+    } finally {
+      setPending(false);
+    }
+  }
 
   if (locked) {
     return (
@@ -35,16 +53,19 @@ export function ImageUploader({
   }
 
   return (
-    <form action={action}>
-      <input type="hidden" name="field" value={field} />
+    <div>
       <label className={`group relative flex ${aspect} w-full cursor-pointer items-center justify-center overflow-hidden rounded-xl border border-white/15 bg-white/[0.02] text-center transition hover:border-white/30`}>
         {url ? (
           // eslint-disable-next-line @next/next/no-img-element
           <img src={url} alt={label} className="h-full w-full object-cover" />
         ) : (
-          <span className="px-4 text-sm text-white/40">{label}<br /><span className="text-xs text-white/25">Tap to upload (JPG, PNG, WEBP)</span></span>
+          <span className="px-4 text-sm text-white/40">
+            {label}
+            <br />
+            <span className="text-xs text-white/25">Tap to upload (JPG, PNG, WEBP)</span>
+          </span>
         )}
-        {url && (
+        {url && !pending && (
           <span className="absolute inset-0 flex items-center justify-center bg-black/50 text-sm font-medium text-white opacity-0 transition group-hover:opacity-100">
             Change photo
           </span>
@@ -56,13 +77,13 @@ export function ImageUploader({
         )}
         <input
           type="file"
-          name="file"
           accept="image/png,image/jpeg,image/webp,image/avif,image/gif"
           className="hidden"
-          onChange={(e) => e.currentTarget.form?.requestSubmit()}
+          disabled={pending}
+          onChange={onChange}
         />
       </label>
-      {state.error && <p className="mt-2 text-sm text-red-400">{state.error}</p>}
-    </form>
+      {error && <p className="mt-2 text-sm text-red-400">{error}</p>}
+    </div>
   );
 }
