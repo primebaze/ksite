@@ -38,16 +38,16 @@ export default async function DashboardHome({
       )}
 
       <div className="grid gap-4 sm:grid-cols-2">
-        <Link href="/dashboard/edit" className="rounded-2xl border border-white/10 bg-white/[0.02] p-6 transition hover:border-white/25">
-          <h2 className="font-semibold">Edit your site</h2>
-          <p className="mt-1 text-sm text-white/45">Content, menu, photos, colours and contact details.</p>
-          <p className="mt-4 text-sm text-emerald-400/90">Open editor →</p>
+        <Link href="/dashboard/setup/look" className="rounded-2xl border border-white/10 bg-white/[0.02] p-6 transition hover:border-white/25">
+          <h2 className="font-semibold">Build &amp; edit your site</h2>
+          <p className="mt-1 text-sm text-white/45">A friendly step-by-step — your look, story, contact, menu and more.</p>
+          <p className="mt-4 text-sm text-emerald-400/90">Open setup →</p>
         </Link>
 
-        <a href={url} target="_blank" rel="noreferrer" className="rounded-2xl border border-white/10 bg-white/[0.02] p-6 transition hover:border-white/25">
+        <a href="/preview" target="_blank" rel="noreferrer" className="rounded-2xl border border-white/10 bg-white/[0.02] p-6 transition hover:border-white/25">
           <h2 className="font-semibold">Preview your site</h2>
-          <p className="mt-1 text-sm text-white/45">See exactly what visitors will see.</p>
-          <p className="mt-4 text-sm text-emerald-400/90">{tenant.subdomain}.kovasite.com →</p>
+          <p className="mt-1 text-sm text-white/45">See exactly what visitors will see, even before publishing.</p>
+          <p className="mt-4 text-sm text-emerald-400/90">Open preview →</p>
         </a>
       </div>
 

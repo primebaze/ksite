@@ -20,7 +20,8 @@ export async function GET(request: Request) {
     const { data, error } = await supabase.auth.verifyOtp({ type, token_hash });
     if (!error && data.user) {
       await ensureSite(supabase, data.user);
-      return NextResponse.redirect(`${origin}/dashboard`);
+      // New clients land in the guided setup wizard.
+      return NextResponse.redirect(`${origin}/dashboard/setup/look`);
     }
   }
 
