@@ -1,6 +1,5 @@
-import type { EmailOtpType } from "@supabase/supabase-js";
+import type { EmailOtpType, User, SupabaseClient } from "@supabase/supabase-js";
 import { NextResponse } from "next/server";
-import type { SupabaseClient } from "@supabase/supabase-js";
 import { createSupabaseServerClient } from "@/lib/supabase-server";
 
 export const runtime = "nodejs";
@@ -16,9 +15,11 @@ export async function GET(request: Request) {
   const supabase = await createSupabaseServerClient();
 
   if (token_hash && type) {
-    const { error } = await supabase.auth.verifyOtp({ type, token_hash });
-    if (!error) {
-      await ensureSite(supabase);
+    // verifyOtp establishes a fresh session for THIS link's user, replacing
+    // any stale session in the browser. Use the user it returns directly.
+    const { data, error } = await supabase.auth.verifyOtp({ type, token_hash });
+    if (!error && data.user) {
+      await ensureSite(supabase, data.user);
       return NextResponse.redirect(`${origin}/dashboard`);
     }
   }
@@ -28,17 +29,18 @@ export async function GET(request: Request) {
   );
 }
 
-async function ensureSite(supabase: SupabaseClient) {
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) return;
-
+// Create the site for the exact user the link verified, from the details they
+// gave at signup (stored in user_metadata). Idempotent.
+async function ensureSite(supabase: SupabaseClient, user: User) {
   const md = user.user_metadata ?? {};
   if (!md.business_name || !md.preset || !md.subdomain) return;
 
-  // Don't double-create if they click the link twice.
-  const { data: existing } = await supabase.from("tenants").select("id").limit(1);
+  // This user already has a site? Don't make a second one.
+  const { data: existing } = await supabase
+    .from("tenants")
+    .select("id")
+    .eq("owner_id", user.id)
+    .limit(1);
   if (existing && existing.length > 0) return;
 
   const { data, error } = await supabase
@@ -52,7 +54,7 @@ async function ensureSite(supabase: SupabaseClient) {
     })
     .select("id")
     .single();
-  if (error || !data) return; // e.g. subdomain taken — dashboard will route them to /get-started
+  if (error || !data) return; // e.g. subdomain taken — dashboard routes them onward
 
   await supabase.from("themes").insert({ tenant_id: data.id });
   await supabase.from("site_content").insert({ tenant_id: data.id, content: {} });
