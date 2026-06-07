@@ -44,6 +44,9 @@ export default async function GetStartedPage({
                       ))}
                     </optgroup>
                   ))}
+                  <optgroup label="Something else" className="bg-zinc-900">
+                    <option value="other" className="bg-zinc-900">Other (type below)</option>
+                  </optgroup>
                 </select>
               </div>
               <div>
@@ -53,6 +56,10 @@ export default async function GetStartedPage({
                   <span className="rounded-r-lg border border-l-0 border-white/10 bg-white/[0.03] px-3 py-3 text-sm text-white/40">.kovasite.com</span>
                 </div>
               </div>
+            </div>
+            <div>
+              <label className="text-sm font-medium">If you chose “Other”, what kind of business?</label>
+              <input name="preset_other" placeholder="e.g. Photography studio, dog groomer…" className={input} />
             </div>
             <div className="h-px bg-white/10" />
             <div className="grid gap-4 sm:grid-cols-2">
