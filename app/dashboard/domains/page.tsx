@@ -48,12 +48,20 @@ export default async function DomainsPage({
           <div className="flex items-center justify-between">
             <p className="font-medium">{custom}</p>
             <span className={`rounded-full px-3 py-1 text-xs font-medium ${tenant.domain_status === "active" ? "bg-emerald-400/15 text-emerald-300" : "bg-white/10 text-white/60"}`}>
-              {tenant.domain_status === "active" ? "Live" : tenant.domain_status === "verifying" ? "Verifying…" : "Pending DNS"}
+              {tenant.domain_status === "active"
+                ? "Live"
+                : tenant.domain_status === "registering"
+                  ? "Setting up…"
+                  : tenant.domain_status === "verifying"
+                    ? "Verifying…"
+                    : "Pending DNS"}
             </span>
           </div>
 
           {tenant.domain_status === "active" ? (
             <a href={`https://${custom}`} target="_blank" rel="noreferrer" className="mt-3 inline-block text-sm text-emerald-400/90 hover:text-emerald-300">Visit ↗</a>
+          ) : tenant.domain_status === "registering" ? (
+            <p className="mt-3 text-sm text-white/55">Setting up your domain — this usually takes a minute or two. Use “Check status” to refresh.</p>
           ) : (
             dns && (
               <div className="mt-4 rounded-lg border border-white/10 bg-white/[0.02] p-4 text-sm">

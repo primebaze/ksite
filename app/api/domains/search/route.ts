@@ -1,4 +1,4 @@
-import { checkAvailability, getDomainPrice, isVercelConfigured } from "@/lib/vercel";
+import { checkAvailability, isVercelConfigured } from "@/lib/vercel";
 import { getMyTenant } from "@/lib/my-site";
 
 export const runtime = "nodejs";
@@ -15,8 +15,5 @@ export async function GET(req: Request) {
 
   const avail = await checkAvailability(name);
   if (!avail.ok) return Response.json({ error: "Couldn't check that domain right now." });
-  if (!avail.data.available) return Response.json({ name, available: false });
-
-  const price = await getDomainPrice(name);
-  return Response.json({ name, available: true, price: price.data.price ?? null, period: price.data.period ?? 1 });
+  return Response.json({ name, available: avail.data.available === true });
 }

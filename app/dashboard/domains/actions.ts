@@ -7,8 +7,8 @@ import {
   addProjectDomain,
   buyDomain,
   checkAvailability,
-  getDomainPrice,
   isDomainLive,
+  isRegistrantConfigured,
   isVercelConfigured,
   removeProjectDomain,
 } from "@/lib/vercel";
@@ -29,18 +29,18 @@ export async function claimDomain(formData: FormData) {
   if (!tenant) redirect("/login");
   const subscribed = tenant!.plan_status === "active" || tenant!.published;
   if (!subscribed) redirect("/dashboard/publish");
-  if (!isVercelConfigured()) back("?error=Domains+aren%27t+switched+on+yet");
+  if (!isVercelConfigured() || !isRegistrantConfigured()) back("?error=Domains+aren%27t+switched+on+yet");
   if (!domain) back("?error=Enter+a+domain");
 
   const avail = await checkAvailability(domain);
-  if (!avail.ok || !avail.data.available) back("?error=That+domain+isn%27t+available");
+  if (!avail.ok || avail.data.available !== true) back("?error=That+domain+isn%27t+available");
 
-  const price = await getDomainPrice(domain);
-  const purchase = await buyDomain(domain, price.data.price);
+  const purchase = await buyDomain(domain);
   if (!purchase.ok) back(`?error=${encodeURIComponent(purchase.data.error?.message ?? "Could not register that domain")}`);
 
-  await addProjectDomain(domain);
-  await updateMyCustomDomain(domain, "active");
+  // Registration is an async order; mark registering and attach (best effort).
+  await updateMyCustomDomain(domain, "registering");
+  await addProjectDomain(domain).catch(() => {});
   revalidatePath("/dashboard/domains");
   back("?claimed=1");
 }
@@ -63,6 +63,8 @@ export async function connectExisting(formData: FormData) {
 export async function checkStatus() {
   const tenant = await getMyTenant();
   if (!tenant?.custom_domain) back();
+  // Make sure it's attached (idempotent), then see if it's live.
+  await addProjectDomain(tenant!.custom_domain!).catch(() => {});
   const live = await isDomainLive(tenant!.custom_domain!);
   await updateMyCustomDomain(tenant!.custom_domain!, live ? "active" : "verifying");
   revalidatePath("/dashboard/domains");
