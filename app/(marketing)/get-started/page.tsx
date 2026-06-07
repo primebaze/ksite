@@ -35,29 +35,20 @@ export default async function GetStartedPage({
               <label className="text-sm font-medium">Business name</label>
               <input name="business_name" required className={input} placeholder="Nonna's Kitchen" />
             </div>
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div>
-                <label className="text-sm font-medium">Type</label>
-                <select name="preset" className={input} defaultValue="salon">
-                  {GROUPS.map((g) => (
-                    <optgroup key={g} label={g} className="bg-zinc-900">
-                      {VERTICALS.filter((v) => v.group === g).map((v) => (
-                        <option key={v.key} value={v.key} className="bg-zinc-900">{v.label}</option>
-                      ))}
-                    </optgroup>
-                  ))}
-                  <optgroup label="Something else" className="bg-zinc-900">
-                    <option value="other" className="bg-zinc-900">Other (type below)</option>
+            <div>
+              <label className="text-sm font-medium">Type of business</label>
+              <select name="preset" className={input} defaultValue="salon">
+                {GROUPS.map((g) => (
+                  <optgroup key={g} label={g} className="bg-zinc-900">
+                    {VERTICALS.filter((v) => v.group === g).map((v) => (
+                      <option key={v.key} value={v.key} className="bg-zinc-900">{v.label}</option>
+                    ))}
                   </optgroup>
-                </select>
-              </div>
-              <div>
-                <label className="text-sm font-medium">Subdomain</label>
-                <div className="mt-1 flex items-center">
-                  <input name="subdomain" required pattern="[a-z0-9-]+" placeholder="nonna" className={`${input} mt-0 rounded-r-none lowercase`} />
-                  <span className="rounded-r-lg border border-l-0 border-white/10 bg-white/[0.03] px-3 py-3 text-sm text-white/40">.kovasite.com</span>
-                </div>
-              </div>
+                ))}
+                <optgroup label="Something else" className="bg-zinc-900">
+                  <option value="other" className="bg-zinc-900">Other (type below)</option>
+                </optgroup>
+              </select>
             </div>
             <div>
               <label className="text-sm font-medium">If you chose “Other”, what kind of business?</label>

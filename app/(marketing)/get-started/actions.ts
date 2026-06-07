@@ -28,21 +28,37 @@ async function verifyTurnstile(token: string): Promise<boolean> {
   }
 }
 
+function slugify(s: string): string {
+  return (
+    s.toLowerCase().normalize("NFKD").replace(/[̀-ͯ]/g, "")
+      .replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").slice(0, 40) || "site"
+  );
+}
+
+// Auto-pick a free subdomain from the business name (client never sees this).
+async function uniqueSubdomain(base: string): Promise<string> {
+  const svc = getServiceClient();
+  if (!svc) return base;
+  let candidate = base;
+  for (let i = 0; i < 6; i++) {
+    const { data } = await svc.from("tenants").select("id").eq("subdomain", candidate).maybeSingle();
+    if (!data) return candidate;
+    candidate = `${base}-${Math.floor(1000 + Math.random() * 9000)}`;
+  }
+  return `${base}-${Date.now().toString().slice(-5)}`;
+}
+
 // Step 1 of self-serve signup. We DON'T create the site yet — email
 // confirmation is on, so we stash the business details in the user's signup
 // metadata and create the site after they confirm (see app/auth/confirm).
 export async function startOnboarding(formData: FormData) {
   const business_name = String(formData.get("business_name") ?? "").trim();
   const preset = String(formData.get("preset") ?? "");
-  const subdomain = String(formData.get("subdomain") ?? "")
-    .trim()
-    .toLowerCase()
-    .replace(/[^a-z0-9-]/g, "");
   const email = String(formData.get("email") ?? "").trim();
   const phone = String(formData.get("phone") ?? "").trim();
   const password = String(formData.get("password") ?? "");
 
-  if (!business_name || !subdomain) err("Please complete the business details.");
+  if (!business_name) err("Please add your business name.");
   if (!email || password.length < 8) err("Enter an email and a password of at least 8 characters.");
   if (!phone) err("Please add a phone number.");
 
@@ -68,6 +84,9 @@ export async function startOnboarding(formData: FormData) {
   } else if (!isVertical(preset)) {
     err("Please choose your business type.");
   }
+
+  // Auto-generate a free subdomain from the business name.
+  const subdomain = await uniqueSubdomain(slugify(business_name));
 
   const metadata: Record<string, string> = { business_name, preset: effectivePreset, subdomain, phone };
   if (businessType) metadata.business_type = businessType;

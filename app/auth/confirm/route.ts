@@ -44,18 +44,21 @@ async function ensureSite(supabase: SupabaseClient, user: User) {
     .limit(1);
   if (existing && existing.length > 0) return;
 
-  const { data, error } = await supabase
-    .from("tenants")
-    .insert({
-      business_name: md.business_name,
-      preset: md.preset,
-      subdomain: md.subdomain,
-      owner_id: user.id,
-      published: false,
-    })
-    .select("id")
-    .single();
-  if (error || !data) return; // e.g. subdomain taken — dashboard routes them onward
+  const row = (subdomain: string) => ({
+    business_name: md.business_name,
+    preset: md.preset,
+    subdomain,
+    owner_id: user.id,
+    published: false,
+  });
+
+  let { data, error } = await supabase.from("tenants").insert(row(md.subdomain)).select("id").single();
+  if (error) {
+    // Subdomain collision (rare race) — retry once with a suffix.
+    const alt = `${md.subdomain}-${Date.now().toString().slice(-4)}`;
+    ({ data, error } = await supabase.from("tenants").insert(row(alt)).select("id").single());
+  }
+  if (error || !data) return;
 
   await supabase.from("themes").insert({ tenant_id: data.id });
   await supabase.from("site_content").insert({ tenant_id: data.id, content: {} });
