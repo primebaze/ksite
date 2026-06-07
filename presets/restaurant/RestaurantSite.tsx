@@ -44,6 +44,7 @@ export default function RestaurantSite({ site }: { site: TenantSite }) {
         subtitle={content.tagline}
         subtitleEdit="content.tagline"
         image={hero}
+        video={content.hero_video_url}
         primary={book && cta ? { label: cta, href: book } : sections.length ? { label: "View the menu", href: "#menu" } : undefined}
         secondary={content.phone ? { label: `Call ${content.phone}`, href: `tel:${content.phone}` } : undefined}
       />

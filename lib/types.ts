@@ -31,6 +31,8 @@ export interface SiteContent {
   /** Visual design variant — see SiteStyle in presets/shared. */
   style?: "editorial" | "bold" | "minimal" | "warm" | "luxe" | "classic";
   hero_image_url?: string;
+  /** Looping background video for the hero (Premium). Takes priority over the image. */
+  hero_video_url?: string;
   about?: string;
   cuisine_type?: string; // restaurant
   hours?: { day: string; open: string }[];

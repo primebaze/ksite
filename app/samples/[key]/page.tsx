@@ -23,16 +23,23 @@ export default async function SamplePage({
   searchParams,
 }: {
   params: Promise<{ key: string }>;
-  searchParams: Promise<{ style?: string; embed?: string }>;
+  searchParams: Promise<{ style?: string; embed?: string; img?: string; video?: string }>;
 }) {
   const { key } = await params;
-  const { style, embed } = await searchParams;
+  const { style, embed, img, video } = await searchParams;
   const site = sampleSiteFor(key);
   if (!site) notFound();
 
   // Optional style override so the same build can be previewed in any look.
   if (style && STYLES.has(style)) {
     site.content = { ...site.content, style: style as SiteContent["style"] };
+  }
+  // Optional media overrides (used by the homepage showcase).
+  if (img && /^[\w-]+$/.test(img)) {
+    site.content = { ...site.content, hero_image_url: `https://images.unsplash.com/photo-${img}?w=1600&q=70&auto=format&fit=crop` };
+  }
+  if (video && /^\/hero\/[\w.-]+\.mp4$/.test(video)) {
+    site.content = { ...site.content, hero_video_url: video };
   }
   const Preset = getPresetComponent(site.tenant.preset);
 

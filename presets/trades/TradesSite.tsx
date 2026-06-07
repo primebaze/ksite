@@ -45,6 +45,7 @@ export default function TradesSite({ site }: { site: TenantSite }) {
         subtitle={tenant.business_name}
         subtitleEdit="tenant.business_name"
         image={hero}
+        video={content.hero_video_url}
         badges={content.accreditations}
         primary={{ label: cta, href: ctaUrl }}
         secondary={content.phone ? { label: `Call ${content.phone}`, href: `tel:${content.phone}` } : undefined}

@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { Reveal } from "@/components/motion/Reveal";
 import { RotatingWord } from "@/components/motion/RotatingWord";
-import { TemplateThumb } from "@/components/TemplateThumb";
+import { HeroShowcase } from "@/components/HeroShowcase";
 import { EXAMPLES, FEATURES, ROTATING_WORDS, SITE_BASE } from "@/lib/marketing";
 
 export default function Home() {
@@ -36,21 +36,10 @@ export default function Home() {
           </Reveal>
         </div>
 
-        {/* Product shot — a real, live sample site */}
+        {/* Product shot — rotating live sample sites (photos + video) */}
         <Reveal delay={0.26}>
           <div className="mx-auto mt-16 max-w-5xl px-6 pb-24">
-            <div className="overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02] shadow-[0_40px_120px_-25px_rgba(0,0,0,0.85)]">
-              <div className="flex items-center gap-2 border-b border-white/10 px-4 py-3">
-                <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
-                <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
-                <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
-                <span className="ml-2 flex items-center gap-1.5 rounded-md bg-white/[0.06] px-3 py-1 text-xs text-white/40">
-                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M6 10V8a6 6 0 1112 0v2m-9 0h6a3 3 0 013 3v5a3 3 0 01-3 3H9a3 3 0 01-3-3v-5a3 3 0 013-3z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
-                  your custom domain
-                </span>
-              </div>
-              <TemplateThumb src="/samples/spa?embed=1" aspect={0.56} />
-            </div>
+            <HeroShowcase />
           </div>
         </Reveal>
       </section>

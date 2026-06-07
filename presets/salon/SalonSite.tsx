@@ -43,6 +43,7 @@ export default function SalonSite({ site }: { site: TenantSite }) {
         title={tenant.business_name}
         titleEdit="tenant.business_name"
         image={hero}
+        video={content.hero_video_url}
         primary={book && cta ? { label: cta, href: book } : groups.length ? { label: "View services", href: "#services" } : undefined}
         secondary={content.phone ? { label: `Call ${content.phone}`, href: `tel:${content.phone}` } : undefined}
       />

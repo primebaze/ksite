@@ -412,6 +412,7 @@ export interface HeroProps {
   title: string;
   subtitle?: string;
   image?: string;
+  video?: string;
   primary?: { label: string; href: string };
   secondary?: { label: string; href: string };
   badges?: string[];
@@ -442,7 +443,16 @@ function Badges({ badges, onLight, center }: { badges?: string[]; onLight?: bool
  *  - minimal:   text-first light hero, full-width image band below
  */
 export function Hero(props: HeroProps) {
-  const { tokens, kicker, title, subtitle, image, primary, secondary, badges, titleEdit, subtitleEdit, kickerEdit } = props;
+  const { tokens, kicker, title, subtitle, image, video, primary, secondary, badges, titleEdit, subtitleEdit, kickerEdit } = props;
+  const hasMedia = !!(video || image);
+
+  const Media = ({ className, dim }: { className?: string; dim?: boolean }) =>
+    video ? (
+      <video src={video} autoPlay muted loop playsInline className={cx(className, dim && "opacity-70")} />
+    ) : image ? (
+      // eslint-disable-next-line @next/next/no-img-element
+      <img src={image} alt="" className={cx(className, dim && "opacity-70")} />
+    ) : null;
 
   const Kicker = ({ light }: { light?: boolean }) =>
     kicker ? (
@@ -459,10 +469,9 @@ export function Hero(props: HeroProps) {
   if (tokens.hero === "bold") {
     return (
       <section className={cx("relative isolate flex min-h-[92vh] items-end overflow-hidden", tokens.heroBase)}>
-        {image && (
+        {hasMedia && (
           <>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={image} alt="" className="absolute inset-0 h-full w-full object-cover" />
+            <Media className="absolute inset-0 h-full w-full object-cover" />
             <div className={cx("absolute inset-0", tokens.heroOverlay)} />
           </>
         )}
@@ -481,10 +490,9 @@ export function Hero(props: HeroProps) {
   if (tokens.hero === "luxe") {
     return (
       <section className={cx("relative isolate flex min-h-[92vh] items-center justify-center overflow-hidden", tokens.heroBase)}>
-        {image && (
+        {hasMedia && (
           <>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={image} alt="" className="absolute inset-0 h-full w-full object-cover opacity-70" />
+            <Media className="absolute inset-0 h-full w-full object-cover" dim />
             <div className={cx("absolute inset-0", tokens.heroOverlay)} />
           </>
         )}
@@ -514,9 +522,8 @@ export function Hero(props: HeroProps) {
           </div>
         </div>
         <div className="relative min-h-[42vh] bg-neutral-200">
-          {image ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={image} alt="" className="absolute inset-0 h-full w-full object-cover" />
+          {hasMedia ? (
+            <Media className="absolute inset-0 h-full w-full object-cover" />
           ) : (
             <div className={cx("absolute inset-0", tokens.heroBase)} />
           )}
@@ -530,9 +537,8 @@ export function Hero(props: HeroProps) {
     return (
       <section className="grid min-h-[86vh] lg:grid-cols-2">
         <div className="relative order-last min-h-[42vh] bg-neutral-200 lg:order-first">
-          {image ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={image} alt="" className="absolute inset-0 h-full w-full object-cover" />
+          {hasMedia ? (
+            <Media className="absolute inset-0 h-full w-full object-cover" />
           ) : (
             <div className={cx("absolute inset-0", tokens.heroBase)} />
           )}
@@ -562,10 +568,9 @@ export function Hero(props: HeroProps) {
           <HeroButtons tokens={tokens} primary={primary} secondary={secondary} onLight center />
           <Badges badges={badges} onLight center />
         </div>
-        {image && (
+        {hasMedia && (
           <div className="mx-auto mt-14 max-w-5xl">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={image} alt="" className={cx("aspect-[16/8] w-full object-cover", tokens.card)} />
+            <Media className={cx("aspect-[16/8] w-full object-cover", tokens.card)} />
           </div>
         )}
       </section>
@@ -582,10 +587,7 @@ export function Hero(props: HeroProps) {
         <HeroButtons tokens={tokens} primary={primary} secondary={secondary} onLight center />
         <Badges badges={badges} onLight center />
       </div>
-      {image && (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img src={image} alt="" className="h-[52vh] w-full object-cover" />
-      )}
+      {hasMedia && <Media className="h-[52vh] w-full object-cover" />}
     </section>
   );
 }
