@@ -145,7 +145,7 @@ export async function startCheckout(formData: FormData) {
       client_reference_id: tenant!.id,
       metadata: { tenant_id: tenant!.id, plan },
       subscription_data: { metadata: { tenant_id: tenant!.id, plan } },
-      success_url: `${base}/dashboard?checkout=success`,
+      success_url: `${base}/dashboard/finishing`,
       cancel_url: `${base}/dashboard/publish?canceled=1`,
     });
     url = session.url;

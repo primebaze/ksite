@@ -3,10 +3,12 @@ import Link from "next/link";
 import { PageHero } from "@/components/PageHero";
 import { Reveal } from "@/components/motion/Reveal";
 import { SubmitButton } from "@/components/SubmitButton";
+import { Turnstile } from "@/components/Turnstile";
 import { VERTICALS } from "@/lib/verticals";
 import { startOnboarding } from "./actions";
 
 const GROUPS = Array.from(new Set(VERTICALS.map((v) => v.group)));
+const TURNSTILE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
 export const metadata: Metadata = { title: "Get started — Kovasite" };
 
@@ -68,10 +70,16 @@ export default async function GetStartedPage({
                 <input name="email" type="email" required className={input} />
               </div>
               <div>
-                <label className="text-sm font-medium">Password</label>
-                <input name="password" type="password" required minLength={8} className={input} />
+                <label className="text-sm font-medium">Phone number</label>
+                <input name="phone" type="tel" required className={input} placeholder="07123 456789" />
               </div>
             </div>
+            <div>
+              <label className="text-sm font-medium">Password</label>
+              <input name="password" type="password" required minLength={8} className={input} />
+            </div>
+
+            <Turnstile siteKey={TURNSTILE_KEY} />
 
             {error && <p className="rounded-lg bg-red-500/10 px-4 py-3 text-sm text-red-300">{error}</p>}
 
