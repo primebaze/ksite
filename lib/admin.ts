@@ -63,7 +63,12 @@ export async function createTenant(input: {
   // Seed a complete, editable starter site so the editor (and the live page)
   // has real content from the first second.
   const starter = starterContent(input.preset);
-  await c.from("themes").insert({ tenant_id: id });
+  await c.from("themes").insert({
+    tenant_id: id,
+    primary_color: starter.theme.primary_color,
+    accent_color: starter.theme.accent_color,
+    font: starter.theme.font,
+  });
   await c.from("site_content").insert({ tenant_id: id, content: starter.content });
   if (starter.items.length) {
     await c.from("catalog_items").insert(

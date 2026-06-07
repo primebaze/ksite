@@ -4,10 +4,10 @@ import { PageHero } from "@/components/PageHero";
 import { Reveal } from "@/components/motion/Reveal";
 import { SubmitButton } from "@/components/SubmitButton";
 import { Turnstile } from "@/components/Turnstile";
-import { VERTICALS } from "@/lib/verticals";
+import { buildGroups } from "@/lib/builds";
 import { startOnboarding } from "./actions";
 
-const GROUPS = Array.from(new Set(VERTICALS.map((v) => v.group)));
+const GROUPS = buildGroups();
 const TURNSTILE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
 export const metadata: Metadata = { title: "Get started — Kovasite" };
@@ -37,11 +37,11 @@ export default async function GetStartedPage({
             </div>
             <div>
               <label className="text-sm font-medium">Type of business</label>
-              <select name="preset" className={input} defaultValue="salon">
+              <select name="preset" className={input} defaultValue="restaurant">
                 {GROUPS.map((g) => (
-                  <optgroup key={g} label={g} className="bg-zinc-900">
-                    {VERTICALS.filter((v) => v.group === g).map((v) => (
-                      <option key={v.key} value={v.key} className="bg-zinc-900">{v.label}</option>
+                  <optgroup key={g.group} label={g.group} className="bg-zinc-900">
+                    {g.builds.map((b) => (
+                      <option key={b.key} value={b.key} className="bg-zinc-900">{b.label}</option>
                     ))}
                   </optgroup>
                 ))}

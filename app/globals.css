@@ -25,6 +25,14 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+/* Tenant-site font roles, driven by the chosen design style (presets/shared). */
+.font-display {
+  font-family: var(--site-display, var(--font-geist-sans));
+}
+.font-body {
+  font-family: var(--site-body, var(--font-geist-sans));
+}
+
 /* Stop iOS Safari auto-zooming when a form field is focused. It zooms whenever
    a control's font-size is under 16px, so force >=16px on small screens.
    Visual sizing on desktop is unchanged. */

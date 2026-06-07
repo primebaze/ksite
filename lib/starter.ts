@@ -1,9 +1,11 @@
 import { archetypeFor } from "./verticals";
+import { buildFor, type BuildArchetype } from "./builds";
 import type { SiteContent } from "./types";
 
 // Starter content so a brand-new site looks like a complete, professional page
 // from the first second — the client edits/replaces it rather than building
-// from a blank canvas.
+// from a blank canvas. When the business type has a curated "build", we use its
+// tailored copy, sample catalog, recommended design style and brand palette.
 
 export interface StarterItem {
   section?: string | null;
@@ -15,22 +17,71 @@ export interface StarterItem {
 export interface Starter {
   content: SiteContent;
   items: StarterItem[];
+  theme: { primary_color: string; accent_color: string; font: string };
+}
+
+function defaultHours(archetype: BuildArchetype): SiteContent["hours"] {
+  if (archetype === "menu") {
+    return [
+      { day: "Mon–Fri", open: "09:00 – 22:00" },
+      { day: "Sat", open: "09:00 – 23:00" },
+      { day: "Sun", open: "10:00 – 21:00" },
+    ];
+  }
+  if (archetype === "bookings") {
+    return [
+      { day: "Tue–Fri", open: "09:00 – 19:00" },
+      { day: "Sat", open: "09:00 – 17:00" },
+      { day: "Sun–Mon", open: "Closed" },
+    ];
+  }
+  return undefined;
 }
 
 export function starterContent(preset: string): Starter {
+  const build = buildFor(preset);
+
+  if (build) {
+    const content: SiteContent = {
+      style: build.style,
+      tagline: build.tagline,
+      about: build.about,
+      cta_label: build.ctaLabel,
+      hours: defaultHours(build.archetype),
+    };
+    if (build.archetype === "services") {
+      content.service_areas = ["Your town", "& surrounding areas"];
+      content.accreditations = ["Fully insured", "5-star rated"];
+    }
+    return {
+      content,
+      items: build.items.map((it) => ({
+        section: it.section ?? null,
+        category: it.category ?? null,
+        name: it.name,
+        description: it.description ?? null,
+        price: it.price ?? null,
+      })),
+      theme: {
+        primary_color: build.palette.primary,
+        accent_color: build.palette.accent,
+        font: build.font,
+      },
+    };
+  }
+
+  // Fallback for custom / "other" types with no curated build.
   const archetype = archetypeFor(preset);
+  const theme = { primary_color: "#111111", accent_color: "#10b981", font: "sans-serif" };
 
   if (archetype === "menu") {
     return {
+      theme,
       content: {
+        style: "classic",
         tagline: "Honest food, made fresh every day.",
-        about:
-          "A warm neighbourhood spot serving seasonal dishes and proper coffee. Pop in, or book a table — we'd love to have you.",
-        hours: [
-          { day: "Mon–Fri", open: "08:00 – 22:00" },
-          { day: "Sat", open: "09:00 – 23:00" },
-          { day: "Sun", open: "09:00 – 21:00" },
-        ],
+        about: "A warm neighbourhood spot serving seasonal dishes and proper coffee. Pop in, or book a table — we'd love to have you.",
+        hours: defaultHours("menu"),
         cta_label: "Book a table",
       },
       items: [
@@ -44,15 +95,12 @@ export function starterContent(preset: string): Starter {
 
   if (archetype === "bookings") {
     return {
+      theme,
       content: {
+        style: "warm",
         tagline: "Look great. Feel great.",
-        about:
-          "A friendly, modern studio with a team that genuinely loves what they do. Book online in seconds and let us take care of the rest.",
-        hours: [
-          { day: "Tue–Fri", open: "09:00 – 19:00" },
-          { day: "Sat", open: "09:00 – 17:00" },
-          { day: "Sun–Mon", open: "Closed" },
-        ],
+        about: "A friendly, modern studio with a team that genuinely loves what they do. Book online in seconds and let us take care of the rest.",
+        hours: defaultHours("bookings"),
         cta_label: "Book now",
       },
       items: [
@@ -63,12 +111,12 @@ export function starterContent(preset: string): Starter {
     };
   }
 
-  // services
   return {
+    theme,
     content: {
+      style: "classic",
       tagline: "Reliable local experts — fast, fair and friendly.",
-      about:
-        "Family-run and fully insured. No call-out fee, upfront pricing, and we always leave things tidy. Get in touch for a free quote.",
+      about: "Family-run and fully insured. No call-out fee, upfront pricing, and we always leave things tidy. Get in touch for a free quote.",
       service_areas: ["Your town", "& surrounding areas"],
       accreditations: ["Fully insured", "5-star rated"],
       cta_label: "Get a quote",

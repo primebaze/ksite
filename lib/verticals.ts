@@ -2,6 +2,8 @@
 // archetype + a tailored onboarding flow. This is the single source of truth
 // for "what kind of site is this and what should we ask the owner".
 
+import { BUILDS, buildFor } from "./builds";
+
 export type Archetype = "bookings" | "menu" | "services";
 
 export interface Vertical {
@@ -12,25 +14,25 @@ export interface Vertical {
   catalogLabel: string; // "Services" | "Menu" | "Treatments"
 }
 
-export const VERTICALS: Vertical[] = [
-  { key: "salon", label: "Hair salon", group: "Hair & beauty", archetype: "bookings", catalogLabel: "Services" },
-  { key: "stylist", label: "Stylist / barber", group: "Hair & beauty", archetype: "bookings", catalogLabel: "Services" },
-  { key: "beauty", label: "Beauty (nails, lashes, skin)", group: "Hair & beauty", archetype: "bookings", catalogLabel: "Treatments" },
-  { key: "clinic", label: "Clinic / aesthetics", group: "Health & care", archetype: "bookings", catalogLabel: "Treatments" },
-  { key: "restaurant", label: "Restaurant / café", group: "Food", archetype: "menu", catalogLabel: "Menu" },
-  { key: "plumber", label: "Plumber", group: "Trades & services", archetype: "services", catalogLabel: "Services" },
-  { key: "electrician", label: "Electrician", group: "Trades & services", archetype: "services", catalogLabel: "Services" },
-  { key: "moving", label: "Moving company", group: "Trades & services", archetype: "services", catalogLabel: "Services" },
-];
+// The full catalogue of supported business types is the builds library
+// (lib/builds.ts) — 150+ tailored starting points. Verticals are derived from
+// it so the picker, onboarding and starter content all stay in sync.
+export const VERTICALS: Vertical[] = BUILDS.map((b) => ({
+  key: b.key,
+  label: b.label,
+  group: b.group,
+  archetype: b.archetype,
+  catalogLabel: b.catalogLabel,
+}));
 
 export function verticalFor(key: string): Vertical | undefined {
   return VERTICALS.find((v) => v.key === key);
 }
 export function archetypeFor(key: string): Archetype {
-  return verticalFor(key)?.archetype ?? "services";
+  return verticalFor(key)?.archetype ?? buildFor(key)?.archetype ?? "services";
 }
 export function catalogLabelFor(key: string): string {
-  return verticalFor(key)?.catalogLabel ?? "Services";
+  return verticalFor(key)?.catalogLabel ?? buildFor(key)?.catalogLabel ?? "Services";
 }
 export function isVertical(key: string): boolean {
   return VERTICALS.some((v) => v.key === key);
@@ -65,6 +67,14 @@ const LOOK: Step = {
   kind: "fields",
   fields: [
     { name: "business_name", label: "Business name", help: "What your business is called.", source: "tenant" },
+    { name: "style", label: "Design style", help: "The overall look and feel. We've picked one to suit your business — change it any time.", type: "select", source: "content", options: [
+      { value: "editorial", label: "Editorial — elegant & magazine-like" },
+      { value: "bold", label: "Bold — big, high-energy" },
+      { value: "minimal", label: "Minimal — clean & calm" },
+      { value: "warm", label: "Warm — soft & welcoming" },
+      { value: "luxe", label: "Luxe — dark & premium" },
+      { value: "classic", label: "Classic — balanced & timeless" },
+    ] },
     { name: "primary_color", label: "Main colour", help: "Your main brand colour.", type: "color", source: "theme" },
     { name: "accent_color", label: "Highlight colour", help: "Used for buttons and accents.", type: "color", source: "theme" },
     { name: "font", label: "Font style", type: "select", source: "theme", options: [

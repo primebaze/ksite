@@ -28,6 +28,8 @@ export interface Theme {
  */
 export interface SiteContent {
   tagline?: string;
+  /** Visual design variant — see SiteStyle in presets/shared. */
+  style?: "editorial" | "bold" | "minimal" | "warm" | "luxe" | "classic";
   hero_image_url?: string;
   about?: string;
   cuisine_type?: string; // restaurant

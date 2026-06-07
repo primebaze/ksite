@@ -63,7 +63,12 @@ async function ensureSite(supabase: SupabaseClient, user: User) {
 
   // Seed a complete, editable starter site for the business type.
   const starter = starterContent(md.preset);
-  await supabase.from("themes").insert({ tenant_id: data.id });
+  await supabase.from("themes").insert({
+    tenant_id: data.id,
+    primary_color: starter.theme.primary_color,
+    accent_color: starter.theme.accent_color,
+    font: starter.theme.font,
+  });
   await supabase.from("site_content").insert({ tenant_id: data.id, content: starter.content });
   if (starter.items.length) {
     await supabase.from("catalog_items").insert(
