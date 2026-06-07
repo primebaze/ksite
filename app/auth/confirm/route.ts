@@ -1,6 +1,7 @@
 import type { EmailOtpType, User, SupabaseClient } from "@supabase/supabase-js";
 import { NextResponse } from "next/server";
 import { createSupabaseServerClient } from "@/lib/supabase-server";
+import { starterContent } from "@/lib/starter";
 
 export const runtime = "nodejs";
 
@@ -60,6 +61,22 @@ async function ensureSite(supabase: SupabaseClient, user: User) {
   }
   if (error || !data) return;
 
+  // Seed a complete, editable starter site for the business type.
+  const starter = starterContent(md.preset);
   await supabase.from("themes").insert({ tenant_id: data.id });
-  await supabase.from("site_content").insert({ tenant_id: data.id, content: {} });
+  await supabase.from("site_content").insert({ tenant_id: data.id, content: starter.content });
+  if (starter.items.length) {
+    await supabase.from("catalog_items").insert(
+      starter.items.map((it, i) => ({
+        tenant_id: data!.id,
+        section: it.section ?? null,
+        category: it.category ?? null,
+        name: it.name,
+        description: it.description ?? null,
+        price: it.price ?? null,
+        is_available: true,
+        sort_order: i + 1,
+      })),
+    );
+  }
 }

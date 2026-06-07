@@ -1,6 +1,7 @@
 import "server-only";
 import { getServiceClient } from "./supabase";
 import { revalidateTenant, revalidateSiteHost } from "./tenant";
+import { starterContent } from "./starter";
 import type {
   CatalogItem,
   GalleryImage,
@@ -59,9 +60,25 @@ export async function createTenant(input: {
     .single();
   if (error) throw new Error(error.message);
   const id = data.id as string;
-  // Seed the one-to-one rows so the editor has something to write into.
+  // Seed a complete, editable starter site so the editor (and the live page)
+  // has real content from the first second.
+  const starter = starterContent(input.preset);
   await c.from("themes").insert({ tenant_id: id });
-  await c.from("site_content").insert({ tenant_id: id, content: {} });
+  await c.from("site_content").insert({ tenant_id: id, content: starter.content });
+  if (starter.items.length) {
+    await c.from("catalog_items").insert(
+      starter.items.map((it, i) => ({
+        tenant_id: id,
+        section: it.section ?? null,
+        category: it.category ?? null,
+        name: it.name,
+        description: it.description ?? null,
+        price: it.price ?? null,
+        is_available: true,
+        sort_order: i + 1,
+      })),
+    );
+  }
   return id;
 }
 
