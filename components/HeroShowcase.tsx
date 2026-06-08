@@ -13,8 +13,8 @@ const SLIDES: { key: string; video: string; name: string }[] = [
 ];
 
 function srcFor(s: (typeof SLIDES)[number]) {
-  // Force the luxe full-bleed layout so the video hero fills the frame.
-  return `/samples/${s.key}?embed=1&style=luxe&video=${encodeURIComponent(s.video)}&name=${encodeURIComponent(s.name)}`;
+  // Bold full-bleed layout: big headline over the video hero.
+  return `/samples/${s.key}?embed=1&style=bold&video=${encodeURIComponent(s.video)}&name=${encodeURIComponent(s.name)}`;
 }
 
 export function HeroShowcase() {

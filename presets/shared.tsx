@@ -468,14 +468,14 @@ export function Hero(props: HeroProps) {
   // ---- BOLD: full-bleed, content bottom-left ----
   if (tokens.hero === "bold") {
     return (
-      <section className={cx("relative isolate flex min-h-[92vh] items-end overflow-hidden", tokens.heroBase)}>
+      <section className={cx("relative isolate flex min-h-[92vh] items-center overflow-hidden", tokens.heroBase)}>
         {hasMedia && (
           <>
             <Media className="absolute inset-0 h-full w-full object-cover" />
             <div className={cx("absolute inset-0", tokens.heroOverlay)} />
           </>
         )}
-        <div className="relative mx-auto w-full max-w-6xl px-6 pb-20 pt-40 text-white">
+        <div className="relative mx-auto w-full max-w-6xl px-6 py-28 text-white">
           <Kicker light />
           <H1 cls={cx("font-display mt-4 max-w-4xl text-6xl text-white sm:text-8xl", tokens.heading)} />
           <Sub cls="mt-5 max-w-xl text-lg text-white/80" />

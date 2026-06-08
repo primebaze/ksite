@@ -16,7 +16,7 @@ const REST: Ex[] = [
 ];
 
 function src(e: Ex) {
-  return `/samples/${e.key}?embed=1&style=luxe&video=${encodeURIComponent(e.video)}&name=${encodeURIComponent(e.name)}`;
+  return `/samples/${e.key}?embed=1&style=bold&video=${encodeURIComponent(e.video)}&name=${encodeURIComponent(e.name)}`;
 }
 
 function Tile({ e, aspect, big }: { e: Ex; aspect: number; big?: boolean }) {
@@ -55,10 +55,10 @@ export function LiveExamples() {
 
         <Reveal delay={0.08}>
           <div className="mt-12 space-y-5">
-            <Tile e={FEATURE} aspect={0.42} big />
+            <Tile e={FEATURE} aspect={0.5} big />
             <div className="grid gap-5 sm:grid-cols-3">
               {REST.map((e) => (
-                <Tile key={e.key} e={e} aspect={0.64} />
+                <Tile key={e.key} e={e} aspect={0.66} />
               ))}
             </div>
           </div>
