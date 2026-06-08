@@ -11,9 +11,9 @@ export const dynamic = "force-dynamic";
 export default async function DomainsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ claimed?: string; error?: string }>;
+  searchParams: Promise<{ claimed?: string; error?: string; launch?: string }>;
 }) {
-  const { claimed, error } = await searchParams;
+  const { claimed, error, launch } = await searchParams;
   const tenant = await getMyTenant();
   if (!tenant) redirect("/get-started");
 
@@ -21,11 +21,32 @@ export default async function DomainsPage({
   const custom = tenant.custom_domain;
   const subUrl = `https://${tenant.subdomain}.${SITE_BASE}`;
   const dns = custom ? dnsInstructions(custom) : null;
+  const baseName = tenant.business_name
+    .toLowerCase()
+    .normalize("NFKD")
+    .replace(/[̀-ͯ]/g, "")
+    .replace(/[^a-z0-9]+/g, "")
+    .slice(0, 28) || tenant.subdomain;
+  const suggestions = [
+    `${baseName}.com`,
+    `${baseName}.co.uk`,
+    `${baseName}studio.com`,
+    `hello${baseName}.com`,
+  ];
 
   return (
-    <div className="max-w-2xl space-y-8">
+    <div className="max-w-3xl space-y-8">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-semibold">Your domains</h1>
+        <div>
+          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-emerald-400/80">{launch ? "Final step" : "Domains"}</p>
+          <h1 className="mt-2 text-3xl font-semibold tracking-tight">{launch ? "Choose your custom domain." : "Your domains"}</h1>
+          {launch && (
+            <p className="mt-2 max-w-xl text-sm leading-6 text-white/50">
+              We launch all websites directly into your own custom domain. Your plan already includes the domain cost.
+              Pick a unique name and we&apos;ll attach hosting, SSL and routing for you.
+            </p>
+          )}
+        </div>
         <Link href="/dashboard" className="text-sm text-white/55 hover:text-white">← Overview</Link>
       </div>
 
@@ -83,10 +104,12 @@ export default async function DomainsPage({
           </div>
         </section>
       ) : subscribed ? (
-        <section className="rounded-2xl border border-white/10 bg-white/[0.02] p-6">
-          <h2 className="font-semibold">Get your own domain</h2>
-          <p className="mt-1 text-sm text-white/45">Search a name and claim it — included in your plan, live in about a minute, no DNS setup.</p>
-          <div className="mt-4"><DomainSearch /></div>
+        <section className="rounded-2xl border border-emerald-400/25 bg-emerald-400/[0.04] p-6">
+          <h2 className="font-semibold">Find a unique name</h2>
+          <p className="mt-1 text-sm text-white/50">
+            Domain names are global, so the name must be available. Try your business name, location, or a short brand variation.
+          </p>
+          <div className="mt-4"><DomainSearch suggestions={suggestions} /></div>
 
           <details className="mt-6">
             <summary className="cursor-pointer text-sm text-white/55">Already own a domain elsewhere?</summary>

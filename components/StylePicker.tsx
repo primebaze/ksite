@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState } from "react";
 import { SubmitButton } from "./SubmitButton";
 
@@ -67,7 +68,7 @@ export function StylePicker({
       </div>
 
       <div className="mt-8 flex items-center justify-between">
-        <a href="/dashboard/setup/look" className="text-sm text-white/45 hover:text-white">← Back</a>
+        <Link href="/dashboard/setup/look" className="text-sm text-white/45 hover:text-white">← Back</Link>
         <SubmitButton
           className="rounded-lg bg-white px-6 py-3 text-sm font-semibold text-black transition hover:bg-white/90"
           pendingText="Saving…"

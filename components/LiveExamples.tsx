@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Reveal } from "./motion/Reveal";
 import { TemplateThumb } from "./TemplateThumb";
 
@@ -21,7 +22,7 @@ function src(e: Ex) {
 
 function Tile({ e, aspect, big }: { e: Ex; aspect: number; big?: boolean }) {
   return (
-    <a
+    <Link
       href={`/samples/${e.key}`}
       target="_blank"
       rel="noreferrer"
@@ -32,30 +33,36 @@ function Tile({ e, aspect, big }: { e: Ex; aspect: number; big?: boolean }) {
         <span className={`font-semibold uppercase tracking-[0.2em] text-white/70 ${big ? "text-xs" : "text-[10px]"}`}>{e.cat}</span>
         <span className="rounded-full bg-emerald-400 px-3 py-1 text-xs font-semibold text-black opacity-0 transition group-hover:opacity-100">View live →</span>
       </div>
-      <span className="absolute right-4 top-4 flex items-center gap-1.5 rounded-full bg-black/40 px-2.5 py-1 text-[10px] font-medium text-white/80 backdrop-blur">
-        <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" /> Live · video
-      </span>
-    </a>
+    </Link>
   );
 }
 
 export function LiveExamples() {
   return (
     <section className="border-t border-white/5 bg-white/[0.015]">
-      <div className="mx-auto max-w-6xl px-6 py-24">
+      <div className="mx-auto max-w-6xl px-6 py-20">
         <Reveal>
-          <p className="text-xs font-medium uppercase tracking-widest text-emerald-400/80">Live examples</p>
-          <div className="mt-3 flex flex-wrap items-end justify-between gap-4">
-            <h2 className="max-w-xl text-3xl font-semibold tracking-tight sm:text-4xl">
-              Real sites with video heroes — built in minutes.
-            </h2>
-            <a href="/samples" className="text-sm text-emerald-400/90 transition hover:text-emerald-300">Browse all samples →</a>
+          <div className="grid gap-6 lg:grid-cols-[1fr_360px] lg:items-end">
+            <div>
+              <p className="text-xs font-medium uppercase tracking-widest text-emerald-400/80">Live examples</p>
+              <h2 className="mt-3 max-w-2xl text-3xl font-semibold tracking-tight sm:text-4xl">
+                Premium sample sites, ready to edit.
+              </h2>
+            </div>
+            <div className="max-w-sm lg:justify-self-end">
+              <p className="text-sm leading-6 text-white/45">
+                Every example opens as a real editable site, with a cinematic hero and matching content already in place.
+              </p>
+              <Link href="/samples" className="mt-4 inline-flex rounded-full border border-white/10 px-4 py-2 text-sm text-emerald-300 transition hover:border-emerald-400/40 hover:bg-emerald-400/10">
+                Browse all samples →
+              </Link>
+            </div>
           </div>
         </Reveal>
 
         <Reveal delay={0.08}>
-          <div className="mt-12 space-y-5">
-            <Tile e={FEATURE} aspect={0.5} big />
+          <div className="mt-8 space-y-5">
+            <Tile e={FEATURE} aspect={0.42} big />
             <div className="grid gap-5 sm:grid-cols-3">
               {REST.map((e) => (
                 <Tile key={e.key} e={e} aspect={0.66} />

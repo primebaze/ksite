@@ -50,6 +50,8 @@ button,
 a {
   transition-property: color, background-color, border-color, opacity, transform, filter;
   transition-duration: 120ms;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 button:not(:disabled):active {
   transform: scale(0.97);
@@ -58,6 +60,29 @@ button:not(:disabled):active {
 a:active {
   opacity: 0.7;
 }
+button[data-pressed="true"]:not(:disabled),
+a[data-pressed="true"] {
+  transform: scale(0.97);
+  filter: brightness(0.88);
+}
+a[data-pressed="true"] {
+  opacity: 0.78;
+}
 button:disabled {
   cursor: not-allowed;
+}
+
+button[data-pending="true"],
+button[aria-disabled="true"] {
+  opacity: 0.65;
+  pointer-events: none;
+}
+
+@keyframes nav-progress {
+  0% {
+    transform: translateX(-120%);
+  }
+  100% {
+    transform: translateX(240%);
+  }
 }

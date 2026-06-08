@@ -1,3 +1,4 @@
+import { createElement } from "react";
 import { redirect } from "next/navigation";
 import { getMyTenantFull } from "@/lib/my-site";
 import { getPresetComponent } from "@/presets";
@@ -13,14 +14,14 @@ export default async function PreviewPage({ searchParams }: { searchParams: Prom
   const { edit } = await searchParams;
   const site = await getMyTenantFull();
   if (!site) redirect("/login");
-  const Preset = getPresetComponent(site.tenant.preset);
+  const preset = createElement(getPresetComponent(site.tenant.preset), { site });
 
   if (edit) {
     return (
       <InlineEditor save={saveInline}>
-        <Preset site={site} />
+        {preset}
       </InlineEditor>
     );
   }
-  return <Preset site={site} />;
+  return preset;
 }

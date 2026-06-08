@@ -446,15 +446,22 @@ export function Hero(props: HeroProps) {
   const { tokens, kicker, title, subtitle, image, video, primary, secondary, badges, titleEdit, subtitleEdit, kickerEdit } = props;
   const hasMedia = !!(video || image);
 
-  const Media = ({ className, dim }: { className?: string; dim?: boolean }) =>
-    video ? (
+  const renderMedia = (className?: string, dim?: boolean) => {
+    if (video) {
+      return (
       <video src={video} autoPlay muted loop playsInline className={cx(className, dim && "opacity-70")} />
-    ) : image ? (
+      );
+    }
+    if (image) {
+      return (
       // eslint-disable-next-line @next/next/no-img-element
       <img src={image} alt="" className={cx(className, dim && "opacity-70")} />
-    ) : null;
+      );
+    }
+    return null;
+  };
 
-  const Kicker = ({ light }: { light?: boolean }) =>
+  const renderKicker = (light?: boolean) =>
     kicker ? (
       tokens.label === "serif" ? (
         <p data-edit={kickerEdit} className={cx("font-display text-lg italic", light ? "text-white/85" : "text-[var(--primary)]")}>{kicker}</p>
@@ -462,8 +469,8 @@ export function Hero(props: HeroProps) {
         <p data-edit={kickerEdit} className={cx("text-xs font-semibold uppercase tracking-[0.35em]", light ? "text-white/80" : "text-[var(--primary)]")}>{kicker}</p>
       )
     ) : null;
-  const H1 = ({ cls }: { cls: string }) => <h1 data-edit={titleEdit} className={cls}>{title}</h1>;
-  const Sub = ({ cls }: { cls: string }) => (subtitle ? <p data-edit={subtitleEdit} className={cls}>{subtitle}</p> : null);
+  const renderH1 = (cls: string) => <h1 data-edit={titleEdit} className={cls}>{title}</h1>;
+  const renderSub = (cls: string) => (subtitle ? <p data-edit={subtitleEdit} className={cls}>{subtitle}</p> : null);
 
   // ---- BOLD: full-bleed, content bottom-left ----
   if (tokens.hero === "bold") {
@@ -471,14 +478,14 @@ export function Hero(props: HeroProps) {
       <section className={cx("relative isolate flex min-h-[92vh] items-center overflow-hidden", tokens.heroBase)}>
         {hasMedia && (
           <>
-            <Media className="absolute inset-0 h-full w-full object-cover" />
+            {renderMedia("absolute inset-0 h-full w-full object-cover")}
             <div className={cx("absolute inset-0", tokens.heroOverlay)} />
           </>
         )}
         <div className="relative mx-auto w-full max-w-6xl px-6 py-28 text-white">
-          <Kicker light />
-          <H1 cls={cx("font-display mt-4 max-w-4xl text-6xl text-white sm:text-8xl", tokens.heading)} />
-          <Sub cls="mt-5 max-w-xl text-lg text-white/80" />
+          {renderKicker(true)}
+          {renderH1(cx("font-display mt-4 max-w-4xl text-6xl text-white sm:text-8xl", tokens.heading))}
+          {renderSub("mt-5 max-w-xl text-lg text-white/80")}
           <HeroButtons tokens={tokens} primary={primary} secondary={secondary} />
           <Badges badges={badges} />
         </div>
@@ -492,15 +499,15 @@ export function Hero(props: HeroProps) {
       <section className={cx("relative isolate flex min-h-[92vh] items-center justify-center overflow-hidden", tokens.heroBase)}>
         {hasMedia && (
           <>
-            <Media className="absolute inset-0 h-full w-full object-cover" dim />
+            {renderMedia("absolute inset-0 h-full w-full object-cover", true)}
             <div className={cx("absolute inset-0", tokens.heroOverlay)} />
           </>
         )}
         <div className="relative mx-auto max-w-3xl px-6 text-center text-white">
           <div className="mx-auto mb-7 h-px w-14 bg-[var(--accent)]" />
-          <Kicker light />
-          <H1 cls={cx("font-display mt-5 text-5xl text-white sm:text-7xl", tokens.heading)} />
-          <Sub cls="mx-auto mt-5 max-w-xl text-white/75" />
+          {renderKicker(true)}
+          {renderH1(cx("font-display mt-5 text-5xl text-white sm:text-7xl", tokens.heading))}
+          {renderSub("mx-auto mt-5 max-w-xl text-white/75")}
           <HeroButtons tokens={tokens} primary={primary} secondary={secondary} center />
           <Badges badges={badges} center />
         </div>
@@ -514,16 +521,16 @@ export function Hero(props: HeroProps) {
       <section className="grid min-h-[86vh] lg:grid-cols-2">
         <div className={cx("flex items-center px-6 py-24 lg:px-16", tokens.tint)}>
           <div className="max-w-md">
-            <Kicker />
-            <H1 cls={cx("font-display mt-4 text-5xl text-neutral-900 sm:text-6xl", tokens.heading)} />
-            <Sub cls="mt-5 text-lg text-neutral-600" />
+            {renderKicker()}
+            {renderH1(cx("font-display mt-4 text-5xl text-neutral-900 sm:text-6xl", tokens.heading))}
+            {renderSub("mt-5 text-lg text-neutral-600")}
             <HeroButtons tokens={tokens} primary={primary} secondary={secondary} onLight />
             <Badges badges={badges} onLight />
           </div>
         </div>
         <div className="relative min-h-[42vh] bg-neutral-200">
           {hasMedia ? (
-            <Media className="absolute inset-0 h-full w-full object-cover" />
+            renderMedia("absolute inset-0 h-full w-full object-cover")
           ) : (
             <div className={cx("absolute inset-0", tokens.heroBase)} />
           )}
@@ -538,7 +545,7 @@ export function Hero(props: HeroProps) {
       <section className="grid min-h-[86vh] lg:grid-cols-2">
         <div className="relative order-last min-h-[42vh] bg-neutral-200 lg:order-first">
           {hasMedia ? (
-            <Media className="absolute inset-0 h-full w-full object-cover" />
+            renderMedia("absolute inset-0 h-full w-full object-cover")
           ) : (
             <div className={cx("absolute inset-0", tokens.heroBase)} />
           )}
@@ -546,9 +553,9 @@ export function Hero(props: HeroProps) {
         <div className="flex items-center bg-white px-6 py-24 lg:px-16">
           <div className="max-w-md">
             <div className="mb-5 h-1 w-12 bg-[var(--accent)]" />
-            <Kicker />
-            <H1 cls={cx("font-display mt-3 text-5xl text-neutral-900 sm:text-6xl", tokens.heading)} />
-            <Sub cls="mt-5 text-lg text-neutral-600" />
+            {renderKicker()}
+            {renderH1(cx("font-display mt-3 text-5xl text-neutral-900 sm:text-6xl", tokens.heading))}
+            {renderSub("mt-5 text-lg text-neutral-600")}
             <HeroButtons tokens={tokens} primary={primary} secondary={secondary} onLight />
             <Badges badges={badges} onLight />
           </div>
@@ -562,15 +569,15 @@ export function Hero(props: HeroProps) {
     return (
       <section className={cx("px-6 pt-28 pb-14", tokens.tint)}>
         <div className="mx-auto max-w-3xl text-center">
-          <Kicker />
-          <H1 cls={cx("font-display mt-4 text-5xl text-neutral-900 sm:text-6xl", tokens.heading)} />
-          <Sub cls="mx-auto mt-5 max-w-xl text-lg text-neutral-600" />
+          {renderKicker()}
+          {renderH1(cx("font-display mt-4 text-5xl text-neutral-900 sm:text-6xl", tokens.heading))}
+          {renderSub("mx-auto mt-5 max-w-xl text-lg text-neutral-600")}
           <HeroButtons tokens={tokens} primary={primary} secondary={secondary} onLight center />
           <Badges badges={badges} onLight center />
         </div>
         {hasMedia && (
           <div className="mx-auto mt-14 max-w-5xl">
-            <Media className={cx("aspect-[16/8] w-full object-cover", tokens.card)} />
+            {renderMedia(cx("aspect-[16/8] w-full object-cover", tokens.card))}
           </div>
         )}
       </section>
@@ -581,13 +588,13 @@ export function Hero(props: HeroProps) {
   return (
     <section className="bg-white">
       <div className="mx-auto max-w-2xl px-6 pt-32 pb-14 text-center">
-        <Kicker />
-        <H1 cls={cx("font-display mt-5 text-5xl text-neutral-900 sm:text-7xl", tokens.heading)} />
-        <Sub cls="mx-auto mt-5 max-w-lg text-lg text-neutral-500" />
+        {renderKicker()}
+        {renderH1(cx("font-display mt-5 text-5xl text-neutral-900 sm:text-7xl", tokens.heading))}
+        {renderSub("mx-auto mt-5 max-w-lg text-lg text-neutral-500")}
         <HeroButtons tokens={tokens} primary={primary} secondary={secondary} onLight center />
         <Badges badges={badges} onLight center />
       </div>
-      {hasMedia && <Media className="h-[52vh] w-full object-cover" />}
+      {hasMedia && renderMedia("h-[52vh] w-full object-cover")}
     </section>
   );
 }

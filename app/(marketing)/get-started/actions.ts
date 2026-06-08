@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { createSupabaseServerClient } from "@/lib/supabase-server";
 import { getServiceClient } from "@/lib/supabase";
 import { isVertical } from "@/lib/verticals";
+import { buildFor } from "@/lib/builds";
 import { moderate } from "@/lib/moderation";
 
 function err(msg: string): never {
@@ -57,6 +58,8 @@ export async function startOnboarding(formData: FormData) {
   const email = String(formData.get("email") ?? "").trim();
   const phone = String(formData.get("phone") ?? "").trim();
   const password = String(formData.get("password") ?? "");
+  const selectedDesign = String(formData.get("selected_design") ?? "").trim();
+  const selectedStyle = String(formData.get("selected_style") ?? "").trim();
 
   if (!business_name) err("Please add your business name.");
   if (!email || password.length < 8) err("Enter an email and a password of at least 8 characters.");
@@ -74,7 +77,9 @@ export async function startOnboarding(formData: FormData) {
   // and render it with the generic (services) template archetype.
   let effectivePreset = preset;
   let businessType: string | undefined;
-  if (preset === "other") {
+  if (selectedDesign && selectedDesign !== "scratch" && buildFor(selectedDesign)) {
+    effectivePreset = selectedDesign;
+  } else if (preset === "other") {
     const typed = String(formData.get("preset_other") ?? "").trim();
     if (!typed) err("Tell us what kind of business you run.");
     const typeCheck = moderate(typed);
@@ -89,6 +94,10 @@ export async function startOnboarding(formData: FormData) {
   const subdomain = await uniqueSubdomain(slugify(business_name));
 
   const metadata: Record<string, string> = { business_name, preset: effectivePreset, subdomain, phone };
+  if (selectedDesign && selectedDesign !== "scratch") metadata.selected_design = selectedDesign;
+  if (["editorial", "warm", "bold", "minimal", "luxe", "classic"].includes(selectedStyle)) {
+    metadata.selected_style = selectedStyle;
+  }
   if (businessType) metadata.business_type = businessType;
 
   const supabase = await createSupabaseServerClient();

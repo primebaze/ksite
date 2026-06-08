@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Fraunces, Space_Grotesk, Inter } from "next/font/google";
+import { NavigationFeedback } from "@/components/NavigationFeedback";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -32,7 +33,10 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} ${fraunces.variable} ${spaceGrotesk.variable} ${inter.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        <NavigationFeedback />
+        {children}
+      </body>
     </html>
   );
 }

@@ -10,26 +10,60 @@ export default async function DashboardLayout({ children }: { children: React.Re
   // Staff use the operator console, not the client dashboard.
   if (isStaff(user.email)) redirect("/admin");
 
+  const initial = user.email?.[0]?.toUpperCase() ?? "K";
+  const nav = [
+    { href: "/dashboard", label: "Home" },
+    { href: "/dashboard/setup/look", label: "Website setup" },
+    { href: "/dashboard/edit", label: "Content" },
+    { href: "/dashboard/domains", label: "Domains" },
+    { href: "/preview?edit=1", label: "Edit on page" },
+  ];
+
   return (
     <div className="min-h-screen bg-black font-sans text-white antialiased">
-      <header className="sticky top-0 z-50 border-b border-white/5 bg-black/60 backdrop-blur-xl">
-        <nav className="mx-auto flex max-w-4xl items-center justify-between px-6 py-4">
+      <aside className="fixed inset-y-0 left-0 hidden w-72 border-r border-white/10 bg-neutral-950 px-7 py-8 lg:flex lg:flex-col">
+        <Link href="/dashboard" className="flex items-center gap-3 font-semibold tracking-tight">
+          <span className="grid h-9 w-9 place-items-center rounded-xl bg-white text-sm font-bold text-black">K</span>
+          Kovasite
+        </Link>
+
+        <nav className="mt-16 space-y-1">
+          {nav.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className="block rounded-xl px-3 py-2.5 text-sm font-medium text-white/50 transition hover:bg-white/[0.06] hover:text-white"
+            >
+              {item.label}
+            </Link>
+          ))}
+        </nav>
+
+        <div className="mt-auto flex items-center justify-between">
+          <div className="grid h-11 w-11 place-items-center rounded-full bg-white text-sm font-semibold text-black">{initial}</div>
+          <form action={clientLogout}>
+            <button className="rounded-xl border border-white/15 px-4 py-2 text-sm font-medium text-white/60 transition hover:bg-white/[0.06] hover:text-white">
+              Sign out
+            </button>
+          </form>
+        </div>
+      </aside>
+
+      <header className="sticky top-0 z-50 border-b border-white/10 bg-black/80 backdrop-blur-xl lg:hidden">
+        <nav className="flex items-center justify-between px-5 py-4">
           <Link href="/dashboard" className="flex items-center gap-2 font-semibold tracking-tight">
-            <span className="grid h-6 w-6 place-items-center rounded-md bg-white text-xs font-bold text-black">K</span>
+            <span className="grid h-8 w-8 place-items-center rounded-lg bg-white text-xs font-bold text-black">K</span>
             Dashboard
           </Link>
-          <div className="flex items-center gap-4 text-sm text-white/55">
-            <Link href="/dashboard" className="transition hover:text-white">Overview</Link>
-            <Link href="/dashboard/edit" className="transition hover:text-white">Edit site</Link>
-            <form action={clientLogout}>
-              <button className="rounded-lg border border-white/15 px-3 py-1.5 text-white/80 transition hover:bg-white/5">
-                Sign out
-              </button>
-            </form>
-          </div>
+          <form action={clientLogout}>
+            <button className="rounded-lg border border-white/15 px-3 py-1.5 text-sm font-medium text-white/70">
+              Sign out
+            </button>
+          </form>
         </nav>
       </header>
-      <main className="mx-auto max-w-4xl px-6 py-10">{children}</main>
+
+      <main className="px-5 py-8 lg:ml-72 lg:px-12 lg:py-10">{children}</main>
     </div>
   );
 }

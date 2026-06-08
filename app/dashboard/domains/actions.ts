@@ -42,7 +42,7 @@ export async function claimDomain(formData: FormData) {
   await updateMyCustomDomain(domain, "registering");
   await addProjectDomain(domain).catch(() => {});
   revalidatePath("/dashboard/domains");
-  back("?claimed=1");
+  redirect("/dashboard?welcome=1");
 }
 
 // Connect a domain the client already owns (needs one DNS record).

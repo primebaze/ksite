@@ -21,8 +21,9 @@ export async function GET(request: Request) {
     const { data, error } = await supabase.auth.verifyOtp({ type, token_hash });
     if (!error && data.user) {
       await ensureSite(supabase, data.user);
-      // New clients land in the guided setup wizard.
-      return NextResponse.redirect(`${origin}/dashboard/setup/look`);
+      // New clients land directly on the site so they can edit the chosen
+      // design on-screen before publishing.
+      return NextResponse.redirect(`${origin}/preview?edit=1`);
     }
   }
 
@@ -62,7 +63,10 @@ async function ensureSite(supabase: SupabaseClient, user: User) {
   if (error || !data) return;
 
   // Seed a complete, editable starter site for the business type.
-  const starter = starterContent(md.preset);
+  const starter = starterContent(md.selected_design || md.preset);
+  if (["editorial", "warm", "bold", "minimal", "luxe", "classic"].includes(md.selected_style)) {
+    starter.content.style = md.selected_style;
+  }
   await supabase.from("themes").insert({
     tenant_id: data.id,
     primary_color: starter.theme.primary_color,

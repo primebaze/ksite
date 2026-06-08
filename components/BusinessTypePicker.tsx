@@ -78,7 +78,6 @@ export function BusinessTypePicker({ groups, defaultKey = "restaurant" }: { grou
               <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="2" />
               <path d="M20 20l-3.2-3.2" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
             </svg>
-            {/* eslint-disable-next-line jsx-a11y/no-autofocus */}
             <input
               autoFocus
               value={q}

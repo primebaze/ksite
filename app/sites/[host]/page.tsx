@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { createElement } from "react";
 import { notFound } from "next/navigation";
 import { getSiteByHost } from "@/lib/tenant";
 import { getPresetComponent } from "@/presets";
@@ -38,6 +39,5 @@ export default async function SitePage({ params }: Props) {
     return <HoldingPage businessName={site.tenant.business_name} />;
   }
 
-  const Preset = getPresetComponent(site.tenant.preset);
-  return <Preset site={site} />;
+  return createElement(getPresetComponent(site.tenant.preset), { site });
 }

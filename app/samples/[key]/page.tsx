@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { createElement } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getPresetComponent } from "@/presets";
@@ -46,7 +47,6 @@ export default async function SamplePage({
   if (video && /^\/hero\/[\w.-]+\.mp4$/.test(video)) {
     site.content = { ...site.content, hero_video_url: video };
   }
-  const Preset = getPresetComponent(site.tenant.preset);
 
   return (
     <div className="relative">
@@ -56,7 +56,7 @@ export default async function SamplePage({
           <Link href="/get-started" className="rounded-full bg-white px-4 py-1.5 font-semibold text-black transition hover:bg-white/90">Build mine</Link>
         </div>
       )}
-      <Preset site={site} />
+      {createElement(getPresetComponent(site.tenant.preset), { site })}
     </div>
   );
 }
