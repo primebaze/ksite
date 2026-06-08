@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Reveal } from "@/components/motion/Reveal";
 import { RotatingWord } from "@/components/motion/RotatingWord";
+import { FloatingDevices } from "@/components/FloatingDevices";
 import { HeroShowcase } from "@/components/HeroShowcase";
 import { ScrollZoom } from "@/components/ScrollZoom";
 import { LiveExamples } from "@/components/LiveExamples";
@@ -9,9 +10,14 @@ import { FEATURES, ROTATING_WORDS } from "@/lib/marketing";
 export default function Home() {
   return (
     <>
-      {/* Hero */}
-      <section className="relative border-b border-white/5">
-        <div className="mx-auto max-w-3xl px-6 pt-24 pb-20 text-center sm:pt-28">
+      {/* Hero — floating multi-device mockups behind text */}
+      <section className="relative min-h-[92vh] overflow-hidden border-b border-white/5">
+        {/* Floating device mockups — behind text */}
+        <FloatingDevices />
+        {/* Dark vignette so text reads over the mockups */}
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(0,0,0,0.6)_0%,rgba(0,0,0,0.85)_55%,black_100%)]" />
+
+        <div className="relative z-10 mx-auto flex min-h-[92vh] max-w-3xl flex-col items-center justify-center px-6 text-center">
           <Reveal>
             <h1 className="text-5xl font-semibold leading-[1.02] tracking-tight sm:text-7xl">
               Websites for
