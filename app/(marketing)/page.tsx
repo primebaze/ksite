@@ -3,7 +3,8 @@ import { Reveal } from "@/components/motion/Reveal";
 import { RotatingWord } from "@/components/motion/RotatingWord";
 import { HeroShowcase } from "@/components/HeroShowcase";
 import { ScrollZoom } from "@/components/ScrollZoom";
-import { EXAMPLES, FEATURES, ROTATING_WORDS, SITE_BASE } from "@/lib/marketing";
+import { LiveExamples } from "@/components/LiveExamples";
+import { FEATURES, ROTATING_WORDS } from "@/lib/marketing";
 
 export default function Home() {
   return (
@@ -68,34 +69,8 @@ export default function Home() {
         </Reveal>
       </section>
 
-      {/* Examples */}
-      <section className="border-t border-white/5 bg-white/[0.015]">
-        <div className="mx-auto max-w-6xl px-6 py-24">
-          <Reveal>
-            <p className="text-xs font-medium uppercase tracking-widest text-emerald-400/80">Live examples</p>
-            <h2 className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">Real sites, one engine.</h2>
-          </Reveal>
-          <div className="mt-12 grid gap-5 sm:grid-cols-3">
-            {EXAMPLES.map((e, i) => (
-              <Reveal key={e.sub} delay={i * 0.06}>
-                <a
-                  href={`http://${e.sub}.${SITE_BASE}`}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="group block rounded-2xl border border-white/10 bg-white/[0.02] p-6 transition hover:border-white/25 hover:bg-white/[0.04]"
-                >
-                  <div className="flex aspect-[16/10] items-center justify-center rounded-lg border border-white/10 bg-gradient-to-br from-white/[0.06] to-transparent text-2xl font-semibold text-white/70">
-                    {e.name.charAt(0)}
-                  </div>
-                  <p className="mt-4 text-xs uppercase tracking-widest text-white/30">{e.label}</p>
-                  <p className="mt-1 font-medium">{e.name}</p>
-                  <p className="mt-3 text-sm text-emerald-400/90 transition group-hover:text-emerald-300">View live →</p>
-                </a>
-              </Reveal>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* Live examples — real video-hero sites */}
+      <LiveExamples />
 
       {/* Pricing teaser */}
       <section className="mx-auto max-w-6xl px-6 py-24">

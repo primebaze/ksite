@@ -5,16 +5,16 @@ import { TemplateThumb } from "./TemplateThumb";
 
 // A rotating product reel: best-selling business types, each shown with a
 // looping video hero. Slides preload and crossfade so there's no flicker.
-const SLIDES: { key: string; video: string }[] = [
-  { key: "restaurant", video: "/hero/restaurant.mp4" },
-  { key: "hair_salon", video: "/hero/hair.mp4" },
-  { key: "gym", video: "/hero/gym.mp4" },
-  { key: "beauty_salon", video: "/hero/beauty.mp4" },
+const SLIDES: { key: string; video: string; name: string }[] = [
+  { key: "restaurant", video: "/hero/restaurant.mp4", name: "Nonna's Kitchen" },
+  { key: "cafe", video: "/hero/cafe.mp4", name: "Maple & Bean" },
+  { key: "hair_salon", video: "/hero/hair.mp4", name: "The Chair Co." },
+  { key: "gym", video: "/hero/gym.mp4", name: "Ironworks Gym" },
 ];
 
 function srcFor(s: (typeof SLIDES)[number]) {
   // Force the luxe full-bleed layout so the video hero fills the frame.
-  return `/samples/${s.key}?embed=1&style=luxe&video=${encodeURIComponent(s.video)}`;
+  return `/samples/${s.key}?embed=1&style=luxe&video=${encodeURIComponent(s.video)}&name=${encodeURIComponent(s.name)}`;
 }
 
 export function HeroShowcase() {

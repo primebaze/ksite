@@ -23,12 +23,17 @@ export default async function SamplePage({
   searchParams,
 }: {
   params: Promise<{ key: string }>;
-  searchParams: Promise<{ style?: string; embed?: string; img?: string; video?: string }>;
+  searchParams: Promise<{ style?: string; embed?: string; img?: string; video?: string; name?: string }>;
 }) {
   const { key } = await params;
-  const { style, embed, img, video } = await searchParams;
+  const { style, embed, img, video, name } = await searchParams;
   const site = sampleSiteFor(key);
   if (!site) notFound();
+
+  // Optional brand-name override (used by the homepage showcase for real-feeling demos).
+  if (name && name.length <= 40) {
+    site.tenant = { ...site.tenant, business_name: name.replace(/[<>]/g, "") };
+  }
 
   // Optional style override so the same build can be previewed in any look.
   if (style && STYLES.has(style)) {
