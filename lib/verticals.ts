@@ -15,7 +15,7 @@ export interface Vertical {
 }
 
 // The full catalogue of supported business types is the builds library
-// (lib/builds.ts) — 150+ tailored starting points. Verticals are derived from
+// (lib/builds.ts), 150+ tailored starting points. Verticals are derived from
 // it so the picker, onboarding and starter content all stay in sync.
 export const VERTICALS: Vertical[] = BUILDS.map((b) => ({
   key: b.key,
@@ -63,7 +63,7 @@ export const FIRST_STEP = "look";
 const LOOK: Step = {
   key: "look",
   title: "Your look",
-  intro: "Start with your name and colours. Nothing's permanent — change it any time.",
+  intro: "Start with your name and colours. Nothing's permanent, change it any time.",
   kind: "fields",
   fields: [
     { name: "business_name", label: "Business name", help: "What your business is called.", source: "tenant" },
@@ -79,7 +79,7 @@ const LOOK: Step = {
 const DESIGN: Step = {
   key: "design",
   title: "Choose your design",
-  intro: "Here's your site in a few different looks. Pick the one you love — you can change it any time.",
+  intro: "Here's your site in a few different looks. Pick the one you love, you can change it any time.",
   kind: "design",
 };
 
@@ -90,7 +90,7 @@ const STORY: Step = {
   kind: "fields",
   fields: [
     { name: "tagline", label: "Tagline", help: "One short line that sums you up.", placeholder: "e.g. Fresh cuts, friendly faces", source: "content" },
-    { name: "about", label: "About you", help: "A short paragraph — who you are and what makes you great.", multiline: true, source: "content" },
+    { name: "about", label: "About you", help: "A short paragraph: who you are and what makes you great.", multiline: true, source: "content" },
   ],
 };
 
@@ -109,7 +109,7 @@ const CONTACT: Step = {
 const PHOTOS: Step = {
   key: "photos",
   title: "Your photos",
-  intro: "A great hero image makes your site feel premium. Add one now — you can add gallery photos too.",
+  intro: "A great hero image makes your site feel premium. Add one now, you can add gallery photos too.",
   kind: "photos",
 };
 
@@ -156,7 +156,7 @@ const SERVICES_ACTION: Step = {
   kind: "fields",
   fields: [
     { name: "service_areas", label: "Areas you cover", help: "Separate with commas, e.g. Leeds, Wakefield, Bradford.", list: true, source: "content" },
-    { name: "accreditations", label: "Accreditations", help: "e.g. Gas Safe, NICEIC, Which? Trusted Trader — separate with commas.", list: true, source: "content" },
+    { name: "accreditations", label: "Accreditations", help: "e.g. Gas Safe, NICEIC, Which? Trusted Trader. Separate with commas.", list: true, source: "content" },
     { name: "cta_label", label: "Main button text", placeholder: "Get a quote", source: "content" },
     { name: "cta_url", label: "Where the button goes", help: "A phone link, email, or contact form link.", placeholder: "tel:01234567890", source: "content" },
   ],

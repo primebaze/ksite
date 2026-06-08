@@ -18,7 +18,7 @@ export default async function PublishPage({
   const { error, canceled } = await searchParams;
   const tenant = await getMyTenant();
   if (!tenant) redirect("/get-started");
-  // Already subscribed — don't let them pay again.
+  // Already subscribed, don't let them pay again.
   if (tenant.published || tenant.plan_status === "active") redirect("/dashboard");
 
   return (
@@ -33,10 +33,10 @@ export default async function PublishPage({
       </p>
       <p className="mt-3 max-w-2xl rounded-lg border border-white/10 bg-white/[0.02] px-4 py-3 text-sm text-white/55">
         Prefer your own domain (like <span className="text-white">yourbusiness.co.uk</span>)? You can connect it any
-        time after you subscribe — we&apos;ll guide you through it from your dashboard.
+        time after you subscribe, and we&apos;ll guide you through it from your dashboard.
       </p>
 
-      {canceled && <p className="mt-4 rounded-lg border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-white/60">Checkout canceled — you can pick a plan whenever you&apos;re ready.</p>}
+      {canceled && <p className="mt-4 rounded-lg border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-white/60">Checkout canceled. You can pick a plan whenever you&apos;re ready.</p>}
       {error && <p className="mt-4 rounded-lg bg-red-500/10 px-4 py-3 text-sm text-red-300">{error}</p>}
 
       <div className="mt-8 grid gap-6 lg:grid-cols-3">

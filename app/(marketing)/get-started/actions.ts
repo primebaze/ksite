@@ -49,7 +49,7 @@ async function uniqueSubdomain(base: string): Promise<string> {
   return `${base}-${Date.now().toString().slice(-5)}`;
 }
 
-// Step 1 of self-serve signup. We DON'T create the site yet — email
+// Step 1 of self-serve signup. We DON'T create the site yet. Email
 // confirmation is on, so we stash the business details in the user's signup
 // metadata and create the site after they confirm (see app/auth/confirm).
 export async function startOnboarding(formData: FormData) {
@@ -67,7 +67,7 @@ export async function startOnboarding(formData: FormData) {
 
   // Bot check (Cloudflare Turnstile).
   const passedBotCheck = await verifyTurnstile(String(formData.get("cf-turnstile-response") ?? ""));
-  if (!passedBotCheck) err("Verification failed — please try again.");
+  if (!passedBotCheck) err("Verification failed. Please try again.");
 
   // Moderation: block offensive/spam business names.
   const nameCheck = moderate(business_name);

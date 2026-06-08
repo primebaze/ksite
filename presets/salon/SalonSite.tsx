@@ -14,7 +14,7 @@ import {
   tokensFor,
 } from "../shared";
 
-// "bookings" archetype — salons, barbers, beauty, clinics, fitness studios.
+// "bookings" archetype: salons, barbers, beauty, clinics, fitness studios.
 export default function SalonSite({ site }: { site: TenantSite }) {
   const { tenant, theme, content, catalog, gallery, team } = site;
   const tokens = tokensFor(content, theme);

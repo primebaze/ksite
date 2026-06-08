@@ -89,7 +89,7 @@ export default async function SetupStep({ params }: { params: Promise<{ step: st
         <div className="mt-8">
           <h2 className="text-sm font-medium text-white/70">Your {catalogLabel.toLowerCase()}</h2>
           <div className="mt-3 space-y-2">
-            {site.catalog.length === 0 && <p className="text-sm text-white/35">Nothing added yet — add your first item below.</p>}
+            {site.catalog.length === 0 && <p className="text-sm text-white/35">Nothing added yet. Add your first item below.</p>}
             {site.catalog.map((it) => (
               <div key={it.id} className="flex items-center justify-between rounded-xl border border-white/10 bg-white/[0.02] px-4 py-3">
                 <div>
@@ -122,7 +122,7 @@ export default async function SetupStep({ params }: { params: Promise<{ step: st
         <div className="mt-8 space-y-8">
           <div>
             <p className="text-sm font-medium">Cover photo</p>
-            <p className="mt-1 text-xs text-white/40">A wide, real photo of your food, space or work — <span className="text-white/60">not your logo</span>. Leave blank for a clean branded cover.</p>
+            <p className="mt-1 text-xs text-white/40">A wide, real photo of your food, space or work (<span className="text-white/60">not your logo</span>). Leave blank for a clean branded cover.</p>
             <div className="mt-3">
               <ImageUploader field="hero" current={site.content.hero_image_url} label="Upload a cover photo" aspect="aspect-[16/9]" />
             </div>
@@ -152,7 +152,7 @@ export default async function SetupStep({ params }: { params: Promise<{ step: st
           </div>
           <div>
             <p className="text-sm font-medium">Video hero</p>
-            <p className="mt-1 text-xs text-white/40">A short looping video at the top — even more premium.</p>
+            <p className="mt-1 text-xs text-white/40">A short looping video at the top, even more premium.</p>
             <div className="mt-3">
               <ImageUploader field="hero" locked label="Video hero" lockedNote="Available on the Premium plan." aspect="aspect-[16/9]" />
             </div>
@@ -173,7 +173,7 @@ export default async function SetupStep({ params }: { params: Promise<{ step: st
 
           <div className="mt-6 flex flex-wrap items-center gap-3">
             <Link href="/dashboard/publish" className="rounded-lg bg-white px-6 py-3 text-sm font-semibold text-black transition hover:bg-white/90">
-              Looks good — publish
+              Looks good, publish
             </Link>
             <Link href={`/dashboard/setup/${FIRST_STEP}`} className="rounded-lg border border-white/15 px-5 py-3 text-sm text-white/80 hover:bg-white/5">
               Keep editing

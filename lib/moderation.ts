@@ -54,7 +54,7 @@ export function moderate(text: string): ModerationResult {
     return { ok: false, reason: "Please remove offensive language." };
   }
   if (looksLikeSpam(text)) {
-    return { ok: false, reason: "That doesn't look valid — please enter a real business name." };
+    return { ok: false, reason: "That doesn't look valid. Please enter a real business name." };
   }
   return { ok: true };
 }

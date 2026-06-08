@@ -53,7 +53,7 @@ export default async function DomainsPage({
       {claimed && <p className="rounded-lg border border-emerald-400/30 bg-emerald-400/5 px-4 py-3 text-sm text-emerald-200">🎉 Your domain is live!</p>}
       {error && <p className="rounded-lg bg-red-500/10 px-4 py-3 text-sm text-red-300">{error}</p>}
       {!isVercelConfigured() && (
-        <p className="rounded-lg border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-white/55">Custom domains are being switched on — check back shortly.</p>
+        <p className="rounded-lg border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-white/55">Custom domains are being switched on. Check back shortly.</p>
       )}
 
       {/* Free address */}
@@ -82,7 +82,7 @@ export default async function DomainsPage({
           {tenant.domain_status === "active" ? (
             <a href={`https://${custom}`} target="_blank" rel="noreferrer" className="mt-3 inline-block text-sm text-emerald-400/90 hover:text-emerald-300">Visit ↗</a>
           ) : tenant.domain_status === "registering" ? (
-            <p className="mt-3 text-sm text-white/55">Setting up your domain — this usually takes a minute or two. Use “Check status” to refresh.</p>
+            <p className="mt-3 text-sm text-white/55">Setting up your domain. This usually takes a minute or two. Use “Check status” to refresh.</p>
           ) : (
             dns && (
               <div className="mt-4 rounded-lg border border-white/10 bg-white/[0.02] p-4 text-sm">
@@ -117,7 +117,7 @@ export default async function DomainsPage({
               <input name="domain" placeholder="yourbusiness.co.uk" className="w-full rounded-lg border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-white placeholder-white/30 outline-none focus:border-white/30" />
               <button className="shrink-0 rounded-lg border border-white/15 px-5 py-3 text-sm font-medium hover:bg-white/5">Connect</button>
             </form>
-            <p className="mt-2 text-xs text-white/35">You&apos;ll add one DNS record at your provider — we&apos;ll show you exactly which.</p>
+            <p className="mt-2 text-xs text-white/35">You&apos;ll add one DNS record at your provider, and we&apos;ll show you exactly which.</p>
           </details>
         </section>
       ) : (

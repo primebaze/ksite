@@ -43,7 +43,7 @@ export function HeroShowcase() {
             className={`transition-opacity duration-700 ${idx === i ? "opacity-100" : "pointer-events-none opacity-0"}`}
             aria-hidden={idx !== i}
           >
-            <TemplateThumb src={srcFor(s)} aspect={0.56} />
+            <TemplateThumb src={srcFor(s)} aspect={0.5625} base={1440} />
           </div>
         ))}
       </div>

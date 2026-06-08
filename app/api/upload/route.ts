@@ -11,7 +11,7 @@ import {
 
 // Image upload. Node runtime + extra time for processing big photos. Every path
 // returns JSON (never an unhandled 500), and sharp re-encodes to a clean,
-// resized webp — which sanitises the file and keeps memory/time bounded.
+// resized webp, which sanitises the file and keeps memory/time bounded.
 export const runtime = "nodejs";
 export const maxDuration = 60;
 
@@ -30,7 +30,7 @@ export async function POST(req: Request) {
     const tenant = await getMyTenant();
     if (!tenant) return Response.json({ ok: false, error: "Please sign in again." }, { status: 401 });
     if (!(file instanceof File) || file.size === 0) return Response.json({ ok: false, error: "No file selected." });
-    if (file.size > MAX_BYTES) return Response.json({ ok: false, error: "That image is too large — please use one under 12MB." });
+    if (file.size > MAX_BYTES) return Response.json({ ok: false, error: "That image is too large. Please use one under 12MB." });
     if (!ALLOWED.includes(file.type)) return Response.json({ ok: false, error: "Please use a JPG, PNG, WEBP, AVIF or GIF." });
 
     let clean: Buffer;
@@ -42,7 +42,7 @@ export async function POST(req: Request) {
         .webp({ quality: 80 })
         .toBuffer();
     } catch {
-      return Response.json({ ok: false, error: "That image couldn't be processed — try a JPG or PNG." });
+      return Response.json({ ok: false, error: "That image couldn't be processed. Try a JPG or PNG." });
     }
 
     const svc = getServiceClient();
@@ -68,7 +68,7 @@ export async function POST(req: Request) {
     revalidatePath("/dashboard/edit");
     return Response.json({ ok: true, url });
   } catch (e) {
-    const message = e instanceof Error ? e.message : "Upload failed — please try again.";
+    const message = e instanceof Error ? e.message : "Upload failed. Please try again.";
     return Response.json({ ok: false, error: message }, { status: 500 });
   }
 }

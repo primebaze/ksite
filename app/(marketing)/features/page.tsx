@@ -4,13 +4,13 @@ import { CTASection } from "@/components/CTASection";
 import { Reveal } from "@/components/motion/Reveal";
 import { FEATURES } from "@/lib/marketing";
 
-export const metadata: Metadata = { title: "Features — Kovasite" };
+export const metadata: Metadata = { title: "Features · Kovasite" };
 
 export default function FeaturesPage() {
   return (
     <>
       <PageHero kicker="Features" title="Everything you need to be found, booked and remembered.">
-        Your site takes bookings, captures leads and shows up on Google — and we look after the whole thing for you.
+        Your site takes bookings, captures leads and shows up on Google, and we look after the whole thing for you.
       </PageHero>
 
       <section className="mx-auto max-w-6xl px-6 py-20">

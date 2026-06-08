@@ -14,7 +14,7 @@ interface Group {
 const FIELD =
   "mt-1 flex w-full items-center justify-between rounded-lg border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-white outline-none transition focus:border-white/30";
 
-// A short, friendly default list — not all 150+.
+// A short, friendly default list, not all 150+.
 const POPULAR = [
   "restaurant",
   "cafe",
@@ -102,14 +102,14 @@ export function BusinessTypePicker({ groups, defaultKey = "restaurant" }: { grou
               </button>
             ))}
             {ql && results.length === 0 && (
-              <p className="px-2 py-3 text-sm text-white/40">No matches — pick “Other” below to type your own.</p>
+              <p className="px-2 py-3 text-sm text-white/40">No matches. Pick “Other” below to type your own.</p>
             )}
             <button
               type="button"
               onClick={() => choose("other", "Other")}
               className="mt-1 flex w-full items-center rounded-lg border-t border-white/10 px-2 py-2.5 text-left text-[15px] text-white/55 transition hover:bg-white/10 hover:text-white"
             >
-              Other — type your own
+              Other (type your own)
             </button>
           </div>
         </div>

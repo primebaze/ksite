@@ -118,7 +118,7 @@ function loadSiteById(id: string): Promise<TenantSite | null> {
   )();
 }
 
-// Invalidation helpers — call from the admin panel after an edit.
+// Invalidation helpers, called from the admin panel after an edit.
 // Next 16's revalidateTag takes (tag, profile); { expire: 0 } purges the tag
 // immediately so the next request refetches that tenant's data.
 export async function revalidateTenant(tenantId: string) {

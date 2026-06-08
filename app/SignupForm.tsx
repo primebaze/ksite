@@ -16,7 +16,7 @@ export default function SignupForm() {
         <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-emerald-400/15 text-emerald-300">
           ✓
         </div>
-        <h3 className="mt-4 text-lg font-semibold text-white">Thanks — we&apos;ll be in touch.</h3>
+        <h3 className="mt-4 text-lg font-semibold text-white">Thanks, we&apos;ll be in touch.</h3>
         <p className="mt-1 text-sm text-white/50">
           We&apos;ll email you within one working day to get your site started.
         </p>

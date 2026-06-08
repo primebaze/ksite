@@ -4,7 +4,7 @@ import { useFormStatus } from "react-dom";
 import type { ReactNode } from "react";
 
 // Submit button that disables itself and shows a pending label while its form's
-// server action is in flight — prevents double-clicks/double-submits.
+// server action is in flight, preventing double-clicks/double-submits.
 // Place inside a <form action={…}>.
 export function SubmitButton({
   children,

@@ -4,7 +4,7 @@ import { createServerClient } from "@supabase/ssr";
 
 // Cookie-bound Supabase client for the ADMIN area only. Uses the publishable
 // key + a cookie session to authenticate staff (Supabase Auth). This is the
-// auth/session client — data CRUD in the admin uses the service client
+// auth/session client. Data CRUD in the admin uses the service client
 // (lib/supabase.ts getServiceClient) after the user is verified.
 export async function createSupabaseServerClient() {
   const cookieStore = await cookies();
@@ -22,7 +22,7 @@ export async function createSupabaseServerClient() {
               cookieStore.set(name, value, options),
             );
           } catch {
-            // Called from a Server Component render — cookies are read-only
+            // Called from a Server Component render, where cookies are read-only
             // here. Session refresh still works via the layout/actions path.
           }
         },

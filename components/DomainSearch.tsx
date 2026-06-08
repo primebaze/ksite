@@ -24,7 +24,7 @@ export function DomainSearch({ suggestions = [] }: { suggestions?: string[] }) {
       const r = await fetch(`/api/domains/search?name=${encodeURIComponent(q)}`, { cache: "no-store" });
       setResult(await r.json());
     } catch {
-      setResult({ error: "Something went wrong — try again." });
+      setResult({ error: "Something went wrong. Try again." });
     } finally {
       setLoading(false);
     }
@@ -67,7 +67,7 @@ export function DomainSearch({ suggestions = [] }: { suggestions?: string[] }) {
 
       {result && !result.error && result.available === false && (
         <p className="mt-3 rounded-lg border border-white/10 bg-white/[0.02] px-4 py-3 text-sm text-white/55">
-          <span className="text-white">{result.name}</span> is taken — try another name.
+          <span className="text-white">{result.name}</span> is taken. Try another name.
         </p>
       )}
 
@@ -76,7 +76,7 @@ export function DomainSearch({ suggestions = [] }: { suggestions?: string[] }) {
           <div className="text-sm">
             <span className="font-medium text-white">{result.name}</span>
             <span className="ml-2 text-emerald-300">available</span>
-            <p className="mt-0.5 text-xs text-white/45">Included with your plan — this name must be unique, and we launch it for you.</p>
+            <p className="mt-0.5 text-xs text-white/45">Included with your plan. This name must be unique, and we launch it for you.</p>
           </div>
           <input type="hidden" name="domain" value={result.name} />
           <button className="shrink-0 rounded-lg bg-emerald-400 px-5 py-2.5 text-sm font-semibold text-black transition hover:bg-emerald-300">

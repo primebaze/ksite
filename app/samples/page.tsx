@@ -8,7 +8,7 @@ import Footer from "../(marketing)/Footer";
 export const dynamic = "force-static";
 
 export const metadata: Metadata = {
-  title: "Samples — Kovasite",
+  title: "Samples · Kovasite",
   description: "Browse sample websites for over 150 types of local business.",
 };
 

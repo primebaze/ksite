@@ -25,17 +25,20 @@ const STYLES = [
   { value: "minimal", label: "Minimal" },
 ] as const;
 
+const VALID_STYLES = ["editorial", "warm", "bold", "minimal", "luxe", "classic"];
+const titleCase = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
+
 const input =
   "mt-2 w-full rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-white placeholder-white/30 outline-none transition focus:border-white/30";
 
-const FEATURED_GROUPS = ["Food & drink", "Hair & beauty", "Health & wellness", "Fitness", "Trades & home", "Professional services"];
+const FEATURED_GROUPS = ["Food & drink", "Hair & beauty", "Health & wellness", "Fitness", "Contractors & home", "Professional services"];
 
 const GROUP_COPY: Record<string, string> = {
   "Food & drink": "Restaurants, cafés, bars and bakeries",
   "Hair & beauty": "Salons, spas, nails, lashes and makeup",
   "Health & wellness": "Clinics, dentists, therapy and wellbeing",
   Fitness: "Gyms, trainers, yoga and coaching",
-  "Trades & home": "Plumbers, electricians and home services",
+  "Contractors & home": "Plumbers, electricians and home services",
   Automotive: "Garages, valeting and vehicle services",
   "Professional services": "Consultants, legal, finance and agencies",
   "Retail & shops": "Boutiques, florists and product shops",
@@ -49,7 +52,7 @@ const FEATURED_TYPES: Record<string, string[]> = {
   "Hair & beauty": ["beauty_salon", "hair_salon", "barber", "nail_salon", "lash_brow", "makeup_artist"],
   "Health & wellness": ["dentist", "dental", "aesthetics_clinic", "skin_clinic", "physio", "massage"],
   Fitness: ["personal_trainer", "gym", "yoga_studio", "pilates", "boxing_gym", "bootcamp"],
-  "Trades & home": ["plumber", "electrician", "builder", "cleaner", "handyman", "painter_decorator"],
+  "Contractors & home": ["plumber", "electrician", "builder", "cleaner", "handyman", "painter_decorator"],
   Automotive: ["garage", "car_detailing", "car_wash", "mot_centre", "bodyshop", "tyre_shop"],
   "Professional services": ["accountant", "business_consultant", "solicitor", "marketing_agency", "financial_advisor", "architect"],
   "Retail & shops": ["boutique", "florist", "gift_shop", "bookshop", "homeware", "jeweller"],
@@ -64,24 +67,36 @@ export function GetStartedFlow({
   turnstileKey,
   error,
   action,
+  preselect,
 }: {
   groups: Group[];
   builds: BuildOption[];
   turnstileKey?: string;
   error?: string;
   action: (formData: FormData) => void | Promise<void>;
+  preselect?: { key: string; style?: string };
 }) {
   const formRef = useRef<HTMLFormElement>(null);
   const byKey = useMemo(() => new Map(builds.map((build) => [build.key, build])), [builds]);
-  const [step, setStep] = useState(0);
+
+  // Came from "Build mine": the design is already chosen, so start on the
+  // account step with that build (and the style they were viewing) locked in.
+  const pre = preselect && byKey.get(preselect.key) ? preselect : null;
+  const preStyle = pre
+    ? pre.style && VALID_STYLES.includes(pre.style)
+      ? pre.style
+      : byKey.get(pre.key)!.style
+    : byKey.get("beauty_salon")?.style ?? "warm";
+
+  const [step, setStep] = useState(pre ? 2 : 0);
   const [group, setGroup] = useState<string | null>(null);
   const [query, setQuery] = useState("");
   const [showMoreGroups, setShowMoreGroups] = useState(false);
   const [showMoreTypes, setShowMoreTypes] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
-  const [preset, setPreset] = useState("beauty_salon");
-  const [selectedStyle, setSelectedStyle] = useState(byKey.get("beauty_salon")?.style ?? "warm");
-  const [selectedDesign, setSelectedDesign] = useState("beauty_salon");
+  const [preset, setPreset] = useState(pre ? pre.key : "beauty_salon");
+  const [selectedStyle, setSelectedStyle] = useState(preStyle);
+  const [selectedDesign, setSelectedDesign] = useState(pre ? pre.key : "beauty_salon");
 
   const selected = byKey.get(preset);
   const visibleGroups = showMoreGroups ? groups : groups.filter((item) => FEATURED_GROUPS.includes(item.group));
@@ -324,8 +339,28 @@ export function GetStartedFlow({
             <p className="text-xs font-semibold uppercase tracking-[0.28em] text-emerald-400/80">Step 3</p>
             <h2 className="mt-2 text-3xl font-semibold tracking-tight">Create your account.</h2>
             <p className="mt-2 max-w-2xl text-sm leading-6 text-white/50">
-              We&apos;ll save your chosen {selected?.label?.toLowerCase() ?? "custom"} design and open it in the on-screen editor after email confirmation.
+              We&apos;ll build this exact design for you and open it in the on-screen editor after email confirmation, so you can make it yours.
             </p>
+
+            {selected && selectedDesign !== "scratch" && (
+              <div className="mt-6 flex items-center gap-4 rounded-2xl border border-emerald-400/20 bg-emerald-400/[0.04] p-3 sm:p-4">
+                <div className="w-24 shrink-0 overflow-hidden rounded-lg border border-white/10 sm:w-32">
+                  <TemplateThumb src={`/samples/${preset}?embed=1&style=${selectedStyle}`} aspect={0.62} />
+                </div>
+                <div className="min-w-0">
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-emerald-300/70">You&apos;re building</p>
+                  <p className="mt-1 font-semibold leading-tight">{selected.label}</p>
+                  <p className="text-sm text-white/45">{titleCase(selectedStyle)} design</p>
+                  <button
+                    type="button"
+                    onClick={() => goToStep(0)}
+                    className="mt-1.5 text-sm text-white/50 underline-offset-4 transition hover:text-white hover:underline"
+                  >
+                    Change
+                  </button>
+                </div>
+              </div>
+            )}
 
             <div className="mt-6 grid gap-4 lg:grid-cols-2">
               <div>

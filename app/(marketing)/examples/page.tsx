@@ -4,13 +4,13 @@ import { CTASection } from "@/components/CTASection";
 import { Reveal } from "@/components/motion/Reveal";
 import { EXAMPLES, SITE_BASE } from "@/lib/marketing";
 
-export const metadata: Metadata = { title: "Examples — Kovasite" };
+export const metadata: Metadata = { title: "Examples · Kovasite" };
 
 export default function ExamplesPage() {
   return (
     <>
       <PageHero kicker="Examples" title="One engine. Every kind of business.">
-        Each of these runs on the same platform, restyled and rewritten for a different trade. They&apos;re live — open them.
+        Each of these runs on the same platform, restyled and rewritten for a different trade. They&apos;re live. Open them.
       </PageHero>
 
       <section className="mx-auto max-w-6xl px-6 py-20">

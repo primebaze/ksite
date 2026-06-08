@@ -5,7 +5,7 @@ import { getPublicClient } from "@/lib/supabase";
 export type SignupState = { ok: boolean; error: string | null };
 
 // Marketing-site lead capture. Uses the publishable (anon) client + the
-// anon-insert policy on `signups` — no service key on the public path.
+// anon-insert policy on `signups` (no service key on the public path).
 export async function submitSignup(
   _prev: SignupState,
   formData: FormData,

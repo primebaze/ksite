@@ -3,7 +3,7 @@ import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 // Two clients, two privilege levels:
 //
 //  - getPublicClient():  PUBLISHABLE (anon) key. RLS-enforced. Used by the
-//    public site renderer. Can only read published, public content — safe even
+//    public site renderer. Can only read published, public content, safe even
 //    if exposed. This is the only client the public site touches.
 //
 //  - getServiceClient(): SECRET (service_role) key. Bypasses RLS. Server-only.

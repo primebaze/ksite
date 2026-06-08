@@ -1,6 +1,6 @@
 import type { TenantSite } from "./types";
 
-// Built-in demo tenants — mirrors supabase/seed.sql. Used automatically when
+// Built-in demo tenants, mirroring supabase/seed.sql. Used automatically when
 // Supabase env vars are absent, so `npm run dev` shows all three presets
 // before any database is connected. Once SUPABASE_* env is set, the real DB
 // takes over (see lib/tenant.ts).
@@ -17,7 +17,7 @@ export const MOCK_SITES: Record<string, TenantSite> = {
       published: true,
       plan: "standard",
       plan_status: "active",
-      meta_title: "Nonna's Kitchen — Italian Restaurant",
+      meta_title: "Nonna's Kitchen · Italian Restaurant",
       meta_description: "Family-run Italian kitchen. Book a table or order direct.",
       og_image_url: null,
       favicon_url: null,
@@ -71,7 +71,7 @@ export const MOCK_SITES: Record<string, TenantSite> = {
       published: true,
       plan: "basic",
       plan_status: "active",
-      meta_title: "Swift Plumbing & Heating — Leeds",
+      meta_title: "Swift Plumbing & Heating · Leeds",
       meta_description: "Gas Safe registered plumbers. Fast callouts, free quotes.",
       og_image_url: null,
       favicon_url: null,
@@ -79,7 +79,7 @@ export const MOCK_SITES: Record<string, TenantSite> = {
     },
     theme: { logo_url: null, primary_color: "#0f3d6b", accent_color: "#f2a900", font: "sans-serif" },
     content: {
-      tagline: "Leeds' trusted plumbers — fast, fair, Gas Safe",
+      tagline: "Leeds' trusted plumbers, fast, fair, Gas Safe",
       about: "Family-run since 2009. No call-out fee, upfront pricing, and we tidy up after ourselves.",
       phone: "0113 555 0198",
       emergency_phone: "0113 555 0199",
@@ -119,7 +119,7 @@ export const MOCK_SITES: Record<string, TenantSite> = {
       published: true,
       plan: "premium",
       plan_status: "active",
-      meta_title: "Lumière Hair & Beauty — Bristol",
+      meta_title: "Lumière Hair & Beauty · Bristol",
       meta_description: "Award-winning salon. Book online in seconds.",
       og_image_url: null,
       favicon_url: null,

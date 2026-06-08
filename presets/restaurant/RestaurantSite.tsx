@@ -14,7 +14,7 @@ import {
   tokensFor,
 } from "../shared";
 
-// "menu" archetype — restaurants, cafés, bars, bakeries and the rest of food & drink.
+// "menu" archetype: restaurants, cafés, bars, bakeries and the rest of food & drink.
 export default function RestaurantSite({ site }: { site: TenantSite }) {
   const { tenant, theme, content, catalog, gallery } = site;
   const tokens = tokensFor(content, theme);

@@ -33,7 +33,7 @@ export interface StyleTokens {
   card: string;
   /** A faint section background tint. */
   tint: string;
-  /** Hero layout structure — drives a genuinely different arrangement. */
+  /** Hero layout structure: drives a genuinely different arrangement. */
   hero: "bold" | "luxe" | "editorial" | "classic" | "warm" | "minimal";
   /** Whether the hero sits on dark imagery (white overlay nav) or light. */
   heroDark: boolean;
@@ -437,8 +437,8 @@ function Badges({ badges, onLight, center }: { badges?: string[]; onLight?: bool
  * Hero with genuinely different structural layouts per design style:
  *  - bold:      full-bleed image, content bottom-left, huge headline
  *  - luxe:      full-bleed dark, centered, framed, serif
- *  - editorial: split — text left, image right (light, magazine)
- *  - classic:   split — image left, text right (light)
+ *  - editorial: split (text left, image right; light, magazine)
+ *  - classic:   split (image left, text right; light)
  *  - warm:      centered text on cream, large rounded inset image
  *  - minimal:   text-first light hero, full-width image band below
  */

@@ -150,7 +150,7 @@ export default async function DashboardHome({
             Subscribe to take it live on your subdomain. No setup fee, cancel anytime.
           </p>
           <Link href="/dashboard/publish" className="mt-4 inline-block rounded-xl bg-white px-5 py-3 text-sm font-semibold text-black transition hover:bg-white/90">
-            Publish — choose a plan
+            Publish: choose a plan
           </Link>
         </div>
       )}

@@ -24,11 +24,11 @@ export interface Theme {
 
 /**
  * Loose, preset-specific content. Stored as one JSONB blob per tenant.
- * Not every key is used by every preset — templates read what they need.
+ * Not every key is used by every preset: templates read what they need.
  */
 export interface SiteContent {
   tagline?: string;
-  /** Visual design variant — see SiteStyle in presets/shared. */
+  /** Visual design variant (see SiteStyle in presets/shared). */
   style?: "editorial" | "bold" | "minimal" | "warm" | "luxe" | "classic";
   hero_image_url?: string;
   /** Looping background video for the hero (Premium). Takes priority over the image. */

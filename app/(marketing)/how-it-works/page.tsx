@@ -4,7 +4,7 @@ import { CTASection } from "@/components/CTASection";
 import { Reveal } from "@/components/motion/Reveal";
 import { STEPS } from "@/lib/marketing";
 
-export const metadata: Metadata = { title: "How it works — Kovasite" };
+export const metadata: Metadata = { title: "How it works · Kovasite" };
 
 export default function HowItWorksPage() {
   return (

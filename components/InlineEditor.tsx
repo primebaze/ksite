@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 
 // Wraps the live site and makes any [data-edit] text editable in place.
-// Edits save automatically on blur. Public sites never use this — the
+// Edits save automatically on blur. Public sites never use this; the
 // attributes are inert until this wrapper hydrates them.
 export function InlineEditor({
   children,

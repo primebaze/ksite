@@ -4,7 +4,7 @@ import { PageHero } from "@/components/PageHero";
 import { Reveal } from "@/components/motion/Reveal";
 import { FAQS, TIERS } from "@/lib/marketing";
 
-export const metadata: Metadata = { title: "Pricing — Kovasite" };
+export const metadata: Metadata = { title: "Pricing · Kovasite" };
 
 export default function PricingPage() {
   return (

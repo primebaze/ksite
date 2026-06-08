@@ -3,7 +3,7 @@ import Link from "next/link";
 import { PageHero } from "@/components/PageHero";
 import { Reveal } from "@/components/motion/Reveal";
 
-export const metadata: Metadata = { title: "Check your email — Kovasite" };
+export const metadata: Metadata = { title: "Check your email · Kovasite" };
 
 export default async function CheckEmailPage({
   searchParams,

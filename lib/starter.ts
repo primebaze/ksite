@@ -3,7 +3,7 @@ import { buildFor, type BuildArchetype } from "./builds";
 import type { SiteContent } from "./types";
 
 // Starter content so a brand-new site looks like a complete, professional page
-// from the first second — the client edits/replaces it rather than building
+// from the first second. The client edits/replaces it rather than building
 // from a blank canvas. When the business type has a curated "build", we use its
 // tailored copy, sample catalog, recommended design style and brand palette.
 
@@ -80,7 +80,7 @@ export function starterContent(preset: string): Starter {
       content: {
         style: "classic",
         tagline: "Honest food, made fresh every day.",
-        about: "A warm neighbourhood spot serving seasonal dishes and proper coffee. Pop in, or book a table — we'd love to have you.",
+        about: "A warm neighbourhood spot serving seasonal dishes and proper coffee. Pop in, or book a table. We'd love to have you.",
         hours: defaultHours("menu"),
         cta_label: "Book a table",
       },
@@ -115,7 +115,7 @@ export function starterContent(preset: string): Starter {
     theme,
     content: {
       style: "classic",
-      tagline: "Reliable local experts — fast, fair and friendly.",
+      tagline: "Reliable local experts, fast, fair and friendly.",
       about: "Family-run and fully insured. No call-out fee, upfront pricing, and we always leave things tidy. Get in touch for a free quote.",
       service_areas: ["Your town", "& surrounding areas"],
       accreditations: ["Fully insured", "5-star rated"],

@@ -19,10 +19,10 @@ npm run dev
 
 Then open:
 
-- http://localhost:3000 — the Kovasite marketing site
-- http://nonna.localhost:3000 — a demo restaurant
-- http://swift.localhost:3000 — a demo plumber
-- http://lumiere.localhost:3000 — a demo salon
+- http://localhost:3000 is the Kovasite marketing site
+- http://nonna.localhost:3000 is a demo restaurant
+- http://swift.localhost:3000 is a demo plumber
+- http://lumiere.localhost:3000 is a demo salon
 
 Browsers send `*.localhost` to 127.0.0.1 on their own, so the subdomains just
 work with no hosts-file fiddling. With no Supabase env set it falls back to the
@@ -40,10 +40,10 @@ The public site uses the publishable (anon) key. The secret key is for the
 operator admin and the Stripe webhook. Then, in the Supabase SQL editor, run the
 migrations in order:
 
-- `supabase/migrations/0001_init.sql` — core schema + RLS
-- `supabase/migrations/0002_signups.sql` — marketing signups table
-- `supabase/migrations/0003_self_serve.sql` — client ownership + RLS
-- `supabase/seed.sql` — the three demo sites (optional)
+- `supabase/migrations/0001_init.sql`: core schema + RLS
+- `supabase/migrations/0002_signups.sql`: marketing signups table
+- `supabase/migrations/0003_self_serve.sql`: client ownership + RLS
+- `supabase/seed.sql`: the three demo sites (optional)
 
 Two Supabase settings for the self-serve flow: turn **off** "Confirm email"
 under Auth so signup is one step, and add my email to `STAFF_EMAILS` so I get
@@ -58,25 +58,25 @@ template. The public site only touches the publishable key, and RLS keeps it to
 published tenants and their public content.
 
 Each tenant has an owner. A signed-in client manages only their own site, with
-their own session — RLS enforces it, so the dashboard never uses the operator
+their own session. RLS enforces it, so the dashboard never uses the operator
 key. Publishing goes through Stripe: the client picks a plan, pays, and the
 webhook flips their site live and stores the Stripe IDs in a table the anon key
 can't read.
 
 Where things live, for when I forget:
 
-- `proxy.ts` — hostname to tenant
-- `lib/tenant.ts` — loading a public site's data (cached, with the demo fallback)
-- `lib/my-site.ts` — a client's own data + edits (their RLS-scoped session)
-- `lib/supabase.ts` — the two clients, public (anon) vs admin (secret)
-- `lib/stripe.ts` — Stripe client + plan/price lookup
-- `app/(marketing)` — the Kovasite site + signup (`/get-started`) and login
-- `app/dashboard` — where a client edits and publishes their own site
-- `app/admin` — operator override (staff only) to edit any client
-- `app/api/stripe/webhook` — payment succeeded → publish the site
-- `app/sites/[host]` — the actual client sites
-- `presets/` — the restaurant, trades and salon templates
-- `supabase/` — schema, RLS, migrations and seed
+- `proxy.ts`: hostname to tenant
+- `lib/tenant.ts`: loading a public site's data (cached, with the demo fallback)
+- `lib/my-site.ts`: a client's own data + edits (their RLS-scoped session)
+- `lib/supabase.ts`: the two clients, public (anon) vs admin (secret)
+- `lib/stripe.ts`: Stripe client + plan/price lookup
+- `app/(marketing)`: the Kovasite site + signup (`/get-started`) and login
+- `app/dashboard`: where a client edits and publishes their own site
+- `app/admin`: operator override (staff only) to edit any client
+- `app/api/stripe/webhook`: payment succeeded → publish the site
+- `app/sites/[host]`: the actual client sites
+- `presets/`: the restaurant, trades and salon templates
+- `supabase/`: schema, RLS, migrations and seed
 
 ## Still to do
 

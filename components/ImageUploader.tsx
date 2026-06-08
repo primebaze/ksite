@@ -37,7 +37,7 @@ export function ImageUploader({
       if (data.ok) setUrl(data.url);
       else setError(data.error ?? "Upload failed.");
     } catch {
-      setError("Upload failed — please try again.");
+      setError("Upload failed. Please try again.");
     } finally {
       setPending(false);
     }

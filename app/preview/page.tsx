@@ -7,7 +7,7 @@ import { saveInline } from "./actions";
 
 export const dynamic = "force-dynamic";
 
-// Owner-only live preview of their site — renders even while it's still a
+// Owner-only live preview of their site, renders even while it's still a
 // draft (the public subdomain only shows published sites). With ?edit=1 the
 // text becomes editable directly on the page.
 export default async function PreviewPage({ searchParams }: { searchParams: Promise<{ edit?: string }> }) {

@@ -14,7 +14,7 @@ import {
   tokensFor,
 } from "../shared";
 
-// "services" archetype — trades, home, automotive, professional, retail, events.
+// "services" archetype: trades, home, automotive, professional, retail, events.
 export default function TradesSite({ site }: { site: TenantSite }) {
   const { tenant, theme, content, catalog, gallery } = site;
   const tokens = tokensFor(content, theme);

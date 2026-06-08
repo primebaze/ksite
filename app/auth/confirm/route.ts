@@ -56,7 +56,7 @@ async function ensureSite(supabase: SupabaseClient, user: User) {
 
   let { data, error } = await supabase.from("tenants").insert(row(md.subdomain)).select("id").single();
   if (error) {
-    // Subdomain collision (rare race) — retry once with a suffix.
+    // Subdomain collision (rare race). Retry once with a suffix.
     const alt = `${md.subdomain}-${Date.now().toString().slice(-4)}`;
     ({ data, error } = await supabase.from("tenants").insert(row(alt)).select("id").single());
   }
