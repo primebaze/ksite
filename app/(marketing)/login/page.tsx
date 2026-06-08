@@ -22,7 +22,7 @@ export default async function LoginPage({
         Sign in to manage your site.
       </PageHero>
 
-      <section className="mx-auto max-w-md px-6 py-20">
+      <section className="mx-auto max-w-md px-6 pb-20 pt-10">
         <Reveal>
           <form action={clientLogin} className="space-y-4 rounded-2xl border border-white/10 bg-white/[0.02] p-8">
             <div>

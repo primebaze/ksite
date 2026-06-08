@@ -13,7 +13,7 @@ export function PageHero({
 }) {
   return (
     <section className="border-b border-white/5">
-      <div className="mx-auto max-w-5xl px-6 py-24 sm:py-28">
+      <div className="mx-auto max-w-5xl px-6 pb-12 pt-24 sm:pt-28">
         <Reveal>
           <p className="text-xs font-medium uppercase tracking-[0.25em] text-emerald-400/80">{kicker}</p>
         </Reveal>
