@@ -6,10 +6,10 @@ import { TemplateThumb } from "./TemplateThumb";
 // A rotating product reel: best-selling business types, each shown with a
 // looping video hero. Slides preload and crossfade so there's no flicker.
 const SLIDES: { key: string; video: string }[] = [
-  { key: "restaurant", video: "/hero/hero1.mp4" },
-  { key: "hair_salon", video: "/hero/hero2.mp4" },
-  { key: "gym", video: "/hero/hero3.mp4" },
-  { key: "beauty_salon", video: "/hero/hero4.mp4" },
+  { key: "restaurant", video: "/hero/restaurant.mp4" },
+  { key: "hair_salon", video: "/hero/hair.mp4" },
+  { key: "gym", video: "/hero/gym.mp4" },
+  { key: "beauty_salon", video: "/hero/beauty.mp4" },
 ];
 
 function srcFor(s: (typeof SLIDES)[number]) {
