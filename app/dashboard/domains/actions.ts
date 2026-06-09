@@ -2,12 +2,11 @@
 
 import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
-import { getMyTenant, updateMyCustomDomain } from "@/lib/my-site";
+import { getMyTenant, refreshMyDomainStatus, updateMyCustomDomain } from "@/lib/my-site";
 import {
   addProjectDomain,
   buyDomain,
   checkAvailability,
-  isDomainLive,
   isRegistrantConfigured,
   isVercelConfigured,
   removeProjectDomain,
@@ -63,12 +62,11 @@ export async function connectExisting(formData: FormData) {
 export async function checkStatus() {
   const tenant = await getMyTenant();
   if (!tenant?.custom_domain) back();
-  // Make sure it's attached (idempotent), then see if it's live.
-  await addProjectDomain(tenant!.custom_domain!).catch(() => {});
-  const live = await isDomainLive(tenant!.custom_domain!);
-  await updateMyCustomDomain(tenant!.custom_domain!, live ? "active" : "verifying");
+  // Re-check against Vercel, persist status, and email the client + staff on
+  // the pending→live edge.
+  const { justWentLive } = await refreshMyDomainStatus();
   revalidatePath("/dashboard/domains");
-  back();
+  back(justWentLive ? "?claimed=1" : "");
 }
 
 export async function disconnectDomain() {

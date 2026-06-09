@@ -4,6 +4,7 @@ import { getMyTenant } from "@/lib/my-site";
 import { SITE_BASE } from "@/lib/marketing";
 import { dnsInstructions, isVercelConfigured } from "@/lib/vercel";
 import { DomainSearch } from "@/components/DomainSearch";
+import { DomainStatusPoller } from "@/components/DomainStatusPoller";
 import { checkStatus, connectExisting, disconnectDomain } from "./actions";
 
 export const dynamic = "force-dynamic";
@@ -66,6 +67,7 @@ export default async function DomainsPage({
       {/* Custom domain */}
       {custom ? (
         <section className="rounded-2xl border border-white/10 bg-white/[0.02] p-6">
+          {tenant.domain_status !== "active" && <DomainStatusPoller active={false} />}
           <div className="flex items-center justify-between">
             <p className="font-medium">{custom}</p>
             <span className={`rounded-full px-3 py-1 text-xs font-medium ${tenant.domain_status === "active" ? "bg-emerald-400/15 text-emerald-300" : "bg-white/10 text-white/60"}`}>

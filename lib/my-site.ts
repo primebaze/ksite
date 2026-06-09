@@ -1,6 +1,8 @@
 import "server-only";
 import { createSupabaseServerClient } from "./supabase-server";
 import { revalidateSiteHost, revalidateTenant } from "./tenant";
+import { addProjectDomain, isDomainLive, isVercelConfigured } from "./vercel";
+import { sendAdminDomainLiveNotification, sendDomainLiveEmail } from "./email";
 import type {
   CatalogItem,
   GalleryImage,
@@ -117,6 +119,54 @@ export async function updateMyContent(content: SiteContent) {
   if (!ref) return;
   await supabase.from("site_content").update({ content }).eq("tenant_id", ref.id);
   await bust(ref);
+}
+
+export interface DomainStatusResult {
+  status: string;
+  justWentLive: boolean;
+}
+
+// Re-check the client's custom domain against Vercel (attach if needed, test
+// verification + SSL), persist the new status, and — the first time it goes
+// live — email the client and staff (the second email in the launch sequence;
+// the first fires at payment when the kovasite.com subdomain is already up).
+// Safe to call repeatedly: the emails only send on the pending→active edge.
+export async function refreshMyDomainStatus(): Promise<DomainStatusResult> {
+  const supabase = await db();
+  const { data } = await supabase
+    .from("tenants")
+    .select("id,business_name,subdomain,custom_domain,domain_status")
+    .limit(1);
+  const t = data?.[0];
+  if (!t?.custom_domain) return { status: "none", justWentLive: false };
+  if (!isVercelConfigured()) return { status: t.domain_status ?? "pending", justWentLive: false };
+
+  await addProjectDomain(t.custom_domain).catch(() => {});
+  const live = await isDomainLive(t.custom_domain);
+  const wasActive = t.domain_status === "active";
+  const status = live ? "active" : "verifying";
+
+  await supabase.from("tenants").update({ domain_status: status }).eq("id", t.id);
+  await bust({ id: t.id, subdomain: t.subdomain, custom_domain: t.custom_domain });
+
+  const justWentLive = live && !wasActive;
+  if (justWentLive) {
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    await Promise.all([
+      user?.email
+        ? sendDomainLiveEmail({ to: user.email, businessName: t.business_name, domain: t.custom_domain })
+        : Promise.resolve(),
+      sendAdminDomainLiveNotification({
+        businessName: t.business_name,
+        domain: t.custom_domain,
+        customerEmail: user?.email ?? null,
+      }),
+    ]).catch((error) => console.error("Domain-live email failed", error));
+  }
+
+  return { status, justWentLive };
 }
 
 export async function updateMyCustomDomain(custom_domain: string | null, domain_status: string) {

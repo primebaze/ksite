@@ -76,6 +76,63 @@ export async function sendPaymentLiveEmail({
   });
 }
 
+// Sent to the client once their custom/main domain has finished propagating
+// and is serving over SSL — the second email in the launch sequence (the first
+// goes out at payment, when the kovasite.com subdomain is already live).
+export async function sendDomainLiveEmail({
+  to,
+  businessName,
+  domain,
+}: {
+  to: string;
+  businessName: string;
+  domain: string;
+}) {
+  const safeBusinessName = escapeHtml(businessName);
+  const safeDomain = escapeHtml(domain);
+  await sendTransactionalEmail({
+    to: [to],
+    subject: `${businessName} is now live on ${domain}`,
+    html: renderNotice({
+      eyebrow: "Custom domain connected",
+      title: "Your domain is live.",
+      body: `${safeBusinessName} is now live on <strong>${safeDomain}</strong>, with hosting and SSL fully set up.`,
+      cta: "Visit your site",
+      link: `https://${domain}`,
+      secondary: "Your free kovasite.com address keeps working too, so links you've already shared stay valid.",
+    }),
+  });
+}
+
+export async function sendAdminDomainLiveNotification({
+  businessName,
+  domain,
+  customerEmail,
+}: {
+  businessName: string;
+  domain: string;
+  customerEmail?: string | null;
+}) {
+  const recipients = notificationRecipients();
+  if (recipients.length === 0) return;
+  const safeBusinessName = escapeHtml(businessName);
+  await sendTransactionalEmail({
+    to: recipients,
+    subject: `Domain live: ${domain}`,
+    html: renderNotice({
+      eyebrow: "Custom domain live",
+      title: `${safeBusinessName} is live on its custom domain.`,
+      body: [
+        `Domain: ${escapeHtml(domain)}`,
+        customerEmail ? `Customer: ${escapeHtml(customerEmail)}` : null,
+      ].filter(Boolean).join("<br/>"),
+      cta: "Open site",
+      link: `https://${domain}`,
+      secondary: "DNS has propagated and SSL is active.",
+    }),
+  });
+}
+
 export async function sendAdminPaymentNotification({
   businessName,
   siteUrl,
