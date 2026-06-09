@@ -299,13 +299,13 @@ export function ContactFooter({
                 {content.address && (
                   <div>
                     <p className="text-xs font-semibold uppercase tracking-widest text-neutral-400">Find us</p>
-                    <p className="mt-2 text-neutral-700">{content.address}</p>
+                    <p data-edit="content.address" className="mt-2 text-neutral-700">{content.address}</p>
                   </div>
                 )}
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-widest text-neutral-400">Contact</p>
-                  {content.phone && <a href={`tel:${content.phone}`} className="mt-2 block text-neutral-700 hover:text-[var(--primary)]">{content.phone}</a>}
-                  {content.email && <a href={`mailto:${content.email}`} className="block text-neutral-700 hover:text-[var(--primary)]">{content.email}</a>}
+                  {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="mt-2 block text-neutral-700 hover:text-[var(--primary)]">{content.phone}</a>}
+                  {content.email && <a data-edit="content.email" href={`mailto:${content.email}`} className="block text-neutral-700 hover:text-[var(--primary)]">{content.email}</a>}
                 </div>
                 {content.hours && content.hours.length > 0 && (
                   <div className="sm:col-span-2">
@@ -455,7 +455,7 @@ export function Hero(props: HeroProps) {
     if (image) {
       return (
       // eslint-disable-next-line @next/next/no-img-element
-      <img src={image} alt="" className={cx(className, dim && "opacity-70")} />
+      <img data-edit-image="hero" src={image} alt="" className={cx(className, dim && "opacity-70")} />
       );
     }
     return null;
