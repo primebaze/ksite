@@ -30,6 +30,10 @@ export interface SiteContent {
   tagline?: string;
   /** Visual design variant (see SiteStyle in presets/shared). */
   style?: "editorial" | "bold" | "minimal" | "warm" | "luxe" | "classic";
+  /** Layout variant for the list/body section (e.g. services shown as a list vs cards). */
+  body_variant?: "list" | "cards";
+  /** Layout variant for the footer / contact section. */
+  footer_variant?: "detailed" | "minimal";
   hero_image_url?: string;
   /** Looping background video for the hero (Premium). Takes priority over the image. */
   hero_video_url?: string;

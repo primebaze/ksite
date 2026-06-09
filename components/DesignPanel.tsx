@@ -21,10 +21,12 @@ export function DesignPanel({
   style,
   primary,
   accent,
+  footerVariant,
 }: {
   style?: string;
   primary: string;
   accent: string;
+  footerVariant?: string;
 }) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
@@ -32,8 +34,14 @@ export function DesignPanel({
   const [look, setLook] = useState(style ?? "classic");
   const [pri, setPri] = useState(primary);
   const [acc, setAcc] = useState(accent);
+  const [footer, setFooter] = useState(footerVariant === "minimal" ? "minimal" : "detailed");
 
-  const apply = (input: { style?: string; primary?: string; accent?: string }) => {
+  const apply = (input: {
+    style?: string;
+    primary?: string;
+    accent?: string;
+    footer_variant?: "detailed" | "minimal";
+  }) => {
     start(async () => {
       await saveDesign(input);
       router.refresh();
@@ -100,6 +108,26 @@ export function DesignPanel({
                 </button>
               );
             })}
+          </div>
+
+          {/* Footer layout */}
+          <p className="mt-5 text-xs font-medium uppercase tracking-widest text-white/40">Footer</p>
+          <div className="mt-2 grid grid-cols-2 gap-2">
+            {([["detailed", "Detailed"], ["minimal", "Minimal"]] as const).map(([value, label]) => (
+              <button
+                key={value}
+                type="button"
+                onClick={() => {
+                  setFooter(value);
+                  apply({ footer_variant: value });
+                }}
+                className={`rounded-lg border px-2 py-2 text-xs transition ${
+                  footer === value ? "border-emerald-400/70 bg-emerald-400/10 text-white" : "border-white/10 text-white/60 hover:border-white/25"
+                }`}
+              >
+                {label}
+              </button>
+            ))}
           </div>
 
           {/* Custom colours */}

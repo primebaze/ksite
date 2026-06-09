@@ -19,12 +19,18 @@ export async function saveDesign(input: {
   style?: string;
   primary?: string;
   accent?: string;
+  footer_variant?: SiteContent["footer_variant"];
+  body_variant?: SiteContent["body_variant"];
 }): Promise<{ ok: boolean }> {
   const site = await getMyTenantFull();
   if (!site) return { ok: false };
 
-  if (input.style && STYLES.includes(input.style)) {
-    await updateMyContent({ ...site.content, style: input.style as SiteContent["style"] });
+  const contentPatch: Partial<SiteContent> = {};
+  if (input.style && STYLES.includes(input.style)) contentPatch.style = input.style as SiteContent["style"];
+  if (input.footer_variant === "detailed" || input.footer_variant === "minimal") contentPatch.footer_variant = input.footer_variant;
+  if (input.body_variant === "list" || input.body_variant === "cards") contentPatch.body_variant = input.body_variant;
+  if (Object.keys(contentPatch).length) {
+    await updateMyContent({ ...site.content, ...contentPatch });
   }
 
   const theme: Partial<Theme> = {};

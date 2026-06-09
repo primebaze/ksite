@@ -288,6 +288,46 @@ export function ContactFooter({
 }) {
   const { tenant, content } = site;
   const hasContact = content.phone || content.email || content.address || (content.hours && content.hours.length);
+
+  // Minimal footer: a single compact contact band on the brand colour, no map.
+  if (content.footer_variant === "minimal") {
+    return (
+      <footer id="contact" className="bg-[var(--primary)] text-white">
+        <div className="mx-auto max-w-3xl px-6 py-16 text-center">
+          <p className="font-display text-2xl font-semibold tracking-tight">{tenant.business_name}</p>
+          <div className="mt-5 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-white/75">
+            {content.address && <span data-edit="content.address">{content.address}</span>}
+            {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="hover:text-white">{content.phone}</a>}
+            {content.email && <a data-edit="content.email" href={`mailto:${content.email}`} className="hover:text-white">{content.email}</a>}
+          </div>
+          {content.hours && content.hours.length > 0 && (
+            <div className="mx-auto mt-6 max-w-sm space-y-1 text-sm text-white/55">
+              {content.hours.map((h) => (
+                <div key={h.day} className="flex justify-between border-b border-white/10 py-1">
+                  <span>{h.day}</span>
+                  <span>{h.open}</span>
+                </div>
+              ))}
+            </div>
+          )}
+          {cta && (
+            <div className="mt-7">
+              <a href={cta.href} className={cx("inline-flex bg-white px-7 py-3.5 text-sm font-semibold text-[var(--primary)] transition active:scale-[0.98] hover:opacity-90", tokens.btn)}>{cta.label}</a>
+            </div>
+          )}
+          {content.socials && content.socials.length > 0 && (
+            <div className="mt-6 flex flex-wrap justify-center gap-4">
+              {content.socials.map((s) => (
+                <a key={s.url} href={s.url} className="text-sm text-white/70 underline-offset-4 hover:underline">{s.label}</a>
+              ))}
+            </div>
+          )}
+          <p className="mt-10 text-xs text-white/40">© {tenant.business_name}. All rights reserved.</p>
+        </div>
+      </footer>
+    );
+  }
+
   return (
     <>
       {hasContact && (
