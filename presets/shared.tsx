@@ -389,8 +389,7 @@ export function ContactFooter({
         <section id="contact" className="border-t border-black/5 bg-white">
           <div className="mx-auto max-w-6xl px-6 py-24">
             <SectionHeading tokens={tokens} kicker="Get in touch" title="Come say hello" />
-            <div className="mt-12 grid gap-12 lg:grid-cols-[1fr_1.1fr]">
-              <div className="grid gap-8 sm:grid-cols-2">
+            <div className="mt-12 grid max-w-3xl gap-8 sm:grid-cols-2">
                 {content.address && (
                   <div>
                     <p className="text-xs font-semibold uppercase tracking-widest text-neutral-400">Find us</p>
@@ -427,21 +426,6 @@ export function ContactFooter({
                     <a href={cta.href} className={cx("inline-flex bg-[var(--primary)] px-7 py-3.5 text-sm font-semibold text-white transition active:scale-[0.98] hover:opacity-90", tokens.btn)}>{cta.label}</a>
                   </div>
                 )}
-              </div>
-              {content.map_url ? (
-                <div className={cx("overflow-hidden border border-black/5", tokens.card)}>
-                  <iframe src={content.map_url} title="Map" className="h-full min-h-[300px] w-full" loading="lazy" />
-                </div>
-              ) : content.address ? (
-                <a
-                  href={`https://maps.google.com/?q=${encodeURIComponent(content.address)}`}
-                  target="_blank"
-                  rel="noreferrer"
-                  className={cx("flex min-h-[260px] items-center justify-center border border-dashed border-neutral-300 bg-neutral-50 text-sm font-medium text-neutral-500 transition hover:text-[var(--primary)]", tokens.card)}
-                >
-                  View on the map ↗
-                </a>
-              ) : null}
             </div>
             {forms && <div className="mt-14 border-t border-black/5 pt-12">{forms}</div>}
           </div>
@@ -796,21 +780,46 @@ export function renderMultiPage({
     );
   }
 
-  // home
+  // home — a rich landing page: intro, featured catalog, gallery, closing CTA
+  const featuredItems = groups.flatMap((g) => g.categories.flatMap((c) => c.items)).slice(0, 6);
+  const featuredGroups: CatalogGroup[] = [{ section: "", categories: [{ category: null, items: featuredItems }] }];
+
   return wrap(
     <>
       {heroEl}
+
       {about && (
-        <section className="mx-auto max-w-3xl px-6 py-24 text-center">
-          <p data-edit="content.about" className={cx("font-display text-2xl leading-relaxed text-neutral-800 sm:text-[2rem] sm:leading-[1.45]", tokens.serif ? "font-normal" : "font-light")}>{about}</p>
-          {groups.length > 0 && (
-            <div className="mt-9">
-              <a href={pageHref(basePath, "services")} className={cx("inline-flex bg-[var(--primary)] px-8 py-3.5 text-sm font-semibold text-white transition active:scale-[0.98] hover:opacity-90", tokens.btn)}>View {catalogLabel.toLowerCase()}</a>
-            </div>
-          )}
+        <section className="mx-auto max-w-3xl px-6 py-24 text-center sm:py-28">
+          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[var(--primary)]">Welcome</p>
+          <p data-edit="content.about" className={cx("mt-6 font-display text-2xl leading-relaxed text-neutral-800 sm:text-[2.1rem] sm:leading-[1.4]", tokens.serif ? "font-normal" : "font-light")}>{about}</p>
         </section>
       )}
+
+      {groups.length > 0 && (
+        <section className={cx("border-y border-black/5", tokens.tint)}>
+          <div className="mx-auto max-w-6xl px-6 py-24">
+            <div className="flex flex-wrap items-end justify-between gap-4">
+              <SectionHeading tokens={tokens} kicker={catalogKicker} title={catalogTitle} />
+              <a href={pageHref(basePath, "services")} className="shrink-0 text-sm font-medium text-[var(--primary)] underline-offset-4 hover:underline">
+                View {catalogLabel.toLowerCase()} →
+              </a>
+            </div>
+            <CatalogCards groups={featuredGroups} tokens={tokens} />
+          </div>
+        </section>
+      )}
+
       {gallery.length > 0 && <GallerySection gallery={gallery} />}
+
+      {cta && (
+        <section className="bg-[var(--primary)] text-white">
+          <div className="mx-auto max-w-3xl px-6 py-24 text-center sm:py-28">
+            <h2 className={cx("font-display text-4xl font-semibold tracking-tight sm:text-5xl", tokens.heading)}>Ready when you are.</h2>
+            <p className="mx-auto mt-4 max-w-md text-base leading-relaxed text-white/65">Get in touch today and we&apos;ll take care of the rest.</p>
+            <a href={cta.href} className={cx("mt-9 inline-flex bg-white px-8 py-4 text-sm font-semibold text-[var(--primary)] transition active:scale-[0.98] hover:opacity-90", tokens.btn)}>{cta.label}</a>
+          </div>
+        </section>
+      )}
     </>,
   );
 }

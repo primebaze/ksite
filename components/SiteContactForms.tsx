@@ -140,7 +140,7 @@ export function SiteContactForms({
     "mt-5 w-full rounded-lg bg-[var(--primary)] px-5 py-3 text-sm font-semibold text-white transition active:scale-[0.99] hover:opacity-90 disabled:opacity-60";
 
   return (
-    <div className={`grid gap-5 ${booking && contact ? "lg:grid-cols-2" : "mx-auto max-w-xl"}`}>
+    <div className="mx-auto grid max-w-xl gap-5">
       {booking && (
         <LeadForm
           tenantId={tenantId}

@@ -115,7 +115,7 @@ export function GetStartedFlow({
   }, [query, group, groups, builds, byKey, showMoreTypes]);
   const selectedGroupCount = group ? groups.find((item) => item.group === group)?.builds.length ?? 0 : 0;
 
-  const recommendedStyle = selected?.style ?? "warm";
+  const recommendedStyle = "bold";
   const designStyles = [
     { value: recommendedStyle, label: "Recommended" },
     ...STYLES.filter((style) => style.value !== recommendedStyle).slice(0, 3),
