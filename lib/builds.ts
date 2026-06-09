@@ -71,8 +71,19 @@ const HERO_BY_KEY: Record<string, string> = {
   bakery: "1509440159596-0249088772ff", patisserie: "1509440159596-0249088772ff",
   pizzeria: "1513104890138-7c749659a591", burger_joint: "1568901346375-23c9450c58cd",
   bar: "1514362545857-3bc16c4c7d1b", cocktail_bar: "1514362545857-3bc16c4c7d1b", wine_bar: "1514362545857-3bc16c4c7d1b",
-  barber: "1503951914875-452162b0f3f1", mens_grooming: "1503951914875-452162b0f3f1",
-  nail_salon: "1604654894610-df63bc536371", makeup_artist: "1487412947147-5cebf100ffc2", lash_brow: "1596462502278-27bfdc403348",
+  // Hair & beauty — every key pinned to a unique, on-theme photo.
+  hair_salon: "1560066984-138dadb4c035",
+  beauty_salon: "1556228578-8c89e6adf883",
+  bridal_hair: "1522337660859-02fbefca4702",
+  barber: "1503951914875-452162b0f3f1",
+  mens_grooming: "1605497788044-5a32c7078486",
+  nail_salon: "1604654894610-df63bc536371",
+  makeup_artist: "1487412947147-5cebf100ffc2",
+  lash_brow: "1596462502278-27bfdc403348",
+  piercing: "1633681926022-84c23e8cb2d6",
+  tattoo: "1521590832167-7bcbfaa6381f",
+  tanning: "1562322140-8baeececf3df",
+  waxing: "1545205597-3d9d02c29597",
   spa: "1540555700478-4be289fbecef", day_spa: "1540555700478-4be289fbecef", massage: "1544161515-4ab6ce6db874",
   dental: "1606811841689-23dfddce3e95", dentist: "1606811841689-23dfddce3e95", orthodontist: "1606811841689-23dfddce3e95",
   skin_clinic: "1570172619644-dfd03ed5d881", dermatology: "1570172619644-dfd03ed5d881",
@@ -152,10 +163,20 @@ const HERO = new Map<string, string>();
 for (const g of sampleGroups(1000)) {
   const pool = HERO_POOL[g.group] ?? [];
   const used = new Set<string>();
+  // Pass 1: curated per-key pins always win (so a themed photo is never stolen
+  // by an unpinned key that happens to come first). First claim on a shared
+  // pin keeps it; later duplicates fall through to the pool.
   for (const b of g.builds) {
-    let id: string | undefined = HERO_BY_KEY[b.key];
-    if (id && used.has(id)) id = undefined;
-    if (!id) id = pool.find((p) => !used.has(p));
+    const id = HERO_BY_KEY[b.key];
+    if (id && !used.has(id)) {
+      used.add(id);
+      HERO.set(b.key, id);
+    }
+  }
+  // Pass 2: everyone else takes an unused pool image (cycle once exhausted).
+  for (const b of g.builds) {
+    if (HERO.has(b.key)) continue;
+    let id = pool.find((p) => !used.has(p));
     if (!id && pool.length) id = pool[used.size % pool.length];
     if (id) {
       used.add(id);

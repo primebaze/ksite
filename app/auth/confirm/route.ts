@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import { createSupabaseServerClient } from "@/lib/supabase-server";
 import { starterContent } from "@/lib/starter";
 import { heroFor } from "@/lib/builds";
+import { BUILD_DESIGN } from "@/lib/sample-site";
 
 export const runtime = "nodejs";
 
@@ -72,6 +73,13 @@ async function ensureSite(supabase: SupabaseClient, user: User) {
   if (["editorial", "warm", "bold", "minimal", "luxe", "classic"].includes(md.selected_style)) {
     starter.content.style = md.selected_style;
   }
+  // Bespoke full-page design: what they picked at signup, else the build key's
+  // default — so the created site looks exactly like the sample they chose.
+  const bespokeDesign =
+    typeof md.design === "string" && /^[a-z][a-z0-9_-]{1,30}$/.test(md.design)
+      ? md.design
+      : BUILD_DESIGN[designKey];
+  if (bespokeDesign) starter.content.design = bespokeDesign;
   starter.content.hero_image_url = starter.content.hero_image_url ?? heroFor(designKey);
   starter.content.phone = starter.content.phone ?? "01234 567890";
   starter.content.email = starter.content.email ?? "hello@example.com";

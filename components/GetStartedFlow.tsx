@@ -64,6 +64,8 @@ const FEATURED_TYPES: Record<string, string[]> = {
 export function GetStartedFlow({
   groups,
   builds,
+  buildDesigns = {},
+  groupDesigns = {},
   turnstileKey,
   error,
   action,
@@ -71,6 +73,10 @@ export function GetStartedFlow({
 }: {
   groups: Group[];
   builds: BuildOption[];
+  /** Default bespoke design per build key (e.g. cafe -> "meadow"). */
+  buildDesigns?: Record<string, string>;
+  /** All bespoke designs available per group, for the design step. */
+  groupDesigns?: Record<string, string[]>;
   turnstileKey?: string;
   error?: string;
   action: (formData: FormData) => void | Promise<void>;
@@ -97,6 +103,8 @@ export function GetStartedFlow({
   const [preset, setPreset] = useState(pre ? pre.key : "beauty_salon");
   const [selectedStyle, setSelectedStyle] = useState(preStyle);
   const [selectedDesign, setSelectedDesign] = useState(pre ? pre.key : "beauty_salon");
+  // The bespoke full-page design key (e.g. "meadow"); "" = generic style mode.
+  const [designKey, setDesignKey] = useState(buildDesigns[pre ? pre.key : "beauty_salon"] ?? "");
 
   const selected = byKey.get(preset);
   const visibleGroups = showMoreGroups ? groups : groups.filter((item) => FEATURED_GROUPS.includes(item.group));
@@ -134,20 +142,39 @@ export function GetStartedFlow({
     setPreset(key);
     setSelectedDesign(key);
     setSelectedStyle(build?.style ?? "classic");
+    setDesignKey(buildDesigns[key] ?? "");
     goToStep(1);
   }
 
   function chooseDesign(style: string) {
     setSelectedDesign(preset);
     setSelectedStyle(style);
+    setDesignKey("");
     goToStep(2);
   }
+
+  function chooseDesignKey(design: string) {
+    setSelectedDesign(preset);
+    setDesignKey(design);
+    goToStep(2);
+  }
+
+  // Bespoke designs available for the selected type's sector: recommended (the
+  // type's default) first, then three more so every card is a DIFFERENT design.
+  const designOptions = useMemo(() => {
+    if (!selected) return [];
+    const all = groupDesigns[selected.group] ?? [];
+    if (all.length === 0) return [];
+    const recommended = buildDesigns[preset] ?? all[0];
+    return [recommended, ...all.filter((d) => d !== recommended)].slice(0, 4);
+  }, [selected, preset, groupDesigns, buildDesigns]);
 
   return (
     <form ref={formRef} action={action} className="flex min-h-[calc(100vh-6rem)] flex-col overflow-hidden rounded-3xl border border-white/10 bg-white/[0.02] shadow-[0_40px_140px_-80px_rgba(16,185,129,0.9)]">
       <input type="hidden" name="preset" value={preset} />
       <input type="hidden" name="selected_design" value={selectedDesign} />
       <input type="hidden" name="selected_style" value={selectedStyle} />
+      <input type="hidden" name="design" value={designKey} />
 
       <div className="border-b border-white/10 px-6 py-5 sm:px-8">
         <div className="flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.22em] text-white/35">
@@ -293,33 +320,59 @@ export function GetStartedFlow({
             </p>
 
             <div className="mt-6 grid gap-4 lg:grid-cols-2">
-              {designStyles.map((style, idx) => (
-                <button
-                  key={style.value}
-                  type="button"
-                  onClick={() => chooseDesign(style.value)}
-                  className="group overflow-hidden rounded-2xl border border-white/10 bg-black text-left transition hover:-translate-y-1 hover:border-emerald-400/50"
-                >
-                  <TemplateThumb src={`/samples/${preset}?embed=1&style=${style.value}`} aspect={0.55} />
-                  <div className="border-t border-white/10 p-4">
-                    <div className="flex items-center justify-between gap-3">
-                      <div>
-                        <p className="font-semibold">{style.label} design</p>
-                        <p className="mt-1 text-xs text-white/40">{selected.label} sample</p>
+              {designOptions.length > 0
+                ? // Bespoke designs exist for this sector: every card is a genuinely
+                  // different full-page design (never the same site repeated).
+                  designOptions.map((design, idx) => (
+                    <button
+                      key={design}
+                      type="button"
+                      onClick={() => chooseDesignKey(design)}
+                      className="group overflow-hidden rounded-2xl border border-white/10 bg-black text-left transition hover:-translate-y-1 hover:border-emerald-400/50"
+                    >
+                      <TemplateThumb src={`/samples/${preset}?embed=1&design=${design}`} aspect={0.55} />
+                      <div className="border-t border-white/10 p-4">
+                        <div className="flex items-center justify-between gap-3">
+                          <div>
+                            <p className="font-semibold">{titleCase(design)}</p>
+                            <p className="mt-1 text-xs text-white/40">{selected.label} sample</p>
+                          </div>
+                          <span className="rounded-full border border-white/10 px-3 py-1 text-xs text-white/50 group-hover:border-emerald-400/40 group-hover:text-emerald-300">
+                            Choose this design
+                          </span>
+                        </div>
+                        {idx === 0 && <p className="mt-3 text-xs font-medium text-emerald-300">Recommended</p>}
                       </div>
-                      <span className="rounded-full border border-white/10 px-3 py-1 text-xs text-white/50 group-hover:border-emerald-400/40 group-hover:text-emerald-300">
-                        Choose this design
-                      </span>
-                    </div>
-                    {idx === 0 && <p className="mt-3 text-xs font-medium text-emerald-300">Recommended</p>}
-                  </div>
-                </button>
-              ))}
+                    </button>
+                  ))
+                : designStyles.map((style, idx) => (
+                    <button
+                      key={style.value}
+                      type="button"
+                      onClick={() => chooseDesign(style.value)}
+                      className="group overflow-hidden rounded-2xl border border-white/10 bg-black text-left transition hover:-translate-y-1 hover:border-emerald-400/50"
+                    >
+                      <TemplateThumb src={`/samples/${preset}?embed=1&style=${style.value}`} aspect={0.55} />
+                      <div className="border-t border-white/10 p-4">
+                        <div className="flex items-center justify-between gap-3">
+                          <div>
+                            <p className="font-semibold">{style.label} design</p>
+                            <p className="mt-1 text-xs text-white/40">{selected.label} sample</p>
+                          </div>
+                          <span className="rounded-full border border-white/10 px-3 py-1 text-xs text-white/50 group-hover:border-emerald-400/40 group-hover:text-emerald-300">
+                            Choose this design
+                          </span>
+                        </div>
+                        {idx === 0 && <p className="mt-3 text-xs font-medium text-emerald-300">Recommended</p>}
+                      </div>
+                    </button>
+                  ))}
               <button
                 type="button"
                 onClick={() => {
                   setSelectedDesign("scratch");
                   setSelectedStyle("classic");
+                  setDesignKey("");
                   goToStep(2);
                 }}
                 className="flex min-h-[280px] flex-col justify-between rounded-2xl border border-dashed border-white/15 bg-white/[0.02] p-5 text-left transition hover:border-white/30"
@@ -346,12 +399,15 @@ export function GetStartedFlow({
             {selected && selectedDesign !== "scratch" && (
               <div className="mt-6 flex items-center gap-4 rounded-2xl border border-emerald-400/20 bg-emerald-400/[0.04] p-3 sm:p-4">
                 <div className="w-24 shrink-0 overflow-hidden rounded-lg border border-white/10 sm:w-32">
-                  <TemplateThumb src={`/samples/${preset}?embed=1&style=${selectedStyle}`} aspect={0.62} />
+                  <TemplateThumb
+                    src={designKey ? `/samples/${preset}?embed=1&design=${designKey}` : `/samples/${preset}?embed=1&style=${selectedStyle}`}
+                    aspect={0.62}
+                  />
                 </div>
                 <div className="min-w-0">
                   <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-emerald-300/70">You&apos;re building</p>
                   <p className="mt-1 font-semibold leading-tight">{selected.label}</p>
-                  <p className="text-sm text-white/45">{titleCase(selectedStyle)} design</p>
+                  <p className="text-sm text-white/45">{designKey ? `${titleCase(designKey)} design` : `${titleCase(selectedStyle)} design`}</p>
                   <button
                     type="button"
                     onClick={() => goToStep(0)}

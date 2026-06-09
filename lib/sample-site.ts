@@ -16,7 +16,7 @@ const SAMPLE_TEAM = [
 // right design automatically. ?design= still overrides this for previews.
 // EVERY Food & drink build key is mapped to one of the 6 designs (by closest
 // aesthetic) so the whole sector uses the new designs, not the old template.
-const BUILD_DESIGN: Record<string, string> = {
+export const BUILD_DESIGN: Record<string, string> = {
   // ember — dark, luxe, premium steakhouse
   steakhouse: "ember",
   // marble — charcoal & gold grill / lounge
@@ -57,19 +57,20 @@ const BUILD_DESIGN: Record<string, string> = {
   chinese: "lacquer",
   cocktail_bar: "cinder",
   cafe: "meadow",
-  // Hair & beauty — EVERY key mapped (by closest aesthetic)
+  // Hair & beauty — EVERY key mapped, each to a DIFFERENT design (12 keys, 12
+  // salon designs) so the gallery tab never repeats a layout.
   hair_salon: "indigo",
   beauty_salon: "halo",
   nail_salon: "verve",
   bridal_hair: "atelier",
   barber: "fade",
   makeup_artist: "lumiere",
-  lash_brow: "lumiere",
-  mens_grooming: "fade",
-  piercing: "verve",
-  tattoo: "verve",
-  tanning: "halo",
-  waxing: "halo",
+  tattoo: "aurelia",
+  tanning: "seren",
+  waxing: "lustre",
+  lash_brow: "linea",
+  piercing: "radiance",
+  mens_grooming: "lumina",
   // Health & wellness — EVERY key mapped (by closest aesthetic)
   aesthetics_clinic: "aurelia",
   skin_clinic: "seren",
@@ -91,6 +92,15 @@ const BUILD_DESIGN: Record<string, string> = {
   dentist: "lumina",
   orthodontist: "lumina",
   iv_therapy: "aurelia",
+};
+
+// All bespoke designs available per sector, for pickers (e.g. the get-started
+// design step): any design in the group works for any build key in that group
+// because they share the archetype's data model.
+export const GROUP_DESIGNS: Record<string, string[]> = {
+  "Food & drink": ["ember", "drift", "laurel", "lantern", "marble", "daybreak", "tide", "botanica", "lacquer", "cinder", "meadow"],
+  "Hair & beauty": ["indigo", "halo", "verve", "atelier", "fade", "lumiere", "aurelia", "seren", "lustre", "linea", "radiance", "lumina"],
+  "Health & wellness": ["aurelia", "seren", "lustre", "linea", "radiance", "lumina", "indigo", "halo", "verve", "atelier", "fade", "lumiere"],
 };
 
 // Turn a build into a fully-populated TenantSite for the public samples gallery,

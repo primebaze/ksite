@@ -60,6 +60,7 @@ export async function startOnboarding(formData: FormData) {
   const password = String(formData.get("password") ?? "");
   const selectedDesign = String(formData.get("selected_design") ?? "").trim();
   const selectedStyle = String(formData.get("selected_style") ?? "").trim();
+  const designKey = String(formData.get("design") ?? "").trim();
 
   if (!business_name) err("Please add your business name.");
   if (!email || password.length < 8) err("Enter an email and a password of at least 8 characters.");
@@ -98,6 +99,8 @@ export async function startOnboarding(formData: FormData) {
   if (["editorial", "warm", "bold", "minimal", "luxe", "classic"].includes(selectedStyle)) {
     metadata.selected_style = selectedStyle;
   }
+  // The bespoke full-page design they picked (e.g. "meadow"); seeds content.design.
+  if (/^[a-z][a-z0-9_-]{1,30}$/.test(designKey)) metadata.design = designKey;
   if (businessType) metadata.business_type = businessType;
 
   const supabase = await createSupabaseServerClient();
