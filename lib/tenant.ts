@@ -121,13 +121,28 @@ function loadSiteById(id: string): Promise<TenantSite | null> {
 // Invalidation helpers, called from the admin panel after an edit.
 // Next 16's revalidateTag takes (tag, profile); { expire: 0 } purges the tag
 // immediately so the next request refetches that tenant's data.
+//
+// revalidateTag is only permitted OUTSIDE a render (server actions, route
+// handlers). Activation (lib/billing) also runs from the post-payment page
+// render, where revalidateTag throws "used during render". If we let that
+// bubble, it both 500s the page AND aborts activation before the customer/
+// staff payment emails are sent. So we swallow it here and let the webhook
+// (a route handler) plus ISR keep caches fresh.
+function safeRevalidateTag(tag: string) {
+  try {
+    revalidateTag(tag, { expire: 0 });
+  } catch (error) {
+    console.error(`revalidateTag(${tag}) skipped`, error);
+  }
+}
+
 export async function revalidateTenant(tenantId: string) {
-  revalidateTag(`tenant:${tenantId}`, { expire: 0 });
+  safeRevalidateTag(`tenant:${tenantId}`);
 }
 
 export async function revalidateSiteHost(
   kind: "subdomain" | "custom",
   key: string,
 ) {
-  revalidateTag(`site:${kind}:${key}`, { expire: 0 });
+  safeRevalidateTag(`site:${kind}:${key}`);
 }
