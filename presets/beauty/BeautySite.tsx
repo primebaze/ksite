@@ -1,4 +1,3 @@
-import type { TenantSite } from "@/lib/types";
 import {
   CatalogCards,
   ContactFooter,
@@ -9,21 +8,54 @@ import {
   SiteSmoothScroll,
   cx,
   groupCatalog,
+  renderMultiPage,
   siteRootStyle,
   tokensFor,
 } from "../shared";
+import { pageHref, type PresetProps } from "@/lib/site-pages";
 
 // Bespoke template for makeup artists & beauty pros: image-forward and
 // portfolio-led — distinct from the generic bookings layout. Reuses the shared
 // header/hero/footer so the on-screen editor (text, image, colours, variants)
 // keeps working, but arranges the page editorially around the artist's work.
-export default function BeautySite({ site }: { site: TenantSite }) {
+export default function BeautySite({ site, page = "home", basePath = "", multiPage = false }: PresetProps) {
   const { tenant, theme, content, catalog, gallery } = site;
   const tokens = tokensFor(content, theme);
   const groups = groupCatalog(catalog);
   const hero = content.hero_image_url;
   const book = content.booking_url || content.reservation_url || content.cta_url;
   const cta = content.cta_label ?? (book ? "Book your session" : undefined);
+  const ctaObj = book && cta ? { label: cta, href: book } : undefined;
+
+  const heroEl = (
+    <Hero
+      tokens={tokens}
+      kicker={content.tagline}
+      kickerEdit="content.tagline"
+      title={tenant.business_name}
+      titleEdit="tenant.business_name"
+      image={hero}
+      video={content.hero_video_url}
+      primary={ctaObj ?? (groups.length ? { label: "View services", href: multiPage ? pageHref(basePath, "services") : "#services" } : undefined)}
+      secondary={content.phone ? { label: `Call ${content.phone}`, href: `tel:${content.phone}` } : undefined}
+    />
+  );
+
+  if (multiPage) {
+    return renderMultiPage({
+      site,
+      tokens,
+      page,
+      basePath,
+      cta: ctaObj,
+      heroEl,
+      groups,
+      about: content.about,
+      catalogLabel: "Services",
+      catalogTitle: "Signature services",
+      catalogKicker: "Services",
+    });
+  }
 
   const nav: NavItem[] = [
     content.about && { label: "About", href: "#about" },
@@ -35,19 +67,9 @@ export default function BeautySite({ site }: { site: TenantSite }) {
   return (
     <div id="top" style={siteRootStyle(theme, tokens)} className="font-body min-h-screen bg-white text-neutral-900">
       <SiteSmoothScroll />
-      <SiteHeader site={site} tokens={tokens} nav={nav} cta={book && cta ? { label: cta, href: book } : undefined} />
+      <SiteHeader site={site} tokens={tokens} nav={nav} cta={ctaObj} />
 
-      <Hero
-        tokens={tokens}
-        kicker={content.tagline}
-        kickerEdit="content.tagline"
-        title={tenant.business_name}
-        titleEdit="tenant.business_name"
-        image={hero}
-        video={content.hero_video_url}
-        primary={book && cta ? { label: cta, href: book } : groups.length ? { label: "View services", href: "#services" } : undefined}
-        secondary={content.phone ? { label: `Call ${content.phone}`, href: `tel:${content.phone}` } : undefined}
-      />
+      {heroEl}
 
       {/* About the artist — editorial split with portrait */}
       {content.about && (
@@ -105,7 +127,7 @@ export default function BeautySite({ site }: { site: TenantSite }) {
         </section>
       )}
 
-      <ContactFooter site={site} tokens={tokens} cta={book && cta ? { label: cta, href: book } : undefined} />
+      <ContactFooter site={site} tokens={tokens} cta={ctaObj} />
     </div>
   );
 }

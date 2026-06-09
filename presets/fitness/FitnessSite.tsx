@@ -1,4 +1,3 @@
-import type { TenantSite } from "@/lib/types";
 import {
   CatalogCards,
   ContactFooter,
@@ -10,20 +9,54 @@ import {
   SiteSmoothScroll,
   cx,
   groupCatalog,
+  renderMultiPage,
   siteRootStyle,
   tokensFor,
 } from "../shared";
+import { pageHref, type PresetProps } from "@/lib/site-pages";
 
 // Bespoke template for gyms, studios and trainers: energetic and
 // class/membership-led. Reuses the shared header/hero/footer so the on-screen
 // editor keeps working, arranged around classes and a strong join CTA.
-export default function FitnessSite({ site }: { site: TenantSite }) {
+export default function FitnessSite({ site, page = "home", basePath = "", multiPage = false }: PresetProps) {
   const { tenant, theme, content, catalog, gallery } = site;
   const tokens = tokensFor(content, theme);
   const groups = groupCatalog(catalog);
   const hero = content.hero_image_url;
   const book = content.booking_url || content.reservation_url || content.cta_url;
   const cta = content.cta_label ?? (book ? "Start training" : undefined);
+  const ctaObj = book && cta ? { label: cta, href: book } : undefined;
+
+  const heroEl = (
+    <Hero
+      tokens={tokens}
+      kicker={content.tagline}
+      kickerEdit="content.tagline"
+      title={tenant.business_name}
+      titleEdit="tenant.business_name"
+      image={hero}
+      video={content.hero_video_url}
+      primary={ctaObj ?? (groups.length ? { label: "See classes", href: multiPage ? pageHref(basePath, "services") : "#classes" } : undefined)}
+      secondary={content.phone ? { label: `Call ${content.phone}`, href: `tel:${content.phone}` } : undefined}
+      badges={content.accreditations}
+    />
+  );
+
+  if (multiPage) {
+    return renderMultiPage({
+      site,
+      tokens,
+      page,
+      basePath,
+      cta: ctaObj,
+      heroEl,
+      groups,
+      about: content.about,
+      catalogLabel: "Classes",
+      catalogTitle: "Classes & memberships",
+      catalogKicker: "Timetable",
+    });
+  }
 
   const nav: NavItem[] = [
     content.about && { label: "About", href: "#about" },
@@ -35,20 +68,9 @@ export default function FitnessSite({ site }: { site: TenantSite }) {
   return (
     <div id="top" style={siteRootStyle(theme, tokens)} className="font-body min-h-screen bg-white text-neutral-900">
       <SiteSmoothScroll />
-      <SiteHeader site={site} tokens={tokens} nav={nav} cta={book && cta ? { label: cta, href: book } : undefined} />
+      <SiteHeader site={site} tokens={tokens} nav={nav} cta={ctaObj} />
 
-      <Hero
-        tokens={tokens}
-        kicker={content.tagline}
-        kickerEdit="content.tagline"
-        title={tenant.business_name}
-        titleEdit="tenant.business_name"
-        image={hero}
-        video={content.hero_video_url}
-        primary={book && cta ? { label: cta, href: book } : groups.length ? { label: "See classes", href: "#classes" } : undefined}
-        secondary={content.phone ? { label: `Call ${content.phone}`, href: `tel:${content.phone}` } : undefined}
-        badges={content.accreditations}
-      />
+      {heroEl}
 
       {/* Intro */}
       {content.about && (
@@ -82,7 +104,7 @@ export default function FitnessSite({ site }: { site: TenantSite }) {
 
       <GallerySection gallery={gallery} />
 
-      <ContactFooter site={site} tokens={tokens} cta={book && cta ? { label: cta, href: book } : undefined} />
+      <ContactFooter site={site} tokens={tokens} cta={ctaObj} />
     </div>
   );
 }

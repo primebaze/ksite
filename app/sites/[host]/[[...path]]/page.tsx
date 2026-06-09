@@ -3,10 +3,11 @@ import { createElement } from "react";
 import { notFound } from "next/navigation";
 import { getSiteByHost } from "@/lib/tenant";
 import { getPresetComponent } from "@/presets";
-import HoldingPage from "./HoldingPage";
+import { pageFromPath } from "@/lib/site-pages";
+import HoldingPage from "../HoldingPage";
 
 interface Props {
-  params: Promise<{ host: string }>;
+  params: Promise<{ host: string; path?: string[] }>;
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -27,17 +28,21 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function SitePage({ params }: Props) {
-  const { host } = await params;
-  const site = await getSiteByHost(host);
+  const { host, path } = await params;
 
+  const page = pageFromPath(path);
+  if (!page) notFound();
+
+  const site = await getSiteByHost(host);
   if (!site) notFound();
 
-  // Gate on plan status + publish state (Phase 5). Non-paying / unpublished
-  // tenants show a holding page instead of the live site.
+  // Gate on plan status + publish state. Non-paying / unpublished tenants show
+  // a holding page instead of the live site.
   const { plan_status, published } = site.tenant;
   if (!published || plan_status === "suspended" || plan_status === "canceled") {
     return <HoldingPage businessName={site.tenant.business_name} />;
   }
 
-  return createElement(getPresetComponent(site.tenant.preset), { site });
+  // Live tenant site: multi-page, nav at the domain root (basePath "").
+  return createElement(getPresetComponent(site.tenant.preset), { site, page, basePath: "", multiPage: true });
 }

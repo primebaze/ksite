@@ -2,6 +2,7 @@ import type { CSSProperties, ReactNode } from "react";
 import type { CatalogItem, SiteContent, TenantSite, Theme } from "@/lib/types";
 import { archetypeFor } from "@/lib/verticals";
 import { SiteContactForms } from "@/components/SiteContactForms";
+import { pageHref, type PageKey } from "@/lib/site-pages";
 
 const BOOKING_TITLES: Record<string, string> = {
   menu: "Request a booking",
@@ -691,5 +692,125 @@ export function Hero(props: HeroProps) {
       </div>
       {hasMedia && renderMedia("h-[52vh] w-full object-cover")}
     </section>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Multi-page rendering
+// ---------------------------------------------------------------------------
+
+// Shared chrome for a multi-page site: branded root + header (with real-path
+// nav) + the page content + the footer. A plain function (not a component) so
+// callers compose it without creating components during render.
+export function siteShell({
+  site,
+  tokens,
+  nav,
+  cta,
+  basePath,
+  children,
+}: {
+  site: TenantSite;
+  tokens: StyleTokens;
+  nav: NavItem[];
+  cta?: { label: string; href: string };
+  basePath: string;
+  children: ReactNode;
+}): ReactNode {
+  return (
+    <div id="top" style={siteRootStyle(site.theme, tokens)} className="font-body min-h-screen bg-white text-neutral-900">
+      <SiteHeader site={site} tokens={tokens} nav={nav} cta={cta} home={pageHref(basePath, "home")} />
+      {children}
+      <ContactFooter site={site} tokens={tokens} cta={cta} />
+    </div>
+  );
+}
+
+// Generic multi-page renderer shared by the bookings/services/beauty/fitness
+// templates (hero + about + catalog + gallery + contact). The catalog page uses
+// the premium card grid; the contact page's form/details come from the footer.
+export function renderMultiPage({
+  site,
+  tokens,
+  page,
+  basePath,
+  cta,
+  heroEl,
+  groups,
+  about,
+  catalogLabel,
+  catalogTitle,
+  catalogKicker,
+}: {
+  site: TenantSite;
+  tokens: StyleTokens;
+  page: PageKey;
+  basePath: string;
+  cta?: { label: string; href: string };
+  heroEl: ReactNode;
+  groups: CatalogGroup[];
+  about?: string;
+  catalogLabel: string;
+  catalogTitle: string;
+  catalogKicker: string;
+}): ReactNode {
+  const gallery = site.gallery;
+  const nav: NavItem[] = [
+    groups.length > 0 && { label: catalogLabel, href: pageHref(basePath, "services") },
+    about && { label: "About", href: pageHref(basePath, "about") },
+    gallery.length > 0 && { label: "Gallery", href: pageHref(basePath, "gallery") },
+    { label: "Contact", href: pageHref(basePath, "contact") },
+  ].filter(Boolean) as NavItem[];
+
+  const wrap = (children: ReactNode) => siteShell({ site, tokens, nav, cta, basePath, children });
+  const ctaBtn = cta ? (
+    <div className="mt-14 text-center">
+      <a href={cta.href} className={cx("inline-flex bg-[var(--primary)] px-8 py-3.5 text-sm font-semibold text-white transition active:scale-[0.98] hover:opacity-90", tokens.btn)}>{cta.label}</a>
+    </div>
+  ) : null;
+
+  if (page === "services" || page === "menu") {
+    return wrap(
+      <section className="mx-auto max-w-6xl px-6 py-20 sm:py-28">
+        <SectionHeading tokens={tokens} kicker={catalogKicker} title={catalogTitle} center />
+        <CatalogCards groups={groups} tokens={tokens} />
+        {ctaBtn}
+      </section>,
+    );
+  }
+  if (page === "about") {
+    return wrap(<AboutSection tokens={tokens} about={about} kicker="About" />);
+  }
+  if (page === "gallery") {
+    return wrap(
+      <div className="py-10">
+        <GallerySection gallery={gallery} />
+      </div>,
+    );
+  }
+  if (page === "contact") {
+    return wrap(
+      <div className="mx-auto max-w-6xl px-6 pt-20 text-center sm:pt-28">
+        <SectionHeading tokens={tokens} kicker="Get in touch" title="Come say hello" center />
+      </div>,
+    );
+  }
+
+  // home
+  return wrap(
+    <>
+      {heroEl}
+      {about && (
+        <section className="mx-auto max-w-3xl px-6 py-24 text-center">
+          <p data-edit="content.about" className={cx("font-display text-2xl leading-relaxed text-neutral-800 sm:text-[2rem] sm:leading-[1.45]", tokens.serif ? "font-normal" : "font-light")}>{about}</p>
+          {groups.length > 0 && (
+            <div className="mt-9">
+              <a href={pageHref(basePath, "services")} className={cx("inline-flex bg-[var(--primary)] px-8 py-3.5 text-sm font-semibold text-white transition active:scale-[0.98] hover:opacity-90", tokens.btn)}>View {catalogLabel.toLowerCase()}</a>
+            </div>
+          )}
+        </section>
+      )}
+      {gallery.length > 0 && <GallerySection gallery={gallery} />}
+    </>,
   );
 }

@@ -36,6 +36,17 @@ export function InlineEditor({
     if (!root) return;
     const cleanups: (() => void)[] = [];
 
+    // Multi-page editing: keep ?edit=1 when the in-site nav moves between pages
+    // so the editor stays on every page.
+    const keepEdit = (e: MouseEvent) => {
+      const a = (e.target as Element | null)?.closest?.("a");
+      if (a instanceof HTMLAnchorElement && a.pathname.startsWith("/preview") && !/(?:^|[?&])edit=/.test(a.search)) {
+        a.search = a.search ? `${a.search}&edit=1` : "?edit=1";
+      }
+    };
+    document.addEventListener("click", keepEdit, true);
+    cleanups.push(() => document.removeEventListener("click", keepEdit, true));
+
     // --- editable text ---
     for (const el of Array.from(root.querySelectorAll<HTMLElement>("[data-edit]"))) {
       el.setAttribute("contenteditable", "true");

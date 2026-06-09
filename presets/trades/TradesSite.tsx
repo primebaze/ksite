@@ -1,4 +1,3 @@
-import type { TenantSite } from "@/lib/types";
 import {
   AboutSection,
   ContactFooter,
@@ -10,12 +9,14 @@ import {
   SiteSmoothScroll,
   cx,
   groupCatalog,
+  renderMultiPage,
   siteRootStyle,
   tokensFor,
 } from "../shared";
+import type { PresetProps } from "@/lib/site-pages";
 
 // "services" archetype: trades, home, automotive, professional, retail, events.
-export default function TradesSite({ site }: { site: TenantSite }) {
+export default function TradesSite({ site, page = "home", basePath = "", multiPage = false }: PresetProps) {
   const { tenant, theme, content, catalog, gallery } = site;
   const tokens = tokensFor(content, theme);
   const groups = groupCatalog(catalog);
@@ -24,6 +25,38 @@ export default function TradesSite({ site }: { site: TenantSite }) {
   const cta = content.cta_label ?? "Get a quote";
   const ctaUrl = content.cta_url ?? (content.phone ? `tel:${content.phone}` : "#contact");
   const phone = content.emergency_phone || content.phone;
+  const ctaObj = { label: cta, href: ctaUrl };
+
+  const heroEl = (
+    <Hero
+      tokens={tokens}
+      title={content.tagline ?? tenant.business_name}
+      titleEdit="content.tagline"
+      subtitle={tenant.business_name}
+      subtitleEdit="tenant.business_name"
+      image={hero}
+      video={content.hero_video_url}
+      badges={content.accreditations}
+      primary={ctaObj}
+      secondary={content.phone ? { label: `Call ${content.phone}`, href: `tel:${content.phone}` } : undefined}
+    />
+  );
+
+  if (multiPage) {
+    return renderMultiPage({
+      site,
+      tokens,
+      page,
+      basePath,
+      cta: ctaObj,
+      heroEl,
+      groups,
+      about: content.about,
+      catalogLabel: "Services",
+      catalogTitle: "Our services",
+      catalogKicker: "What we do",
+    });
+  }
 
   const nav: NavItem[] = [
     content.about && { label: "About", href: "#about" },
@@ -36,20 +69,9 @@ export default function TradesSite({ site }: { site: TenantSite }) {
   return (
     <div id="top" style={siteRootStyle(theme, tokens)} className="font-body min-h-screen bg-white text-neutral-900">
       <SiteSmoothScroll />
-      <SiteHeader site={site} tokens={tokens} nav={nav} cta={phone ? { label: `Call ${phone}`, href: `tel:${phone}` } : { label: cta, href: ctaUrl }} />
+      <SiteHeader site={site} tokens={tokens} nav={nav} cta={phone ? { label: `Call ${phone}`, href: `tel:${phone}` } : ctaObj} />
 
-      <Hero
-        tokens={tokens}
-        title={content.tagline ?? tenant.business_name}
-        titleEdit="content.tagline"
-        subtitle={tenant.business_name}
-        subtitleEdit="tenant.business_name"
-        image={hero}
-        video={content.hero_video_url}
-        badges={content.accreditations}
-        primary={{ label: cta, href: ctaUrl }}
-        secondary={content.phone ? { label: `Call ${content.phone}`, href: `tel:${content.phone}` } : undefined}
-      />
+      {heroEl}
 
       <AboutSection tokens={tokens} about={content.about} kicker="About us" />
 
@@ -85,7 +107,7 @@ export default function TradesSite({ site }: { site: TenantSite }) {
 
       <GallerySection gallery={gallery} />
 
-      <ContactFooter site={site} tokens={tokens} cta={{ label: cta, href: ctaUrl }} />
+      <ContactFooter site={site} tokens={tokens} cta={ctaObj} />
     </div>
   );
 }
