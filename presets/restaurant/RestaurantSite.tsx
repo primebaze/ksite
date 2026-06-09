@@ -1,6 +1,7 @@
 import type { TenantSite } from "@/lib/types";
 import {
   AboutSection,
+  CatalogCards,
   ContactFooter,
   GallerySection,
   Hero,
@@ -56,6 +57,9 @@ export default function RestaurantSite({ site }: { site: TenantSite }) {
         <section id="menu" className={cx("border-y border-black/5", tokens.tint)}>
           <div className="mx-auto max-w-3xl px-6 py-24">
             <SectionHeading tokens={tokens} kicker="What's cooking" title="The menu" center />
+            {content.body_variant === "cards" ? (
+              <CatalogCards groups={sections} tokens={tokens} />
+            ) : (
             <div className="mt-14 space-y-16">
               {sections.map((section) => (
                 <div key={section.section}>
@@ -80,6 +84,7 @@ export default function RestaurantSite({ site }: { site: TenantSite }) {
                 </div>
               ))}
             </div>
+            )}
             {content.ordering_links && content.ordering_links.length > 0 && (
               <div className="mt-16 flex flex-wrap justify-center gap-3">
                 {content.ordering_links.map((l) => (

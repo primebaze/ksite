@@ -26,6 +26,7 @@ export default async function PreviewPage({ searchParams }: { searchParams: Prom
           primary={site.theme.primary_color || "#141414"}
           accent={site.theme.accent_color || "#c8a24a"}
           footerVariant={site.content.footer_variant}
+          bodyVariant={site.content.body_variant}
         />
       </InlineEditor>
     );

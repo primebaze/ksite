@@ -179,6 +179,36 @@ export function Label({ tokens, children }: { tokens: StyleTokens; children: Rea
 }
 
 /** Section heading with an accent rule. */
+// Alternate "cards" body layout for any catalog (menu / services / treatments).
+// A responsive grid of refined cards — reads more premium than a plain list and
+// is the `body_variant === "cards"` option in the on-screen editor.
+export function CatalogCards({ groups, tokens }: { groups: CatalogGroup[]; tokens: StyleTokens }) {
+  const items = groups.flatMap((g) =>
+    g.categories.flatMap((c) => c.items.map((item) => ({ item, label: c.category ?? g.section }))),
+  );
+  if (items.length === 0) return null;
+  return (
+    <div className="mt-14 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+      {items.map(({ item, label }) => (
+        <div
+          key={item.id}
+          className={cx(
+            "flex flex-col border border-black/[0.06] bg-white p-6 shadow-[0_1px_2px_rgba(0,0,0,0.04)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_44px_-16px_rgba(0,0,0,0.22)]",
+            tokens.card,
+          )}
+        >
+          {label && <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-neutral-400">{label}</p>}
+          <div className="mt-2 flex items-baseline justify-between gap-3">
+            <h4 data-edit={`item:${item.id}:name`} className={cx("font-display text-lg text-neutral-900", tokens.heading)}>{item.name}</h4>
+            {item.price && <span data-edit={`item:${item.id}:price`} className="whitespace-nowrap font-medium text-[var(--primary)]">{item.price}</span>}
+          </div>
+          {item.description && <p data-edit={`item:${item.id}:description`} className="mt-2 text-sm leading-relaxed text-neutral-500">{item.description}</p>}
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export function SectionHeading({ tokens, kicker, title, center }: { tokens: StyleTokens; kicker?: string; title: string; center?: boolean }) {
   return (
     <div className={center ? "text-center" : ""}>

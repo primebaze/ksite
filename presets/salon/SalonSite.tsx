@@ -1,6 +1,7 @@
 import type { TenantSite } from "@/lib/types";
 import {
   AboutSection,
+  CatalogCards,
   ContactFooter,
   GallerySection,
   Hero,
@@ -55,6 +56,9 @@ export default function SalonSite({ site }: { site: TenantSite }) {
         <section id="services" className={cx("border-y border-black/5", tokens.tint)}>
           <div className="mx-auto max-w-3xl px-6 py-24">
             <SectionHeading tokens={tokens} kicker="The list" title="Services & prices" center />
+            {content.body_variant === "cards" ? (
+              <CatalogCards groups={groups} tokens={tokens} />
+            ) : (
             <div className="mt-14 space-y-14">
               {groups.map((section) => (
                 <div key={section.section}>
@@ -78,6 +82,7 @@ export default function SalonSite({ site }: { site: TenantSite }) {
                 </div>
               ))}
             </div>
+            )}
             {book && cta && (
               <div className="mt-14 text-center">
                 <a href={book} className={cx("inline-flex bg-[var(--primary)] px-8 py-3.5 text-sm font-semibold text-white transition active:scale-[0.98] hover:opacity-90", tokens.btn)}>{cta}</a>

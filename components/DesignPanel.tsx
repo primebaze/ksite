@@ -22,11 +22,13 @@ export function DesignPanel({
   primary,
   accent,
   footerVariant,
+  bodyVariant,
 }: {
   style?: string;
   primary: string;
   accent: string;
   footerVariant?: string;
+  bodyVariant?: string;
 }) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
@@ -35,12 +37,14 @@ export function DesignPanel({
   const [pri, setPri] = useState(primary);
   const [acc, setAcc] = useState(accent);
   const [footer, setFooter] = useState(footerVariant === "minimal" ? "minimal" : "detailed");
+  const [body, setBody] = useState(bodyVariant === "cards" ? "cards" : "list");
 
   const apply = (input: {
     style?: string;
     primary?: string;
     accent?: string;
     footer_variant?: "detailed" | "minimal";
+    body_variant?: "list" | "cards";
   }) => {
     start(async () => {
       await saveDesign(input);
@@ -108,6 +112,26 @@ export function DesignPanel({
                 </button>
               );
             })}
+          </div>
+
+          {/* Body layout */}
+          <p className="mt-5 text-xs font-medium uppercase tracking-widest text-white/40">Body</p>
+          <div className="mt-2 grid grid-cols-2 gap-2">
+            {([["list", "List"], ["cards", "Cards"]] as const).map(([value, label]) => (
+              <button
+                key={value}
+                type="button"
+                onClick={() => {
+                  setBody(value);
+                  apply({ body_variant: value });
+                }}
+                className={`rounded-lg border px-2 py-2 text-xs transition ${
+                  body === value ? "border-emerald-400/70 bg-emerald-400/10 text-white" : "border-white/10 text-white/60 hover:border-white/25"
+                }`}
+              >
+                {label}
+              </button>
+            ))}
           </div>
 
           {/* Footer layout */}
