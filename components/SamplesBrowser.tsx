@@ -8,6 +8,10 @@ export interface BrowserItem {
   key: string;
   label: string;
   style: string;
+  /** Bespoke full-page design to preview under this build (e.g. "ember"). */
+  design?: string;
+  /** Demo business name override for the preview. */
+  name?: string;
 }
 export interface BrowserGroup {
   group: string;
@@ -49,16 +53,25 @@ export function SamplesBrowser({ groups }: { groups: BrowserGroup[] }) {
           {active.group} <span className="text-white/35">({active.builds.length})</span>
         </h2>
         <div className="mt-7 grid grid-cols-1 gap-7 lg:grid-cols-2">
-          {active.builds.map((b) => (
-            <Link
-              key={b.key}
-              href={`/samples/${b.key}`}
-              aria-label={`${b.label} template`}
-              className="group block overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02] transition duration-300 hover:-translate-y-1 hover:border-white/25 hover:shadow-[0_28px_70px_-18px_rgba(0,0,0,0.75)]"
-            >
-              <TemplateThumb src={`/samples/${b.key}?embed=1`} />
-            </Link>
-          ))}
+          {active.builds.map((b) => {
+            const extra =
+              (b.design ? `&design=${b.design}` : "") +
+              (b.name ? `&name=${encodeURIComponent(b.name)}` : "");
+            const href = `/samples/${b.key}${extra ? `?${extra.slice(1)}` : ""}`;
+            return (
+              <Link
+                key={`${b.key}-${b.design ?? ""}`}
+                href={href}
+                aria-label={`${b.label} sample`}
+                className="group block overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02] transition duration-300 hover:-translate-y-1 hover:border-white/25 hover:shadow-[0_28px_70px_-18px_rgba(0,0,0,0.75)]"
+              >
+                <TemplateThumb src={`/samples/${b.key}?embed=1${extra}`} />
+                {b.design && (
+                  <p className="px-5 pb-4 pt-3.5 text-sm font-medium text-white/80">{b.label}</p>
+                )}
+              </Link>
+            );
+          })}
         </div>
       </div>
     </div>

@@ -45,8 +45,35 @@ next sector.
    (constants at top of the file). It's fine to read `var(--accent)` where the
    reference uses a single accent, but match the look first.
 8. **Pull real data** — use `groupCatalog(catalog)` for the menu, `content.hours`
-   for hours, `content.socials` for social links, etc. Fall back gracefully when
-   empty.
+   for hours, `content.socials` for social links, `content.ordering_links` for
+   order/delivery buttons, etc. Render these as **lists** (map over the array) so
+   rows a tenant adds in the dashboard appear automatically; fall back gracefully
+   when empty. Don't hardcode hours/socials — tenants add/remove these rows
+   themselves (Content & menu → add-row editors).
+9. **Sticky header** — the nav/header sticks to the top while scrolling. Build it
+   as a `fixed inset-x-0 top-0 z-50` client component that's transparent over the
+   hero and turns solid (brand colour) once `window.scrollY > ~40` (e.g.
+   `EmberHeader.tsx`). Keep editable bits (`data-edit="tenant.business_name"`) in
+   it; add `pointer-events-auto` on those where the wrapper is `pointer-events-none`.
+10. **Everything works — real bookings, contact & links.** No dead buttons. The
+    site is for the tenant to actually take reservations and enquiries:
+    - **Booking widget** → a `"use client"` component that POSTs to
+      `/api/site-forms` with `{ tenantId: tenant.id, kind: "booking", fields: { name, contact, date, time, party, notes } }`. Model it on `EmberBooking.tsx`
+      (honeypot field `company`, sending/sent/error states). It emails the owner;
+      sample/preview tenants (`id` starts `sample-`) no-op with the success state.
+    - **Contact form** → reuse `SiteContactForms` (`@/components/SiteContactForms`)
+      with `booking={false} contact` (same endpoint), or a styled clone.
+    - Gate both on `content.booking_enabled !== false` /
+      `content.contact_form_enabled !== false`; drop the section + its nav link
+      when off.
+    - Phone/email are `tel:`/`mailto:` links; address has a "Get directions"
+      button using `content.map_url`; every nav/footer link points to a real
+      in-page anchor (`#menu`, `#book`, `#visit`, …) — never a dead `#`.
+11. **Render from data so tenant edits show.** Tenants edit AND add/remove rows
+    in the dashboard (Content & menu): hours, socials, ordering links, menu items,
+    gallery, team. There is **no raw-JSON box** on the tenant side. So map over the
+    arrays (`content.hours`, `content.socials`, `content.ordering_links`,
+    `groupCatalog(catalog)`, `gallery`) — never hardcode them — and they update live.
 
 ---
 
@@ -111,14 +138,24 @@ samples gallery and onboarding) instead of needing the `?design=` param.
 ### Food, drink & restaurants (in progress)
 Originals (6), then 12 variants → 18 total.
 
-| # | Reference | Key | Status |
-|---|-----------|-----|--------|
-| 1 | Gaucho — `gauchorestaurants.com` (dark/gold, booking-first, navy info band, rope footer) | `ember` | built, in review |
-| 2 | Sticks'n'Sushi — `sticksnsushi.com` (light, photo-led, alternating promo blocks, menu carousel) | `sticks` | to build |
-| 3 | The Ivy — `ivycollection.com` (elegant serif, persistent booking widget, seasonal cards, events timeline) | `ivy` | to build |
-| 4 | The Duck & Rice — `theduckandrice.com` (dark, moody, modern-Asian) | `duckrice` | to build |
-| 5 | Kobe — `kobe-restaurant.co.uk` (steakhouse & lounge, multi-location) | `kobe` | to build |
-| 6 | Bill's — `bills-website.co.uk` (bright/energetic, hero carousel, OpenTable widget, "What's On" grid) | `bills` | to build |
+Our own design names (never ship the brand name): Gaucho→**Ember**,
+Sticks'n'Sushi→**Drift**, The Ivy→**Laurel**, The Duck & Rice→**Lantern**,
+Kobe→**Marble**, Bill's→**Daybreak**. All 6 are registered in
+`presets/restaurant/designs/index.tsx` and featured on the **/samples "Popular
+designs"** tab (`app/samples/page.tsx` → `POPULAR_DESIGNS`, each previewed under
+a fitting build key for a real hero photo).
+
+| # | Reference | Our name | Key | Build key (preview) | Status |
+|---|-----------|----------|-----|--------------------|--------|
+| 1 | Gaucho — `gauchorestaurants.com` (dark/gold, booking-first, navy info band, rope footer) | Ember | `ember` | `steakhouse` | built, in review |
+| 2 | Sticks'n'Sushi — `sticksnsushi.com` (light, photo-led, alternating promo blocks) | Drift | `drift` | `sushi` | built, in review |
+| 3 | The Ivy — `ivycollection.com` (elegant serif, persistent booking widget, seasonal cards) | Laurel | `laurel` | `fine_dining` | built, in review |
+| 4 | The Duck & Rice — `theduckandrice.com` (dark, moody, modern-Asian gastropub) | Lantern | `lantern` | `bar` | built, in review |
+| 5 | Kobe — `kobe-restaurant.co.uk` (steakhouse & lounge, warm dark) | Marble | `marble` | `bbq` | built, in review |
+| 6 | Bill's — `bills-website.co.uk` (bright, all-day, "What's On" grid) | Daybreak | `daybreak` | `brunch_cafe` | built, in review |
+
+Next for this sector: after review/approval, build the **2 variants per original**
+(18 total), then move to Hair & beauty.
 
 ### Remaining sectors (ask the user for ~6 reference links each, in order)
 1. Hair & beauty

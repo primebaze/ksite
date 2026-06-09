@@ -64,15 +64,45 @@ export async function saveContent(formData: FormData) {
   refresh();
 }
 
-export async function saveContentRaw(formData: FormData) {
-  const raw = String(formData.get("content_json") ?? "");
-  let parsed: SiteContent;
-  try {
-    parsed = JSON.parse(raw);
-  } catch {
-    redirect("/dashboard/edit?error=Invalid+JSON");
+// Zip repeated form fields (col[0..n]) into row objects, dropping fully-empty rows.
+function zipRows(formData: FormData, cols: string[]): Record<string, string>[] {
+  const colVals = cols.map((c) => formData.getAll(c).map((v) => String(v).trim()));
+  const len = Math.max(0, ...colVals.map((a) => a.length));
+  const rows: Record<string, string>[] = [];
+  for (let i = 0; i < len; i++) {
+    const row: Record<string, string> = {};
+    let hasValue = false;
+    cols.forEach((c, ci) => {
+      const v = colVals[ci][i] ?? "";
+      row[c] = v;
+      if (v) hasValue = true;
+    });
+    if (hasValue) rows.push(row);
   }
-  await updateMyContent(parsed!);
+  return rows;
+}
+
+export async function saveHours(formData: FormData) {
+  const site = await getMyTenantFull();
+  if (!site) return;
+  const hours = zipRows(formData, ["day", "open"]) as { day: string; open: string }[];
+  await updateMyContent({ ...site.content, hours });
+  refresh();
+}
+
+export async function saveSocials(formData: FormData) {
+  const site = await getMyTenantFull();
+  if (!site) return;
+  const socials = zipRows(formData, ["label", "url"]).filter((r) => r.url) as { label: string; url: string }[];
+  await updateMyContent({ ...site.content, socials });
+  refresh();
+}
+
+export async function saveOrderingLinks(formData: FormData) {
+  const site = await getMyTenantFull();
+  if (!site) return;
+  const ordering_links = zipRows(formData, ["label", "url"]).filter((r) => r.url) as { label: string; url: string }[];
+  await updateMyContent({ ...site.content, ordering_links });
   refresh();
 }
 

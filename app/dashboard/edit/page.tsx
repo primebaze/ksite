@@ -9,7 +9,9 @@ import {
   gallerySave,
   saveBasics,
   saveContent,
-  saveContentRaw,
+  saveHours,
+  saveOrderingLinks,
+  saveSocials,
   teamDelete,
   teamSave,
 } from "../actions";
@@ -19,7 +21,9 @@ export const dynamic = "force-dynamic";
 const actions: EditorActions = {
   saveBasics,
   saveContent,
-  saveContentRaw,
+  saveHours,
+  saveSocials,
+  saveOrderingLinks,
   catalogSave,
   catalogDelete,
   gallerySave,

@@ -1,5 +1,6 @@
 import type { TenantSite } from "@/lib/types";
 import { catalogLabelFor } from "@/lib/verticals";
+import { ListEditor } from "./ListEditor";
 
 // Dark, client-facing editor. Reused on the self-serve dashboard. Each form
 // posts to a server action passed in via `actions`, so the same UI works for
@@ -7,7 +8,9 @@ import { catalogLabelFor } from "@/lib/verticals";
 export interface EditorActions {
   saveBasics: (formData: FormData) => Promise<void>;
   saveContent: (formData: FormData) => Promise<void>;
-  saveContentRaw: (formData: FormData) => Promise<void>;
+  saveHours: (formData: FormData) => Promise<void>;
+  saveSocials: (formData: FormData) => Promise<void>;
+  saveOrderingLinks: (formData: FormData) => Promise<void>;
   catalogSave: (formData: FormData) => Promise<void>;
   catalogDelete: (formData: FormData) => Promise<void>;
   gallerySave: (formData: FormData) => Promise<void>;
@@ -109,6 +112,48 @@ export function SiteEditor({ site, actions }: { site: TenantSite; actions: Edito
         </form>
       </Card>
 
+      {/* Opening hours — add / remove rows */}
+      <Card title="Opening hours" desc="Add a row for each day or range. Leave a row blank and save to remove it.">
+        <ListEditor
+          tenantId={id}
+          action={actions.saveHours}
+          addLabel="+ Add hours row"
+          columns={[
+            { name: "day", label: "Day (e.g. Mon–Fri)" },
+            { name: "open", label: "Hours (e.g. 12:00–22:00 or Closed)" },
+          ]}
+          initial={(content.hours ?? []).map((h) => ({ day: h.day ?? "", open: h.open ?? "" }))}
+        />
+      </Card>
+
+      {/* Social links — add / remove rows */}
+      <Card title="Social links" desc="Add your social profiles. Leave a row blank and save to remove it.">
+        <ListEditor
+          tenantId={id}
+          action={actions.saveSocials}
+          addLabel="+ Add social link"
+          columns={[
+            { name: "label", label: "Label (e.g. Instagram)" },
+            { name: "url", label: "URL (https://…)" },
+          ]}
+          initial={(content.socials ?? []).map((s) => ({ label: s.label ?? "", url: s.url ?? "" }))}
+        />
+      </Card>
+
+      {/* Ordering / booking links — add / remove rows */}
+      <Card title="Ordering & delivery links" desc="Links to ordering, delivery or booking partners. Leave a row blank and save to remove it.">
+        <ListEditor
+          tenantId={id}
+          action={actions.saveOrderingLinks}
+          addLabel="+ Add link"
+          columns={[
+            { name: "label", label: "Label (e.g. Order on Deliveroo)" },
+            { name: "url", label: "URL (https://…)" },
+          ]}
+          initial={(content.ordering_links ?? []).map((o) => ({ label: o.label ?? "", url: o.url ?? "" }))}
+        />
+      </Card>
+
       {/* Catalog */}
       <Card title={catalogLabel} desc={`Add, edit and remove your ${catalogLabel.toLowerCase()} items.`}>
         <div className="space-y-3">
@@ -197,15 +242,6 @@ export function SiteEditor({ site, actions }: { site: TenantSite; actions: Edito
             <div className="col-span-12"><button className={btn}>+ Add</button></div>
           </form>
         </div>
-      </Card>
-
-      {/* Advanced */}
-      <Card title="Advanced: full content JSON" desc="For fields not above (hours, ordering links, service areas, socials). Replaces the whole content blob.">
-        <form action={actions.saveContentRaw}>
-          <input type="hidden" name="id" value={id} />
-          <textarea name="content_json" rows={10} defaultValue={JSON.stringify(content, null, 2)} className={`${input} font-mono text-xs`} />
-          <button className={`${btn} mt-3`}>Save JSON</button>
-        </form>
       </Card>
     </div>
   );

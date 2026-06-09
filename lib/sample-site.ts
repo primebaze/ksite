@@ -38,6 +38,21 @@ export function sampleSiteFor(key: string): TenantSite | null {
       phone: "01234 567890",
       email: "hello@example.com",
       address: "12 High Street, Yourtown",
+      map_url: "https://maps.google.com/?q=12+High+Street",
+      // Sample sites are shown as if the owner already filled everything in.
+      socials: [
+        { label: "Instagram", url: "https://instagram.com" },
+        { label: "Facebook", url: "https://facebook.com" },
+        { label: "TikTok", url: "https://tiktok.com" },
+      ],
+      ...(build.archetype === "menu"
+        ? {
+            ordering_links: [
+              { label: "Order on Deliveroo", url: "https://deliveroo.co.uk" },
+              { label: "Order on Uber Eats", url: "https://ubereats.com" },
+            ],
+          }
+        : {}),
     },
     catalog: starter.items.map((it, i) => ({
       id: `${key}-item-${i}`,
