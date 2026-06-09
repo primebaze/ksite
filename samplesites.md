@@ -243,6 +243,16 @@ Each archetype gets its OWN designs registry + preset hook (mirrors restaurants)
 - Register new keys centrally in `SALON_DESIGNS` and add them to `BUILD_DESIGN`
   (sample-site) for salon build keys (e.g. `hair_salon`, `barber`, `nail_salon`,
   `spa`, `beauty_salon`) + the Popular tab.
+- **GOTCHA — bespoke preset routing:** `getPresetComponent` (presets/index.tsx)
+  routes some keys to bespoke presets, NOT the archetype: `BEAUTY` keys
+  (makeup_artist, lash_brow, nail_salon, beauty_salon, aesthetics_clinic,
+  cosmetic_clinic, tanning, waxing, photographer, videographer) → `BeautySite`;
+  `FITNESS` keys (gym, yoga_studio, crossfit, …) → `FitnessSite`. EVERY preset a
+  key can route to needs the design hook at the top, or the `BUILD_DESIGN`
+  mapping is silently ignored (the bug that left makeup_artist on the generic
+  "Signature services" layout). BeautySite, FitnessSite and SalonSite all call
+  `getSalonDesign` now; when adding a new sector, verify the hook exists in
+  whichever preset its keys actually hit.
 
 ### Hair & beauty (in progress) — screenshots in `public/samples/hair&beauty/`
 | # | Reference | Our name | Key | Status |

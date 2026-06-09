@@ -13,12 +13,18 @@ import {
   tokensFor,
 } from "../shared";
 import { pageHref, type PresetProps } from "@/lib/site-pages";
+import { getSalonDesign } from "../salon/designs";
 
 // Bespoke template for makeup artists & beauty pros: image-forward and
 // portfolio-led — distinct from the generic bookings layout. Reuses the shared
 // header/hero/footer so the on-screen editor (text, image, colours, variants)
 // keeps working, but arranges the page editorially around the artist's work.
-export default function BeautySite({ site, page = "home", basePath = "", multiPage = false }: PresetProps) {
+export default function BeautySite(props: PresetProps) {
+  // A bespoke real-world-inspired design takes over the whole page when set.
+  const Design = getSalonDesign(props.site.content.design);
+  if (Design) return <Design {...props} />;
+
+  const { site, page = "home", basePath = "", multiPage = false } = props;
   const { tenant, theme, content, catalog, gallery } = site;
   const tokens = tokensFor(content, theme);
   const groups = groupCatalog(catalog);
