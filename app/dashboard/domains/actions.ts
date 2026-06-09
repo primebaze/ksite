@@ -7,8 +7,10 @@ import {
   addProjectDomain,
   buyDomain,
   checkAvailability,
+  getDomainPrice,
   isRegistrantConfigured,
   isVercelConfigured,
+  registrarErrorMessage,
   removeProjectDomain,
 } from "@/lib/vercel";
 
@@ -34,8 +36,21 @@ export async function claimDomain(formData: FormData) {
   const avail = await checkAvailability(domain);
   if (!avail.ok || avail.data.available !== true) back("?error=That+domain+isn%27t+available");
 
-  const purchase = await buyDomain(domain);
-  if (!purchase.ok) back(`?error=${encodeURIComponent(purchase.data.error?.message ?? "Could not register that domain")}`);
+  // Vercel only sells a subset of TLDs (e.g. not .co.uk / .uk). For anything it
+  // can't register, steer the client to the "connect a domain you own" path.
+  const price = await getDomainPrice(domain);
+  if (!price.supported) {
+    back(
+      `?error=${encodeURIComponent(
+        "We can’t auto-register that ending (e.g. .co.uk). Register it with any provider, then use “Already own a domain elsewhere?” below to connect it.",
+      )}`,
+    );
+  }
+  if (price.price == null) back("?error=Couldn%27t+price+that+domain+right+now.+Please+try+again.");
+
+  // expectedPrice is required by Vercel; the charge goes to your Vercel account.
+  const purchase = await buyDomain(domain, price.price!);
+  if (!purchase.ok) back(`?error=${encodeURIComponent(registrarErrorMessage(purchase) ?? "Could not register that domain")}`);
 
   // Registration is an async order; mark registering and attach (best effort).
   await updateMyCustomDomain(domain, "registering");

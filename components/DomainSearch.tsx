@@ -6,7 +6,7 @@ import { claimDomain } from "@/app/dashboard/domains/actions";
 interface Result {
   name?: string;
   available?: boolean;
-  price?: number | null;
+  supported?: boolean; // false → Vercel can't register this TLD (connect instead)
   error?: string;
 }
 
@@ -71,7 +71,16 @@ export function DomainSearch({ suggestions = [] }: { suggestions?: string[] }) {
         </p>
       )}
 
-      {result && result.available && (
+      {result && result.available && result.supported === false && (
+        <p className="mt-3 rounded-lg border border-white/10 bg-white/[0.02] px-4 py-3 text-sm text-white/60">
+          <span className="text-white">{result.name}</span> is available, but we can&apos;t auto-register that ending (e.g.{" "}
+          <span className="text-white">.co.uk</span>). Register it with any provider, then use{" "}
+          <span className="text-white">&ldquo;Already own a domain elsewhere?&rdquo;</span> below to connect it. Or try a{" "}
+          <span className="text-white">.com</span>.
+        </p>
+      )}
+
+      {result && result.available && result.supported !== false && (
         <form action={claimDomain} className="mt-3 flex items-center justify-between gap-3 rounded-lg border border-emerald-400/30 bg-emerald-400/5 px-4 py-3">
           <div className="text-sm">
             <span className="font-medium text-white">{result.name}</span>

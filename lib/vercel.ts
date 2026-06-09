@@ -64,23 +64,61 @@ async function api<T = Record<string, unknown>>(path: string, init?: RequestInit
   return { ok: res.ok, status: res.status, data };
 }
 
-// --- Registrar: search + buy ------------------------------------------------
+// --- Registrar: search, price, buy ------------------------------------------
 export async function checkAvailability(domain: string) {
   return api<{ available?: boolean }>(`/v1/registrar/domains/${encodeURIComponent(domain)}/availability`);
 }
 
-export async function buyDomain(domain: string) {
+export interface DomainPrice {
+  supported: boolean; // false when Vercel can't sell this TLD (e.g. .co.uk, .uk)
+  price: number | null; // purchase price (USD) for `years`
+  years: number;
+}
+
+function toNumber(value: unknown): number | null {
+  if (typeof value === "number") return Number.isFinite(value) ? value : null;
+  if (typeof value === "string") {
+    const n = Number(value);
+    return Number.isFinite(n) ? n : null;
+  }
+  if (value && typeof value === "object") {
+    const o = value as Record<string, unknown>;
+    return toNumber(o.amount ?? o.value ?? o.price);
+  }
+  return null;
+}
+
+// Vercel requires an expectedPrice on purchase and only sells a limited set of
+// TLDs. A non-OK response here (e.g. 400 "tld_not_supported") means we can't
+// register it for the client — they must bring their own and connect it.
+export async function getDomainPrice(domain: string, years = 1): Promise<DomainPrice> {
+  const res = await api<{ purchasePrice?: unknown; years?: number }>(
+    `/v1/registrar/domains/${encodeURIComponent(domain)}/price?years=${years}`,
+  );
+  if (!res.ok) return { supported: false, price: null, years };
+  return { supported: true, price: toNumber(res.data.purchasePrice), years: res.data.years ?? years };
+}
+
+interface BuyResult {
+  orderId?: string;
+  message?: string;
+  error?: { message?: string };
+}
+
+export async function buyDomain(domain: string, expectedPrice: number) {
   const contact = registrant();
   if (!contact) {
-    return { ok: false, status: 0, data: { error: { message: "Registrant contact isn't configured." } } } as ApiResult<{
-      orderId?: string;
-      error?: { message?: string };
-    }>;
+    return { ok: false, status: 0, data: { message: "Registrant contact isn't configured." } } as ApiResult<BuyResult>;
   }
-  return api<{ orderId?: string; error?: { message?: string } }>(`/v1/registrar/domains/buy`, {
+  return api<BuyResult>(`/v1/registrar/domains/${encodeURIComponent(domain)}/buy`, {
     method: "POST",
-    body: JSON.stringify({ domains: [domain], contactInformation: contact }),
+    body: JSON.stringify({ autoRenew: true, years: 1, expectedPrice, contactInformation: contact }),
   });
+}
+
+// Pull a human-readable message out of a registrar error response.
+export function registrarErrorMessage(res: ApiResult<BuyResult>): string | null {
+  return res.data?.error?.message ?? res.data?.message ?? null;
 }
 
 // --- Project domains: attach + verify ---------------------------------------

@@ -28,9 +28,10 @@ export default async function DomainsPage({
     .replace(/[̀-ͯ]/g, "")
     .replace(/[^a-z0-9]+/g, "")
     .slice(0, 28) || tenant.subdomain;
+  // Suggest endings Vercel can actually register (it can't sell .co.uk/.uk).
   const suggestions = [
     `${baseName}.com`,
-    `${baseName}.co.uk`,
+    `${baseName}.co`,
     `${baseName}studio.com`,
     `hello${baseName}.com`,
   ];
