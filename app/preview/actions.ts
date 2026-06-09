@@ -5,9 +5,36 @@ import {
   getMyTenantFull,
   updateMyContent,
   updateMyTenant,
+  updateMyTheme,
   upsertMyCatalogItem,
 } from "@/lib/my-site";
-import type { CatalogItem, SiteContent } from "@/lib/types";
+import type { CatalogItem, SiteContent, Theme } from "@/lib/types";
+import { isHexColor } from "@/lib/palettes";
+
+const STYLES = ["editorial", "bold", "minimal", "warm", "luxe", "classic"];
+
+// Apply a design change from the on-screen Design panel: switch the overall
+// look (style) and/or the brand colours. Client-scoped via RLS.
+export async function saveDesign(input: {
+  style?: string;
+  primary?: string;
+  accent?: string;
+}): Promise<{ ok: boolean }> {
+  const site = await getMyTenantFull();
+  if (!site) return { ok: false };
+
+  if (input.style && STYLES.includes(input.style)) {
+    await updateMyContent({ ...site.content, style: input.style as SiteContent["style"] });
+  }
+
+  const theme: Partial<Theme> = {};
+  if (input.primary && isHexColor(input.primary)) theme.primary_color = input.primary;
+  if (input.accent && isHexColor(input.accent)) theme.accent_color = input.accent;
+  if (Object.keys(theme).length) await updateMyTheme(theme);
+
+  revalidatePath("/preview");
+  return { ok: true };
+}
 
 // Persist an on-screen text edit. Keys are "tenant.business_name",
 // "content.<field>" or "item:<id>:<field>".

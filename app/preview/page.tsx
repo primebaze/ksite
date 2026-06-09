@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { getMyTenantFull } from "@/lib/my-site";
 import { getPresetComponent } from "@/presets";
 import { InlineEditor } from "@/components/InlineEditor";
+import { DesignPanel } from "@/components/DesignPanel";
 import { saveInline } from "./actions";
 
 export const dynamic = "force-dynamic";
@@ -20,6 +21,11 @@ export default async function PreviewPage({ searchParams }: { searchParams: Prom
     return (
       <InlineEditor save={saveInline}>
         {preset}
+        <DesignPanel
+          style={site.content.style}
+          primary={site.theme.primary_color || "#141414"}
+          accent={site.theme.accent_color || "#c8a24a"}
+        />
       </InlineEditor>
     );
   }
