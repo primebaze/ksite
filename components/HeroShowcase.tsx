@@ -7,7 +7,7 @@ import { PreviewVideo } from "./PreviewVideo";
 // hero built from a looping video plus a headline overlay. Only the active
 // slide's video decodes, so the homepage stays light on mobile.
 const SLIDES: { key: string; video: string; name: string; tag: string; cta: string }[] = [
-  { key: "cafe", video: "/hero/sds.mp4", name: "Maple & Bean", tag: "Coffee & Brunch", cta: "Order online" },
+  { key: "motivational", video: "/hero/box.mp4", name: "Motivational", tag: "Personal Training", cta: "Start today" },
   { key: "hair_salon", video: "/hero/hair.mp4", name: "The Chair Co.", tag: "Hair Studio", cta: "Book appointment" },
   { key: "gym", video: "/hero/gym.mp4", name: "Ironworks Gym", tag: "Strength & Conditioning", cta: "Start free trial" },
 ];
