@@ -23,16 +23,16 @@ export interface Starter {
 function defaultHours(archetype: BuildArchetype): SiteContent["hours"] {
   if (archetype === "menu") {
     return [
-      { day: "Mon–Fri", open: "09:00 – 22:00" },
-      { day: "Sat", open: "09:00 – 23:00" },
-      { day: "Sun", open: "10:00 – 21:00" },
+      { day: "Mon to Fri", open: "12:00 to 22:00" },
+      { day: "Saturday", open: "12:00 to 23:00" },
+      { day: "Sunday", open: "12:00 to 21:00" },
     ];
   }
   if (archetype === "bookings") {
     return [
-      { day: "Tue–Fri", open: "09:00 – 19:00" },
-      { day: "Sat", open: "09:00 – 17:00" },
-      { day: "Sun–Mon", open: "Closed" },
+      { day: "Tue to Fri", open: "09:00 to 19:00" },
+      { day: "Saturday", open: "09:00 to 17:00" },
+      { day: "Sun and Mon", open: "Closed" },
     ];
   }
   return undefined;

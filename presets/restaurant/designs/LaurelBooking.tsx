@@ -4,13 +4,18 @@ import { useState } from "react";
 
 const GREEN = "#163d2b";
 const GOLD = "#b8975a";
+const CREAM = "#f6f1e7";
+
+const serif = { fontFamily: "var(--font-fraunces)" } as const;
 
 const fieldCls =
-  "w-full border-0 border-b bg-transparent pb-2 pt-1 text-[15px] outline-none transition";
+  "mt-1 w-full border-0 border-b bg-transparent pb-2 pt-1 text-[15px] outline-none transition";
 
-// Signature persistent reservation widget for the Laurel design. Posts to the
-// shared /api/site-forms pipeline (kind "booking"), which emails the business
-// owner; sample/preview sites no-op with a success state.
+// Refined, boutique reservation widget for the Laurel design: a centred,
+// gold-bordered card on its own reservations page (vertically stacked, unlike a
+// horizontal booking bar). Posts to the shared /api/site-forms pipeline (kind
+// "booking"), which emails the business owner; sample/preview sites (id starting
+// "sample-") no-op with a success state.
 export function LaurelBooking({ tenantId, name }: { tenantId: string; name: string }) {
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
   const [error, setError] = useState("");
@@ -55,22 +60,29 @@ export function LaurelBooking({ tenantId, name }: { tenantId: string; name: stri
   }
 
   return (
-    <div id="book" className="w-full">
+    <div
+      className="relative mx-auto w-full max-w-lg p-9 sm:p-11"
+      style={{ background: CREAM, border: `1px solid ${GOLD}`, boxShadow: `inset 0 0 0 5px ${CREAM}, inset 0 0 0 6px ${GOLD}44` }}
+    >
+      <p className="text-center text-[11px] uppercase tracking-[0.32em]" style={{ color: GOLD }}>Reservations</p>
+      <p style={serif} className="mt-2 text-center text-2xl">Reserve at {name}</p>
+
       {status === "sent" ? (
-        <p className="border px-5 py-6 text-center text-sm leading-relaxed" style={{ borderColor: `${GOLD}66`, color: GREEN }}>
+        <p className="mt-8 border px-5 py-7 text-center text-sm leading-relaxed" style={{ borderColor: `${GOLD}66`, color: GREEN }}>
           Thank you. Your reservation request is with us and we will confirm shortly.
         </p>
       ) : (
-        <form onSubmit={onSubmit}>
-          <div className="grid gap-x-6 gap-y-5 sm:grid-cols-2 lg:grid-cols-4 lg:items-end">
-            <label className="block">
-              <span className="text-[10px] uppercase tracking-[0.22em]" style={{ color: GOLD }}>Guests</span>
-              <select name="party" defaultValue="2 guests" className={fieldCls} style={{ borderColor: `${GREEN}33`, color: GREEN }}>
-                {["1 guest", "2 guests", "3 guests", "4 guests", "5 guests", "6 guests", "7+ guests"].map((g) => (
-                  <option key={g}>{g}</option>
-                ))}
-              </select>
-            </label>
+        <form onSubmit={onSubmit} className="mt-8">
+          <label className="block">
+            <span className="text-[10px] uppercase tracking-[0.22em]" style={{ color: GOLD }}>Number of guests</span>
+            <select name="party" defaultValue="2 guests" className={fieldCls} style={{ borderColor: `${GREEN}33`, color: GREEN }}>
+              {["1 guest", "2 guests", "3 guests", "4 guests", "5 guests", "6 guests", "7+ guests"].map((g) => (
+                <option key={g}>{g}</option>
+              ))}
+            </select>
+          </label>
+
+          <div className="mt-6 grid grid-cols-2 gap-6">
             <label className="block">
               <span className="text-[10px] uppercase tracking-[0.22em]" style={{ color: GOLD }}>Date</span>
               <input name="date" type="date" required className={fieldCls} style={{ borderColor: `${GREEN}33`, color: GREEN }} />
@@ -83,35 +95,35 @@ export function LaurelBooking({ tenantId, name }: { tenantId: string; name: stri
                 ))}
               </select>
             </label>
-            <button
-              type="submit"
-              disabled={status === "sending"}
-              className="w-full px-6 py-3 text-center text-xs font-semibold uppercase tracking-[0.22em] text-white transition hover:opacity-90 disabled:opacity-60"
-              style={{ background: GREEN }}
-            >
-              {status === "sending" ? "Sending" : "Find a table"}
-            </button>
           </div>
 
-          <div className="mt-6 grid gap-x-6 gap-y-5 sm:grid-cols-2">
-            <label className="block">
-              <span className="text-[10px] uppercase tracking-[0.22em]" style={{ color: GOLD }}>Your name</span>
-              <input name="cust_name" required className={fieldCls} style={{ borderColor: `${GREEN}33`, color: GREEN }} />
-            </label>
-            <label className="block">
-              <span className="text-[10px] uppercase tracking-[0.22em]" style={{ color: GOLD }}>Phone or email</span>
-              <input name="contact" required className={fieldCls} style={{ borderColor: `${GREEN}33`, color: GREEN }} />
-            </label>
-          </div>
+          <label className="mt-6 block">
+            <span className="text-[10px] uppercase tracking-[0.22em]" style={{ color: GOLD }}>Your name</span>
+            <input name="cust_name" required className={fieldCls} style={{ borderColor: `${GREEN}33`, color: GREEN }} />
+          </label>
 
-          <label className="mt-5 block">
+          <label className="mt-6 block">
+            <span className="text-[10px] uppercase tracking-[0.22em]" style={{ color: GOLD }}>Phone or email</span>
+            <input name="contact" required className={fieldCls} style={{ borderColor: `${GREEN}33`, color: GREEN }} />
+          </label>
+
+          <label className="mt-6 block">
             <span className="text-[10px] uppercase tracking-[0.22em]" style={{ color: GOLD }}>Anything else?</span>
             <input name="notes" placeholder={`A note for ${name}`} className={fieldCls} style={{ borderColor: `${GREEN}33`, color: GREEN }} />
           </label>
 
           {/* honeypot */}
           <input type="text" name="company" tabIndex={-1} autoComplete="off" className="absolute left-[-9999px] h-0 w-0 opacity-0" aria-hidden />
-          {status === "error" && <p className="mt-4 text-sm text-red-700">{error}</p>}
+          {status === "error" && <p className="mt-5 text-center text-sm text-red-700">{error}</p>}
+
+          <button
+            type="submit"
+            disabled={status === "sending"}
+            className="mt-9 w-full px-6 py-4 text-center text-xs font-semibold uppercase tracking-[0.24em] text-white transition hover:opacity-90 disabled:opacity-60"
+            style={{ background: GREEN }}
+          >
+            {status === "sending" ? "Sending" : "Request reservation"}
+          </button>
         </form>
       )}
     </div>

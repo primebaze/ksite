@@ -4,17 +4,22 @@ import { useState } from "react";
 
 const GOLD = "#c9a227";
 const EMBER = "#8a2b22";
+const CHARCOAL_TEXT = "#1c1a17";
 
 const fieldCls =
   "w-full border-0 border-b border-white/25 bg-transparent pb-2 pt-1 text-[15px] text-[#efe8db] placeholder:text-white/40 outline-none transition focus:border-[#c9a227]";
 
+const PARTY_SIZES = ["1", "2", "3", "4", "5", "6", "7", "8+"];
+
 // Functional reservation widget for the Marble design. Posts to the shared
 // /api/site-forms pipeline (kind "booking"), which emails the business owner;
 // sample/preview sites (id starts "sample-") no-op with a success state.
-// Honeypot field "company"; sending / sent / error states.
+// Honeypot field "company"; sending / sent / error states. Distinct layout:
+// party size is the hero of the form, chosen from a large row of tap targets.
 export function MarbleBooking({ tenantId, name }: { tenantId: string; name: string }) {
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
   const [error, setError] = useState("");
+  const [party, setParty] = useState("2");
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -45,6 +50,7 @@ export function MarbleBooking({ tenantId, name }: { tenantId: string; name: stri
       if (json.ok) {
         setStatus("sent");
         form.reset();
+        setParty("2");
       } else {
         setStatus("error");
         setError(json.error ?? "Something went wrong.");
@@ -56,28 +62,41 @@ export function MarbleBooking({ tenantId, name }: { tenantId: string; name: stri
   }
 
   return (
-    <div id="book" className="h-fit p-8" style={{ border: `1px solid ${GOLD}`, background: "rgba(0,0,0,0.25)" }}>
-      <p style={{ fontFamily: "var(--font-fraunces)", color: GOLD }} className="text-xl">Reserve a table</p>
+    <div id="book" className="h-fit p-8 sm:p-10" style={{ border: `1px solid ${GOLD}`, background: "rgba(0,0,0,0.25)" }}>
+      <p style={{ fontFamily: "var(--font-fraunces)", color: GOLD }} className="text-2xl">Reserve a table</p>
 
       {status === "sent" ? (
         <p className="mt-6 border border-white/20 px-4 py-5 text-sm leading-relaxed text-[#efe8db]/80">
           Thank you, your reservation request is in. We&apos;ll confirm shortly.
         </p>
       ) : (
-        <form onSubmit={onSubmit} className="mt-6 space-y-6">
-          <label className="block">
-            <span className="text-xs uppercase tracking-wider text-white/50">Venue</span>
-            <input className={fieldCls} value={name} readOnly />
-          </label>
-          <label className="block">
-            <span className="text-xs uppercase tracking-wider text-white/50">Number of guests</span>
-            <select name="party" className={fieldCls} defaultValue="2 guests">
-              {["1 guest", "2 guests", "3 guests", "4 guests", "5 guests", "6 guests", "7+ guests"].map((g) => (
-                <option key={g} className="text-neutral-900">{g}</option>
+        <form onSubmit={onSubmit} className="mt-8 space-y-8">
+          {/* PARTY SIZE — the emphasised choice */}
+          <fieldset>
+            <legend className="text-xs font-semibold uppercase tracking-[0.22em] text-[#efe8db]/70">How many in your party?</legend>
+            <input type="hidden" name="party" value={party === "8+" ? "8+ guests" : `${party} guests`} />
+            <div className="mt-4 flex flex-wrap gap-2.5">
+              {PARTY_SIZES.map((p) => (
+                <button
+                  key={p}
+                  type="button"
+                  onClick={() => setParty(p)}
+                  aria-pressed={party === p}
+                  className="flex h-12 w-12 items-center justify-center text-lg font-medium transition sm:h-14 sm:w-14"
+                  style={
+                    party === p
+                      ? { background: GOLD, color: CHARCOAL_TEXT, fontFamily: "var(--font-fraunces)" }
+                      : { border: "1px solid rgba(255,255,255,0.22)", color: "rgba(239,232,219,0.85)", fontFamily: "var(--font-fraunces)" }
+                  }
+                >
+                  {p}
+                </button>
               ))}
-            </select>
-          </label>
-          <div className="grid grid-cols-2 gap-4">
+            </div>
+            <p className="mt-3 text-xs text-[#efe8db]/45">Parties of 9 or more, please call us directly.</p>
+          </fieldset>
+
+          <div className="grid grid-cols-2 gap-5">
             <label className="block">
               <span className="text-xs uppercase tracking-wider text-white/50">Date</span>
               <input name="date" type="date" required className={fieldCls} />
@@ -91,6 +110,10 @@ export function MarbleBooking({ tenantId, name }: { tenantId: string; name: stri
               </select>
             </label>
           </div>
+          <label className="block">
+            <span className="text-xs uppercase tracking-wider text-white/50">Restaurant</span>
+            <input className={fieldCls} value={name} readOnly />
+          </label>
           <label className="block">
             <span className="text-xs uppercase tracking-wider text-white/50">Your name</span>
             <input name="cust_name" required className={fieldCls} />

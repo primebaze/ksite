@@ -12,21 +12,30 @@ export function EmberHeader({
   name,
   book,
   links,
+  home = "/",
   est = "EST 1994",
+  solid = false,
 }: {
   name: string;
   book: string;
   links: { label: string; href: string }[];
+  home?: string;
   est?: string;
+  /** Force the solid background (used on sub-pages that have no hero behind it). */
+  solid?: boolean;
 }) {
-  const [scrolled, setScrolled] = useState(false);
+  const [scrolled, setScrolled] = useState(solid);
 
   useEffect(() => {
+    if (solid) {
+      setScrolled(true);
+      return;
+    }
     const onScroll = () => setScrolled(window.scrollY > 40);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  }, [solid]);
 
   return (
     <header
@@ -45,11 +54,11 @@ export function EmberHeader({
         {/* mobile menu (functional) */}
         <MobileNav links={links} book={book} />
 
-        {/* centred crest */}
-        <div className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
-          <p data-edit="tenant.business_name" style={{ fontFamily: "var(--font-fraunces)" }} className="pointer-events-auto whitespace-nowrap text-base font-medium tracking-[0.15em] text-white [text-shadow:0_1px_14px_rgba(0,0,0,0.55)] sm:text-xl">{name.toUpperCase()}</p>
-          <p className="mt-0.5 text-[8px] tracking-[0.3em] text-white/80 sm:text-[10px]">{est}</p>
-        </div>
+        {/* centred crest (links home) */}
+        <a href={home} className="pointer-events-auto absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
+          <span data-edit="tenant.business_name" style={{ fontFamily: "var(--font-fraunces)" }} className="block whitespace-nowrap text-base font-medium tracking-[0.15em] text-white [text-shadow:0_1px_14px_rgba(0,0,0,0.55)] sm:text-xl">{name.toUpperCase()}</span>
+          <span className="mt-0.5 block text-[8px] tracking-[0.3em] text-white/80 sm:text-[10px]">{est}</span>
+        </a>
 
         {/* desktop reservation button */}
         <a href={book} className="hidden border border-white/70 px-6 py-3 text-xs font-semibold uppercase tracking-[0.2em] text-white backdrop-blur-sm transition hover:bg-white hover:text-neutral-900 md:inline-flex">Make a reservation</a>

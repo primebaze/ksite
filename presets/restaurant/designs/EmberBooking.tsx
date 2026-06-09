@@ -50,7 +50,7 @@ export function EmberBooking({ tenantId, name }: { tenantId: string; name: strin
       }
     } catch {
       setStatus("error");
-      setError("Network error — please try again.");
+      setError("Network error. Please try again.");
     }
   }
 
@@ -60,7 +60,7 @@ export function EmberBooking({ tenantId, name }: { tenantId: string; name: strin
 
       {status === "sent" ? (
         <p className="mt-6 border border-neutral-300 px-4 py-5 text-sm leading-relaxed text-neutral-700">
-          Thanks — your reservation request is in. We&apos;ll confirm shortly.
+          Thanks, your reservation request is in. We&apos;ll confirm shortly.
         </p>
       ) : (
         <form onSubmit={onSubmit} className="mt-6 space-y-6">

@@ -3,14 +3,15 @@
 import { useState } from "react";
 
 const RED = "#c1272d";
-const GOLD = "#c8a24a";
 
 const fieldCls =
-  "w-full border-0 border-b border-white/20 bg-transparent pb-2 pt-1 text-[15px] text-[#f3ede1] outline-none focus:border-[#c8a24a]";
+  "w-full rounded-sm border border-white/15 bg-black/30 px-3.5 py-3 text-[15px] text-[#f3ede1] outline-none transition focus:border-[#c8a24a]";
+const labelCls = "mb-1.5 block text-xs uppercase tracking-wider text-[#f3ede1]/55";
 
-// Booking widget for the Lantern design. Posts to the shared /api/site-forms
-// pipeline (kind "booking"), which emails the business owner; sample/preview
-// sites (id starts "sample-") no-op with a success state.
+// Booking widget for the Lantern design: a dark inline form on a dark lacquer
+// panel, red CTA. Posts to the shared /api/site-forms pipeline (kind "booking"),
+// which emails the business owner; sample/preview sites (id starts "sample-")
+// no-op with a success state. Honeypot field "company".
 export function LanternBooking({ tenantId, name }: { tenantId: string; name: string }) {
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
   const [error, setError] = useState("");
@@ -55,51 +56,47 @@ export function LanternBooking({ tenantId, name }: { tenantId: string; name: str
   }
 
   return (
-    <div id="book" className="h-fit border bg-black/20 p-8 backdrop-blur-sm" style={{ borderColor: GOLD }}>
-      <p style={{ fontFamily: "var(--font-fraunces)" }} className="text-xl text-[#f3ede1]">Book a table</p>
-
+    <div className="border border-white/12 bg-[#1b1714] p-8 sm:p-10">
       {status === "sent" ? (
-        <p className="mt-6 border border-white/15 px-4 py-5 text-sm leading-relaxed text-[#f3ede1]/85">
+        <p className="border border-white/15 px-4 py-5 text-sm leading-relaxed text-[#f3ede1]/85">
           Thanks, your table request is in. We&apos;ll confirm shortly.
         </p>
       ) : (
-        <form onSubmit={onSubmit} className="mt-6 space-y-6">
-          <label className="block">
-            <span className="text-xs uppercase tracking-wider text-[#f3ede1]/55">Restaurant</span>
-            <input className={fieldCls} value={name} readOnly />
-          </label>
-          <label className="block">
-            <span className="text-xs uppercase tracking-wider text-[#f3ede1]/55">Number of guests</span>
-            <select name="party" className={fieldCls} defaultValue="2 guests">
-              {["1 guest", "2 guests", "3 guests", "4 guests", "5 guests", "6 guests", "7+ guests"].map((g) => (
-                <option key={g} className="text-neutral-900">{g}</option>
-              ))}
-            </select>
-          </label>
-          <div className="grid grid-cols-2 gap-4">
+        <form onSubmit={onSubmit} className="space-y-5">
+          <div className="grid gap-5 sm:grid-cols-2">
             <label className="block">
-              <span className="text-xs uppercase tracking-wider text-[#f3ede1]/55">Date</span>
-              <input name="date" type="date" required className={fieldCls} />
+              <span className={labelCls}>Your name</span>
+              <input name="cust_name" required className={fieldCls} />
             </label>
             <label className="block">
-              <span className="text-xs uppercase tracking-wider text-[#f3ede1]/55">Time</span>
+              <span className={labelCls}>Phone or email</span>
+              <input name="contact" required className={fieldCls} />
+            </label>
+          </div>
+          <div className="grid gap-5 sm:grid-cols-3">
+            <label className="block">
+              <span className={labelCls}>Date</span>
+              <input name="date" type="date" required className={`${fieldCls} [color-scheme:dark]`} />
+            </label>
+            <label className="block">
+              <span className={labelCls}>Time</span>
               <select name="time" className={fieldCls} defaultValue="7:00 PM">
                 {["12:00 PM", "1:00 PM", "2:00 PM", "5:30 PM", "6:30 PM", "7:00 PM", "8:00 PM", "8:30 PM"].map((t) => (
                   <option key={t} className="text-neutral-900">{t}</option>
                 ))}
               </select>
             </label>
+            <label className="block">
+              <span className={labelCls}>Guests</span>
+              <select name="party" className={fieldCls} defaultValue="2 guests">
+                {["1 guest", "2 guests", "3 guests", "4 guests", "5 guests", "6 guests", "7+ guests"].map((g) => (
+                  <option key={g} className="text-neutral-900">{g}</option>
+                ))}
+              </select>
+            </label>
           </div>
           <label className="block">
-            <span className="text-xs uppercase tracking-wider text-[#f3ede1]/55">Your name</span>
-            <input name="cust_name" required className={fieldCls} />
-          </label>
-          <label className="block">
-            <span className="text-xs uppercase tracking-wider text-[#f3ede1]/55">Phone or email</span>
-            <input name="contact" required className={fieldCls} />
-          </label>
-          <label className="block">
-            <span className="text-xs uppercase tracking-wider text-[#f3ede1]/55">Anything else?</span>
+            <span className={labelCls}>Anything else?</span>
             <textarea name="notes" rows={2} className={fieldCls} />
           </label>
           {/* honeypot */}
@@ -108,7 +105,7 @@ export function LanternBooking({ tenantId, name }: { tenantId: string; name: str
           <button
             type="submit"
             disabled={status === "sending"}
-            className="mt-2 block w-full py-4 text-center text-sm font-semibold uppercase tracking-[0.2em] text-white transition hover:opacity-90 disabled:opacity-60"
+            className="mt-1 block w-full py-4 text-center text-sm font-semibold uppercase tracking-[0.2em] text-white transition hover:opacity-90 disabled:opacity-60"
             style={{ background: RED }}
           >
             {status === "sending" ? "Sending…" : "Book now"}

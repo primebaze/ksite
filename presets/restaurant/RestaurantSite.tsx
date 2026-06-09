@@ -143,7 +143,7 @@ export default function RestaurantSite(props: PresetProps) {
       </div>,
     );
   }
-  if (page === "contact") {
+  if (page === "contact" || page === "reservations") {
     return shell(
       <div className="mx-auto max-w-6xl px-6 pt-20 text-center sm:pt-28">
         <SectionHeading tokens={tokens} kicker="Visit us" title="Come and see us" center />

@@ -6,27 +6,36 @@ import { MobileNav } from "./MobileNav";
 const GREEN = "#163d2b";
 const CREAM = "#f6f1e7";
 
-// Sticky header for the Laurel design: transparent over the lush hero, turns
-// solid deep green once the page is scrolled. Centred elegant serif wordmark,
-// nav split either side, prominent "Book a table" button; collapses to a
-// functional hamburger below md.
+// Sticky header for the Laurel design: transparent over the lush home hero,
+// solid deep green on scroll (or forced solid on sub-pages via `solid`).
+// Centred elegant serif wordmark that links home, nav split either side, a
+// prominent "Book a table" button; collapses to a functional hamburger below md.
 export function LaurelHeader({
   name,
   book,
   links,
+  home = "/",
+  solid = false,
 }: {
   name: string;
   book: string;
   links: { label: string; href: string }[];
+  home?: string;
+  /** Force the solid background (used on sub-pages with no hero behind it). */
+  solid?: boolean;
 }) {
-  const [scrolled, setScrolled] = useState(false);
+  const [scrolled, setScrolled] = useState(solid);
 
   useEffect(() => {
+    if (solid) {
+      setScrolled(true);
+      return;
+    }
     const onScroll = () => setScrolled(window.scrollY > 40);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  }, [solid]);
 
   const left = links.slice(0, Math.ceil(links.length / 2));
   const right = links.slice(Math.ceil(links.length / 2));
@@ -48,14 +57,18 @@ export function LaurelHeader({
         {/* mobile menu (functional) */}
         <MobileNav links={links} book={book} cta="Book a table" />
 
-        {/* centred serif wordmark */}
+        {/* centred serif wordmark — links home */}
         <a
-          href="#top"
-          data-edit="tenant.business_name"
-          style={{ fontFamily: "var(--font-fraunces)" }}
-          className="whitespace-nowrap text-center text-lg font-medium tracking-[0.18em] text-white [text-shadow:0_1px_14px_rgba(0,0,0,0.5)] sm:text-2xl"
+          href={home}
+          className="pointer-events-auto absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-center"
         >
-          {name}
+          <span
+            data-edit="tenant.business_name"
+            style={{ fontFamily: "var(--font-fraunces)" }}
+            className="block whitespace-nowrap text-lg font-medium tracking-[0.18em] text-white [text-shadow:0_1px_14px_rgba(0,0,0,0.5)] sm:text-2xl"
+          >
+            {name}
+          </span>
         </a>
 
         {/* desktop nav — right half + book button */}

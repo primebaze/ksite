@@ -1,24 +1,24 @@
 import type { PresetProps } from "@/lib/site-pages";
+import { pageHref } from "@/lib/site-pages";
+import type { ReactNode } from "react";
 import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { LaurelHeader } from "./LaurelHeader";
 import { LaurelBooking } from "./LaurelBooking";
 
 // Laurel — an elegant, luxe, botanical single-venue design (inspired by the
-// structure of The Ivy Collection), adapted to one fully-editable restaurant:
-//  1. Sticky centred serif wordmark header — transparent over the hero, solid
-//     deep green on scroll, prominent "Book a table" button, mobile hamburger.
-//  2. Lush full-bleed hero — serif headline, venue name, reservation CTA.
-//  3. A prominent, persistent booking widget (guests/date/time) — the signature.
-//  4. Refined serif intro / about section.
-//  5. Seasonal menu as elegant cards from groupCatalog(catalog).
-//  6. Events & private dining section (placeholder copy).
-//  7. Order/delivery buttons from content.ordering_links (when present).
-//  8. Botanical gallery grid (only when gallery is non-empty).
-//  9. Visit / Find us — address, tel/mailto, directions, working contact form.
-// 10. Ornate footer — hours, socials, in-page links.
-// Palette is baked to the reference's botanical look (deep green / gold / cream
-// / ink); the client swaps in their own photography, copy, menu, hours, contact.
+// structure of The Ivy Collection), MULTI-PAGE: the nav opens real routes
+// (Menu / About / Gallery / Reservations / Visit) under basePath, never scroll
+// anchors. Each page is its own layout; the sticky serif header and ornate
+// footer are shared via shell(). The palette is baked to the reference's
+// botanical look (deep green / gold / cream / ink); the client swaps in their
+// own photography, copy, menu, hours and contact.
+//
+// Distinct layouts (vs Ember):
+//  - menu: elegant CENTERED single-column with gold decorative dividers.
+//  - reservations: a refined, centred boutique gold-bordered card (LaurelBooking).
+//  - contact: two-column with opening hours emphasised in a bordered card on one
+//    side and the contact form on the other.
 
 const serif = { fontFamily: "var(--font-fraunces)" } as const;
 const GREEN = "#163d2b";
@@ -48,7 +48,18 @@ function Sprig() {
   );
 }
 
-export default function LaurelDesign({ site }: PresetProps) {
+// A decorative centred gold rule with a sprig at its middle, for menu sections.
+function GoldDivider() {
+  return (
+    <div className="flex items-center justify-center gap-4 py-2" aria-hidden>
+      <span className="h-px w-16" style={{ background: `${GOLD}88` }} />
+      <Sprig />
+      <span className="h-px w-16" style={{ background: `${GOLD}88` }} />
+    </div>
+  );
+}
+
+export default function LaurelDesign({ site, page = "home", basePath = "" }: PresetProps) {
   const { tenant, theme, content, catalog, gallery } = site;
   const tokens = tokensFor(content, theme);
   const groups = groupCatalog(catalog);
@@ -57,21 +68,285 @@ export default function LaurelDesign({ site }: PresetProps) {
 
   const bookingOn = content.booking_enabled !== false;
   const contactOn = content.contact_form_enabled !== false;
-  const book = bookingOn ? "#book" : content.reservation_url || content.cta_url || "#visit";
 
-  const navLinks = [
-    { label: "Menu", href: "#menu" },
-    { label: "Events", href: "#events" },
-    ...(bookingOn ? [{ label: "Book", href: "#book" }] : []),
-    { label: "Visit", href: "#visit" },
-  ];
+  const href = (p: Parameters<typeof pageHref>[1]) => pageHref(basePath, p);
+  const book = bookingOn ? href("reservations") : content.reservation_url || href("contact");
 
-  return (
+  const nav = [
+    groups.length > 0 && { label: "Menu", href: href("menu") },
+    content.about && { label: "About", href: href("about") },
+    gallery.length > 0 && { label: "Gallery", href: href("gallery") },
+    bookingOn && { label: "Reservations", href: href("reservations") },
+    { label: "Visit", href: href("contact") },
+  ].filter(Boolean) as { label: string; href: string }[];
+
+  // ---- SHARED FOOTER ----
+  const footer = (
+    <footer style={{ background: GREEN }} className="text-white">
+      <div className="mx-auto max-w-6xl px-6 py-16">
+        <div className="text-center">
+          <Sprig />
+          <a href={href("home")} data-edit="tenant.business_name" style={serif} className="mt-4 block text-2xl tracking-[0.16em]">{name}</a>
+        </div>
+
+        <div className="mt-12 grid gap-12 sm:grid-cols-2 lg:grid-cols-4">
+          <div>
+            <h4 className="text-xs font-semibold uppercase tracking-[0.2em]" style={{ color: GOLD }}>Explore</h4>
+            <ul className="mt-5 space-y-2.5 text-sm text-white/75">
+              {([
+                groups.length > 0 && { label: "Our menu", href: href("menu") },
+                content.about && { label: "About us", href: href("about") },
+                gallery.length > 0 && { label: "Gallery", href: href("gallery") },
+                bookingOn && { label: "Reservations", href: href("reservations") },
+                { label: "Visit us", href: href("contact") },
+              ].filter(Boolean) as { label: string; href: string }[]).map((l) => (
+                <li key={l.label}><a href={l.href} className="transition hover:text-white">{l.label}</a></li>
+              ))}
+            </ul>
+          </div>
+
+          <div>
+            <h4 className="text-xs font-semibold uppercase tracking-[0.2em]" style={{ color: GOLD }}>Opening hours</h4>
+            {content.hours && content.hours.length > 0 ? (
+              <ul className="mt-5 space-y-2 text-sm text-white/75">
+                {content.hours.map((h, i) => (
+                  <li key={i} className="flex justify-between gap-6"><span data-edit={`hours:${i}:day`}>{h.day}</span><span data-edit={`hours:${i}:open`} className="text-white/50">{h.open}</span></li>
+                ))}
+              </ul>
+            ) : (
+              <p className="mt-5 text-sm text-white/60">Open daily for lunch and dinner.</p>
+            )}
+          </div>
+
+          <div>
+            <h4 className="text-xs font-semibold uppercase tracking-[0.2em]" style={{ color: GOLD }}>Find us</h4>
+            <div className="mt-5 space-y-2 text-sm text-white/75">
+              {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
+              {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block hover:text-white">{content.phone}</a>}
+              {content.email && <a data-edit="content.email" href={`mailto:${content.email}`} className="block hover:text-white">{content.email}</a>}
+            </div>
+          </div>
+
+          <div>
+            <h4 className="text-xs font-semibold uppercase tracking-[0.2em]" style={{ color: GOLD }}>Follow</h4>
+            {content.socials && content.socials.length > 0 && (
+              <div className="mt-5 flex gap-4">
+                {content.socials.map((s) => (
+                  <a key={s.url} href={s.url} target="_blank" rel="noreferrer" aria-label={s.label} className="transition hover:opacity-60">
+                    <SocialIcon kind={`${s.label} ${s.url}`} />
+                  </a>
+                ))}
+              </div>
+            )}
+            <a href={book} className="mt-6 inline-flex px-7 py-3 text-xs font-semibold uppercase tracking-[0.2em] transition hover:opacity-90" style={{ background: CREAM, color: GREEN }}>
+              {bookingOn ? "Book a table" : "Contact us"}
+            </a>
+          </div>
+        </div>
+
+        <p className="mt-14 border-t pt-8 text-center text-xs text-white/45" style={{ borderColor: `${GOLD}33` }}>© {name}. All rights reserved.</p>
+      </div>
+    </footer>
+  );
+
+  // ---- SHARED SHELL ----
+  const shell = (children: ReactNode, solid = true) => (
     <div id="top" style={{ ...siteRootStyle(theme, tokens), background: CREAM, color: INK }} className="min-h-screen font-body">
-      {/* Sticky header (transparent over hero, solid green on scroll) */}
-      <LaurelHeader name={name} book={book} links={navLinks} />
+      <LaurelHeader name={name} book={book} links={nav} home={href("home")} solid={solid} />
+      {children}
+      {footer}
+    </div>
+  );
 
-      {/* 2 — LUSH HERO */}
+  // Cream sub-page banner — sets the elegant tone and clears the fixed header.
+  const banner = (kicker: string, title: string) => (
+    <section className="border-b text-center" style={{ background: CREAM, borderColor: `${GOLD}33` }}>
+      <div className="mx-auto max-w-3xl px-6 pb-14 pt-32 sm:pt-36">
+        <p className="text-xs font-semibold uppercase tracking-[0.35em]" style={{ color: GOLD }}>{kicker}</p>
+        <h1 style={serif} className="mt-3 text-4xl font-medium sm:text-5xl">{title}</h1>
+        <div className="mt-6"><Sprig /></div>
+      </div>
+    </section>
+  );
+
+  // ---- MENU (elegant centred single-column with gold dividers) ----
+  if (page === "menu") {
+    return shell(
+      <>
+        {banner("Our menu", "The seasonal table")}
+        <section className="mx-auto max-w-2xl px-6 py-20">
+          {groups.length > 0 ? (
+            <>
+              {groups.map((section, si) => (
+                <div key={section.section} className="break-inside-avoid">
+                  {si > 0 && <GoldDivider />}
+                  {section.section && (
+                    <h2 style={serif} className="mt-2 text-center text-2xl uppercase tracking-[0.18em]" >{section.section}</h2>
+                  )}
+                  {section.categories.map((catg) => (
+                    <div key={catg.category ?? "_"} className="mt-8">
+                      {catg.category && (
+                        <p className="mb-5 text-center text-xs font-semibold uppercase tracking-[0.3em]" style={{ color: GOLD }}>{catg.category}</p>
+                      )}
+                      <ul className="space-y-7">
+                        {catg.items.map((item) => (
+                          <li key={item.id} className="text-center">
+                            <div className="flex items-baseline justify-center gap-3">
+                              <span data-edit={`item:${item.id}:name`} style={serif} className="text-lg" >{item.name}</span>
+                              {item.price && <span data-edit={`item:${item.id}:price`} className="text-sm font-medium" style={{ color: GOLD }}>{item.price}</span>}
+                            </div>
+                            {item.description && <p data-edit={`item:${item.id}:description`} className="mx-auto mt-1.5 max-w-md text-sm italic leading-relaxed text-neutral-600">{item.description}</p>}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  ))}
+                </div>
+              ))}
+
+              {content.ordering_links && content.ordering_links.length > 0 && (
+                <>
+                  <GoldDivider />
+                  <div className="mt-6 flex flex-wrap justify-center gap-4">
+                    {content.ordering_links.map((o) => (
+                      <a key={o.url} href={o.url} target="_blank" rel="noreferrer" className="inline-flex px-8 py-3.5 text-xs font-semibold uppercase tracking-[0.2em] text-white transition hover:opacity-90" style={{ background: GREEN }}>
+                        {o.label}{o.commission_free ? " · commission-free" : ""}
+                      </a>
+                    ))}
+                  </div>
+                </>
+              )}
+
+              <div className="mt-14 text-center">
+                <a href={book} className="inline-flex px-9 py-3.5 text-xs font-semibold uppercase tracking-[0.22em] text-white transition hover:opacity-90" style={{ background: GREEN }}>
+                  {bookingOn ? "Book a table" : "Contact us"}
+                </a>
+              </div>
+            </>
+          ) : (
+            <p className="text-center text-neutral-500">Our menu is coming soon.</p>
+          )}
+        </section>
+      </>,
+    );
+  }
+
+  // ---- RESERVATIONS (refined boutique boxed card) ----
+  if (page === "reservations") {
+    return shell(
+      <>
+        {banner("Reservations", "Book a table")}
+        <section className="mx-auto max-w-xl px-6 py-20">
+          <p className="mb-10 text-center text-[17px] leading-[1.9] text-neutral-700">
+            We would be delighted to welcome you to {name}. Reserve your table below and we will confirm by phone or email. For parties of eight or more, or private dining, please call us directly.
+          </p>
+          <LaurelBooking tenantId={tenant.id} name={name} />
+        </section>
+      </>,
+    );
+  }
+
+  // ---- CONTACT / VISIT (hours card + contact form, two-column) ----
+  if (page === "contact") {
+    return shell(
+      <>
+        {banner("Visit us", "Find us")}
+        <section className="mx-auto grid max-w-6xl gap-12 px-6 py-20 lg:grid-cols-2 lg:gap-20">
+          <div>
+            <h2 style={serif} className="text-3xl font-medium">How to find us</h2>
+            <div className="mt-6 space-y-4 text-[15px] leading-relaxed text-neutral-700">
+              {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
+              {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block hover:opacity-70">{content.phone}</a>}
+              {content.email && <a data-edit="content.email" href={`mailto:${content.email}`} className="block hover:opacity-70">{content.email}</a>}
+            </div>
+
+            {/* Opening hours emphasised in a bordered card */}
+            {content.hours && content.hours.length > 0 && (
+              <div className="mt-9 p-7" style={{ border: `1px solid ${GOLD}`, boxShadow: `inset 0 0 0 4px ${CREAM}, inset 0 0 0 5px ${GOLD}33` }}>
+                <p className="text-xs font-semibold uppercase tracking-[0.3em]" style={{ color: GOLD }}>Opening hours</p>
+                <ul className="mt-4 space-y-2.5 text-sm text-neutral-700">
+                  {content.hours.map((h, i) => (
+                    <li key={i} className="flex justify-between gap-6 border-b border-dashed py-1.5" style={{ borderColor: `${GREEN}22` }}>
+                      <span data-edit={`hours:${i}:day`}>{h.day}</span>
+                      <span data-edit={`hours:${i}:open`} className="text-neutral-500">{h.open}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {content.map_url && (
+              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-8 inline-flex px-7 py-3 text-xs font-semibold uppercase tracking-[0.2em] text-white transition hover:opacity-90" style={{ background: GREEN }}>
+                Get directions
+              </a>
+            )}
+          </div>
+
+          {contactOn && (
+            <div>
+              <SiteContactForms
+                tenantId={tenant.id}
+                booking={false}
+                contact
+                contactTitle="Make an enquiry"
+                contactBlurb="For reservations, events or private dining, send us a note."
+                contactCta="Send enquiry"
+                theme={{ card: "#ffffff", cardBorder: "#b8975a", heading: "#163d2b", blurb: "#4a5b4f", label: "#4a5b4f", fieldBg: "#ffffff", fieldBorder: "#d8cdb0", fieldText: "#163d2b", button: "#163d2b", buttonText: "#f6f1e7", radius: "0", font: "var(--font-fraunces)" }}
+              />
+            </div>
+          )}
+        </section>
+      </>,
+    );
+  }
+
+  // ---- ABOUT ----
+  if (page === "about") {
+    return shell(
+      <>
+        {banner("About", `Welcome to ${name}`)}
+        <section className="mx-auto max-w-3xl px-6 py-20 text-center">
+          {content.about ? (
+            <p data-edit="content.about" className="text-[18px] leading-[1.95] text-neutral-700">{content.about}</p>
+          ) : (
+            <p className="text-neutral-500">Our story is coming soon.</p>
+          )}
+          {content.cuisine_type && (
+            <>
+              <GoldDivider />
+              <h2 style={serif} className="mt-2 text-3xl font-medium">A taste of what we do</h2>
+              <p data-edit="content.cuisine_type" className="mx-auto mt-5 max-w-2xl text-[17px] leading-[1.85] text-neutral-700">{content.cuisine_type}</p>
+            </>
+          )}
+        </section>
+      </>,
+    );
+  }
+
+  // ---- GALLERY ----
+  if (page === "gallery") {
+    return shell(
+      <>
+        {banner("Gallery", "A look inside")}
+        {gallery.length > 0 ? (
+          <section className="grid grid-cols-2 gap-1.5 px-1.5 pb-1.5 sm:grid-cols-3">
+            {gallery.map((g) => (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full object-cover" />
+            ))}
+          </section>
+        ) : (
+          <p className="mx-auto max-w-6xl px-6 py-20 text-center text-neutral-500">Photos coming soon.</p>
+        )}
+      </>,
+    );
+  }
+
+  // ---- HOME (hero + short teasers only) ----
+  const featured = groups.flatMap((s) => s.categories.flatMap((c) => c.items)).slice(0, 6);
+  return shell(
+    <>
+      {/* LUSH HERO */}
       <section className="relative isolate flex min-h-[100vh] flex-col items-center justify-center overflow-hidden text-center">
         {hero ? (
           // eslint-disable-next-line @next/next/no-img-element
@@ -97,212 +372,65 @@ export default function LaurelDesign({ site }: PresetProps) {
         </div>
       </section>
 
-      {/* 3 — PERSISTENT BOOKING WIDGET (signature) */}
-      {bookingOn && (
-        <section style={{ background: GREEN }} className="relative z-20 -mt-px text-white">
-          <div className="mx-auto max-w-6xl px-6 py-10 sm:py-12">
-            <p style={serif} className="text-center text-xl" >Book your table</p>
-            <p className="mt-1 text-center text-xs uppercase tracking-[0.3em]" style={{ color: GOLD }}>Reservations at {name}</p>
-            <div className="mt-8">
-              <LaurelBooking tenantId={tenant.id} name={name} />
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* 4 — INTRO / ABOUT */}
-      {(content.about || content.cuisine_type) && (
+      {/* INTRO / WELCOME teaser */}
+      {content.about && (
         <section className="mx-auto max-w-3xl px-6 py-24 text-center">
           <Sprig />
-          <h2 style={serif} className="mt-6 text-3xl font-medium sm:text-4xl" >Welcome to {name}</h2>
-          {content.about && (
-            <p data-edit="content.about" className="mx-auto mt-7 max-w-2xl text-[17px] leading-[1.9] text-neutral-700">{content.about}</p>
+          <h2 style={serif} className="mt-6 text-3xl font-medium sm:text-4xl">Welcome to {name}</h2>
+          <p data-edit="content.about" className="mx-auto mt-7 max-w-2xl text-[17px] leading-[1.9] text-neutral-700">{content.about}</p>
+          {content.about.length > 0 && (
+            <div className="mt-9">
+              <a href={href("about")} className="text-xs font-semibold uppercase tracking-[0.2em]" style={{ color: GREEN }}>Read our story →</a>
+            </div>
           )}
         </section>
       )}
 
-      {/* 5 — SEASONAL MENU */}
-      {groups.length > 0 && (
-        <section id="menu" style={{ background: GREEN }} className="text-white">
-          <div className="mx-auto max-w-6xl px-6 py-24">
-            <p className="text-center text-xs font-semibold uppercase tracking-[0.35em]" style={{ color: GOLD }}>Our menu</p>
-            <h2 style={serif} className="mt-3 text-center text-4xl font-medium sm:text-5xl">The seasonal table</h2>
-            <div className="mt-14 grid gap-x-12 gap-y-12 md:grid-cols-2">
-              {groups.map((section) => (
-                <div key={section.section} className="break-inside-avoid">
-                  {section.section && (
-                    <h3 className="mb-6 border-b pb-3 text-xl uppercase tracking-[0.16em]" style={{ borderColor: `${GOLD}55`, color: GOLD, fontFamily: "var(--font-fraunces)" }}>{section.section}</h3>
-                  )}
-                  {section.categories.map((catg) => (
-                    <ul key={catg.category ?? "_"} className="space-y-6">
-                      {catg.items.map((item) => (
-                        <li key={item.id}>
-                          <div className="flex items-baseline justify-between gap-3">
-                            <span data-edit={`item:${item.id}:name`} style={serif} className="text-lg text-white">{item.name}</span>
-                            <span className="mx-2 flex-1 border-b border-dotted" style={{ borderColor: `${GOLD}55` }} />
-                            {item.price && <span data-edit={`item:${item.id}:price`} className="text-sm font-medium" style={{ color: GOLD }}>{item.price}</span>}
-                          </div>
-                          {item.description && <p data-edit={`item:${item.id}:description`} className="mt-1 max-w-md text-sm leading-relaxed text-white/65">{item.description}</p>}
-                        </li>
-                      ))}
-                    </ul>
-                  ))}
-                </div>
+      {/* MENU HIGHLIGHTS → link to full menu page */}
+      {featured.length > 0 && (
+        <section style={{ background: GREEN }} className="text-white">
+          <div className="mx-auto max-w-3xl px-6 py-24 text-center">
+            <p className="text-xs font-semibold uppercase tracking-[0.35em]" style={{ color: GOLD }}>Our menu</p>
+            <h2 style={serif} className="mt-3 text-4xl font-medium sm:text-5xl">The seasonal table</h2>
+            <ul className="mx-auto mt-12 max-w-xl space-y-7 text-left">
+              {featured.map((item) => (
+                <li key={item.id}>
+                  <div className="flex items-baseline justify-between gap-3">
+                    <span data-edit={`item:${item.id}:name`} style={serif} className="text-lg text-white">{item.name}</span>
+                    <span className="mx-2 flex-1 border-b border-dotted" style={{ borderColor: `${GOLD}55` }} />
+                    {item.price && <span data-edit={`item:${item.id}:price`} className="text-sm font-medium" style={{ color: GOLD }}>{item.price}</span>}
+                  </div>
+                  {item.description && <p data-edit={`item:${item.id}:description`} className="mt-1 text-sm leading-relaxed text-white/65">{item.description}</p>}
+                </li>
               ))}
+            </ul>
+            <div className="mt-12">
+              <a href={href("menu")} className="inline-flex px-9 py-3.5 text-xs font-semibold uppercase tracking-[0.22em] transition hover:opacity-90" style={{ background: CREAM, color: GREEN }}>
+                View the full menu
+              </a>
             </div>
-
-            {/* 7 — ORDERING LINKS */}
-            {content.ordering_links && content.ordering_links.length > 0 && (
-              <div className="mt-14 flex flex-wrap justify-center gap-4">
-                {content.ordering_links.map((o) => (
-                  <a key={o.url} href={o.url} target="_blank" rel="noreferrer" className="inline-flex px-8 py-3.5 text-xs font-semibold uppercase tracking-[0.2em] transition hover:opacity-90" style={{ background: CREAM, color: GREEN }}>
-                    {o.label}{o.commission_free ? " · commission-free" : ""}
-                  </a>
-                ))}
-              </div>
-            )}
           </div>
         </section>
       )}
 
-      {/* 6 — EVENTS & PRIVATE DINING */}
-      <section id="events" className="mx-auto max-w-5xl px-6 py-24 text-center">
+      {/* QUICK INFO / CTA band */}
+      <section className="mx-auto max-w-5xl px-6 py-24 text-center">
         <Sprig />
-        <p className="mt-6 text-xs font-semibold uppercase tracking-[0.35em]" style={{ color: GOLD }}>Celebrate with us</p>
-        <h2 style={serif} className="mt-3 text-4xl font-medium sm:text-5xl">Events &amp; private dining</h2>
+        <p className="mt-6 text-xs font-semibold uppercase tracking-[0.35em]" style={{ color: GOLD }}>An evening at {name}</p>
+        <h2 style={serif} className="mt-3 text-4xl font-medium sm:text-5xl">Reserve your table</h2>
         <p className="mx-auto mt-6 max-w-2xl text-[17px] leading-[1.9] text-neutral-700">
-          From intimate dinners to milestone celebrations, our team will craft an occasion to remember. Elegant private rooms, bespoke menus and attentive service, tailored to you.
+          Whether an intimate dinner or a milestone celebration, our team is ready to welcome you. Book online in moments, or get in touch to plan something special.
         </p>
-        <div className="mt-12 grid gap-8 text-left sm:grid-cols-3">
-          {[
-            { t: "Private rooms", d: "Beautiful spaces for seated dinners and receptions, with dedicated service throughout." },
-            { t: "Bespoke menus", d: "Seasonal tasting menus and curated wine pairings, designed around your party." },
-            { t: "Special occasions", d: "Birthdays, anniversaries and corporate gatherings, hosted with care from start to finish." },
-          ].map((c) => (
-            <div key={c.t} className="border-t pt-5" style={{ borderColor: `${GOLD}66` }}>
-              <h3 className="text-xl" style={{ color: GREEN, fontFamily: "var(--font-fraunces)" }}>{c.t}</h3>
-              <p className="mt-2 text-sm leading-relaxed text-neutral-600">{c.d}</p>
-            </div>
-          ))}
-        </div>
-        <div className="mt-12">
-          <a href={bookingOn ? "#book" : "#visit"} className="inline-flex px-9 py-3.5 text-xs font-semibold uppercase tracking-[0.2em] text-white transition hover:opacity-90" style={{ background: GREEN }}>
-            Enquire now
+        <div className="mt-10 flex flex-wrap justify-center gap-4">
+          <a href={book} className="inline-flex px-9 py-3.5 text-xs font-semibold uppercase tracking-[0.2em] text-white transition hover:opacity-90" style={{ background: GREEN }}>
+            {bookingOn ? "Book a table" : "Contact us"}
+          </a>
+          <a href={href("contact")} className="inline-flex px-9 py-3.5 text-xs font-semibold uppercase tracking-[0.2em] transition hover:opacity-90" style={{ border: `1px solid ${GREEN}`, color: GREEN }}>
+            Visit us
           </a>
         </div>
       </section>
-
-      {/* 8 — GALLERY */}
-      {gallery.length > 0 && (
-        <section className="grid grid-cols-2 gap-1.5 sm:grid-cols-3">
-          {gallery.slice(0, 6).map((g) => (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full object-cover" />
-          ))}
-        </section>
-      )}
-
-      {/* 9 — VISIT / FIND US (working contact form) */}
-      <section id="visit" style={{ background: CREAM }} className="border-t" >
-        <div className="mx-auto grid max-w-6xl gap-12 px-6 py-24 lg:grid-cols-2 lg:gap-20">
-          <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.35em]" style={{ color: GOLD }}>Visit us</p>
-            <h2 className="mt-3 text-4xl font-medium sm:text-5xl" style={{ color: GREEN, fontFamily: "var(--font-fraunces)" }}>Find us</h2>
-            <div className="mt-8 space-y-4 text-[15px] leading-relaxed text-neutral-700">
-              {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
-              {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block hover:opacity-70">{content.phone}</a>}
-              {content.email && <a data-edit="content.email" href={`mailto:${content.email}`} className="block hover:opacity-70">{content.email}</a>}
-            </div>
-            {content.hours && content.hours.length > 0 && (
-              <ul className="mt-8 max-w-sm space-y-2 text-sm text-neutral-700">
-                {content.hours.map((h, i) => (
-                  <li key={i} className="flex justify-between gap-6 border-b border-dashed py-1.5" style={{ borderColor: `${GREEN}22` }}>
-                    <span data-edit={`hours:${i}:day`}>{h.day}</span>
-                    <span data-edit={`hours:${i}:open`} className="text-neutral-500">{h.open}</span>
-                  </li>
-                ))}
-              </ul>
-            )}
-            {content.map_url && (
-              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-8 inline-flex px-7 py-3 text-xs font-semibold uppercase tracking-[0.2em] text-white transition hover:opacity-90" style={{ background: GREEN }}>
-                Get directions
-              </a>
-            )}
-          </div>
-
-          {contactOn && (
-            <div>
-              <SiteContactForms tenantId={tenant.id} booking={false} contact />
-            </div>
-          )}
-        </div>
-      </section>
-
-      {/* 10 — ORNATE FOOTER */}
-      <footer style={{ background: GREEN }} className="text-white">
-        <div className="mx-auto max-w-6xl px-6 py-16">
-          <div className="text-center">
-            <Sprig />
-            <p data-edit="tenant.business_name" style={serif} className="mt-4 text-2xl tracking-[0.16em]">{name}</p>
-          </div>
-
-          <div className="mt-12 grid gap-12 sm:grid-cols-2 lg:grid-cols-4">
-            <div>
-              <h4 className="text-xs font-semibold uppercase tracking-[0.2em]" style={{ color: GOLD }}>Explore</h4>
-              <ul className="mt-5 space-y-2.5 text-sm text-white/75">
-                {[
-                  { label: "Our menu", href: "#menu" },
-                  { label: "Events & private dining", href: "#events" },
-                  ...(bookingOn ? [{ label: "Book a table", href: "#book" }] : []),
-                  { label: "Visit us", href: "#visit" },
-                ].map((l) => (
-                  <li key={l.label}><a href={l.href} className="transition hover:text-white">{l.label}</a></li>
-                ))}
-              </ul>
-            </div>
-
-            <div>
-              <h4 className="text-xs font-semibold uppercase tracking-[0.2em]" style={{ color: GOLD }}>Opening hours</h4>
-              {content.hours && content.hours.length > 0 ? (
-                <ul className="mt-5 space-y-2 text-sm text-white/75">
-                  {content.hours.map((h, i) => (
-                    <li key={i} className="flex justify-between gap-6"><span data-edit={`hours:${i}:day`}>{h.day}</span><span data-edit={`hours:${i}:open`} className="text-white/50">{h.open}</span></li>
-                  ))}
-                </ul>
-              ) : (
-                <p className="mt-5 text-sm text-white/60">Open daily for lunch and dinner.</p>
-              )}
-            </div>
-
-            <div>
-              <h4 className="text-xs font-semibold uppercase tracking-[0.2em]" style={{ color: GOLD }}>Find us</h4>
-              <div className="mt-5 space-y-2 text-sm text-white/75">
-                {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
-                {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block hover:text-white">{content.phone}</a>}
-                {content.email && <a data-edit="content.email" href={`mailto:${content.email}`} className="block hover:text-white">{content.email}</a>}
-              </div>
-            </div>
-
-            <div>
-              <h4 className="text-xs font-semibold uppercase tracking-[0.2em]" style={{ color: GOLD }}>Follow</h4>
-              {content.socials && content.socials.length > 0 && (
-                <div className="mt-5 flex gap-4">
-                  {content.socials.map((s) => (
-                    <a key={s.url} href={s.url} target="_blank" rel="noreferrer" aria-label={s.label} className="transition hover:opacity-60">
-                      <SocialIcon kind={`${s.label} ${s.url}`} />
-                    </a>
-                  ))}
-                </div>
-              )}
-              <a href={book} className="mt-6 inline-flex px-7 py-3 text-xs font-semibold uppercase tracking-[0.2em] transition hover:opacity-90" style={{ background: CREAM, color: GREEN }}>
-                {bookingOn ? "Book a table" : "Contact us"}
-              </a>
-            </div>
-          </div>
-
-          <p className="mt-14 border-t pt-8 text-center text-xs text-white/45" style={{ borderColor: `${GOLD}33` }}>© {name}. All rights reserved.</p>
-        </div>
-      </footer>
-    </div>
+    </>,
+    false,
   );
 }

@@ -67,13 +67,57 @@ next sector.
       `content.contact_form_enabled !== false`; drop the section + its nav link
       when off.
     - Phone/email are `tel:`/`mailto:` links; address has a "Get directions"
-      button using `content.map_url`; every nav/footer link points to a real
-      in-page anchor (`#menu`, `#book`, `#visit`, …) — never a dead `#`.
+      button using `content.map_url`.
 11. **Render from data so tenant edits show.** Tenants edit AND add/remove rows
     in the dashboard (Content & menu): hours, socials, ordering links, menu items,
     gallery, team. There is **no raw-JSON box** on the tenant side. So map over the
     arrays (`content.hours`, `content.socials`, `content.ordering_links`,
     `groupCatalog(catalog)`, `gallery`) — never hardcode them — and they update live.
+12. **MULTI-PAGE — links open real pages, never scroll.** The nav must navigate to
+    real routes, NOT scroll to anchors on one long page. Switch on `props.page`
+    (`home | menu | about | gallery | reservations | contact`) and render each as
+    its own page; build every nav/footer link with `pageHref(basePath, page)` from
+    `@/lib/site-pages` (so it works on samples and live tenant domains). See
+    `Ember.tsx` for the exact shape: a shared `shell()` (sticky header + footer)
+    wraps each page's body.
+    - **home** = hero + short teasers (intro, a few menu highlights linking to
+      `pageHref(basePath,"menu")`, a quick info band). NOT the full menu, booking
+      form, or contact form.
+    - **menu** = the full menu. **reservations** = the booking widget (its own
+      page). **contact** = address + map/directions + the contact form.
+      **about** / **gallery** when content exists.
+    - The sticky header is transparent only over the home hero; pass `solid` (or
+      equivalent) so it's solid on sub-pages, and give sub-pages a top banner / top
+      padding so content clears the fixed header. The crest links home.
+    - Register the design as the default for its build key in `sample-site.ts`
+      `BUILD_DESIGN` (done centrally) so sub-page links keep the design with no
+      `?design=` query.
+13. **Make each design DISTINCT — never clone closely.** The whole point is variety.
+    Each design must have a genuinely different **menu layout** (e.g. dotted-leader
+    list vs photo cards vs tabbed sections vs centered single-column), **booking
+    layout**, and **contact-page layout**. Match the reference's structure; never
+    copy another design section-for-section. Ember is a *pattern* reference (how to
+    wire pages/header/footer/data), NOT a layout to reproduce. If two designs look
+    interchangeable, that is a bug.
+    - Do not lean on the shared generic blocks as-is when they make every design
+      look the same. The booking widget should be styled to the design (its own
+      `<Name>Booking.tsx`). For the contact form, if you reuse
+      `SiteContactForms`, wrap/skin it so it fits the design rather than shipping
+      the identical white card everywhere; better, give visually distinct designs
+      their own form styling.
+    - Vary copy, headings and section names too — avoid the same stock labels
+      ("Send a message", "What's cooking") across designs.
+14. **No em dashes or en dashes — anywhere a user can see.** This includes data
+    (hours like "Mon to Fri", "12:00 to 22:00"), blurbs, success/error strings, and
+    button labels. Use commas, periods, "to", or a question mark. (Code comments may
+    use them.) The user treats "—"/"–" as an AI tell.
+15. **Never let the sticky header cut off content.** Every sub-page must start below
+    the fixed header — give it a top banner or `pt-32 sm:pt-36`. Test the top of
+    Menu, Reservations and Contact: the first heading/field must be fully visible.
+16. **Every control must be legible.** No same-colour text on same-colour background
+    (e.g. a dark-filled button with dark text). Filled buttons get contrasting text;
+    outline buttons get a visible border. Check booking fields and ordering-link
+    buttons on the design's actual background colour.
 
 ---
 

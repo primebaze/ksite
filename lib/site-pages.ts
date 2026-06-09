@@ -5,7 +5,7 @@
 
 import type { TenantSite } from "./types";
 
-export type PageKey = "home" | "about" | "menu" | "services" | "gallery" | "contact";
+export type PageKey = "home" | "about" | "menu" | "services" | "gallery" | "contact" | "reservations";
 
 // Templates accept an optional page + base path so the same component renders as
 // a single-page site (default) or, when multiPage is set, one page of a
@@ -17,7 +17,7 @@ export interface PresetProps {
   multiPage?: boolean;
 }
 
-export const SUBPAGE_SLUGS = ["about", "menu", "services", "gallery", "contact"] as const;
+export const SUBPAGE_SLUGS = ["about", "menu", "services", "gallery", "contact", "reservations"] as const;
 
 // Resolve an incoming path segment array to a page (or null = 404).
 export function pageFromPath(path?: string[]): PageKey | null {

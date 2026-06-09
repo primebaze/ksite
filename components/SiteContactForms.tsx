@@ -10,6 +10,39 @@ interface Field {
   half?: boolean;
 }
 
+// Visual theme so each design can skin the form to its palette instead of the
+// same white card everywhere. All optional; omitted values fall back to a clean
+// light look (used by the generic preset).
+export interface FormTheme {
+  card?: string;
+  cardBorder?: string;
+  heading?: string;
+  blurb?: string;
+  label?: string;
+  fieldBg?: string;
+  fieldBorder?: string;
+  fieldText?: string;
+  button?: string;
+  buttonText?: string;
+  radius?: string;
+  font?: string;
+}
+
+const DEFAULT_THEME: Required<FormTheme> = {
+  card: "#ffffff",
+  cardBorder: "rgba(0,0,0,0.07)",
+  heading: "#171717",
+  blurb: "#737373",
+  label: "#525252",
+  fieldBg: "#ffffff",
+  fieldBorder: "#d4d4d4",
+  fieldText: "#171717",
+  button: "var(--primary)",
+  buttonText: "#ffffff",
+  radius: "1rem",
+  font: "inherit",
+};
+
 const BOOKING_FIELDS: Field[] = [
   { key: "name", label: "Your name", required: true, half: true },
   { key: "contact", label: "Phone or email", required: true, half: true },
@@ -25,9 +58,6 @@ const CONTACT_FIELDS: Field[] = [
   { key: "message", label: "Message", type: "textarea", required: true },
 ];
 
-const inputCls =
-  "mt-1.5 w-full rounded-lg border border-neutral-300 bg-white px-3.5 py-2.5 text-sm text-neutral-900 outline-none transition focus:border-[var(--primary)] focus:ring-2 focus:ring-[var(--primary)]/15";
-
 function LeadForm({
   tenantId,
   kind,
@@ -35,7 +65,7 @@ function LeadForm({
   blurb,
   submitLabel,
   fields,
-  btnClass,
+  t,
 }: {
   tenantId: string;
   kind: "booking" | "contact";
@@ -43,7 +73,7 @@ function LeadForm({
   blurb: string;
   submitLabel: string;
   fields: Field[];
-  btnClass: string;
+  t: Required<FormTheme>;
 }) {
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
   const [error, setError] = useState("");
@@ -76,29 +106,32 @@ function LeadForm({
       }
     } catch {
       setStatus("error");
-      setError("Network error — please try again.");
+      setError("Network error. Please try again.");
     }
   }
 
+  const inputStyle = { background: t.fieldBg, borderColor: t.fieldBorder, color: t.fieldText } as const;
+  const inputCls = "mt-1.5 w-full rounded-lg border px-3.5 py-2.5 text-sm outline-none transition focus:border-current";
+
   return (
-    <div className="rounded-2xl border border-black/[0.07] bg-white p-6 shadow-[0_1px_2px_rgba(0,0,0,0.04)] sm:p-7">
-      <h3 className="font-display text-xl font-semibold text-neutral-900">{title}</h3>
-      <p className="mt-1 text-sm text-neutral-500">{blurb}</p>
+    <div className="border p-6 shadow-[0_1px_2px_rgba(0,0,0,0.04)] sm:p-7" style={{ background: t.card, borderColor: t.cardBorder, borderRadius: t.radius }}>
+      <h3 className="text-xl font-semibold" style={{ color: t.heading, fontFamily: t.font }}>{title}</h3>
+      <p className="mt-1 text-sm" style={{ color: t.blurb }}>{blurb}</p>
 
       {status === "sent" ? (
         <p className="mt-5 rounded-lg border border-emerald-300/50 bg-emerald-50 px-4 py-4 text-sm font-medium text-emerald-700">
-          Thanks — we&apos;ve received it and will be in touch shortly.
+          Thanks, we&apos;ve received it and will be in touch shortly.
         </p>
       ) : (
         <form onSubmit={onSubmit} className="mt-5">
           <div className="grid grid-cols-2 gap-3">
             {fields.map((f) => (
-              <label key={f.key} className={f.half ? "col-span-1 block text-xs font-medium text-neutral-600" : "col-span-2 block text-xs font-medium text-neutral-600"}>
+              <label key={f.key} className={`${f.half ? "col-span-1" : "col-span-2"} block text-xs font-medium`} style={{ color: t.label }}>
                 {f.label}
                 {f.type === "textarea" ? (
-                  <textarea name={f.key} required={f.required} rows={3} className={inputCls} />
+                  <textarea name={f.key} required={f.required} rows={3} className={inputCls} style={inputStyle} />
                 ) : (
-                  <input name={f.key} type={f.type ?? "text"} required={f.required} className={inputCls} />
+                  <input name={f.key} type={f.type ?? "text"} required={f.required} className={inputCls} style={inputStyle} />
                 )}
               </label>
             ))}
@@ -109,9 +142,10 @@ function LeadForm({
           <button
             type="submit"
             disabled={status === "sending"}
-            className={btnClass}
+            className="mt-5 w-full px-5 py-3 text-sm font-semibold uppercase tracking-[0.12em] transition active:scale-[0.99] hover:opacity-90 disabled:opacity-60"
+            style={{ background: t.button, color: t.buttonText, borderRadius: t.radius === "0" ? "0" : "0.6rem" }}
           >
-            {status === "sending" ? "Sending…" : submitLabel}
+            {status === "sending" ? "Sending..." : submitLabel}
           </button>
         </form>
       )}
@@ -127,6 +161,10 @@ export function SiteContactForms({
   bookingTitle = "Request a booking",
   bookingBlurb = "Tell us when suits and we'll confirm.",
   bookingCta = "Send request",
+  contactTitle = "Send a message",
+  contactBlurb = "Questions or anything else? We'd love to hear from you.",
+  contactCta = "Send message",
+  theme,
 }: {
   tenantId: string;
   booking: boolean;
@@ -134,34 +172,21 @@ export function SiteContactForms({
   bookingTitle?: string;
   bookingBlurb?: string;
   bookingCta?: string;
+  contactTitle?: string;
+  contactBlurb?: string;
+  contactCta?: string;
+  theme?: FormTheme;
 }) {
   if (!booking && !contact) return null;
-  const btnClass =
-    "mt-5 w-full rounded-lg bg-[var(--primary)] px-5 py-3 text-sm font-semibold text-white transition active:scale-[0.99] hover:opacity-90 disabled:opacity-60";
+  const t: Required<FormTheme> = { ...DEFAULT_THEME, ...theme };
 
   return (
     <div className="mx-auto grid max-w-xl gap-5">
       {booking && (
-        <LeadForm
-          tenantId={tenantId}
-          kind="booking"
-          title={bookingTitle}
-          blurb={bookingBlurb}
-          submitLabel={bookingCta}
-          fields={BOOKING_FIELDS}
-          btnClass={btnClass}
-        />
+        <LeadForm tenantId={tenantId} kind="booking" title={bookingTitle} blurb={bookingBlurb} submitLabel={bookingCta} fields={BOOKING_FIELDS} t={t} />
       )}
       {contact && (
-        <LeadForm
-          tenantId={tenantId}
-          kind="contact"
-          title="Send a message"
-          blurb="Questions or anything else — we'd love to hear from you."
-          submitLabel="Send message"
-          fields={CONTACT_FIELDS}
-          btnClass={btnClass}
-        />
+        <LeadForm tenantId={tenantId} kind="contact" title={contactTitle} blurb={contactBlurb} submitLabel={contactCta} fields={CONTACT_FIELDS} t={t} />
       )}
     </div>
   );
