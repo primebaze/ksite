@@ -141,9 +141,18 @@ export function sampleGroups(perGroup = 10): BuildGroup[] {
   });
 }
 
+// Near-duplicate business types hidden from the pickers and gallery so the
+// selection never reads as the same thing twice (e.g. "Dentist" next to
+// "Dental Practice"). The keys still resolve for existing links and tenants.
+const HIDDEN_KEYS = new Set(["dental", "day_spa", "coffee_shop", "videographer"]);
+
+// Builds shown in pickers/search (alias keys filtered out).
+export const VISIBLE_BUILDS = BUILDS.filter((b) => !HIDDEN_KEYS.has(b.key));
+
 export function buildGroups(): BuildGroup[] {
   const map = new Map<string, { key: string; label: string }[]>();
   for (const b of BUILDS) {
+    if (HIDDEN_KEYS.has(b.key)) continue;
     if (!map.has(b.group)) map.set(b.group, []);
     map.get(b.group)!.push({ key: b.key, label: b.label });
   }
@@ -159,8 +168,19 @@ export function buildGroups(): BuildGroup[] {
 // Assign a UNIQUE photo per build, walking each category in the same
 // (style-diverse) order the gallery shows them, so the visible cards never
 // repeat an image. Falls back to cycling only once a pool is exhausted.
+// Group ALL builds (including picker-hidden alias keys) so every key keeps a
+// hero photo even though it no longer appears in the pickers/gallery.
+function allGroups(): BuildGroup[] {
+  const map = new Map<string, { key: string; label: string }[]>();
+  for (const b of BUILDS) {
+    if (!map.has(b.group)) map.set(b.group, []);
+    map.get(b.group)!.push({ key: b.key, label: b.label });
+  }
+  return [...map.entries()].map(([group, builds]) => ({ group, builds }));
+}
+
 const HERO = new Map<string, string>();
-for (const g of sampleGroups(1000)) {
+for (const g of allGroups()) {
   const pool = HERO_POOL[g.group] ?? [];
   const used = new Set<string>();
   // Pass 1: curated per-key pins always win (so a themed photo is never stolen

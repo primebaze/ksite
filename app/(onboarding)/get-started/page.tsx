@@ -1,13 +1,13 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { BUILDS, buildGroups, buildFor } from "@/lib/builds";
+import { VISIBLE_BUILDS, buildGroups, buildFor } from "@/lib/builds";
 import { BUILD_DESIGN, GROUP_DESIGNS } from "@/lib/sample-site";
 import { GetStartedFlow } from "@/components/GetStartedFlow";
 import { startOnboarding } from "./actions";
 
 const GROUPS = buildGroups();
 const TURNSTILE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
-const BUILD_OPTIONS = BUILDS.map((build) => ({
+const BUILD_OPTIONS = VISIBLE_BUILDS.map((build) => ({
   key: build.key,
   label: build.label,
   group: build.group,

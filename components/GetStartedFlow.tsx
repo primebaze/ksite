@@ -35,7 +35,7 @@ const FEATURED_GROUPS = ["Food & drink", "Hair & beauty", "Health & wellness", "
 
 const GROUP_COPY: Record<string, string> = {
   "Food & drink": "Restaurants, cafés, bars and bakeries",
-  "Hair & beauty": "Salons, spas, nails, lashes and makeup",
+  "Hair & beauty": "Salons, barbers, nails, lashes and makeup",
   "Health & wellness": "Clinics, dentists, therapy and wellbeing",
   Fitness: "Gyms, trainers, yoga and coaching",
   "Contractors & home": "Plumbers, electricians and home services",
@@ -48,16 +48,16 @@ const GROUP_COPY: Record<string, string> = {
 };
 
 const FEATURED_TYPES: Record<string, string[]> = {
-  "Food & drink": ["restaurant", "cafe", "coffee_shop", "bakery", "bar", "bistro"],
+  "Food & drink": ["restaurant", "cafe", "bakery", "bar", "bistro", "pizzeria"],
   "Hair & beauty": ["beauty_salon", "hair_salon", "barber", "nail_salon", "lash_brow", "makeup_artist"],
-  "Health & wellness": ["dentist", "dental", "aesthetics_clinic", "skin_clinic", "physio", "massage"],
+  "Health & wellness": ["dentist", "aesthetics_clinic", "skin_clinic", "physio", "massage", "spa"],
   Fitness: ["personal_trainer", "gym", "yoga_studio", "pilates", "boxing_gym", "bootcamp"],
   "Contractors & home": ["plumber", "electrician", "builder", "cleaner", "handyman", "painter_decorator"],
   Automotive: ["garage", "car_detailing", "car_wash", "mot_centre", "bodyshop", "tyre_shop"],
   "Professional services": ["accountant", "business_consultant", "solicitor", "marketing_agency", "financial_advisor", "architect"],
   "Retail & shops": ["boutique", "florist", "gift_shop", "bookshop", "homeware", "jeweller"],
   Pets: ["dog_groomer", "vet", "dog_walker", "pet_shop", "dog_trainer", "cattery_kennels"],
-  "Events & creative": ["photographer", "wedding_planner", "event_venue", "dj", "videographer", "party_hire"],
+  "Events & creative": ["photographer", "wedding_planner", "event_venue", "dj", "party_hire"],
   Education: ["private_tutor", "nursery", "driving_school", "dance_school", "music_teacher", "language_school"],
 };
 
