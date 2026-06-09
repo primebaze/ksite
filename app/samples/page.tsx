@@ -12,7 +12,15 @@ export const metadata: Metadata = {
   description: "Browse sample websites for over 150 types of local business.",
 };
 
-const styleOf = (key: string) => BUILDS.find((b) => b.key === key)?.style ?? "classic";
+const byKey = new Map(BUILDS.map((b) => [b.key, b]));
+const styleOf = (key: string) => byKey.get(key)?.style ?? "classic";
+
+// Hand-picked best-looking designs, spanning every hero style, for the
+// "Popular designs" tab (the first thing visitors see).
+const POPULAR_KEYS = [
+  "restaurant", "cafe", "steakhouse", "hair_salon", "barber", "spa",
+  "gym", "dental", "photographer", "florist", "tattoo", "boutique",
+];
 
 export default function SamplesIndex() {
   const groups: BrowserGroup[] = sampleGroups(10).map((g) => ({
@@ -20,10 +28,11 @@ export default function SamplesIndex() {
     builds: g.builds.map((b) => ({ ...b, style: styleOf(b.key) })),
   }));
 
-  // A "Popular" tab: a diverse mix across every category.
   const popular: BrowserGroup = {
     group: "Popular designs",
-    builds: sampleGroups(2).flatMap((g) => g.builds.map((b) => ({ ...b, style: styleOf(b.key) }))),
+    builds: POPULAR_KEYS.map((k) => byKey.get(k))
+      .filter(Boolean)
+      .map((b) => ({ key: b!.key, label: b!.label, style: b!.style })),
   };
 
   const all = [popular, ...groups];

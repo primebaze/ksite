@@ -322,10 +322,14 @@ export function ContactFooter({
   site,
   tokens,
   cta,
+  withForms = true,
 }: {
   site: TenantSite;
   tokens: StyleTokens;
   cta?: { label: string; href: string };
+  // Multi-page sites render the booking/contact forms on the dedicated contact
+  // page instead, so the footer on every page stays a compact contact band.
+  withForms?: boolean;
 }) {
   const { tenant, content } = site;
   const hasContact = content.phone || content.email || content.address || (content.hours && content.hours.length);
@@ -333,7 +337,7 @@ export function ContactFooter({
   // Built-in lead forms (included by default; owner can switch each off).
   const bookingOn = content.booking_enabled !== false;
   const contactOn = content.contact_form_enabled !== false;
-  const formsOn = bookingOn || contactOn;
+  const formsOn = withForms && (bookingOn || contactOn);
   const forms = formsOn ? (
     <SiteContactForms
       tenantId={tenant.id}
@@ -693,6 +697,7 @@ export function siteShell({
   cta,
   basePath,
   children,
+  withForms = true,
 }: {
   site: TenantSite;
   tokens: StyleTokens;
@@ -700,12 +705,13 @@ export function siteShell({
   cta?: { label: string; href: string };
   basePath: string;
   children: ReactNode;
+  withForms?: boolean;
 }): ReactNode {
   return (
     <div id="top" style={siteRootStyle(site.theme, tokens)} className="font-body min-h-screen bg-white text-neutral-900">
       <SiteHeader site={site} tokens={tokens} nav={nav} cta={cta} home={pageHref(basePath, "home")} />
       {children}
-      <ContactFooter site={site} tokens={tokens} cta={cta} />
+      <ContactFooter site={site} tokens={tokens} cta={cta} withForms={withForms} />
     </div>
   );
 }
@@ -746,7 +752,8 @@ export function renderMultiPage({
     { label: "Contact", href: pageHref(basePath, "contact") },
   ].filter(Boolean) as NavItem[];
 
-  const wrap = (children: ReactNode) => siteShell({ site, tokens, nav, cta, basePath, children });
+  // Multi-page: forms live on the contact page, never in the per-page footer.
+  const wrap = (children: ReactNode) => siteShell({ site, tokens, nav, cta, basePath, withForms: false, children });
   const ctaBtn = cta ? (
     <div className="mt-14 text-center">
       <a href={cta.href} className={cx("inline-flex bg-[var(--primary)] px-8 py-3.5 text-sm font-semibold text-white transition active:scale-[0.98] hover:opacity-90", tokens.btn)}>{cta.label}</a>
@@ -773,9 +780,31 @@ export function renderMultiPage({
     );
   }
   if (page === "contact") {
+    const content = site.content;
+    const bookingOn = content.booking_enabled !== false;
+    const contactOn = content.contact_form_enabled !== false;
     return wrap(
-      <div className="mx-auto max-w-6xl px-6 pt-20 text-center sm:pt-28">
+      <div className="mx-auto max-w-2xl px-6 pt-20 pb-24 sm:pt-28">
         <SectionHeading tokens={tokens} kicker="Get in touch" title="Come say hello" center />
+
+        {(content.phone || content.email || content.address) && (
+          <div className="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm text-neutral-600">
+            {content.address && <span data-edit="content.address">{content.address}</span>}
+            {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="hover:text-[var(--primary)]">{content.phone}</a>}
+            {content.email && <a data-edit="content.email" href={`mailto:${content.email}`} className="hover:text-[var(--primary)]">{content.email}</a>}
+          </div>
+        )}
+
+        {(bookingOn || contactOn) && (
+          <div className="mt-12">
+            <SiteContactForms
+              tenantId={site.tenant.id}
+              booking={bookingOn}
+              contact={contactOn}
+              bookingTitle={BOOKING_TITLES[archetypeFor(site.tenant.preset)] ?? "Request a booking"}
+            />
+          </div>
+        )}
       </div>,
     );
   }
