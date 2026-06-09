@@ -5,10 +5,14 @@ import { notFound } from "next/navigation";
 import { getPresetComponent } from "@/presets";
 import { sampleSiteFor } from "@/lib/sample-site";
 import { BUILDS, buildFor } from "@/lib/builds";
+import { pageFromPath } from "@/lib/site-pages";
 import type { SiteContent } from "@/lib/types";
 
+export const dynamicParams = true;
+
 export function generateStaticParams() {
-  return BUILDS.map((b) => ({ key: b.key }));
+  // Prebuild the home page of every sample; sub-pages render on demand.
+  return BUILDS.map((b) => ({ key: b.key, path: [] as string[] }));
 }
 
 const STYLES = new Set(["editorial", "bold", "minimal", "warm", "luxe", "classic"]);
@@ -23,11 +27,15 @@ export default async function SamplePage({
   params,
   searchParams,
 }: {
-  params: Promise<{ key: string }>;
+  params: Promise<{ key: string; path?: string[] }>;
   searchParams: Promise<{ style?: string; embed?: string; img?: string; video?: string; name?: string }>;
 }) {
-  const { key } = await params;
+  const { key, path } = await params;
   const { style, embed, img, video, name } = await searchParams;
+
+  const page = pageFromPath(path);
+  if (!page) notFound();
+
   const site = sampleSiteFor(key);
   if (!site) notFound();
 
@@ -61,7 +69,7 @@ export default async function SamplePage({
           </Link>
         </div>
       )}
-      {createElement(getPresetComponent(site.tenant.preset), { site })}
+      {createElement(getPresetComponent(site.tenant.preset), { site, page, basePath: `/samples/${key}`, multiPage: true })}
     </div>
   );
 }

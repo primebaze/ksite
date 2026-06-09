@@ -229,11 +229,13 @@ export function SiteHeader({
   tokens,
   nav,
   cta,
+  home = "#top",
 }: {
   site: TenantSite;
   tokens: StyleTokens;
   nav: NavItem[];
   cta?: { label: string; href: string };
+  home?: string;
 }) {
   const { tenant, theme } = site;
   const dark = tokens.heroDark;
@@ -247,7 +249,7 @@ export function SiteHeader({
       )}
     >
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-6 px-6 py-5">
-        <a href="#top" className="flex items-center gap-2.5">
+        <a href={home} className="flex items-center gap-2.5">
           {theme.logo_url ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img src={theme.logo_url} alt={tenant.business_name} className="h-8 w-auto object-contain" />
