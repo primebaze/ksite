@@ -17,9 +17,9 @@ interface Ex {
 // They act as a cover that parts on scroll to reveal the pricing panel.
 const EXAMPLES: Ex[] = [
   { key: "cocktail_bar", name: "Velvet & Oak", tag: "Cocktail Bar", domain: "velvetandoak.com", video: "/hero/restaurant.mp4" },
-  { key: "florist", name: "Bloom & Stem", tag: "Florist", domain: "bloomandstem.co.uk", video: "/hero/cafe.mp4" },
+  { key: "boxing_gym", name: "Punch House", tag: "Boxing Gym", domain: "punchhouse.fit", video: "/hero/box.mp4" },
   { key: "gym", name: "Ironworks Gym", tag: "Fitness Studio", domain: "ironworks.gym", video: "/hero/gym.mp4" },
-  { key: "cafe", name: "Maple & Bean", tag: "Café & Brunch", domain: "mapleandbean.co", video: "/hero/hair.mp4" },
+  { key: "barber_shop", name: "Fade & Co.", tag: "Barbershop", domain: "fadeandco.co.uk", video: "/hero/barber.mp4" },
 ];
 
 const PLAN_INCLUDES = [
@@ -39,11 +39,13 @@ function Check() {
   );
 }
 
+// Decorative only: these are part of a scroll-driven reveal, not links. Making
+// them anchors caused the global navigation indicator ("Loading…") to fire on
+// taps that the pinned-scroll section then swallowed, so it looked stuck.
 function BrowserCard({ e }: { e: Ex }) {
   return (
-    <Link
-      href={`/samples/${e.key}`}
-      className="group relative block overflow-hidden rounded-xl border border-white/15 bg-neutral-950 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.8)] transition duration-300 hover:scale-[1.03] hover:border-white/30"
+    <div
+      className="relative block overflow-hidden rounded-xl border border-white/15 bg-neutral-950 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.8)]"
     >
       <div className="flex items-center gap-1.5 border-b border-white/10 bg-white/[0.03] px-3 py-2">
         <span className="h-2 w-2 rounded-full bg-white/15" />
@@ -63,7 +65,7 @@ function BrowserCard({ e }: { e: Ex }) {
           </p>
         </div>
       </div>
-    </Link>
+    </div>
   );
 }
 
