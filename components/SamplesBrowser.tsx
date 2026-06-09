@@ -12,6 +12,8 @@ export interface BrowserItem {
   design?: string;
   /** Demo business name override for the preview. */
   name?: string;
+  /** Short descriptor shown under the design name on the card. */
+  sublabel?: string;
 }
 export interface BrowserGroup {
   group: string;
@@ -67,7 +69,10 @@ export function SamplesBrowser({ groups }: { groups: BrowserGroup[] }) {
               >
                 <TemplateThumb src={`/samples/${b.key}?embed=1${extra}`} />
                 {b.design && (
-                  <p className="px-5 pb-4 pt-3.5 text-sm font-medium text-white/80">{b.label}</p>
+                  <div className="flex items-baseline justify-between gap-3 px-5 pb-4 pt-3.5">
+                    <span className="text-base font-semibold tracking-tight text-white">{b.label}</span>
+                    {b.sublabel && <span className="shrink-0 text-xs text-white/45">{b.sublabel}</span>}
+                  </div>
                 )}
               </Link>
             );

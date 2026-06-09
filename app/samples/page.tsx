@@ -19,12 +19,17 @@ const styleOf = (key: string) => byKey.get(key)?.style ?? "classic";
 // as the recommended "Popular designs" tab — the first thing visitors see.
 // Each previews a full custom design under a fitting build for a real hero photo.
 const POPULAR_DESIGNS: BrowserItem[] = [
-  { key: "steakhouse", design: "ember", label: "Ember · steakhouse", style: "luxe" },
-  { key: "sushi", design: "drift", label: "Drift · sushi & sticks", style: "minimal" },
-  { key: "fine_dining", design: "laurel", label: "Laurel · modern European", style: "editorial" },
-  { key: "bar", design: "lantern", label: "Lantern · modern Asian", style: "bold" },
-  { key: "bbq", design: "marble", label: "Marble · grill & lounge", style: "luxe" },
-  { key: "brunch_cafe", design: "daybreak", label: "Daybreak · all-day dining", style: "warm" },
+  { key: "steakhouse", design: "ember", label: "Ember", sublabel: "Premium steakhouse", style: "luxe" },
+  { key: "sushi", design: "drift", label: "Drift", sublabel: "Sushi and small plates", style: "minimal" },
+  { key: "fine_dining", design: "laurel", label: "Laurel", sublabel: "Modern European", style: "editorial" },
+  { key: "bar", design: "lantern", label: "Lantern", sublabel: "Modern Asian gastropub", style: "bold" },
+  { key: "bbq", design: "marble", label: "Marble", sublabel: "Grill and lounge", style: "luxe" },
+  { key: "brunch_cafe", design: "daybreak", label: "Daybreak", sublabel: "Bright all-day dining", style: "warm" },
+  { key: "japanese", design: "tide", label: "Tide", sublabel: "Sushi and sticks", style: "minimal" },
+  { key: "brasserie", design: "botanica", label: "Botanica", sublabel: "Botanical brasserie", style: "editorial" },
+  { key: "chinese", design: "lacquer", label: "Lacquer", sublabel: "Dark modern Chinese", style: "bold" },
+  { key: "cocktail_bar", design: "cinder", label: "Cinder", sublabel: "Steakhouse and lounge", style: "luxe" },
+  { key: "cafe", design: "meadow", label: "Meadow", sublabel: "All-day brasserie", style: "warm" },
 ];
 
 export default function SamplesIndex() {

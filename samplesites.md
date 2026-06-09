@@ -118,6 +118,25 @@ next sector.
     (e.g. a dark-filled button with dark text). Filled buttons get contrasting text;
     outline buttons get a visible border. Check booking fields and ordering-link
     buttons on the design's actual background colour.
+17. **Copy the IN-DEPTH STRUCTURE, not just the look.** Recreate every meaningful
+    section the reference has and in the same order/density — do NOT flatten a rich
+    page into a few generic blocks. In particular:
+    - **Sliders / carousels** — if the reference has a hero slider, logo strip,
+      review/testimonial carousel, or a "before & after" slider, build it as a small
+      `"use client"` component (state + prev/next, swipe-friendly), fed by our data
+      (gallery, a testimonials array, menu items). Don't replace a carousel with a
+      static grid.
+    - **Video hero** — if the reference's hero is a looping video, render
+      `content.hero_video_url` as a muted autoplay loop with the image
+      (`content.hero_image_url`) as poster/fallback. Support both; never hardcode a
+      file. (See how `Hero` in `presets/shared.tsx` handles `video`.)
+    - **Content blocks** — reproduce the reference's block types: stats/numbers
+      bands, testimonials/reviews, FAQ accordions, "before & after", treatment/price
+      lists, team/stylist grids, trust badges, press logos, intro story, CTA bands.
+      Map them to our data (`catalog`, `team`, `gallery`, `content.*`) with graceful
+      fallbacks; keep the same section rhythm as the screenshot.
+    - Match the reference's COPY tone and headings (rewritten in our own words, no
+      brand names), not placeholder lorem.
 
 ---
 
@@ -159,9 +178,16 @@ samples gallery and onboarding) instead of needing the `?design=` param.
 
 ## Build routine (per design)
 
-1. **Study the reference** — WebFetch the URL for structure; if it 403s, work
-   from screenshots / known style. Note: hero type, nav, section order, footer,
-   palette, type.
+1. **Study the reference — from the real screenshots.** Full-page captures live in
+   `public/samples/` (food) and `public/samples/<sector>/` (e.g. `hair&beauty/`).
+   They are tall PNGs, so slice them and READ each band IN ORDER before coding:
+   ```bash
+   # crop into ~2100px bands, scaled to 1400 wide, into /tmp/slices/<name>/
+   ffmpeg -loglevel error -y -i SHOT.png -vf "crop=W:2100:0:Y,scale=1400:-1" out.png
+   ```
+   Follow the STRUCTURE closely (hero type, nav, section order, layouts, palette,
+   type, footer). Swap ALL media/text for the tenant's; the screenshot is layout
+   reference only, never its photos/logo/brand copy. Adapt chains to a single venue.
 2. **Build the component** in `presets/<archetype>/designs/<Name>.tsx` — faithful
    structure, single-venue, baked palette, `data-edit` + `data-edit-image`,
    real data, mobile-responsive, client component for any interactivity.
@@ -198,11 +224,40 @@ a fitting build key for a real hero photo).
 | 5 | Kobe — `kobe-restaurant.co.uk` (steakhouse & lounge, warm dark) | Marble | `marble` | `bbq` | built, in review |
 | 6 | Bill's — `bills-website.co.uk` (bright, all-day, "What's On" grid) | Daybreak | `daybreak` | `brunch_cafe` | built, in review |
 
-Next for this sector: after review/approval, build the **2 variants per original**
-(18 total), then move to Hair & beauty.
+Plus 5 newer screenshot-faithful designs (kept alongside the first 6 → 11 total):
+Sticks'n'Sushi→**Tide** (`tide`, build `japanese`), The Ivy→**Botanica** (`botanica`,
+build `brasserie`), The Duck & Rice→**Lacquer** (`lacquer`, build `chinese`), Kobe→
+**Cinder** (`cinder`, build `cocktail_bar`), Bill's→**Meadow** (`meadow`, build `cafe`).
+All 11 are in `RESTAURANT_DESIGNS`, the `BUILD_DESIGN` map and the Popular tab.
 
-### Remaining sectors (ask the user for ~6 reference links each, in order)
-1. Hair & beauty
+### A NEW SECTOR / archetype (how Hair & beauty plugs in)
+Each archetype gets its OWN designs registry + preset hook (mirrors restaurants):
+- **Hair & beauty = the `bookings` archetype → `presets/salon/SalonSite.tsx`.**
+- Registry: `presets/salon/designs/index.tsx` → `SALON_DESIGNS` + `getSalonDesign(key)`.
+- Hook (already added) at the top of `SalonSite.tsx`:
+  `const Design = getSalonDesign(props.site.content.design); if (Design) return <Design {...props} />;`
+- Salon data model differs from restaurants: catalog = **treatments / services**
+  (use `groupCatalog`), `site.team` = **stylists** (name/role/photo, edited in the
+  dashboard, no inline data-edit key), booking link = `content.booking_url`. Pages:
+  home / **services** (not "menu") / about / gallery / reservations / contact.
+- Register new keys centrally in `SALON_DESIGNS` and add them to `BUILD_DESIGN`
+  (sample-site) for salon build keys (e.g. `hair_salon`, `barber`, `nail_salon`,
+  `spa`, `beauty_salon`) + the Popular tab.
+
+### Hair & beauty (in progress) — screenshots in `public/samples/hair&beauty/`
+| # | Reference | Our name | Key | Status |
+|---|-----------|----------|-----|--------|
+| 1 | Blue Tit London (creative hair salon) | Indigo | `indigo` | building |
+| 2 | Salt Salon (minimal modern salon) | Halo | `halo` | building |
+| 3 | VA Salon (bold salon) | Verve | `verve` | building |
+| 4 | Salon House (refined salon) | Atelier | `atelier` | building |
+| 5 | New Cross Hair (barber / hair) | Fade | `fade` | building |
+| 6 | Beauty Club London (beauty / aesthetics clinic) | Lumiere | `lumiere` | building |
+
+Extras held for later/variants: `regissalons.co.uk`, `booksy` (booking platform).
+
+### Remaining sectors (ask the user for reference links/screenshots, in order)
+1. ~~Hair & beauty~~ (in progress)
 2. Health & wellness
 3. Fitness
 4. Contractors & home
@@ -211,8 +266,6 @@ Next for this sector: after review/approval, build the **2 variants per original
 7. Pets
 8. Events & creative
 9. Education
-
-When food is done, ask for the **Hair & beauty** links and repeat the routine.
 
 ---
 

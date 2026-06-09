@@ -1,6 +1,15 @@
-import { buildFor, heroFor } from "./builds";
+import { buildFor, galleryFor, heroFor, videoFor } from "./builds";
 import { starterContent } from "./starter";
 import type { TenantSite } from "./types";
+
+// Sample stylists / practitioners for bookings-archetype demos (salons, barbers,
+// clinics, studios) so team sections are populated. Generic portraits + roles.
+const SAMPLE_TEAM = [
+  { name: "Sofia Bennett", role: "Senior Stylist", credentials: null, photo_url: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=600&q=70&auto=format&fit=crop" },
+  { name: "Amara Okafor", role: "Colour Specialist", credentials: null, photo_url: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=600&q=70&auto=format&fit=crop" },
+  { name: "James Carter", role: "Stylist", credentials: null, photo_url: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=600&q=70&auto=format&fit=crop" },
+  { name: "Daniel Reed", role: "Practitioner", credentials: null, photo_url: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=600&q=70&auto=format&fit=crop" },
+];
 
 // Which bespoke full-page design is the default for a given build key. Lets the
 // samples (and sub-page navigation, which carries no ?design query) render the
@@ -12,10 +21,8 @@ const BUILD_DESIGN: Record<string, string> = {
   steakhouse: "ember",
   // marble — charcoal & gold grill / lounge
   bbq: "marble",
-  cocktail_bar: "marble",
   // drift — light, photo-led, fresh (Japanese / Nordic)
   sushi: "drift",
-  japanese: "drift",
   poke: "drift",
   juice_bar: "drift",
   vegan: "drift",
@@ -24,7 +31,6 @@ const BUILD_DESIGN: Record<string, string> = {
   fine_dining: "laurel",
   restaurant: "laurel",
   bistro: "laurel",
-  brasserie: "laurel",
   italian: "laurel",
   tapas: "laurel",
   wine_bar: "laurel",
@@ -33,13 +39,11 @@ const BUILD_DESIGN: Record<string, string> = {
   bar: "lantern",
   pub: "lantern",
   gastropub: "lantern",
-  chinese: "lantern",
   thai: "lantern",
   indian: "lantern",
   mexican: "lantern",
   // daybreak — bright, energetic, all-day / casual
   brunch_cafe: "daybreak",
-  cafe: "daybreak",
   coffee_shop: "daybreak",
   tearoom: "daybreak",
   bakery: "daybreak",
@@ -47,6 +51,26 @@ const BUILD_DESIGN: Record<string, string> = {
   burger_joint: "daybreak",
   food_truck: "daybreak",
   pizzeria: "daybreak",
+  // 5 newer screenshot-faithful designs
+  japanese: "tide",
+  brasserie: "botanica",
+  chinese: "lacquer",
+  cocktail_bar: "cinder",
+  cafe: "meadow",
+  // Hair & beauty (salon archetype)
+  hair_salon: "indigo",
+  beauty_salon: "halo",
+  nail_salon: "verve",
+  bridal_hair: "atelier",
+  barber: "fade",
+  makeup_artist: "lumiere",
+  // Health & wellness (aesthetics clinics)
+  aesthetics_clinic: "aurelia",
+  skin_clinic: "seren",
+  cosmetic_clinic: "lustre",
+  dermatology: "linea",
+  wellness_clinic: "radiance",
+  hair_removal: "lumina",
 };
 
 // Turn a build into a fully-populated TenantSite for the public samples gallery,
@@ -83,10 +107,11 @@ export function sampleSiteFor(key: string): TenantSite | null {
       ...starter.content,
       ...(BUILD_DESIGN[key] ? { design: BUILD_DESIGN[key] } : {}),
       hero_image_url: heroFor(key),
-      phone: "01234 567890",
+      ...(videoFor(key) ? { hero_video_url: videoFor(key) } : {}),
+      phone: "020 7946 0123",
       email: "hello@example.com",
-      address: "12 High Street, Yourtown",
-      map_url: "https://maps.google.com/?q=12+High+Street",
+      address: "48 Northgate Street\nLondon EC1A 4EN",
+      map_url: "https://maps.google.com/?q=48+Northgate+Street+London",
       // Sample sites are shown as if the owner already filled everything in.
       socials: [
         { label: "Instagram", url: "https://instagram.com" },
@@ -113,7 +138,15 @@ export function sampleSiteFor(key: string): TenantSite | null {
       is_available: true,
       sort_order: i + 1,
     })),
-    gallery: [],
-    team: [],
+    gallery: galleryFor(key).map((url, i) => ({
+      id: `${key}-img-${i}`,
+      image_url: url,
+      caption: null,
+      sort_order: i + 1,
+    })),
+    team:
+      build.archetype === "bookings"
+        ? SAMPLE_TEAM.map((m, i) => ({ ...m, id: `${key}-team-${i}`, sort_order: i + 1 }))
+        : [],
   };
 }

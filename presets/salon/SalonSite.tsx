@@ -15,9 +15,15 @@ import {
   tokensFor,
 } from "../shared";
 import { pageHref, type PresetProps } from "@/lib/site-pages";
+import { getSalonDesign } from "./designs";
 
 // "bookings" archetype: salons, barbers, beauty, clinics, fitness studios.
-export default function SalonSite({ site, page = "home", basePath = "", multiPage = false }: PresetProps) {
+export default function SalonSite(props: PresetProps) {
+  // A bespoke real-world-inspired design takes over the whole page when set.
+  const Design = getSalonDesign(props.site.content.design);
+  if (Design) return <Design {...props} />;
+
+  const { site, page = "home", basePath = "", multiPage = false } = props;
   const { tenant, theme, content, catalog, gallery, team } = site;
   const tokens = tokensFor(content, theme);
   const groups = groupCatalog(catalog);

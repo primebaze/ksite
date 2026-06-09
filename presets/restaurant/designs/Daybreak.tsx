@@ -126,7 +126,7 @@ export default function DaybreakDesign({ site, page = "home", basePath = "" }: P
 
   // ---- shared shell: header + page body + footer ----
   const shell = (children: ReactNode, solid = true) => (
-    <div style={siteRootStyle(theme, tokens)} className="min-h-screen font-body" data-page={page}>
+    <div style={siteRootStyle(theme, tokens)} className="min-h-screen font-body text-[#20201d]" data-page={page}>
       <DaybreakHeader name={name} book={book} links={nav} home={href("home")} solid={solid} />
       {children}
       {footer}
@@ -407,7 +407,7 @@ export default function DaybreakDesign({ site, page = "home", basePath = "" }: P
         <div className="mx-auto max-w-6xl px-6 py-20 sm:px-8 sm:py-24">
           <div className="text-center">
             <p className="text-xs font-semibold uppercase tracking-[0.3em]" style={{ color: TOMATO }}>What&apos;s on</p>
-            <h2 style={serif} className="mt-3 text-4xl font-semibold sm:text-5xl">Always something good</h2>
+            <h2 style={serif} className="mt-3 text-4xl font-semibold text-[#20201d] sm:text-5xl">Always something good</h2>
           </div>
           <div className="mt-12 grid gap-6 md:grid-cols-3">
             {HIGHLIGHTS.map((h) => (

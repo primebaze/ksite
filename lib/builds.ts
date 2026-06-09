@@ -168,3 +168,34 @@ export function heroFor(key: string): string | undefined {
   const id = HERO.get(key) ?? HERO.get(buildFor(key)?.key ?? "");
   return id ? `https://images.unsplash.com/photo-${id}?w=1600&q=70&auto=format&fit=crop` : undefined;
 }
+
+// Category-matching gallery: pulls photos from the build's group image pool,
+// skipping the one used as the hero so cards never repeat it. Used to give
+// samples a realistic, on-theme set of images.
+export function galleryFor(key: string, n = 6): string[] {
+  const build = buildFor(key);
+  if (!build) return [];
+  const pool = HERO_POOL[build.group] ?? [];
+  const heroId = HERO.get(key);
+  const ids = pool.filter((id) => id !== heroId).slice(0, n);
+  return ids.map((id) => `https://images.unsplash.com/photo-${id}?w=1100&q=70&auto=format&fit=crop`);
+}
+
+// A looping hero video that matches the trade, where we have one in /public/hero.
+const VIDEO_BY_KEY: Record<string, string> = {
+  // food & drink
+  restaurant: "restaurant", steakhouse: "restaurant", fine_dining: "restaurant",
+  bistro: "restaurant", brasserie: "restaurant", gastropub: "restaurant", pub: "restaurant",
+  cafe: "cafe", coffee_shop: "cafe", brunch_cafe: "cafe", tearoom: "cafe", bakery: "cafe", patisserie: "cafe",
+  // hair & beauty
+  hair_salon: "hair", salon: "hair", blow_dry_bar: "hair", hairdresser: "hair",
+  barber: "barber", mens_grooming: "barber",
+  // fitness
+  gym: "gym", fitness_studio: "gym", personal_trainer: "gym", yoga_studio: "gym", pilates_studio: "gym",
+  crossfit: "box", boxing_gym: "box", martial_arts: "box",
+};
+
+export function videoFor(key: string): string | undefined {
+  const file = VIDEO_BY_KEY[key];
+  return file ? `/hero/${file}.mp4` : undefined;
+}
