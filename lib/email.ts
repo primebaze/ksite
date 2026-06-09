@@ -1,7 +1,10 @@
 import "server-only";
 import { Resend } from "resend";
 
-const FROM = process.env.EMAIL_FROM ?? "Kovasite <onboarding@resend.dev>";
+// `||` (not `??`) so a blank EMAIL_FROM also falls back. Default to our
+// verified Resend domain — the resend.dev sandbox only delivers to the account
+// owner, so it can never reach tenants.
+const FROM = process.env.EMAIL_FROM || "Kovasite <hello@kovasite.com>";
 export interface SupabaseEmailData {
   token: string;
   token_hash: string;
