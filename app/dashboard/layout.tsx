@@ -11,12 +11,14 @@ export default async function DashboardLayout({ children }: { children: React.Re
   if (isStaff(user.email)) redirect("/admin");
 
   const initial = user.email?.[0]?.toUpperCase() ?? "K";
+  // Two editing surfaces: "Edit site" (on-page — also where onboarding lands)
+  // and "Content & menu" (everything structured). The old step-by-step wizard
+  // is retired; editing is the live page.
   const nav = [
     { href: "/dashboard", label: "Home" },
-    { href: "/dashboard/setup/look", label: "Website setup" },
-    { href: "/dashboard/edit", label: "Content" },
+    { href: "/preview?edit=1", label: "Edit site", primary: true },
+    { href: "/dashboard/edit", label: "Content & menu" },
     { href: "/dashboard/domains", label: "Domains" },
-    { href: "/preview?edit=1", label: "Edit on page" },
   ];
 
   return (
@@ -32,7 +34,11 @@ export default async function DashboardLayout({ children }: { children: React.Re
             <Link
               key={item.href}
               href={item.href}
-              className="block rounded-xl px-3 py-2.5 text-sm font-medium text-white/50 transition hover:bg-white/[0.06] hover:text-white"
+              className={
+                item.primary
+                  ? "block rounded-xl bg-emerald-400/10 px-3 py-2.5 text-sm font-semibold text-emerald-300 ring-1 ring-inset ring-emerald-400/25 transition hover:bg-emerald-400/15"
+                  : "block rounded-xl px-3 py-2.5 text-sm font-medium text-white/50 transition hover:bg-white/[0.06] hover:text-white"
+              }
             >
               {item.label}
             </Link>

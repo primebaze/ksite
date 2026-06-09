@@ -22,7 +22,7 @@ export default async function DashboardHome({
   const planLabel = tenant.plan ? tenant.plan[0].toUpperCase() + tenant.plan.slice(1) : null;
   const checklist = [
     { label: "Site published", done: live, href: live ? url : "/dashboard/publish" },
-    { label: "Choose design", done: true, href: "/dashboard/setup/look" },
+    { label: "Personalise your design", done: true, href: "/preview?edit=1" },
     { label: "Add content and photos", done: true, href: "/dashboard/edit" },
     { label: "Connect your own domain", done: tenant.domain_status === "active", href: "/dashboard/domains" },
   ];
@@ -117,10 +117,10 @@ export default async function DashboardHome({
       </section>
 
       <section className="mt-6 grid gap-4 lg:grid-cols-3">
-        <Link href="/dashboard/setup/look" className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 transition hover:-translate-y-0.5 hover:border-white/20">
-          <p className="text-sm font-semibold text-white/35">Design</p>
-          <h2 className="mt-2 text-lg font-semibold">Photos, colours and style</h2>
-          <p className="mt-2 text-sm leading-6 text-white/45">Tune the look of the site without touching code.</p>
+        <Link href="/preview?edit=1" className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 transition hover:-translate-y-0.5 hover:border-white/20">
+          <p className="text-sm font-semibold text-white/35">Edit</p>
+          <h2 className="mt-2 text-lg font-semibold">Edit your site, live</h2>
+          <p className="mt-2 text-sm leading-6 text-white/45">Tap any text or photo right on the page and make it yours.</p>
         </Link>
 
         <Link href="/dashboard/edit" className="rounded-2xl border border-white/10 bg-white/[0.03] p-6 transition hover:-translate-y-0.5 hover:border-white/20">

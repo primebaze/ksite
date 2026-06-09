@@ -66,6 +66,18 @@ export function SiteEditor({ site, actions }: { site: TenantSite; actions: Edito
               </select>
             </div>
           </div>
+          <div>
+            <label className={label}>Design style</label>
+            <select name="style" defaultValue={content.style ?? "classic"} className={input}>
+              <option value="classic" className="bg-zinc-900">Classic — balanced &amp; timeless</option>
+              <option value="editorial" className="bg-zinc-900">Editorial — elegant, magazine</option>
+              <option value="bold" className="bg-zinc-900">Bold — big &amp; high-energy</option>
+              <option value="minimal" className="bg-zinc-900">Minimal — clean &amp; calm</option>
+              <option value="warm" className="bg-zinc-900">Warm — soft &amp; welcoming</option>
+              <option value="luxe" className="bg-zinc-900">Luxe — dark &amp; premium</option>
+            </select>
+            <p className="mt-1 text-xs text-white/35">Changes the whole layout &amp; hero. Preview it with “Edit site”.</p>
+          </div>
           <div className="grid grid-cols-2 gap-4">
             <div><label className={label}>SEO title</label><input name="meta_title" defaultValue={tenant.meta_title ?? ""} className={input} /></div>
             <div><label className={label}>SEO description</label><input name="meta_description" defaultValue={tenant.meta_description ?? ""} className={input} /></div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { EditGuide } from "./EditGuide";
+import { EditOnboarding } from "./EditOnboarding";
 
 // Wraps the live site and makes editing happen in place:
 //  - any [data-edit] text is editable (saves on blur)
@@ -131,7 +131,7 @@ export function InlineEditor({
         .kova-edit [data-edit-image]:hover{outline-color:rgba(16,185,129,.95)}
       `}</style>
 
-      <EditGuide />
+      <EditOnboarding />
       <input ref={fileRef} type="file" accept="image/*" hidden onChange={onFile} />
 
       <div className="fixed bottom-5 left-1/2 z-[200] flex -translate-x-1/2 items-center gap-3 rounded-full border border-white/10 bg-black/85 px-5 py-2.5 text-sm text-white shadow-2xl backdrop-blur">
@@ -141,12 +141,13 @@ export function InlineEditor({
         </span>
         <button
           type="button"
+          data-tour="cover"
           onClick={() => pickImage("hero")}
           className="rounded-full border border-white/20 px-3 py-1.5 font-medium text-white transition hover:bg-white/10"
         >
           Cover photo
         </button>
-        <a href="/dashboard" className="rounded-full bg-white px-4 py-1.5 font-semibold text-black transition hover:bg-white/90">Done</a>
+        <a href="/dashboard" data-tour="done" className="rounded-full bg-white px-4 py-1.5 font-semibold text-black transition hover:bg-white/90">Done</a>
       </div>
 
       {children}

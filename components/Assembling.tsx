@@ -1,7 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+
+// Always let the launch sequence play for at least this long, so an instant
+// activation (webhook already done) still shows the "building your site" moment.
+const MIN_MS = 4200;
 
 const STEPS = [
   "Confirming your subscription",
@@ -14,6 +18,7 @@ export function Assembling() {
   const router = useRouter();
   const [stepIdx, setStepIdx] = useState(0);
   const [done, setDone] = useState(false);
+  const startRef = useRef(Date.now());
 
   useEffect(() => {
     const stepTimer = setInterval(() => setStepIdx((i) => Math.min(i + 1, STEPS.length - 1)), 1600);
@@ -23,15 +28,22 @@ export function Assembling() {
         const r = await fetch("/api/me/status", { cache: "no-store" });
         const j = await r.json();
         if (j.live) {
-          setDone(true);
           clearInterval(poll);
-          clearInterval(stepTimer);
-          setTimeout(() => router.push("/dashboard/domains?launch=1"), 1400);
+          // Hold the animation to at least MIN_MS so it's actually seen, then
+          // show the "live" state briefly before handing off to the dashboard.
+          const elapsed = Date.now() - startRef.current;
+          const wait = Math.max(0, MIN_MS - elapsed);
+          setTimeout(() => {
+            setStepIdx(STEPS.length - 1);
+            setDone(true);
+            clearInterval(stepTimer);
+            setTimeout(() => router.push("/dashboard/domains?launch=1"), 1400);
+          }, wait);
         }
       } catch {
         /* keep polling */
       }
-    }, 2000);
+    }, 1500);
 
     const fallback = setTimeout(() => router.push("/dashboard/domains?launch=1"), 35000);
     return () => {

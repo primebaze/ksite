@@ -36,6 +36,12 @@ export async function saveBasics(formData: FormData) {
     accent_color: String(formData.get("accent_color") ?? "#c8a24a"),
     font: str(formData, "font"),
   });
+  // Design style lives in content; merge so other content fields aren't lost.
+  const style = str(formData, "style");
+  if (style) {
+    const site = await getMyTenantFull();
+    if (site) await updateMyContent({ ...site.content, style: style as SiteContent["style"] });
+  }
   refresh();
 }
 
