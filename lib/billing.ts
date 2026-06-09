@@ -131,16 +131,28 @@ async function sendPaymentNotifications({
     : `https://${subdomain}.${appDomain}`;
   const dashboardUrl = `${base}/admin/${tenantId}`;
 
-  let ownerEmail = customerEmail ?? null;
+  // Resolve the client's email: prefer the Stripe checkout email, but always
+  // fall back to the tenant owner's account email (the subscription webhook
+  // path passes no customerEmail, so without this the client email is skipped).
+  let ownerEmail = customerEmail?.trim() || null;
   if (!ownerEmail && svc && ownerId) {
-    const { data } = await svc.auth.admin.getUserById(ownerId);
-    ownerEmail = data.user?.email ?? null;
+    try {
+      const { data } = await svc.auth.admin.getUserById(ownerId);
+      ownerEmail = data.user?.email ?? null;
+    } catch (error) {
+      console.error("Payment email: owner lookup failed", error);
+    }
+  }
+  if (!ownerEmail) {
+    console.error("Payment email: no client email resolved", { tenantId, ownerId, hadCustomerEmail: Boolean(customerEmail) });
   }
 
-  await Promise.all([
+  // allSettled so a failure on one send can't drop the other, and log each
+  // outcome so a missing client email is visible in the function logs.
+  const results = await Promise.allSettled([
     ownerEmail
       ? sendPaymentLiveEmail({ to: ownerEmail, businessName, siteUrl, plan })
-      : Promise.resolve(),
+      : Promise.reject(new Error("no client email")),
     sendAdminPaymentNotification({
       businessName,
       siteUrl,
@@ -149,4 +161,8 @@ async function sendPaymentNotifications({
       customerEmail: ownerEmail ?? customerEmail,
     }),
   ]);
+  const labels = [`client (${ownerEmail ?? "none"})`, "admin"];
+  results.forEach((r, i) => {
+    if (r.status === "rejected") console.error(`Payment email failed → ${labels[i]}:`, r.reason);
+  });
 }

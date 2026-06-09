@@ -3,8 +3,30 @@ import { Resend } from "resend";
 
 // `||` (not `??`) so a blank EMAIL_FROM also falls back. Default to our
 // verified Resend domain — the resend.dev sandbox only delivers to the account
-// owner, so it can never reach tenants.
-const FROM = process.env.EMAIL_FROM || "Kovasite <hello@kovasite.com>";
+// owner, so it can never reach tenants. We also strip surrounding quotes /
+// whitespace, because pasting `"Name <a@b.com>"` (with quotes) into an env var
+// makes Resend reject every send with a 422.
+const FALLBACK_FROM = "Kovasite <hello@kovasite.com>";
+const FROM = (process.env.EMAIL_FROM || "").trim().replace(/^['"]|['"]$/g, "").trim() || FALLBACK_FROM;
+// A real reply-to + a plain-text alternative materially improve inbox placement.
+const REPLY_TO = (process.env.EMAIL_REPLY_TO || "hello@kovasite.com").trim().replace(/^['"]|['"]$/g, "").trim();
+
+function htmlToText(html: string): string {
+  return html
+    .replace(/<style[\s\S]*?<\/style>/gi, "")
+    .replace(/<\/(p|div|tr|h1|h2|li)>/gi, "\n")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&nbsp;/g, " ")
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"')
+    .replace(/&#x27;/g, "'")
+    .replace(/[ \t]+/g, " ")
+    .replace(/\n\s+/g, "\n")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
+}
 export interface SupabaseEmailData {
   token: string;
   token_hash: string;
@@ -42,12 +64,15 @@ export async function sendAuthEmail({ to, data }: { to: string; data: SupabaseEm
   const link = `${base}/auth/confirm?token_hash=${encodeURIComponent(data.token_hash)}&type=${encodeURIComponent(type)}`;
   const subject = SUBJECTS[type] ?? "Kovasite";
 
+  const html = render({ subject, link, cta: CTA[type] ?? "Continue" });
   const resend = new Resend(apiKey);
   const { error } = await resend.emails.send({
     from: FROM,
     to: [to],
+    replyTo: REPLY_TO,
     subject,
-    html: render({ subject, link, cta: CTA[type] ?? "Continue" }),
+    html,
+    text: `${subject}\n\nOpen this link to continue:\n${link}\n\nThis link expires shortly. If you didn't request this, ignore this email.\n\n— Kovasite`,
   });
   if (error) throw new Error(typeof error === "string" ? error : error.message);
 }
@@ -218,8 +243,10 @@ async function sendTransactionalEmail({
   const { error } = await resend.emails.send({
     from: FROM,
     to,
+    replyTo: REPLY_TO,
     subject,
     html,
+    text: htmlToText(html),
   });
   if (error) throw new Error(typeof error === "string" ? error : error.message);
 }
