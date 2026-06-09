@@ -62,6 +62,16 @@ export async function saveInline(changes: Record<string, string>): Promise<{ ok:
     } else if (key.startsWith("content.")) {
       content[key.slice("content.".length)] = val;
       contentDirty = true;
+    } else if (key.startsWith("hours:")) {
+      // "hours:<index>:<day|open>" — edit one cell of the opening-hours list.
+      const [, idxRaw, field] = key.split(":");
+      const i = Number(idxRaw);
+      const hours = [...((content.hours as SiteContent["hours"]) ?? [])];
+      if (Number.isInteger(i) && hours[i] && (field === "day" || field === "open")) {
+        hours[i] = { ...hours[i], [field]: val };
+        content.hours = hours;
+        contentDirty = true;
+      }
     } else if (key.startsWith("item:")) {
       const [, id, field] = key.split(":");
       if (id && ["name", "description", "price"].includes(field)) {

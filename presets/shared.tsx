@@ -332,10 +332,10 @@ export function ContactFooter({
           </div>
           {content.hours && content.hours.length > 0 && (
             <div className="mx-auto mt-6 max-w-sm space-y-1 text-sm text-white/55">
-              {content.hours.map((h) => (
-                <div key={h.day} className="flex justify-between border-b border-white/10 py-1">
-                  <span>{h.day}</span>
-                  <span>{h.open}</span>
+              {content.hours.map((h, i) => (
+                <div key={i} className="flex justify-between border-b border-white/10 py-1">
+                  <span data-edit={`hours:${i}:day`}>{h.day}</span>
+                  <span data-edit={`hours:${i}:open`}>{h.open}</span>
                 </div>
               ))}
             </div>
@@ -381,10 +381,10 @@ export function ContactFooter({
                   <div className="sm:col-span-2">
                     <p className="text-xs font-semibold uppercase tracking-widest text-neutral-400">Opening hours</p>
                     <ul className="mt-2 space-y-1">
-                      {content.hours.map((h) => (
-                        <li key={h.day} className="flex justify-between gap-8 border-b border-dashed border-neutral-200 py-1.5 text-neutral-700">
-                          <span>{h.day}</span>
-                          <span className="text-neutral-500">{h.open}</span>
+                      {content.hours.map((h, i) => (
+                        <li key={i} className="flex justify-between gap-8 border-b border-dashed border-neutral-200 py-1.5 text-neutral-700">
+                          <span data-edit={`hours:${i}:day`}>{h.day}</span>
+                          <span data-edit={`hours:${i}:open`} className="text-neutral-500">{h.open}</span>
                         </li>
                       ))}
                     </ul>
