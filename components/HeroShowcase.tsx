@@ -7,8 +7,7 @@ import { PreviewVideo } from "./PreviewVideo";
 // hero built from a looping video plus a headline overlay. Only the active
 // slide's video decodes, so the homepage stays light on mobile.
 const SLIDES: { key: string; video: string; name: string; tag: string; cta: string }[] = [
-  { key: "restaurant", video: "/hero/restaurant.mp4", name: "Nonna's Kitchen", tag: "Italian Restaurant", cta: "Book a table" },
-  { key: "cafe", video: "/hero/cafe.mp4", name: "Maple & Bean", tag: "Coffee & Brunch", cta: "Order online" },
+  { key: "cafe", video: "/hero/sds.mp4", name: "Maple & Bean", tag: "Coffee & Brunch", cta: "Order online" },
   { key: "hair_salon", video: "/hero/hair.mp4", name: "The Chair Co.", tag: "Hair Studio", cta: "Book appointment" },
   { key: "gym", video: "/hero/gym.mp4", name: "Ironworks Gym", tag: "Strength & Conditioning", cta: "Start free trial" },
 ];
@@ -39,8 +38,13 @@ export function HeroShowcase() {
             className={`relative aspect-video transition-opacity duration-700 ${idx === i ? "opacity-100" : "pointer-events-none opacity-0"}`}
             aria-hidden={idx !== i}
           >
-            <PreviewVideo src={s.video} active={idx === i} className="absolute inset-0 h-full w-full object-cover" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-black/10" />
+            <PreviewVideo
+              src={s.video}
+              active={idx === i}
+              className="absolute inset-0 h-full w-full object-cover opacity-70 [filter:saturate(0.8)_brightness(0.85)]"
+            />
+            <div className="absolute inset-0 bg-black/30" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/20" />
             <div className="absolute inset-0 flex flex-col justify-end gap-3 p-6 sm:p-10">
               <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-white/65 sm:text-xs">{s.tag}</p>
               <h3 className="max-w-xl text-3xl font-semibold tracking-tight text-white drop-shadow-[0_2px_24px_rgba(0,0,0,0.6)] sm:text-5xl">
