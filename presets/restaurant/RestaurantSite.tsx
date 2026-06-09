@@ -144,28 +144,49 @@ export default function RestaurantSite({ site, page = "home", basePath = "", mul
     );
   }
 
-  // home
+  // home — rich landing: hero, intro, featured menu, gallery, closing CTA
+  const featuredItems = sections.flatMap((s) => s.categories.flatMap((c) => c.items)).slice(0, 6);
+  const featuredGroups: CatalogGroup[] = [{ section: "", categories: [{ category: null, items: featuredItems }] }];
+
   return shell(
     <>
       {heroEl}
+
       {content.about && (
-        <section className="mx-auto max-w-3xl px-6 py-24 text-center">
+        <section className="mx-auto max-w-3xl px-6 py-24 text-center sm:py-28">
+          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[var(--primary)]">Welcome</p>
           <p
             data-edit="content.about"
-            className={cx("font-display text-2xl leading-relaxed text-neutral-800 sm:text-[2rem] sm:leading-[1.45]", tokens.serif ? "font-normal" : "font-light")}
+            className={cx("mt-6 font-display text-2xl leading-relaxed text-neutral-800 sm:text-[2.1rem] sm:leading-[1.4]", tokens.serif ? "font-normal" : "font-light")}
           >
             {content.about}
           </p>
-          {sections.length > 0 && (
-            <div className="mt-9">
-              <a href={pageHref(basePath, "menu")} className={cx("inline-flex bg-[var(--primary)] px-8 py-3.5 text-sm font-semibold text-white transition active:scale-[0.98] hover:opacity-90", tokens.btn)}>
-                View the menu
-              </a>
-            </div>
-          )}
         </section>
       )}
+
+      {sections.length > 0 && (
+        <section className={cx("border-y border-black/5", tokens.tint)}>
+          <div className="mx-auto max-w-6xl px-6 py-24">
+            <div className="flex flex-wrap items-end justify-between gap-4">
+              <SectionHeading tokens={tokens} kicker="What's cooking" title="Menu highlights" />
+              <a href={pageHref(basePath, "menu")} className="shrink-0 text-sm font-medium text-[var(--primary)] underline-offset-4 hover:underline">View full menu →</a>
+            </div>
+            <CatalogCards groups={featuredGroups} tokens={tokens} />
+          </div>
+        </section>
+      )}
+
       {gallery.length > 0 && <GallerySection gallery={gallery} />}
+
+      {ctaObj && (
+        <section className="bg-[var(--primary)] text-white">
+          <div className="mx-auto max-w-3xl px-6 py-24 text-center sm:py-28">
+            <h2 className={cx("font-display text-4xl font-semibold tracking-tight sm:text-5xl", tokens.heading)}>Hungry yet?</h2>
+            <p className="mx-auto mt-4 max-w-md text-base leading-relaxed text-white/65">Reserve your table and we&apos;ll see you soon.</p>
+            <a href={ctaObj.href} className={cx("mt-9 inline-flex bg-white px-8 py-4 text-sm font-semibold text-[var(--primary)] transition active:scale-[0.98] hover:opacity-90", tokens.btn)}>{ctaObj.label}</a>
+          </div>
+        </section>
+      )}
     </>,
   );
 }
