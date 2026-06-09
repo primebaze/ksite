@@ -3,25 +3,24 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { motion, useScroll, useTransform } from "motion/react";
-import { TemplateThumb } from "./TemplateThumb";
+import { PreviewVideo } from "./PreviewVideo";
 
 interface Ex {
   key: string;
-  style: string;
+  name: string;
+  tag: string;
+  domain: string;
+  video: string;
 }
 
-// Real sample sites rendered live inside a browser frame, in a range of design
-// styles. They act as a cover that parts on scroll to reveal the pricing panel.
+// Sample business sites shown as looping video heros inside a browser frame.
+// They act as a cover that parts on scroll to reveal the pricing panel.
 const EXAMPLES: Ex[] = [
-  { key: "cocktail_bar", style: "luxe" },
-  { key: "florist", style: "editorial" },
-  { key: "gym", style: "bold" },
-  { key: "cafe", style: "warm" },
+  { key: "cocktail_bar", name: "Velvet & Oak", tag: "Cocktail Bar", domain: "velvetandoak.com", video: "/hero/restaurant.mp4" },
+  { key: "florist", name: "Bloom & Stem", tag: "Florist", domain: "bloomandstem.co.uk", video: "/hero/cafe.mp4" },
+  { key: "gym", name: "Ironworks Gym", tag: "Fitness Studio", domain: "ironworks.gym", video: "/hero/gym.mp4" },
+  { key: "cafe", name: "Maple & Bean", tag: "Café & Brunch", domain: "mapleandbean.co", video: "/hero/hair.mp4" },
 ];
-
-function srcFor(e: Ex) {
-  return `/samples/${e.key}?embed=1&style=${e.style}`;
-}
 
 const PLAN_INCLUDES = [
   "Bespoke design & hosting",
@@ -50,9 +49,20 @@ function BrowserCard({ e }: { e: Ex }) {
         <span className="h-2 w-2 rounded-full bg-white/15" />
         <span className="h-2 w-2 rounded-full bg-white/15" />
         <span className="h-2 w-2 rounded-full bg-white/15" />
-        <span className="ml-2 h-5 flex-1 rounded-md bg-white/[0.06]" />
+        <span className="ml-2 flex h-5 flex-1 items-center truncate rounded-md bg-white/[0.06] px-2.5 text-[10px] text-white/40">
+          {e.domain}
+        </span>
       </div>
-      <TemplateThumb src={srcFor(e)} base={1280} aspect={0.62} />
+      <div className="relative w-full overflow-hidden bg-neutral-900" style={{ aspectRatio: "1 / 0.62" }}>
+        <PreviewVideo src={e.video} className="absolute inset-0 h-full w-full object-cover" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/15 to-transparent" />
+        <div className="absolute inset-x-0 bottom-0 flex flex-col gap-1 p-4 sm:p-5">
+          <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-white/65">{e.tag}</p>
+          <p className="text-lg font-semibold tracking-tight text-white drop-shadow-[0_2px_18px_rgba(0,0,0,0.6)] sm:text-xl">
+            {e.name}
+          </p>
+        </div>
+      </div>
     </Link>
   );
 }

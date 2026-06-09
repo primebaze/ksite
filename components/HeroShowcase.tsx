@@ -1,21 +1,17 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { TemplateThumb } from "./TemplateThumb";
+import { PreviewVideo } from "./PreviewVideo";
 
-// A rotating product reel: best-selling business types, each shown with a
-// looping video hero. Slides preload and crossfade so there's no flicker.
-const SLIDES: { key: string; video: string; name: string }[] = [
-  { key: "restaurant", video: "/hero/restaurant.mp4", name: "Nonna's Kitchen" },
-  { key: "cafe", video: "/hero/cafe.mp4", name: "Maple & Bean" },
-  { key: "hair_salon", video: "/hero/hair.mp4", name: "The Chair Co." },
-  { key: "gym", video: "/hero/gym.mp4", name: "Ironworks Gym" },
+// A rotating product reel: best-selling business types, each shown as a website
+// hero built from a looping video plus a headline overlay. Only the active
+// slide's video decodes, so the homepage stays light on mobile.
+const SLIDES: { key: string; video: string; name: string; tag: string; cta: string }[] = [
+  { key: "restaurant", video: "/hero/restaurant.mp4", name: "Nonna's Kitchen", tag: "Italian Restaurant", cta: "Book a table" },
+  { key: "cafe", video: "/hero/cafe.mp4", name: "Maple & Bean", tag: "Coffee & Brunch", cta: "Order online" },
+  { key: "hair_salon", video: "/hero/hair.mp4", name: "The Chair Co.", tag: "Hair Studio", cta: "Book appointment" },
+  { key: "gym", video: "/hero/gym.mp4", name: "Ironworks Gym", tag: "Strength & Conditioning", cta: "Start free trial" },
 ];
-
-function srcFor(s: (typeof SLIDES)[number]) {
-  // Bold full-bleed layout: big headline over the video hero.
-  return `/samples/${s.key}?embed=1&style=bold&video=${encodeURIComponent(s.video)}&name=${encodeURIComponent(s.name)}`;
-}
 
 export function HeroShowcase() {
   const [i, setI] = useState(0);
@@ -40,10 +36,20 @@ export function HeroShowcase() {
           <div
             key={s.key}
             style={{ gridArea: "1 / 1" }}
-            className={`transition-opacity duration-700 ${idx === i ? "opacity-100" : "pointer-events-none opacity-0"}`}
+            className={`relative aspect-video transition-opacity duration-700 ${idx === i ? "opacity-100" : "pointer-events-none opacity-0"}`}
             aria-hidden={idx !== i}
           >
-            <TemplateThumb src={srcFor(s)} aspect={0.5625} base={1440} />
+            <PreviewVideo src={s.video} active={idx === i} className="absolute inset-0 h-full w-full object-cover" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/25 to-black/10" />
+            <div className="absolute inset-0 flex flex-col justify-end gap-3 p-6 sm:p-10">
+              <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-white/65 sm:text-xs">{s.tag}</p>
+              <h3 className="max-w-xl text-3xl font-semibold tracking-tight text-white drop-shadow-[0_2px_24px_rgba(0,0,0,0.6)] sm:text-5xl">
+                {s.name}
+              </h3>
+              <div className="mt-1">
+                <span className="inline-flex rounded-full bg-white px-5 py-2 text-sm font-semibold text-black">{s.cta}</span>
+              </div>
+            </div>
           </div>
         ))}
       </div>
