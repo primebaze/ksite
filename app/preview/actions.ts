@@ -21,6 +21,8 @@ export async function saveDesign(input: {
   accent?: string;
   footer_variant?: SiteContent["footer_variant"];
   body_variant?: SiteContent["body_variant"];
+  booking_enabled?: boolean;
+  contact_form_enabled?: boolean;
 }): Promise<{ ok: boolean }> {
   const site = await getMyTenantFull();
   if (!site) return { ok: false };
@@ -29,6 +31,8 @@ export async function saveDesign(input: {
   if (input.style && STYLES.includes(input.style)) contentPatch.style = input.style as SiteContent["style"];
   if (input.footer_variant === "detailed" || input.footer_variant === "minimal") contentPatch.footer_variant = input.footer_variant;
   if (input.body_variant === "list" || input.body_variant === "cards") contentPatch.body_variant = input.body_variant;
+  if (typeof input.booking_enabled === "boolean") contentPatch.booking_enabled = input.booking_enabled;
+  if (typeof input.contact_form_enabled === "boolean") contentPatch.contact_form_enabled = input.contact_form_enabled;
   if (Object.keys(contentPatch).length) {
     await updateMyContent({ ...site.content, ...contentPatch });
   }

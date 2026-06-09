@@ -23,12 +23,16 @@ export function DesignPanel({
   accent,
   footerVariant,
   bodyVariant,
+  bookingEnabled = true,
+  contactEnabled = true,
 }: {
   style?: string;
   primary: string;
   accent: string;
   footerVariant?: string;
   bodyVariant?: string;
+  bookingEnabled?: boolean;
+  contactEnabled?: boolean;
 }) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
@@ -38,6 +42,8 @@ export function DesignPanel({
   const [acc, setAcc] = useState(accent);
   const [footer, setFooter] = useState(footerVariant === "minimal" ? "minimal" : "detailed");
   const [body, setBody] = useState(bodyVariant === "cards" ? "cards" : "list");
+  const [booking, setBooking] = useState(bookingEnabled);
+  const [contactForm, setContactForm] = useState(contactEnabled);
 
   const apply = (input: {
     style?: string;
@@ -45,6 +51,8 @@ export function DesignPanel({
     accent?: string;
     footer_variant?: "detailed" | "minimal";
     body_variant?: "list" | "cards";
+    booking_enabled?: boolean;
+    contact_form_enabled?: boolean;
   }) => {
     start(async () => {
       await saveDesign(input);
@@ -150,6 +158,27 @@ export function DesignPanel({
                 }`}
               >
                 {label}
+              </button>
+            ))}
+          </div>
+
+          {/* Features */}
+          <p className="mt-5 text-xs font-medium uppercase tracking-widest text-white/40">Features</p>
+          <div className="mt-2 space-y-2">
+            {([
+              ["Booking form", booking, (v: boolean) => { setBooking(v); apply({ booking_enabled: v }); }],
+              ["Contact form", contactForm, (v: boolean) => { setContactForm(v); apply({ contact_form_enabled: v }); }],
+            ] as const).map(([label, on, set]) => (
+              <button
+                key={label}
+                type="button"
+                onClick={() => set(!on)}
+                className="flex w-full items-center justify-between rounded-lg border border-white/10 px-3 py-2 text-sm text-white/80 transition hover:border-white/25"
+              >
+                <span>{label}</span>
+                <span className={`relative h-5 w-9 rounded-full transition ${on ? "bg-emerald-400" : "bg-white/15"}`}>
+                  <span className={`absolute top-0.5 h-4 w-4 rounded-full bg-white transition-all ${on ? "left-[18px]" : "left-0.5"}`} />
+                </span>
               </button>
             ))}
           </div>

@@ -1,5 +1,13 @@
 import type { CSSProperties, ReactNode } from "react";
 import type { CatalogItem, SiteContent, TenantSite, Theme } from "@/lib/types";
+import { archetypeFor } from "@/lib/verticals";
+import { SiteContactForms } from "@/components/SiteContactForms";
+
+const BOOKING_TITLES: Record<string, string> = {
+  menu: "Request a booking",
+  bookings: "Request an appointment",
+  services: "Request a quote",
+};
 
 // ---------------------------------------------------------------------------
 // Design-variant system. One set of components renders every site; the chosen
@@ -321,6 +329,19 @@ export function ContactFooter({
   const { tenant, content } = site;
   const hasContact = content.phone || content.email || content.address || (content.hours && content.hours.length);
 
+  // Built-in lead forms (included by default; owner can switch each off).
+  const bookingOn = content.booking_enabled !== false;
+  const contactOn = content.contact_form_enabled !== false;
+  const formsOn = bookingOn || contactOn;
+  const forms = formsOn ? (
+    <SiteContactForms
+      tenantId={tenant.id}
+      booking={bookingOn}
+      contact={contactOn}
+      bookingTitle={BOOKING_TITLES[archetypeFor(tenant.preset)] ?? "Request a booking"}
+    />
+  ) : null;
+
   // Minimal footer: a single compact contact band on the brand colour, no map.
   if (content.footer_variant === "minimal") {
     return (
@@ -342,6 +363,7 @@ export function ContactFooter({
               ))}
             </div>
           )}
+          {forms && <div className="mt-9 text-left">{forms}</div>}
           {cta && (
             <div className="mt-7">
               <a href={cta.href} className={cx("inline-flex bg-white px-7 py-3.5 text-sm font-semibold text-[var(--primary)] transition active:scale-[0.98] hover:opacity-90", tokens.btn)}>{cta.label}</a>
@@ -362,7 +384,7 @@ export function ContactFooter({
 
   return (
     <>
-      {hasContact && (
+      {(hasContact || formsOn) && (
         <section id="contact" className="border-t border-black/5 bg-white">
           <div className="mx-auto max-w-6xl px-6 py-24">
             <SectionHeading tokens={tokens} kicker="Get in touch" title="Come say hello" />
@@ -420,6 +442,7 @@ export function ContactFooter({
                 </a>
               ) : null}
             </div>
+            {forms && <div className="mt-14 border-t border-black/5 pt-12">{forms}</div>}
           </div>
         </section>
       )}

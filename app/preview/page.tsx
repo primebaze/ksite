@@ -27,6 +27,8 @@ export default async function PreviewPage({ searchParams }: { searchParams: Prom
           accent={site.theme.accent_color || "#c8a24a"}
           footerVariant={site.content.footer_variant}
           bodyVariant={site.content.body_variant}
+          bookingEnabled={site.content.booking_enabled !== false}
+          contactEnabled={site.content.contact_form_enabled !== false}
         />
       </InlineEditor>
     );

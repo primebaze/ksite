@@ -133,6 +133,37 @@ export async function sendAdminDomainLiveNotification({
   });
 }
 
+// A booking/contact submission from a tenant's built-in form, emailed to the
+// business owner. `lines` are the already-sanitised field label/value pairs.
+export async function sendFormSubmission({
+  to,
+  businessName,
+  kind,
+  lines,
+  replyTo,
+}: {
+  to: string;
+  businessName: string;
+  kind: "booking" | "contact";
+  lines: { label: string; value: string }[];
+  replyTo?: string | null;
+}) {
+  const title = kind === "booking" ? "New booking request" : "New message";
+  const body = lines.map((l) => `<strong>${escapeHtml(l.label)}:</strong> ${escapeHtml(l.value)}`).join("<br/>");
+  await sendTransactionalEmail({
+    to: [to],
+    subject: `${title} — ${businessName}`,
+    html: renderNotice({
+      eyebrow: kind === "booking" ? "Booking request" : "Contact form",
+      title: `${title}.`,
+      body,
+      cta: replyTo ? "Reply to customer" : "Open dashboard",
+      link: replyTo ? `mailto:${replyTo}` : "https://kovasite.com/dashboard",
+      secondary: "Sent from your Kovasite website.",
+    }),
+  });
+}
+
 export async function sendAdminPaymentNotification({
   businessName,
   siteUrl,

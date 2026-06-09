@@ -34,6 +34,9 @@ export interface SiteContent {
   body_variant?: "list" | "cards";
   /** Layout variant for the footer / contact section. */
   footer_variant?: "detailed" | "minimal";
+  /** Built-in lead forms (included by default; owner can switch off). Undefined = on. */
+  booking_enabled?: boolean;
+  contact_form_enabled?: boolean;
   hero_image_url?: string;
   /** Looping background video for the hero (Premium). Takes priority over the image. */
   hero_video_url?: string;
