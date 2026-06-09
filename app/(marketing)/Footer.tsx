@@ -76,7 +76,7 @@ export default function Footer() {
       <div className="relative mt-2">
         <div
           aria-hidden
-          className="pointer-events-none select-none bg-gradient-to-b from-white/[0.06] to-transparent bg-clip-text px-6 text-center text-[22vw] font-bold leading-[0.7] tracking-tighter text-transparent"
+          className="pointer-events-none select-none bg-gradient-to-b from-white/[0.18] to-white/[0.05] bg-clip-text px-6 text-center text-[22vw] font-bold leading-[0.7] tracking-tighter text-transparent"
         >
           Kovasite
         </div>

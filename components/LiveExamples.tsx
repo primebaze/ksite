@@ -23,6 +23,23 @@ function srcFor(e: Ex) {
   return `/samples/${e.key}?embed=1&style=${e.style}`;
 }
 
+const PLAN_INCLUDES = [
+  "Bespoke design & hosting",
+  "Custom domain & SSL",
+  "Booking & online ordering",
+  "Local SEO & Google reviews",
+  "Mobile-first & lightning fast",
+  "Monthly edits, done for you",
+];
+
+function Check() {
+  return (
+    <svg className="mt-0.5 h-4 w-4 shrink-0 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+      <path d="M5 12.5l4.5 4.5L19 7" />
+    </svg>
+  );
+}
+
 function BrowserCard({ e }: { e: Ex }) {
   return (
     <Link
@@ -96,7 +113,7 @@ export function LiveExamples() {
   ];
 
   return (
-    <section ref={ref} className="relative h-[300vh] border-t border-white/5 bg-white/[0.015]">
+    <section ref={ref} className="relative z-10 h-[200vh] rounded-b-[2.5rem] border-t border-white/5 bg-black sm:rounded-b-[3.5rem]">
       <div className="sticky top-0 flex h-screen items-center justify-center overflow-hidden">
         {/* Heading (fades as the cards part) */}
         <motion.div style={{ opacity: headingOpacity }} className="absolute inset-x-0 top-0 z-10 mx-auto max-w-6xl px-6 pt-[11vh] text-center">
@@ -110,19 +127,24 @@ export function LiveExamples() {
           style={{ opacity: pricingOpacity, scale: pricingScale, y: pricingY, pointerEvents: pricingPE }}
           className="absolute inset-0 z-0 flex items-center justify-center px-6"
         >
-          <div className="relative w-full max-w-3xl overflow-hidden rounded-3xl border border-white/10 bg-neutral-950 p-10 text-center shadow-[0_40px_140px_-40px_rgba(0,0,0,0.9)] sm:p-14">
-            <div className="pointer-events-none absolute -top-24 left-1/2 h-48 w-72 -translate-x-1/2 rounded-full bg-emerald-400/10 blur-3xl" />
-            <p className="relative text-xs font-semibold uppercase tracking-[0.22em] text-emerald-400/80">One simple plan</p>
-            <h2 className="relative mt-4 text-4xl font-semibold tracking-tight sm:text-5xl">One price, everything included.</h2>
-            <p className="relative mx-auto mt-4 max-w-md text-base leading-relaxed text-white/55">
-              Site, hosting, domain, SSL and booking, all in one flat monthly price from £99.
-            </p>
-            <div className="relative mt-8 flex flex-wrap items-center justify-center gap-3">
-              <Link href="/get-started" className="rounded-xl bg-white px-6 py-3 text-sm font-semibold text-black transition hover:bg-white/90">
+          <div className="w-full max-w-xl text-left">
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-emerald-400/80">One simple plan</p>
+            <div className="mt-4 flex items-baseline gap-2">
+              <span className="text-5xl font-semibold tracking-tight sm:text-6xl">£99</span>
+              <span className="text-lg text-white/45">/month</span>
+            </div>
+            <p className="mt-3 text-base text-white/55">Everything included. No setup fee, no contract, cancel anytime.</p>
+            <ul className="mt-7 grid gap-x-6 gap-y-3 sm:grid-cols-2">
+              {PLAN_INCLUDES.map((item) => (
+                <li key={item} className="flex items-start gap-2.5 text-sm leading-snug text-white/75">
+                  <Check />
+                  {item}
+                </li>
+              ))}
+            </ul>
+            <div className="mt-8">
+              <Link href="/get-started" className="inline-block rounded-xl bg-white px-8 py-3.5 text-sm font-semibold text-black transition hover:bg-white/90">
                 Get your site
-              </Link>
-              <Link href="/pricing" className="rounded-xl border border-white/15 px-6 py-3 text-sm font-medium text-white/80 transition hover:bg-white/5">
-                See pricing →
               </Link>
             </div>
           </div>
@@ -134,7 +156,7 @@ export function LiveExamples() {
             <motion.div
               key={e.key}
               style={{ x: xVals[i], y: yVals[i], rotate: rVals[i], scale: layout[i].scale, opacity: cardsOpacity, zIndex: layout[i].z }}
-              className="absolute w-[240px] sm:w-[320px] md:w-[380px] lg:w-[440px]"
+              className="absolute w-[300px] sm:w-[420px] md:w-[520px] lg:w-[600px]"
             >
               <BrowserCard e={e} />
             </motion.div>

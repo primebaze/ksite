@@ -80,34 +80,22 @@ export function ScrollZoom({ children }: { children: ReactNode }) {
           </Caption>
         ))}
 
-        {/* Closing call to action — the selling point, in a premium card */}
+        {/* Closing call to action — content blended on the reel, no card box */}
         <motion.div
           style={{ opacity: ctaOpacity, y: ctaY }}
-          className="absolute inset-0 flex items-center justify-center px-6"
+          className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center px-6 text-center"
         >
-          <div className="pointer-events-auto relative w-full max-w-lg overflow-hidden rounded-3xl border border-white/15 bg-white/[0.05] p-8 text-center shadow-[0_40px_140px_-25px_rgba(0,0,0,0.95)] backdrop-blur-2xl sm:p-10">
-            {/* top edge highlight + soft emerald glow */}
-            <div className="pointer-events-none absolute inset-x-10 top-0 h-px bg-gradient-to-r from-transparent via-white/50 to-transparent" />
-            <div className="pointer-events-none absolute -top-24 left-1/2 h-48 w-48 -translate-x-1/2 rounded-full bg-emerald-400/20 blur-3xl" />
-
-            <p className="relative text-[11px] font-semibold uppercase tracking-[0.22em] text-emerald-400/90">
-              Your site, ready to launch
-            </p>
-            <h3 className="relative mt-4 text-3xl font-semibold tracking-tight text-white sm:text-[2.7rem] sm:leading-[1.05]">
-              Live in a day.
-            </h3>
-            <p className="relative mx-auto mt-4 max-w-sm text-base leading-relaxed text-white/60">
-              Design, hosting, domain and booking, all done for you. One flat price from £99 a month.
-            </p>
-            <Link
-              href="/get-started"
-              className="relative mt-7 inline-flex w-full items-center justify-center gap-2 rounded-xl bg-white px-7 py-3.5 text-sm font-semibold text-black transition hover:bg-white/90 sm:w-auto"
-            >
-              Get started
-              <span aria-hidden>→</span>
-            </Link>
-            <p className="relative mt-4 text-xs text-white/40">No setup fee · No contract · Cancel anytime</p>
-          </div>
+          <p className="mx-auto max-w-md text-lg leading-relaxed text-white/70">
+            Design, hosting, domain and booking, all done for you. One flat price from £99 a month.
+          </p>
+          <Link
+            href="/get-started"
+            className="pointer-events-auto mt-8 inline-flex items-center gap-2 rounded-xl bg-white px-8 py-4 text-sm font-semibold text-black transition hover:bg-white/90"
+          >
+            Get started
+            <span aria-hidden>→</span>
+          </Link>
+          <p className="mt-4 text-xs text-white/45">No setup fee · No contract · Cancel anytime</p>
         </motion.div>
       </div>
     </div>

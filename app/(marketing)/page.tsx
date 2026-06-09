@@ -4,8 +4,8 @@ import { RotatingWord } from "@/components/motion/RotatingWord";
 import { HeroShowcase } from "@/components/HeroShowcase";
 import { ScrollZoom } from "@/components/ScrollZoom";
 import { LiveExamples } from "@/components/LiveExamples";
-import { FeatureIcon } from "@/components/FeatureIcon";
-import { FEATURES, ROTATING_WORDS } from "@/lib/marketing";
+import { FeatureBento } from "@/components/FeatureBento";
+import { ROTATING_WORDS } from "@/lib/marketing";
 
 export default function Home() {
   return (
@@ -60,36 +60,27 @@ export default function Home() {
             </Link>
           </div>
         </Reveal>
-        <div className="mt-14 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {FEATURES.map((f, i) => (
-            <Reveal key={f.title} delay={i * 0.04}>
-              <div className="group relative h-full rounded-2xl bg-gradient-to-b from-white/[0.09] to-white/[0.02] p-px transition duration-300 hover:from-white/25">
-                <div className="relative h-full overflow-hidden rounded-2xl bg-neutral-950/90 p-7">
-                  {/* hover glow */}
-                  <div className="pointer-events-none absolute -right-12 -top-12 h-36 w-36 rounded-full bg-emerald-400/0 blur-2xl transition duration-500 group-hover:bg-emerald-400/[0.12]" />
-                  <span className="relative flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-b from-white/[0.12] to-white/[0.03] text-white ring-1 ring-inset ring-white/10 transition duration-300 group-hover:text-emerald-300">
-                    <FeatureIcon id={f.icon} className="h-5 w-5" />
-                  </span>
-                  <h3 className="relative mt-5 text-[15px] font-semibold tracking-tight text-white">{f.title}</h3>
-                  <p className="relative mt-2 text-sm leading-relaxed text-white/50">{f.body}</p>
-                </div>
-              </div>
-            </Reveal>
-          ))}
-        </div>
+        <Reveal delay={0.06}>
+          <FeatureBento />
+        </Reveal>
       </section>
 
       {/* Live examples: cards part on scroll to reveal the pricing panel */}
       <LiveExamples />
 
-      {/* Final CTA */}
-      <section className="border-t border-white/5">
-        <div className="mx-auto max-w-2xl px-6 py-24 text-center">
+      {/* Final CTA — the section above drapes its rounded edge over this one */}
+      <section className="relative -mt-12 bg-[#0a0a0a] sm:-mt-16">
+        <div className="relative mx-auto max-w-3xl px-6 pt-20 pb-24 text-center sm:pt-24 sm:pb-32">
           <Reveal>
-            <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">Ready to get online?</h2>
-            <p className="mt-4 text-white/55">Tell us about your business and we&apos;ll get you live on your own custom domain, usually in under a day.</p>
-            <Link href="/get-started" className="mt-8 inline-block rounded-lg bg-white px-6 py-3 text-sm font-semibold text-black transition hover:bg-white/90">
-              Get your site
+            <h2 className="text-5xl font-semibold tracking-tight text-white sm:text-7xl">Stand out online.</h2>
+            <p className="mx-auto mt-5 max-w-md text-base leading-relaxed text-white/55">
+              Your site, live on your own domain in a day. Booking, SEO and reviews handled for you.
+            </p>
+            <Link
+              href="/get-started"
+              className="mt-9 inline-block rounded-full bg-white px-8 py-4 text-base font-semibold text-black transition hover:bg-white/90"
+            >
+              Get started
             </Link>
           </Reveal>
         </div>
