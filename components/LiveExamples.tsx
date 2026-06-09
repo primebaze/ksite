@@ -77,7 +77,7 @@ export function LiveExamples() {
   const partR = (win || 1152) * 0.62 + 260;
 
   // Phase stops: assemble (fan in) -> hold -> part (fly out) -> reveal pricing.
-  const k = [0.06, 0.26, 0.44, 0.6] as const;
+  const k = [0.06, 0.26, 0.44, 0.6];
   const x0 = useTransform(scrollYProgress, k, [0, -outer, -outer, partL]);
   const x1 = useTransform(scrollYProgress, k, [0, -inner, -inner, partL]);
   const x2 = useTransform(scrollYProgress, k, [0, inner, inner, partR]);
