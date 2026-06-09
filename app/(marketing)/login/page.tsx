@@ -13,9 +13,9 @@ const input =
 export default async function LoginPage({
   searchParams,
 }: {
-  searchParams: Promise<{ error?: string }>;
+  searchParams: Promise<{ error?: string; notice?: string; email?: string }>;
 }) {
-  const { error } = await searchParams;
+  const { error, notice, email } = await searchParams;
   return (
     <>
       <PageHero kicker="Sign in" title="Welcome back.">
@@ -25,9 +25,10 @@ export default async function LoginPage({
       <section className="mx-auto max-w-md px-6 pb-20 pt-10">
         <Reveal>
           <form action={clientLogin} className="space-y-4 rounded-2xl border border-white/10 bg-white/[0.02] p-8">
+            {notice && <p className="rounded-lg border border-emerald-400/20 bg-emerald-400/[0.06] px-4 py-3 text-sm text-emerald-200">{notice}</p>}
             <div>
               <label className="text-sm font-medium">Email</label>
-              <input name="email" type="email" required className={input} autoComplete="email" />
+              <input name="email" type="email" required defaultValue={email ?? ""} className={input} autoComplete="email" />
             </div>
             <div>
               <label className="text-sm font-medium">Password</label>

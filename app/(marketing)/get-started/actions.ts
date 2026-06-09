@@ -103,20 +103,30 @@ export async function startOnboarding(formData: FormData) {
   const supabase = await createSupabaseServerClient();
   const base = process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000";
 
-  const { error } = await supabase.auth.signUp({
+  const { data, error } = await supabase.auth.signUp({
     email,
     password,
     options: { data: metadata, emailRedirectTo: `${base}/auth/confirm` },
   });
   if (error) err(error.message);
 
-  // Supabase won't update metadata on a repeat signup of an existing email, so
-  // force the latest details onto the user via the admin client.
-  const svc = getServiceClient();
-  if (svc) {
-    const { data: list } = await svc.auth.admin.listUsers();
-    const u = list?.users?.find((x) => x.email?.toLowerCase() === email.toLowerCase());
-    if (u) await svc.auth.admin.updateUserById(u.id, { user_metadata: metadata });
+  // When the email already belongs to a confirmed account, Supabase returns an
+  // obfuscated user with an empty `identities` array (the supported,
+  // enumeration-safe signal). We must NOT touch that account — send them to
+  // sign in instead.
+  //
+  // Previously this path used the admin client to look a user up by email and
+  // OVERWRITE their user_metadata, which let any unauthenticated visitor tamper
+  // with another person's account just by submitting the form with their email.
+  // That has been removed: a brand-new signup already gets its metadata from
+  // `options.data` above, and existing accounts are never modified here.
+  const alreadyRegistered = !data.user?.identities || data.user.identities.length === 0;
+  if (alreadyRegistered) {
+    redirect(
+      `/login?notice=${encodeURIComponent(
+        "An account with this email already exists. Please sign in.",
+      )}&email=${encodeURIComponent(email)}`,
+    );
   }
 
   redirect(`/get-started/check-email?email=${encodeURIComponent(email)}`);

@@ -1,5 +1,8 @@
 import "server-only";
+import { redirect } from "next/navigation";
 import { getServiceClient } from "./supabase";
+import { getAdminUser } from "./supabase-server";
+import { isStaff } from "./staff";
 import { revalidateTenant, revalidateSiteHost } from "./tenant";
 import { starterContent } from "./starter";
 import type {
@@ -14,8 +17,17 @@ import type {
 } from "./types";
 
 // Admin data layer. Uses the SECRET (service_role) client, which bypasses RLS.
-// Only call these from inside the authenticated /admin area (the dash layout
-// verifies the staff user before any of this runs).
+// Only call these from inside the authenticated /admin area.
+
+// Authorization guard for the admin server actions. A page/layout guard does
+// NOT protect server actions — they're independently-callable POST endpoints —
+// so every admin mutation must verify the caller is staff itself before it
+// touches the RLS-bypassing client. Without this, any signed-in user could
+// edit/publish/delete ANY tenant by POSTing to these actions with its id.
+export async function requireStaff() {
+  const user = await getAdminUser();
+  if (!user || !isStaff(user.email)) redirect("/admin/login");
+}
 
 function client() {
   const c = getServiceClient();

@@ -1,10 +1,11 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { createTenant } from "@/lib/admin";
+import { createTenant, requireStaff } from "@/lib/admin";
 import { isVertical } from "@/lib/verticals";
 
 export async function createTenantAction(formData: FormData) {
+  await requireStaff();
   const business_name = String(formData.get("business_name") ?? "").trim();
   const preset = String(formData.get("preset") ?? "");
   const subdomain = String(formData.get("subdomain") ?? "")

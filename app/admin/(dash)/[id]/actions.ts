@@ -7,6 +7,7 @@ import {
   deleteGalleryImage,
   deleteTeamMember,
   getTenantFull,
+  requireStaff,
   setPublished,
   updateContent,
   updateTenantFields,
@@ -24,6 +25,7 @@ const str = (f: FormData, k: string) => {
 const refresh = (id: string) => revalidatePath(`/admin/${id}`);
 
 export async function saveBasics(formData: FormData) {
+  await requireStaff();
   const id = String(formData.get("id"));
   await updateTenantFields(id, {
     business_name: String(formData.get("business_name") ?? "").trim(),
@@ -41,6 +43,7 @@ export async function saveBasics(formData: FormData) {
 }
 
 export async function togglePublish(formData: FormData) {
+  await requireStaff();
   const id = String(formData.get("id"));
   const publish = String(formData.get("publish")) === "true";
   await setPublished(id, publish);
@@ -48,6 +51,7 @@ export async function togglePublish(formData: FormData) {
 }
 
 export async function saveContentFields(formData: FormData) {
+  await requireStaff();
   const id = String(formData.get("id"));
   const site = await getTenantFull(id);
   if (!site) redirect("/admin");
@@ -68,6 +72,7 @@ export async function saveContentFields(formData: FormData) {
 }
 
 export async function saveContentRaw(formData: FormData) {
+  await requireStaff();
   const id = String(formData.get("id"));
   const raw = String(formData.get("content_json") ?? "");
   let parsed: SiteContent;
@@ -82,6 +87,7 @@ export async function saveContentRaw(formData: FormData) {
 
 // --- catalog ---------------------------------------------------------------
 export async function catalogSave(formData: FormData) {
+  await requireStaff();
   const id = String(formData.get("id"));
   await upsertCatalogItem(id, {
     id: str(formData, "item_id") ?? undefined,
@@ -96,6 +102,7 @@ export async function catalogSave(formData: FormData) {
   refresh(id);
 }
 export async function catalogDelete(formData: FormData) {
+  await requireStaff();
   const id = String(formData.get("id"));
   await deleteCatalogItem(id, String(formData.get("item_id")));
   refresh(id);
@@ -103,6 +110,7 @@ export async function catalogDelete(formData: FormData) {
 
 // --- gallery ---------------------------------------------------------------
 export async function gallerySave(formData: FormData) {
+  await requireStaff();
   const id = String(formData.get("id"));
   await upsertGalleryImage(id, {
     id: str(formData, "item_id") ?? undefined,
@@ -113,6 +121,7 @@ export async function gallerySave(formData: FormData) {
   refresh(id);
 }
 export async function galleryDelete(formData: FormData) {
+  await requireStaff();
   const id = String(formData.get("id"));
   await deleteGalleryImage(id, String(formData.get("item_id")));
   refresh(id);
@@ -120,6 +129,7 @@ export async function galleryDelete(formData: FormData) {
 
 // --- team ------------------------------------------------------------------
 export async function teamSave(formData: FormData) {
+  await requireStaff();
   const id = String(formData.get("id"));
   await upsertTeamMember(id, {
     id: str(formData, "item_id") ?? undefined,
@@ -132,6 +142,7 @@ export async function teamSave(formData: FormData) {
   refresh(id);
 }
 export async function teamDelete(formData: FormData) {
+  await requireStaff();
   const id = String(formData.get("id"));
   await deleteTeamMember(id, String(formData.get("item_id")));
   refresh(id);
