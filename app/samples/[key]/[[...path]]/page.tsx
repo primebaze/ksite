@@ -28,10 +28,10 @@ export default async function SamplePage({
   searchParams,
 }: {
   params: Promise<{ key: string; path?: string[] }>;
-  searchParams: Promise<{ style?: string; embed?: string; img?: string; video?: string; name?: string }>;
+  searchParams: Promise<{ style?: string; embed?: string; img?: string; video?: string; name?: string; design?: string }>;
 }) {
   const { key, path } = await params;
-  const { style, embed, img, video, name } = await searchParams;
+  const { style, embed, img, video, name, design } = await searchParams;
 
   const page = pageFromPath(path);
   if (!page) notFound();
@@ -54,6 +54,10 @@ export default async function SamplePage({
   }
   if (video && /^\/hero\/[\w.-]+\.mp4$/.test(video)) {
     site.content = { ...site.content, hero_video_url: video };
+  }
+  // Optional bespoke design override (real-world-inspired layouts).
+  if (design && /^[\w-]+$/.test(design)) {
+    site.content = { ...site.content, design };
   }
 
   return (

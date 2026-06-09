@@ -30,6 +30,8 @@ export interface SiteContent {
   tagline?: string;
   /** Visual design variant (see SiteStyle in presets/shared). */
   style?: "editorial" | "bold" | "minimal" | "warm" | "luxe" | "classic";
+  /** Bespoke full-page design (real-world-inspired layouts, e.g. "ember"). Overrides `style` when set. */
+  design?: string;
   /** Layout variant for the list/body section (e.g. services shown as a list vs cards). */
   body_variant?: "list" | "cards";
   /** Layout variant for the footer / contact section. */

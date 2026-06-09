@@ -78,7 +78,7 @@ export default function SalonSite({ site, page = "home", basePath = "", multiPag
         <section id="services" className={cx("border-y border-black/5", tokens.tint)}>
           <div className="mx-auto max-w-3xl px-6 py-24">
             <SectionHeading tokens={tokens} kicker="The list" title="Services & prices" center />
-            {content.body_variant === "cards" ? (
+            {(content.body_variant ?? tokens.body) === "cards" ? (
               <CatalogCards groups={groups} tokens={tokens} />
             ) : (
             <div className="mt-14 space-y-14">

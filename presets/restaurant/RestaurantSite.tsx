@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import {
   AboutSection,
   CatalogCards,
+  CatalogList,
   ContactFooter,
   GallerySection,
   Hero,
@@ -18,12 +19,18 @@ import {
 import type { CatalogGroup } from "../shared";
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
+import { getRestaurantDesign } from "./designs";
 import type { CatalogItem } from "@/lib/types";
 
 // "menu" archetype: restaurants, cafés, bars, bakeries and the rest of food &
 // drink. Renders as a single-page site by default; with `multiPage`, the nav
 // opens real pages (Menu / About / Gallery / Contact) under basePath.
-export default function RestaurantSite({ site, page = "home", basePath = "", multiPage = false }: PresetProps) {
+export default function RestaurantSite(props: PresetProps) {
+  // A bespoke real-world-inspired design takes over the whole page when set.
+  const Design = getRestaurantDesign(props.site.content.design);
+  if (Design) return <Design {...props} />;
+
+  const { site, page = "home", basePath = "", multiPage = false } = props;
   const { tenant, theme, content, catalog, gallery } = site;
   const tokens = tokensFor(content, theme);
   const sections = groupCatalog(catalog);
@@ -36,7 +43,7 @@ export default function RestaurantSite({ site, page = "home", basePath = "", mul
   const menuBlock =
     sections.length > 0 ? (
       <>
-        {content.body_variant === "cards" ? (
+        {(content.body_variant ?? tokens.body) === "cards" ? (
           <CatalogCards groups={sections} tokens={tokens} />
         ) : (
           <div className="mt-14 space-y-16">
@@ -152,17 +159,7 @@ export default function RestaurantSite({ site, page = "home", basePath = "", mul
     <>
       {heroEl}
 
-      {content.about && (
-        <section className="mx-auto max-w-3xl px-6 py-24 text-center sm:py-28">
-          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[var(--primary)]">Welcome</p>
-          <p
-            data-edit="content.about"
-            className={cx("mt-6 font-display text-2xl leading-relaxed text-neutral-800 sm:text-[2.1rem] sm:leading-[1.4]", tokens.serif ? "font-normal" : "font-light")}
-          >
-            {content.about}
-          </p>
-        </section>
-      )}
+      <AboutSection tokens={tokens} about={content.about} kicker="Welcome" />
 
       {sections.length > 0 && (
         <section className={cx("border-y border-black/5", tokens.tint)}>
@@ -171,7 +168,7 @@ export default function RestaurantSite({ site, page = "home", basePath = "", mul
               <SectionHeading tokens={tokens} kicker="What's cooking" title="Menu highlights" />
               <a href={pageHref(basePath, "menu")} className="shrink-0 text-sm font-medium text-[var(--primary)] underline-offset-4 hover:underline">View full menu →</a>
             </div>
-            <CatalogCards groups={featuredGroups} tokens={tokens} />
+            {tokens.body === "list" ? <CatalogList groups={featuredGroups} tokens={tokens} /> : <CatalogCards groups={featuredGroups} tokens={tokens} />}
           </div>
         </section>
       )}

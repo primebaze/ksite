@@ -46,6 +46,12 @@ export interface StyleTokens {
   hero: "bold" | "luxe" | "editorial" | "classic" | "warm" | "minimal";
   /** Whether the hero sits on dark imagery (white overlay nav) or light. */
   heroDark: boolean;
+  /** Catalog body layout. */
+  body: "list" | "cards";
+  /** About-section composition. */
+  about: "center" | "left" | "statement";
+  /** Footer composition. */
+  footer: "standard" | "minimal" | "columns";
 }
 
 const defaultSerif: Record<SiteStyle, boolean> = {
@@ -74,22 +80,25 @@ export function tokensFor(content: SiteContent, theme: Theme): StyleTokens {
     tint: "bg-neutral-50",
     hero: "classic",
     heroDark: false,
+    body: "cards",
+    about: "center",
+    footer: "standard",
   };
 
   switch (style) {
     case "editorial":
-      return { ...base, heading: "font-medium tracking-tight leading-[1.03]", label: "serif", heroAlign: "left", btn: "rounded-none", card: "rounded-none", tint: "bg-[#faf8f4]", hero: "editorial", heroDark: false };
+      return { ...base, heading: "font-medium tracking-tight leading-[1.03]", label: "serif", heroAlign: "left", btn: "rounded-none", card: "rounded-none", tint: "bg-[#faf8f4]", hero: "editorial", heroDark: false, body: "list", about: "left", footer: "columns" };
     case "bold":
-      return { ...base, heading: "font-bold tracking-[-0.03em] leading-[0.95]", label: "caps", heroAlign: "left", heroOverlay: "bg-gradient-to-r from-black/90 via-black/55 to-black/10", btn: "rounded-md", card: "rounded-xl", tint: "bg-neutral-100", hero: "bold", heroDark: true };
+      return { ...base, heading: "font-bold tracking-[-0.03em] leading-[0.95]", label: "caps", heroAlign: "left", heroOverlay: "bg-gradient-to-r from-black/90 via-black/55 to-black/10", btn: "rounded-md", card: "rounded-xl", tint: "bg-neutral-100", hero: "bold", heroDark: true, body: "cards", about: "statement", footer: "columns" };
     case "minimal":
-      return { ...base, heading: "font-semibold tracking-tight", label: "caps", heroAlign: "center", btn: "rounded-full", card: "rounded-2xl", tint: "bg-neutral-50", hero: "minimal", heroDark: false };
+      return { ...base, heading: "font-semibold tracking-tight", label: "caps", heroAlign: "center", btn: "rounded-full", card: "rounded-2xl", tint: "bg-neutral-50", hero: "minimal", heroDark: false, body: "list", about: "center", footer: "minimal" };
     case "warm":
-      return { ...base, heading: "font-medium tracking-tight leading-[1.05]", label: "serif", heroAlign: "center", btn: "rounded-full", card: "rounded-[1.75rem]", tint: "bg-[#fbf7f2]", hero: "warm", heroDark: false };
+      return { ...base, heading: "font-medium tracking-tight leading-[1.05]", label: "serif", heroAlign: "center", btn: "rounded-full", card: "rounded-[1.75rem]", tint: "bg-[#fbf7f2]", hero: "warm", heroDark: false, body: "cards", about: "center", footer: "minimal" };
     case "luxe":
-      return { ...base, heading: "font-medium tracking-[0.01em] leading-[1.04]", label: "caps", heroAlign: "center", heroOverlay: "bg-gradient-to-t from-black/90 via-black/55 to-black/40", heroBase: "bg-gradient-to-b from-neutral-900 via-black to-black", btn: "rounded-none", card: "rounded-none", tint: "bg-[#f5f2ec]", hero: "luxe", heroDark: true };
+      return { ...base, heading: "font-medium tracking-[0.01em] leading-[1.04]", label: "caps", heroAlign: "center", heroOverlay: "bg-gradient-to-t from-black/90 via-black/55 to-black/40", heroBase: "bg-gradient-to-b from-neutral-900 via-black to-black", btn: "rounded-none", card: "rounded-none", tint: "bg-[#f5f2ec]", hero: "luxe", heroDark: true, body: "list", about: "statement", footer: "minimal" };
     case "classic":
     default:
-      return { ...base, hero: "classic", heroDark: false };
+      return { ...base, hero: "classic", heroDark: false, body: "cards", about: "center", footer: "standard" };
   }
 }
 
@@ -187,7 +196,38 @@ export function Label({ tokens, children }: { tokens: StyleTokens; children: Rea
   return <p className="text-xs font-semibold uppercase tracking-[0.3em] text-[var(--primary)]">{children}</p>;
 }
 
-/** Section heading with an accent rule. */
+// "list" body layout for any catalog — an editorial price list with dotted
+// rules. The counterpart to CatalogCards; which one renders is driven by the
+// design style (tokens.body).
+export function CatalogList({ groups, tokens }: { groups: CatalogGroup[]; tokens: StyleTokens }) {
+  if (groups.every((g) => g.categories.every((c) => c.items.length === 0))) return null;
+  return (
+    <div className="mt-12 space-y-12">
+      {groups.map((section) => (
+        <div key={section.section}>
+          {section.section && <h3 className={cx("font-display text-2xl text-neutral-900", tokens.heading)}>{section.section}</h3>}
+          {section.categories.map((catg) => (
+            <div key={catg.category ?? "_"} className="mt-6">
+              {catg.category && <h4 className="mb-2 text-xs font-semibold uppercase tracking-[0.2em] text-neutral-400">{catg.category}</h4>}
+              <ul className="divide-y divide-neutral-200">
+                {catg.items.map((item) => (
+                  <li key={item.id} className="flex items-baseline justify-between gap-6 py-4">
+                    <div className="min-w-0">
+                      <p data-edit={`item:${item.id}:name`} className="font-medium text-neutral-900">{item.name}</p>
+                      {item.description && <p data-edit={`item:${item.id}:description`} className="mt-0.5 text-sm text-neutral-500">{item.description}</p>}
+                    </div>
+                    {item.price && <span data-edit={`item:${item.id}:price`} className="whitespace-nowrap font-medium text-[var(--primary)]">{item.price}</span>}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </div>
+      ))}
+    </div>
+  );
+}
+
 // Alternate "cards" body layout for any catalog (menu / services / treatments).
 // A responsive grid of refined cards — reads more premium than a plain list and
 // is the `body_variant === "cards"` option in the on-screen editor.
@@ -289,9 +329,40 @@ export function SiteHeader({
   );
 }
 
-/** Centered "about" statement. */
+/** "About" block — composition varies by style. */
 export function AboutSection({ tokens, about, kicker = "About" }: { tokens: StyleTokens; about?: string; kicker?: string }) {
   if (!about) return null;
+
+  // statement: a big, left-aligned editorial statement on a tinted band.
+  if (tokens.about === "statement") {
+    return (
+      <section id="about" className={cx("border-y border-black/5", tokens.tint)}>
+        <div className="mx-auto grid max-w-6xl gap-6 px-6 py-24 sm:py-28 lg:grid-cols-[auto_1fr] lg:gap-14">
+          <div className="lg:pt-2"><Label tokens={tokens}>{kicker}</Label></div>
+          <p data-edit="content.about" className={cx("font-display max-w-3xl text-3xl leading-[1.25] tracking-tight text-neutral-900 sm:text-[2.6rem] sm:leading-[1.2]", tokens.heading)}>
+            {about}
+          </p>
+        </div>
+      </section>
+    );
+  }
+
+  // left: a refined two-column block, kicker beside the text.
+  if (tokens.about === "left") {
+    return (
+      <section id="about" className="mx-auto grid max-w-5xl gap-8 px-6 py-24 sm:py-28 md:grid-cols-[180px_1fr] md:gap-12">
+        <div>
+          <Label tokens={tokens}>{kicker}</Label>
+          <div className="mt-4 h-px w-12 bg-[var(--accent)]" />
+        </div>
+        <p data-edit="content.about" className={cx("max-w-2xl text-xl leading-relaxed text-neutral-700 sm:text-2xl sm:leading-[1.55]", tokens.serif ? "font-display font-normal" : "font-light")}>
+          {about}
+        </p>
+      </section>
+    );
+  }
+
+  // center (default): airy centered statement.
   return (
     <section id="about" className="mx-auto max-w-3xl px-6 py-24 text-center">
       <Label tokens={tokens}>{kicker}</Label>
@@ -347,8 +418,62 @@ export function ContactFooter({
     />
   ) : null;
 
+  const variant = content.footer_variant ?? tokens.footer;
+
+  // Columns footer: a dark, multi-column layout (distinct from the light
+  // "standard" section and the centred "minimal" band).
+  if (variant === "columns") {
+    return (
+      <footer id="contact" className="border-t border-white/10 bg-neutral-950 text-white">
+        <div className="mx-auto max-w-6xl px-6 py-20">
+          <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+            <div className="lg:col-span-1">
+              <p className="font-display text-xl font-semibold tracking-tight">{tenant.business_name}</p>
+              {cta && (
+                <a href={cta.href} className={cx("mt-5 inline-flex bg-white px-5 py-2.5 text-sm font-semibold text-black transition hover:bg-white/90", tokens.btn)}>{cta.label}</a>
+              )}
+            </div>
+            {(content.address || content.phone || content.email) && (
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white/40">Contact</p>
+                {content.address && <p data-edit="content.address" className="mt-3 text-sm text-white/70">{content.address}</p>}
+                {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="mt-2 block text-sm text-white/70 hover:text-white">{content.phone}</a>}
+                {content.email && <a data-edit="content.email" href={`mailto:${content.email}`} className="block text-sm text-white/70 hover:text-white">{content.email}</a>}
+              </div>
+            )}
+            {content.hours && content.hours.length > 0 && (
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white/40">Hours</p>
+                <ul className="mt-3 space-y-1.5 text-sm text-white/70">
+                  {content.hours.map((h, i) => (
+                    <li key={i} className="flex justify-between gap-6">
+                      <span data-edit={`hours:${i}:day`}>{h.day}</span>
+                      <span data-edit={`hours:${i}:open`} className="text-white/45">{h.open}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {content.socials && content.socials.length > 0 && (
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white/40">Follow</p>
+                <div className="mt-3 flex flex-col gap-1.5">
+                  {content.socials.map((s) => (
+                    <a key={s.url} href={s.url} className="text-sm text-white/70 hover:text-white">{s.label}</a>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+          {forms && <div className="mt-14 border-t border-white/10 pt-12">{forms}</div>}
+          <p className="mt-14 border-t border-white/10 pt-8 text-xs text-white/35">© {tenant.business_name}. All rights reserved.</p>
+        </div>
+      </footer>
+    );
+  }
+
   // Minimal footer: a single compact contact band on the brand colour, no map.
-  if (content.footer_variant === "minimal") {
+  if (variant === "minimal") {
     return (
       <footer id="contact" className="bg-[var(--primary)] text-white">
         <div className="mx-auto max-w-3xl px-6 py-16 text-center">
@@ -764,7 +889,7 @@ export function renderMultiPage({
     return wrap(
       <section className="mx-auto max-w-6xl px-6 py-20 sm:py-28">
         <SectionHeading tokens={tokens} kicker={catalogKicker} title={catalogTitle} center />
-        <CatalogCards groups={groups} tokens={tokens} />
+        {tokens.body === "list" ? <CatalogList groups={groups} tokens={tokens} /> : <CatalogCards groups={groups} tokens={tokens} />}
         {ctaBtn}
       </section>,
     );
@@ -817,12 +942,7 @@ export function renderMultiPage({
     <>
       {heroEl}
 
-      {about && (
-        <section className="mx-auto max-w-3xl px-6 py-24 text-center sm:py-28">
-          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[var(--primary)]">Welcome</p>
-          <p data-edit="content.about" className={cx("mt-6 font-display text-2xl leading-relaxed text-neutral-800 sm:text-[2.1rem] sm:leading-[1.4]", tokens.serif ? "font-normal" : "font-light")}>{about}</p>
-        </section>
-      )}
+      <AboutSection tokens={tokens} about={about} kicker="Welcome" />
 
       {groups.length > 0 && (
         <section className={cx("border-y border-black/5", tokens.tint)}>
@@ -833,7 +953,7 @@ export function renderMultiPage({
                 View {catalogLabel.toLowerCase()} →
               </a>
             </div>
-            <CatalogCards groups={featuredGroups} tokens={tokens} />
+            {tokens.body === "list" ? <CatalogList groups={featuredGroups} tokens={tokens} /> : <CatalogCards groups={featuredGroups} tokens={tokens} />}
           </div>
         </section>
       )}
