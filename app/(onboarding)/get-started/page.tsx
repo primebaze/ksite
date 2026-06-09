@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import { PageHero } from "@/components/PageHero";
-import { Reveal } from "@/components/motion/Reveal";
+import Link from "next/link";
 import { BUILDS, buildGroups, buildFor } from "@/lib/builds";
 import { GetStartedFlow } from "@/components/GetStartedFlow";
 import { startOnboarding } from "./actions";
@@ -27,25 +26,21 @@ export default async function GetStartedPage({
   const preselect = build && buildFor(build) ? { key: build, style } : undefined;
 
   return (
-    <>
-      <PageHero kicker="Get started" title={preselect ? "You're almost there." : "Create your site in minutes."}>
-        {preselect
-          ? "Your design is picked. Create your account and we'll open it in the on-screen editor so you can make it yours."
-          : "Choose the kind of website you want first, then pick a matching design. You'll edit it on-screen, revise until it feels right, then publish it to your own domain."}
-      </PageHero>
-
-      <section className="mx-auto max-w-6xl px-6 py-20">
-        <Reveal>
-          <GetStartedFlow
-            groups={GROUPS}
-            builds={BUILD_OPTIONS}
-            turnstileKey={TURNSTILE_KEY}
-            error={error}
-            action={startOnboarding}
-            preselect={preselect}
-          />
-        </Reveal>
-      </section>
-    </>
+    <div className="mx-auto min-h-screen max-w-2xl px-5 pb-16 pt-7">
+      <div className="mb-7 flex justify-center">
+        <Link href="/" className="flex items-center gap-2" aria-label="Kovasite home">
+          <span className="grid h-7 w-7 place-items-center rounded-md bg-white text-sm font-bold text-black">K</span>
+          <span className="text-sm font-semibold tracking-tight">Kovasite</span>
+        </Link>
+      </div>
+      <GetStartedFlow
+        groups={GROUPS}
+        builds={BUILD_OPTIONS}
+        turnstileKey={TURNSTILE_KEY}
+        error={error}
+        action={startOnboarding}
+        preselect={preselect}
+      />
+    </div>
   );
 }

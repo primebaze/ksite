@@ -123,8 +123,9 @@ export function GetStartedFlow({
 
   function goToStep(nextStep: number) {
     setStep(nextStep);
+    // Onboarding: each step is its own screen, so jump back to the very top.
     window.requestAnimationFrame(() => {
-      formRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      window.scrollTo({ top: 0, behavior: "smooth" });
     });
   }
 
@@ -143,7 +144,7 @@ export function GetStartedFlow({
   }
 
   return (
-    <form ref={formRef} action={action} className="scroll-mt-24 overflow-hidden rounded-3xl border border-white/10 bg-white/[0.02] shadow-[0_40px_140px_-80px_rgba(16,185,129,0.9)]">
+    <form ref={formRef} action={action} className="flex min-h-[calc(100vh-6rem)] flex-col overflow-hidden rounded-3xl border border-white/10 bg-white/[0.02] shadow-[0_40px_140px_-80px_rgba(16,185,129,0.9)]">
       <input type="hidden" name="preset" value={preset} />
       <input type="hidden" name="selected_design" value={selectedDesign} />
       <input type="hidden" name="selected_style" value={selectedStyle} />
