@@ -28,10 +28,10 @@ export default async function SamplePage({
   searchParams,
 }: {
   params: Promise<{ key: string; path?: string[] }>;
-  searchParams: Promise<{ style?: string; embed?: string; img?: string; video?: string; name?: string; design?: string }>;
+  searchParams: Promise<{ style?: string; embed?: string; img?: string; video?: string; name?: string; design?: string; from?: string }>;
 }) {
   const { key, path } = await params;
-  const { style, embed, img, video, name, design } = await searchParams;
+  const { style, embed, img, video, name, design, from } = await searchParams;
 
   const page = pageFromPath(path);
   if (!page) notFound();
@@ -64,7 +64,13 @@ export default async function SamplePage({
     <div className="relative">
       {!embed && (
         <div className="fixed bottom-5 left-1/2 z-[100] flex -translate-x-1/2 items-center gap-2 rounded-full border border-white/10 bg-black/80 px-2 py-2 text-sm text-white shadow-2xl backdrop-blur">
-          <Link href="/samples" className="rounded-full px-4 py-1.5 font-medium text-white/80 transition hover:bg-white/10 hover:text-white">← All samples</Link>
+          {/* Return to the tab they came from (else this sample's category). */}
+          <Link
+            href={`/samples?cat=${encodeURIComponent((from && from.length <= 40 ? from : null) ?? buildFor(key)?.group ?? "")}`}
+            className="rounded-full px-4 py-1.5 font-medium text-white/80 transition hover:bg-white/10 hover:text-white"
+          >
+            ← All samples
+          </Link>
           <Link
             href={`/get-started?build=${key}${style && STYLES.has(style) ? `&style=${style}` : ""}`}
             className="rounded-full bg-white px-4 py-1.5 font-semibold text-black transition hover:bg-white/90"

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { TemplateThumb } from "./TemplateThumb";
 
@@ -24,6 +24,20 @@ export function SamplesBrowser({ groups }: { groups: BrowserGroup[] }) {
   const [selected, setSelected] = useState(groups[0]?.group);
   const active = groups.find((g) => g.group === selected) ?? groups[0];
 
+  // Keep the chosen category in the URL (?cat=) so navigating into a sample and
+  // coming Back restores the same section instead of resetting to Popular.
+  useEffect(() => {
+    const cat = new URLSearchParams(window.location.search).get("cat");
+    if (cat && groups.some((g) => g.group === cat)) setSelected(cat);
+  }, [groups]);
+
+  function pick(group: string) {
+    setSelected(group);
+    const url = new URL(window.location.href);
+    url.searchParams.set("cat", group);
+    window.history.replaceState(null, "", url);
+  }
+
   return (
     <div className="mx-auto flex max-w-6xl flex-col gap-8 px-6 py-12 lg:flex-row lg:gap-12">
       {/* Sidebar / category filter */}
@@ -36,7 +50,7 @@ export function SamplesBrowser({ groups }: { groups: BrowserGroup[] }) {
               <li key={g.group} className="shrink-0">
                 <button
                   type="button"
-                  onClick={() => setSelected(g.group)}
+                  onClick={() => pick(g.group)}
                   className={`whitespace-nowrap rounded-lg px-3 py-2 text-left text-sm transition lg:w-full ${
                     on ? "bg-white/10 font-medium text-white" : "text-white/55 hover:bg-white/5 hover:text-white"
                   }`}
@@ -59,7 +73,8 @@ export function SamplesBrowser({ groups }: { groups: BrowserGroup[] }) {
             const extra =
               (b.design ? `&design=${b.design}` : "") +
               (b.name ? `&name=${encodeURIComponent(b.name)}` : "");
-            const href = `/samples/${b.key}${extra ? `?${extra.slice(1)}` : ""}`;
+            // `from` tells the sample page which tab to return to (← All samples).
+            const href = `/samples/${b.key}?from=${encodeURIComponent(active.group)}${extra}`;
             return (
               <Link
                 key={`${b.key}-${b.design ?? ""}`}
