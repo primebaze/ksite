@@ -29,7 +29,7 @@ export const BUILD_DESIGN: Record<string, string> = {
   deli: "drift",
   // laurel — elegant modern-European fine dining
   fine_dining: "laurel",
-  restaurant: "laurel",
+  restaurant: "cinder",
   bistro: "laurel",
   italian: "laurel",
   tapas: "laurel",

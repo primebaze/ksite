@@ -162,7 +162,7 @@ export function GetStartedFlow({
     const photos = groupPhotos[selected.group] ?? [];
     const recommended = buildDesigns[preset] ?? all[0];
     return [recommended, ...all.filter((d) => d !== recommended)]
-      .slice(0, 4)
+      .slice(0, 5)
       .map((design, i) => ({ design, img: photos[i % Math.max(photos.length, 1)] ?? "" }));
   }, [selected, preset, groupDesigns, buildDesigns, groupPhotos]);
 
