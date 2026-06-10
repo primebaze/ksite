@@ -11,6 +11,12 @@ import Botanica from "./Botanica";
 import Lacquer from "./Lacquer";
 import Cinder from "./Cinder";
 import Meadow from "./Meadow";
+import Forno from "./Forno";
+import Crumb from "./Crumb";
+import Stack from "./Stack";
+import Vialetto from "./Vialetto";
+import Saffron from "./Saffron";
+import Agave from "./Agave";
 
 // Bespoke full-page restaurant designs (our own names). Selected via
 // content.design; each keeps its layout and swaps in the client's own media.
@@ -26,6 +32,13 @@ export const RESTAURANT_DESIGNS: Record<string, ComponentType<PresetProps>> = {
   lacquer: Lacquer,
   cinder: Cinder,
   meadow: Meadow,
+  // Type-specific designs so common food types own a distinct look.
+  forno: Forno, // pizzeria
+  crumb: Crumb, // bakery
+  stack: Stack, // burger joint
+  vialetto: Vialetto, // italian trattoria
+  saffron: Saffron, // indian
+  agave: Agave, // mexican
 };
 
 export function getRestaurantDesign(key?: string): ComponentType<PresetProps> | null {

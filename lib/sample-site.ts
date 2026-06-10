@@ -31,7 +31,6 @@ export const BUILD_DESIGN: Record<string, string> = {
   fine_dining: "laurel",
   restaurant: "cinder",
   bistro: "laurel",
-  italian: "laurel",
   tapas: "laurel",
   wine_bar: "laurel",
   patisserie: "laurel",
@@ -40,23 +39,25 @@ export const BUILD_DESIGN: Record<string, string> = {
   pub: "lantern",
   gastropub: "lantern",
   thai: "lantern",
-  indian: "lantern",
-  mexican: "lantern",
   // daybreak — bright, energetic, all-day / casual
   brunch_cafe: "daybreak",
   coffee_shop: "daybreak",
   tearoom: "daybreak",
-  bakery: "daybreak",
   ice_cream: "daybreak",
-  burger_joint: "daybreak",
   food_truck: "daybreak",
-  pizzeria: "daybreak",
   // 5 newer screenshot-faithful designs
   japanese: "tide",
   brasserie: "botanica",
   chinese: "lacquer",
   cocktail_bar: "cinder",
   cafe: "meadow",
+  // Type-specific designs so these common types own a distinct look
+  pizzeria: "forno",
+  bakery: "crumb",
+  burger_joint: "stack",
+  italian: "vialetto",
+  indian: "saffron",
+  mexican: "agave",
   // Hair & beauty — EVERY key mapped, each to a DIFFERENT design (12 keys, 12
   // salon designs) so the gallery tab never repeats a layout.
   hair_salon: "indigo",
@@ -193,7 +194,7 @@ export const BUILD_DESIGN: Record<string, string> = {
 // design step): any design in the group works for any build key in that group
 // because they share the archetype's data model.
 export const GROUP_DESIGNS: Record<string, string[]> = {
-  "Food & drink": ["ember", "drift", "laurel", "lantern", "marble", "daybreak", "tide", "botanica", "lacquer", "cinder", "meadow"],
+  "Food & drink": ["ember", "drift", "laurel", "lantern", "marble", "daybreak", "tide", "botanica", "lacquer", "cinder", "meadow", "forno", "crumb", "stack", "vialetto", "saffron", "agave"],
   "Hair & beauty": ["indigo", "halo", "verve", "atelier", "fade", "lumiere", "aurelia", "seren", "lustre", "linea", "radiance", "lumina"],
   "Health & wellness": ["aurelia", "seren", "lustre", "linea", "radiance", "lumina", "indigo", "halo", "verve", "atelier", "fade", "lumiere"],
   Fitness: ["forge", "box", "ironclad", "apex", "tempo", "flow", "haven", "cadence", "pulse"],
