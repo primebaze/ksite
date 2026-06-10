@@ -38,6 +38,13 @@ import Radiate from "./Radiate";
 import Zephyr from "./Zephyr";
 import Terrace from "./Terrace";
 import Sentry from "./Sentry";
+// Automotive
+import Forecourt from "./Forecourt";
+import Panelworks from "./Panelworks";
+import Concours from "./Concours";
+import Hydro from "./Hydro";
+import Roadworthy from "./Roadworthy";
+import Tread from "./Tread";
 
 // Bespoke full-page services designs (our own names) for the TradesSite preset.
 // Selected via content.design; each keeps its layout and swaps in the client's
@@ -81,6 +88,12 @@ export const TRADES_DESIGNS: Record<string, ComponentType<PresetProps>> = {
   zephyr: Zephyr, // HVAC / air-con (slate + crisp cyan airflow)
   terrace: Terrace, // landscaper / garden design (slate-green + stone)
   sentry: Sentry, // pest control (protective teal + amber shield)
+  forecourt: Forecourt, // car dealer (showroom navy + gold)
+  panelworks: Panelworks, // bodyshop (graphite + factory red)
+  concours: Concours, // car detailing (gloss black + liquid gold)
+  hydro: Hydro, // car wash (splash-blue + lemon)
+  roadworthy: Roadworthy, // MOT centre (white + pass-green)
+  tread: Tread, // tyre shop (tyre-black + hi-vis orange)
 };
 
 export function getTradesDesign(key?: string): ComponentType<PresetProps> | null {
