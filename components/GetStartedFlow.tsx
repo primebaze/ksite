@@ -31,35 +31,22 @@ const titleCase = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 const input =
   "mt-2 w-full rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-white placeholder-white/30 outline-none transition focus:border-white/30";
 
-const FEATURED_GROUPS = ["Food & drink", "Hair & beauty", "Health & wellness", "Fitness", "Contractors & home", "Professional services"];
-
-const GROUP_COPY: Record<string, string> = {
-  "Food & drink": "Restaurants, cafés, bars and bakeries",
-  "Hair & beauty": "Salons, barbers, nails, lashes and makeup",
-  "Health & wellness": "Clinics, dentists, therapy and wellbeing",
-  Fitness: "Gyms, trainers, yoga and coaching",
-  "Contractors & home": "Plumbers, electricians and home services",
-  Automotive: "Garages, valeting and vehicle services",
-  "Professional services": "Consultants, legal, finance and agencies",
-  "Retail & shops": "Boutiques, florists and product shops",
-  Pets: "Groomers, vets and pet services",
-  "Events & creative": "Photographers, venues and creatives",
-  Education: "Tutors, nurseries and training providers",
-};
-
-const FEATURED_TYPES: Record<string, string[]> = {
-  "Food & drink": ["restaurant", "cafe", "bakery", "bar", "bistro", "pizzeria"],
-  "Hair & beauty": ["beauty_salon", "hair_salon", "barber", "nail_salon", "lash_brow", "makeup_artist"],
-  "Health & wellness": ["dentist", "aesthetics_clinic", "skin_clinic", "physio", "massage", "spa"],
-  Fitness: ["personal_trainer", "gym", "yoga_studio", "pilates", "boxing_gym", "bootcamp"],
-  "Contractors & home": ["plumber", "electrician", "builder", "cleaner", "handyman", "painter_decorator"],
-  Automotive: ["garage", "car_detailing", "car_wash", "mot_centre", "bodyshop", "tyre_shop"],
-  "Professional services": ["accountant", "business_consultant", "solicitor", "marketing_agency", "financial_advisor", "architect"],
-  "Retail & shops": ["boutique", "florist", "gift_shop", "bookshop", "homeware", "jeweller"],
-  Pets: ["dog_groomer", "vet", "dog_walker", "pet_shop", "dog_trainer", "cattery_kennels"],
-  "Events & creative": ["photographer", "wedding_planner", "event_venue", "dj", "party_hire"],
-  Education: ["private_tutor", "nursery", "driving_school", "dance_school", "music_teacher", "language_school"],
-};
+// One consolidated card per sector: a primary title with the sub-types listed
+// as the description, so the picker has no duplicate-feeling type buttons. Each
+// maps to its group + a representative build whose designs the next step shows.
+const CATEGORIES: { group: string; title: string; preset: string; desc: string }[] = [
+  { group: "Food & drink", title: "Restaurants", preset: "restaurant", desc: "Cafés, bakeries, bars, bistros, pizzerias and more" },
+  { group: "Hair & beauty", title: "Beauty salon", preset: "beauty_salon", desc: "Hair salons, barbers, nails, lashes, makeup and more" },
+  { group: "Health & wellness", title: "Clinics", preset: "aesthetics_clinic", desc: "Aesthetics, skin, dental, physio, massage and more" },
+  { group: "Fitness", title: "Gyms & studios", preset: "gym", desc: "Yoga, pilates, boxing, personal training and more" },
+  { group: "Contractors & home", title: "Trades & home", preset: "electrician", desc: "Plumbers, electricians, builders, cleaners and more" },
+  { group: "Automotive", title: "Automotive", preset: "garage", desc: "Garages, MOT, detailing, valeting and more" },
+  { group: "Professional services", title: "Professional services", preset: "accountant", desc: "Consultants, legal, finance, agencies and more" },
+  { group: "Retail & shops", title: "Shops", preset: "boutique", desc: "Boutiques, florists, gift shops, jewellers and more" },
+  { group: "Pets", title: "Pet services", preset: "dog_groomer", desc: "Groomers, vets, walkers, trainers and more" },
+  { group: "Events & creative", title: "Events & creative", preset: "photographer", desc: "Photographers, venues, planners, DJs and more" },
+  { group: "Education", title: "Education", preset: "private_tutor", desc: "Tutors, nurseries, driving and music schools and more" },
+];
 
 export function GetStartedFlow({
   groups,
@@ -98,10 +85,7 @@ export function GetStartedFlow({
     : byKey.get("beauty_salon")?.style ?? "warm";
 
   const [step, setStep] = useState(pre ? 2 : 0);
-  const [group, setGroup] = useState<string | null>(null);
   const [query, setQuery] = useState("");
-  const [showMoreGroups, setShowMoreGroups] = useState(false);
-  const [showMoreTypes, setShowMoreTypes] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const [preset, setPreset] = useState(pre ? pre.key : "beauty_salon");
   const [selectedStyle, setSelectedStyle] = useState(preStyle);
@@ -112,21 +96,19 @@ export function GetStartedFlow({
   const [photoId, setPhotoId] = useState("");
 
   const selected = byKey.get(preset);
-  const visibleGroups = showMoreGroups ? groups : groups.filter((item) => FEATURED_GROUPS.includes(item.group));
-  const visibleTypes = useMemo(() => {
+
+  // Consolidated categories: one card per sector (a primary title + the sub-types
+  // as the description) so there are no duplicate-feeling type buttons. Picking a
+  // card jumps straight to the design step using a representative build for the
+  // sector. "Search for a specific type" stays for anyone who wants the exact one.
+  const availableGroups = useMemo(() => new Set(groups.map((g) => g.group)), [groups]);
+  const categories = CATEGORIES.filter((c) => availableGroups.has(c.group) && byKey.has(c.preset));
+
+  const searchResults = useMemo(() => {
     const q = query.trim().toLowerCase();
-    if (q) return builds.filter((build) => build.label.toLowerCase().includes(q)).slice(0, 8);
-    if (!group) return [];
-    const current = groups.find((item) => item.group === group)?.builds ?? [];
-    const priority = FEATURED_TYPES[group] ?? [];
-    const ordered = [...current].sort((a, b) => {
-      const ai = priority.indexOf(a.key);
-      const bi = priority.indexOf(b.key);
-      return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi);
-    });
-    return ordered.map((item) => byKey.get(item.key)).filter(Boolean).slice(0, showMoreTypes ? 12 : 6) as BuildOption[];
-  }, [query, group, groups, builds, byKey, showMoreTypes]);
-  const selectedGroupCount = group ? groups.find((item) => item.group === group)?.builds.length ?? 0 : 0;
+    if (!q) return [];
+    return builds.filter((build) => build.label.toLowerCase().includes(q)).slice(0, 8);
+  }, [query, builds]);
 
   const recommendedStyle = "bold";
   const designStyles = [
@@ -148,6 +130,7 @@ export function GetStartedFlow({
     setSelectedDesign(key);
     setSelectedStyle(build?.style ?? "classic");
     setDesignKey(buildDesigns[key] ?? "");
+    setPhotoId("");
     goToStep(1);
   }
 
@@ -155,6 +138,7 @@ export function GetStartedFlow({
     setSelectedDesign(preset);
     setSelectedStyle(style);
     setDesignKey("");
+    setPhotoId("");
     goToStep(2);
   }
 
@@ -208,100 +192,65 @@ export function GetStartedFlow({
             <p className="text-xs font-semibold uppercase tracking-[0.28em] text-emerald-400/80">Step 1</p>
             <h2 className="mt-2 text-3xl font-semibold tracking-tight">What kind of website do you want?</h2>
             <p className="mt-2 max-w-2xl text-sm leading-6 text-white/50">
-              Choose a category first, then pick the closest website type. We&apos;ll only show designs that match it.
+              Pick the closest category and we&apos;ll show designs that match. You can change every word and photo afterwards.
             </p>
 
-            {!group && !query && !showSearch && (
+            {!query && !showSearch && (
               <>
                 <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                  {visibleGroups.map((item) => (
+                  {categories.map((c) => (
                     <button
-                      key={item.group}
+                      key={c.group}
                       type="button"
-                      onClick={() => {
-                        setGroup(item.group);
-                        setShowMoreTypes(false);
-                      }}
+                      onClick={() => chooseType(c.preset)}
                       className="rounded-2xl border border-white/10 bg-black/30 p-5 text-left transition hover:-translate-y-0.5 hover:border-emerald-400/50 hover:bg-emerald-400/[0.04]"
                     >
-                      <p className="font-semibold">{item.group}</p>
-                      <p className="mt-2 text-sm leading-5 text-white/40">{GROUP_COPY[item.group] ?? `${item.builds.length} website types`}</p>
+                      <p className="font-semibold">{c.title}</p>
+                      <p className="mt-2 text-sm leading-5 text-white/40">{c.desc}</p>
                     </button>
                   ))}
                 </div>
 
-                <div className="mt-5 flex flex-wrap gap-3">
-                  {!showMoreGroups && groups.length > visibleGroups.length && (
-                    <button
-                      type="button"
-                      onClick={() => setShowMoreGroups(true)}
-                      className="rounded-xl border border-white/10 px-4 py-3 text-sm text-white/55 transition hover:border-white/30 hover:text-white"
-                    >
-                      Show more categories
-                    </button>
-                  )}
-                  <button
-                    type="button"
-                    onClick={() => setShowSearch(true)}
-                    className="rounded-xl border border-dashed border-white/15 px-4 py-3 text-sm text-white/55 transition hover:border-white/30 hover:text-white"
-                  >
-                    Search for a specific type
-                  </button>
-                </div>
+                <button
+                  type="button"
+                  onClick={() => setShowSearch(true)}
+                  className="mt-5 rounded-xl border border-dashed border-white/15 px-4 py-3 text-sm text-white/55 transition hover:border-white/30 hover:text-white"
+                >
+                  Search for a specific type
+                </button>
               </>
             )}
 
             {(showSearch || query) && (
               <div className="mt-6">
-                <label className="text-sm font-medium">Search business types</label>
+                <div className="flex items-center justify-between gap-3">
+                  <label className="text-sm font-medium">Search business types</label>
+                  <button type="button" onClick={() => { setShowSearch(false); setQuery(""); }} className="text-sm text-white/45 transition hover:text-white">
+                    Back to categories
+                  </button>
+                </div>
                 <input
                   value={query}
-                  onChange={(event) => {
-                    setQuery(event.target.value);
-                    setGroup(null);
-                  }}
+                  onChange={(event) => setQuery(event.target.value)}
                   placeholder="Search salon, restaurant, plumber..."
                   className={input}
+                  autoFocus
                 />
-              </div>
-            )}
-
-            {(group || query) && (
-              <div className="mt-6">
-                {group && !query && (
-                  <div className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-emerald-400/20 bg-emerald-400/[0.04] px-4 py-3">
-                    <div>
-                      <p className="text-xs font-semibold uppercase tracking-[0.22em] text-emerald-300/70">Selected category</p>
-                      <p className="mt-1 font-semibold">{group}</p>
-                    </div>
-                    <button type="button" onClick={() => setGroup(null)} className="text-sm text-white/45 transition hover:text-white">
-                      Change
-                    </button>
+                {query && (
+                  <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                    {searchResults.map((build) => (
+                      <button
+                        key={build.key}
+                        type="button"
+                        onClick={() => chooseType(build.key)}
+                        className="rounded-2xl border border-white/10 bg-black/30 p-4 text-left transition hover:-translate-y-0.5 hover:border-emerald-400/50 hover:bg-emerald-400/[0.04]"
+                      >
+                        <p className="font-semibold">{build.label}</p>
+                        <p className="mt-1 text-xs text-white/40">{build.group}</p>
+                      </button>
+                    ))}
+                    {searchResults.length === 0 && <p className="text-sm text-white/40">No matches. Try another word.</p>}
                   </div>
-                )}
-
-                <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
-                  {visibleTypes.map((build) => (
-                    <button
-                      key={build.key}
-                      type="button"
-                      onClick={() => chooseType(build.key)}
-                      className="rounded-2xl border border-white/10 bg-black/30 p-4 text-left transition hover:-translate-y-0.5 hover:border-emerald-400/50 hover:bg-emerald-400/[0.04]"
-                    >
-                      <p className="font-semibold">{build.label}</p>
-                      <p className="mt-1 text-xs text-white/40">{build.group}</p>
-                    </button>
-                  ))}
-                </div>
-
-                {group && selectedGroupCount > visibleTypes.length && !query && (
-                  <button
-                    type="button"
-                    onClick={() => setShowMoreTypes(true)}
-                    className="mt-4 rounded-xl border border-white/10 px-4 py-3 text-sm text-white/55 transition hover:border-white/30 hover:text-white"
-                  >
-                    Show more {group.toLowerCase()} types
-                  </button>
                 )}
               </div>
             )}
@@ -312,9 +261,10 @@ export function GetStartedFlow({
                 setPreset("other");
                 setSelectedDesign("scratch");
                 setSelectedStyle("classic");
+                setDesignKey("");
                 goToStep(2);
               }}
-              className="mt-5 rounded-xl border border-dashed border-white/15 px-4 py-3 text-sm text-white/55 transition hover:border-white/30 hover:text-white"
+              className="mt-5 block rounded-xl border border-dashed border-white/15 px-4 py-3 text-sm text-white/55 transition hover:border-white/30 hover:text-white"
             >
               My business type is not listed
             </button>
