@@ -177,16 +177,16 @@ export const BUILD_DESIGN: Record<string, string> = {
   vet: "hearth",
   // Events & creative
   dj: "pulse",
-  event_caterer: "verena",
+  event_caterer: "feast",
   event_venue: "pavilion",
-  party_hire: "pulse",
+  party_hire: "confetti",
   photographer: "aperture",
   videographer: "aperture",
   wedding_planner: "verena",
   // Education
-  dance_school: "conservatoire",
+  dance_school: "plie",
   driving_school: "ignition",
-  language_school: "summit",
+  language_school: "lingua",
   music_teacher: "conservatoire",
   nursery: "sprout",
   private_tutor: "summit",
@@ -205,8 +205,8 @@ export const GROUP_DESIGNS: Record<string, string[]> = {
   "Professional services": ["ledger", "summit", "drafthouse", "meridian", "chambers", "compass", "amplify", "uptime", "shortlist", "pixel", "penny", "assured", "keystone"],
   "Retail & shops": ["atelier", "bloom", "juniper", "vellum", "cleaver", "facet", "harvest", "abode", "decant", "vapour"],
   Pets: ["hearth", "romp", "hollow", "fetch", "stroll", "heel"],
-  "Events & creative": ["aperture", "verena", "pulse", "pavilion"],
-  Education: ["sprout", "summit", "ignition", "conservatoire"],
+  "Events & creative": ["aperture", "verena", "pulse", "pavilion", "feast", "confetti"],
+  Education: ["sprout", "summit", "ignition", "conservatoire", "lingua", "plie"],
 };
 
 // Turn a build into a fully-populated TenantSite for the public samples gallery,

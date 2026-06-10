@@ -4,6 +4,8 @@ import Sprout from "./Sprout";
 import Summit from "./Summit";
 import Ignition from "./Ignition";
 import Conservatoire from "./Conservatoire";
+import Lingua from "./Lingua";
+import Plie from "./Plie";
 
 // Bespoke full-page education designs (our own names). Selected via
 // content.design; each keeps its layout and swaps in the client's own media.
@@ -15,6 +17,8 @@ export const EDUCATION_DESIGNS: Record<string, ComponentType<PresetProps>> = {
   summit: Summit,
   ignition: Ignition,
   conservatoire: Conservatoire,
+  lingua: Lingua, // language school (teal + coral + speech bubbles)
+  plie: Plie, // children's dance school (coral + peach + turquoise)
 };
 
 export function getEducationDesign(key?: string): ComponentType<PresetProps> | null {
