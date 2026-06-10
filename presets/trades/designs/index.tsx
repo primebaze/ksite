@@ -6,6 +6,12 @@ import Apex from "./Apex";
 import Atelier from "./Atelier";
 import Bloom from "./Bloom";
 import Meridian from "./Meridian";
+import Mason from "./Mason";
+import Marigold from "./Marigold";
+import Drafthouse from "./Drafthouse";
+import Velocity from "./Velocity";
+import Juniper from "./Juniper";
+import Summit from "./Summit";
 
 // Bespoke full-page services designs (our own names) for the TradesSite preset.
 // Selected via content.design; each keeps its layout and swaps in the client's
@@ -18,6 +24,12 @@ export const TRADES_DESIGNS: Record<string, ComponentType<PresetProps>> = {
   atelier: Atelier, // warm editorial retail / boutique (light)
   bloom: Bloom, // soft botanical florist / lifestyle shop (light)
   meridian: Meridian, // refined, photo-led premium general services (light)
+  mason: Mason, // bold builder / construction & home improvement (dark, amber)
+  marigold: Marigold, // fresh, friendly cleaning / home services (light, teal)
+  drafthouse: Drafthouse, // premium architecture / design studio (paper & ink, serif)
+  velocity: Velocity, // sharp modern garage / EV & detailing (dark, electric cyan)
+  juniper: Juniper, // warm gift / concept retail shop (cream & terracotta)
+  summit: Summit, // confident corporate consultancy / agency (light, indigo)
 };
 
 export function getTradesDesign(key?: string): ComponentType<PresetProps> | null {
