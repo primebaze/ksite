@@ -59,6 +59,10 @@ import Keystone from "./Keystone";
 import Vellum from "./Vellum";
 import Cleaver from "./Cleaver";
 import Facet from "./Facet";
+import Harvest from "./Harvest";
+import Abode from "./Abode";
+import Decant from "./Decant";
+import Vapour from "./Vapour";
 
 // Bespoke full-page services designs (our own names) for the TradesSite preset.
 // Selected via content.design; each keeps its layout and swaps in the client's
@@ -120,6 +124,10 @@ export const TRADES_DESIGNS: Record<string, ComponentType<PresetProps>> = {
   vellum: Vellum, // bookshop (parchment + ink + bottle-green + burgundy)
   cleaver: Cleaver, // butcher (butcher-block cream + meat-red + brass)
   facet: Facet, // jeweller (near-black + champagne gold + ivory)
+  harvest: Harvest, // greengrocer (leaf-green + tomato + sunny yellow)
+  abode: Abode, // homeware (off-white + clay + sage + walnut)
+  decant: Decant, // off-licence (vineyard burgundy + amber + bottle-green)
+  vapour: Vapour, // vape shop (charcoal-purple + magenta + electric teal)
 };
 
 export function getTradesDesign(key?: string): ComponentType<PresetProps> | null {
