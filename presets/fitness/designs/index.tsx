@@ -9,6 +9,10 @@ import Tempo from "./Tempo";
 import Haven from "./Haven";
 import Ironclad from "./Ironclad";
 import Cadence from "./Cadence";
+import Crag from "./Crag";
+import Reverie from "./Reverie";
+import Dojo from "./Dojo";
+import Lane from "./Lane";
 
 // Bespoke full-page fitness designs (our own names). Selected via
 // content.design; each keeps its layout and swaps in the client's own media,
@@ -32,6 +36,10 @@ export const FITNESS_DESIGNS: Record<string, ComponentType<PresetProps>> = {
   haven: Haven,
   ironclad: Ironclad,
   cadence: Cadence,
+  crag: Crag, // indoor climbing & bouldering gym
+  reverie: Reverie, // dance studio (ballet / contemporary)
+  dojo: Dojo, // martial arts academy
+  lane: Lane, // swim school
 };
 
 export function getFitnessDesign(key?: string): ComponentType<PresetProps> | null {

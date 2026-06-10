@@ -4,6 +4,8 @@ import Hearth from "./Hearth";
 import Romp from "./Romp";
 import Hollow from "./Hollow";
 import Fetch from "./Fetch";
+import Stroll from "./Stroll";
+import Heel from "./Heel";
 
 // Bespoke full-page PET designs (our own names). Selected via content.design;
 // each keeps its own baked palette/typography and swaps in the tenant's media,
@@ -13,4 +15,6 @@ export const PETS_DESIGNS: Record<string, ComponentType<PresetProps>> = {
   romp: Romp,
   hollow: Hollow,
   fetch: Fetch,
+  stroll: Stroll, // dog walker & daycare
+  heel: Heel, // dog trainer & behaviourist
 };
