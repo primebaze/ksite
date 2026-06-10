@@ -34,6 +34,10 @@ import Pane from "./Pane";
 import Riser from "./Riser";
 import Canopy from "./Canopy";
 import Boxwell from "./Boxwell";
+import Radiate from "./Radiate";
+import Zephyr from "./Zephyr";
+import Terrace from "./Terrace";
+import Sentry from "./Sentry";
 
 // Bespoke full-page services designs (our own names) for the TradesSite preset.
 // Selected via content.design; each keeps its layout and swaps in the client's
@@ -73,6 +77,10 @@ export const TRADES_DESIGNS: Record<string, ComponentType<PresetProps>> = {
   riser: Riser, // scaffolding (hi-vis yellow + steel)
   canopy: Canopy, // tree surgeon (woodland green + bark)
   boxwell: Boxwell, // removals & storage (navy + coral + kraft)
+  radiate: Radiate, // heating engineer (charcoal + ember + copper)
+  zephyr: Zephyr, // HVAC / air-con (slate + crisp cyan airflow)
+  terrace: Terrace, // landscaper / garden design (slate-green + stone)
+  sentry: Sentry, // pest control (protective teal + amber shield)
 };
 
 export function getTradesDesign(key?: string): ComponentType<PresetProps> | null {
