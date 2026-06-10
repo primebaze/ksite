@@ -161,6 +161,42 @@ export async function sendAdminDomainLiveNotification({
   });
 }
 
+// A domain purchase was placed for a tenant. Goes to the operator (you) so a
+// no-payment-method situation surfaces immediately, since the registrar accepts
+// the order (returns an orderId) but can't fulfil it without a card on file.
+export async function sendAdminDomainOrderEmail({
+  businessName,
+  domain,
+  orderId,
+  orderStatus,
+  failed,
+}: {
+  businessName: string;
+  domain: string;
+  orderId: string;
+  orderStatus?: string | null;
+  failed?: boolean;
+}) {
+  const recipients = notificationRecipients();
+  if (recipients.length === 0) return;
+  await sendTransactionalEmail({
+    to: recipients,
+    subject: `${failed ? "Domain order FAILED" : "Domain order placed"}: ${domain}`,
+    html: renderNotice({
+      eyebrow: "Domain purchase",
+      title: `${escapeHtml(businessName)} ${failed ? "tried to register" : "ordered"} ${escapeHtml(domain)}.`,
+      body: [
+        `Domain: ${escapeHtml(domain)}`,
+        `Order: ${escapeHtml(orderId)}`,
+        orderStatus ? `Status: ${escapeHtml(orderStatus)}` : null,
+      ].filter(Boolean).join("<br/>"),
+      cta: "Open Vercel domains",
+      link: "https://vercel.com/dashboard/domains",
+      secondary: "Confirm it registered and that the Vercel account has a payment method on file.",
+    }),
+  });
+}
+
 // A booking/contact submission from a tenant's built-in form, emailed to the
 // business owner. `lines` are the already-sanitised field label/value pairs.
 export async function sendFormSubmission({

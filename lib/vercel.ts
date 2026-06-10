@@ -144,6 +144,23 @@ export async function buyDomain(domain: string, expectedPrice: number) {
   });
 }
 
+// Read a registration order (the buy is async — it returns an orderId, then the
+// order succeeds or fails out of band, e.g. fails when the account has no
+// payment method). Lets us detect a buy that won't actually register.
+export async function getRegistrarOrder(orderId: string) {
+  return api<{ status?: string; state?: string; error?: { message?: string } } & Record<string, unknown>>(
+    `/v1/registrar/orders/${encodeURIComponent(orderId)}`,
+  );
+}
+
+// Best-effort read of whether an order has clearly failed (shape is logged so we
+// can tighten this once we've seen real bodies). Conservative: only an explicit
+// failure signal counts, so we never false-flag a still-pending order.
+export function registrarOrderFailed(data: Record<string, unknown>): boolean {
+  const s = String(data?.status ?? data?.state ?? "").toLowerCase();
+  return /fail|cancel|declin|refund|error/.test(s) || Boolean((data as { error?: unknown }).error);
+}
+
 export async function createApexDnsRecord(domain: string) {
   return api<{ uid?: string; updated?: number }>(`/v2/domains/${encodeURIComponent(domain)}/records`, {
     method: "POST",

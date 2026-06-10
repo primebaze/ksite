@@ -9,11 +9,14 @@ import {
   checkAvailability,
   createApexDnsRecord,
   getDomainPrice,
+  getRegistrarOrder,
   isRegistrantConfigured,
   isVercelConfigured,
   registrarErrorMessage,
+  registrarOrderFailed,
   removeProjectDomain,
 } from "@/lib/vercel";
+import { sendAdminDomainOrderEmail } from "@/lib/email";
 
 function clean(v: FormDataEntryValue | null): string {
   return String(v ?? "")
@@ -60,6 +63,34 @@ export async function claimDomain(formData: FormData) {
   const buyFailed = !purchase.ok || Boolean(purchase.data?.error) || Boolean(purchase.data?.message && !purchase.data?.orderId);
   if (buyFailed) {
     back(`?error=${encodeURIComponent(registrarErrorMessage(purchase) ?? "Could not register that domain. Check that the Vercel account has a payment method and the Domains registrar enabled.")}`);
+  }
+
+  // The buy is async: Vercel returns an orderId, then the order succeeds/fails
+  // out of band (it fails when the account has no payment method). Read the
+  // order once, log its real shape, and always email the operator so a stuck /
+  // no-card order is caught immediately. A clearly-failed order stops here with
+  // a real error instead of leaving the client on "registering" forever.
+  const orderId = typeof purchase.data?.orderId === "string" ? purchase.data.orderId : undefined;
+  let orderStatus: string | undefined;
+  let orderFailed = false;
+  if (orderId) {
+    const order = await getRegistrarOrder(orderId).catch(() => null);
+    if (order) {
+      orderStatus = String(order.data?.status ?? order.data?.state ?? "") || undefined;
+      console.log("[domain order]", domain, orderId, "http=", order.status, "body=", JSON.stringify(order.data));
+      orderFailed = order.ok && registrarOrderFailed(order.data);
+    }
+  }
+  await sendAdminDomainOrderEmail({
+    businessName: tenant!.business_name,
+    domain,
+    orderId: orderId ?? "(none returned)",
+    orderStatus,
+    failed: orderFailed,
+  }).catch(() => {});
+  if (orderFailed) {
+    await updateMyCustomDomain(null, "error");
+    back(`?error=${encodeURIComponent("Your domain order didn’t go through. This is usually a billing issue on our side — please try again shortly or contact support.")}`);
   }
 
   // Registration is an async order; mark registering and attach (best effort).
