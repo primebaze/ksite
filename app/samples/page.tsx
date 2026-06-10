@@ -15,21 +15,36 @@ export const metadata: Metadata = {
 const byKey = new Map(BUILDS.map((b) => [b.key, b]));
 const styleOf = (key: string) => byKey.get(key)?.style ?? "classic";
 
-// Bespoke, hand-built designs (real-world-inspired, fully functional) shown
-// as the recommended "Popular designs" tab — the first thing visitors see.
-// Each previews a full custom design under a fitting build for a real hero photo.
+// Hand-picked "Popular designs" tab — the first thing visitors see. Two from
+// every category (interleaved so the top of the list shows real variety, not a
+// wall of restaurants), each previewing that type's own bespoke design under a
+// build with a distinct, on-theme hero photo (no repeated images).
+// TODO: once analytics are wired, order this by most-viewed instead.
 const POPULAR_DESIGNS: BrowserItem[] = [
-  { key: "steakhouse", design: "ember", label: "Ember", sublabel: "Premium steakhouse", style: "luxe" },
-  { key: "sushi", design: "drift", label: "Drift", sublabel: "Sushi and small plates", style: "minimal" },
-  { key: "fine_dining", design: "laurel", label: "Laurel", sublabel: "Modern European", style: "editorial" },
-  { key: "bar", design: "lantern", label: "Lantern", sublabel: "Modern Asian gastropub", style: "bold" },
-  { key: "bbq", design: "marble", label: "Marble", sublabel: "Grill and lounge", style: "luxe" },
-  { key: "brunch_cafe", design: "daybreak", label: "Daybreak", sublabel: "Bright all-day dining", style: "warm" },
-  { key: "japanese", design: "tide", label: "Tide", sublabel: "Sushi and sticks", style: "minimal" },
-  { key: "brasserie", design: "botanica", label: "Botanica", sublabel: "Botanical brasserie", style: "editorial" },
-  { key: "chinese", design: "lacquer", label: "Lacquer", sublabel: "Dark modern Chinese", style: "bold" },
-  { key: "cocktail_bar", design: "cinder", label: "Cinder", sublabel: "Steakhouse and lounge", style: "luxe" },
-  { key: "cafe", design: "meadow", label: "Meadow", sublabel: "All-day brasserie", style: "warm" },
+  // round 1 — one per category
+  { key: "steakhouse", design: "ember", label: "Steakhouse", sublabel: "Food & drink", style: "luxe" },
+  { key: "hair_salon", design: "indigo", label: "Hair studio", sublabel: "Hair & beauty", style: "editorial" },
+  { key: "dentist", design: "enamel", label: "Dental practice", sublabel: "Health & wellness", style: "minimal" },
+  { key: "climbing_gym", design: "crag", label: "Climbing gym", sublabel: "Fitness", style: "bold" },
+  { key: "plumber", design: "pipeworks", label: "Plumber", sublabel: "Trades & home", style: "bold" },
+  { key: "garage", design: "apex", label: "Car garage", sublabel: "Automotive", style: "bold" },
+  { key: "solicitor", design: "chambers", label: "Law firm", sublabel: "Professional services", style: "classic" },
+  { key: "florist", design: "bloom", label: "Florist", sublabel: "Retail & shops", style: "warm" },
+  { key: "vet", design: "hearth", label: "Vet practice", sublabel: "Pets", style: "warm" },
+  { key: "photographer", design: "aperture", label: "Photographer", sublabel: "Events & creative", style: "editorial" },
+  { key: "nursery", design: "sprout", label: "Nursery", sublabel: "Education", style: "warm" },
+  // round 2 — a second per category
+  { key: "pizzeria", design: "forno", label: "Pizzeria", sublabel: "Food & drink", style: "warm" },
+  { key: "barber", design: "fade", label: "Barbershop", sublabel: "Hair & beauty", style: "bold" },
+  { key: "spa", design: "thermae", label: "Day spa", sublabel: "Health & wellness", style: "luxe" },
+  { key: "pilates", design: "haven", label: "Pilates studio", sublabel: "Fitness", style: "minimal" },
+  { key: "electrician", design: "livewire", label: "Electrician", sublabel: "Trades & home", style: "bold" },
+  { key: "car_detailing", design: "concours", label: "Car detailing", sublabel: "Automotive", style: "luxe" },
+  { key: "marketing_agency", design: "amplify", label: "Marketing agency", sublabel: "Professional services", style: "bold" },
+  { key: "jeweller", design: "facet", label: "Jeweller", sublabel: "Retail & shops", style: "luxe" },
+  { key: "dog_groomer", design: "romp", label: "Dog grooming", sublabel: "Pets", style: "warm" },
+  { key: "wedding_planner", design: "verena", label: "Wedding planner", sublabel: "Events & creative", style: "editorial" },
+  { key: "driving_school", design: "ignition", label: "Driving school", sublabel: "Education", style: "bold" },
 ];
 
 export default function SamplesIndex() {
