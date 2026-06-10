@@ -169,17 +169,16 @@ export function GetStartedFlow({
     window.requestAnimationFrame(() => window.scrollTo({ top: 0, behavior: "smooth" }));
   }
 
-  // Bespoke designs available for the selected type's sector: recommended (the
-  // type's default) first, then three more so every card is a DIFFERENT design,
-  // each shown with a DIFFERENT on-theme photo (never the same site repeated).
+  // Each business type now has its OWN bespoke design, so the design step shows
+  // exactly that one (no sector-wide pool — a bar must never be offered a sushi
+  // or fine-dining design). To see a different type's design, switch sub-type.
   const designOptions = useMemo(() => {
     if (!selected) return [];
     const all = groupDesigns[selected.group] ?? [];
     if (all.length === 0) return [];
     const photos = groupPhotos[selected.group] ?? [];
     const recommended = buildDesigns[preset] ?? all[0];
-    return [recommended, ...all.filter((d) => d !== recommended)]
-      .map((design, i) => ({ design, img: photos[i % Math.max(photos.length, 1)] ?? "" }));
+    return [{ design: recommended, img: photos[0] ?? "" }];
   }, [selected, preset, groupDesigns, buildDesigns, groupPhotos]);
 
   // Other sub-types in the same sector (e.g. Pets → vet, dog walker, trainer),

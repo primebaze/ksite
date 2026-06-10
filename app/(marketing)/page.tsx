@@ -12,7 +12,7 @@ export default function Home() {
     <>
       {/* Hero */}
       <section className="relative border-b border-white/5">
-        <div className="mx-auto max-w-3xl px-6 pt-24 pb-20 text-center sm:pt-28">
+        <div className="mx-auto max-w-3xl px-6 pt-24 pb-10 text-center sm:pt-28 sm:pb-20">
           <Reveal>
             <h1 className="text-5xl font-semibold leading-[1.02] tracking-tight sm:text-7xl">
               Websites for
