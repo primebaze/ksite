@@ -14,9 +14,15 @@ import {
   tokensFor,
 } from "../shared";
 import type { PresetProps } from "@/lib/site-pages";
+import { getTradesDesign } from "./designs";
 
 // "services" archetype: trades, home, automotive, professional, retail, events.
-export default function TradesSite({ site, page = "home", basePath = "", multiPage = false }: PresetProps) {
+export default function TradesSite(props: PresetProps) {
+  // A bespoke real-world-inspired design takes over the whole page when set.
+  const Design = getTradesDesign(props.site.content.design);
+  if (Design) return <Design {...props} />;
+
+  const { site, page = "home", basePath = "", multiPage = false } = props;
   const { tenant, theme, content, catalog, gallery } = site;
   const tokens = tokensFor(content, theme);
   const groups = groupCatalog(catalog);

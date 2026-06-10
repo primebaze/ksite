@@ -28,10 +28,7 @@ export function FlowHeader({
   const [scrolled, setScrolled] = useState(solid);
 
   useEffect(() => {
-    if (solid) {
-      setScrolled(true);
-      return;
-    }
+    if (solid) return;
     const onScroll = () => setScrolled(window.scrollY > 30);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });

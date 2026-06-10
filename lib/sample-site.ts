@@ -92,6 +92,46 @@ export const BUILD_DESIGN: Record<string, string> = {
   dentist: "lumina",
   orthodontist: "lumina",
   iv_therapy: "aurelia",
+  // Fitness
+  gym: "forge",
+  boxing_gym: "forge",
+  crossfit: "forge",
+  martial_arts: "forge",
+  climbing_gym: "forge",
+  yoga_studio: "flow",
+  pilates: "flow",
+  barre: "flow",
+  spin_studio: "pulse",
+  dance_studio: "pulse",
+  dance_school: "pulse",
+  personal_trainer: "apex",
+  // Contractors & home / trades
+  electrician: "forge",
+  plumber: "forge",
+  builder: "forge",
+  roofer: "forge",
+  painter_decorator: "forge",
+  handyman: "forge",
+  landscaper: "meridian",
+  cleaner: "meridian",
+  // Automotive
+  garage: "apex",
+  mot: "apex",
+  car_detailing: "apex",
+  car_valeting: "apex",
+  // Professional services
+  accountant: "ledger",
+  business_consultant: "ledger",
+  solicitor: "ledger",
+  financial_advisor: "ledger",
+  marketing_agency: "ledger",
+  architect: "ledger",
+  // Retail & shops
+  boutique: "atelier",
+  gift_shop: "atelier",
+  jeweller: "atelier",
+  florist: "bloom",
+  garden_centre: "bloom",
 };
 
 // All bespoke designs available per sector, for pickers (e.g. the get-started
@@ -101,6 +141,11 @@ export const GROUP_DESIGNS: Record<string, string[]> = {
   "Food & drink": ["ember", "drift", "laurel", "lantern", "marble", "daybreak", "tide", "botanica", "lacquer", "cinder", "meadow"],
   "Hair & beauty": ["indigo", "halo", "verve", "atelier", "fade", "lumiere", "aurelia", "seren", "lustre", "linea", "radiance", "lumina"],
   "Health & wellness": ["aurelia", "seren", "lustre", "linea", "radiance", "lumina", "indigo", "halo", "verve", "atelier", "fade", "lumiere"],
+  Fitness: ["forge", "flow", "pulse", "apex"],
+  "Contractors & home": ["forge", "meridian", "ledger", "apex", "atelier", "bloom"],
+  Automotive: ["apex", "forge", "meridian", "ledger", "atelier", "bloom"],
+  "Professional services": ["ledger", "meridian", "forge", "atelier", "apex", "bloom"],
+  "Retail & shops": ["atelier", "bloom", "meridian", "ledger", "forge", "apex"],
 };
 
 // Turn a build into a fully-populated TenantSite for the public samples gallery,
