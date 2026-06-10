@@ -14,14 +14,14 @@ import {
   tokensFor,
 } from "../shared";
 import { pageHref, type PresetProps } from "@/lib/site-pages";
-import { getSalonDesign } from "../salon/designs";
+import { getFitnessDesign } from "./designs";
 
 // Bespoke template for gyms, studios and trainers: energetic and
 // class/membership-led. Reuses the shared header/hero/footer so the on-screen
 // editor keeps working, arranged around classes and a strong join CTA.
 export default function FitnessSite(props: PresetProps) {
   // A bespoke real-world-inspired design takes over the whole page when set.
-  const Design = getSalonDesign(props.site.content.design);
+  const Design = getFitnessDesign(props.site.content.design);
   if (Design) return <Design {...props} />;
 
   const { site, page = "home", basePath = "", multiPage = false } = props;
