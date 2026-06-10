@@ -12,6 +12,13 @@ import Drafthouse from "./Drafthouse";
 import Velocity from "./Velocity";
 import Juniper from "./Juniper";
 import Summit from "./Summit";
+// Contractors & home (trade-specific)
+import Pipeworks from "./Pipeworks";
+import Livewire from "./Livewire";
+import Greenscape from "./Greenscape";
+import Ridgeline from "./Ridgeline";
+import Rollwell from "./Rollwell";
+import Latchkey from "./Latchkey";
 
 // Bespoke full-page services designs (our own names) for the TradesSite preset.
 // Selected via content.design; each keeps its layout and swaps in the client's
@@ -30,6 +37,12 @@ export const TRADES_DESIGNS: Record<string, ComponentType<PresetProps>> = {
   velocity: Velocity, // sharp modern garage / EV & detailing (dark, electric cyan)
   juniper: Juniper, // warm gift / concept retail shop (cream & terracotta)
   summit: Summit, // confident corporate consultancy / agency (light, indigo)
+  pipeworks: Pipeworks, // plumber (marine navy + water-blue)
+  livewire: Livewire, // electrician (charcoal + electric yellow)
+  greenscape: Greenscape, // gardener (garden green)
+  ridgeline: Ridgeline, // roofer (slate + terracotta tile)
+  rollwell: Rollwell, // painter & decorator (white + cobalt swatches)
+  latchkey: Latchkey, // locksmith (midnight blue + brass)
 };
 
 export function getTradesDesign(key?: string): ComponentType<PresetProps> | null {
