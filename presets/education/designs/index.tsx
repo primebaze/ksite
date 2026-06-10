@@ -6,6 +6,10 @@ import Ignition from "./Ignition";
 import Conservatoire from "./Conservatoire";
 import Lingua from "./Lingua";
 import Plie from "./Plie";
+import Clutch from "./Clutch";
+import Roadcraft from "./Roadcraft";
+import Milestone from "./Milestone";
+import Junction from "./Junction";
 
 // Bespoke full-page education designs (our own names). Selected via
 // content.design; each keeps its layout and swaps in the client's own media.
@@ -19,6 +23,11 @@ export const EDUCATION_DESIGNS: Record<string, ComponentType<PresetProps>> = {
   conservatoire: Conservatoire,
   lingua: Lingua, // language school (teal + coral + speech bubbles)
   plie: Plie, // children's dance school (coral + peach + turquoise)
+  // driving school designs (5 total with Ignition)
+  clutch: Clutch, // modern teal/lime
+  roadcraft: Roadcraft, // bold charcoal/amber, results-led
+  milestone: Milestone, // warm coral/navy, nervous learners
+  junction: Junction, // premium navy/brass, intensive courses
 };
 
 export function getEducationDesign(key?: string): ComponentType<PresetProps> | null {

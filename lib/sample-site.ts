@@ -206,7 +206,14 @@ export const GROUP_DESIGNS: Record<string, string[]> = {
   "Retail & shops": ["atelier", "bloom", "juniper", "vellum", "cleaver", "facet", "harvest", "abode", "decant", "vapour"],
   Pets: ["hearth", "romp", "hollow", "fetch", "stroll", "heel"],
   "Events & creative": ["aperture", "verena", "pulse", "pavilion", "feast", "confetti"],
-  Education: ["sprout", "summit", "ignition", "conservatoire", "lingua", "plie"],
+  Education: ["sprout", "summit", "ignition", "conservatoire", "lingua", "plie", "clutch", "roadcraft", "milestone", "junction"],
+};
+
+// Per-type design sets for the get-started design step. By default a type shows
+// only its own bespoke design; a few high-demand types (e.g. driving school)
+// get a hand-picked set of multiple dedicated designs to choose from.
+export const TYPE_DESIGNS: Record<string, string[]> = {
+  driving_school: ["ignition", "clutch", "roadcraft", "milestone", "junction"],
 };
 
 // Turn a build into a fully-populated TenantSite for the public samples gallery,

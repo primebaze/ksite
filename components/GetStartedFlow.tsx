@@ -45,7 +45,8 @@ const CATEGORIES: { group: string; title: string; preset: string; desc: string }
   { group: "Retail & shops", title: "Shops", preset: "boutique", desc: "Boutiques, florists, gift shops, jewellers and more" },
   { group: "Pets", title: "Pet services", preset: "dog_groomer", desc: "Groomers, vets, walkers, trainers and more" },
   { group: "Events & creative", title: "Events & creative", preset: "photographer", desc: "Photographers, venues, planners, DJs and more" },
-  { group: "Education", title: "Education", preset: "private_tutor", desc: "Tutors, nurseries, driving and music schools and more" },
+  { group: "Education", title: "Education", preset: "private_tutor", desc: "Tutors, nurseries, music and language schools and more" },
+  { group: "Education", title: "Driving school", preset: "driving_school", desc: "Driving lessons, intensive courses, theory and Pass Plus" },
 ];
 
 export function GetStartedFlow({
@@ -54,6 +55,7 @@ export function GetStartedFlow({
   buildDesigns = {},
   groupDesigns = {},
   groupPhotos = {},
+  typeDesigns = {},
   turnstileKey,
   error,
   action,
@@ -67,6 +69,8 @@ export function GetStartedFlow({
   groupDesigns?: Record<string, string[]>;
   /** On-theme photo ids per group so each design card shows a different photo. */
   groupPhotos?: Record<string, string[]>;
+  /** Per-type design sets (e.g. driving_school -> 5 driving designs). */
+  typeDesigns?: Record<string, string[]>;
   turnstileKey?: string;
   error?: string;
   action: (formData: FormData) => void | Promise<void>;
@@ -169,17 +173,19 @@ export function GetStartedFlow({
     window.requestAnimationFrame(() => window.scrollTo({ top: 0, behavior: "smooth" }));
   }
 
-  // Each business type now has its OWN bespoke design, so the design step shows
-  // exactly that one (no sector-wide pool — a bar must never be offered a sushi
-  // or fine-dining design). To see a different type's design, switch sub-type.
+  // Each business type shows its OWN bespoke design (no sector-wide pool — a bar
+  // must never be offered a sushi or fine-dining design). A few high-demand
+  // types (e.g. driving school) get a hand-picked set of several dedicated
+  // designs via typeDesigns; each preview uses a different on-theme photo.
   const designOptions = useMemo(() => {
     if (!selected) return [];
     const all = groupDesigns[selected.group] ?? [];
     if (all.length === 0) return [];
     const photos = groupPhotos[selected.group] ?? [];
     const recommended = buildDesigns[preset] ?? all[0];
-    return [{ design: recommended, img: photos[0] ?? "" }];
-  }, [selected, preset, groupDesigns, buildDesigns, groupPhotos]);
+    const list = typeDesigns[preset]?.length ? typeDesigns[preset] : [recommended];
+    return list.map((design, i) => ({ design, img: photos[i % Math.max(photos.length, 1)] ?? "" }));
+  }, [selected, preset, groupDesigns, buildDesigns, groupPhotos, typeDesigns]);
 
   // Other sub-types in the same sector (e.g. Pets → vet, dog walker, trainer),
   // hidden behind buttons under the previews so each sub-category's own samples
