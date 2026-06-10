@@ -308,6 +308,18 @@ export function GetStartedFlow({
               websites. Pick one and we&apos;ll load the next step.
             </p>
 
+            {/* General reassurance — applies to every type, not just this one:
+                the sample wording/photos are placeholders the owner edits. */}
+            <div className="mt-4 flex items-start gap-2.5 rounded-xl border border-emerald-400/20 bg-emerald-400/[0.05] px-4 py-3 text-sm leading-6 text-emerald-100/90">
+              <svg className="mt-0.5 h-4 w-4 shrink-0 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                <path d="M12 20h9" /><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" />
+              </svg>
+              <span>
+                The business name, wording, photos, prices and colours in every sample are just a
+                starting point — you can change all of them to match your business after you pick a design.
+              </span>
+            </div>
+
             <div className="mt-6 grid gap-4 lg:grid-cols-2">
               {designOptions.length > 0
                 ? // Bespoke designs exist for this sector: every card is a genuinely
