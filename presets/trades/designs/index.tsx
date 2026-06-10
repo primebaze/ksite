@@ -25,6 +25,9 @@ import Sparkle from "./Sparkle";
 import Culina from "./Culina";
 import Lagoon from "./Lagoon";
 import Mendwell from "./Mendwell";
+import Render from "./Render";
+import Tessera from "./Tessera";
+import Parquet from "./Parquet";
 
 // Bespoke full-page services designs (our own names) for the TradesSite preset.
 // Selected via content.design; each keeps its layout and swaps in the client's
@@ -55,6 +58,9 @@ export const TRADES_DESIGNS: Record<string, ComponentType<PresetProps>> = {
   culina: Culina, // kitchen fitter (forest + brass marble)
   lagoon: Lagoon, // bathroom fitter (seafoam + brass)
   mendwell: Mendwell, // handyman (royal blue + amber)
+  render: Render, // plasterer (plaster off-white + steel-blue)
+  tessera: Tessera, // tiler (glazed white + Moroccan blue tile-grid)
+  parquet: Parquet, // flooring (greige + espresso herringbone)
 };
 
 export function getTradesDesign(key?: string): ComponentType<PresetProps> | null {
