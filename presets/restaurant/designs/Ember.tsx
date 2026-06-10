@@ -131,15 +131,18 @@ export default function EmberDesign({ site, page = "home", basePath = "" }: Pres
                 <div key={section.section} className="break-inside-avoid">
                   {section.section && <h3 style={serif} className="mb-5 border-b border-neutral-200 pb-3 text-lg uppercase tracking-[0.16em]">{section.section}</h3>}
                   {section.categories.map((catg) => (
-                    <ul key={catg.category ?? "_"} className="space-y-4">
+                    <ul key={catg.category ?? "_"} className="divide-y" style={{ borderColor: `${NAVY}1f` }}>
                       {catg.items.map((item) => (
-                        <li key={item.id}>
-                          <div className="flex items-baseline justify-between gap-3">
-                            <span data-edit={`item:${item.id}:name`} style={serif} className="text-lg">{item.name}</span>
-                            <span className="mx-2 flex-1 border-b border-dotted border-neutral-300" />
-                            {item.price && <span data-edit={`item:${item.id}:price`} className="text-sm font-medium" style={{ color: OLIVE }}>{item.price}</span>}
+                        <li key={item.id} className="flex items-baseline justify-between gap-8 py-5">
+                          <div className="min-w-0">
+                            <p data-edit={`item:${item.id}:name`} className="text-base font-medium" style={{ ...serif, color: NAVY }}>{item.name}</p>
+                            {item.description && (
+                              <p data-edit={`item:${item.id}:description`} className="mt-1 text-sm leading-relaxed text-neutral-500">{item.description}</p>
+                            )}
                           </div>
-                          {item.description && <p data-edit={`item:${item.id}:description`} className="mt-1 max-w-md text-sm leading-relaxed text-neutral-500">{item.description}</p>}
+                          {item.price && (
+                            <span data-edit={`item:${item.id}:price`} className="shrink-0 text-sm font-semibold" style={{ color: OLIVE }}>{item.price}</span>
+                          )}
                         </li>
                       ))}
                     </ul>
@@ -287,18 +290,21 @@ export default function EmberDesign({ site, page = "home", basePath = "" }: Pres
               </div>
               <a href={href("menu")} className="text-sm font-semibold uppercase tracking-[0.15em]" style={{ color: OLIVE }}>View full menu →</a>
             </div>
-            <div className="mt-12 grid items-start gap-x-16 gap-y-6 md:grid-cols-2">
+            <ul className="mx-auto mt-12 max-w-xl divide-y" style={{ borderColor: `${NAVY}1f` }}>
               {featured.map((item) => (
-                <div key={item.id}>
-                  <div className="flex items-baseline justify-between gap-3">
-                    <span data-edit={`item:${item.id}:name`} style={serif} className="text-lg">{item.name}</span>
-                    <span className="mx-2 flex-1 border-b border-dotted border-neutral-300" />
-                    {item.price && <span data-edit={`item:${item.id}:price`} className="text-sm font-medium" style={{ color: OLIVE }}>{item.price}</span>}
+                <li key={item.id} className="flex items-baseline justify-between gap-8 py-5">
+                  <div className="min-w-0">
+                    <p data-edit={`item:${item.id}:name`} className="text-base font-medium" style={{ ...serif, color: NAVY }}>{item.name}</p>
+                    {item.description && (
+                      <p data-edit={`item:${item.id}:description`} className="mt-1 text-sm leading-relaxed text-neutral-500">{item.description}</p>
+                    )}
                   </div>
-                  {item.description && <p data-edit={`item:${item.id}:description`} className="mt-1 max-w-md text-sm leading-relaxed text-neutral-500">{item.description}</p>}
-                </div>
+                  {item.price && (
+                    <span data-edit={`item:${item.id}:price`} className="shrink-0 text-sm font-semibold" style={{ color: OLIVE }}>{item.price}</span>
+                  )}
+                </li>
               ))}
-            </div>
+            </ul>
           </div>
         </section>
       )}

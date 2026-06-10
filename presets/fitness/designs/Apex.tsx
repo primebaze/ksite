@@ -168,17 +168,21 @@ export default function Apex({ site, page = "home", basePath = "" }: PresetProps
                       <span className="h-px w-8" style={{ background: `${COPPER}88` }} />{section.section}<span className="h-px flex-1" style={{ background: LINE }} />
                     </p>
                   )}
-                  <div className="grid gap-5 sm:grid-cols-2">
+                  <ul className="divide-y" style={{ borderColor: LINE }}>
                     {section.categories.flatMap((c) => c.items).map((item) => (
-                      <div key={item.id} className="flex flex-col p-8" style={{ background: PANEL, border: `1px solid ${LINE}` }}>
-                        <div className="flex items-baseline justify-between gap-3">
-                          <h3 data-edit={`item:${item.id}:name`} style={{ ...serif, color: BONE }} className="text-xl">{item.name}</h3>
-                          {item.price && <span data-edit={`item:${item.id}:price`} className="whitespace-nowrap text-sm" style={{ color: COPPER }}>{item.price}</span>}
+                      <li key={item.id} className="flex items-baseline justify-between gap-8 py-5">
+                        <div className="min-w-0">
+                          <p data-edit={`item:${item.id}:name`} className="text-base font-medium" style={{ ...serif, color: BONE }}>{item.name}</p>
+                          {item.description && (
+                            <p data-edit={`item:${item.id}:description`} className="mt-1 text-sm leading-relaxed" style={{ color: MUTE }}>{item.description}</p>
+                          )}
                         </div>
-                        {item.description && <p data-edit={`item:${item.id}:description`} className="mt-3 text-sm leading-relaxed" style={{ color: MUTE }}>{item.description}</p>}
-                      </div>
+                        {item.price && (
+                          <span data-edit={`item:${item.id}:price`} className="shrink-0 text-sm font-semibold" style={{ color: COPPER }}>{item.price}</span>
+                        )}
+                      </li>
                     ))}
-                  </div>
+                  </ul>
                 </div>
               ))}
               <div className="text-center">
@@ -352,17 +356,21 @@ export default function Apex({ site, page = "home", basePath = "" }: PresetProps
               <div className="flex justify-center"><Kicker center>How we train</Kicker></div>
               <h2 style={{ ...serif, color: BONE }} className="mt-4 text-4xl font-medium sm:text-5xl">Programmes</h2>
             </div>
-            <div className="mt-14 grid gap-5 sm:grid-cols-2">
+            <ul className="mt-14 divide-y" style={{ borderColor: LINE }}>
               {featured.map((item) => (
-                <div key={item.id} className="flex flex-col p-8" style={{ background: CHAR, border: `1px solid ${LINE}` }}>
-                  <div className="flex items-baseline justify-between gap-3">
-                    <h3 data-edit={`item:${item.id}:name`} style={{ ...serif, color: BONE }} className="text-lg">{item.name}</h3>
-                    {item.price && <span data-edit={`item:${item.id}:price`} className="whitespace-nowrap text-sm" style={{ color: COPPER }}>{item.price}</span>}
+                <li key={item.id} className="flex items-baseline justify-between gap-8 py-5">
+                  <div className="min-w-0">
+                    <p data-edit={`item:${item.id}:name`} className="text-base font-medium" style={{ ...serif, color: BONE }}>{item.name}</p>
+                    {item.description && (
+                      <p data-edit={`item:${item.id}:description`} className="mt-1 text-sm leading-relaxed" style={{ color: MUTE }}>{item.description}</p>
+                    )}
                   </div>
-                  {item.description && <p data-edit={`item:${item.id}:description`} className="mt-2 text-sm leading-relaxed" style={{ color: MUTE }}>{item.description}</p>}
-                </div>
+                  {item.price && (
+                    <span data-edit={`item:${item.id}:price`} className="shrink-0 text-sm font-semibold" style={{ color: COPPER }}>{item.price}</span>
+                  )}
+                </li>
               ))}
-            </div>
+            </ul>
             <div className="mt-14 text-center">
               <a href={href("services")} className="inline-flex px-10 py-4 text-[11px] font-semibold uppercase tracking-[0.22em] transition hover:bg-white hover:text-neutral-900" style={{ border: `1px solid ${COPPER}`, color: BONE }}>All programmes</a>
             </div>

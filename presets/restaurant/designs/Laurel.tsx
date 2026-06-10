@@ -392,15 +392,18 @@ export default function LaurelDesign({ site, page = "home", basePath = "" }: Pre
           <div className="mx-auto max-w-3xl px-6 py-24 text-center">
             <p className="text-xs font-semibold uppercase tracking-[0.35em]" style={{ color: GOLD }}>Our menu</p>
             <h2 style={serif} className="mt-3 text-4xl font-medium sm:text-5xl">The seasonal table</h2>
-            <ul className="mx-auto mt-12 max-w-xl space-y-7 text-left">
+            <ul className="mx-auto mt-12 max-w-xl divide-y text-left" style={{ borderColor: `${GOLD}55` }}>
               {featured.map((item) => (
-                <li key={item.id}>
-                  <div className="flex items-baseline justify-between gap-3">
-                    <span data-edit={`item:${item.id}:name`} style={serif} className="text-lg text-white">{item.name}</span>
-                    <span className="mx-2 flex-1 border-b border-dotted" style={{ borderColor: `${GOLD}55` }} />
-                    {item.price && <span data-edit={`item:${item.id}:price`} className="text-sm font-medium" style={{ color: GOLD }}>{item.price}</span>}
+                <li key={item.id} className="flex items-baseline justify-between gap-8 py-5">
+                  <div className="min-w-0">
+                    <p data-edit={`item:${item.id}:name`} className="text-base font-medium text-white" style={{ ...serif }}>{item.name}</p>
+                    {item.description && (
+                      <p data-edit={`item:${item.id}:description`} className="mt-1 text-sm leading-relaxed text-white/65">{item.description}</p>
+                    )}
                   </div>
-                  {item.description && <p data-edit={`item:${item.id}:description`} className="mt-1 text-sm leading-relaxed text-white/65">{item.description}</p>}
+                  {item.price && (
+                    <span data-edit={`item:${item.id}:price`} className="shrink-0 text-sm font-semibold" style={{ color: GOLD }}>{item.price}</span>
+                  )}
                 </li>
               ))}
             </ul>

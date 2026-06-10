@@ -175,15 +175,18 @@ export default function BotanicaDesign({ site, page = "home", basePath = "" }: P
                     {section.categories.map((catg) => (
                       <div key={catg.category ?? "_"} className="mb-8 last:mb-0">
                         {catg.category && <p className="mb-4 text-center text-[11px] font-semibold uppercase tracking-[0.28em]" style={{ color: GOLD }}>{catg.category}</p>}
-                        <ul className="space-y-5">
+                        <ul className="divide-y" style={{ borderColor: "rgba(13,59,46,0.25)" }}>
                           {catg.items.map((item) => (
-                            <li key={item.id}>
-                              <div className="flex items-baseline justify-between gap-3">
-                                <span data-edit={`item:${item.id}:name`} style={{ ...serif, color: GREEN }} className="text-lg">{item.name}</span>
-                                <span className="mx-2 flex-1 border-b border-dotted" style={{ borderColor: "rgba(13,59,46,0.25)" }} />
-                                {item.price && <span data-edit={`item:${item.id}:price`} className="text-sm font-semibold" style={{ color: GOLD }}>{item.price}</span>}
+                            <li key={item.id} className="flex items-baseline justify-between gap-8 py-5">
+                              <div className="min-w-0">
+                                <p data-edit={`item:${item.id}:name`} className="text-base font-medium" style={{ ...serif, color: GREEN }}>{item.name}</p>
+                                {item.description && (
+                                  <p data-edit={`item:${item.id}:description`} className="mt-1 text-sm leading-relaxed text-[#6b6b5f]">{item.description}</p>
+                                )}
                               </div>
-                              {item.description && <p data-edit={`item:${item.id}:description`} className="mt-1.5 max-w-xl text-sm leading-relaxed text-[#6b6b5f]">{item.description}</p>}
+                              {item.price && (
+                                <span data-edit={`item:${item.id}:price`} className="shrink-0 text-sm font-semibold" style={{ color: GOLD }}>{item.price}</span>
+                              )}
                             </li>
                           ))}
                         </ul>
@@ -409,18 +412,21 @@ export default function BotanicaDesign({ site, page = "home", basePath = "" }: P
           <div className="mx-auto max-w-4xl px-8 py-24 text-center">
             {kicker("The menu")}
             <h2 style={{ ...serif, color: GREEN }} className="mt-4 text-4xl sm:text-5xl">Signature dishes</h2>
-            <div className="mt-12 grid items-start gap-x-14 gap-y-6 text-left sm:grid-cols-2">
+            <ul className="mx-auto mt-12 max-w-xl divide-y text-left" style={{ borderColor: "rgba(13,59,46,0.25)" }}>
               {featured.map((item) => (
-                <div key={item.id}>
-                  <div className="flex items-baseline justify-between gap-3">
-                    <span data-edit={`item:${item.id}:name`} style={{ ...serif, color: GREEN }} className="text-lg">{item.name}</span>
-                    <span className="mx-2 flex-1 border-b border-dotted" style={{ borderColor: "rgba(13,59,46,0.25)" }} />
-                    {item.price && <span data-edit={`item:${item.id}:price`} className="text-sm font-semibold" style={{ color: GOLD }}>{item.price}</span>}
+                <li key={item.id} className="flex items-baseline justify-between gap-8 py-5">
+                  <div className="min-w-0">
+                    <p data-edit={`item:${item.id}:name`} className="text-base font-medium" style={{ ...serif, color: GREEN }}>{item.name}</p>
+                    {item.description && (
+                      <p data-edit={`item:${item.id}:description`} className="mt-1 text-sm leading-relaxed text-[#6b6b5f]">{item.description}</p>
+                    )}
                   </div>
-                  {item.description && <p data-edit={`item:${item.id}:description`} className="mt-1.5 max-w-md text-sm leading-relaxed text-[#6b6b5f]">{item.description}</p>}
-                </div>
+                  {item.price && (
+                    <span data-edit={`item:${item.id}:price`} className="shrink-0 text-sm font-semibold" style={{ color: GOLD }}>{item.price}</span>
+                  )}
+                </li>
               ))}
-            </div>
+            </ul>
             <a href={href("menu")} className="mt-14 inline-flex px-10 py-4 text-[11px] font-semibold uppercase tracking-[0.24em] transition hover:brightness-110" style={{ background: GREEN, color: "#fff" }}>View the full menu</a>
           </div>
         </section>

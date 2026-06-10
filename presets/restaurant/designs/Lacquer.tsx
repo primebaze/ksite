@@ -149,15 +149,18 @@ export default function LacquerDesign({ site, page = "home", basePath = "" }: Pr
                     {section.categories.map((catg) => (
                       <div key={catg.category ?? "_"} className="mb-8">
                         {catg.category && <p className="mb-4 text-center text-[11px] font-semibold uppercase tracking-[0.28em] text-white/45">{catg.category}</p>}
-                        <ul className="space-y-5">
+                        <ul className="divide-y" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
                           {catg.items.map((item) => (
-                            <li key={item.id} className="border-b pb-5" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
-                              <div className="flex items-baseline justify-between gap-4">
-                                <span data-edit={`item:${item.id}:name`} style={serif} className="text-lg text-white">{item.name}</span>
-                                <span className="mx-2 flex-1 border-b border-dotted" style={{ borderColor: "rgba(255,255,255,0.18)" }} />
-                                {item.price && <span data-edit={`item:${item.id}:price`} className="text-sm font-semibold" style={{ color: GOLD_SOFT }}>{item.price}</span>}
+                            <li key={item.id} className="flex items-baseline justify-between gap-8 py-5">
+                              <div className="min-w-0">
+                                <p data-edit={`item:${item.id}:name`} className="text-base font-medium" style={{ ...serif, color: "#ffffff" }}>{item.name}</p>
+                                {item.description && (
+                                  <p data-edit={`item:${item.id}:description`} className="mt-1 text-sm leading-relaxed text-white/55">{item.description}</p>
+                                )}
                               </div>
-                              {item.description && <p data-edit={`item:${item.id}:description`} className="mt-1.5 max-w-xl text-sm leading-relaxed text-white/55">{item.description}</p>}
+                              {item.price && (
+                                <span data-edit={`item:${item.id}:price`} className="shrink-0 text-sm font-semibold" style={{ color: GOLD_SOFT }}>{item.price}</span>
+                              )}
                             </li>
                           ))}
                         </ul>

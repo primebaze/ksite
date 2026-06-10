@@ -164,15 +164,18 @@ export default function Flow({ site, page = "home", basePath = "" }: PresetProps
                       <span className="h-px w-8" style={{ background: `${CLAY}66` }} />{section.section}<span className="h-px flex-1" style={{ background: `${SAGE}22` }} />
                     </p>
                   )}
-                  <ul className="space-y-7">
+                  <ul className="divide-y" style={{ borderColor: `${SAGE}22` }}>
                     {section.categories.flatMap((c) => c.items).map((item) => (
-                      <li key={item.id}>
-                        <div className="flex items-baseline justify-between gap-3">
-                          <span data-edit={`item:${item.id}:name`} style={{ ...serif, color: SAGE }} className="text-xl">{item.name}</span>
-                          <span className="mx-2 flex-1 border-b border-dotted" style={{ borderColor: `${SAGE}3a` }} />
-                          {item.price && <span data-edit={`item:${item.id}:price`} className="text-sm" style={{ color: CLAY }}>{item.price}</span>}
+                      <li key={item.id} className="flex items-baseline justify-between gap-8 py-5">
+                        <div className="min-w-0">
+                          <p data-edit={`item:${item.id}:name`} className="text-base font-medium" style={{ ...serif, color: SAGE }}>{item.name}</p>
+                          {item.description && (
+                            <p data-edit={`item:${item.id}:description`} className="mt-1 text-sm leading-relaxed" style={{ color: MUTE }}>{item.description}</p>
+                          )}
                         </div>
-                        {item.description && <p data-edit={`item:${item.id}:description`} className="mt-1.5 max-w-xl text-sm leading-relaxed" style={{ color: MUTE }}>{item.description}</p>}
+                        {item.price && (
+                          <span data-edit={`item:${item.id}:price`} className="shrink-0 text-sm font-semibold" style={{ color: CLAY }}>{item.price}</span>
+                        )}
                       </li>
                     ))}
                   </ul>
@@ -324,15 +327,18 @@ export default function Flow({ site, page = "home", basePath = "" }: PresetProps
               <Kicker center>Our schedule</Kicker>
               <h2 style={{ ...serif, color: SAGE }} className="mt-4 text-4xl font-medium sm:text-5xl">Classes & Membership</h2>
             </div>
-            <ul className="mt-12 space-y-6">
+            <ul className="mt-12 divide-y" style={{ borderColor: `${SAGE}22` }}>
               {featured.map((item) => (
-                <li key={item.id}>
-                  <div className="flex items-baseline justify-between gap-3">
-                    <span data-edit={`item:${item.id}:name`} style={{ ...serif, color: SAGE }} className="text-lg">{item.name}</span>
-                    <span className="mx-2 flex-1 border-b border-dotted" style={{ borderColor: `${SAGE}3a` }} />
-                    {item.price && <span data-edit={`item:${item.id}:price`} className="text-sm" style={{ color: CLAY }}>{item.price}</span>}
+                <li key={item.id} className="flex items-baseline justify-between gap-8 py-5">
+                  <div className="min-w-0">
+                    <p data-edit={`item:${item.id}:name`} className="text-base font-medium" style={{ ...serif, color: SAGE }}>{item.name}</p>
+                    {item.description && (
+                      <p data-edit={`item:${item.id}:description`} className="mt-1 text-sm leading-relaxed" style={{ color: MUTE }}>{item.description}</p>
+                    )}
                   </div>
-                  {item.description && <p data-edit={`item:${item.id}:description`} className="mt-1 max-w-md text-sm leading-relaxed" style={{ color: MUTE }}>{item.description}</p>}
+                  {item.price && (
+                    <span data-edit={`item:${item.id}:price`} className="shrink-0 text-sm font-semibold" style={{ color: CLAY }}>{item.price}</span>
+                  )}
                 </li>
               ))}
             </ul>

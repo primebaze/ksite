@@ -333,18 +333,21 @@ export default function LanternDesign({ site, page = "home", basePath = "" }: Pr
               </div>
               <a href={href("menu")} className="text-sm font-semibold uppercase tracking-[0.15em]" style={{ color: RED }}>View full menu →</a>
             </div>
-            <div className="mt-12 grid items-start gap-x-12 gap-y-5 md:grid-cols-2">
+            <ul className="mx-auto mt-12 max-w-xl divide-y" style={{ borderColor: "rgba(255,255,255,0.12)" }}>
               {featured.map((item) => (
-                <div key={item.id}>
-                  <div className="flex items-baseline justify-between gap-3">
-                    <span data-edit={`item:${item.id}:name`} className="text-[15px] font-medium text-[#f3ede1]">{item.name}</span>
-                    <span className="mx-2 flex-1 border-b border-dotted border-white/20" />
-                    {item.price && <span data-edit={`item:${item.id}:price`} className="text-sm font-medium" style={{ color: GOLD }}>{item.price}</span>}
+                <li key={item.id} className="flex items-baseline justify-between gap-8 py-5">
+                  <div className="min-w-0">
+                    <p data-edit={`item:${item.id}:name`} className="text-base font-medium text-[#f3ede1]">{item.name}</p>
+                    {item.description && (
+                      <p data-edit={`item:${item.id}:description`} className="mt-1 text-sm leading-relaxed text-[#f3ede1]/55">{item.description}</p>
+                    )}
                   </div>
-                  {item.description && <p data-edit={`item:${item.id}:description`} className="mt-1 max-w-md text-sm leading-relaxed text-[#f3ede1]/55">{item.description}</p>}
-                </div>
+                  {item.price && (
+                    <span data-edit={`item:${item.id}:price`} className="shrink-0 text-sm font-semibold" style={{ color: GOLD }}>{item.price}</span>
+                  )}
+                </li>
               ))}
-            </div>
+            </ul>
           </div>
         </section>
       )}

@@ -156,15 +156,18 @@ export default function MeadowDesign({ site, page = "home", basePath = "" }: Pre
                     {section.categories.map((catg) => (
                       <div key={catg.category ?? "_"} className="mb-6">
                         {catg.category && <p className="mb-2 text-xs font-bold uppercase tracking-[0.16em] text-neutral-400">{catg.category}</p>}
-                        <ul className="space-y-4">
+                        <ul className="divide-y" style={{ borderColor: `${INK}1f` }}>
                           {catg.items.map((item) => (
-                            <li key={item.id}>
-                              <div className="flex items-baseline justify-between gap-3">
-                                <span data-edit={`item:${item.id}:name`} style={display} className="text-lg font-semibold text-[color:#3a322f]">{item.name}</span>
-                                <span className="mx-1 flex-1 border-b-2 border-dotted border-neutral-300" />
-                                {item.price && <span data-edit={`item:${item.id}:price`} className="text-sm font-bold text-[color:#3a322f]">{item.price}</span>}
+                            <li key={item.id} className="flex items-baseline justify-between gap-8 py-5">
+                              <div className="min-w-0">
+                                <p data-edit={`item:${item.id}:name`} className="text-base font-medium text-[color:#3a322f]" style={display}>{item.name}</p>
+                                {item.description && (
+                                  <p data-edit={`item:${item.id}:description`} className="mt-1 text-sm leading-relaxed text-neutral-500">{item.description}</p>
+                                )}
                               </div>
-                              {item.description && <p data-edit={`item:${item.id}:description`} className="mt-1 max-w-md text-sm leading-relaxed text-neutral-500">{item.description}</p>}
+                              {item.price && (
+                                <span data-edit={`item:${item.id}:price`} className="shrink-0 text-sm font-semibold text-[color:#3a322f]">{item.price}</span>
+                              )}
                             </li>
                           ))}
                         </ul>

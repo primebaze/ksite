@@ -195,15 +195,18 @@ function MenuSection({ section, tokens }: { section: CatalogGroup; tokens: Style
       {section.categories.map((catg) => (
         <div key={catg.category ?? "_"} className="mt-8">
           {catg.category && <h4 className="mb-4 text-center text-xs font-semibold uppercase tracking-[0.25em] text-neutral-400">{catg.category}</h4>}
-          <ul className="space-y-6">
+          <ul className="divide-y" style={{ borderColor: "rgb(0 0 0 / 0.12)" }}>
             {catg.items.map((item: CatalogItem) => (
-              <li key={item.id}>
-                <div className="flex items-baseline gap-3">
-                  <span data-edit={`item:${item.id}:name`} className="font-display text-lg text-neutral-900">{item.name}</span>
-                  <span className="mb-1 flex-1 border-b border-dotted border-neutral-300" />
-                  {item.price && <span data-edit={`item:${item.id}:price`} className="font-medium text-[var(--primary)]">{item.price}</span>}
+              <li key={item.id} className="flex items-baseline justify-between gap-8 py-5">
+                <div className="min-w-0">
+                  <p data-edit={`item:${item.id}:name`} className="font-display text-base font-medium text-neutral-900">{item.name}</p>
+                  {item.description && (
+                    <p data-edit={`item:${item.id}:description`} className="mt-1 text-sm leading-relaxed text-neutral-500">{item.description}</p>
+                  )}
                 </div>
-                {item.description && <p data-edit={`item:${item.id}:description`} className="mt-1 max-w-md text-sm text-neutral-500">{item.description}</p>}
+                {item.price && (
+                  <span data-edit={`item:${item.id}:price`} className="shrink-0 text-sm font-semibold text-[var(--primary)]">{item.price}</span>
+                )}
               </li>
             ))}
           </ul>

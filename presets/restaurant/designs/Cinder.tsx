@@ -175,15 +175,18 @@ export default function CinderDesign({ site, page = "home", basePath = "" }: Pre
                             <span className="h-px w-8" style={{ background: `${GOLD}66` }} />{catg.category}<span className="h-px w-8" style={{ background: `${GOLD}66` }} />
                           </p>
                         )}
-                        <ul className="space-y-6">
+                        <ul className="divide-y" style={{ borderColor: "#ffffff26" }}>
                           {catg.items.map((item) => (
-                            <li key={item.id}>
-                              <div className="flex items-baseline justify-between gap-3">
-                                <span data-edit={`item:${item.id}:name`} style={{ ...serif, color: CREAM }} className="text-lg">{item.name}</span>
-                                <span className="mx-2 flex-1 border-b border-dotted" style={{ borderColor: "#ffffff26" }} />
-                                {item.price && <span data-edit={`item:${item.id}:price`} className="text-sm" style={{ color: GOLD }}>{item.price}</span>}
+                            <li key={item.id} className="flex items-baseline justify-between gap-8 py-5">
+                              <div className="min-w-0">
+                                <p data-edit={`item:${item.id}:name`} className="text-base font-medium" style={{ ...serif, color: CREAM }}>{item.name}</p>
+                                {item.description && (
+                                  <p data-edit={`item:${item.id}:description`} className="mt-1 text-sm leading-relaxed" style={{ color: MUTE }}>{item.description}</p>
+                                )}
                               </div>
-                              {item.description && <p data-edit={`item:${item.id}:description`} className="mt-1.5 max-w-xl text-sm leading-relaxed" style={{ color: MUTE }}>{item.description}</p>}
+                              {item.price && (
+                                <span data-edit={`item:${item.id}:price`} className="shrink-0 text-sm font-semibold" style={{ color: GOLD }}>{item.price}</span>
+                              )}
                             </li>
                           ))}
                         </ul>
@@ -422,18 +425,21 @@ export default function CinderDesign({ site, page = "home", basePath = "" }: Pre
               <Kicker>Our Menus</Kicker>
               <h2 style={{ ...serif, color: CREAM }} className="mt-4 text-4xl font-medium sm:text-5xl">Culinary Excellence</h2>
             </div>
-            <div className="mt-14 grid gap-x-14 gap-y-7 md:grid-cols-2">
+            <ul className="mx-auto mt-14 max-w-xl divide-y" style={{ borderColor: "#ffffff26" }}>
               {featured.map((item) => (
-                <div key={item.id}>
-                  <div className="flex items-baseline justify-between gap-3">
-                    <span data-edit={`item:${item.id}:name`} style={{ ...serif, color: CREAM }} className="text-lg">{item.name}</span>
-                    <span className="mx-2 flex-1 border-b border-dotted" style={{ borderColor: "#ffffff26" }} />
-                    {item.price && <span data-edit={`item:${item.id}:price`} className="text-sm" style={{ color: GOLD }}>{item.price}</span>}
+                <li key={item.id} className="flex items-baseline justify-between gap-8 py-5">
+                  <div className="min-w-0">
+                    <p data-edit={`item:${item.id}:name`} className="text-base font-medium" style={{ ...serif, color: CREAM }}>{item.name}</p>
+                    {item.description && (
+                      <p data-edit={`item:${item.id}:description`} className="mt-1 text-sm leading-relaxed" style={{ color: MUTE }}>{item.description}</p>
+                    )}
                   </div>
-                  {item.description && <p data-edit={`item:${item.id}:description`} className="mt-1.5 max-w-md text-sm leading-relaxed" style={{ color: MUTE }}>{item.description}</p>}
-                </div>
+                  {item.price && (
+                    <span data-edit={`item:${item.id}:price`} className="shrink-0 text-sm font-semibold" style={{ color: GOLD }}>{item.price}</span>
+                  )}
+                </li>
               ))}
-            </div>
+            </ul>
             <div className="mt-14 text-center">
               <a href={href("menu")} className="inline-flex px-9 py-3.5 text-[11px] font-semibold uppercase tracking-[0.22em] transition hover:bg-white hover:text-neutral-900" style={{ border: `1px solid ${GOLD}`, color: CREAM }}>View full menu</a>
             </div>
