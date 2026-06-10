@@ -97,6 +97,9 @@ export function GetStartedFlow({
   // Live pop-out preview of a design before choosing it.
   const [preview, setPreview] = useState<{ design: string; img: string } | null>(null);
   const [previewDevice, setPreviewDevice] = useState<"desktop" | "mobile">("desktop");
+  // Design step: show the top 5, reveal the rest under "View more".
+  const [showAllDesigns, setShowAllDesigns] = useState(false);
+  const DESIGNS_SHOWN = 5;
 
   const selected = byKey.get(preset);
 
@@ -134,6 +137,7 @@ export function GetStartedFlow({
     setSelectedStyle(build?.style ?? "classic");
     setDesignKey(buildDesigns[key] ?? "");
     setPhotoId("");
+    setShowAllDesigns(false);
     goToStep(1);
   }
 
@@ -162,7 +166,6 @@ export function GetStartedFlow({
     const photos = groupPhotos[selected.group] ?? [];
     const recommended = buildDesigns[preset] ?? all[0];
     return [recommended, ...all.filter((d) => d !== recommended)]
-      .slice(0, 5)
       .map((design, i) => ({ design, img: photos[i % Math.max(photos.length, 1)] ?? "" }));
   }, [selected, preset, groupDesigns, buildDesigns, groupPhotos]);
 
@@ -287,7 +290,7 @@ export function GetStartedFlow({
               {designOptions.length > 0
                 ? // Bespoke designs exist for this sector: every card is a genuinely
                   // different full-page design with its own photo (never repeated).
-                  designOptions.map(({ design, img }, idx) => (
+                  (showAllDesigns ? designOptions : designOptions.slice(0, DESIGNS_SHOWN)).map(({ design, img }, idx) => (
                     <button
                       key={design}
                       type="button"
@@ -356,6 +359,15 @@ export function GetStartedFlow({
                 <span className="mt-6 rounded-full border border-white/10 px-3 py-2 text-center text-xs text-white/50">Start from scratch</span>
               </button>
             </div>
+            {designOptions.length > DESIGNS_SHOWN && !showAllDesigns && (
+              <button
+                type="button"
+                onClick={() => setShowAllDesigns(true)}
+                className="mx-auto mt-6 block rounded-full border border-white/15 px-6 py-2.5 text-sm font-medium text-white/70 transition hover:border-white/30 hover:text-white"
+              >
+                View more designs ({designOptions.length - DESIGNS_SHOWN})
+              </button>
+            )}
           </div>
         )}
 
