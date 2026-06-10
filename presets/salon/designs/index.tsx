@@ -14,6 +14,13 @@ import Lustre from "./Lustre";
 import Linea from "./Linea";
 import Radiance from "./Radiance";
 import Lumina from "./Lumina";
+// Health & wellness (clinical: dental, ortho, physio, chiro, osteo, optical)
+import Enamel from "./Enamel";
+import Align from "./Align";
+import Kinetic from "./Kinetic";
+import Axis from "./Axis";
+import Pivot from "./Pivot";
+import Lumen from "./Lumen";
 
 // Bespoke full-page salon / hair & beauty / health & wellness designs (our own
 // names, real-world inspired). Selected via content.design; each keeps its layout
@@ -31,6 +38,12 @@ export const SALON_DESIGNS: Record<string, ComponentType<PresetProps>> = {
   linea: Linea,
   radiance: Radiance,
   lumina: Lumina,
+  enamel: Enamel, // dentist
+  align: Align, // orthodontist
+  kinetic: Kinetic, // physio
+  axis: Axis, // chiropractor
+  pivot: Pivot, // osteopath
+  lumen: Lumen, // optician
 };
 
 export function getSalonDesign(key?: string): ComponentType<PresetProps> | null {

@@ -72,7 +72,8 @@ export const BUILD_DESIGN: Record<string, string> = {
   lash_brow: "linea",
   piercing: "radiance",
   mens_grooming: "lumina",
-  // Health & wellness — EVERY key mapped (by closest aesthetic)
+  // Health & wellness — aesthetics keep the salon-derived clinic looks; the
+  // medical/therapy types get their own bespoke clinical designs.
   aesthetics_clinic: "aurelia",
   skin_clinic: "seren",
   cosmetic_clinic: "lustre",
@@ -83,16 +84,17 @@ export const BUILD_DESIGN: Record<string, string> = {
   spa: "radiance",
   massage: "lustre",
   acupuncture: "seren",
-  osteopath: "seren",
   podiatry: "seren",
-  chiropractor: "linea",
-  physio: "linea",
-  optician: "linea",
-  hearing_clinic: "linea",
-  dental: "lumina",
-  dentist: "lumina",
-  orthodontist: "lumina",
   iv_therapy: "aurelia",
+  // bespoke clinical designs
+  dentist: "enamel",
+  dental: "enamel",
+  orthodontist: "align",
+  physio: "kinetic",
+  chiropractor: "axis",
+  osteopath: "pivot",
+  optician: "lumen",
+  hearing_clinic: "lumen",
   // Fitness
   barre: "cadence",
   bootcamp: "box",
@@ -196,7 +198,7 @@ export const BUILD_DESIGN: Record<string, string> = {
 export const GROUP_DESIGNS: Record<string, string[]> = {
   "Food & drink": ["ember", "drift", "laurel", "lantern", "marble", "daybreak", "tide", "botanica", "lacquer", "cinder", "meadow", "forno", "crumb", "stack", "vialetto", "saffron", "agave", "lemongrass", "tavern", "larder", "gateau", "cellar", "sobremesa", "sundae", "reuben", "gilded", "pulp", "kona", "fern", "comptoir", "camellia", "curbside"],
   "Hair & beauty": ["indigo", "halo", "verve", "atelier", "fade", "lumiere", "aurelia", "seren", "lustre", "linea", "radiance", "lumina"],
-  "Health & wellness": ["aurelia", "seren", "lustre", "linea", "radiance", "lumina", "indigo", "halo", "verve", "atelier", "fade", "lumiere"],
+  "Health & wellness": ["aurelia", "seren", "lustre", "linea", "radiance", "lumina", "enamel", "align", "kinetic", "axis", "pivot", "lumen"],
   Fitness: ["forge", "box", "ironclad", "apex", "tempo", "flow", "haven", "cadence", "pulse"],
   "Contractors & home": ["forge", "mason", "marigold", "meridian", "drafthouse", "summit", "velocity", "atelier", "bloom", "juniper", "ledger", "apex"],
   Automotive: ["apex", "velocity", "forge", "meridian", "summit", "mason", "drafthouse"],
