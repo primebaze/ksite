@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { PreviewVideo } from "./PreviewVideo";
+import { StoryReelContext } from "./ScrollZoom";
 
 // A rotating product reel: best-selling business types, each shown as a website
 // hero built from a looping video plus a headline overlay. Only the active
@@ -14,10 +15,15 @@ const SLIDES: { key: string; video: string; name: string; tag: string; cta: stri
 
 export function HeroShowcase() {
   const [i, setI] = useState(0);
+  const story = useContext(StoryReelContext);
   useEffect(() => {
     const t = setInterval(() => setI((x) => (x + 1) % SLIDES.length), 7000);
     return () => clearInterval(t);
   }, []);
+  // Tell the scroll-story which video is on screen so its mobile backdrop matches.
+  useEffect(() => {
+    story?.setActiveVideo(SLIDES[i].video);
+  }, [i, story]);
 
   return (
     <div className="overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02] shadow-[0_40px_120px_-25px_rgba(0,0,0,0.85)]">

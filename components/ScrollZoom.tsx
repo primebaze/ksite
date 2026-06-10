@@ -1,9 +1,13 @@
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { createContext, useEffect, useRef, useState, type ReactNode } from "react";
 import Link from "next/link";
 import { motion, useScroll, useTransform, useMotionTemplate, type MotionValue } from "motion/react";
 import { PreviewVideo } from "./PreviewVideo";
+
+// The reel (HeroShowcase) reports its currently-playing video here so the
+// mobile story backdrop can blur the SAME video, keeping them in sync.
+export const StoryReelContext = createContext<{ setActiveVideo: (src: string) => void } | null>(null);
 
 // The reel zooms up to fill the screen, then softens into an ambient backdrop
 // while a short scroll-driven story plays over it: each line drifts up and
@@ -42,13 +46,12 @@ export function ScrollZoom({ children }: { children: ReactNode }) {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
 
-  // The reel is a 16:9 browser mockup. On a wide desktop it fills the screen at
-  // ~1.04; on a tall phone it must zoom much further to COVER the portrait
-  // viewport (so the blurred backdrop fills the screen and the story text writes
-  // over the video, never onto black). Compute the cover scale from the screen.
   // On mobile the centred reel sits below the fold, leaving a dark void under
   // the hero. Lift the small reel up so it peeks into that space.
   const [liftPx, setLiftPx] = useState(0);
+  // The video the reel is currently showing — the mobile story backdrop blurs
+  // the same one so they always match.
+  const [activeVideo, setActiveVideo] = useState("/hero/box.mp4");
   useEffect(() => {
     const compute = () => {
       const mobile = window.innerWidth < 640;
@@ -84,9 +87,10 @@ export function ScrollZoom({ children }: { children: ReactNode }) {
   const ctaY = useTransform(scrollYProgress, [0.66, 0.78], [60, 0]);
 
   return (
+    <StoryReelContext.Provider value={{ setActiveVideo }}>
     <div ref={ref} className="relative h-[360vh]">
-      {/* Reel is centred so the scroll-story captions overlay it (the reel zooms
-          to cover the viewport, so the text writes over the video, not black). */}
+      {/* Reel is centred so the scroll-story captions overlay it; on mobile a
+          blurred copy of the same video fades in so text writes over it. */}
       <div className="sticky top-0 flex h-screen items-center justify-center overflow-hidden">
         <motion.div
           style={{ scale, y: lift, borderRadius: radius, padding: pad, width: "100%", maxWidth: "100vw" }}
@@ -97,10 +101,11 @@ export function ScrollZoom({ children }: { children: ReactNode }) {
           </motion.div>
         </motion.div>
 
-        {/* Mobile-only full-screen video backdrop — crossfades in for the story
-            so the text writes over the video without zooming the reel. */}
+        {/* Mobile-only full-screen video backdrop — the SAME video the reel is
+            playing, blurred, crossfaded in so the captions write over the video
+            without zooming the reel. */}
         <motion.div style={{ opacity: bgOpacity }} className="pointer-events-none absolute inset-0 sm:hidden">
-          <PreviewVideo src="/hero/box.mp4" className="h-full w-full scale-105 object-cover blur-lg" />
+          <PreviewVideo key={activeVideo} src={activeVideo} className="h-full w-full scale-105 object-cover blur-lg" />
         </motion.div>
 
         {/* Legibility scrim over the filled reel / backdrop */}
@@ -132,5 +137,6 @@ export function ScrollZoom({ children }: { children: ReactNode }) {
         </motion.div>
       </div>
     </div>
+    </StoryReelContext.Provider>
   );
 }
