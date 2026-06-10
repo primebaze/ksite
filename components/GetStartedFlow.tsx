@@ -187,6 +187,11 @@ export function GetStartedFlow({
   // can be revealed without leaving the design step.
   const subtypeOptions = useMemo(() => {
     if (!selected) return [];
+    // Only Food & drink shows the "pick your exact type" switcher: there, each
+    // type has a genuinely different sample (pizzeria vs sushi vs bakery...).
+    // In other sectors the types share one look, so switching would show the
+    // same designs — hide it there.
+    if (selected.group !== "Food & drink") return [];
     const inGroup = groups.find((g) => g.group === selected.group)?.builds ?? [];
     return inGroup.filter((b) => b.key !== preset);
   }, [selected, groups, preset]);
