@@ -257,3 +257,30 @@ export async function deleteMyTeamMember(memberId: string) {
   await supabase.from("team").delete().eq("id", memberId);
   await bust(ref);
 }
+
+// --- Form submissions (booking + contact enquiries) ------------------------
+export interface FormSubmission {
+  id: string;
+  kind: "booking" | "contact";
+  payload: { lines: { label: string; value: string }[] };
+  reply_to: string | null;
+  status: "new" | "read" | "archived";
+  created_at: string;
+}
+
+/** The current owner's form submissions (RLS scopes to their tenant). */
+export async function getMyFormSubmissions(): Promise<FormSubmission[]> {
+  const supabase = await db();
+  const { data, error } = await supabase
+    .from("form_submissions")
+    .select("id,kind,payload,reply_to,status,created_at")
+    .order("created_at", { ascending: false })
+    .limit(300);
+  if (error) return [];
+  return (data ?? []) as FormSubmission[];
+}
+
+export async function setMyFormSubmissionStatus(id: string, status: "new" | "read" | "archived") {
+  const supabase = await db();
+  await supabase.from("form_submissions").update({ status }).eq("id", id);
+}

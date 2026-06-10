@@ -18,6 +18,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
     { href: "/dashboard", label: "Home" },
     { href: "/preview?edit=1", label: "Edit site", primary: true },
     { href: "/dashboard/edit", label: "Content & menu" },
+    { href: "/dashboard/inbox", label: "Enquiries" },
     { href: "/dashboard/domains", label: "Domains" },
   ];
 

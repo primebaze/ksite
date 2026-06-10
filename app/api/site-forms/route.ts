@@ -61,18 +61,44 @@ export async function POST(req: Request) {
     const { data } = await svc.auth.admin.getUserById(tenant.owner_id);
     ownerEmail = data.user?.email ?? null;
   }
-  if (!ownerEmail) return Response.json({ ok: false, error: "Couldn't route your message." }, { status: 500 });
+
+  const payloadLines = lines.map(({ label, value }) => ({ label, value }));
+
+  // Store the submission so the owner can manage it in their dashboard inbox,
+  // AND email it as a notification. We succeed if either path works so a
+  // customer's booking is never lost to a transient failure.
+  let stored = false;
+  let emailed = false;
 
   try {
-    await sendFormSubmission({
-      to: ownerEmail,
-      businessName: tenant.business_name ?? "Your site",
+    const { error } = await svc.from("form_submissions").insert({
+      tenant_id: tenantId,
       kind,
-      lines: lines.map(({ label, value }) => ({ label, value })),
-      replyTo,
+      payload: { lines: payloadLines },
+      reply_to: replyTo,
     });
+    if (error) console.error("site-forms store failed", error);
+    else stored = true;
   } catch (error) {
-    console.error("site-forms send failed", error);
+    console.error("site-forms store failed", error);
+  }
+
+  if (ownerEmail) {
+    try {
+      await sendFormSubmission({
+        to: ownerEmail,
+        businessName: tenant.business_name ?? "Your site",
+        kind,
+        lines: payloadLines,
+        replyTo,
+      });
+      emailed = true;
+    } catch (error) {
+      console.error("site-forms send failed", error);
+    }
+  }
+
+  if (!stored && !emailed) {
     return Response.json({ ok: false, error: "Couldn't send right now. Please try again." }, { status: 500 });
   }
 
