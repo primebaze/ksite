@@ -22,11 +22,12 @@ export function isVercelConfigured(): boolean {
 // The legal registrant for domains we buy on a client's behalf (we hold them).
 function registrant() {
   const e = process.env;
+  const phone = normalizeE164Phone(e.REGISTRANT_PHONE, e.REGISTRANT_COUNTRY);
   const c = {
     firstName: e.REGISTRANT_FIRST_NAME,
     lastName: e.REGISTRANT_LAST_NAME,
     email: e.REGISTRANT_EMAIL,
-    phone: e.REGISTRANT_PHONE,
+    phone,
     address1: e.REGISTRANT_ADDRESS1,
     city: e.REGISTRANT_CITY,
     state: e.REGISTRANT_STATE,
@@ -39,6 +40,26 @@ function registrant() {
 
 export function isRegistrantConfigured(): boolean {
   return registrant() !== null;
+}
+
+function normalizeE164Phone(phone: string | undefined, country: string | undefined): string | undefined {
+  const raw = phone?.trim();
+  if (!raw) return undefined;
+
+  const compact = raw.replace(/[^\d+]/g, "");
+  if (compact.startsWith("+")) return compact;
+  if (compact.startsWith("00")) return `+${compact.slice(2)}`;
+
+  const countryCode = country?.trim().toUpperCase();
+  if (countryCode === "GB" || countryCode === "UK" || countryCode === "UNITED KINGDOM") {
+    return `+44${compact.replace(/^0+/, "")}`;
+  }
+
+  return compact;
+}
+
+function isE164Phone(phone: string): boolean {
+  return /^\+[1-9]\d{1,14}$/.test(phone);
 }
 
 interface ApiResult<T = Record<string, unknown>> {
@@ -110,9 +131,29 @@ export async function buyDomain(domain: string, expectedPrice: number) {
   if (!contact) {
     return { ok: false, status: 0, data: { message: "Registrant contact isn't configured." } } as ApiResult<BuyResult>;
   }
+  if (!isE164Phone(contact.phone)) {
+    return {
+      ok: false,
+      status: 0,
+      data: { message: "Registrant phone must be in international E.164 format, for example +447234345654." },
+    } as ApiResult<BuyResult>;
+  }
   return api<BuyResult>(`/v1/registrar/domains/${encodeURIComponent(domain)}/buy`, {
     method: "POST",
     body: JSON.stringify({ autoRenew: true, years: 1, expectedPrice, contactInformation: contact }),
+  });
+}
+
+export async function createApexDnsRecord(domain: string) {
+  return api<{ uid?: string; updated?: number }>(`/v2/domains/${encodeURIComponent(domain)}/records`, {
+    method: "POST",
+    body: JSON.stringify({
+      name: "",
+      type: "A",
+      value: dnsInstructions(domain).value,
+      ttl: 60,
+      comment: "Routes the managed domain to the Vercel project.",
+    }),
   });
 }
 
@@ -152,6 +193,6 @@ export async function isDomainLive(domain: string): Promise<boolean> {
 // The DNS record a client must set for a domain they already own. Apex → A.
 export function dnsInstructions(domain: string): { type: "A" | "CNAME"; name: string; value: string } {
   const labels = domain.split(".");
-  if (labels.length <= 2) return { type: "A", name: "@", value: "76.76.21.21" };
+  if (labels.length <= 2) return { type: "A", name: "@", value: "216.198.79.1" };
   return { type: "CNAME", name: labels[0], value: "cname.vercel-dns.com" };
 }

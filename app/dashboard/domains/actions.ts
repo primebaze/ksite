@@ -7,6 +7,7 @@ import {
   addProjectDomain,
   buyDomain,
   checkAvailability,
+  createApexDnsRecord,
   getDomainPrice,
   isRegistrantConfigured,
   isVercelConfigured,
@@ -54,6 +55,7 @@ export async function claimDomain(formData: FormData) {
 
   // Registration is an async order; mark registering and attach (best effort).
   await updateMyCustomDomain(domain, "registering");
+  await createApexDnsRecord(domain).catch(() => {});
   await addProjectDomain(domain).catch(() => {});
   revalidatePath("/dashboard/domains");
   redirect("/dashboard?welcome=1");
