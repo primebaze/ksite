@@ -28,6 +28,12 @@ import Mendwell from "./Mendwell";
 import Render from "./Render";
 import Tessera from "./Tessera";
 import Parquet from "./Parquet";
+import Kerbside from "./Kerbside";
+import Palisade from "./Palisade";
+import Pane from "./Pane";
+import Riser from "./Riser";
+import Canopy from "./Canopy";
+import Boxwell from "./Boxwell";
 
 // Bespoke full-page services designs (our own names) for the TradesSite preset.
 // Selected via content.design; each keeps its layout and swaps in the client's
@@ -61,6 +67,12 @@ export const TRADES_DESIGNS: Record<string, ComponentType<PresetProps>> = {
   render: Render, // plasterer (plaster off-white + steel-blue)
   tessera: Tessera, // tiler (glazed white + Moroccan blue tile-grid)
   parquet: Parquet, // flooring (greige + espresso herringbone)
+  kerbside: Kerbside, // driveways & paving (asphalt + sandstone + teal)
+  palisade: Palisade, // fencing & decking (pine + cedar slats)
+  pane: Pane, // window cleaning (sky-blue + glass-navy)
+  riser: Riser, // scaffolding (hi-vis yellow + steel)
+  canopy: Canopy, // tree surgeon (woodland green + bark)
+  boxwell: Boxwell, // removals & storage (navy + coral + kraft)
 };
 
 export function getTradesDesign(key?: string): ComponentType<PresetProps> | null {
