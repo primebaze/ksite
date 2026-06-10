@@ -22,7 +22,7 @@ const BY_ARCHETYPE: Record<Archetype, ComponentType<PresetProps>> = {
 // Bespoke per-type templates that override the generic archetype layout — each
 // sector here has its own bespoke design set.
 const BEAUTY = ["makeup_artist", "lash_brow", "nail_salon", "beauty_salon", "aesthetics_clinic", "cosmetic_clinic", "tanning", "waxing"];
-const FITNESS = ["gym", "yoga_studio", "pilates", "barre", "boxing_gym", "climbing_gym", "crossfit", "martial_arts", "personal_trainer", "spin_studio", "dance_studio"];
+const FITNESS = ["gym", "yoga_studio", "pilates", "barre", "boxing_gym", "climbing_gym", "crossfit", "martial_arts", "personal_trainer", "spin_studio", "dance_studio", "bootcamp", "swim_school"];
 const PETS = ["vet", "dog_groomer", "dog_walker", "dog_trainer", "cattery_kennels", "pet_shop"];
 const EVENTS = ["photographer", "videographer", "wedding_planner", "event_venue", "event_caterer", "dj", "party_hire"];
 const EDUCATION = ["private_tutor", "nursery", "driving_school", "music_teacher", "language_school", "dance_school"];
