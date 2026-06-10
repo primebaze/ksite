@@ -19,6 +19,12 @@ import Greenscape from "./Greenscape";
 import Ridgeline from "./Ridgeline";
 import Rollwell from "./Rollwell";
 import Latchkey from "./Latchkey";
+import Cornerstone from "./Cornerstone";
+import Heartwood from "./Heartwood";
+import Sparkle from "./Sparkle";
+import Culina from "./Culina";
+import Lagoon from "./Lagoon";
+import Mendwell from "./Mendwell";
 
 // Bespoke full-page services designs (our own names) for the TradesSite preset.
 // Selected via content.design; each keeps its layout and swaps in the client's
@@ -43,6 +49,12 @@ export const TRADES_DESIGNS: Record<string, ComponentType<PresetProps>> = {
   ridgeline: Ridgeline, // roofer (slate + terracotta tile)
   rollwell: Rollwell, // painter & decorator (white + cobalt swatches)
   latchkey: Latchkey, // locksmith (midnight blue + brass)
+  cornerstone: Cornerstone, // builder (concrete + hi-vis orange)
+  heartwood: Heartwood, // carpenter (walnut + oak)
+  sparkle: Sparkle, // cleaner (aqua-teal + lemon)
+  culina: Culina, // kitchen fitter (forest + brass marble)
+  lagoon: Lagoon, // bathroom fitter (seafoam + brass)
+  mendwell: Mendwell, // handyman (royal blue + amber)
 };
 
 export function getTradesDesign(key?: string): ComponentType<PresetProps> | null {
