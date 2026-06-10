@@ -495,14 +495,14 @@ export function GetStartedFlow({
               </button>
             </div>
 
-            {/* Live site */}
-            <div className="flex-1 overflow-auto bg-neutral-100 p-0 sm:p-4">
-              <div className={`mx-auto h-full overflow-hidden bg-white transition-all ${previewDevice === "mobile" ? "w-[390px] rounded-[2rem] border-[6px] border-neutral-900 shadow-2xl" : "w-full rounded-lg"}`}>
+            {/* Live site — edge to edge on desktop; phone frame only on mobile */}
+            <div className={`flex-1 overflow-auto ${previewDevice === "mobile" ? "bg-[#0c0c0d] p-4 sm:p-6" : "bg-white"}`}>
+              <div className={`mx-auto h-full overflow-hidden transition-all ${previewDevice === "mobile" ? "w-[390px] rounded-[2.2rem] border-[8px] border-neutral-900 bg-white shadow-2xl" : "w-full"}`}>
                 <iframe
                   key={`${preview.design}-${previewDevice}`}
                   src={`/samples/${preset}?embed=1&design=${preview.design}${preview.img ? `&img=${preview.img}` : ""}`}
                   title={`${titleCase(preview.design)} preview`}
-                  className="h-full w-full border-0"
+                  className="block h-full w-full border-0"
                   style={{ minHeight: previewDevice === "mobile" ? 680 : 560 }}
                 />
               </div>
