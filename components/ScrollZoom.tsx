@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import Link from "next/link";
 import { motion, useScroll, useTransform, useMotionTemplate, type MotionValue } from "motion/react";
 
@@ -41,8 +41,37 @@ export function ScrollZoom({ children }: { children: ReactNode }) {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start end", "end start"] });
 
+  // The reel is a 16:9 browser mockup. On a wide desktop it fills the screen at
+  // ~1.04; on a tall phone it must zoom much further to COVER the portrait
+  // viewport (so the blurred backdrop fills the screen and the story text writes
+  // over the video, never onto black). Compute the cover scale from the screen.
+  const [fillScale, setFillScale] = useState(1.04);
+  // On mobile the centred reel sits below the fold, leaving a dark void under
+  // the hero. Lift the small reel up so it peeks into that space, then let it
+  // settle back to centre as it zooms to cover (so captions still overlay it).
+  const [liftPx, setLiftPx] = useState(0);
+  useEffect(() => {
+    const compute = () => {
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
+      if (vw >= 640) {
+        setFillScale(1.04);
+        setLiftPx(0);
+        return;
+      }
+      // reel video height at scale 1 ≈ vw * 9/16; scale so it covers vh (+8%).
+      const needed = (vh / ((vw * 9) / 16)) * 1.08;
+      setFillScale(Math.max(1.2, needed));
+      setLiftPx(-vh * 0.28);
+    };
+    compute();
+    window.addEventListener("resize", compute);
+    return () => window.removeEventListener("resize", compute);
+  }, []);
+
   // Zoom up to fill as the section pins, then stay filled for the story.
-  const scale = useTransform(scrollYProgress, [0.1, 0.22, 1], [0.82, 1.04, 1.04]);
+  const scale = useTransform(scrollYProgress, [0.1, 0.22, 1], [0.82, fillScale, fillScale]);
+  const lift = useTransform(scrollYProgress, [0, 0.1, 0.22], [liftPx, liftPx, 0]);
   const radius = useTransform(scrollYProgress, [0.1, 0.22], [16, 0]);
   const pad = useTransform(scrollYProgress, [0.1, 0.22], [24, 0]);
 
@@ -60,12 +89,11 @@ export function ScrollZoom({ children }: { children: ReactNode }) {
 
   return (
     <div ref={ref} className="relative h-[360vh]">
-      {/* On mobile the 16:9 reel is short next to the tall viewport, so centering
-          it leaves a big empty band under the hero. Pull it toward the top (clear
-          of the sticky nav) on small screens; keep it centered on desktop. */}
-      <div className="sticky top-0 flex h-screen items-start justify-center overflow-hidden pt-20 sm:items-center sm:pt-0">
+      {/* Reel is centred so the scroll-story captions overlay it (the reel zooms
+          to cover the viewport, so the text writes over the video, not black). */}
+      <div className="sticky top-0 flex h-screen items-center justify-center overflow-hidden">
         <motion.div
-          style={{ scale, borderRadius: radius, padding: pad, width: "100%", maxWidth: "100vw" }}
+          style={{ scale, y: lift, borderRadius: radius, padding: pad, width: "100%", maxWidth: "100vw" }}
           className="origin-center"
         >
           <motion.div style={{ borderRadius: radius, filter: reelFilter }} className="overflow-hidden">
