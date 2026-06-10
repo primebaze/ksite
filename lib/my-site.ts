@@ -1,7 +1,7 @@
 import "server-only";
 import { createSupabaseServerClient } from "./supabase-server";
 import { revalidateSiteHost, revalidateTenant } from "./tenant";
-import { addProjectDomain, isDomainLive, isVercelConfigured } from "./vercel";
+import { addProjectDomain, createApexDnsRecord, isDomainLive, isVercelConfigured } from "./vercel";
 import { sendAdminDomainLiveNotification, sendDomainLiveEmail } from "./email";
 import type {
   CatalogItem,
@@ -142,6 +142,12 @@ export async function refreshMyDomainStatus(): Promise<DomainStatusResult> {
   if (!isVercelConfigured()) return { status: t.domain_status ?? "pending", justWentLive: false };
 
   await addProjectDomain(t.custom_domain).catch(() => {});
+  // Re-assert the apex A record each check. At purchase time the registration
+  // order is still async, so the first attempt (in claimDomain) usually fails
+  // because the DNS zone doesn't exist yet. Retrying here lets a domain we
+  // registered auto-configure once the order finalises — and it harmlessly
+  // no-ops for domains hosted elsewhere (we don't control their zone).
+  await createApexDnsRecord(t.custom_domain).catch(() => {});
   const live = await isDomainLive(t.custom_domain);
   const wasActive = t.domain_status === "active";
   const status = live ? "active" : "verifying";
