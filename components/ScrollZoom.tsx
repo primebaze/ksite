@@ -60,7 +60,10 @@ export function ScrollZoom({ children }: { children: ReactNode }) {
 
   return (
     <div ref={ref} className="relative h-[360vh]">
-      <div className="sticky top-0 flex h-screen items-center justify-center overflow-hidden">
+      {/* On mobile the 16:9 reel is short next to the tall viewport, so centering
+          it leaves a big empty band under the hero. Pull it toward the top (clear
+          of the sticky nav) on small screens; keep it centered on desktop. */}
+      <div className="sticky top-0 flex h-screen items-start justify-center overflow-hidden pt-[14vh] sm:items-center sm:pt-0">
         <motion.div
           style={{ scale, borderRadius: radius, padding: pad, width: "100%", maxWidth: "100vw" }}
           className="origin-center"
