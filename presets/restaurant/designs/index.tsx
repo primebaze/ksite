@@ -29,6 +29,9 @@ import Gilded from "./Gilded";
 import Pulp from "./Pulp";
 import Kona from "./Kona";
 import Fern from "./Fern";
+import Comptoir from "./Comptoir";
+import Camellia from "./Camellia";
+import Curbside from "./Curbside";
 
 // Bespoke full-page restaurant designs (our own names). Selected via
 // content.design; each keeps its layout and swaps in the client's own media.
@@ -63,6 +66,9 @@ export const RESTAURANT_DESIGNS: Record<string, ComponentType<PresetProps>> = {
   pulp: Pulp, // juice bar
   kona: Kona, // poke
   fern: Fern, // vegan
+  comptoir: Comptoir, // parisian bistro
+  camellia: Camellia, // english tearoom
+  curbside: Curbside, // food truck
 };
 
 export function getRestaurantDesign(key?: string): ComponentType<PresetProps> | null {
