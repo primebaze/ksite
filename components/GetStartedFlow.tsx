@@ -94,6 +94,9 @@ export function GetStartedFlow({
   const [designKey, setDesignKey] = useState(buildDesigns[pre ? pre.key : "beauty_salon"] ?? "");
   // Photo id shown on the chosen design card (seeds the new site's hero).
   const [photoId, setPhotoId] = useState("");
+  // Live pop-out preview of a design before choosing it.
+  const [preview, setPreview] = useState<{ design: string; img: string } | null>(null);
+  const [previewDevice, setPreviewDevice] = useState<"desktop" | "mobile">("desktop");
 
   const selected = byKey.get(preset);
 
@@ -288,10 +291,17 @@ export function GetStartedFlow({
                     <button
                       key={design}
                       type="button"
-                      onClick={() => chooseDesignKey(design, img)}
-                      className="group overflow-hidden rounded-2xl border border-white/10 bg-black text-left transition hover:-translate-y-1 hover:border-emerald-400/50"
+                      onClick={() => { setPreviewDevice("desktop"); setPreview({ design, img }); }}
+                      className="group relative overflow-hidden rounded-2xl border border-white/10 bg-black text-left transition hover:-translate-y-1 hover:border-emerald-400/50"
                     >
                       <TemplateThumb src={`/samples/${preset}?embed=1&design=${design}${img ? `&img=${img}` : ""}`} aspect={0.55} />
+                      {/* Hover overlay: clear "preview" affordance */}
+                      <span className="pointer-events-none absolute inset-x-0 top-0 flex items-center justify-center" style={{ height: "calc(100% - 73px)" }}>
+                        <span className="flex items-center gap-2 rounded-full bg-black/70 px-4 py-2 text-sm font-medium text-white opacity-0 backdrop-blur transition group-hover:opacity-100">
+                          <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z" /><circle cx="12" cy="12" r="3" /></svg>
+                          Preview design
+                        </span>
+                      </span>
                       <div className="border-t border-white/10 p-4">
                         <div className="flex items-center justify-between gap-3">
                           <div>
@@ -299,7 +309,7 @@ export function GetStartedFlow({
                             <p className="mt-1 text-xs text-white/40">{selected.label} sample</p>
                           </div>
                           <span className="rounded-full border border-white/10 px-3 py-1 text-xs text-white/50 group-hover:border-emerald-400/40 group-hover:text-emerald-300">
-                            Choose this design
+                            Preview
                           </span>
                         </div>
                         {idx === 0 && <p className="mt-3 text-xs font-medium text-emerald-300">Recommended</p>}
@@ -444,6 +454,82 @@ export function GetStartedFlow({
           </div>
         )}
       </div>
+
+      {/* Live pop-out preview — a faux browser window (not full screen) so you can
+          look around the real site before choosing. */}
+      {preview && selected && (
+        <div
+          className="fixed inset-0 z-[120] flex items-center justify-center bg-black/75 p-4 backdrop-blur-sm sm:p-8"
+          onClick={() => setPreview(null)}
+        >
+          <div
+            className="flex max-h-[88vh] w-full max-w-5xl flex-col overflow-hidden rounded-2xl border border-white/15 bg-[#0c0c0d] shadow-[0_40px_120px_-20px_rgba(0,0,0,0.9)]"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Browser chrome */}
+            <div className="flex items-center gap-3 border-b border-white/10 bg-white/[0.03] px-4 py-3">
+              <div className="flex gap-1.5">
+                <span className="h-3 w-3 rounded-full bg-[#ff5f57]" />
+                <span className="h-3 w-3 rounded-full bg-[#febc2e]" />
+                <span className="h-3 w-3 rounded-full bg-[#28c840]" />
+              </div>
+              <div className="mx-auto flex max-w-xs flex-1 items-center justify-center gap-2 truncate rounded-md bg-black/40 px-3 py-1.5 text-xs text-white/50">
+                <svg className="h-3 w-3 shrink-0 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden><path d="M5 11V7a5 5 0 0 1 10 0v4" transform="translate(2)" /><rect x="4" y="11" width="16" height="9" rx="2" /></svg>
+                yourname.kovasite.com
+              </div>
+              {/* device toggle */}
+              <div className="hidden items-center gap-1 rounded-md bg-black/40 p-0.5 sm:flex">
+                {(["desktop", "mobile"] as const).map((d) => (
+                  <button
+                    key={d}
+                    type="button"
+                    onClick={() => setPreviewDevice(d)}
+                    className={`rounded px-2.5 py-1 text-xs capitalize transition ${previewDevice === d ? "bg-white/15 text-white" : "text-white/45 hover:text-white"}`}
+                  >
+                    {d}
+                  </button>
+                ))}
+              </div>
+              <button type="button" onClick={() => setPreview(null)} aria-label="Close preview" className="rounded-md p-1 text-white/50 transition hover:bg-white/10 hover:text-white">
+                <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden><path d="M6 6l12 12M18 6L6 18" /></svg>
+              </button>
+            </div>
+
+            {/* Live site */}
+            <div className="flex-1 overflow-auto bg-neutral-100 p-0 sm:p-4">
+              <div className={`mx-auto h-full overflow-hidden bg-white transition-all ${previewDevice === "mobile" ? "w-[390px] rounded-[2rem] border-[6px] border-neutral-900 shadow-2xl" : "w-full rounded-lg"}`}>
+                <iframe
+                  key={`${preview.design}-${previewDevice}`}
+                  src={`/samples/${preset}?embed=1&design=${preview.design}${preview.img ? `&img=${preview.img}` : ""}`}
+                  title={`${titleCase(preview.design)} preview`}
+                  className="h-full w-full border-0"
+                  style={{ minHeight: previewDevice === "mobile" ? 680 : 560 }}
+                />
+              </div>
+            </div>
+
+            {/* Footer: choose */}
+            <div className="flex flex-wrap items-center justify-between gap-3 border-t border-white/10 bg-white/[0.03] px-4 py-3">
+              <div className="min-w-0">
+                <p className="truncate font-semibold text-white">{titleCase(preview.design)}</p>
+                <p className="truncate text-xs text-white/45">Scroll and click around — this is the live {selected.label.toLowerCase()} site</p>
+              </div>
+              <div className="flex items-center gap-2">
+                <button type="button" onClick={() => setPreview(null)} className="rounded-xl border border-white/15 px-4 py-2.5 text-sm text-white/70 transition hover:text-white">
+                  Keep looking
+                </button>
+                <button
+                  type="button"
+                  onClick={() => { chooseDesignKey(preview.design, preview.img); setPreview(null); }}
+                  className="rounded-xl bg-emerald-400 px-5 py-2.5 text-sm font-semibold text-black transition hover:bg-emerald-300"
+                >
+                  Choose this design
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </form>
   );
 }
