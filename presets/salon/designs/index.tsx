@@ -21,6 +21,13 @@ import Kinetic from "./Kinetic";
 import Axis from "./Axis";
 import Pivot from "./Pivot";
 import Lumen from "./Lumen";
+// Health & wellness (spa / massage / acupuncture / podiatry / IV / audiology)
+import Thermae from "./Thermae";
+import Stillwater from "./Stillwater";
+import Lotus from "./Lotus";
+import Stride from "./Stride";
+import Aurora from "./Aurora";
+import Clarity from "./Clarity";
 
 // Bespoke full-page salon / hair & beauty / health & wellness designs (our own
 // names, real-world inspired). Selected via content.design; each keeps its layout
@@ -44,6 +51,12 @@ export const SALON_DESIGNS: Record<string, ComponentType<PresetProps>> = {
   axis: Axis, // chiropractor
   pivot: Pivot, // osteopath
   lumen: Lumen, // optician
+  thermae: Thermae, // day spa
+  stillwater: Stillwater, // massage therapy
+  lotus: Lotus, // acupuncture
+  stride: Stride, // podiatry
+  aurora: Aurora, // IV therapy
+  clarity: Clarity, // audiology / hearing
 };
 
 export function getSalonDesign(key?: string): ComponentType<PresetProps> | null {

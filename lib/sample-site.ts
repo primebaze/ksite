@@ -80,13 +80,8 @@ export const BUILD_DESIGN: Record<string, string> = {
   dermatology: "linea",
   wellness_clinic: "radiance",
   hair_removal: "lumina",
-  day_spa: "lustre",
-  spa: "radiance",
-  massage: "lustre",
-  acupuncture: "seren",
-  podiatry: "seren",
-  iv_therapy: "aurelia",
-  // bespoke clinical designs
+  iv_therapy: "aurora",
+  // bespoke clinical / wellness designs (each type its own)
   dentist: "enamel",
   dental: "enamel",
   orthodontist: "align",
@@ -94,7 +89,12 @@ export const BUILD_DESIGN: Record<string, string> = {
   chiropractor: "axis",
   osteopath: "pivot",
   optician: "lumen",
-  hearing_clinic: "lumen",
+  hearing_clinic: "clarity",
+  spa: "thermae",
+  day_spa: "thermae",
+  massage: "stillwater",
+  acupuncture: "lotus",
+  podiatry: "stride",
   // Fitness
   barre: "cadence",
   bootcamp: "box",
@@ -198,7 +198,7 @@ export const BUILD_DESIGN: Record<string, string> = {
 export const GROUP_DESIGNS: Record<string, string[]> = {
   "Food & drink": ["ember", "drift", "laurel", "lantern", "marble", "daybreak", "tide", "botanica", "lacquer", "cinder", "meadow", "forno", "crumb", "stack", "vialetto", "saffron", "agave", "lemongrass", "tavern", "larder", "gateau", "cellar", "sobremesa", "sundae", "reuben", "gilded", "pulp", "kona", "fern", "comptoir", "camellia", "curbside"],
   "Hair & beauty": ["indigo", "halo", "verve", "atelier", "fade", "lumiere", "aurelia", "seren", "lustre", "linea", "radiance", "lumina"],
-  "Health & wellness": ["aurelia", "seren", "lustre", "linea", "radiance", "lumina", "enamel", "align", "kinetic", "axis", "pivot", "lumen"],
+  "Health & wellness": ["aurelia", "seren", "lustre", "linea", "radiance", "lumina", "enamel", "align", "kinetic", "axis", "pivot", "lumen", "thermae", "stillwater", "lotus", "stride", "aurora", "clarity"],
   Fitness: ["forge", "box", "ironclad", "apex", "tempo", "flow", "haven", "cadence", "pulse"],
   "Contractors & home": ["forge", "mason", "marigold", "meridian", "drafthouse", "summit", "velocity", "atelier", "bloom", "juniper", "ledger", "apex"],
   Automotive: ["apex", "velocity", "forge", "meridian", "summit", "mason", "drafthouse"],
