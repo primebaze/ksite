@@ -51,7 +51,16 @@ export async function claimDomain(formData: FormData) {
 
   // expectedPrice is required by Vercel; the charge goes to your Vercel account.
   const purchase = await buyDomain(domain, price.price!);
-  if (!purchase.ok) back(`?error=${encodeURIComponent(registrarErrorMessage(purchase) ?? "Could not register that domain")}`);
+  // Log Vercel's exact answer so we can see why a buy didn't register (e.g.
+  // missing payment method / registrar not enabled) instead of guessing.
+  console.log("[domain buy]", domain, "status=", purchase.status, "body=", JSON.stringify(purchase.data));
+  // Treat HTTP-ok-but-error-body as failure too: Vercel can return 2xx with an
+  // error object, which previously slipped through and left the domain merely
+  // "attached" (asking for DNS) instead of actually registered.
+  const buyFailed = !purchase.ok || Boolean(purchase.data?.error) || Boolean(purchase.data?.message && !purchase.data?.orderId);
+  if (buyFailed) {
+    back(`?error=${encodeURIComponent(registrarErrorMessage(purchase) ?? "Could not register that domain. Check that the Vercel account has a payment method and the Domains registrar enabled.")}`);
+  }
 
   // Registration is an async order; mark registering and attach (best effort).
   await updateMyCustomDomain(domain, "registering");
