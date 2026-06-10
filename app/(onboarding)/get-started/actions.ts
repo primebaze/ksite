@@ -101,6 +101,10 @@ export async function startOnboarding(formData: FormData) {
   }
   // The bespoke full-page design they picked (e.g. "meadow"); seeds content.design.
   if (/^[a-z][a-z0-9_-]{1,30}$/.test(designKey)) metadata.design = designKey;
+  // The photo shown on the design card they picked; seeds the hero image so the
+  // created site looks exactly like the card.
+  const heroImg = String(formData.get("hero_img") ?? "").trim();
+  if (/^[\w-]{8,40}$/.test(heroImg)) metadata.hero_img = heroImg;
   if (businessType) metadata.business_type = businessType;
 
   const supabase = await createSupabaseServerClient();

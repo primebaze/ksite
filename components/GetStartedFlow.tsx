@@ -66,6 +66,7 @@ export function GetStartedFlow({
   builds,
   buildDesigns = {},
   groupDesigns = {},
+  groupPhotos = {},
   turnstileKey,
   error,
   action,
@@ -77,6 +78,8 @@ export function GetStartedFlow({
   buildDesigns?: Record<string, string>;
   /** All bespoke designs available per group, for the design step. */
   groupDesigns?: Record<string, string[]>;
+  /** On-theme photo ids per group so each design card shows a different photo. */
+  groupPhotos?: Record<string, string[]>;
   turnstileKey?: string;
   error?: string;
   action: (formData: FormData) => void | Promise<void>;
@@ -105,6 +108,8 @@ export function GetStartedFlow({
   const [selectedDesign, setSelectedDesign] = useState(pre ? pre.key : "beauty_salon");
   // The bespoke full-page design key (e.g. "meadow"); "" = generic style mode.
   const [designKey, setDesignKey] = useState(buildDesigns[pre ? pre.key : "beauty_salon"] ?? "");
+  // Photo id shown on the chosen design card (seeds the new site's hero).
+  const [photoId, setPhotoId] = useState("");
 
   const selected = byKey.get(preset);
   const visibleGroups = showMoreGroups ? groups : groups.filter((item) => FEATURED_GROUPS.includes(item.group));
@@ -153,21 +158,26 @@ export function GetStartedFlow({
     goToStep(2);
   }
 
-  function chooseDesignKey(design: string) {
+  function chooseDesignKey(design: string, img: string) {
     setSelectedDesign(preset);
     setDesignKey(design);
+    setPhotoId(img);
     goToStep(2);
   }
 
   // Bespoke designs available for the selected type's sector: recommended (the
-  // type's default) first, then three more so every card is a DIFFERENT design.
+  // type's default) first, then three more so every card is a DIFFERENT design,
+  // each shown with a DIFFERENT on-theme photo (never the same site repeated).
   const designOptions = useMemo(() => {
     if (!selected) return [];
     const all = groupDesigns[selected.group] ?? [];
     if (all.length === 0) return [];
+    const photos = groupPhotos[selected.group] ?? [];
     const recommended = buildDesigns[preset] ?? all[0];
-    return [recommended, ...all.filter((d) => d !== recommended)].slice(0, 4);
-  }, [selected, preset, groupDesigns, buildDesigns]);
+    return [recommended, ...all.filter((d) => d !== recommended)]
+      .slice(0, 4)
+      .map((design, i) => ({ design, img: photos[i % Math.max(photos.length, 1)] ?? "" }));
+  }, [selected, preset, groupDesigns, buildDesigns, groupPhotos]);
 
   return (
     <form ref={formRef} action={action} className="flex min-h-[calc(100vh-6rem)] flex-col overflow-hidden rounded-3xl border border-white/10 bg-white/[0.02] shadow-[0_40px_140px_-80px_rgba(16,185,129,0.9)]">
@@ -175,6 +185,7 @@ export function GetStartedFlow({
       <input type="hidden" name="selected_design" value={selectedDesign} />
       <input type="hidden" name="selected_style" value={selectedStyle} />
       <input type="hidden" name="design" value={designKey} />
+      <input type="hidden" name="hero_img" value={photoId} />
 
       <div className="border-b border-white/10 px-6 py-5 sm:px-8">
         <div className="flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.22em] text-white/35">
@@ -322,15 +333,15 @@ export function GetStartedFlow({
             <div className="mt-6 grid gap-4 lg:grid-cols-2">
               {designOptions.length > 0
                 ? // Bespoke designs exist for this sector: every card is a genuinely
-                  // different full-page design (never the same site repeated).
-                  designOptions.map((design, idx) => (
+                  // different full-page design with its own photo (never repeated).
+                  designOptions.map(({ design, img }, idx) => (
                     <button
                       key={design}
                       type="button"
-                      onClick={() => chooseDesignKey(design)}
+                      onClick={() => chooseDesignKey(design, img)}
                       className="group overflow-hidden rounded-2xl border border-white/10 bg-black text-left transition hover:-translate-y-1 hover:border-emerald-400/50"
                     >
-                      <TemplateThumb src={`/samples/${preset}?embed=1&design=${design}`} aspect={0.55} />
+                      <TemplateThumb src={`/samples/${preset}?embed=1&design=${design}${img ? `&img=${img}` : ""}`} aspect={0.55} />
                       <div className="border-t border-white/10 p-4">
                         <div className="flex items-center justify-between gap-3">
                           <div>
@@ -400,7 +411,11 @@ export function GetStartedFlow({
               <div className="mt-6 flex items-center gap-4 rounded-2xl border border-emerald-400/20 bg-emerald-400/[0.04] p-3 sm:p-4">
                 <div className="w-24 shrink-0 overflow-hidden rounded-lg border border-white/10 sm:w-32">
                   <TemplateThumb
-                    src={designKey ? `/samples/${preset}?embed=1&design=${designKey}` : `/samples/${preset}?embed=1&style=${selectedStyle}`}
+                    src={
+                      designKey
+                        ? `/samples/${preset}?embed=1&design=${designKey}${photoId ? `&img=${photoId}` : ""}`
+                        : `/samples/${preset}?embed=1&style=${selectedStyle}`
+                    }
                     aspect={0.62}
                   />
                 </div>

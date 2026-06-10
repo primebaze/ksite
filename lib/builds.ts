@@ -149,6 +149,10 @@ const HIDDEN_KEYS = new Set(["dental", "day_spa", "coffee_shop", "videographer"]
 // Builds shown in pickers/search (alias keys filtered out).
 export const VISIBLE_BUILDS = BUILDS.filter((b) => !HIDDEN_KEYS.has(b.key));
 
+// On-theme photo ids per group, for pickers that need to show the same build
+// under several designs without repeating the photo (get-started design step).
+export const GROUP_PHOTOS: Record<string, string[]> = HERO_POOL;
+
 export function buildGroups(): BuildGroup[] {
   const map = new Map<string, { key: string; label: string }[]>();
   for (const b of BUILDS) {

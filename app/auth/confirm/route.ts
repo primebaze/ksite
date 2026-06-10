@@ -80,6 +80,10 @@ async function ensureSite(supabase: SupabaseClient, user: User) {
       ? md.design
       : BUILD_DESIGN[designKey];
   if (bespokeDesign) starter.content.design = bespokeDesign;
+  // The photo from the design card they picked at signup.
+  if (typeof md.hero_img === "string" && /^[\w-]{8,40}$/.test(md.hero_img)) {
+    starter.content.hero_image_url = `https://images.unsplash.com/photo-${md.hero_img}?w=1600&q=70&auto=format&fit=crop`;
+  }
   starter.content.hero_image_url = starter.content.hero_image_url ?? heroFor(designKey);
   starter.content.phone = starter.content.phone ?? "01234 567890";
   starter.content.email = starter.content.email ?? "hello@example.com";
