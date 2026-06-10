@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import Link from "next/link";
 import { motion, useScroll, useTransform, useMotionTemplate, type MotionValue } from "motion/react";
+import { PreviewVideo } from "./PreviewVideo";
 
 // The reel zooms up to fill the screen, then softens into an ambient backdrop
 // while a short scroll-driven story plays over it: each line drifts up and
@@ -45,35 +46,30 @@ export function ScrollZoom({ children }: { children: ReactNode }) {
   // ~1.04; on a tall phone it must zoom much further to COVER the portrait
   // viewport (so the blurred backdrop fills the screen and the story text writes
   // over the video, never onto black). Compute the cover scale from the screen.
-  const [fillScale, setFillScale] = useState(1.04);
   // On mobile the centred reel sits below the fold, leaving a dark void under
-  // the hero. Lift the small reel up so it peeks into that space, then let it
-  // settle back to centre as it zooms to cover (so captions still overlay it).
+  // the hero. Lift the small reel up so it peeks into that space.
   const [liftPx, setLiftPx] = useState(0);
   useEffect(() => {
     const compute = () => {
-      const vw = window.innerWidth;
-      const vh = window.innerHeight;
-      if (vw >= 640) {
-        setFillScale(1.04);
-        setLiftPx(0);
-        return;
-      }
-      // reel video height at scale 1 ≈ vw * 9/16; scale so it covers vh (+8%).
-      const needed = (vh / ((vw * 9) / 16)) * 1.08;
-      setFillScale(Math.max(1.2, needed));
-      setLiftPx(-vh * 0.28);
+      const mobile = window.innerWidth < 640;
+      setLiftPx(mobile ? -window.innerHeight * 0.26 : 0);
     };
     compute();
     window.addEventListener("resize", compute);
     return () => window.removeEventListener("resize", compute);
   }, []);
 
-  // Zoom up to fill as the section pins, then stay filled for the story.
-  const scale = useTransform(scrollYProgress, [0.1, 0.22, 1], [0.82, fillScale, fillScale]);
+  // Gentle settle as the section pins (no big zoom). The reel just eases to its
+  // natural size; on mobile a full-screen video backdrop crossfades in for the
+  // story (below) so the text writes over the video without a jarring zoom.
+  const scale = useTransform(scrollYProgress, [0.1, 0.22, 1], [0.9, 1.04, 1.04]);
   const lift = useTransform(scrollYProgress, [0, 0.1, 0.22], [liftPx, liftPx, 0]);
   const radius = useTransform(scrollYProgress, [0.1, 0.22], [16, 0]);
   const pad = useTransform(scrollYProgress, [0.1, 0.22], [24, 0]);
+
+  // Mobile only: a full-bleed blurred video backdrop fades in as the story
+  // starts, so captions overlay the video (not black) — no zoom needed.
+  const bgOpacity = useTransform(scrollYProgress, [0.12, 0.26], [0, 1]);
 
   // Once it fills, blur the reel into a soft backdrop so the sample site's own
   // headline stops competing with the story text.
@@ -101,7 +97,13 @@ export function ScrollZoom({ children }: { children: ReactNode }) {
           </motion.div>
         </motion.div>
 
-        {/* Legibility scrim over the filled reel */}
+        {/* Mobile-only full-screen video backdrop — crossfades in for the story
+            so the text writes over the video without zooming the reel. */}
+        <motion.div style={{ opacity: bgOpacity }} className="pointer-events-none absolute inset-0 sm:hidden">
+          <PreviewVideo src="/hero/box.mp4" className="h-full w-full scale-105 object-cover blur-lg" />
+        </motion.div>
+
+        {/* Legibility scrim over the filled reel / backdrop */}
         <motion.div style={{ opacity: scrim }} className="pointer-events-none absolute inset-0 bg-black" />
 
         {/* Scroll-driven story */}
