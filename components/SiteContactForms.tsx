@@ -115,8 +115,8 @@ function LeadForm({
 
   return (
     <div className="border p-6 shadow-[0_1px_2px_rgba(0,0,0,0.04)] sm:p-7" style={{ background: t.card, borderColor: t.cardBorder, borderRadius: t.radius }}>
-      <h3 className="text-xl font-semibold" style={{ color: t.heading, fontFamily: t.font }}>{title}</h3>
-      <p className="mt-1 text-sm" style={{ color: t.blurb }}>{blurb}</p>
+      {title && <h3 className="text-xl font-semibold" style={{ color: t.heading, fontFamily: t.font }}>{title}</h3>}
+      {blurb && <p className={`text-sm ${title ? "mt-1" : ""}`} style={{ color: t.blurb }}>{blurb}</p>}
 
       {status === "sent" ? (
         <p className="mt-5 rounded-lg border border-emerald-300/50 bg-emerald-50 px-4 py-4 text-sm font-medium text-emerald-700">
@@ -180,13 +180,88 @@ export function SiteContactForms({
   if (!booking && !contact) return null;
   const t: Required<FormTheme> = { ...DEFAULT_THEME, ...theme };
 
+  // Both requested → one card with a Book / Message toggle, never two stacked
+  // forms (which reads as duplicate, cluttered UI).
+  if (booking && contact) {
+    return (
+      <DualForms
+        tenantId={tenantId}
+        t={t}
+        bookingTitle={bookingTitle}
+        bookingBlurb={bookingBlurb}
+        bookingCta={bookingCta}
+        contactTitle={contactTitle}
+        contactBlurb={contactBlurb}
+        contactCta={contactCta}
+      />
+    );
+  }
+
+  // Single form.
   return (
-    <div className="mx-auto grid max-w-xl gap-5">
-      {booking && (
+    <div className="mx-auto w-full max-w-xl">
+      {booking ? (
         <LeadForm tenantId={tenantId} kind="booking" title={bookingTitle} blurb={bookingBlurb} submitLabel={bookingCta} fields={BOOKING_FIELDS} t={t} />
-      )}
-      {contact && (
+      ) : (
         <LeadForm tenantId={tenantId} kind="contact" title={contactTitle} blurb={contactBlurb} submitLabel={contactCta} fields={CONTACT_FIELDS} t={t} />
+      )}
+    </div>
+  );
+}
+
+// Booking + contact in one place: a segmented toggle picks which single form is
+// shown, so a page never stacks two full forms on top of each other.
+function DualForms({
+  tenantId,
+  t,
+  bookingTitle,
+  bookingBlurb,
+  bookingCta,
+  contactTitle,
+  contactBlurb,
+  contactCta,
+}: {
+  tenantId: string;
+  t: Required<FormTheme>;
+  bookingTitle: string;
+  bookingBlurb: string;
+  bookingCta: string;
+  contactTitle: string;
+  contactBlurb: string;
+  contactCta: string;
+}) {
+  const [tab, setTab] = useState<"booking" | "contact">("booking");
+  const tabs: { key: "booking" | "contact"; label: string }[] = [
+    { key: "booking", label: bookingTitle },
+    { key: "contact", label: contactTitle },
+  ];
+  return (
+    <div className="mx-auto w-full max-w-xl">
+      <div className="mb-4 grid grid-cols-2 gap-1.5 border p-1.5" style={{ background: t.card, borderColor: t.cardBorder, borderRadius: t.radius }}>
+        {tabs.map((tb) => {
+          const on = tab === tb.key;
+          return (
+            <button
+              key={tb.key}
+              type="button"
+              onClick={() => setTab(tb.key)}
+              aria-pressed={on}
+              className="px-3 py-2.5 text-sm font-semibold transition"
+              style={{
+                background: on ? t.button : "transparent",
+                color: on ? t.buttonText : t.label,
+                borderRadius: t.radius === "0" ? "0" : "0.55rem",
+              }}
+            >
+              {tb.label}
+            </button>
+          );
+        })}
+      </div>
+      {tab === "booking" ? (
+        <LeadForm tenantId={tenantId} kind="booking" title="" blurb={bookingBlurb} submitLabel={bookingCta} fields={BOOKING_FIELDS} t={t} />
+      ) : (
+        <LeadForm tenantId={tenantId} kind="contact" title="" blurb={contactBlurb} submitLabel={contactCta} fields={CONTACT_FIELDS} t={t} />
       )}
     </div>
   );
