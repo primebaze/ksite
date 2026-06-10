@@ -23,6 +23,12 @@ import Larder from "./Larder";
 import Gateau from "./Gateau";
 import Cellar from "./Cellar";
 import Sobremesa from "./Sobremesa";
+import Sundae from "./Sundae";
+import Reuben from "./Reuben";
+import Gilded from "./Gilded";
+import Pulp from "./Pulp";
+import Kona from "./Kona";
+import Fern from "./Fern";
 
 // Bespoke full-page restaurant designs (our own names). Selected via
 // content.design; each keeps its layout and swaps in the client's own media.
@@ -51,6 +57,12 @@ export const RESTAURANT_DESIGNS: Record<string, ComponentType<PresetProps>> = {
   gateau: Gateau, // french patisserie
   cellar: Cellar, // wine bar
   sobremesa: Sobremesa, // spanish tapas
+  sundae: Sundae, // ice cream parlour
+  reuben: Reuben, // deli
+  gilded: Gilded, // cocktail bar
+  pulp: Pulp, // juice bar
+  kona: Kona, // poke
+  fern: Fern, // vegan
 };
 
 export function getRestaurantDesign(key?: string): ComponentType<PresetProps> | null {

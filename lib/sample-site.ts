@@ -23,10 +23,6 @@ export const BUILD_DESIGN: Record<string, string> = {
   bbq: "marble",
   // drift — light, photo-led, fresh (Japanese / Nordic)
   sushi: "drift",
-  poke: "drift",
-  juice_bar: "drift",
-  vegan: "drift",
-  deli: "drift",
   // laurel — elegant modern-European fine dining
   fine_dining: "laurel",
   restaurant: "cinder",
@@ -37,13 +33,11 @@ export const BUILD_DESIGN: Record<string, string> = {
   brunch_cafe: "daybreak",
   coffee_shop: "daybreak",
   tearoom: "daybreak",
-  ice_cream: "daybreak",
   food_truck: "daybreak",
   // 5 newer screenshot-faithful designs
   japanese: "tide",
   brasserie: "botanica",
   chinese: "lacquer",
-  cocktail_bar: "cinder",
   cafe: "meadow",
   // Type-specific designs so these common types own a distinct look
   pizzeria: "forno",
@@ -58,6 +52,12 @@ export const BUILD_DESIGN: Record<string, string> = {
   patisserie: "gateau",
   wine_bar: "cellar",
   tapas: "sobremesa",
+  ice_cream: "sundae",
+  deli: "reuben",
+  cocktail_bar: "gilded",
+  juice_bar: "pulp",
+  poke: "kona",
+  vegan: "fern",
   // Hair & beauty — EVERY key mapped, each to a DIFFERENT design (12 keys, 12
   // salon designs) so the gallery tab never repeats a layout.
   hair_salon: "indigo",
@@ -194,7 +194,7 @@ export const BUILD_DESIGN: Record<string, string> = {
 // design step): any design in the group works for any build key in that group
 // because they share the archetype's data model.
 export const GROUP_DESIGNS: Record<string, string[]> = {
-  "Food & drink": ["ember", "drift", "laurel", "lantern", "marble", "daybreak", "tide", "botanica", "lacquer", "cinder", "meadow", "forno", "crumb", "stack", "vialetto", "saffron", "agave", "lemongrass", "tavern", "larder", "gateau", "cellar", "sobremesa"],
+  "Food & drink": ["ember", "drift", "laurel", "lantern", "marble", "daybreak", "tide", "botanica", "lacquer", "cinder", "meadow", "forno", "crumb", "stack", "vialetto", "saffron", "agave", "lemongrass", "tavern", "larder", "gateau", "cellar", "sobremesa", "sundae", "reuben", "gilded", "pulp", "kona", "fern"],
   "Hair & beauty": ["indigo", "halo", "verve", "atelier", "fade", "lumiere", "aurelia", "seren", "lustre", "linea", "radiance", "lumina"],
   "Health & wellness": ["aurelia", "seren", "lustre", "linea", "radiance", "lumina", "indigo", "halo", "verve", "atelier", "fade", "lumiere"],
   Fitness: ["forge", "box", "ironclad", "apex", "tempo", "flow", "haven", "cadence", "pulse"],
