@@ -52,6 +52,13 @@ import Amplify from "./Amplify";
 import Uptime from "./Uptime";
 import Shortlist from "./Shortlist";
 import Pixel from "./Pixel";
+import Penny from "./Penny";
+import Assured from "./Assured";
+import Keystone from "./Keystone";
+// Retail & shops
+import Vellum from "./Vellum";
+import Cleaver from "./Cleaver";
+import Facet from "./Facet";
 
 // Bespoke full-page services designs (our own names) for the TradesSite preset.
 // Selected via content.design; each keeps its layout and swaps in the client's
@@ -107,6 +114,12 @@ export const TRADES_DESIGNS: Record<string, ComponentType<PresetProps>> = {
   uptime: Uptime, // IT support (tech navy + cyan + signal green)
   shortlist: Shortlist, // recruitment (indigo + coral + mint)
   pixel: Pixel, // web design studio (near-black + electric indigo + mint)
+  penny: Penny, // bookkeeper (mint + coral + butter)
+  assured: Assured, // insurance broker (trust-blue + steel + amber)
+  keystone: Keystone, // mortgage broker (slate-blue + terracotta + sage)
+  vellum: Vellum, // bookshop (parchment + ink + bottle-green + burgundy)
+  cleaver: Cleaver, // butcher (butcher-block cream + meat-red + brass)
+  facet: Facet, // jeweller (near-black + champagne gold + ivory)
 };
 
 export function getTradesDesign(key?: string): ComponentType<PresetProps> | null {
