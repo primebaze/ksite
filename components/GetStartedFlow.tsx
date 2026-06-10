@@ -156,6 +156,19 @@ export function GetStartedFlow({
     goToStep(2);
   }
 
+  // Switch to another sub-type within the same sector (e.g. Pets: dog groomer →
+  // vet) without leaving the design step, so its own samples are revealed.
+  function switchSubtype(key: string) {
+    const build = byKey.get(key);
+    setPreset(key);
+    setSelectedDesign(key);
+    setSelectedStyle(build?.style ?? "classic");
+    setDesignKey(buildDesigns[key] ?? "");
+    setPhotoId("");
+    setShowAllDesigns(false);
+    window.requestAnimationFrame(() => window.scrollTo({ top: 0, behavior: "smooth" }));
+  }
+
   // Bespoke designs available for the selected type's sector: recommended (the
   // type's default) first, then three more so every card is a DIFFERENT design,
   // each shown with a DIFFERENT on-theme photo (never the same site repeated).
@@ -168,6 +181,15 @@ export function GetStartedFlow({
     return [recommended, ...all.filter((d) => d !== recommended)]
       .map((design, i) => ({ design, img: photos[i % Math.max(photos.length, 1)] ?? "" }));
   }, [selected, preset, groupDesigns, buildDesigns, groupPhotos]);
+
+  // Other sub-types in the same sector (e.g. Pets → vet, dog walker, trainer),
+  // hidden behind buttons under the previews so each sub-category's own samples
+  // can be revealed without leaving the design step.
+  const subtypeOptions = useMemo(() => {
+    if (!selected) return [];
+    const inGroup = groups.find((g) => g.group === selected.group)?.builds ?? [];
+    return inGroup.filter((b) => b.key !== preset);
+  }, [selected, groups, preset]);
 
   return (
     <form ref={formRef} action={action} className="flex min-h-[calc(100vh-6rem)] flex-col overflow-hidden rounded-3xl border border-white/10 bg-white/[0.02] shadow-[0_40px_140px_-80px_rgba(16,185,129,0.9)]">
@@ -367,6 +389,31 @@ export function GetStartedFlow({
               >
                 View more designs ({designOptions.length - DESIGNS_SHOWN})
               </button>
+            )}
+
+            {/* Other sub-types in this sector — hidden behind buttons; tapping one
+                reveals that sub-category's own samples in place. */}
+            {subtypeOptions.length > 0 && (
+              <div className="mt-10 border-t border-white/10 pt-7">
+                <p className="text-sm font-medium text-white/75">
+                  Not a {selected.label.toLowerCase()}? Pick your exact type:
+                </p>
+                <p className="mt-1 text-xs text-white/40">
+                  We&apos;ll show samples built for that type — same easy editing afterwards.
+                </p>
+                <div className="mt-4 flex flex-wrap gap-2.5">
+                  {subtypeOptions.map((b) => (
+                    <button
+                      key={b.key}
+                      type="button"
+                      onClick={() => switchSubtype(b.key)}
+                      className="rounded-full border border-white/15 bg-white/[0.03] px-4 py-2 text-sm text-white/75 transition hover:-translate-y-0.5 hover:border-emerald-400/50 hover:text-white"
+                    >
+                      {b.label}
+                    </button>
+                  ))}
+                </div>
+              </div>
             )}
           </div>
         )}
