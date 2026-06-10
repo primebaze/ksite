@@ -45,6 +45,13 @@ import Concours from "./Concours";
 import Hydro from "./Hydro";
 import Roadworthy from "./Roadworthy";
 import Tread from "./Tread";
+// Professional services
+import Chambers from "./Chambers";
+import Compass from "./Compass";
+import Amplify from "./Amplify";
+import Uptime from "./Uptime";
+import Shortlist from "./Shortlist";
+import Pixel from "./Pixel";
 
 // Bespoke full-page services designs (our own names) for the TradesSite preset.
 // Selected via content.design; each keeps its layout and swaps in the client's
@@ -94,6 +101,12 @@ export const TRADES_DESIGNS: Record<string, ComponentType<PresetProps>> = {
   hydro: Hydro, // car wash (splash-blue + lemon)
   roadworthy: Roadworthy, // MOT centre (white + pass-green)
   tread: Tread, // tyre shop (tyre-black + hi-vis orange)
+  chambers: Chambers, // solicitor (legal navy + burgundy + parchment)
+  compass: Compass, // financial adviser (teal-green + gold)
+  amplify: Amplify, // marketing agency (ink-violet + magenta + lime)
+  uptime: Uptime, // IT support (tech navy + cyan + signal green)
+  shortlist: Shortlist, // recruitment (indigo + coral + mint)
+  pixel: Pixel, // web design studio (near-black + electric indigo + mint)
 };
 
 export function getTradesDesign(key?: string): ComponentType<PresetProps> | null {
