@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "motion/react";
+import { motion, useMotionValueEvent, useScroll, useTransform, type MotionValue } from "motion/react";
 import { FEATURES } from "@/lib/marketing";
 
 // Base44-style stack: numbered text on the left, and on the right a single app
@@ -205,64 +205,114 @@ const SHOWN = FEATURES.slice(0, 4);
 const EASE = [0.22, 0.61, 0.36, 1] as const;
 
 // Mobile: a pinned scroll-story. The section is tall; its inner card pins to the
-// screen and the active feature (number, title, body + live window) steps from
-// 01 → 04 as you scroll, the same fixed-scroll feel as the hero and the
-// "See what you get" section.
+// screen and the features cross-fade from 01 → 04 as you scroll. Everything is
+// driven directly off scroll progress (not a stepped index), so every bit of
+// scroll moves something — it tracks your finger instead of snapping.
 function MobileFeatureScroll() {
   const ref = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
-  const [active, setActive] = useState(0);
-  useMotionValueEvent(scrollYProgress, "change", (p) => {
-    const idx = Math.max(0, Math.min(SHOWN.length - 1, Math.floor(p * SHOWN.length - 1e-4)));
-    setActive(idx);
-  });
-
-  const f = SHOWN[active];
-  const Visual = WINDOWS[f.icon] ?? DesignWindow;
 
   return (
-    // ≈0.95 screen of scroll per feature: snappy, but not a hair-trigger.
+    // ≈0.95 screen of scroll per feature.
     <div ref={ref} className="mt-10 lg:hidden" style={{ height: `${SHOWN.length * 95}vh` }}>
       <div className="sticky top-0 flex h-[100svh] flex-col gap-7 py-20">
-        {/* progress: one pill per feature, the active one stretched */}
-        <div className="flex shrink-0 items-center gap-2">
-          {SHOWN.map((s, i) => (
-            <span
-              key={s.title}
-              className={`h-1 rounded-full transition-all duration-300 ${i === active ? "w-8 bg-emerald-400" : "w-3 bg-white/15"}`}
-            />
-          ))}
-        </div>
-
-        {/* Cards crossfade in place: the outgoing card slides out while the next
-            slides in over the same spot (absolute, so no layout gap). Default
-            AnimatePresence (not mode="wait") overlaps them, so a card is always
-            on screen — the animation is back without the blank gap. */}
+        <Pills progress={scrollYProgress} />
         <div className="relative flex-1">
-          <AnimatePresence initial={false}>
-            <motion.div
-              key={f.title}
-              initial={{ opacity: 0, y: 26 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -26 }}
-              transition={{ duration: 0.45, ease: EASE }}
-              className="absolute inset-0 flex flex-col justify-center gap-7"
-            >
-              <div>
-                <p className="text-sm font-medium tracking-[0.2em] text-white/30">
-                  {pad(active + 1)} <span className="text-white/15">/ {pad(SHOWN.length)}</span>
-                </p>
-                <h3 className="mt-3 text-3xl font-semibold tracking-tight">{f.title}</h3>
-                <p className="mt-3 max-w-md text-base leading-relaxed text-white/55">{f.body}</p>
-              </div>
-              <div className="h-[42vh] min-h-[300px]">
-                <Visual />
-              </div>
-            </motion.div>
-          </AnimatePresence>
+          {SHOWN.map((f, i) => (
+            <FeatureCard key={f.title} feature={f} index={i} progress={scrollYProgress} />
+          ))}
         </div>
       </div>
     </div>
+  );
+}
+
+// Progress pills — the active one (nearest card centre) stretches.
+function Pills({ progress }: { progress: MotionValue<number> }) {
+  const [active, setActive] = useState(0);
+  const last = SHOWN.length - 1;
+  useMotionValueEvent(progress, "change", (p) => {
+    setActive(Math.max(0, Math.min(last, Math.round(p * last))));
+  });
+  return (
+    <div className="flex shrink-0 items-center gap-2">
+      {SHOWN.map((s, i) => (
+        <span
+          key={s.title}
+          className={`h-1 rounded-full transition-all duration-300 ${i === active ? "w-8 bg-emerald-400" : "w-3 bg-white/15"}`}
+        />
+      ))}
+    </div>
+  );
+}
+
+// One feature card, stacked over the others and continuously faded/drifted by
+// scroll. Card i is centred at i/(N-1) of progress (so the first is full at the
+// top, the last at the bottom) and crossfades with its neighbours.
+function FeatureCard({
+  feature,
+  index,
+  progress,
+}: {
+  feature: (typeof SHOWN)[number];
+  index: number;
+  progress: MotionValue<number>;
+}) {
+  const last = Math.max(1, SHOWN.length - 1);
+  const w = 1 / last;
+  const c = index / last;
+  const isFirst = index === 0;
+  const isLast = index === last;
+
+  // Build keyframes spanning the FULL [0,1] with explicit endpoint stops, so the
+  // value is correct everywhere without relying on clamping/extrapolation (which
+  // let the first card reappear at the bottom). Stops stay in range and strictly
+  // increasing — required by Framer's WAAPI path.
+  const opIn: number[] = [];
+  const opOut: number[] = [];
+  const add = (i: number, o: number) => {
+    if (opIn.length === 0 || i > opIn[opIn.length - 1]) {
+      opIn.push(i);
+      opOut.push(o);
+    }
+  };
+  add(0, isFirst ? 1 : 0); // top endpoint
+  if (c - w > 0) add(c - w, 0); // fade-in start
+  add(c, 1); // peak
+  if (c + w < 1) add(c + w, 0); // fade-out end
+  add(1, isLast ? 1 : 0); // bottom endpoint
+  const opacity = useTransform(progress, opIn, opOut);
+
+  // Gentle scroll-linked drift, pinned at the endpoints so it never extrapolates.
+  const yIn: number[] = [];
+  const yOut: number[] = [];
+  const addY = (i: number, o: number) => {
+    if (yIn.length === 0 || i > yIn[yIn.length - 1]) {
+      yIn.push(i);
+      yOut.push(o);
+    }
+  };
+  addY(0, isFirst ? 0 : 64);
+  if (c - w > 0) addY(c - w, 64);
+  addY(c, 0);
+  if (c + w < 1) addY(c + w, -64);
+  addY(1, isLast ? 0 : -64);
+  const y = useTransform(progress, yIn, yOut);
+
+  const Visual = WINDOWS[feature.icon] ?? DesignWindow;
+  return (
+    <motion.div style={{ opacity, y }} className="absolute inset-0 flex flex-col justify-center gap-7">
+      <div>
+        <p className="text-sm font-medium tracking-[0.2em] text-white/30">
+          {pad(index + 1)} <span className="text-white/15">/ {pad(SHOWN.length)}</span>
+        </p>
+        <h3 className="mt-3 text-3xl font-semibold tracking-tight">{feature.title}</h3>
+        <p className="mt-3 max-w-md text-base leading-relaxed text-white/55">{feature.body}</p>
+      </div>
+      <div className="h-[42vh] min-h-[300px]">
+        <Visual />
+      </div>
+    </motion.div>
   );
 }
 
