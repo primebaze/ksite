@@ -44,7 +44,7 @@ export default function TermsPage() {
       <LSection heading="5. Fees, billing & cancellation">
         <LUL>
           <li>Subscriptions are billed in advance on a recurring basis at the plan price shown at sign-up.</li>
-          <li>Payments are processed by Stripe; you authorise us to charge your chosen payment method each period.</li>
+          <li>Payments are processed by our third-party payment processor; you authorise us to charge your chosen payment method each period.</li>
           <li>You can cancel at any time; cancellation takes effect at the end of the current billing period.</li>
           <li>Except where the law requires, fees already paid are non-refundable.</li>
           <li>We may change pricing on reasonable notice; changes apply from your next billing period.</li>

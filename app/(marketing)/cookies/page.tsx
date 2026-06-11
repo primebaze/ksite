@@ -21,7 +21,7 @@ export default function CookiesPage() {
       <LSection heading="The cookies we use">
         <LUL>
           <li><strong>Essential</strong> — sign-in/session cookies that keep you authenticated and secure your dashboard. The service will not work without these.</li>
-          <li><strong>Security</strong> — Cloudflare Turnstile uses a token to tell humans from bots at sign-up.</li>
+          <li><strong>Security</strong> — our bot-protection provider uses a token to tell humans from bots at sign-up.</li>
           <li><strong>Preferences</strong> — remember choices such as which sample category you were viewing.</li>
           <li><strong>Analytics</strong> — if enabled, aggregate, privacy-respecting usage data to help us improve the service.</li>
         </LUL>

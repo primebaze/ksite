@@ -35,7 +35,7 @@ export default function PrivacyPage() {
         <LUL>
           <li><strong>Account details</strong> — name, email, phone number and password (stored hashed) when you sign up.</li>
           <li><strong>Business content</strong> — the text, images, opening hours, menu/services and contact details you add to your site.</li>
-          <li><strong>Payment data</strong> — handled by our payment processor (Stripe). We do not store card numbers.</li>
+          <li><strong>Payment data</strong> — handled by our payment processor. We do not store card numbers.</li>
           <li><strong>Domain registrant data</strong> — where we register a domain on your behalf, the contact details required by the registry.</li>
           <li><strong>Form submissions</strong> — booking and contact enquiries sent through a customer&rsquo;s website.</li>
           <li><strong>Technical data</strong> — IP address, browser type, and cookies/usage data (see our <Link href="/cookies" className="text-emerald-400/90 underline-offset-4 hover:underline">Cookie Policy</Link>).</li>
@@ -59,13 +59,18 @@ export default function PrivacyPage() {
       <LSection heading="Service providers we share data with">
         <LP>We use trusted providers to run the service. Each only receives the data needed for their role:</LP>
         <LUL>
-          <li><strong>Supabase</strong> — database, authentication and file storage.</li>
-          <li><strong>Vercel</strong> — hosting, content delivery and domain registration/SSL.</li>
-          <li><strong>Stripe</strong> — payment processing.</li>
-          <li><strong>Resend</strong> — transactional and authentication emails.</li>
-          <li><strong>Cloudflare Turnstile</strong> — bot/abuse protection on sign-up.</li>
+          <li><strong>Hosting &amp; content delivery</strong> — to host and serve our platform and your website.</li>
+          <li><strong>Database, authentication &amp; file storage</strong> — to store your account, content and media securely.</li>
+          <li><strong>Payment processing</strong> — to take subscription payments (card details are handled by the processor; we do not store card numbers).</li>
+          <li><strong>Domain registration, DNS &amp; SSL</strong> — to register, secure and route custom domains.</li>
+          <li><strong>Email delivery</strong> — to send account, security and service emails.</li>
+          <li><strong>Bot &amp; abuse protection</strong> — to keep sign-up and forms secure.</li>
+          <li><strong>Analytics &amp; logging</strong> (where enabled) — to monitor performance and improve the service.</li>
         </LUL>
         <LP>
+          We choose reputable providers and require them to protect your data under appropriate agreements. A list of the
+          specific processors we use is available on request by emailing{" "}
+          <a href={`mailto:${LEGAL.email}`} className="text-emerald-400/90 underline-offset-4 hover:underline">{LEGAL.email}</a>.
           We may also disclose data where required by law, or to establish, exercise or defend legal claims.
         </LP>
       </LSection>
