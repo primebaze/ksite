@@ -30,6 +30,18 @@ export default async function DashboardHome({
 
   return (
     <div className="mx-auto max-w-7xl">
+      {(tenant.kyc_status === "requested" || tenant.kyc_status === "rejected") && (
+        <Link href="/dashboard/verify" className="mb-6 flex items-center justify-between gap-4 rounded-2xl border border-amber-400/30 bg-amber-400/10 px-5 py-4 text-amber-100 transition hover:bg-amber-400/15">
+          <span>
+            <span className="font-semibold">Verification needed</span>
+            <span className="mt-0.5 block text-sm text-amber-100/70">
+              {tenant.kyc_status === "rejected" ? "Your details need a small change — please resubmit." : "Confirm your business details to keep your account active."}
+            </span>
+          </span>
+          <span className="shrink-0 rounded-lg bg-amber-300 px-3 py-1.5 text-sm font-semibold text-black">Verify →</span>
+        </Link>
+      )}
+
       {welcome === "1" && live && (
         <div className="mb-6 rounded-2xl border border-emerald-400/30 bg-emerald-400/10 px-5 py-4 text-emerald-100">
           <p className="font-semibold">Your site is live.</p>

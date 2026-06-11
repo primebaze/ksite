@@ -317,6 +317,37 @@ export async function sendSupportClientReply({
   });
 }
 
+// Free-form message from an operator to a client (admin → user).
+export async function sendOperatorEmail({ to, subject, body }: { to: string; subject: string; body: string }) {
+  await sendTransactionalEmail({
+    to: [to],
+    subject,
+    html: renderNotice({
+      eyebrow: "Message from Kovasite",
+      title: escapeHtml(subject),
+      body: escapeHtml(body).replace(/\n/g, "<br/>"),
+      cta: "Open your dashboard",
+      link: (process.env.NEXT_PUBLIC_SITE_URL || "https://kovasite.com").replace(/\/$/, "") + "/dashboard",
+    }),
+  });
+}
+
+// Ask a client to complete identity / business verification.
+export async function sendKycRequestEmail({ to, businessName }: { to: string; businessName: string }) {
+  const base = (process.env.NEXT_PUBLIC_SITE_URL || "https://kovasite.com").replace(/\/$/, "");
+  await sendTransactionalEmail({
+    to: [to],
+    subject: "Action needed: verify your business",
+    html: renderNotice({
+      eyebrow: "Verification",
+      title: "Please verify your business",
+      body: `To keep ${escapeHtml(businessName)} active we need a few business details. It only takes a minute.`,
+      cta: "Complete verification",
+      link: `${base}/dashboard/verify`,
+    }),
+  });
+}
+
 async function sendTransactionalEmail({
   to,
   subject,

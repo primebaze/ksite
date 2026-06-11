@@ -3,11 +3,16 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import {
+  cancelSubscriptionForTenant,
   deleteCatalogItem,
   deleteGalleryImage,
   deleteTeamMember,
+  emailClient,
   getTenantFull,
+  requestKyc,
   requireStaff,
+  reviewKyc,
+  setAccountStatus,
   setPublished,
   updateContent,
   updateTenantFields,
@@ -16,6 +21,7 @@ import {
   upsertGalleryImage,
   upsertTeamMember,
 } from "@/lib/admin";
+import type { AccountStatus } from "@/lib/types";
 import { isVertical } from "@/lib/verticals";
 import type { SiteContent, Tenant } from "@/lib/types";
 
@@ -144,6 +150,58 @@ export async function saveSettings(formData: FormData) {
     });
   }
   refresh(id);
+}
+
+// --- account actions (staff) -----------------------------------------------
+export async function emailClientAction(formData: FormData) {
+  await requireStaff();
+  const id = String(formData.get("id"));
+  const subject = String(formData.get("subject") ?? "").trim();
+  const body = String(formData.get("body") ?? "").trim();
+  if (!subject || !body) redirect(`/admin/${id}?error=Add+a+subject+and+message`);
+  try {
+    await emailClient(id, subject, body);
+  } catch (e) {
+    redirect(`/admin/${id}?error=${encodeURIComponent(e instanceof Error ? e.message : "Email failed")}`);
+  }
+  redirect(`/admin/${id}?notice=Email+sent`);
+}
+
+export async function setAccountStatusAction(formData: FormData) {
+  await requireStaff();
+  const id = String(formData.get("id"));
+  const status = String(formData.get("status") ?? "") as AccountStatus;
+  if (status !== "active" && status !== "suspended") return;
+  await setAccountStatus(id, status);
+  refresh(id);
+}
+
+export async function requestKycAction(formData: FormData) {
+  await requireStaff();
+  const id = String(formData.get("id"));
+  await requestKyc(id);
+  redirect(`/admin/${id}?notice=KYC+requested`);
+}
+
+export async function reviewKycAction(formData: FormData) {
+  await requireStaff();
+  const id = String(formData.get("id"));
+  const submissionId = String(formData.get("submission_id") ?? "");
+  const approve = String(formData.get("decision")) === "approve";
+  const note = String(formData.get("review_note") ?? "").trim() || null;
+  if (submissionId) await reviewKyc(id, submissionId, approve, note);
+  refresh(id);
+}
+
+export async function cancelSubscriptionAction(formData: FormData) {
+  await requireStaff();
+  const id = String(formData.get("id"));
+  try {
+    await cancelSubscriptionForTenant(id);
+  } catch (e) {
+    redirect(`/admin/${id}?error=${encodeURIComponent(e instanceof Error ? e.message : "Cancel failed")}`);
+  }
+  redirect(`/admin/${id}?notice=Subscription+set+to+cancel+at+period+end`);
 }
 
 export async function togglePublish(formData: FormData) {

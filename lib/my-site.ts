@@ -3,9 +3,11 @@ import { createSupabaseServerClient } from "./supabase-server";
 import { revalidateSiteHost, revalidateTenant } from "./tenant";
 import { addProjectDomain, createApexDnsRecord, isDomainLive, isVercelConfigured } from "./vercel";
 import { sendAdminDomainLiveNotification, sendDomainLiveEmail } from "./email";
+import { getStripe } from "./stripe";
 import type {
   CatalogItem,
   GalleryImage,
+  KycSubmission,
   Preset,
   SiteContent,
   TeamMember,
@@ -289,4 +291,67 @@ export async function getMyFormSubmissions(): Promise<FormSubmission[]> {
 export async function setMyFormSubmissionStatus(id: string, status: "new" | "read" | "archived") {
   const supabase = await db();
   await supabase.from("form_submissions").update({ status }).eq("id", id);
+}
+
+// --- billing (self-serve) ---------------------------------------------------
+export interface MyBilling {
+  subscriptionId: string | null;
+  cancelAt: string | null;
+}
+
+export async function getMyBilling(): Promise<MyBilling> {
+  const supabase = await db();
+  const { data } = await supabase.from("tenant_billing").select("stripe_subscription_id,cancel_at").limit(1).maybeSingle();
+  const row = data as { stripe_subscription_id?: string | null; cancel_at?: string | null } | null;
+  return { subscriptionId: row?.stripe_subscription_id ?? null, cancelAt: row?.cancel_at ?? null };
+}
+
+// Cancel at period end — the site stays live until the paid-through date.
+export async function cancelMySubscription(): Promise<void> {
+  const { subscriptionId } = await getMyBilling();
+  const stripe = getStripe();
+  if (!stripe || !subscriptionId) throw new Error("No active subscription found.");
+  const sub = await stripe.subscriptions.update(subscriptionId, { cancel_at_period_end: true });
+  const supabase = await db();
+  // tenant_billing is staff/webhook-writable only (RLS denies client writes),
+  // so the webhook (customer.subscription.updated) is what persists cancel_at;
+  // we just trigger the Stripe change here. Touch nothing else.
+  void supabase;
+  void sub;
+}
+
+export async function resumeMySubscription(): Promise<void> {
+  const { subscriptionId } = await getMyBilling();
+  const stripe = getStripe();
+  if (!stripe || !subscriptionId) throw new Error("No subscription found.");
+  await stripe.subscriptions.update(subscriptionId, { cancel_at_period_end: false });
+}
+
+// --- KYC (self-serve) -------------------------------------------------------
+export async function getMyKyc(): Promise<KycSubmission | null> {
+  const supabase = await db();
+  const { data } = await supabase
+    .from("kyc_submissions")
+    .select("*")
+    .order("submitted_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+  return (data as KycSubmission) ?? null;
+}
+
+export async function submitMyKyc(fields: {
+  legal_name: string;
+  business_type?: string | null;
+  registration_no?: string | null;
+  address?: string | null;
+  contact_name?: string | null;
+  contact_phone?: string | null;
+  notes?: string | null;
+}): Promise<void> {
+  const supabase = await db();
+  const { data: tenant } = await supabase.from("tenants").select("id").limit(1).maybeSingle();
+  if (!tenant) throw new Error("No site found.");
+  const { error } = await supabase.from("kyc_submissions").insert({ tenant_id: tenant.id, ...fields });
+  if (error) throw new Error(error.message);
+  await supabase.from("tenants").update({ kyc_status: "submitted" }).eq("id", tenant.id);
 }

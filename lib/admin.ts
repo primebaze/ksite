@@ -5,10 +5,14 @@ import { getAdminUser } from "./supabase-server";
 import { isStaff } from "./staff";
 import { revalidateTenant, revalidateSiteHost } from "./tenant";
 import { starterContent } from "./starter";
-import { sendSupportClientReply } from "./email";
+import { getStripe } from "./stripe";
+import { sendKycRequestEmail, sendOperatorEmail, sendSupportClientReply } from "./email";
 import type {
+  AccountStatus,
   CatalogItem,
   GalleryImage,
+  KycStatus,
+  KycSubmission,
   Preset,
   SiteContent,
   SupportTicket,
@@ -220,6 +224,91 @@ export async function getOpenTicketCount(): Promise<number> {
     .select("*", { count: "exact", head: true })
     .eq("status", "open");
   return count ?? 0;
+}
+
+// --- account actions, billing & KYC (staff, service role) ------------------
+export interface TenantBilling {
+  stripe_customer_id: string | null;
+  stripe_subscription_id: string | null;
+  cancel_at: string | null;
+}
+
+export async function getTenantBilling(tenantId: string): Promise<TenantBilling | null> {
+  const { data } = await client()
+    .from("tenant_billing")
+    .select("stripe_customer_id,stripe_subscription_id,cancel_at")
+    .eq("tenant_id", tenantId)
+    .maybeSingle();
+  return (data as TenantBilling) ?? null;
+}
+
+async function ownerEmail(tenantId: string): Promise<string | null> {
+  const c = client();
+  const { data: t } = await c.from("tenants").select("owner_id").eq("id", tenantId).maybeSingle();
+  const ownerId = (t as { owner_id?: string } | null)?.owner_id;
+  if (!ownerId) return null;
+  const { data } = await c.auth.admin.getUserById(ownerId);
+  return data?.user?.email ?? null;
+}
+
+// Suspend = take the site offline + block the dashboard. Unsuspend leaves the
+// site as a draft (staff republish) so we never silently re-expose a site.
+export async function setAccountStatus(tenantId: string, status: AccountStatus) {
+  const update = status === "suspended" ? { account_status: status, published: false } : { account_status: status };
+  const { error } = await client().from("tenants").update(update).eq("id", tenantId);
+  if (error) throw new Error(error.message);
+  await revalidate(await tenantRef(tenantId));
+}
+
+export async function emailClient(tenantId: string, subject: string, body: string) {
+  const to = await ownerEmail(tenantId);
+  if (!to) throw new Error("No client email on file.");
+  await sendOperatorEmail({ to, subject, body });
+}
+
+export async function requestKyc(tenantId: string) {
+  const c = client();
+  const { error } = await c.from("tenants").update({ kyc_status: "requested" }).eq("id", tenantId);
+  if (error) throw new Error(error.message);
+  const { data: t } = await c.from("tenants").select("business_name").eq("id", tenantId).maybeSingle();
+  const to = await ownerEmail(tenantId);
+  if (to) {
+    sendKycRequestEmail({ to, businessName: (t as { business_name?: string } | null)?.business_name ?? "your business" }).catch(() => {});
+  }
+}
+
+export async function getLatestKyc(tenantId: string): Promise<KycSubmission | null> {
+  const { data } = await client()
+    .from("kyc_submissions")
+    .select("*")
+    .eq("tenant_id", tenantId)
+    .order("submitted_at", { ascending: false })
+    .limit(1)
+    .maybeSingle();
+  return (data as KycSubmission) ?? null;
+}
+
+export async function reviewKyc(tenantId: string, submissionId: string, approve: boolean, note: string | null) {
+  const c = client();
+  const status: KycStatus = approve ? "approved" : "rejected";
+  await c
+    .from("kyc_submissions")
+    .update({ status, review_note: note, reviewed_at: new Date().toISOString() })
+    .eq("id", submissionId);
+  const { error } = await c.from("tenants").update({ kyc_status: status }).eq("id", tenantId);
+  if (error) throw new Error(error.message);
+}
+
+// Cancel at period end (keeps the site live until the paid-through date).
+export async function cancelSubscriptionForTenant(tenantId: string): Promise<void> {
+  const billing = await getTenantBilling(tenantId);
+  const stripe = getStripe();
+  if (!stripe || !billing?.stripe_subscription_id) throw new Error("No active subscription found.");
+  const sub = await stripe.subscriptions.update(billing.stripe_subscription_id, { cancel_at_period_end: true });
+  await client()
+    .from("tenant_billing")
+    .update({ cancel_at: sub.cancel_at ? new Date(sub.cancel_at * 1000).toISOString() : null })
+    .eq("tenant_id", tenantId);
 }
 
 export async function createTenant(input: {

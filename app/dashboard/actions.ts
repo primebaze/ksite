@@ -4,11 +4,14 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createSupabaseServerClient } from "@/lib/supabase-server";
 import {
+  cancelMySubscription,
   deleteMyCatalogItem,
   deleteMyGalleryImage,
   deleteMyTeamMember,
   getMyTenant,
   getMyTenantFull,
+  resumeMySubscription,
+  submitMyKyc,
   updateMyContent,
   updateMyTenant,
   updateMyTheme,
@@ -18,6 +21,38 @@ import {
 } from "@/lib/my-site";
 import { getStripe, priceForBilling, type BillingPeriod, type Plan } from "@/lib/stripe";
 import type { SiteContent } from "@/lib/types";
+
+const trimOrNull = (f: FormData, k: string) => {
+  const v = String(f.get(k) ?? "").trim();
+  return v === "" ? null : v;
+};
+
+export async function cancelSubscriptionAction() {
+  await cancelMySubscription();
+  revalidatePath("/dashboard/billing");
+  redirect("/dashboard/billing?canceled=1");
+}
+
+export async function resumeSubscriptionAction() {
+  await resumeMySubscription();
+  revalidatePath("/dashboard/billing");
+  redirect("/dashboard/billing?resumed=1");
+}
+
+export async function submitKycAction(formData: FormData) {
+  const legal_name = String(formData.get("legal_name") ?? "").trim();
+  if (!legal_name) redirect("/dashboard/verify?error=Add+your+registered+business+name");
+  await submitMyKyc({
+    legal_name,
+    business_type: trimOrNull(formData, "business_type"),
+    registration_no: trimOrNull(formData, "registration_no"),
+    address: trimOrNull(formData, "address"),
+    contact_name: trimOrNull(formData, "contact_name"),
+    contact_phone: trimOrNull(formData, "contact_phone"),
+    notes: trimOrNull(formData, "notes"),
+  });
+  redirect("/dashboard/verify?done=1");
+}
 
 const str = (f: FormData, k: string) => {
   const v = String(f.get(k) ?? "").trim();

@@ -1,14 +1,18 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getTenantFull } from "@/lib/admin";
+import { getTenantFull, getTenantBilling, getLatestKyc } from "@/lib/admin";
 import { SITE_BASE } from "@/lib/marketing";
 import { VERTICALS, verticalFor } from "@/lib/verticals";
 import { SiteEditor, type EditorActions } from "@/components/SiteEditor";
 import {
+  cancelSubscriptionAction,
   catalogDelete,
   catalogSave,
+  emailClientAction,
   galleryDelete,
   gallerySave,
+  requestKycAction,
+  reviewKycAction,
   saveBasics,
   saveContent,
   saveContentRaw,
@@ -16,6 +20,7 @@ import {
   saveOrderingLinks,
   saveSettings,
   saveSocials,
+  setAccountStatusAction,
   teamDelete,
   teamSave,
   togglePublish,
@@ -80,13 +85,16 @@ export default async function EditTenant({
   searchParams,
 }: {
   params: Promise<{ id: string }>;
-  searchParams: Promise<{ error?: string }>;
+  searchParams: Promise<{ error?: string; notice?: string }>;
 }) {
   const { id } = await params;
-  const { error } = await searchParams;
+  const { error, notice } = await searchParams;
   const site = await getTenantFull(id);
   if (!site) notFound();
   const { tenant, content } = site;
+  const [billing, kyc] = await Promise.all([getTenantBilling(id), getLatestKyc(id)]);
+  const subscribed = tenant.plan_status === "active" || tenant.plan_status === "trialing" || tenant.published;
+  const fmtDay = (iso: string) => new Date(iso).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
 
   const proto = SITE_BASE.includes("localhost") ? "http" : "https";
   const liveHost = tenant.custom_domain ?? `${tenant.subdomain}.${SITE_BASE}`;
@@ -125,9 +133,99 @@ export default async function EditTenant({
         <Badge tone={DOMAIN_TONE[tenant.domain_status] ?? "neutral"}>
           domain: {tenant.domain_status}
         </Badge>
+        {tenant.account_status === "suspended" && <Badge tone="red">suspended</Badge>}
+        {tenant.kyc_status && tenant.kyc_status !== "none" && (
+          <Badge tone={tenant.kyc_status === "approved" ? "green" : tenant.kyc_status === "rejected" ? "red" : "amber"}>KYC: {tenant.kyc_status}</Badge>
+        )}
       </div>
 
       {error && <p className="rounded-lg bg-red-500/10 px-3 py-2 text-sm text-red-300">{error}</p>}
+      {notice && <p className="rounded-lg bg-emerald-400/10 px-3 py-2 text-sm text-emerald-300">{notice}</p>}
+
+      {/* Account & billing (staff) */}
+      <section className={card}>
+        <h2 className="text-lg font-semibold">Account &amp; billing <span className="ml-1 align-middle text-xs font-normal text-white/35">staff only</span></h2>
+        <div className="mt-5 grid gap-5 sm:grid-cols-2">
+          {/* Account status */}
+          <div className="rounded-xl border border-white/[0.08] p-4">
+            <p className="text-sm font-medium text-white/80">Account status</p>
+            <p className="mt-0.5 text-xs text-white/45">
+              {tenant.account_status === "suspended" ? "Site offline + dashboard blocked." : "Active and editable."}
+            </p>
+            <form action={setAccountStatusAction} className="mt-3">
+              <input type="hidden" name="id" value={id} />
+              <input type="hidden" name="status" value={tenant.account_status === "suspended" ? "active" : "suspended"} />
+              <button className={tenant.account_status === "suspended" ? btn : "rounded-lg border border-red-400/30 px-4 py-2 text-sm font-medium text-red-300 transition hover:bg-red-400/10"}>
+                {tenant.account_status === "suspended" ? "Reactivate account" : "Suspend account"}
+              </button>
+            </form>
+          </div>
+
+          {/* Subscription */}
+          <div className="rounded-xl border border-white/[0.08] p-4">
+            <p className="text-sm font-medium text-white/80">Subscription</p>
+            <p className="mt-0.5 text-xs text-white/45">
+              {!subscribed
+                ? "No active subscription."
+                : billing?.cancel_at
+                  ? `Cancels on ${fmtDay(billing.cancel_at)} (period end).`
+                  : "Active · renews automatically."}
+            </p>
+            {subscribed && !billing?.cancel_at && (
+              <form action={cancelSubscriptionAction} className="mt-3">
+                <input type="hidden" name="id" value={id} />
+                <button className="rounded-lg border border-red-400/30 px-4 py-2 text-sm font-medium text-red-300 transition hover:bg-red-400/10">Cancel at period end</button>
+              </form>
+            )}
+          </div>
+
+          {/* KYC */}
+          <div className="rounded-xl border border-white/[0.08] p-4 sm:col-span-2">
+            <div className="flex flex-wrap items-center justify-between gap-2">
+              <p className="text-sm font-medium text-white/80">Verification (KYC)</p>
+              <Badge tone={tenant.kyc_status === "approved" ? "green" : tenant.kyc_status === "rejected" ? "red" : tenant.kyc_status === "none" ? "neutral" : "amber"}>{tenant.kyc_status}</Badge>
+            </div>
+            {kyc && (
+              <dl className="mt-3 grid gap-x-6 gap-y-1 text-sm sm:grid-cols-2">
+                <div className="flex gap-2"><dt className="text-white/40">Legal name</dt><dd className="text-white/80">{kyc.legal_name}</dd></div>
+                {kyc.business_type && <div className="flex gap-2"><dt className="text-white/40">Type</dt><dd className="text-white/80">{kyc.business_type}</dd></div>}
+                {kyc.registration_no && <div className="flex gap-2"><dt className="text-white/40">Reg no.</dt><dd className="text-white/80">{kyc.registration_no}</dd></div>}
+                {kyc.address && <div className="flex gap-2"><dt className="text-white/40">Address</dt><dd className="text-white/80">{kyc.address}</dd></div>}
+                {kyc.contact_name && <div className="flex gap-2"><dt className="text-white/40">Contact</dt><dd className="text-white/80">{kyc.contact_name} {kyc.contact_phone}</dd></div>}
+                {kyc.notes && <div className="flex gap-2 sm:col-span-2"><dt className="text-white/40">Notes</dt><dd className="text-white/80">{kyc.notes}</dd></div>}
+              </dl>
+            )}
+            <div className="mt-3 flex flex-wrap items-end gap-2">
+              <form action={requestKycAction}>
+                <input type="hidden" name="id" value={id} />
+                <button className="rounded-lg border border-white/15 px-4 py-2 text-sm font-medium text-white/80 transition hover:bg-white/5">
+                  {tenant.kyc_status === "none" ? "Request KYC" : "Re-request KYC"}
+                </button>
+              </form>
+              {kyc && kyc.status === "submitted" && (
+                <form action={reviewKycAction} className="flex flex-1 flex-wrap items-end gap-2">
+                  <input type="hidden" name="id" value={id} />
+                  <input type="hidden" name="submission_id" value={kyc.id} />
+                  <input name="review_note" placeholder="Note (optional, shown if rejected)" className={`${input} mt-0 flex-1`} />
+                  <button name="decision" value="approve" className={btn}>Approve</button>
+                  <button name="decision" value="reject" className="rounded-lg border border-red-400/30 px-4 py-2 text-sm font-medium text-red-300 transition hover:bg-red-400/10">Reject</button>
+                </form>
+              )}
+            </div>
+          </div>
+
+          {/* Email the client */}
+          <div className="rounded-xl border border-white/[0.08] p-4 sm:col-span-2">
+            <p className="text-sm font-medium text-white/80">Email the client</p>
+            <form action={emailClientAction} className="mt-3 space-y-3">
+              <input type="hidden" name="id" value={id} />
+              <input name="subject" placeholder="Subject" className={`${input} mt-0`} />
+              <textarea name="body" rows={3} placeholder="Write a message…" className={`${input} mt-0`} />
+              <div className="flex justify-end"><button className={btn}>Send email</button></div>
+            </form>
+          </div>
+        </div>
+      </section>
 
       {/* Staff-only settings */}
       <section className={card}>

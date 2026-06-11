@@ -66,6 +66,13 @@ export async function POST(req: Request) {
             stripeCustomerId: typeof sub.customer === "string" ? sub.customer : sub.customer.id,
             stripeSubscriptionId: sub.id,
           });
+          // Reflect a pending end-of-period cancellation (or its reversal) so
+          // the dashboard can show "cancels on <date>".
+          await svc
+            .from("tenant_billing")
+            .update({ cancel_at: sub.cancel_at_period_end && sub.cancel_at ? new Date(sub.cancel_at * 1000).toISOString() : null })
+            .eq("tenant_id", tenantId);
+          await bust(tenantId);
         } else {
           await svc.from("tenants").update({ plan_status: "past_due" }).eq("id", tenantId);
           await bust(tenantId);

@@ -104,11 +104,33 @@ export interface Tenant {
   published: boolean;
   plan: "basic" | "standard" | "premium" | null;
   plan_status: PlanStatus;
+  // Optional: absent until the 0006 migration; reads default to active/none.
+  account_status?: AccountStatus;
+  kyc_status?: KycStatus;
   meta_title: string | null;
   meta_description: string | null;
   og_image_url: string | null;
   favicon_url: string | null;
   analytics_id: string | null;
+}
+
+export type AccountStatus = "active" | "suspended";
+export type KycStatus = "none" | "requested" | "submitted" | "approved" | "rejected";
+
+export interface KycSubmission {
+  id: string;
+  tenant_id: string;
+  legal_name: string;
+  business_type: string | null;
+  registration_no: string | null;
+  address: string | null;
+  contact_name: string | null;
+  contact_phone: string | null;
+  notes: string | null;
+  status: "submitted" | "approved" | "rejected";
+  review_note: string | null;
+  submitted_at: string;
+  reviewed_at: string | null;
 }
 
 /** Everything a template needs to render a full site. */

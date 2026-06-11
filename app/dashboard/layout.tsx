@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { getMyUser } from "@/lib/my-site";
+import { getMyTenant, getMyUser } from "@/lib/my-site";
 import { isStaff } from "@/lib/staff";
 import { clientLogout } from "./actions";
 
@@ -9,6 +9,9 @@ export default async function DashboardLayout({ children }: { children: React.Re
   if (!user) redirect("/login");
   // Staff use the operator console, not the client dashboard.
   if (isStaff(user.email)) redirect("/admin");
+  // Suspended accounts are blocked from the dashboard (site is also offline).
+  const me = await getMyTenant();
+  if (me?.account_status === "suspended") redirect("/suspended");
 
   const initial = user.email?.[0]?.toUpperCase() ?? "K";
   // Two editing surfaces: "Edit site" (on-page — also where onboarding lands)
@@ -20,6 +23,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
     { href: "/dashboard/edit", label: "Content & menu" },
     { href: "/dashboard/inbox", label: "Enquiries" },
     { href: "/dashboard/domains", label: "Domains" },
+    { href: "/dashboard/billing", label: "Billing" },
     { href: "/dashboard/support", label: "Support" },
   ];
 
