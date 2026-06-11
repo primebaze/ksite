@@ -15,8 +15,8 @@ export default function Home() {
         <div className="mx-auto max-w-3xl px-6 pt-24 pb-10 text-center sm:pt-28 sm:pb-20">
           <Reveal>
             <h1 className="font-semibold leading-[1.05] tracking-tight">
-              <span className="block text-5xl sm:text-7xl">Website For</span>
-              <span className="mt-1 block text-[1.7rem] leading-tight sm:mt-0 sm:text-7xl">
+              <span className="block text-5xl sm:text-7xl">Website</span>
+              <span className="mt-1 block text-[1.6rem] leading-tight sm:mt-0 sm:text-7xl">
                 <BusinessesRotator words={ROTATING_WORDS} />
               </span>
             </h1>

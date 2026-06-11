@@ -3,60 +3,42 @@
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 
-const EASE = [0.21, 0.47, 0.32, 0.98] as const;
+const EASE = [0.22, 0.61, 0.36, 1] as const;
 
-// Hero headline rotator: opens as a centred "Businesses", which then eases to
-// the left as a ": <type>" reveals beside it and cycles — "Businesses: Cafe",
-// "Businesses: Salon", … The type rides an industry-standard clipped slide.
+// Hero headline: a still "For Businesses:" with the type quickly scrolling
+// through in a fixed-width clipped slot — "For Businesses: Cafés",
+// "…: Salons", … The slot is sized to the widest word so nothing shifts.
 export function BusinessesRotator({ words }: { words: string[] }) {
-  const [revealed, setRevealed] = useState(false);
   const [i, setI] = useState(0);
+  const longest = words.reduce((a, b) => (b.length >= a.length ? b : a), "");
 
   useEffect(() => {
-    const t = setTimeout(() => setRevealed(true), 1000);
-    return () => clearTimeout(t);
-  }, []);
-
-  useEffect(() => {
-    if (!revealed) return;
-    const t = setInterval(() => setI((p) => (p + 1) % words.length), 2400);
+    const t = setInterval(() => setI((p) => (p + 1) % words.length), 1200);
     return () => clearInterval(t);
-  }, [revealed, words.length]);
+  }, [words.length]);
 
   return (
-    <motion.span
-      layout
-      transition={{ duration: 0.6, ease: EASE }}
-      className="inline-flex items-baseline justify-center whitespace-nowrap"
-    >
-      <span className="text-white/90">Businesses</span>
-      <AnimatePresence>
-        {revealed && (
+    <span className="inline-flex items-baseline justify-center whitespace-nowrap">
+      <span className="text-white/90">For Businesses:</span>
+      <span className="relative ml-[0.32em] inline-grid overflow-hidden pb-[0.12em] text-emerald-400">
+        {/* invisible sizer holds the slot at the widest word's width so the line
+            never reflows and nothing else moves as words scroll through. */}
+        <span className="invisible col-start-1 row-start-1 whitespace-nowrap" aria-hidden>
+          {longest}
+        </span>
+        <AnimatePresence initial={false}>
           <motion.span
-            layout
-            initial={{ opacity: 0, x: 14 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.55, ease: EASE }}
-            className="inline-flex items-baseline"
+            key={words[i]}
+            className="col-start-1 row-start-1 inline-block whitespace-nowrap"
+            initial={{ y: "1em", opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: "-1em", opacity: 0 }}
+            transition={{ duration: 0.32, ease: EASE }}
           >
-            <span className="text-white/90">:</span>
-            <span className="relative ml-[0.32em] inline-flex overflow-hidden whitespace-nowrap pb-[0.14em] text-emerald-400">
-              <AnimatePresence mode="wait" initial={false}>
-                <motion.span
-                  key={words[i]}
-                  className="inline-block"
-                  initial={{ y: "110%", opacity: 0 }}
-                  animate={{ y: 0, opacity: 1 }}
-                  exit={{ y: "-110%", opacity: 0 }}
-                  transition={{ duration: 0.42, ease: EASE }}
-                >
-                  {words[i]}
-                </motion.span>
-              </AnimatePresence>
-            </span>
+            {words[i]}
           </motion.span>
-        )}
-      </AnimatePresence>
-    </motion.span>
+        </AnimatePresence>
+      </span>
+    </span>
   );
 }
