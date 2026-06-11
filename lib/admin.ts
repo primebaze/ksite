@@ -6,7 +6,16 @@ import { isStaff } from "./staff";
 import { revalidateTenant, revalidateSiteHost } from "./tenant";
 import { starterContent } from "./starter";
 import { getStripe } from "./stripe";
-import { sendKycRequestEmail, sendOperatorEmail, sendSupportClientReply } from "./email";
+import {
+  sendAccountReactivatedEmail,
+  sendAccountSuspendedEmail,
+  sendAdminLifecycleAlert,
+  sendCancellationScheduledEmail,
+  sendKycDecisionEmail,
+  sendKycRequestEmail,
+  sendOperatorEmail,
+  sendSupportClientReply,
+} from "./email";
 import type {
   AccountStatus,
   CatalogItem,
@@ -243,12 +252,20 @@ export async function getTenantBilling(tenantId: string): Promise<TenantBilling 
 }
 
 async function ownerEmail(tenantId: string): Promise<string | null> {
+  return (await tenantContact(tenantId)).email;
+}
+
+// Business name + the owner's account email, for lifecycle notifications.
+async function tenantContact(tenantId: string): Promise<{ name: string; email: string | null }> {
   const c = client();
-  const { data: t } = await c.from("tenants").select("owner_id").eq("id", tenantId).maybeSingle();
-  const ownerId = (t as { owner_id?: string } | null)?.owner_id;
-  if (!ownerId) return null;
-  const { data } = await c.auth.admin.getUserById(ownerId);
-  return data?.user?.email ?? null;
+  const { data: t } = await c.from("tenants").select("business_name,owner_id").eq("id", tenantId).maybeSingle();
+  const row = t as { business_name?: string; owner_id?: string } | null;
+  let email: string | null = null;
+  if (row?.owner_id) {
+    const { data } = await c.auth.admin.getUserById(row.owner_id);
+    email = data?.user?.email ?? null;
+  }
+  return { name: row?.business_name ?? "your business", email };
 }
 
 // Suspend = take the site offline + block the dashboard. Unsuspend leaves the
@@ -258,6 +275,15 @@ export async function setAccountStatus(tenantId: string, status: AccountStatus) 
   const { error } = await client().from("tenants").update(update).eq("id", tenantId);
   if (error) throw new Error(error.message);
   await revalidate(await tenantRef(tenantId));
+
+  const { name, email } = await tenantContact(tenantId);
+  if (status === "suspended") {
+    if (email) sendAccountSuspendedEmail({ to: email, businessName: name }).catch(() => {});
+    sendAdminLifecycleAlert({ subject: "Account suspended", businessName: name, detail: "Site unpublished and dashboard access blocked.", tenantId }).catch(() => {});
+  } else {
+    if (email) sendAccountReactivatedEmail({ to: email, businessName: name }).catch(() => {});
+    sendAdminLifecycleAlert({ subject: "Account reactivated", businessName: name, detail: "Dashboard access restored; site stays a draft until republished.", tenantId }).catch(() => {});
+  }
 }
 
 export async function emailClient(tenantId: string, subject: string, body: string) {
@@ -297,6 +323,9 @@ export async function reviewKyc(tenantId: string, submissionId: string, approve:
     .eq("id", submissionId);
   const { error } = await c.from("tenants").update({ kyc_status: status }).eq("id", tenantId);
   if (error) throw new Error(error.message);
+
+  const { name, email } = await tenantContact(tenantId);
+  if (email) sendKycDecisionEmail({ to: email, businessName: name, approved: approve, note }).catch(() => {});
 }
 
 // Cancel at period end (keeps the site live until the paid-through date).
@@ -305,10 +334,13 @@ export async function cancelSubscriptionForTenant(tenantId: string): Promise<voi
   const stripe = getStripe();
   if (!stripe || !billing?.stripe_subscription_id) throw new Error("No active subscription found.");
   const sub = await stripe.subscriptions.update(billing.stripe_subscription_id, { cancel_at_period_end: true });
-  await client()
-    .from("tenant_billing")
-    .update({ cancel_at: sub.cancel_at ? new Date(sub.cancel_at * 1000).toISOString() : null })
-    .eq("tenant_id", tenantId);
+  const endIso = sub.cancel_at ? new Date(sub.cancel_at * 1000).toISOString() : null;
+  await client().from("tenant_billing").update({ cancel_at: endIso }).eq("tenant_id", tenantId);
+
+  const endDate = endIso ? new Date(endIso).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" }) : null;
+  const { name, email } = await tenantContact(tenantId);
+  if (email) sendCancellationScheduledEmail({ to: email, businessName: name, endDate }).catch(() => {});
+  sendAdminLifecycleAlert({ subject: "Cancellation scheduled", businessName: name, detail: endDate ? `Ends ${endDate}.` : "Ends at period end.", tenantId }).catch(() => {});
 }
 
 export async function createTenant(input: {

@@ -2,7 +2,7 @@ import "server-only";
 import { createSupabaseServerClient } from "./supabase-server";
 import { revalidateSiteHost, revalidateTenant } from "./tenant";
 import { addProjectDomain, createApexDnsRecord, isDomainLive, isVercelConfigured } from "./vercel";
-import { sendAdminDomainLiveNotification, sendDomainLiveEmail } from "./email";
+import { sendAdminDomainLiveNotification, sendAdminLifecycleAlert, sendCancellationScheduledEmail, sendDomainLiveEmail } from "./email";
 import { getStripe } from "./stripe";
 import type {
   CatalogItem,
@@ -312,12 +312,15 @@ export async function cancelMySubscription(): Promise<void> {
   const stripe = getStripe();
   if (!stripe || !subscriptionId) throw new Error("No active subscription found.");
   const sub = await stripe.subscriptions.update(subscriptionId, { cancel_at_period_end: true });
+  // tenant_billing.cancel_at is persisted by the webhook (subscription.updated);
+  // here we just trigger Stripe and send the confirmation emails.
+  const endDate = sub.cancel_at ? new Date(sub.cancel_at * 1000).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" }) : null;
   const supabase = await db();
-  // tenant_billing is staff/webhook-writable only (RLS denies client writes),
-  // so the webhook (customer.subscription.updated) is what persists cancel_at;
-  // we just trigger the Stripe change here. Touch nothing else.
-  void supabase;
-  void sub;
+  const { data: { user } } = await supabase.auth.getUser();
+  const tenant = await getMyTenant();
+  const name = tenant?.business_name ?? "your business";
+  if (user?.email) sendCancellationScheduledEmail({ to: user.email, businessName: name, endDate }).catch(() => {});
+  sendAdminLifecycleAlert({ subject: "Client cancelled (self-serve)", businessName: name, detail: endDate ? `Ends ${endDate}.` : "Ends at period end.", tenantId: tenant?.id }).catch(() => {});
 }
 
 export async function resumeMySubscription(): Promise<void> {

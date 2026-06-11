@@ -3,6 +3,7 @@ import { getStripe } from "@/lib/stripe";
 import { getServiceClient } from "@/lib/supabase";
 import { revalidateSiteHost, revalidateTenant } from "@/lib/tenant";
 import { activateTenantFromCheckoutSession, activateTenantSubscription } from "@/lib/billing";
+import { sendAdminLifecycleAlert, sendPastDueEmail, sendRefundEmail, sendSubscriptionEndedEmail } from "@/lib/email";
 
 // Stripe webhook. Runs on the Node runtime (needs the raw body + crypto).
 export const runtime = "nodejs";
@@ -36,6 +37,23 @@ export async function POST(req: Request) {
     if (data?.custom_domain) await revalidateSiteHost("custom", data.custom_domain);
   }
 
+  // Business name + owner email for lifecycle notifications.
+  async function contact(tenantId: string): Promise<{ name: string; email: string | null }> {
+    const { data: t } = await svc!.from("tenants").select("business_name,owner_id").eq("id", tenantId).maybeSingle();
+    const row = t as { business_name?: string; owner_id?: string } | null;
+    let email: string | null = null;
+    if (row?.owner_id) {
+      const { data } = await svc!.auth.admin.getUserById(row.owner_id);
+      email = data?.user?.email ?? null;
+    }
+    return { name: row?.business_name ?? "your business", email };
+  }
+
+  async function tenantByCustomer(customerId: string): Promise<string | null> {
+    const { data } = await svc!.from("tenant_billing").select("tenant_id").eq("stripe_customer_id", customerId).maybeSingle();
+    return (data as { tenant_id?: string } | null)?.tenant_id ?? null;
+  }
+
   switch (event.type) {
     // Payment succeeded → activate + publish.
     case "checkout.session.completed": {
@@ -50,7 +68,27 @@ export async function POST(req: Request) {
       const tenantId = sub.metadata?.tenant_id ?? null;
       if (tenantId) {
         await svc.from("tenants").update({ plan_status: "canceled", published: false }).eq("id", tenantId);
+        await svc.from("tenant_billing").update({ cancel_at: null }).eq("tenant_id", tenantId);
         await bust(tenantId);
+        const { name, email } = await contact(tenantId);
+        if (email) sendSubscriptionEndedEmail({ to: email, businessName: name }).catch(() => {});
+        sendAdminLifecycleAlert({ subject: "Subscription ended", businessName: name, detail: "Subscription deleted; site unpublished.", tenantId }).catch(() => {});
+      }
+      break;
+    }
+
+    // A charge was refunded → take the site offline + notify both sides.
+    case "charge.refunded": {
+      const charge = event.data.object as Stripe.Charge;
+      const customerId = typeof charge.customer === "string" ? charge.customer : charge.customer?.id ?? null;
+      const tenantId = customerId ? await tenantByCustomer(customerId) : null;
+      if (tenantId) {
+        await svc.from("tenants").update({ plan_status: "canceled", published: false }).eq("id", tenantId);
+        await bust(tenantId);
+        const { name, email } = await contact(tenantId);
+        if (email) sendRefundEmail({ to: email, businessName: name }).catch(() => {});
+        const amount = `${(charge.amount_refunded / 100).toFixed(2)} ${(charge.currency ?? "").toUpperCase()}`.trim();
+        sendAdminLifecycleAlert({ subject: "Payment refunded", businessName: name, detail: `Refunded ${amount}; site unpublished.`, tenantId }).catch(() => {});
       }
       break;
     }
@@ -76,6 +114,11 @@ export async function POST(req: Request) {
         } else {
           await svc.from("tenants").update({ plan_status: "past_due" }).eq("id", tenantId);
           await bust(tenantId);
+          if (sub.status === "past_due" || sub.status === "unpaid") {
+            const { name, email } = await contact(tenantId);
+            if (email) sendPastDueEmail({ to: email, businessName: name }).catch(() => {});
+            sendAdminLifecycleAlert({ subject: "Payment past due", businessName: name, detail: `Subscription status: ${sub.status}.`, tenantId }).catch(() => {});
+          }
         }
       }
       break;

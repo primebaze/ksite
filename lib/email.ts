@@ -348,6 +348,129 @@ export async function sendKycRequestEmail({ to, businessName }: { to: string; bu
   });
 }
 
+// --- account & billing lifecycle ------------------------------------------
+const appUrl = () => (process.env.NEXT_PUBLIC_SITE_URL || "https://kovasite.com").replace(/\/$/, "");
+
+export async function sendAccountSuspendedEmail({ to, businessName }: { to: string; businessName: string }) {
+  await sendTransactionalEmail({
+    to: [to],
+    subject: "Your Kovasite account is on hold",
+    html: renderNotice({
+      eyebrow: "Account on hold",
+      title: "Your account is on hold",
+      body: `Access to your dashboard is paused and ${escapeHtml(businessName)} is temporarily offline. This is usually about billing or verification.`,
+      cta: "Email support",
+      link: "mailto:hello@kovasite.com",
+      secondary: "Reply to this email or contact hello@kovasite.com and we'll get you back online quickly.",
+    }),
+  });
+}
+
+export async function sendAccountReactivatedEmail({ to, businessName }: { to: string; businessName: string }) {
+  await sendTransactionalEmail({
+    to: [to],
+    subject: "Your Kovasite account is active again",
+    html: renderNotice({
+      eyebrow: "Account restored",
+      title: "You're back online",
+      body: `${escapeHtml(businessName)} has been reactivated. You can sign in and manage your site as normal.`,
+      cta: "Open your dashboard",
+      link: `${appUrl()}/dashboard`,
+    }),
+  });
+}
+
+export async function sendCancellationScheduledEmail({ to, businessName, endDate }: { to: string; businessName: string; endDate?: string | null }) {
+  await sendTransactionalEmail({
+    to: [to],
+    subject: "Your subscription is set to cancel",
+    html: renderNotice({
+      eyebrow: "Subscription",
+      title: "Your subscription will end",
+      body: `${escapeHtml(businessName)} will stay live until ${endDate ? escapeHtml(endDate) : "the end of your current billing period"}, then revert to a draft. You won't be charged again.`,
+      cta: "Keep my subscription",
+      link: `${appUrl()}/dashboard/billing`,
+      secondary: "Changed your mind? You can resume any time before it ends from your billing page.",
+    }),
+  });
+}
+
+export async function sendSubscriptionEndedEmail({ to, businessName }: { to: string; businessName: string }) {
+  await sendTransactionalEmail({
+    to: [to],
+    subject: "Your subscription has ended",
+    html: renderNotice({
+      eyebrow: "Subscription ended",
+      title: "Your site is now offline",
+      body: `Your subscription for ${escapeHtml(businessName)} has ended, so the site is no longer published. Your content is saved.`,
+      cta: "Re-subscribe",
+      link: `${appUrl()}/dashboard/publish`,
+      secondary: "Re-subscribe any time to take it back online instantly.",
+    }),
+  });
+}
+
+export async function sendRefundEmail({ to, businessName }: { to: string; businessName: string }) {
+  await sendTransactionalEmail({
+    to: [to],
+    subject: "Your refund has been processed",
+    html: renderNotice({
+      eyebrow: "Refund",
+      title: "Your payment was refunded",
+      body: `We've refunded your payment for ${escapeHtml(businessName)}. The site has been taken offline. Refunds usually appear within 5–10 business days.`,
+      cta: "Contact support",
+      link: "mailto:hello@kovasite.com",
+    }),
+  });
+}
+
+export async function sendPastDueEmail({ to, businessName }: { to: string; businessName: string }) {
+  await sendTransactionalEmail({
+    to: [to],
+    subject: "Payment failed — please update your card",
+    html: renderNotice({
+      eyebrow: "Payment issue",
+      title: "We couldn't take your payment",
+      body: `Your latest payment for ${escapeHtml(businessName)} didn't go through. Please update your payment details to keep your site online.`,
+      cta: "Update payment",
+      link: `${appUrl()}/dashboard/billing`,
+    }),
+  });
+}
+
+export async function sendKycDecisionEmail({ to, businessName, approved, note }: { to: string; businessName: string; approved: boolean; note?: string | null }) {
+  await sendTransactionalEmail({
+    to: [to],
+    subject: approved ? "You're verified" : "Verification needs an update",
+    html: renderNotice({
+      eyebrow: "Verification",
+      title: approved ? "You're verified ✓" : "We need a quick change",
+      body: approved
+        ? `Thanks — verification for ${escapeHtml(businessName)} is complete. No further action needed.`
+        : `We couldn't verify ${escapeHtml(businessName)} yet${note ? `: ${escapeHtml(note)}` : "."} Please review and resubmit.`,
+      cta: approved ? "Open your dashboard" : "Update details",
+      link: approved ? `${appUrl()}/dashboard` : `${appUrl()}/dashboard/verify`,
+    }),
+  });
+}
+
+// Operator alert for any account/billing lifecycle event.
+export async function sendAdminLifecycleAlert({ subject, businessName, detail, tenantId }: { subject: string; businessName: string; detail: string; tenantId?: string }) {
+  const recipients = notificationRecipients();
+  if (recipients.length === 0) return;
+  await sendTransactionalEmail({
+    to: recipients,
+    subject: `${subject}: ${businessName}`,
+    html: renderNotice({
+      eyebrow: "Account event",
+      title: escapeHtml(`${subject} — ${businessName}`),
+      body: escapeHtml(detail),
+      cta: "Open in admin",
+      link: tenantId ? `${appUrl()}/kmanageradmin/${tenantId}` : `${appUrl()}/kmanageradmin`,
+    }),
+  });
+}
+
 async function sendTransactionalEmail({
   to,
   subject,
