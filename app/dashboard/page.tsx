@@ -32,7 +32,6 @@ export default async function DashboardHome({ searchParams }: { searchParams: Pr
   const live = tenant.published || tenant.plan_status === "active";
   const url = `https://${tenant.subdomain}.${SITE_BASE}`;
   const typeLabel = verticalFor(tenant.preset)?.label ?? tenant.preset;
-  const planLabel = tenant.plan ? tenant.plan[0].toUpperCase() + tenant.plan.slice(1) : null;
   const checklist = [
     { label: "Site published", done: live, href: live ? url : "/dashboard/publish" },
     { label: "Personalise your design", done: true, href: "/preview?edit=1" },
@@ -47,7 +46,7 @@ export default async function DashboardHome({ searchParams }: { searchParams: Pr
     { href: "/dashboard/edit", icon: "content", title: "Content & menu", desc: "Services, prices and details." },
     { href: "/dashboard/inbox", icon: "inbox", title: "Enquiries", desc: "Bookings and messages." },
     { href: "/dashboard/domains", icon: "domains", title: "Domains", desc: tenant.custom_domain ?? "Claim a custom domain." },
-    { href: "/dashboard/billing", icon: "billing", title: "Billing", desc: planLabel ? `${planLabel} plan` : "Manage subscription." },
+    { href: "/dashboard/billing", icon: "billing", title: "Billing", desc: live ? "Manage your subscription." : "Plans & invoices." },
     { href: "/dashboard/support", icon: "support", title: "Support", desc: "We're here to help." },
   ];
 
@@ -74,16 +73,18 @@ export default async function DashboardHome({ searchParams }: { searchParams: Pr
       )}
 
       {/* Hero */}
-      <section className="relative overflow-hidden rounded-[2rem] border border-white/[0.08] bg-gradient-to-br from-white/[0.07] via-white/[0.03] to-transparent p-7 sm:p-9">
-        <div className="pointer-events-none absolute -right-24 -top-24 size-64 rounded-full bg-emerald-400/10 blur-3xl" />
+      <section className="relative overflow-hidden rounded-[2rem] border border-white/10 bg-white/[0.03] p-7 shadow-[0_24px_70px_-44px_rgba(0,0,0,0.95)] sm:p-9">
+        {/* Even top sheen + a single, contained emerald glow kept out of the text */}
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/25 to-transparent" />
+        <div className="pointer-events-none absolute -right-16 -top-24 size-56 rounded-full bg-emerald-500/20 blur-[90px]" />
         <div className="relative flex flex-wrap items-start justify-between gap-6">
           <div className="min-w-0">
             <div className="flex items-center gap-2">
-              <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold ${live ? "bg-emerald-400/15 text-emerald-300" : "bg-white/10 text-white/60"}`}>
+              <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold ring-1 ring-inset ${live ? "bg-emerald-400/15 text-emerald-300 ring-emerald-400/25" : "bg-white/10 text-white/60 ring-white/10"}`}>
                 <span className={`size-1.5 rounded-full ${live ? "bg-emerald-400" : "bg-white/40"}`} />
                 {live ? "Live" : "Draft"}
               </span>
-              {planLabel && <span className="rounded-full border border-white/10 bg-white/[0.04] px-2.5 py-1 text-xs font-semibold text-white/55">{planLabel} plan</span>}
+              {live && <span className="rounded-full bg-white/[0.06] px-2.5 py-1 text-xs font-medium text-white/55 ring-1 ring-inset ring-white/10">Subscription active</span>}
             </div>
             <p className="mt-4 text-sm font-medium text-white/45">Welcome back</p>
             <h1 className="mt-1 truncate text-4xl font-semibold tracking-tight sm:text-5xl">{tenant.business_name}</h1>
