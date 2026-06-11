@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import { getAdminUser } from "@/lib/supabase-server";
 import { isStaff } from "@/lib/staff";
 import { getNavBadges } from "@/lib/admin";
-import { sessionExpired } from "@/lib/session";
+import { sessionExpired, ADMIN_SESSION_MAX_AGE_MS } from "@/lib/session";
 import { AdminNav, type AdminNavItem } from "@/components/AdminNav";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { logout } from "../login/actions";
@@ -15,7 +15,7 @@ export default async function DashLayout({ children }: { children: React.ReactNo
   const user = await getAdminUser();
   if (!user) redirect("/kmanageradmin/login");
   // Time-box: force staff re-login once the session exceeds the max age.
-  if (sessionExpired(user.last_sign_in_at)) redirect("/auth/signout?to=admin");
+  if (sessionExpired(user.last_sign_in_at, ADMIN_SESSION_MAX_AGE_MS)) redirect("/auth/signout?to=admin");
   // Clients who sign in land here only if they're on the staff allowlist;
   // everyone else is sent to their own dashboard.
   if (!isStaff(user.email)) redirect("/dashboard");
