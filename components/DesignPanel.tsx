@@ -71,7 +71,7 @@ export function DesignPanel({
       {/* Backdrop (mobile dismiss) */}
       <div className="fixed inset-0 z-[230] bg-black/50 backdrop-blur-sm sm:bg-transparent sm:backdrop-blur-0" onClick={onClose} />
 
-      <div className="fixed inset-x-0 bottom-0 z-[240] max-h-[82vh] overflow-y-auto rounded-t-3xl border-t border-white/12 bg-neutral-950/95 p-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] text-white shadow-2xl backdrop-blur sm:inset-x-auto sm:bottom-24 sm:right-5 sm:max-h-[70vh] sm:w-[320px] sm:rounded-2xl sm:border">
+      <div className="fixed inset-x-0 bottom-0 z-[240] max-h-[68vh] overflow-y-auto rounded-t-3xl border-t border-white/12 bg-neutral-950/95 p-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] text-white shadow-2xl backdrop-blur sm:inset-x-auto sm:bottom-24 sm:right-5 sm:max-h-[70vh] sm:w-[320px] sm:rounded-2xl sm:border">
         <div className="mx-auto mb-3 h-1.5 w-10 rounded-full bg-white/15 sm:hidden" />
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">

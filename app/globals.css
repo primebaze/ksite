@@ -53,6 +53,17 @@ a {
   touch-action: manipulation;
   -webkit-tap-highlight-color: transparent;
 }
+
+/* Tailwind v4's reset no longer makes buttons a pointer; restore the hand
+   cursor on every interactive element (anchors get it natively). */
+button:not(:disabled),
+[role="button"]:not([aria-disabled="true"]),
+a[href],
+label,
+summary,
+select:not(:disabled) {
+  cursor: pointer;
+}
 button:not(:disabled):active {
   transform: scale(0.97);
   filter: brightness(0.9);
