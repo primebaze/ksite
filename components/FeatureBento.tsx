@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "motion/react";
+import { motion, useMotionValueEvent, useScroll } from "motion/react";
 import { FEATURES } from "@/lib/marketing";
 
 // Base44-style stack: numbered text on the left, and on the right a single app
@@ -221,7 +221,8 @@ function MobileFeatureScroll() {
   const Visual = WINDOWS[f.icon] ?? DesignWindow;
 
   return (
-    <div ref={ref} className="mt-10 lg:hidden" style={{ height: `${SHOWN.length * 100}vh` }}>
+    // Shorter track (≈0.7 screen per feature) so a swipe advances quickly.
+    <div ref={ref} className="mt-10 lg:hidden" style={{ height: `${SHOWN.length * 72}vh` }}>
       <div className="sticky top-0 flex h-[100svh] flex-col justify-center gap-7 py-20">
         {/* progress: one pill per feature, the active one stretched */}
         <div className="flex items-center gap-2">
@@ -233,27 +234,26 @@ function MobileFeatureScroll() {
           ))}
         </div>
 
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={f.title}
-            initial={{ opacity: 0, y: 18 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -18 }}
-            transition={{ duration: 0.4, ease: EASE }}
-            className="flex flex-col gap-7"
-          >
-            <div>
-              <p className="text-sm font-medium tracking-[0.2em] text-white/30">
-                {pad(active + 1)} <span className="text-white/15">/ {pad(SHOWN.length)}</span>
-              </p>
-              <h3 className="mt-3 text-3xl font-semibold tracking-tight">{f.title}</h3>
-              <p className="mt-3 max-w-md text-base leading-relaxed text-white/55">{f.body}</p>
-            </div>
-            <div className="h-[42vh] min-h-[300px]">
-              <Visual />
-            </div>
-          </motion.div>
-        </AnimatePresence>
+        {/* Keyed remount (no AnimatePresence exit) swaps the card instantly with a
+            quick fade in — no empty gap while scrolling between features. */}
+        <motion.div
+          key={f.title}
+          initial={{ opacity: 0, y: 8 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.14, ease: EASE }}
+          className="flex flex-col gap-7"
+        >
+          <div>
+            <p className="text-sm font-medium tracking-[0.2em] text-white/30">
+              {pad(active + 1)} <span className="text-white/15">/ {pad(SHOWN.length)}</span>
+            </p>
+            <h3 className="mt-3 text-3xl font-semibold tracking-tight">{f.title}</h3>
+            <p className="mt-3 max-w-md text-base leading-relaxed text-white/55">{f.body}</p>
+          </div>
+          <div className="h-[42vh] min-h-[300px]">
+            <Visual />
+          </div>
+        </motion.div>
       </div>
     </div>
   );
