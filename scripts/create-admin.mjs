@@ -26,15 +26,42 @@ if (!url || !key) {
   process.exit(1);
 }
 
-const supabase = createClient(url, key, { auth: { persistSession: false } });
-const { data, error } = await supabase.auth.admin.createUser({
-  email,
-  password,
-  email_confirm: true,
+const supabase = createClient(url, key, {
+  auth: { autoRefreshToken: false, persistSession: false },
 });
 
-if (error) {
-  console.error("Failed:", error.message);
-  process.exit(1);
+// Find an existing user with this email (so re-runs reset the password
+// instead of erroring with "already registered").
+let existing = null;
+for (let page = 1; page <= 20 && !existing; page++) {
+  const { data, error } = await supabase.auth.admin.listUsers({ page, perPage: 200 });
+  if (error) {
+    console.error("listUsers failed:", error.message);
+    process.exit(1);
+  }
+  existing = data.users.find((u) => (u.email ?? "").toLowerCase() === email.toLowerCase());
+  if (data.users.length < 200) break;
 }
-console.log("Created admin user:", data.user.email);
+
+if (existing) {
+  const { error } = await supabase.auth.admin.updateUserById(existing.id, {
+    password,
+    email_confirm: true,
+  });
+  if (error) {
+    console.error("Failed to reset password:", error.message);
+    process.exit(1);
+  }
+  console.log("Reset password for existing admin user:", email);
+} else {
+  const { data, error } = await supabase.auth.admin.createUser({
+    email,
+    password,
+    email_confirm: true,
+  });
+  if (error) {
+    console.error("Failed:", error.message);
+    process.exit(1);
+  }
+  console.log("Created admin user:", data.user.email);
+}

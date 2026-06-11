@@ -120,3 +120,26 @@ export interface TenantSite {
   gallery: GalleryImage[];
   team: TeamMember[];
 }
+
+// --- Support tickets --------------------------------------------------------
+export type TicketStatus = "open" | "pending" | "closed";
+
+export interface SupportTicket {
+  id: string;
+  tenant_id: string;
+  subject: string;
+  status: TicketStatus;
+  created_by: string | null;
+  created_at: string;
+  updated_at: string;
+  last_message_at: string;
+}
+
+export interface TicketMessage {
+  id: string;
+  ticket_id: string;
+  author_role: "client" | "staff";
+  author_id: string | null;
+  body: string;
+  created_at: string;
+}

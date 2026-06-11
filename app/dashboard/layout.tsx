@@ -20,6 +20,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
     { href: "/dashboard/edit", label: "Content & menu" },
     { href: "/dashboard/inbox", label: "Enquiries" },
     { href: "/dashboard/domains", label: "Domains" },
+    { href: "/dashboard/support", label: "Support" },
   ];
 
   return (

@@ -2,9 +2,9 @@ import type { TenantSite } from "@/lib/types";
 import { catalogLabelFor } from "@/lib/verticals";
 import { ListEditor } from "./ListEditor";
 
-// Dark, client-facing editor. Reused on the self-serve dashboard. Each form
-// posts to a server action passed in via `actions`, so the same UI works for
-// any data layer (here: the client's RLS-scoped session).
+// Dark, client-facing editor. Reused on the self-serve dashboard AND the staff
+// console. Each form posts to a server action passed in via `actions`, so the
+// same UI works for any data layer (client RLS session, or admin service role).
 export interface EditorActions {
   saveBasics: (formData: FormData) => Promise<void>;
   saveContent: (formData: FormData) => Promise<void>;
@@ -19,22 +19,61 @@ export interface EditorActions {
   teamDelete: (formData: FormData) => Promise<void>;
 }
 
+const card = "rounded-2xl border border-white/[0.08] bg-white/[0.02] p-6 sm:p-7";
 const input =
-  "mt-1 w-full rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2 text-sm text-white placeholder-white/30 outline-none focus:border-white/30";
-const label = "text-xs text-white/40";
-const card = "rounded-2xl border border-white/10 bg-white/[0.02] p-6";
-const btn = "rounded-lg bg-white px-4 py-2 text-sm font-semibold text-black transition hover:bg-white/90";
-const smBtn = "rounded-lg border border-white/15 px-3 py-1.5 text-sm text-white/80 transition hover:bg-white/5";
-const delBtn = "rounded-lg border border-red-400/30 px-3 py-1.5 text-sm text-red-300 transition hover:bg-red-400/10";
+  "w-full rounded-xl border border-white/10 bg-white/[0.03] px-3.5 py-2.5 text-sm text-white placeholder-white/25 outline-none transition focus:border-white/25 focus:bg-white/[0.05]";
+const fieldLabel = "mb-1.5 block text-[13px] font-medium text-white/55";
+const primaryBtn = "rounded-xl bg-white px-4 py-2.5 text-sm font-semibold text-black transition hover:bg-white/90";
+const ghostBtn = "rounded-xl border border-white/[0.12] px-3.5 py-2 text-sm font-medium text-white/75 transition hover:bg-white/[0.06]";
+const delBtn = "rounded-xl border border-red-400/25 px-3.5 py-2 text-sm font-medium text-red-300 transition hover:bg-red-400/10";
 
-function Card({ title, desc, children }: { title: string; desc?: string; children: React.ReactNode }) {
+function Card({ id, title, desc, children }: { id?: string; title: string; desc?: string; children: React.ReactNode }) {
   return (
-    <section className={card}>
-      <h2 className="text-lg font-semibold text-white">{title}</h2>
-      {desc && <p className="mt-0.5 text-sm text-white/45">{desc}</p>}
-      <div className="mt-5">{children}</div>
+    <section id={id} className={`${card} scroll-mt-24`}>
+      <div className="mb-5">
+        <h2 className="text-base font-semibold text-white">{title}</h2>
+        {desc && <p className="mt-1 text-sm text-white/40">{desc}</p>}
+      </div>
+      {children}
     </section>
   );
+}
+
+function Field({ label, span, children }: { label: string; span?: boolean; children: React.ReactNode }) {
+  return (
+    <div className={span ? "sm:col-span-2" : undefined}>
+      <label className={fieldLabel}>{label}</label>
+      {children}
+    </div>
+  );
+}
+
+function Chevron() {
+  return (
+    <svg viewBox="0 0 20 20" fill="none" className="size-4 shrink-0 text-white/30 transition group-open:rotate-90" aria-hidden>
+      <path d="M7.5 5l5 5-5 5" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+// A collapsible item cell: scannable summary row that expands to the edit form.
+function Disclosure({ summary, defaultOpen, children }: { summary: React.ReactNode; defaultOpen?: boolean; children: React.ReactNode }) {
+  return (
+    <details
+      open={defaultOpen}
+      className="group overflow-hidden rounded-xl border border-white/[0.08] bg-white/[0.02] transition open:border-white/15 open:bg-white/[0.035]"
+    >
+      <summary className="flex cursor-pointer list-none select-none items-center gap-3 px-4 py-3.5 [&::-webkit-details-marker]:hidden">
+        {summary}
+        <Chevron />
+      </summary>
+      <div className="border-t border-white/[0.08] p-4 sm:p-5">{children}</div>
+    </details>
+  );
+}
+
+function Dot({ on }: { on: boolean }) {
+  return <span className={`size-2 shrink-0 rounded-full ${on ? "bg-emerald-400" : "bg-white/20"}`} aria-hidden />;
 }
 
 export function SiteEditor({ site, actions }: { site: TenantSite; actions: EditorActions }) {
@@ -44,203 +83,231 @@ export function SiteEditor({ site, actions }: { site: TenantSite; actions: Edito
 
   return (
     <div className="space-y-6">
-      {/* Basics & branding */}
-      <Card title="Basics & branding">
-        <form action={actions.saveBasics} className="space-y-4">
+      {/* Branding */}
+      <Card id="branding" title="Branding" desc="Your name, colours and overall look.">
+        <form action={actions.saveBasics} className="space-y-5">
           <input type="hidden" name="id" value={id} />
-          <div>
-            <label className={label}>Business name</label>
+          <Field label="Business name">
             <input name="business_name" defaultValue={tenant.business_name} className={input} />
-          </div>
-          <div className="grid grid-cols-3 gap-4">
-            <div>
-              <label className={label}>Primary colour</label>
-              <input name="primary_color" type="color" defaultValue={theme.primary_color} className="mt-1 h-10 w-full rounded-lg border border-white/10 bg-transparent" />
-            </div>
-            <div>
-              <label className={label}>Accent colour</label>
-              <input name="accent_color" type="color" defaultValue={theme.accent_color} className="mt-1 h-10 w-full rounded-lg border border-white/10 bg-transparent" />
-            </div>
-            <div>
-              <label className={label}>Font</label>
-              <select name="font" defaultValue={theme.font ?? "sans-serif"} className={input}>
-                <option value="sans-serif" className="bg-zinc-900">Sans-serif</option>
-                <option value="serif" className="bg-zinc-900">Serif</option>
+          </Field>
+          <div className="grid gap-4 sm:grid-cols-3">
+            <Field label="Primary colour">
+              <input name="primary_color" type="color" defaultValue={theme.primary_color} className="h-11 w-full cursor-pointer rounded-xl border border-white/10 bg-transparent" />
+            </Field>
+            <Field label="Accent colour">
+              <input name="accent_color" type="color" defaultValue={theme.accent_color} className="h-11 w-full cursor-pointer rounded-xl border border-white/10 bg-transparent" />
+            </Field>
+            <Field label="Font">
+              <select name="font" defaultValue={theme.font ?? "sans-serif"} className={`${input} [&>option]:bg-neutral-900`}>
+                <option value="sans-serif">Sans-serif</option>
+                <option value="serif">Serif</option>
               </select>
-            </div>
+            </Field>
           </div>
-          <div>
-            <label className={label}>Design style</label>
-            <select name="style" defaultValue={content.style ?? "classic"} className={input}>
-              <option value="classic" className="bg-zinc-900">Classic — balanced &amp; timeless</option>
-              <option value="editorial" className="bg-zinc-900">Editorial — elegant, magazine</option>
-              <option value="bold" className="bg-zinc-900">Bold — big &amp; high-energy</option>
-              <option value="minimal" className="bg-zinc-900">Minimal — clean &amp; calm</option>
-              <option value="warm" className="bg-zinc-900">Warm — soft &amp; welcoming</option>
-              <option value="luxe" className="bg-zinc-900">Luxe — dark &amp; premium</option>
+          <Field label="Design style">
+            <select name="style" defaultValue={content.style ?? "classic"} className={`${input} [&>option]:bg-neutral-900`}>
+              <option value="classic">Classic — balanced &amp; timeless</option>
+              <option value="editorial">Editorial — elegant, magazine</option>
+              <option value="bold">Bold — big &amp; high-energy</option>
+              <option value="minimal">Minimal — clean &amp; calm</option>
+              <option value="warm">Warm — soft &amp; welcoming</option>
+              <option value="luxe">Luxe — dark &amp; premium</option>
             </select>
-            <p className="mt-1 text-xs text-white/35">Changes the whole layout &amp; hero. Preview it with “Edit site”.</p>
+            <p className="mt-1.5 text-xs text-white/35">Changes the whole layout &amp; hero. Preview it with “Edit site”.</p>
+          </Field>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <Field label="SEO title"><input name="meta_title" defaultValue={tenant.meta_title ?? ""} className={input} /></Field>
+            <Field label="SEO description"><input name="meta_description" defaultValue={tenant.meta_description ?? ""} className={input} /></Field>
           </div>
-          <div className="grid grid-cols-2 gap-4">
-            <div><label className={label}>SEO title</label><input name="meta_title" defaultValue={tenant.meta_title ?? ""} className={input} /></div>
-            <div><label className={label}>SEO description</label><input name="meta_description" defaultValue={tenant.meta_description ?? ""} className={input} /></div>
-          </div>
-          <button className={btn}>Save</button>
+          <div className="flex justify-end pt-1"><button className={primaryBtn}>Save branding</button></div>
         </form>
       </Card>
 
       {/* Content */}
-      <Card title="Content" desc="The main copy and contact details on your site.">
-        <form action={actions.saveContent} className="space-y-4">
+      <Card id="content" title="Content" desc="The main copy and contact details shown on your site.">
+        <form action={actions.saveContent} className="space-y-5">
           <input type="hidden" name="id" value={id} />
-          <div><label className={label}>Tagline</label><input name="tagline" defaultValue={content.tagline ?? ""} className={input} /></div>
-          <div><label className={label}>About</label><textarea name="about" defaultValue={content.about ?? ""} rows={3} className={input} /></div>
-          <div className="grid grid-cols-3 gap-4">
-            <div><label className={label}>Phone</label><input name="phone" defaultValue={content.phone ?? ""} className={input} /></div>
-            <div><label className={label}>Email</label><input name="email" defaultValue={content.email ?? ""} className={input} /></div>
-            <div><label className={label}>Address</label><input name="address" defaultValue={content.address ?? ""} className={input} /></div>
+          <Field label="Tagline"><input name="tagline" defaultValue={content.tagline ?? ""} className={input} /></Field>
+          <Field label="About"><textarea name="about" defaultValue={content.about ?? ""} rows={3} className={input} /></Field>
+          <div className="grid gap-4 sm:grid-cols-3">
+            <Field label="Phone"><input name="phone" defaultValue={content.phone ?? ""} className={input} /></Field>
+            <Field label="Email"><input name="email" defaultValue={content.email ?? ""} className={input} /></Field>
+            <Field label="Address"><input name="address" defaultValue={content.address ?? ""} className={input} /></Field>
           </div>
-          <div className="grid grid-cols-2 gap-4">
-            <div><label className={label}>Reservation URL</label><input name="reservation_url" defaultValue={content.reservation_url ?? ""} className={input} /></div>
-            <div><label className={label}>Booking URL</label><input name="booking_url" defaultValue={content.booking_url ?? ""} className={input} /></div>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <Field label="Reservation URL"><input name="reservation_url" defaultValue={content.reservation_url ?? ""} className={input} /></Field>
+            <Field label="Booking URL"><input name="booking_url" defaultValue={content.booking_url ?? ""} className={input} /></Field>
           </div>
-          <div className="grid grid-cols-2 gap-4">
-            <div><label className={label}>CTA label</label><input name="cta_label" defaultValue={content.cta_label ?? ""} className={input} /></div>
-            <div><label className={label}>CTA URL</label><input name="cta_url" defaultValue={content.cta_url ?? ""} className={input} /></div>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <Field label="Button label"><input name="cta_label" defaultValue={content.cta_label ?? ""} className={input} /></Field>
+            <Field label="Button URL"><input name="cta_url" defaultValue={content.cta_url ?? ""} className={input} /></Field>
           </div>
-          <button className={btn}>Save content</button>
+          <div className="flex justify-end pt-1"><button className={primaryBtn}>Save content</button></div>
         </form>
       </Card>
 
-      {/* Opening hours — add / remove rows */}
-      <Card title="Opening hours" desc="Add a row for each day or range. Leave a row blank and save to remove it.">
-        <ListEditor
-          tenantId={id}
-          action={actions.saveHours}
-          addLabel="+ Add hours row"
-          columns={[
-            { name: "day", label: "Day (e.g. Mon–Fri)" },
-            { name: "open", label: "Hours (e.g. 12:00–22:00 or Closed)" },
-          ]}
-          initial={(content.hours ?? []).map((h) => ({ day: h.day ?? "", open: h.open ?? "" }))}
-        />
-      </Card>
-
-      {/* Social links — add / remove rows */}
-      <Card title="Social links" desc="Add your social profiles. Leave a row blank and save to remove it.">
-        <ListEditor
-          tenantId={id}
-          action={actions.saveSocials}
-          addLabel="+ Add social link"
-          columns={[
-            { name: "label", label: "Label (e.g. Instagram)" },
-            { name: "url", label: "URL (https://…)" },
-          ]}
-          initial={(content.socials ?? []).map((s) => ({ label: s.label ?? "", url: s.url ?? "" }))}
-        />
-      </Card>
-
-      {/* Ordering / booking links — add / remove rows */}
-      <Card title="Ordering & delivery links" desc="Links to ordering, delivery or booking partners. Leave a row blank and save to remove it.">
-        <ListEditor
-          tenantId={id}
-          action={actions.saveOrderingLinks}
-          addLabel="+ Add link"
-          columns={[
-            { name: "label", label: "Label (e.g. Order on Deliveroo)" },
-            { name: "url", label: "URL (https://…)" },
-          ]}
-          initial={(content.ordering_links ?? []).map((o) => ({ label: o.label ?? "", url: o.url ?? "" }))}
-        />
+      {/* Hours & links */}
+      <Card id="hours" title="Hours &amp; links" desc="Opening hours, social profiles and ordering links. Clear a row and save to remove it.">
+        <div className="space-y-7">
+          <div>
+            <h3 className="mb-3 text-sm font-medium text-white/70">Opening hours</h3>
+            <ListEditor tenantId={id} action={actions.saveHours} addLabel="+ Add hours row"
+              columns={[{ name: "day", label: "Day (e.g. Mon–Fri)" }, { name: "open", label: "Hours (e.g. 12:00–22:00)" }]}
+              initial={(content.hours ?? []).map((h) => ({ day: h.day ?? "", open: h.open ?? "" }))} />
+          </div>
+          <div>
+            <h3 className="mb-3 text-sm font-medium text-white/70">Social links</h3>
+            <ListEditor tenantId={id} action={actions.saveSocials} addLabel="+ Add social link"
+              columns={[{ name: "label", label: "Label (e.g. Instagram)" }, { name: "url", label: "URL (https://…)" }]}
+              initial={(content.socials ?? []).map((s) => ({ label: s.label ?? "", url: s.url ?? "" }))} />
+          </div>
+          <div>
+            <h3 className="mb-3 text-sm font-medium text-white/70">Ordering &amp; delivery links</h3>
+            <ListEditor tenantId={id} action={actions.saveOrderingLinks} addLabel="+ Add link"
+              columns={[{ name: "label", label: "Label (e.g. Order on Deliveroo)" }, { name: "url", label: "URL (https://…)" }]}
+              initial={(content.ordering_links ?? []).map((o) => ({ label: o.label ?? "", url: o.url ?? "" }))} />
+          </div>
+        </div>
       </Card>
 
       {/* Catalog */}
-      <Card title={catalogLabel} desc={`Add, edit and remove your ${catalogLabel.toLowerCase()} items.`}>
-        <div className="space-y-3">
+      <Card id="catalog" title={catalogLabel} desc={`Add, edit and remove your ${catalogLabel.toLowerCase()}. Tap an item to edit it.`}>
+        <div className="space-y-2.5">
           {catalog.map((it) => (
-            <form key={it.id} action={actions.catalogSave} className="grid grid-cols-12 items-end gap-2 rounded-xl border border-white/10 p-3">
-              <input type="hidden" name="id" value={id} />
-              <input type="hidden" name="item_id" value={it.id} />
-              <div className="col-span-2"><label className={label}>Section</label><input name="section" defaultValue={it.section ?? ""} className={input} /></div>
-              <div className="col-span-2"><label className={label}>Category</label><input name="category" defaultValue={it.category ?? ""} className={input} /></div>
-              <div className="col-span-2"><label className={label}>Name</label><input name="name" defaultValue={it.name} className={input} /></div>
-              <div className="col-span-3"><label className={label}>Description</label><input name="description" defaultValue={it.description ?? ""} className={input} /></div>
-              <div className="col-span-1"><label className={label}>Price</label><input name="price" defaultValue={it.price ?? ""} className={input} /></div>
-              <div className="col-span-1"><label className={label}>Order</label><input name="sort_order" type="number" defaultValue={it.sort_order} className={input} /></div>
-              <label className="col-span-1 flex items-center gap-1 text-xs text-white/60"><input type="checkbox" name="is_available" defaultChecked={it.is_available} /> On</label>
-              <div className="col-span-12 flex gap-2">
-                <button className={smBtn}>Save</button>
-                <button formAction={actions.catalogDelete} className={delBtn}>Delete</button>
-              </div>
-            </form>
+            <Disclosure
+              key={it.id}
+              summary={
+                <>
+                  <Dot on={it.is_available} />
+                  <span className="min-w-0 flex-1">
+                    <span className="block truncate font-medium text-white">{it.name || "Untitled item"}</span>
+                    <span className="block truncate text-xs text-white/40">{[it.section, it.category].filter(Boolean).join(" · ") || "No section"}</span>
+                  </span>
+                  {it.price && <span className="shrink-0 text-sm text-white/55">{it.price}</span>}
+                </>
+              }
+            >
+              <form action={actions.catalogSave} className="grid gap-4 sm:grid-cols-2">
+                <input type="hidden" name="id" value={id} />
+                <input type="hidden" name="item_id" value={it.id} />
+                <Field label="Name"><input name="name" defaultValue={it.name} className={input} /></Field>
+                <Field label="Price"><input name="price" defaultValue={it.price ?? ""} placeholder="e.g. £12 or from £45" className={input} /></Field>
+                <Field label="Section"><input name="section" defaultValue={it.section ?? ""} placeholder="e.g. Dinner" className={input} /></Field>
+                <Field label="Category"><input name="category" defaultValue={it.category ?? ""} placeholder="e.g. Starters" className={input} /></Field>
+                <Field label="Description" span><textarea name="description" defaultValue={it.description ?? ""} rows={2} className={input} /></Field>
+                <Field label="Sort order"><input name="sort_order" type="number" defaultValue={it.sort_order} className={input} /></Field>
+                <div className="flex items-center sm:pt-7">
+                  <label className="inline-flex items-center gap-2 text-sm text-white/70"><input type="checkbox" name="is_available" defaultChecked={it.is_available} className="size-4 accent-emerald-400" /> Available</label>
+                </div>
+                <div className="flex items-center justify-between gap-2 sm:col-span-2">
+                  <button formAction={actions.catalogDelete} className={delBtn}>Delete</button>
+                  <button className={primaryBtn}>Save</button>
+                </div>
+              </form>
+            </Disclosure>
           ))}
-          <form action={actions.catalogSave} className="grid grid-cols-12 items-end gap-2 rounded-xl border border-dashed border-white/15 bg-white/[0.02] p-3">
-            <input type="hidden" name="id" value={id} />
-            <div className="col-span-2"><label className={label}>Section</label><input name="section" className={input} /></div>
-            <div className="col-span-2"><label className={label}>Category</label><input name="category" className={input} /></div>
-            <div className="col-span-2"><label className={label}>Name</label><input name="name" required className={input} /></div>
-            <div className="col-span-3"><label className={label}>Description</label><input name="description" className={input} /></div>
-            <div className="col-span-1"><label className={label}>Price</label><input name="price" className={input} /></div>
-            <div className="col-span-1"><label className={label}>Order</label><input name="sort_order" type="number" defaultValue={catalog.length + 1} className={input} /></div>
-            <label className="col-span-1 flex items-center gap-1 text-xs text-white/60"><input type="checkbox" name="is_available" defaultChecked /> On</label>
-            <div className="col-span-12"><button className={btn}>+ Add</button></div>
-          </form>
+
+          <Disclosure
+            summary={<span className="flex-1 text-sm font-medium text-emerald-300/90">+ Add {catalogLabel.toLowerCase().replace(/s$/, "")}</span>}
+          >
+            <form action={actions.catalogSave} className="grid gap-4 sm:grid-cols-2">
+              <input type="hidden" name="id" value={id} />
+              <Field label="Name"><input name="name" required className={input} /></Field>
+              <Field label="Price"><input name="price" placeholder="e.g. £12" className={input} /></Field>
+              <Field label="Section"><input name="section" className={input} /></Field>
+              <Field label="Category"><input name="category" className={input} /></Field>
+              <Field label="Description" span><textarea name="description" rows={2} className={input} /></Field>
+              <Field label="Sort order"><input name="sort_order" type="number" defaultValue={catalog.length + 1} className={input} /></Field>
+              <div className="flex items-center sm:pt-7">
+                <label className="inline-flex items-center gap-2 text-sm text-white/70"><input type="checkbox" name="is_available" defaultChecked className="size-4 accent-emerald-400" /> Available</label>
+              </div>
+              <div className="flex justify-end sm:col-span-2"><button className={primaryBtn}>Add item</button></div>
+            </form>
+          </Disclosure>
         </div>
       </Card>
 
       {/* Gallery */}
-      <Card title="Gallery">
-        <div className="space-y-3">
+      <Card id="gallery" title="Gallery" desc="Photos shown on your site. Tap an image to edit it.">
+        <div className="space-y-2.5">
           {gallery.map((g) => (
-            <form key={g.id} action={actions.gallerySave} className="grid grid-cols-12 items-end gap-2 rounded-xl border border-white/10 p-3">
-              <input type="hidden" name="id" value={id} />
-              <input type="hidden" name="item_id" value={g.id} />
-              <div className="col-span-6"><label className={label}>Image URL</label><input name="image_url" defaultValue={g.image_url} className={input} /></div>
-              <div className="col-span-4"><label className={label}>Caption</label><input name="caption" defaultValue={g.caption ?? ""} className={input} /></div>
-              <div className="col-span-1"><label className={label}>Order</label><input name="sort_order" type="number" defaultValue={g.sort_order} className={input} /></div>
-              <div className="col-span-12 flex gap-2">
-                <button className={smBtn}>Save</button>
-                <button formAction={actions.galleryDelete} className={delBtn}>Delete</button>
-              </div>
-            </form>
+            <Disclosure
+              key={g.id}
+              summary={
+                <>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={g.image_url} alt="" className="size-10 shrink-0 rounded-lg border border-white/10 object-cover" />
+                  <span className="min-w-0 flex-1">
+                    <span className="block truncate font-medium text-white">{g.caption || "Untitled photo"}</span>
+                    <span className="block truncate text-xs text-white/35">{g.image_url}</span>
+                  </span>
+                </>
+              }
+            >
+              <form action={actions.gallerySave} className="grid gap-4 sm:grid-cols-2">
+                <input type="hidden" name="id" value={id} />
+                <input type="hidden" name="item_id" value={g.id} />
+                <Field label="Image URL" span><input name="image_url" defaultValue={g.image_url} className={input} /></Field>
+                <Field label="Caption"><input name="caption" defaultValue={g.caption ?? ""} className={input} /></Field>
+                <Field label="Sort order"><input name="sort_order" type="number" defaultValue={g.sort_order} className={input} /></Field>
+                <div className="flex items-center justify-between gap-2 sm:col-span-2">
+                  <button formAction={actions.galleryDelete} className={delBtn}>Delete</button>
+                  <button className={primaryBtn}>Save</button>
+                </div>
+              </form>
+            </Disclosure>
           ))}
-          <form action={actions.gallerySave} className="grid grid-cols-12 items-end gap-2 rounded-xl border border-dashed border-white/15 bg-white/[0.02] p-3">
-            <input type="hidden" name="id" value={id} />
-            <div className="col-span-6"><label className={label}>Image URL</label><input name="image_url" required className={input} /></div>
-            <div className="col-span-4"><label className={label}>Caption</label><input name="caption" className={input} /></div>
-            <div className="col-span-1"><label className={label}>Order</label><input name="sort_order" type="number" defaultValue={gallery.length + 1} className={input} /></div>
-            <div className="col-span-12"><button className={btn}>+ Add</button></div>
-          </form>
+          <Disclosure summary={<span className="flex-1 text-sm font-medium text-emerald-300/90">+ Add photo</span>}>
+            <form action={actions.gallerySave} className="grid gap-4 sm:grid-cols-2">
+              <input type="hidden" name="id" value={id} />
+              <Field label="Image URL" span><input name="image_url" required className={input} /></Field>
+              <Field label="Caption"><input name="caption" className={input} /></Field>
+              <Field label="Sort order"><input name="sort_order" type="number" defaultValue={gallery.length + 1} className={input} /></Field>
+              <div className="flex justify-end sm:col-span-2"><button className={primaryBtn}>Add photo</button></div>
+            </form>
+          </Disclosure>
         </div>
       </Card>
 
       {/* Team */}
-      <Card title="Team" desc="Most useful for salons; optional otherwise.">
-        <div className="space-y-3">
+      <Card id="team" title="Team" desc="Most useful for salons and clinics; optional otherwise.">
+        <div className="space-y-2.5">
           {team.map((m) => (
-            <form key={m.id} action={actions.teamSave} className="grid grid-cols-12 items-end gap-2 rounded-xl border border-white/10 p-3">
-              <input type="hidden" name="id" value={id} />
-              <input type="hidden" name="item_id" value={m.id} />
-              <div className="col-span-3"><label className={label}>Name</label><input name="name" defaultValue={m.name} className={input} /></div>
-              <div className="col-span-3"><label className={label}>Role</label><input name="role" defaultValue={m.role ?? ""} className={input} /></div>
-              <div className="col-span-3"><label className={label}>Credentials</label><input name="credentials" defaultValue={m.credentials ?? ""} className={input} /></div>
-              <div className="col-span-2"><label className={label}>Photo URL</label><input name="photo_url" defaultValue={m.photo_url ?? ""} className={input} /></div>
-              <div className="col-span-1"><label className={label}>Order</label><input name="sort_order" type="number" defaultValue={m.sort_order} className={input} /></div>
-              <div className="col-span-12 flex gap-2">
-                <button className={smBtn}>Save</button>
-                <button formAction={actions.teamDelete} className={delBtn}>Delete</button>
-              </div>
-            </form>
+            <Disclosure
+              key={m.id}
+              summary={
+                <span className="min-w-0 flex-1">
+                  <span className="block truncate font-medium text-white">{m.name || "Unnamed"}</span>
+                  <span className="block truncate text-xs text-white/40">{[m.role, m.credentials].filter(Boolean).join(" · ") || "No role"}</span>
+                </span>
+              }
+            >
+              <form action={actions.teamSave} className="grid gap-4 sm:grid-cols-2">
+                <input type="hidden" name="id" value={id} />
+                <input type="hidden" name="item_id" value={m.id} />
+                <Field label="Name"><input name="name" defaultValue={m.name} className={input} /></Field>
+                <Field label="Role"><input name="role" defaultValue={m.role ?? ""} className={input} /></Field>
+                <Field label="Credentials"><input name="credentials" defaultValue={m.credentials ?? ""} className={input} /></Field>
+                <Field label="Photo URL"><input name="photo_url" defaultValue={m.photo_url ?? ""} className={input} /></Field>
+                <Field label="Sort order"><input name="sort_order" type="number" defaultValue={m.sort_order} className={input} /></Field>
+                <div className="flex items-center justify-between gap-2 sm:col-span-2">
+                  <button formAction={actions.teamDelete} className={delBtn}>Delete</button>
+                  <button className={primaryBtn}>Save</button>
+                </div>
+              </form>
+            </Disclosure>
           ))}
-          <form action={actions.teamSave} className="grid grid-cols-12 items-end gap-2 rounded-xl border border-dashed border-white/15 bg-white/[0.02] p-3">
-            <input type="hidden" name="id" value={id} />
-            <div className="col-span-3"><label className={label}>Name</label><input name="name" required className={input} /></div>
-            <div className="col-span-3"><label className={label}>Role</label><input name="role" className={input} /></div>
-            <div className="col-span-3"><label className={label}>Credentials</label><input name="credentials" className={input} /></div>
-            <div className="col-span-2"><label className={label}>Photo URL</label><input name="photo_url" className={input} /></div>
-            <div className="col-span-1"><label className={label}>Order</label><input name="sort_order" type="number" defaultValue={team.length + 1} className={input} /></div>
-            <div className="col-span-12"><button className={btn}>+ Add</button></div>
-          </form>
+          <Disclosure summary={<span className="flex-1 text-sm font-medium text-emerald-300/90">+ Add team member</span>}>
+            <form action={actions.teamSave} className="grid gap-4 sm:grid-cols-2">
+              <input type="hidden" name="id" value={id} />
+              <Field label="Name"><input name="name" required className={input} /></Field>
+              <Field label="Role"><input name="role" className={input} /></Field>
+              <Field label="Credentials"><input name="credentials" className={input} /></Field>
+              <Field label="Photo URL"><input name="photo_url" className={input} /></Field>
+              <Field label="Sort order"><input name="sort_order" type="number" defaultValue={team.length + 1} className={input} /></Field>
+              <div className="flex justify-end sm:col-span-2"><button className={primaryBtn}>Add member</button></div>
+            </form>
+          </Disclosure>
         </div>
       </Card>
     </div>

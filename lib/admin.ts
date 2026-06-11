@@ -5,15 +5,19 @@ import { getAdminUser } from "./supabase-server";
 import { isStaff } from "./staff";
 import { revalidateTenant, revalidateSiteHost } from "./tenant";
 import { starterContent } from "./starter";
+import { sendSupportClientReply } from "./email";
 import type {
   CatalogItem,
   GalleryImage,
   Preset,
   SiteContent,
+  SupportTicket,
   TeamMember,
   Tenant,
   TenantSite,
   Theme,
+  TicketMessage,
+  TicketStatus,
 } from "./types";
 
 // Admin data layer. Uses the SECRET (service_role) client, which bypasses RLS.
@@ -125,6 +129,99 @@ export async function listRecentSubmissions(limit = 100): Promise<AdminSubmissio
   });
 }
 
+// --- support tickets (staff side, service role) ----------------------------
+export interface AdminTicket extends SupportTicket {
+  business_name: string;
+}
+
+export async function listTickets(status?: TicketStatus): Promise<AdminTicket[]> {
+  let q = client()
+    .from("support_tickets")
+    .select("*,tenants(business_name)")
+    .order("last_message_at", { ascending: false });
+  if (status) q = q.eq("status", status);
+  const { data, error } = await q;
+  // Before the 0005 migration is applied the table won't exist yet — degrade
+  // gracefully instead of crashing the console.
+  if (error) return [];
+  return (data ?? []).map((r) => {
+    const row = r as Record<string, unknown>;
+    const tenant = row.tenants as { business_name?: string } | null;
+    return { ...(row as unknown as SupportTicket), business_name: tenant?.business_name ?? "Unknown" };
+  });
+}
+
+export async function getTicketFull(
+  id: string,
+): Promise<{ ticket: AdminTicket; messages: TicketMessage[]; clientEmail: string | null } | null> {
+  const c = client();
+  const { data: row } = await c.from("support_tickets").select("*,tenants(business_name,owner_id)").eq("id", id).maybeSingle();
+  if (!row) return null;
+  const r = row as Record<string, unknown>;
+  const tenant = r.tenants as { business_name?: string; owner_id?: string } | null;
+  const { data: messages } = await c
+    .from("ticket_messages")
+    .select("*")
+    .eq("ticket_id", id)
+    .order("created_at", { ascending: true });
+  let clientEmail: string | null = null;
+  const ownerId = tenant?.owner_id ?? (r.created_by as string | null);
+  if (ownerId) {
+    const { data } = await c.auth.admin.getUserById(ownerId);
+    clientEmail = data?.user?.email ?? null;
+  }
+  return {
+    ticket: { ...(r as unknown as SupportTicket), business_name: tenant?.business_name ?? "Unknown" },
+    messages: (messages ?? []) as TicketMessage[],
+    clientEmail,
+  };
+}
+
+export async function postStaffMessage(ticketId: string, body: string): Promise<void> {
+  const c = client();
+  const user = await getAdminUser();
+  const { error } = await c
+    .from("ticket_messages")
+    .insert({ ticket_id: ticketId, author_role: "staff", author_id: user?.id ?? null, body });
+  if (error) throw new Error(error.message);
+  // Staff replied → awaiting the client.
+  await c
+    .from("support_tickets")
+    .update({ status: "pending", last_message_at: new Date().toISOString(), updated_at: new Date().toISOString() })
+    .eq("id", ticketId);
+
+  const full = await getTicketFull(ticketId);
+  if (full?.clientEmail) {
+    sendSupportClientReply({ to: full.clientEmail, subject: full.ticket.subject, body, ticketId }).catch(() => {});
+  }
+}
+
+export async function setTicketStatus(ticketId: string, status: TicketStatus): Promise<void> {
+  const { error } = await client()
+    .from("support_tickets")
+    .update({ status, updated_at: new Date().toISOString() })
+    .eq("id", ticketId);
+  if (error) throw new Error(error.message);
+}
+
+// Light counts for the sidebar badges (new enquiries + open tickets).
+export async function getNavBadges(): Promise<{ newEnquiries: number; openTickets: number }> {
+  const c = client();
+  const [enq, tick] = await Promise.all([
+    c.from("form_submissions").select("*", { count: "exact", head: true }).eq("status", "new"),
+    c.from("support_tickets").select("*", { count: "exact", head: true }).eq("status", "open"),
+  ]);
+  return { newEnquiries: enq.count ?? 0, openTickets: tick.count ?? 0 };
+}
+
+export async function getOpenTicketCount(): Promise<number> {
+  const { count } = await client()
+    .from("support_tickets")
+    .select("*", { count: "exact", head: true })
+    .eq("status", "open");
+  return count ?? 0;
+}
+
 export async function createTenant(input: {
   business_name: string;
   preset: Preset;
@@ -221,7 +318,7 @@ export async function updateTenantFields(
   fields: Partial<
     Pick<
       Tenant,
-      "business_name" | "meta_title" | "meta_description" | "og_image_url" | "favicon_url" | "analytics_id" | "custom_domain" | "plan"
+      "business_name" | "preset" | "meta_title" | "meta_description" | "og_image_url" | "favicon_url" | "analytics_id" | "custom_domain" | "plan"
     >
   >,
 ) {

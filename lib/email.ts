@@ -263,6 +263,60 @@ export async function sendAdminPaymentNotification({
   });
 }
 
+// Notify staff that a client opened or replied to a support ticket.
+export async function sendSupportStaffNotification({
+  businessName,
+  subject,
+  body,
+  ticketId,
+}: {
+  businessName: string;
+  subject: string;
+  body: string;
+  ticketId: string;
+}) {
+  const recipients = notificationRecipients();
+  if (recipients.length === 0) return;
+  const base = (process.env.NEXT_PUBLIC_SITE_URL || "https://kovasite.com").replace(/\/$/, "");
+  await sendTransactionalEmail({
+    to: recipients,
+    subject: `Support: ${subject} — ${businessName}`,
+    html: renderNotice({
+      eyebrow: "Support ticket",
+      title: escapeHtml(subject),
+      body: `${escapeHtml(businessName)} wrote:<br/><br/>${escapeHtml(body)}`,
+      cta: "Open in admin",
+      link: `${base}/admin/support/${ticketId}`,
+    }),
+  });
+}
+
+// Notify a client that staff replied to their ticket.
+export async function sendSupportClientReply({
+  to,
+  subject,
+  body,
+  ticketId,
+}: {
+  to: string;
+  subject: string;
+  body: string;
+  ticketId: string;
+}) {
+  const base = (process.env.NEXT_PUBLIC_SITE_URL || "https://kovasite.com").replace(/\/$/, "");
+  await sendTransactionalEmail({
+    to: [to],
+    subject: `Re: ${subject}`,
+    html: renderNotice({
+      eyebrow: "Kovasite support",
+      title: "We've replied to your ticket",
+      body: escapeHtml(body),
+      cta: "View conversation",
+      link: `${base}/dashboard/support/${ticketId}`,
+    }),
+  });
+}
+
 async function sendTransactionalEmail({
   to,
   subject,
