@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
-import { motion, useMotionValueEvent, useScroll } from "motion/react";
+import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "motion/react";
 import { FEATURES } from "@/lib/marketing";
 
 // Base44-style stack: numbered text on the left, and on the right a single app
@@ -223,9 +223,9 @@ function MobileFeatureScroll() {
   return (
     // ≈0.95 screen of scroll per feature: snappy, but not a hair-trigger.
     <div ref={ref} className="mt-10 lg:hidden" style={{ height: `${SHOWN.length * 95}vh` }}>
-      <div className="sticky top-0 flex h-[100svh] flex-col justify-center gap-7 py-20">
+      <div className="sticky top-0 flex h-[100svh] flex-col gap-7 py-20">
         {/* progress: one pill per feature, the active one stretched */}
-        <div className="flex items-center gap-2">
+        <div className="flex shrink-0 items-center gap-2">
           {SHOWN.map((s, i) => (
             <span
               key={s.title}
@@ -234,26 +234,33 @@ function MobileFeatureScroll() {
           ))}
         </div>
 
-        {/* Keyed remount (no AnimatePresence exit) swaps the card instantly with a
-            quick fade in — no empty gap while scrolling between features. */}
-        <motion.div
-          key={f.title}
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.22, ease: EASE }}
-          className="flex flex-col gap-7"
-        >
-          <div>
-            <p className="text-sm font-medium tracking-[0.2em] text-white/30">
-              {pad(active + 1)} <span className="text-white/15">/ {pad(SHOWN.length)}</span>
-            </p>
-            <h3 className="mt-3 text-3xl font-semibold tracking-tight">{f.title}</h3>
-            <p className="mt-3 max-w-md text-base leading-relaxed text-white/55">{f.body}</p>
-          </div>
-          <div className="h-[42vh] min-h-[300px]">
-            <Visual />
-          </div>
-        </motion.div>
+        {/* Cards crossfade in place: the outgoing card slides out while the next
+            slides in over the same spot (absolute, so no layout gap). Default
+            AnimatePresence (not mode="wait") overlaps them, so a card is always
+            on screen — the animation is back without the blank gap. */}
+        <div className="relative flex-1">
+          <AnimatePresence initial={false}>
+            <motion.div
+              key={f.title}
+              initial={{ opacity: 0, y: 26 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -26 }}
+              transition={{ duration: 0.45, ease: EASE }}
+              className="absolute inset-0 flex flex-col justify-center gap-7"
+            >
+              <div>
+                <p className="text-sm font-medium tracking-[0.2em] text-white/30">
+                  {pad(active + 1)} <span className="text-white/15">/ {pad(SHOWN.length)}</span>
+                </p>
+                <h3 className="mt-3 text-3xl font-semibold tracking-tight">{f.title}</h3>
+                <p className="mt-3 max-w-md text-base leading-relaxed text-white/55">{f.body}</p>
+              </div>
+              <div className="h-[42vh] min-h-[300px]">
+                <Visual />
+              </div>
+            </motion.div>
+          </AnimatePresence>
+        </div>
       </div>
     </div>
   );
