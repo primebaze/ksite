@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Reveal } from "@/components/motion/Reveal";
-import { RotatingWord } from "@/components/motion/RotatingWord";
+import { BusinessesRotator } from "@/components/motion/BusinessesRotator";
 import { HeroShowcase } from "@/components/HeroShowcase";
 import { ScrollZoom } from "@/components/ScrollZoom";
 import { LiveExamples } from "@/components/LiveExamples";
@@ -14,10 +14,11 @@ export default function Home() {
       <section className="relative border-b border-white/5">
         <div className="mx-auto max-w-3xl px-6 pt-24 pb-10 text-center sm:pt-28 sm:pb-20">
           <Reveal>
-            <h1 className="text-5xl font-semibold leading-[1.02] tracking-tight sm:text-7xl">
-              Websites for
-              <br />
-              <RotatingWord words={ROTATING_WORDS} />
+            <h1 className="font-semibold leading-[1.05] tracking-tight">
+              <span className="block text-5xl sm:text-7xl">Website</span>
+              <span className="mt-1 block text-[1.7rem] leading-tight sm:mt-0 sm:text-7xl">
+                <BusinessesRotator words={ROTATING_WORDS} />
+              </span>
             </h1>
           </Reveal>
           <Reveal delay={0.1}>

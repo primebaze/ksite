@@ -3,15 +3,17 @@
 export const APP_DOMAIN = process.env.NEXT_PUBLIC_APP_DOMAIN ?? "localhost";
 export const SITE_BASE = process.env.NODE_ENV === "production" ? APP_DOMAIN : "localhost:3000";
 
+// Types shown after the "Businesses:" label in the hero (capitalised to match,
+// kept short so "Businesses: <type>" fits one line on a phone).
 export const ROTATING_WORDS = [
-  "restaurants",
-  "salons",
-  "clinics",
-  "contractors",
-  "cafés",
-  "barbers",
-  "gyms",
-  "studios",
+  "Cafés",
+  "Salons",
+  "Gyms",
+  "Barbers",
+  "Clinics",
+  "Shops",
+  "Studios",
+  "Garages",
 ];
 
 export const NAV_LINKS = [
