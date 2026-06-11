@@ -80,5 +80,6 @@ export const FAQS = [
   { q: "Is there a contract?", a: "No. Cancel anytime. We earn your business by making the site genuinely good, not by locking you in." },
   { q: "Do I own my domain?", a: "Yes. We manage it for you, and if you ever leave we hand it over cleanly." },
   { q: "How fast can I go live?", a: "About 5 minutes: add your business details, services, hours and a few photos, and your site is live on your own domain." },
-  { q: "What if I want changes?", a: "Text or email us. Edits are included; Standard and Premium get priority turnaround." },
+  { q: "Do you offer annual billing?", a: "Yes. Pay yearly and get 2 months free — £990 a year (works out at £82.50/month) instead of £1,188. Same plan, everything included." },
+  { q: "What if I want changes?", a: "Tap any text on your live site to edit it yourself in seconds, or text/email us and we'll make the change for you. Monthly edits are included." },
 ];
