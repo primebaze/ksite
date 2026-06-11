@@ -1,34 +1,43 @@
 import type { TicketMessage } from "@/lib/types";
 
 const fmt = (iso: string) =>
-  new Date(iso).toLocaleString("en-GB", { day: "numeric", month: "short", hour: "2-digit", minute: "2-digit" });
+  new Date(iso).toLocaleString("en-GB", { day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit" });
 
-// Renders a ticket conversation. `mineRole` is the role of the viewer, so their
-// own messages align right and read as "sent".
+function PersonIcon() {
+  return (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" className="size-4" aria-hidden>
+      <path d="M4 20a8 8 0 0116 0M12 11a4 4 0 100-8 4 4 0 000 8z" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+// Renders a ticket as an attributed conversation thread (like a help-desk
+// ticket, not a chat). Each entry shows who wrote it, when, and the body in a
+// full-width block. `mineRole` only affects the "You" label.
 export function TicketThread({ messages, mineRole }: { messages: TicketMessage[]; mineRole: "client" | "staff" }) {
   if (messages.length === 0) return <p className="text-sm text-white/40">No messages yet.</p>;
   return (
-    <div className="space-y-4">
+    <ol className="divide-y divide-white/[0.07]">
       {messages.map((m) => {
-        const mine = m.author_role === mineRole;
+        const staff = m.author_role === "staff";
+        const name = m.author_role === mineRole ? "You" : staff ? "Kovasite Support" : "Client";
         return (
-          <div key={m.id} className={`flex ${mine ? "justify-end" : "justify-start"}`}>
-            <div className="max-w-[80%]">
-              <div
-                className={`whitespace-pre-wrap rounded-2xl px-4 py-3 text-sm leading-relaxed ${
-                  mine ? "bg-white text-black" : "border border-white/10 bg-white/[0.04] text-white/90"
-                }`}
-              >
-                {m.body}
-              </div>
-              <p className={`mt-1 text-[11px] text-white/35 ${mine ? "text-right" : "text-left"}`}>
-                {mine ? "You" : m.author_role === "staff" ? "Kovasite support" : "Client"} · {fmt(m.created_at)}
-              </p>
+          <li key={m.id} className="flex gap-3.5 py-5 first:pt-0 last:pb-0">
+            <div className={`grid size-9 shrink-0 place-items-center rounded-full text-xs font-bold ${staff ? "bg-emerald-500 text-black" : "bg-white/10 text-white/70"}`}>
+              {staff ? "K" : <PersonIcon />}
             </div>
-          </div>
+            <div className="min-w-0 flex-1">
+              <div className="flex flex-wrap items-center gap-x-2 gap-y-1">
+                <span className="text-sm font-semibold text-white">{name}</span>
+                {staff && <span className="rounded-full bg-emerald-400/15 px-2 py-0.5 text-[11px] font-medium text-emerald-300">Support</span>}
+                <span className="text-xs text-white/35">{fmt(m.created_at)}</span>
+              </div>
+              <div className="mt-1.5 whitespace-pre-wrap text-sm leading-relaxed text-white/80">{m.body}</div>
+            </div>
+          </li>
         );
       })}
-    </div>
+    </ol>
   );
 }
 

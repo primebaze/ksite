@@ -15,6 +15,8 @@ export default async function AdminTicket({ params }: { params: Promise<{ id: st
   const data = await getTicketFull(id);
   if (!data) notFound();
   const { ticket, messages, clientEmail } = data;
+  const ref = `#${ticket.id.slice(0, 8).toUpperCase()}`;
+  const opened = new Date(ticket.created_at).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
 
   return (
     <div className="mx-auto max-w-3xl">
@@ -24,8 +26,9 @@ export default async function AdminTicket({ params }: { params: Promise<{ id: st
         <div className="min-w-0">
           <h1 className="text-2xl font-semibold">{ticket.subject}</h1>
           <p className="mt-1 text-sm text-white/45">
+            Ticket {ref} ·{" "}
             <Link href={`/kmanageradmin/${ticket.tenant_id}`} className="text-emerald-400 hover:underline">{ticket.business_name}</Link>
-            {clientEmail && <> · {clientEmail}</>}
+            {clientEmail && <> · {clientEmail}</>} · opened {opened}
           </p>
         </div>
         <TicketStatusBadge status={ticket.status} />

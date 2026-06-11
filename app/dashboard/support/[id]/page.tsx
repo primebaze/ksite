@@ -12,12 +12,17 @@ export default async function ClientTicket({ params }: { params: Promise<{ id: s
   if (!data) notFound();
   const { ticket, messages } = data;
   const closed = ticket.status === "closed";
+  const ref = `#${ticket.id.slice(0, 8).toUpperCase()}`;
+  const opened = new Date(ticket.created_at).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
 
   return (
     <div className="mx-auto max-w-3xl">
       <Link href="/dashboard/support" className="text-sm text-white/50 hover:text-white">← All requests</Link>
-      <div className="mt-3 flex flex-wrap items-center justify-between gap-3">
-        <h1 className="text-2xl font-semibold tracking-tight">{ticket.subject}</h1>
+      <div className="mt-3 flex flex-wrap items-start justify-between gap-3">
+        <div>
+          <h1 className="text-2xl font-semibold tracking-tight">{ticket.subject}</h1>
+          <p className="mt-1 text-sm text-white/40">Ticket {ref} · opened {opened}</p>
+        </div>
         <TicketStatusBadge status={ticket.status} />
       </div>
 
