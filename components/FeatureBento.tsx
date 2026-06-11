@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
+import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "motion/react";
 import { FEATURES } from "@/lib/marketing";
 
 // Base44-style stack: numbered text on the left, and on the right a single app
@@ -201,42 +202,96 @@ const WINDOWS: Record<string, () => React.ReactNode> = {
 
 const pad = (n: number) => String(n).padStart(2, "0");
 const SHOWN = FEATURES.slice(0, 4);
+const EASE = [0.22, 0.61, 0.36, 1] as const;
+
+// Mobile: a pinned scroll-story. The section is tall; its inner card pins to the
+// screen and the active feature (number, title, body + live window) steps from
+// 01 → 04 as you scroll, the same fixed-scroll feel as the hero and the
+// "See what you get" section.
+function MobileFeatureScroll() {
+  const ref = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end end"] });
+  const [active, setActive] = useState(0);
+  useMotionValueEvent(scrollYProgress, "change", (p) => {
+    const idx = Math.max(0, Math.min(SHOWN.length - 1, Math.floor(p * SHOWN.length - 1e-4)));
+    setActive(idx);
+  });
+
+  const f = SHOWN[active];
+  const Visual = WINDOWS[f.icon] ?? DesignWindow;
+
+  return (
+    <div ref={ref} className="mt-10 lg:hidden" style={{ height: `${SHOWN.length * 100}vh` }}>
+      <div className="sticky top-0 flex h-[100svh] flex-col justify-center gap-7 py-20">
+        {/* progress: one pill per feature, the active one stretched */}
+        <div className="flex items-center gap-2">
+          {SHOWN.map((s, i) => (
+            <span
+              key={s.title}
+              className={`h-1 rounded-full transition-all duration-300 ${i === active ? "w-8 bg-emerald-400" : "w-3 bg-white/15"}`}
+            />
+          ))}
+        </div>
+
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={f.title}
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -18 }}
+            transition={{ duration: 0.4, ease: EASE }}
+            className="flex flex-col gap-7"
+          >
+            <div>
+              <p className="text-sm font-medium tracking-[0.2em] text-white/30">
+                {pad(active + 1)} <span className="text-white/15">/ {pad(SHOWN.length)}</span>
+              </p>
+              <h3 className="mt-3 text-3xl font-semibold tracking-tight">{f.title}</h3>
+              <p className="mt-3 max-w-md text-base leading-relaxed text-white/55">{f.body}</p>
+            </div>
+            <div className="h-[42vh] min-h-[300px]">
+              <Visual />
+            </div>
+          </motion.div>
+        </AnimatePresence>
+      </div>
+    </div>
+  );
+}
 
 export function FeatureBento() {
   return (
-    <div className="mt-14 grid gap-12 lg:grid-cols-2 lg:gap-20">
-      {/* LEFT: numbered text */}
-      <div>
-        {SHOWN.map((f, i) => {
-          const Visual = WINDOWS[f.icon] ?? DesignWindow;
-          return (
-            <div key={f.title} className="flex flex-col justify-center py-12 lg:min-h-[54vh] lg:py-0">
+    <>
+      {/* Desktop: numbered text scrolls past a window that pins at the same spot */}
+      <div className="mt-14 hidden gap-12 lg:grid lg:grid-cols-2 lg:gap-20">
+        {/* LEFT: numbered text */}
+        <div>
+          {SHOWN.map((f, i) => (
+            <div key={f.title} className="flex min-h-[54vh] flex-col justify-center">
               <p className="text-sm font-medium tracking-[0.2em] text-white/30">
                 {pad(i + 1)} <span className="text-white/15">/ {pad(SHOWN.length)}</span>
               </p>
               <h3 className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl">{f.title}</h3>
               <p className="mt-4 max-w-md text-base leading-relaxed text-white/55">{f.body}</p>
-              {/* small screens: window under the text — sizes to its content
-                  (no fixed height) so there's no empty gap or clipping */}
-              <div className="mt-9 lg:hidden">
+            </div>
+          ))}
+        </div>
+
+        {/* RIGHT: app window that fills the card; each pins at the same spot */}
+        <div>
+          {SHOWN.map((f) => {
+            const Visual = WINDOWS[f.icon] ?? DesignWindow;
+            return (
+              <div key={f.title} className="sticky top-28 h-[54vh]">
                 <Visual />
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
+        </div>
       </div>
 
-      {/* RIGHT: app window that fills the card; each pins at the same spot */}
-      <div className="hidden lg:block">
-        {SHOWN.map((f) => {
-          const Visual = WINDOWS[f.icon] ?? DesignWindow;
-          return (
-            <div key={f.title} className="sticky top-28 h-[54vh]">
-              <Visual />
-            </div>
-          );
-        })}
-      </div>
-    </div>
+      {/* Mobile: the same content as a pinned, scroll-driven story */}
+      <MobileFeatureScroll />
+    </>
   );
 }
