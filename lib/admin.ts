@@ -41,17 +41,88 @@ export interface TenantListRow {
   preset: Preset;
   subdomain: string;
   custom_domain: string | null;
+  domain_status: string;
   published: boolean;
+  plan: string | null;
   plan_status: string;
+  created_at: string;
 }
 
 export async function listTenants(): Promise<TenantListRow[]> {
   const { data, error } = await client()
     .from("tenants")
-    .select("id,business_name,preset,subdomain,custom_domain,published,plan_status")
+    .select("id,business_name,preset,subdomain,custom_domain,domain_status,published,plan,plan_status,created_at")
     .order("created_at", { ascending: false });
   if (error) throw new Error(error.message);
   return (data ?? []) as TenantListRow[];
+}
+
+export interface AdminStats {
+  total: number;
+  live: number;
+  drafts: number;
+  domainsLive: number;
+  enquiries: number;
+  newEnquiries: number;
+}
+
+// Headline counts for the admin overview. Uses count-only queries (no rows).
+export async function getAdminStats(): Promise<AdminStats> {
+  const c = client();
+  const head = { count: "exact" as const, head: true };
+  const [total, live, domainsLive, enquiries, newEnquiries] = await Promise.all([
+    c.from("tenants").select("*", head),
+    c.from("tenants").select("*", head).eq("published", true),
+    c.from("tenants").select("*", head).eq("domain_status", "active"),
+    c.from("form_submissions").select("*", head),
+    c.from("form_submissions").select("*", head).eq("status", "new"),
+  ]);
+  const n = (r: { count: number | null }) => r.count ?? 0;
+  return {
+    total: n(total),
+    live: n(live),
+    drafts: n(total) - n(live),
+    domainsLive: n(domainsLive),
+    enquiries: n(enquiries),
+    newEnquiries: n(newEnquiries),
+  };
+}
+
+export interface AdminSubmission {
+  id: string;
+  tenant_id: string;
+  business_name: string;
+  kind: "booking" | "contact";
+  reply_to: string | null;
+  status: string;
+  created_at: string;
+  lines: { label: string; value: string }[];
+}
+
+// Recent form submissions across all tenants, newest first, with the business
+// name joined in. Powers the admin Enquiries inbox.
+export async function listRecentSubmissions(limit = 100): Promise<AdminSubmission[]> {
+  const { data, error } = await client()
+    .from("form_submissions")
+    .select("id,tenant_id,kind,reply_to,status,created_at,payload,tenants(business_name)")
+    .order("created_at", { ascending: false })
+    .limit(limit);
+  if (error) throw new Error(error.message);
+  return (data ?? []).map((r) => {
+    const row = r as Record<string, unknown>;
+    const tenant = row.tenants as { business_name?: string } | null;
+    const payload = (row.payload ?? {}) as { lines?: { label: string; value: string }[] };
+    return {
+      id: String(row.id),
+      tenant_id: String(row.tenant_id),
+      business_name: tenant?.business_name ?? "Unknown",
+      kind: row.kind === "booking" ? "booking" : "contact",
+      reply_to: (row.reply_to as string | null) ?? null,
+      status: String(row.status ?? "new"),
+      created_at: String(row.created_at),
+      lines: Array.isArray(payload.lines) ? payload.lines : [],
+    };
+  });
 }
 
 export async function createTenant(input: {

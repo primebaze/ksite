@@ -15,9 +15,15 @@ export default async function DashLayout({ children }: { children: React.ReactNo
     <div className="min-h-screen bg-stone-50">
       <header className="border-b border-stone-200 bg-white">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-3">
-          <Link href="/admin" className="font-semibold">
-            Kovasite <span className="text-stone-400">admin</span>
-          </Link>
+          <div className="flex items-center gap-6">
+            <Link href="/admin" className="font-semibold">
+              Kovasite <span className="text-stone-400">admin</span>
+            </Link>
+            <nav className="flex items-center gap-4 text-sm text-stone-500">
+              <Link href="/admin" className="hover:text-stone-900">Clients</Link>
+              <Link href="/admin/enquiries" className="hover:text-stone-900">Enquiries</Link>
+            </nav>
+          </div>
           <div className="flex items-center gap-4 text-sm text-stone-500">
             <span>{user.email}</span>
             <form action={logout}>
