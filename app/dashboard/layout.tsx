@@ -4,6 +4,7 @@ import { getMyTenant, getMyUser } from "@/lib/my-site";
 import { isStaff } from "@/lib/staff";
 import { MobileTabBar } from "@/components/MobileTabBar";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import { sessionExpired } from "@/lib/session";
 import { clientLogout } from "./actions";
 
 export const metadata: import("next").Metadata = { robots: { index: false, follow: false } };
@@ -11,6 +12,8 @@ export const metadata: import("next").Metadata = { robots: { index: false, follo
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const user = await getMyUser();
   if (!user) redirect("/login");
+  // Time-box: force re-login once the session exceeds the max age.
+  if (sessionExpired(user.last_sign_in_at)) redirect("/auth/signout");
   // Staff use the operator console, not the client dashboard.
   if (isStaff(user.email)) redirect("/kmanageradmin");
   // Suspended accounts are blocked from the dashboard (site is also offline).
