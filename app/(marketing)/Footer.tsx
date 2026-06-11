@@ -4,6 +4,7 @@ import { NAV_LINKS } from "@/lib/marketing";
 const COMPANY_LINKS = [
   { href: "/get-started", label: "Get started" },
   { href: "/samples", label: "Browse samples" },
+  { href: "/support", label: "Support" },
   { href: "/login", label: "Sign in" },
   { href: "/admin", label: "Admin" },
 ];

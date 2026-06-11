@@ -22,6 +22,7 @@ export const NAV_LINKS = [
   { href: "/how-it-works", label: "How it works" },
   { href: "/samples", label: "Samples" },
   { href: "/pricing", label: "Pricing" },
+  { href: "/support", label: "Support" },
 ];
 
 // `icon` is an id resolved to an SVG in the marketing pages.
