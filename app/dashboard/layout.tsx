@@ -2,6 +2,7 @@ import Link from "next/link";
 import { redirect } from "next/navigation";
 import { getMyTenant, getMyUser } from "@/lib/my-site";
 import { isStaff } from "@/lib/staff";
+import { MobileTabBar } from "@/components/MobileTabBar";
 import { clientLogout } from "./actions";
 
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
@@ -61,21 +62,20 @@ export default async function DashboardLayout({ children }: { children: React.Re
         </div>
       </aside>
 
-      <header className="sticky top-0 z-50 border-b border-white/10 bg-black/80 backdrop-blur-xl lg:hidden">
-        <nav className="flex items-center justify-between px-5 py-4">
+      {/* Mobile top bar (slim — nav lives in the bottom tab bar) */}
+      <header className="sticky top-0 z-40 border-b border-white/10 bg-black/70 backdrop-blur-xl lg:hidden">
+        <div className="flex items-center justify-center px-5 py-3.5">
           <Link href="/dashboard" className="flex items-center gap-2 font-semibold tracking-tight">
-            <span className="grid h-8 w-8 place-items-center rounded-lg bg-white text-xs font-bold text-black">K</span>
-            Dashboard
+            <span className="grid h-7 w-7 place-items-center rounded-lg bg-white text-xs font-bold text-black">K</span>
+            Kovasite
           </Link>
-          <form action={clientLogout}>
-            <button className="rounded-lg border border-white/15 px-3 py-1.5 text-sm font-medium text-white/70">
-              Sign out
-            </button>
-          </form>
-        </nav>
+        </div>
       </header>
 
-      <main className="px-5 py-8 lg:ml-72 lg:px-12 lg:py-10">{children}</main>
+      <main className="px-5 py-7 pb-28 lg:ml-72 lg:px-12 lg:py-10 lg:pb-10">{children}</main>
+
+      {/* App-style bottom tab bar (mobile) */}
+      <MobileTabBar onSignOut={clientLogout} />
     </div>
   );
 }

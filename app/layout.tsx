@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Fraunces, Space_Grotesk, Inter } from "next/font/google";
 import { NavigationFeedback } from "@/components/NavigationFeedback";
 import "./globals.css";
@@ -21,6 +21,15 @@ const inter = Inter({ variable: "--font-inter", subsets: ["latin"], display: "sw
 export const metadata: Metadata = {
   title: "Kovasite",
   description: "Websites as a service.",
+};
+
+// Explicit viewport so mobile renders at device width and iOS safe-area insets
+// (used by the dashboard bottom tab bar) resolve correctly.
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
+  themeColor: "#000000",
 };
 
 export default function RootLayout({
