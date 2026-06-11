@@ -54,9 +54,9 @@ export async function claimDomain(formData: FormData) {
 
   // expectedPrice is required by Vercel; the charge goes to your Vercel account.
   const purchase = await buyDomain(domain, price.price!);
-  // Log Vercel's exact answer so we can see why a buy didn't register (e.g.
-  // missing payment method / registrar not enabled) instead of guessing.
-  console.log("[domain buy]", domain, "status=", purchase.status, "body=", JSON.stringify(purchase.data));
+  // Log only the registrar status + error code so we can diagnose a failed buy
+  // without writing registrant PII / full order bodies into the logs.
+  console.log("[domain buy]", domain, "status=", purchase.status, "ok=", purchase.ok, "err=", purchase.data?.error ?? null);
   // Treat HTTP-ok-but-error-body as failure too: Vercel can return 2xx with an
   // error object, which previously slipped through and left the domain merely
   // "attached" (asking for DNS) instead of actually registered.
@@ -77,7 +77,7 @@ export async function claimDomain(formData: FormData) {
     const order = await getRegistrarOrder(orderId).catch(() => null);
     if (order) {
       orderStatus = String(order.data?.status ?? order.data?.state ?? "") || undefined;
-      console.log("[domain order]", domain, orderId, "http=", order.status, "body=", JSON.stringify(order.data));
+      console.log("[domain order]", domain, orderId, "http=", order.status, "status=", orderStatus ?? null);
       orderFailed = order.ok && registrarOrderFailed(order.data);
     }
   }
