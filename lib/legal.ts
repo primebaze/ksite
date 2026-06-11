@@ -13,6 +13,8 @@ export const LEGAL = {
   address: process.env.LEGAL_ADDRESS || "",
   /** Privacy / contact email. */
   email: process.env.LEGAL_EMAIL || "hello@kovasite.com",
+  /** Complaints / legal email (kept separate from general contact). */
+  complaintsEmail: process.env.LEGAL_COMPLAINTS_EMAIL || "legal@kovasite.com",
   /** Public website shown in the policy. */
   website: process.env.LEGAL_WEBSITE || "kovasite.com",
   governingLaw: process.env.LEGAL_GOVERNING_LAW || "England and Wales",
