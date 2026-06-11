@@ -35,7 +35,7 @@ function Caption({
   const y = useTransform(progress, [start, end], [60, -60]);
   return (
     <motion.div style={{ opacity, y }} className="pointer-events-none absolute inset-0 flex items-center justify-center px-6">
-      <p className="max-w-3xl text-center text-4xl font-semibold tracking-tight text-white drop-shadow-[0_2px_30px_rgba(0,0,0,0.6)] sm:text-6xl">
+      <p className="max-w-3xl text-center text-4xl font-semibold tracking-tight text-ink drop-shadow-[0_2px_30px_rgba(0,0,0,0.6)] sm:text-6xl">
         {children}
       </p>
     </motion.div>
@@ -109,7 +109,7 @@ export function ScrollZoom({ children }: { children: ReactNode }) {
         </motion.div>
 
         {/* Legibility scrim over the filled reel / backdrop */}
-        <motion.div style={{ opacity: scrim }} className="pointer-events-none absolute inset-0 bg-black" />
+        <motion.div style={{ opacity: scrim }} className="pointer-events-none absolute inset-0 bg-paper" />
 
         {/* Scroll-driven story */}
         {CAPTIONS.map((c) => (
@@ -123,17 +123,17 @@ export function ScrollZoom({ children }: { children: ReactNode }) {
           style={{ opacity: ctaOpacity, y: ctaY }}
           className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center px-6 text-center"
         >
-          <p className="mx-auto max-w-md text-lg leading-relaxed text-white/70">
+          <p className="mx-auto max-w-md text-lg leading-relaxed text-ink/70">
             Design, hosting, a free domain and booking, all done for you. One flat price from £99 a month.
           </p>
           <Link
             href="/get-started"
-            className="pointer-events-auto mt-8 inline-flex items-center gap-2 rounded-xl bg-white px-8 py-4 text-sm font-semibold text-black transition hover:bg-white/90"
+            className="pointer-events-auto mt-8 inline-flex items-center gap-2 rounded-xl bg-ink px-8 py-4 text-sm font-semibold text-paper transition hover:bg-ink/90"
           >
             Get started
             <span aria-hidden>→</span>
           </Link>
-          <p className="mt-4 text-xs text-white/45">No setup fee · No contract · Cancel anytime</p>
+          <p className="mt-4 text-xs text-ink/45">No setup fee · No contract · Cancel anytime</p>
         </motion.div>
       </div>
     </div>

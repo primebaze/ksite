@@ -54,15 +54,15 @@ export function Assembling() {
   }, [router]);
 
   return (
-    <div className="relative w-full overflow-hidden rounded-[2rem] border border-white/10 bg-[radial-gradient(circle_at_top,rgba(16,185,129,0.18),transparent_34%),linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0.02))] p-6 shadow-[0_40px_140px_-60px_rgba(16,185,129,0.9)] sm:p-10">
+    <div className="relative w-full overflow-hidden rounded-[2rem] border border-ink/10 bg-[radial-gradient(circle_at_top,rgba(16,185,129,0.18),transparent_34%),linear-gradient(180deg,rgba(255,255,255,0.08),rgba(255,255,255,0.02))] p-6 shadow-[0_40px_140px_-60px_rgba(16,185,129,0.9)] sm:p-10">
       <div className="absolute inset-x-10 top-0 h-px bg-gradient-to-r from-transparent via-emerald-300/60 to-transparent" />
       <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.35em] text-emerald-300/80">Launch in progress</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.35em] text-accent/80">Launch in progress</p>
           <h1 className="mt-5 text-4xl font-semibold tracking-tight sm:text-5xl">
             {done ? "Your site is live." : "We are taking your site live."}
           </h1>
-          <p className="mt-4 max-w-md text-base leading-relaxed text-white/58">
+          <p className="mt-4 max-w-md text-base leading-relaxed text-ink/58">
             {done
               ? "Everything is connected. Your dashboard is ready."
               : "Your payment is confirmed and Kovasite is publishing the site, securing hosting, and preparing your domain controls."}
@@ -76,7 +76,7 @@ export function Assembling() {
                 </div>
               ) : (
                 <>
-                  <div className="absolute inset-0 rounded-full border border-white/10" />
+                  <div className="absolute inset-0 rounded-full border border-ink/10" />
                   <div className="absolute inset-2 rounded-full border border-emerald-300/20 bg-emerald-300/5" />
                   <div className="absolute inset-0 animate-spin rounded-full border-2 border-transparent border-t-emerald-300" />
                   <div className="absolute inset-5 rounded-full bg-emerald-300 shadow-[0_0_40px_rgba(16,185,129,0.8)]" />
@@ -84,8 +84,8 @@ export function Assembling() {
               )}
             </div>
             <div>
-              <p className="text-sm font-medium text-white">{STEPS[stepIdx]}</p>
-              <div className="mt-3 h-2 w-48 overflow-hidden rounded-full bg-white/10">
+              <p className="text-sm font-medium text-ink">{STEPS[stepIdx]}</p>
+              <div className="mt-3 h-2 w-48 overflow-hidden rounded-full bg-ink/10">
                 <div
                   className="h-full rounded-full bg-emerald-300 transition-all duration-700"
                   style={{ width: `${done ? 100 : ((stepIdx + 1) / STEPS.length) * 100}%` }}
@@ -95,9 +95,9 @@ export function Assembling() {
           </div>
         </div>
 
-        <div className="rounded-3xl border border-white/10 bg-black/40 p-4 shadow-2xl backdrop-blur">
-          <div className="rounded-2xl border border-white/10 bg-neutral-950">
-            <div className="flex items-center justify-between border-b border-white/10 px-4 py-3">
+        <div className="rounded-3xl border border-ink/10 bg-paper/40 p-4 shadow-2xl backdrop-blur">
+          <div className="rounded-2xl border border-ink/10 bg-panel">
+            <div className="flex items-center justify-between border-b border-ink/10 px-4 py-3">
               <div className="flex items-center gap-2">
                 <span className="h-2.5 w-2.5 rounded-full bg-red-400/70" />
                 <span className="h-2.5 w-2.5 rounded-full bg-amber-300/70" />
@@ -114,13 +114,13 @@ export function Assembling() {
                     key={s}
                     className={`flex items-center gap-3 rounded-xl border px-4 py-3 text-sm transition ${
                       complete
-                        ? "border-emerald-300/25 bg-emerald-300/10 text-white"
+                        ? "border-emerald-300/25 bg-emerald-300/10 text-ink"
                         : active
-                          ? "border-white/20 bg-white/[0.06] text-white"
-                          : "border-white/8 bg-white/[0.02] text-white/35"
+                          ? "border-ink/20 bg-ink/[0.06] text-ink"
+                          : "border-ink/8 bg-ink/[0.02] text-ink/35"
                     }`}
                   >
-                    <span className={`grid h-7 w-7 place-items-center rounded-full border text-xs ${complete ? "border-emerald-300 bg-emerald-300 text-black" : "border-white/20"}`}>
+                    <span className={`grid h-7 w-7 place-items-center rounded-full border text-xs ${complete ? "border-emerald-300 bg-emerald-300 text-neutral-950" : "border-ink/20"}`}>
                       {complete ? "✓" : i + 1}
                     </span>
                     <span>{s}</span>

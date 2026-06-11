@@ -19,8 +19,8 @@ export function BusinessesRotator({ words }: { words: string[] }) {
 
   return (
     <span className="inline-flex items-baseline justify-center whitespace-nowrap">
-      <span className="text-white/90">For Businesses:</span>
-      <span className="relative ml-[0.32em] inline-grid overflow-hidden pb-[0.12em] text-emerald-400">
+      <span className="text-ink/90">For Businesses:</span>
+      <span className="relative ml-[0.32em] inline-grid overflow-hidden pb-[0.12em] text-accent">
         {/* invisible sizer holds the slot at the widest word's width so the line
             never reflows and nothing else moves as words scroll through. */}
         <span className="invisible col-start-1 row-start-1 whitespace-nowrap" aria-hidden>

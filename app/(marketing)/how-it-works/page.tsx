@@ -43,22 +43,22 @@ export default function HowItWorksPage() {
       <section className="mx-auto max-w-6xl px-6 py-20 sm:py-24">
         <div className="relative grid gap-10 md:grid-cols-3 md:gap-8">
           {/* connecting line (desktop) */}
-          <div className="pointer-events-none absolute inset-x-0 top-[2.1rem] hidden h-px bg-gradient-to-r from-transparent via-white/15 to-transparent md:block" />
+          <div className="pointer-events-none absolute inset-x-0 top-[2.1rem] hidden h-px bg-gradient-to-r from-transparent via-ink/15 to-transparent md:block" />
           {STEPS.map((s, i) => (
             <Reveal key={s.n} delay={i * 0.1}>
               <div className="relative flex flex-col">
                 <div className="flex items-center gap-4">
-                  <span className="relative z-10 grid h-[4.25rem] w-[4.25rem] shrink-0 place-items-center rounded-2xl border border-emerald-400/25 bg-[#0a0a0a] text-emerald-400 shadow-[0_0_40px_-12px_rgba(16,185,129,0.6)]">
+                  <span className="relative z-10 grid h-[4.25rem] w-[4.25rem] shrink-0 place-items-center rounded-2xl border border-emerald-400/25 bg-panel text-accent shadow-[0_0_40px_-12px_rgba(16,185,129,0.6)]">
                     <svg className="h-7 w-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                       {STEP_ICONS[i]}
                     </svg>
                   </span>
-                  <span className="bg-gradient-to-br from-white/35 to-white/5 bg-clip-text font-mono text-4xl font-bold tracking-tight text-transparent">
+                  <span className="bg-gradient-to-br from-ink/35 to-ink/5 bg-clip-text font-mono text-4xl font-bold tracking-tight text-transparent">
                     {s.n}
                   </span>
                 </div>
                 <h3 className="mt-6 text-xl font-semibold tracking-tight">{s.title}</h3>
-                <p className="mt-3 text-sm leading-relaxed text-white/55">{s.body}</p>
+                <p className="mt-3 text-sm leading-relaxed text-ink/55">{s.body}</p>
               </div>
             </Reveal>
           ))}
@@ -66,33 +66,33 @@ export default function HowItWorksPage() {
 
         {/* timing reassurance */}
         <Reveal delay={0.1}>
-          <p className="mt-14 text-center text-sm text-white/40">
-            Your site is live on your own custom domain in about <span className="text-white/70">5 minutes</span>.
+          <p className="mt-14 text-center text-sm text-ink/40">
+            Your site is live on your own custom domain in about <span className="text-ink/70">5 minutes</span>.
           </p>
         </Reveal>
       </section>
 
       {/* What you never have to do */}
-      <section className="border-t border-white/5 bg-[#070707]">
+      <section className="border-t border-ink/5 bg-panel-2">
         <div className="mx-auto max-w-6xl px-6 py-20 sm:py-24">
           <Reveal>
-            <p className="text-xs font-medium uppercase tracking-[0.25em] text-emerald-400/80">Hands off</p>
+            <p className="text-xs font-medium uppercase tracking-[0.25em] text-accent/80">Hands off</p>
             <h2 className="mt-3 max-w-2xl text-3xl font-semibold tracking-tight sm:text-4xl">
               What you never have to do.
             </h2>
           </Reveal>
-          <div className="mt-12 grid gap-px overflow-hidden rounded-3xl border border-white/10 bg-white/10 sm:grid-cols-2">
+          <div className="mt-12 grid gap-px overflow-hidden rounded-3xl border border-ink/10 bg-ink/10 sm:grid-cols-2">
             {NEVER.map((n, i) => (
-              <Reveal key={n.t} delay={(i % 2) * 0.06} className="bg-[#070707]">
+              <Reveal key={n.t} delay={(i % 2) * 0.06} className="bg-panel-2">
                 <div className="flex h-full items-start gap-4 p-7">
-                  <span className="mt-0.5 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-white/10 bg-white/[0.03] text-white/40">
+                  <span className="mt-0.5 inline-flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-ink/10 bg-ink/[0.03] text-ink/40">
                     <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.4} strokeLinecap="round" aria-hidden>
                       <path d="M6 6l12 12M18 6L6 18" />
                     </svg>
                   </span>
                   <div>
                     <h3 className="font-semibold">{n.t}</h3>
-                    <p className="mt-1.5 text-sm leading-relaxed text-white/50">{n.d}</p>
+                    <p className="mt-1.5 text-sm leading-relaxed text-ink/50">{n.d}</p>
                   </div>
                 </div>
               </Reveal>

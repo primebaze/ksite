@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { getMyTenant, getMyUser } from "@/lib/my-site";
 import { isStaff } from "@/lib/staff";
 import { MobileTabBar } from "@/components/MobileTabBar";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { clientLogout } from "./actions";
 
 export const metadata: import("next").Metadata = { robots: { index: false, follow: false } };
@@ -31,10 +32,10 @@ export default async function DashboardLayout({ children }: { children: React.Re
   ];
 
   return (
-    <div className="min-h-screen bg-black font-sans text-white antialiased">
-      <aside className="fixed inset-y-0 left-0 hidden w-72 border-r border-white/10 bg-neutral-950 px-7 py-8 lg:flex lg:flex-col">
+    <div className="min-h-screen bg-paper font-sans text-ink antialiased">
+      <aside className="fixed inset-y-0 left-0 hidden w-72 border-r border-ink/10 bg-panel px-7 py-8 lg:flex lg:flex-col">
         <Link href="/dashboard" className="flex items-center gap-3 font-semibold tracking-tight">
-          <span className="grid h-9 w-9 place-items-center rounded-xl bg-white text-sm font-bold text-black">K</span>
+          <span className="grid h-9 w-9 place-items-center rounded-xl bg-ink text-sm font-bold text-paper">K</span>
           Kovasite
         </Link>
 
@@ -45,8 +46,8 @@ export default async function DashboardLayout({ children }: { children: React.Re
               href={item.href}
               className={
                 item.primary
-                  ? "block rounded-xl bg-emerald-400/10 px-3 py-2.5 text-sm font-semibold text-emerald-300 ring-1 ring-inset ring-emerald-400/25 transition hover:bg-emerald-400/15"
-                  : "block rounded-xl px-3 py-2.5 text-sm font-medium text-white/50 transition hover:bg-white/[0.06] hover:text-white"
+                  ? "block rounded-xl bg-emerald-400/10 px-3 py-2.5 text-sm font-semibold text-accent ring-1 ring-inset ring-emerald-400/25 transition hover:bg-emerald-400/15"
+                  : "block rounded-xl px-3 py-2.5 text-sm font-medium text-ink/50 transition hover:bg-ink/[0.06] hover:text-ink"
               }
             >
               {item.label}
@@ -54,23 +55,27 @@ export default async function DashboardLayout({ children }: { children: React.Re
           ))}
         </nav>
 
-        <div className="mt-auto flex items-center justify-between">
-          <div className="grid h-11 w-11 place-items-center rounded-full bg-white text-sm font-semibold text-black">{initial}</div>
-          <form action={clientLogout}>
-            <button className="rounded-xl border border-white/15 px-4 py-2 text-sm font-medium text-white/60 transition hover:bg-white/[0.06] hover:text-white">
-              Sign out
-            </button>
-          </form>
+        <div className="mt-auto flex items-center justify-between gap-2">
+          <div className="grid h-11 w-11 place-items-center rounded-full bg-ink text-sm font-semibold text-paper">{initial}</div>
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
+            <form action={clientLogout}>
+              <button className="rounded-xl border border-ink/15 px-4 py-2 text-sm font-medium text-ink/60 transition hover:bg-ink/[0.06] hover:text-ink">
+                Sign out
+              </button>
+            </form>
+          </div>
         </div>
       </aside>
 
       {/* Mobile top bar (slim — nav lives in the bottom tab bar) */}
-      <header className="sticky top-0 z-40 border-b border-white/10 bg-black/70 backdrop-blur-xl lg:hidden">
-        <div className="flex items-center justify-center px-5 py-3.5">
+      <header className="sticky top-0 z-40 border-b border-ink/10 bg-paper/70 backdrop-blur-xl lg:hidden">
+        <div className="relative flex items-center justify-center px-5 py-3.5">
           <Link href="/dashboard" className="flex items-center gap-2 font-semibold tracking-tight">
-            <span className="grid h-7 w-7 place-items-center rounded-lg bg-white text-xs font-bold text-black">K</span>
+            <span className="grid h-7 w-7 place-items-center rounded-lg bg-ink text-xs font-bold text-paper">K</span>
             Kovasite
           </Link>
+          <div className="absolute right-4"><ThemeToggle /></div>
         </div>
       </header>
 

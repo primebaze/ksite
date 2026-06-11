@@ -5,7 +5,7 @@ import { useState } from "react";
 type Col = { name: string; label: string; type?: string };
 
 const input =
-  "w-full rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2 text-sm text-white placeholder-white/30 outline-none focus:border-white/30";
+  "w-full rounded-lg border border-ink/10 bg-ink/[0.03] px-3 py-2 text-sm text-ink placeholder-ink/30 outline-none focus:border-ink/30";
 
 // Generic add/remove-row editor for repeatable content lists (opening hours,
 // socials, ordering links). Rows are managed in client state; on submit the
@@ -62,11 +62,11 @@ export function ListEditor({
         <button
           type="button"
           onClick={add}
-          className="rounded-lg border border-white/15 px-3 py-1.5 text-sm text-white/80 transition hover:bg-white/5"
+          className="rounded-lg border border-ink/15 px-3 py-1.5 text-sm text-ink/80 transition hover:bg-ink/5"
         >
           {addLabel}
         </button>
-        <button type="submit" className="rounded-lg bg-white px-4 py-1.5 text-sm font-semibold text-black transition hover:bg-white/90">
+        <button type="submit" className="rounded-lg bg-ink px-4 py-1.5 text-sm font-semibold text-paper transition hover:bg-ink/90">
           Save
         </button>
       </div>

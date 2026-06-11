@@ -66,21 +66,21 @@ export default function SupportPage() {
             const external = c.href.startsWith("mailto:");
             const Inner = (
               <>
-                <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl border border-emerald-400/20 bg-emerald-400/[0.06] text-emerald-400">
+                <span className="inline-flex h-12 w-12 items-center justify-center rounded-xl border border-emerald-400/20 bg-emerald-400/[0.06] text-accent">
                   <svg className="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                     {c.icon}
                   </svg>
                 </span>
                 <h3 className="mt-5 text-lg font-semibold">{c.title}</h3>
-                <p className="mt-2 flex-1 text-sm leading-relaxed text-white/55">{c.body}</p>
-                <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-medium text-emerald-400/90 transition group-hover:text-emerald-300">
+                <p className="mt-2 flex-1 text-sm leading-relaxed text-ink/55">{c.body}</p>
+                <span className="mt-5 inline-flex items-center gap-1.5 text-sm font-medium text-accent/90 transition group-hover:text-accent">
                   {c.cta}
                   <span aria-hidden>→</span>
                 </span>
               </>
             );
             const cls =
-              "group flex h-full flex-col rounded-2xl border border-white/10 bg-[#0a0a0a] p-7 transition hover:-translate-y-1 hover:border-emerald-400/40";
+              "group flex h-full flex-col rounded-2xl border border-ink/10 bg-panel p-7 transition hover:-translate-y-1 hover:border-emerald-400/40";
             return (
               <Reveal key={c.title} delay={i * 0.06}>
                 {external ? (
@@ -99,44 +99,44 @@ export default function SupportPage() {
 
         {/* Response-time strip */}
         <Reveal delay={0.1}>
-          <div className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-3 rounded-2xl border border-white/10 bg-black/40 px-6 py-5 text-sm text-white/55">
+          <div className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-3 rounded-2xl border border-ink/10 bg-paper/40 px-6 py-5 text-sm text-ink/55">
             <span className="flex items-center gap-2">
-              <svg className="h-4 w-4 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+              <svg className="h-4 w-4 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                 <circle cx="12" cy="12" r="9" /><path d="M12 7v5l3 2" />
               </svg>
               Same-day replies on business days
             </span>
-            <span className="hidden text-white/15 sm:inline">·</span>
+            <span className="hidden text-ink/15 sm:inline">·</span>
             <span>Priority turnaround on Standard &amp; Premium</span>
           </div>
         </Reveal>
       </section>
 
       {/* FAQ */}
-      <section className="border-t border-white/5 bg-[#070707]">
+      <section className="border-t border-ink/5 bg-panel-2">
         <div className="mx-auto max-w-3xl px-6 py-20 sm:py-24">
           <Reveal>
             <h2 className="text-center text-3xl font-semibold tracking-tight sm:text-4xl">Common questions</h2>
           </Reveal>
-          <div className="mt-10 divide-y divide-white/10 overflow-hidden rounded-2xl border border-white/10 bg-[#0a0a0a]">
+          <div className="mt-10 divide-y divide-ink/10 overflow-hidden rounded-2xl border border-ink/10 bg-panel">
             {FAQS.map((f, i) => (
               <Reveal key={f.q} delay={i * 0.04}>
                 <details className="group p-6 [&_summary]:cursor-pointer">
                   <summary className="flex list-none items-center justify-between gap-4 font-medium">
                     {f.q}
-                    <svg className="h-4 w-4 shrink-0 text-white/40 transition group-open:rotate-45" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" aria-hidden>
+                    <svg className="h-4 w-4 shrink-0 text-ink/40 transition group-open:rotate-45" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" aria-hidden>
                       <path d="M12 5v14M5 12h14" />
                     </svg>
                   </summary>
-                  <p className="mt-3 text-sm leading-relaxed text-white/55">{f.a}</p>
+                  <p className="mt-3 text-sm leading-relaxed text-ink/55">{f.a}</p>
                 </details>
               </Reveal>
             ))}
           </div>
           <Reveal delay={0.08}>
-            <p className="mt-8 text-center text-sm text-white/45">
+            <p className="mt-8 text-center text-sm text-ink/45">
               Still stuck?{" "}
-              <a href="mailto:hello@kovasite.com" className="text-emerald-400/90 underline-offset-4 transition hover:text-emerald-300 hover:underline">
+              <a href="mailto:hello@kovasite.com" className="text-accent/90 underline-offset-4 transition hover:text-accent hover:underline">
                 Email our team
               </a>{" "}
               and we&apos;ll get back to you.

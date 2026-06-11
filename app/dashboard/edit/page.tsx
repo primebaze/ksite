@@ -40,7 +40,7 @@ export default async function EditMySite() {
     <div>
       <div className="mb-6 flex items-center justify-between">
         <h1 className="text-2xl font-semibold">Edit your site</h1>
-        <Link href="/dashboard" className="text-sm text-white/55 hover:text-white">← Overview</Link>
+        <Link href="/dashboard" className="text-sm text-ink/55 hover:text-ink">← Overview</Link>
       </div>
       <SiteEditor site={site} actions={actions} />
     </div>

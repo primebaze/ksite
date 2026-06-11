@@ -38,7 +38,7 @@ function Cursor() {
 
 function Check() {
   return (
-    <svg className="mt-0.5 h-4 w-4 shrink-0 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+    <svg className="mt-0.5 h-4 w-4 shrink-0 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
       <path d="M5 12.5l4.5 4.5L19 7" />
     </svg>
   );
@@ -47,12 +47,12 @@ function Check() {
 // A consistent app-window frame that fills the card.
 function Window({ label, children }: { label: ReactNode; children: ReactNode }) {
   return (
-    <div className="flex h-full w-full flex-col overflow-hidden rounded-3xl border border-white/10 bg-neutral-950 shadow-[0_24px_70px_-30px_rgba(0,0,0,0.95)]">
-      <div className="flex items-center gap-1.5 border-b border-white/10 bg-white/[0.03] px-4 py-3">
-        <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
-        <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
-        <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
-        <span className="ml-2 truncate text-xs text-white/40">{label}</span>
+    <div className="flex h-full w-full flex-col overflow-hidden rounded-3xl border border-ink/10 bg-panel shadow-[0_24px_70px_-30px_rgba(0,0,0,0.95)]">
+      <div className="flex items-center gap-1.5 border-b border-ink/10 bg-ink/[0.03] px-4 py-3">
+        <span className="h-2.5 w-2.5 rounded-full bg-ink/15" />
+        <span className="h-2.5 w-2.5 rounded-full bg-ink/15" />
+        <span className="h-2.5 w-2.5 rounded-full bg-ink/15" />
+        <span className="ml-2 truncate text-xs text-ink/40">{label}</span>
       </div>
       <div className="flex flex-1 flex-col justify-center gap-5 p-6 sm:p-8">{children}</div>
     </div>
@@ -63,22 +63,22 @@ export function DesignWindow() {
   return (
     <Window label="yoursite.com">
       <div className="flex items-center justify-between">
-        <div className="h-3 w-20 rounded bg-white/25" />
+        <div className="h-3 w-20 rounded bg-ink/25" />
         <div className="flex gap-2">
-          <div className="h-2.5 w-10 rounded bg-white/10" />
-          <div className="h-2.5 w-10 rounded bg-white/10" />
-          <div className="h-2.5 w-10 rounded bg-white/10" />
+          <div className="h-2.5 w-10 rounded bg-ink/10" />
+          <div className="h-2.5 w-10 rounded bg-ink/10" />
+          <div className="h-2.5 w-10 rounded bg-ink/10" />
         </div>
       </div>
       <div className="relative overflow-hidden rounded-xl bg-gradient-to-br from-emerald-500/25 via-neutral-800 to-neutral-900 p-6">
-        <div className="h-3.5 w-2/3 rounded-full bg-white/35" />
-        <div className="mt-2.5 h-3.5 w-1/2 rounded-full bg-white/20" />
-        <div className="mt-5 h-8 w-28 rounded-md bg-white" />
+        <div className="h-3.5 w-2/3 rounded-full bg-ink/35" />
+        <div className="mt-2.5 h-3.5 w-1/2 rounded-full bg-ink/20" />
+        <div className="mt-5 h-8 w-28 rounded-md bg-ink" />
       </div>
       <div className="grid grid-cols-3 gap-3">
-        <div className="h-14 rounded-lg border border-white/5 bg-white/[0.04]" />
-        <div className="h-14 rounded-lg border border-white/5 bg-white/[0.04]" />
-        <div className="h-14 rounded-lg border border-white/5 bg-white/[0.04]" />
+        <div className="h-14 rounded-lg border border-ink/5 bg-ink/[0.04]" />
+        <div className="h-14 rounded-lg border border-ink/5 bg-ink/[0.04]" />
+        <div className="h-14 rounded-lg border border-ink/5 bg-ink/[0.04]" />
       </div>
     </Window>
   );
@@ -88,19 +88,19 @@ export function ShieldWindow() {
   const tld = useTypewriter(TLDS);
   return (
     <Window label="Domains & SSL">
-      <div className="flex items-center gap-2.5 rounded-full border border-white/10 bg-neutral-900 px-4 py-3.5">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 text-emerald-400">
+      <div className="flex items-center gap-2.5 rounded-full border border-ink/10 bg-panel-2 px-4 py-3.5">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="shrink-0 text-accent">
           <path d="M6 10V8a6 6 0 1112 0v2m-9 0h6a3 3 0 013 3v5a3 3 0 01-3 3H9a3 3 0 01-3-3v-5a3 3 0 013-3z" />
         </svg>
-        <span className="truncate text-sm text-white/75">
-          yourbusiness<span className="text-emerald-300">{tld}</span>
+        <span className="truncate text-sm text-ink/75">
+          yourbusiness<span className="text-accent">{tld}</span>
           <Cursor />
         </span>
-        <span className="ml-auto shrink-0 rounded-full bg-emerald-400/15 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-emerald-300">SSL</span>
+        <span className="ml-auto shrink-0 rounded-full bg-emerald-400/15 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-accent">SSL</span>
       </div>
       <div className="space-y-3">
         {["Domain registered", "HTTPS certificate active", "DNS configured for you", "Renews automatically"].map((s) => (
-          <div key={s} className="flex items-center gap-2.5 text-sm text-white/65">
+          <div key={s} className="flex items-center gap-2.5 text-sm text-ink/65">
             <Check />
             {s}
           </div>
@@ -122,7 +122,7 @@ export function BookingWindow() {
   }, []);
   return (
     <Window label="Reservations">
-      <div className="flex items-center justify-between text-xs text-white/40">
+      <div className="flex items-center justify-between text-xs text-ink/40">
         <span>Book a table · Today</span>
         <span>2 guests</span>
       </div>
@@ -131,14 +131,14 @@ export function BookingWindow() {
           <div
             key={t}
             className={`rounded-lg border px-2 py-2.5 text-center text-sm transition-colors duration-300 ${
-              i === sel ? "border-emerald-400/60 bg-emerald-400/15 font-medium text-emerald-200" : "border-white/10 text-white/55"
+              i === sel ? "border-emerald-400/60 bg-emerald-400/15 font-medium text-emerald-200" : "border-ink/10 text-ink/55"
             }`}
           >
             {t}
           </div>
         ))}
       </div>
-      <div className="rounded-lg bg-white py-3 text-center text-sm font-semibold text-black">Confirm booking</div>
+      <div className="rounded-lg bg-ink py-3 text-center text-sm font-semibold text-paper">Confirm booking</div>
     </Window>
   );
 }
@@ -170,22 +170,22 @@ export function SpeedWindow() {
     <Window label="PageSpeed">
       <div className="flex items-center gap-5">
         <div className="grid h-20 w-20 shrink-0 place-items-center rounded-full" style={{ background: `conic-gradient(#34d399 0 ${score}%, rgba(255,255,255,0.08) 0)` }}>
-          <div className="grid h-[60px] w-[60px] place-items-center rounded-full bg-neutral-950 text-xl font-bold text-emerald-300">{score}</div>
+          <div className="grid h-[60px] w-[60px] place-items-center rounded-full bg-panel text-xl font-bold text-accent">{score}</div>
         </div>
         <div>
-          <p className="text-sm font-semibold text-white">Performance</p>
-          <p className="mt-0.5 text-xs text-white/45">Core Web Vitals</p>
-          <p className="mt-2 text-xs text-emerald-300">Loads in 0.4s</p>
+          <p className="text-sm font-semibold text-ink">Performance</p>
+          <p className="mt-0.5 text-xs text-ink/45">Core Web Vitals</p>
+          <p className="mt-2 text-xs text-accent">Loads in 0.4s</p>
         </div>
       </div>
       <div className="space-y-3">
         {METRICS.map(([name, val, pct]) => (
           <div key={name} className="flex items-center gap-3 text-xs">
-            <span className="w-24 shrink-0 text-white/45">{name}</span>
-            <span className="h-1.5 flex-1 overflow-hidden rounded-full bg-white/10">
+            <span className="w-24 shrink-0 text-ink/45">{name}</span>
+            <span className="h-1.5 flex-1 overflow-hidden rounded-full bg-ink/10">
               <span className="block h-full rounded-full bg-emerald-400/70" style={{ width: `${pct}%` }} />
             </span>
-            <span className="w-12 shrink-0 text-right text-white/70">{val}</span>
+            <span className="w-12 shrink-0 text-right text-ink/70">{val}</span>
           </div>
         ))}
       </div>
@@ -239,7 +239,7 @@ function Pills({ progress }: { progress: MotionValue<number> }) {
       {SHOWN.map((s, i) => (
         <span
           key={s.title}
-          className={`h-1 rounded-full transition-all duration-300 ${i === active ? "w-8 bg-emerald-400" : "w-3 bg-white/15"}`}
+          className={`h-1 rounded-full transition-all duration-300 ${i === active ? "w-8 bg-emerald-400" : "w-3 bg-ink/15"}`}
         />
       ))}
     </div>
@@ -303,11 +303,11 @@ function FeatureCard({
   return (
     <motion.div style={{ opacity, y }} className="absolute inset-0 flex flex-col justify-center gap-7">
       <div>
-        <p className="text-sm font-medium tracking-[0.2em] text-white/30">
-          {pad(index + 1)} <span className="text-white/15">/ {pad(SHOWN.length)}</span>
+        <p className="text-sm font-medium tracking-[0.2em] text-ink/30">
+          {pad(index + 1)} <span className="text-ink/15">/ {pad(SHOWN.length)}</span>
         </p>
         <h3 className="mt-3 text-3xl font-semibold tracking-tight">{feature.title}</h3>
-        <p className="mt-3 max-w-md text-base leading-relaxed text-white/55">{feature.body}</p>
+        <p className="mt-3 max-w-md text-base leading-relaxed text-ink/55">{feature.body}</p>
       </div>
       <div className="h-[42vh] min-h-[300px]">
         <Visual />
@@ -325,11 +325,11 @@ export function FeatureBento() {
         <div>
           {SHOWN.map((f, i) => (
             <div key={f.title} className="flex min-h-[54vh] flex-col justify-center">
-              <p className="text-sm font-medium tracking-[0.2em] text-white/30">
-                {pad(i + 1)} <span className="text-white/15">/ {pad(SHOWN.length)}</span>
+              <p className="text-sm font-medium tracking-[0.2em] text-ink/30">
+                {pad(i + 1)} <span className="text-ink/15">/ {pad(SHOWN.length)}</span>
               </p>
               <h3 className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl">{f.title}</h3>
-              <p className="mt-4 max-w-md text-base leading-relaxed text-white/55">{f.body}</p>
+              <p className="mt-4 max-w-md text-base leading-relaxed text-ink/55">{f.body}</p>
             </div>
           ))}
         </div>

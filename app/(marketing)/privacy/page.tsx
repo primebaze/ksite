@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 };
 
 const mail = (
-  <a href={`mailto:${LEGAL.email}`} className="text-emerald-400/90 underline-offset-4 hover:underline">{LEGAL.email}</a>
+  <a href={`mailto:${LEGAL.email}`} className="text-accent/90 underline-offset-4 hover:underline">{LEGAL.email}</a>
 );
 
 export default function PrivacyPage() {

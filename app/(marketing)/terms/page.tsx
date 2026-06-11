@@ -36,7 +36,7 @@ export default function TermsPage() {
 
       <LSection heading="4. Acceptable use">
         <LP>
-          You must use the service lawfully and follow our <Link href="/acceptable-use" className="text-emerald-400/90 underline-offset-4 hover:underline">Acceptable Use Policy</Link>.
+          You must use the service lawfully and follow our <Link href="/acceptable-use" className="text-accent/90 underline-offset-4 hover:underline">Acceptable Use Policy</Link>.
           We may suspend or remove content or accounts that breach it.
         </LP>
       </LSection>
@@ -115,7 +115,7 @@ export default function TermsPage() {
       <LSection heading="14. Governing law">
         <LP>
           These terms are governed by the laws of {LEGAL.governingLaw}, and the courts of {LEGAL.governingLaw} have
-          exclusive jurisdiction. Questions? Contact <a href={`mailto:${LEGAL.email}`} className="text-emerald-400/90 underline-offset-4 hover:underline">{LEGAL.email}</a>.
+          exclusive jurisdiction. Questions? Contact <a href={`mailto:${LEGAL.email}`} className="text-accent/90 underline-offset-4 hover:underline">{LEGAL.email}</a>.
         </LP>
       </LSection>
     </LegalLayout>

@@ -24,9 +24,9 @@ export default async function AdminSupport({ searchParams }: { searchParams: Pro
     <div>
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-semibold">Support</h1>
-        <Link href="/kmanageradmin" className="text-sm text-white/50 hover:text-white">← Clients</Link>
+        <Link href="/kmanageradmin" className="text-sm text-ink/50 hover:text-ink">← Clients</Link>
       </div>
-      <p className="mt-1 text-sm text-white/45">Tickets from every client, newest activity first.</p>
+      <p className="mt-1 text-sm text-ink/45">Tickets from every client, newest activity first.</p>
 
       <div className="mt-5 flex flex-wrap gap-2">
         {FILTERS.map((f) => (
@@ -34,7 +34,7 @@ export default async function AdminSupport({ searchParams }: { searchParams: Pro
             key={f.key}
             href={`/kmanageradmin/support?status=${f.key}`}
             className={`rounded-full px-3.5 py-1.5 text-sm font-medium transition ${
-              f.key === active.key ? "bg-white text-black" : "border border-white/12 text-white/70 hover:bg-white/[0.06]"
+              f.key === active.key ? "bg-ink text-paper" : "border border-ink/12 text-ink/70 hover:bg-ink/[0.06]"
             }`}
           >
             {f.label}
@@ -44,7 +44,7 @@ export default async function AdminSupport({ searchParams }: { searchParams: Pro
 
       <div className="mt-6 space-y-2.5">
         {tickets.length === 0 ? (
-          <p className="rounded-2xl border border-white/[0.08] bg-white/[0.02] px-5 py-8 text-center text-sm text-white/40">
+          <p className="rounded-2xl border border-ink/[0.08] bg-ink/[0.02] px-5 py-8 text-center text-sm text-ink/40">
             No {active.label.toLowerCase()} tickets.
           </p>
         ) : (
@@ -52,11 +52,11 @@ export default async function AdminSupport({ searchParams }: { searchParams: Pro
             <Link
               key={t.id}
               href={`/kmanageradmin/support/${t.id}`}
-              className="flex items-center justify-between gap-4 rounded-2xl border border-white/[0.08] bg-white/[0.02] px-5 py-4 transition hover:border-white/20 hover:bg-white/[0.04]"
+              className="flex items-center justify-between gap-4 rounded-2xl border border-ink/[0.08] bg-ink/[0.02] px-5 py-4 transition hover:border-ink/20 hover:bg-ink/[0.04]"
             >
               <div className="min-w-0">
-                <p className="truncate font-medium text-white">{t.subject}</p>
-                <p className="mt-0.5 text-xs text-white/40">{t.business_name} · {fmt(t.last_message_at)}</p>
+                <p className="truncate font-medium text-ink">{t.subject}</p>
+                <p className="mt-0.5 text-xs text-ink/40">{t.business_name} · {fmt(t.last_message_at)}</p>
               </div>
               <TicketStatusBadge status={t.status} />
             </Link>

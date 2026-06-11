@@ -18,7 +18,7 @@ export function RotatingWord({ words }: { words: string[] }) {
   }, [words.length]);
 
   return (
-    <span className="relative inline-flex overflow-hidden whitespace-nowrap pb-[0.12em] align-bottom text-emerald-400">
+    <span className="relative inline-flex overflow-hidden whitespace-nowrap pb-[0.12em] align-bottom text-accent">
       <AnimatePresence mode="wait" initial={false}>
         <motion.span
           key={words[i]}

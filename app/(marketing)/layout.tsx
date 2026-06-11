@@ -4,7 +4,7 @@ import Footer from "./Footer";
 
 export default function MarketingLayout({ children }: { children: ReactNode }) {
   return (
-    <div className="min-h-screen bg-black font-sans text-white antialiased">
+    <div className="min-h-screen bg-paper font-sans text-ink antialiased">
       <Nav />
       <main>{children}</main>
       <Footer />

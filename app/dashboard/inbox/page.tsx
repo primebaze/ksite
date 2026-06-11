@@ -48,12 +48,12 @@ export default async function InboxPage({
     <div className="max-w-3xl">
       <div className="mb-2 flex items-center justify-between">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-emerald-400/80">Enquiries</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.28em] text-accent/80">Enquiries</p>
           <h1 className="mt-2 text-3xl font-semibold tracking-tight">Bookings &amp; messages</h1>
         </div>
-        <Link href="/dashboard" className="text-sm text-white/55 hover:text-white">← Overview</Link>
+        <Link href="/dashboard" className="text-sm text-ink/55 hover:text-ink">← Overview</Link>
       </div>
-      <p className="max-w-xl text-sm leading-6 text-white/50">
+      <p className="max-w-xl text-sm leading-6 text-ink/50">
         Every booking request and contact message from your site lands here (and is emailed to you). Reply, mark as
         read, or archive.
       </p>
@@ -64,7 +64,7 @@ export default async function InboxPage({
             key={t.key}
             href={`/dashboard/inbox?view=${t.key}`}
             className={`rounded-full px-4 py-1.5 text-sm font-medium transition ${
-              tab === t.key ? "bg-emerald-400 text-black" : "border border-white/10 text-white/60 hover:border-white/25"
+              tab === t.key ? "bg-emerald-400 text-neutral-950" : "border border-ink/10 text-ink/60 hover:border-ink/25"
             }`}
           >
             {t.label}
@@ -73,7 +73,7 @@ export default async function InboxPage({
       </div>
 
       {items.length === 0 ? (
-        <p className="mt-10 rounded-2xl border border-dashed border-white/12 bg-white/[0.02] px-6 py-12 text-center text-sm text-white/45">
+        <p className="mt-10 rounded-2xl border border-dashed border-ink/12 bg-ink/[0.02] px-6 py-12 text-center text-sm text-ink/45">
           {tab === "new" ? "No new enquiries yet." : tab === "archived" ? "Nothing archived." : "No enquiries yet."}
         </p>
       ) : (
@@ -91,33 +91,33 @@ function SubmissionCard({ s }: { s: FormSubmission }) {
   const lines = s.payload?.lines ?? [];
   const href = replyHref(s.reply_to);
   return (
-    <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-5">
+    <div className="rounded-2xl border border-ink/10 bg-ink/[0.02] p-5">
       <div className="flex items-center justify-between gap-3">
         <span className="flex items-center gap-2">
           <span
             className={`rounded-full px-2.5 py-1 text-[11px] font-semibold uppercase tracking-wide ${
-              s.kind === "booking" ? "bg-emerald-400/15 text-emerald-300" : "bg-sky-400/15 text-sky-300"
+              s.kind === "booking" ? "bg-emerald-400/15 text-accent" : "bg-sky-400/15 text-sky-300"
             }`}
           >
             {s.kind === "booking" ? "Booking" : "Message"}
           </span>
           {s.status === "new" && <span className="h-2 w-2 rounded-full bg-emerald-400" title="New" />}
         </span>
-        <span className="text-xs text-white/35">{timeAgo(s.created_at)}</span>
+        <span className="text-xs text-ink/35">{timeAgo(s.created_at)}</span>
       </div>
 
       <dl className="mt-4 space-y-1.5 text-sm">
         {lines.map((l, i) => (
           <div key={i} className="flex gap-3">
-            <dt className="w-28 shrink-0 text-white/40">{l.label}</dt>
-            <dd className="text-white/85">{l.value}</dd>
+            <dt className="w-28 shrink-0 text-ink/40">{l.label}</dt>
+            <dd className="text-ink/85">{l.value}</dd>
           </div>
         ))}
       </dl>
 
       <div className="mt-5 flex flex-wrap items-center gap-2">
         {href && (
-          <a href={href} className="rounded-lg bg-white px-4 py-2 text-sm font-semibold text-black transition hover:bg-white/90">
+          <a href={href} className="rounded-lg bg-ink px-4 py-2 text-sm font-semibold text-paper transition hover:bg-ink/90">
             Reply
           </a>
         )}
@@ -125,20 +125,20 @@ function SubmissionCard({ s }: { s: FormSubmission }) {
           <form action={markSubmission}>
             <input type="hidden" name="id" value={s.id} />
             <input type="hidden" name="status" value="read" />
-            <button className="rounded-lg border border-white/15 px-4 py-2 text-sm text-white/80 transition hover:bg-white/5">Mark read</button>
+            <button className="rounded-lg border border-ink/15 px-4 py-2 text-sm text-ink/80 transition hover:bg-ink/5">Mark read</button>
           </form>
         )}
         {s.status !== "archived" ? (
           <form action={markSubmission}>
             <input type="hidden" name="id" value={s.id} />
             <input type="hidden" name="status" value="archived" />
-            <button className="rounded-lg border border-white/15 px-4 py-2 text-sm text-white/55 transition hover:bg-white/5">Archive</button>
+            <button className="rounded-lg border border-ink/15 px-4 py-2 text-sm text-ink/55 transition hover:bg-ink/5">Archive</button>
           </form>
         ) : (
           <form action={markSubmission}>
             <input type="hidden" name="id" value={s.id} />
             <input type="hidden" name="status" value="read" />
-            <button className="rounded-lg border border-white/15 px-4 py-2 text-sm text-white/55 transition hover:bg-white/5">Restore</button>
+            <button className="rounded-lg border border-ink/15 px-4 py-2 text-sm text-ink/55 transition hover:bg-ink/5">Restore</button>
           </form>
         )}
       </div>

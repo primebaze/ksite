@@ -32,7 +32,7 @@ export function AdminNav({ items, orientation = "vertical" }: { items: AdminNavI
             key={item.href}
             href={item.href}
             className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition ${
-              active ? "bg-white/[0.08] text-white" : "text-white/50 hover:bg-white/[0.05] hover:text-white"
+              active ? "bg-ink/[0.08] text-ink" : "text-ink/50 hover:bg-ink/[0.05] hover:text-ink"
             } ${orientation === "horizontal" ? "shrink-0" : ""}`}
           >
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" className="size-[18px] shrink-0">
@@ -40,7 +40,7 @@ export function AdminNav({ items, orientation = "vertical" }: { items: AdminNavI
             </svg>
             <span className="flex-1">{item.label}</span>
             {item.badge ? (
-              <span className="rounded-full bg-emerald-400/15 px-2 py-0.5 text-xs font-semibold text-emerald-300">{item.badge}</span>
+              <span className="rounded-full bg-emerald-400/15 px-2 py-0.5 text-xs font-semibold text-accent">{item.badge}</span>
             ) : null}
           </Link>
         );

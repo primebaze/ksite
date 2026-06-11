@@ -29,7 +29,7 @@ const VALID_STYLES = ["editorial", "warm", "bold", "minimal", "luxe", "classic"]
 const titleCase = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
 const input =
-  "mt-2 w-full rounded-xl border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-white placeholder-white/30 outline-none transition focus:border-white/30";
+  "mt-2 w-full rounded-xl border border-ink/10 bg-ink/[0.03] px-4 py-3 text-sm text-ink placeholder-ink/30 outline-none transition focus:border-ink/30";
 
 // One consolidated card per sector: a primary title with the sub-types listed
 // as the description, so the picker has no duplicate-feeling type buttons. Each
@@ -194,21 +194,21 @@ export function GetStartedFlow({
   }, [selected, preset, groupDesigns, buildDesigns, groupPhotos, typeDesigns]);
 
   return (
-    <form ref={formRef} action={action} className="flex min-h-[calc(100vh-6rem)] flex-col overflow-hidden rounded-3xl border border-white/10 bg-white/[0.02] shadow-[0_40px_140px_-80px_rgba(16,185,129,0.9)]">
+    <form ref={formRef} action={action} className="flex min-h-[calc(100vh-6rem)] flex-col overflow-hidden rounded-3xl border border-ink/10 bg-ink/[0.02] shadow-[0_40px_140px_-80px_rgba(16,185,129,0.9)]">
       <input type="hidden" name="preset" value={preset} />
       <input type="hidden" name="selected_design" value={selectedDesign} />
       <input type="hidden" name="selected_style" value={selectedStyle} />
       <input type="hidden" name="design" value={designKey} />
       <input type="hidden" name="hero_img" value={photoId} />
 
-      <div className="border-b border-white/10 px-6 py-5 sm:px-8">
-        <div className="flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.22em] text-white/35">
+      <div className="border-b border-ink/10 px-6 py-5 sm:px-8">
+        <div className="flex items-center gap-3 text-xs font-semibold uppercase tracking-[0.22em] text-ink/35">
           {["Type", "Design", "Account"].map((label, i) => (
             <button
               key={label}
               type="button"
               onClick={() => i <= step && goToStep(i)}
-              className={`rounded-full px-3 py-1.5 transition ${i === step ? "bg-emerald-400 text-black" : i < step ? "bg-white/10 text-white" : "bg-transparent text-white/25"}`}
+              className={`rounded-full px-3 py-1.5 transition ${i === step ? "bg-emerald-400 text-neutral-950" : i < step ? "bg-ink/10 text-ink" : "bg-transparent text-ink/25"}`}
             >
               {i + 1}. {label}
             </button>
@@ -219,9 +219,9 @@ export function GetStartedFlow({
       <div className="p-6 sm:p-8">
         {step === 0 && (
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-emerald-400/80">Step 1</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-accent/80">Step 1</p>
             <h2 className="mt-2 text-3xl font-semibold tracking-tight">What kind of website do you want?</h2>
-            <p className="mt-2 max-w-2xl text-sm leading-6 text-white/50">
+            <p className="mt-2 max-w-2xl text-sm leading-6 text-ink/50">
               Pick the closest category and we&apos;ll show designs that match. You can change every word and photo afterwards.
             </p>
 
@@ -233,10 +233,10 @@ export function GetStartedFlow({
                       key={c.group}
                       type="button"
                       onClick={() => chooseType(c.preset)}
-                      className="rounded-2xl border border-white/10 bg-black/30 p-5 text-left transition hover:-translate-y-0.5 hover:border-emerald-400/50 hover:bg-emerald-400/[0.04]"
+                      className="rounded-2xl border border-ink/10 bg-paper/30 p-5 text-left transition hover:-translate-y-0.5 hover:border-emerald-400/50 hover:bg-emerald-400/[0.04]"
                     >
                       <p className="font-semibold">{c.title}</p>
-                      <p className="mt-2 text-sm leading-5 text-white/40">{c.desc}</p>
+                      <p className="mt-2 text-sm leading-5 text-ink/40">{c.desc}</p>
                     </button>
                   ))}
                 </div>
@@ -244,7 +244,7 @@ export function GetStartedFlow({
                 <button
                   type="button"
                   onClick={() => setShowSearch(true)}
-                  className="mt-5 rounded-xl border border-dashed border-white/15 px-4 py-3 text-sm text-white/55 transition hover:border-white/30 hover:text-white"
+                  className="mt-5 rounded-xl border border-dashed border-ink/15 px-4 py-3 text-sm text-ink/55 transition hover:border-ink/30 hover:text-ink"
                 >
                   Search for a specific type
                 </button>
@@ -255,7 +255,7 @@ export function GetStartedFlow({
               <div className="mt-6">
                 <div className="flex items-center justify-between gap-3">
                   <label className="text-sm font-medium">Search business types</label>
-                  <button type="button" onClick={() => { setShowSearch(false); setQuery(""); }} className="text-sm text-white/45 transition hover:text-white">
+                  <button type="button" onClick={() => { setShowSearch(false); setQuery(""); }} className="text-sm text-ink/45 transition hover:text-ink">
                     Back to categories
                   </button>
                 </div>
@@ -273,13 +273,13 @@ export function GetStartedFlow({
                         key={build.key}
                         type="button"
                         onClick={() => chooseType(build.key)}
-                        className="rounded-2xl border border-white/10 bg-black/30 p-4 text-left transition hover:-translate-y-0.5 hover:border-emerald-400/50 hover:bg-emerald-400/[0.04]"
+                        className="rounded-2xl border border-ink/10 bg-paper/30 p-4 text-left transition hover:-translate-y-0.5 hover:border-emerald-400/50 hover:bg-emerald-400/[0.04]"
                       >
                         <p className="font-semibold">{build.label}</p>
-                        <p className="mt-1 text-xs text-white/40">{build.group}</p>
+                        <p className="mt-1 text-xs text-ink/40">{build.group}</p>
                       </button>
                     ))}
-                    {searchResults.length === 0 && <p className="text-sm text-white/40">No matches. Try another word.</p>}
+                    {searchResults.length === 0 && <p className="text-sm text-ink/40">No matches. Try another word.</p>}
                   </div>
                 )}
               </div>
@@ -294,7 +294,7 @@ export function GetStartedFlow({
                 setDesignKey("");
                 goToStep(2);
               }}
-              className="mt-5 block rounded-xl border border-dashed border-white/15 px-4 py-3 text-sm text-white/55 transition hover:border-white/30 hover:text-white"
+              className="mt-5 block rounded-xl border border-dashed border-ink/15 px-4 py-3 text-sm text-ink/55 transition hover:border-ink/30 hover:text-ink"
             >
               My business type is not listed
             </button>
@@ -303,9 +303,9 @@ export function GetStartedFlow({
 
         {step === 1 && selected && (
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-emerald-400/80">Step 2</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-accent/80">Step 2</p>
             <h2 className="mt-2 text-3xl font-semibold tracking-tight">Choose a {selected.label.toLowerCase()} design.</h2>
-            <p className="mt-2 max-w-2xl text-sm leading-6 text-white/50">
+            <p className="mt-2 max-w-2xl text-sm leading-6 text-ink/50">
               These samples are all for {selected.label.toLowerCase()}{" "}
               websites. Pick one and we&apos;ll load the next step.
             </p>
@@ -313,7 +313,7 @@ export function GetStartedFlow({
             {/* General reassurance — applies to every type, not just this one:
                 the sample wording/photos are placeholders the owner edits. */}
             <div className="mt-4 flex items-start gap-2.5 rounded-xl border border-emerald-400/20 bg-emerald-400/[0.05] px-4 py-3 text-sm leading-6 text-emerald-100/90">
-              <svg className="mt-0.5 h-4 w-4 shrink-0 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+              <svg className="mt-0.5 h-4 w-4 shrink-0 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                 <path d="M12 20h9" /><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z" />
               </svg>
               <span>
@@ -331,27 +331,27 @@ export function GetStartedFlow({
                       key={design}
                       type="button"
                       onClick={() => { setPreviewDevice("desktop"); setPreview({ design, img }); }}
-                      className="group relative overflow-hidden rounded-2xl border border-white/10 bg-black text-left transition hover:-translate-y-1 hover:border-emerald-400/50"
+                      className="group relative overflow-hidden rounded-2xl border border-ink/10 bg-paper text-left transition hover:-translate-y-1 hover:border-emerald-400/50"
                     >
                       <TemplateThumb src={`/samples/${preset}?embed=1&design=${design}${img ? `&img=${img}` : ""}`} aspect={0.55} />
                       {/* Hover overlay: clear "preview" affordance */}
                       <span className="pointer-events-none absolute inset-x-0 top-0 flex items-center justify-center" style={{ height: "calc(100% - 73px)" }}>
-                        <span className="flex items-center gap-2 rounded-full bg-black/70 px-4 py-2 text-sm font-medium text-white opacity-0 backdrop-blur transition group-hover:opacity-100">
+                        <span className="flex items-center gap-2 rounded-full bg-paper/70 px-4 py-2 text-sm font-medium text-ink opacity-0 backdrop-blur transition group-hover:opacity-100">
                           <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z" /><circle cx="12" cy="12" r="3" /></svg>
                           Preview design
                         </span>
                       </span>
-                      <div className="border-t border-white/10 p-4">
+                      <div className="border-t border-ink/10 p-4">
                         <div className="flex items-center justify-between gap-3">
                           <div>
                             <p className="font-semibold">{titleCase(design)}</p>
-                            <p className="mt-1 text-xs text-white/40">{selected.label} sample</p>
+                            <p className="mt-1 text-xs text-ink/40">{selected.label} sample</p>
                           </div>
-                          <span className="rounded-full border border-white/10 px-3 py-1 text-xs text-white/50 group-hover:border-emerald-400/40 group-hover:text-emerald-300">
+                          <span className="rounded-full border border-ink/10 px-3 py-1 text-xs text-ink/50 group-hover:border-emerald-400/40 group-hover:text-accent">
                             Preview
                           </span>
                         </div>
-                        {idx === 0 && <p className="mt-3 text-xs font-medium text-emerald-300">Recommended</p>}
+                        {idx === 0 && <p className="mt-3 text-xs font-medium text-accent">Recommended</p>}
                       </div>
                     </button>
                   ))
@@ -360,20 +360,20 @@ export function GetStartedFlow({
                       key={style.value}
                       type="button"
                       onClick={() => chooseDesign(style.value)}
-                      className="group overflow-hidden rounded-2xl border border-white/10 bg-black text-left transition hover:-translate-y-1 hover:border-emerald-400/50"
+                      className="group overflow-hidden rounded-2xl border border-ink/10 bg-paper text-left transition hover:-translate-y-1 hover:border-emerald-400/50"
                     >
                       <TemplateThumb src={`/samples/${preset}?embed=1&style=${style.value}`} aspect={0.55} />
-                      <div className="border-t border-white/10 p-4">
+                      <div className="border-t border-ink/10 p-4">
                         <div className="flex items-center justify-between gap-3">
                           <div>
                             <p className="font-semibold">{style.label} design</p>
-                            <p className="mt-1 text-xs text-white/40">{selected.label} sample</p>
+                            <p className="mt-1 text-xs text-ink/40">{selected.label} sample</p>
                           </div>
-                          <span className="rounded-full border border-white/10 px-3 py-1 text-xs text-white/50 group-hover:border-emerald-400/40 group-hover:text-emerald-300">
+                          <span className="rounded-full border border-ink/10 px-3 py-1 text-xs text-ink/50 group-hover:border-emerald-400/40 group-hover:text-accent">
                             Choose this design
                           </span>
                         </div>
-                        {idx === 0 && <p className="mt-3 text-xs font-medium text-emerald-300">Recommended</p>}
+                        {idx === 0 && <p className="mt-3 text-xs font-medium text-accent">Recommended</p>}
                       </div>
                     </button>
                   ))}
@@ -385,21 +385,21 @@ export function GetStartedFlow({
                   setDesignKey("");
                   goToStep(2);
                 }}
-                className="flex min-h-[280px] flex-col justify-between rounded-2xl border border-dashed border-white/15 bg-white/[0.02] p-5 text-left transition hover:border-white/30"
+                className="flex min-h-[280px] flex-col justify-between rounded-2xl border border-dashed border-ink/15 bg-ink/[0.02] p-5 text-left transition hover:border-ink/30"
               >
                 <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.25em] text-white/35">Blank start</p>
+                  <p className="text-xs font-semibold uppercase tracking-[0.25em] text-ink/35">Blank start</p>
                   <h3 className="mt-3 text-xl font-semibold">Start from scratch</h3>
-                  <p className="mt-2 text-sm leading-6 text-white/45">Start with a simple {selected.label.toLowerCase()} layout and edit everything yourself.</p>
+                  <p className="mt-2 text-sm leading-6 text-ink/45">Start with a simple {selected.label.toLowerCase()} layout and edit everything yourself.</p>
                 </div>
-                <span className="mt-6 rounded-full border border-white/10 px-3 py-2 text-center text-xs text-white/50">Start from scratch</span>
+                <span className="mt-6 rounded-full border border-ink/10 px-3 py-2 text-center text-xs text-ink/50">Start from scratch</span>
               </button>
             </div>
             {designOptions.length > DESIGNS_SHOWN && !showAllDesigns && (
               <button
                 type="button"
                 onClick={() => setShowAllDesigns(true)}
-                className="mx-auto mt-6 block rounded-full border border-white/15 px-6 py-2.5 text-sm font-medium text-white/70 transition hover:border-white/30 hover:text-white"
+                className="mx-auto mt-6 block rounded-full border border-ink/15 px-6 py-2.5 text-sm font-medium text-ink/70 transition hover:border-ink/30 hover:text-ink"
               >
                 View more designs ({designOptions.length - DESIGNS_SHOWN})
               </button>
@@ -409,15 +409,15 @@ export function GetStartedFlow({
 
         {step === 2 && (
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-emerald-400/80">Step 3</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-accent/80">Step 3</p>
             <h2 className="mt-2 text-3xl font-semibold tracking-tight">Create your account.</h2>
-            <p className="mt-2 max-w-2xl text-sm leading-6 text-white/50">
+            <p className="mt-2 max-w-2xl text-sm leading-6 text-ink/50">
               We&apos;ll build this exact design for you and open it in the on-screen editor after email confirmation, so you can make it yours.
             </p>
 
             {selected && selectedDesign !== "scratch" && (
               <div className="mt-6 flex items-center gap-4 rounded-2xl border border-emerald-400/20 bg-emerald-400/[0.04] p-3 sm:p-4">
-                <div className="w-24 shrink-0 overflow-hidden rounded-lg border border-white/10 sm:w-32">
+                <div className="w-24 shrink-0 overflow-hidden rounded-lg border border-ink/10 sm:w-32">
                   <TemplateThumb
                     src={
                       designKey
@@ -428,13 +428,13 @@ export function GetStartedFlow({
                   />
                 </div>
                 <div className="min-w-0">
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-emerald-300/70">You&apos;re building</p>
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-accent/70">You&apos;re building</p>
                   <p className="mt-1 font-semibold leading-tight">{selected.label}</p>
-                  <p className="text-sm text-white/45">{designKey ? `${titleCase(designKey)} design` : `${titleCase(selectedStyle)} design`}</p>
+                  <p className="text-sm text-ink/45">{designKey ? `${titleCase(designKey)} design` : `${titleCase(selectedStyle)} design`}</p>
                   <button
                     type="button"
                     onClick={() => goToStep(0)}
-                    className="mt-1.5 text-sm text-white/50 underline-offset-4 transition hover:text-white hover:underline"
+                    className="mt-1.5 text-sm text-ink/50 underline-offset-4 transition hover:text-ink hover:underline"
                   >
                     Change
                   </button>
@@ -476,20 +476,20 @@ export function GetStartedFlow({
             {error && <p className="mt-4 rounded-lg bg-red-500/10 px-4 py-3 text-sm text-red-300">{error}</p>}
 
             {/* Terms acceptance — required before the account can be created. */}
-            <label className="mt-6 flex cursor-pointer items-start gap-3 text-sm leading-relaxed text-white/60">
+            <label className="mt-6 flex cursor-pointer items-start gap-3 text-sm leading-relaxed text-ink/60">
               <input
                 type="checkbox"
                 name="terms"
                 required
-                className="mt-0.5 h-4 w-4 shrink-0 cursor-pointer rounded border-white/25 bg-white/[0.03] text-emerald-500 accent-emerald-500 focus:ring-emerald-400/40"
+                className="mt-0.5 h-4 w-4 shrink-0 cursor-pointer rounded border-ink/25 bg-ink/[0.03] text-accent accent-emerald-500 focus:ring-emerald-400/40"
               />
               <span>
                 I agree to the{" "}
-                <Link href="/terms" target="_blank" className="text-white/80 underline underline-offset-2 hover:text-white">
+                <Link href="/terms" target="_blank" className="text-ink/80 underline underline-offset-2 hover:text-ink">
                   Terms &amp; Conditions
                 </Link>{" "}
                 and{" "}
-                <Link href="/privacy" target="_blank" className="text-white/80 underline underline-offset-2 hover:text-white">
+                <Link href="/privacy" target="_blank" className="text-ink/80 underline underline-offset-2 hover:text-ink">
                   Privacy Policy
                 </Link>
                 .
@@ -497,19 +497,19 @@ export function GetStartedFlow({
             </label>
 
             <div className="mt-6 flex flex-wrap items-center justify-between gap-4">
-              <button type="button" onClick={() => setStep(preset === "other" ? 0 : 1)} className="text-sm text-white/45 transition hover:text-white">
+              <button type="button" onClick={() => setStep(preset === "other" ? 0 : 1)} className="text-sm text-ink/45 transition hover:text-ink">
                 Back
               </button>
-              <SubmitButton className="rounded-xl bg-white px-7 py-3 text-sm font-semibold text-black transition hover:bg-white/90" pendingText="Creating your site...">
+              <SubmitButton className="rounded-xl bg-ink px-7 py-3 text-sm font-semibold text-paper transition hover:bg-ink/90" pendingText="Creating your site...">
                 Create my site
               </SubmitButton>
             </div>
 
             {/* Trust strip — reassurance at the commitment point. */}
-            <ul className="mt-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs text-white/45">
+            <ul className="mt-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs text-ink/45">
               {["No setup fee", "Cancel anytime", "Live in 5 minutes", "150+ designs"].map((t) => (
                 <li key={t} className="flex items-center gap-1.5">
-                  <svg className="h-3.5 w-3.5 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+                  <svg className="h-3.5 w-3.5 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                     <path d="M5 12.5l4.5 4.5L19 7" />
                   </svg>
                   {t}
@@ -517,8 +517,8 @@ export function GetStartedFlow({
               ))}
             </ul>
 
-            <p className="mt-5 text-center text-xs text-white/30">
-              Already have an account? <Link href="/login" className="text-white/60 hover:text-white">Sign in</Link>
+            <p className="mt-5 text-center text-xs text-ink/30">
+              Already have an account? <Link href="/login" className="text-ink/60 hover:text-ink">Sign in</Link>
             </p>
           </div>
         )}
@@ -528,45 +528,45 @@ export function GetStartedFlow({
           look around the real site before choosing. */}
       {preview && selected && (
         <div
-          className="fixed inset-0 z-[120] flex items-center justify-center bg-black/75 p-4 backdrop-blur-sm sm:p-8"
+          className="fixed inset-0 z-[120] flex items-center justify-center bg-paper/75 p-4 backdrop-blur-sm sm:p-8"
           onClick={() => setPreview(null)}
         >
           <div
-            className="flex max-h-[88vh] w-full max-w-5xl flex-col overflow-hidden rounded-2xl border border-white/15 bg-[#0c0c0d] shadow-[0_40px_120px_-20px_rgba(0,0,0,0.9)]"
+            className="flex max-h-[88vh] w-full max-w-5xl flex-col overflow-hidden rounded-2xl border border-ink/15 bg-panel shadow-[0_40px_120px_-20px_rgba(0,0,0,0.9)]"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Browser chrome */}
-            <div className="flex items-center gap-3 border-b border-white/10 bg-white/[0.03] px-4 py-3">
+            <div className="flex items-center gap-3 border-b border-ink/10 bg-ink/[0.03] px-4 py-3">
               <div className="flex gap-1.5">
                 <span className="h-3 w-3 rounded-full bg-[#ff5f57]" />
                 <span className="h-3 w-3 rounded-full bg-[#febc2e]" />
                 <span className="h-3 w-3 rounded-full bg-[#28c840]" />
               </div>
-              <div className="mx-auto flex max-w-xs flex-1 items-center justify-center gap-2 truncate rounded-md bg-black/40 px-3 py-1.5 text-xs text-white/50">
-                <svg className="h-3 w-3 shrink-0 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden><path d="M5 11V7a5 5 0 0 1 10 0v4" transform="translate(2)" /><rect x="4" y="11" width="16" height="9" rx="2" /></svg>
+              <div className="mx-auto flex max-w-xs flex-1 items-center justify-center gap-2 truncate rounded-md bg-paper/40 px-3 py-1.5 text-xs text-ink/50">
+                <svg className="h-3 w-3 shrink-0 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden><path d="M5 11V7a5 5 0 0 1 10 0v4" transform="translate(2)" /><rect x="4" y="11" width="16" height="9" rx="2" /></svg>
                 yourname.kovasite.com
               </div>
               {/* device toggle */}
-              <div className="hidden items-center gap-1 rounded-md bg-black/40 p-0.5 sm:flex">
+              <div className="hidden items-center gap-1 rounded-md bg-paper/40 p-0.5 sm:flex">
                 {(["desktop", "mobile"] as const).map((d) => (
                   <button
                     key={d}
                     type="button"
                     onClick={() => setPreviewDevice(d)}
-                    className={`rounded px-2.5 py-1 text-xs capitalize transition ${previewDevice === d ? "bg-white/15 text-white" : "text-white/45 hover:text-white"}`}
+                    className={`rounded px-2.5 py-1 text-xs capitalize transition ${previewDevice === d ? "bg-ink/15 text-ink" : "text-ink/45 hover:text-ink"}`}
                   >
                     {d}
                   </button>
                 ))}
               </div>
-              <button type="button" onClick={() => setPreview(null)} aria-label="Close preview" className="rounded-md p-1 text-white/50 transition hover:bg-white/10 hover:text-white">
+              <button type="button" onClick={() => setPreview(null)} aria-label="Close preview" className="rounded-md p-1 text-ink/50 transition hover:bg-ink/10 hover:text-ink">
                 <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden><path d="M6 6l12 12M18 6L6 18" /></svg>
               </button>
             </div>
 
             {/* Live site — edge to edge on desktop; phone frame only on mobile */}
-            <div className={`flex-1 overflow-auto ${previewDevice === "mobile" ? "bg-[#0c0c0d] p-4 sm:p-6" : "bg-white"}`}>
-              <div className={`mx-auto h-full overflow-hidden transition-all ${previewDevice === "mobile" ? "w-[390px] rounded-[2.2rem] border-[8px] border-neutral-900 bg-white shadow-2xl" : "w-full"}`}>
+            <div className={`flex-1 overflow-auto ${previewDevice === "mobile" ? "bg-panel p-4 sm:p-6" : "bg-ink"}`}>
+              <div className={`mx-auto h-full overflow-hidden transition-all ${previewDevice === "mobile" ? "w-[390px] rounded-[2.2rem] border-[8px] border-neutral-900 bg-ink shadow-2xl" : "w-full"}`}>
                 <iframe
                   key={`${preview.design}-${previewDevice}`}
                   src={`/samples/${preset}?embed=1&design=${preview.design}${preview.img ? `&img=${preview.img}` : ""}`}
@@ -578,19 +578,19 @@ export function GetStartedFlow({
             </div>
 
             {/* Footer: choose */}
-            <div className="flex flex-wrap items-center justify-between gap-3 border-t border-white/10 bg-white/[0.03] px-4 py-3">
+            <div className="flex flex-wrap items-center justify-between gap-3 border-t border-ink/10 bg-ink/[0.03] px-4 py-3">
               <div className="min-w-0">
-                <p className="truncate font-semibold text-white">{titleCase(preview.design)}</p>
-                <p className="truncate text-xs text-white/45">Scroll and click around — this is the live {selected.label.toLowerCase()} site</p>
+                <p className="truncate font-semibold text-ink">{titleCase(preview.design)}</p>
+                <p className="truncate text-xs text-ink/45">Scroll and click around — this is the live {selected.label.toLowerCase()} site</p>
               </div>
               <div className="flex items-center gap-2">
-                <button type="button" onClick={() => setPreview(null)} className="rounded-xl border border-white/15 px-4 py-2.5 text-sm text-white/70 transition hover:text-white">
+                <button type="button" onClick={() => setPreview(null)} className="rounded-xl border border-ink/15 px-4 py-2.5 text-sm text-ink/70 transition hover:text-ink">
                   Keep looking
                 </button>
                 <button
                   type="button"
                   onClick={() => { chooseDesignKey(preview.design, preview.img); setPreview(null); }}
-                  className="rounded-xl bg-emerald-400 px-5 py-2.5 text-sm font-semibold text-black transition hover:bg-emerald-300"
+                  className="rounded-xl bg-emerald-400 px-5 py-2.5 text-sm font-semibold text-neutral-950 transition hover:bg-emerald-300"
                 >
                   Choose this design
                 </button>

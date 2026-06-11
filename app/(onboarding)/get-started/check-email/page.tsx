@@ -20,16 +20,16 @@ export default async function CheckEmailPage({
 
       <section className="mx-auto max-w-md px-6 py-20">
         <Reveal>
-          <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-8 text-center">
-            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-emerald-400/15 text-emerald-300">
+          <div className="rounded-2xl border border-ink/10 bg-ink/[0.02] p-8 text-center">
+            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-emerald-400/15 text-accent">
               ✉
             </div>
-            <p className="mt-4 text-sm text-white/55">
+            <p className="mt-4 text-sm text-ink/55">
               Once you click the link, you&apos;ll land straight in your dashboard with your draft site ready to edit.
             </p>
-            <p className="mt-6 text-xs text-white/30">
-              Didn&apos;t get it? Check spam, or <Link href="/get-started" className="text-white/60 hover:text-white">try again</Link>.
-              Already confirmed? <Link href="/login" className="text-white/60 hover:text-white">Sign in</Link>.
+            <p className="mt-6 text-xs text-ink/30">
+              Didn&apos;t get it? Check spam, or <Link href="/get-started" className="text-ink/60 hover:text-ink">try again</Link>.
+              Already confirmed? <Link href="/login" className="text-ink/60 hover:text-ink">Sign in</Link>.
             </p>
           </div>
         </Reveal>

@@ -101,7 +101,7 @@ export function NavigationFeedback() {
           <div className="h-full w-1/2 animate-[nav-progress_900ms_ease-in-out_infinite] rounded-full bg-emerald-300 shadow-[0_0_22px_rgba(52,211,153,0.9)]" />
         </div>
       )}
-      <div className="fixed bottom-5 left-1/2 z-[9999] -translate-x-1/2 rounded-full border border-white/10 bg-black/85 px-4 py-2 text-xs font-medium text-white shadow-2xl backdrop-blur">
+      <div className="fixed bottom-5 left-1/2 z-[9999] -translate-x-1/2 rounded-full border border-ink/10 bg-paper/85 px-4 py-2 text-xs font-medium text-ink shadow-2xl backdrop-blur">
         {feedback === "opening" ? "Opening…" : "Loading…"}
       </div>
     </>

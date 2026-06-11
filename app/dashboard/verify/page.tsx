@@ -6,8 +6,8 @@ import { submitKycAction } from "../actions";
 export const dynamic = "force-dynamic";
 
 const input =
-  "w-full rounded-xl border border-white/10 bg-white/[0.03] px-3.5 py-2.5 text-sm text-white placeholder-white/25 outline-none transition focus:border-white/25 focus:bg-white/[0.05]";
-const label = "mb-1.5 block text-[13px] font-medium text-white/55";
+  "w-full rounded-xl border border-ink/10 bg-ink/[0.03] px-3.5 py-2.5 text-sm text-ink placeholder-ink/25 outline-none transition focus:border-ink/25 focus:bg-ink/[0.05]";
+const label = "mb-1.5 block text-[13px] font-medium text-ink/55";
 
 export default async function VerifyPage({ searchParams }: { searchParams: Promise<{ done?: string; error?: string }> }) {
   const { done, error } = await searchParams;
@@ -20,9 +20,9 @@ export default async function VerifyPage({ searchParams }: { searchParams: Promi
     <div className="mx-auto max-w-2xl">
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-semibold tracking-tight">Verification</h1>
-        <Link href="/dashboard" className="text-sm text-white/50 hover:text-white">← Home</Link>
+        <Link href="/dashboard" className="text-sm text-ink/50 hover:text-ink">← Home</Link>
       </div>
-      <p className="mt-1 text-sm text-white/45">Confirm your business details so we can keep your account in good standing.</p>
+      <p className="mt-1 text-sm text-ink/45">Confirm your business details so we can keep your account in good standing.</p>
 
       {error && <p className="mt-5 rounded-xl bg-red-500/10 px-4 py-3 text-sm text-red-300">{error}</p>}
 
@@ -32,9 +32,9 @@ export default async function VerifyPage({ searchParams }: { searchParams: Promi
           <p className="mt-1 text-sm text-emerald-200/80">Thanks — no further action needed.</p>
         </div>
       ) : status === "submitted" || done ? (
-        <div className="mt-6 rounded-2xl border border-white/[0.08] bg-white/[0.02] p-6">
-          <p className="font-semibold text-white">Under review</p>
-          <p className="mt-1 text-sm text-white/55">We&apos;ve received your details and will confirm shortly. We&apos;ll email you when it&apos;s done.</p>
+        <div className="mt-6 rounded-2xl border border-ink/[0.08] bg-ink/[0.02] p-6">
+          <p className="font-semibold text-ink">Under review</p>
+          <p className="mt-1 text-sm text-ink/55">We&apos;ve received your details and will confirm shortly. We&apos;ll email you when it&apos;s done.</p>
         </div>
       ) : (
         <>
@@ -43,7 +43,7 @@ export default async function VerifyPage({ searchParams }: { searchParams: Promi
               Your last submission needs changes: {latest.review_note}
             </p>
           )}
-          <form action={submitKycAction} className="mt-6 space-y-4 rounded-2xl border border-white/[0.08] bg-white/[0.02] p-6">
+          <form action={submitKycAction} className="mt-6 space-y-4 rounded-2xl border border-ink/[0.08] bg-ink/[0.02] p-6">
             <div>
               <label className={label}>Registered business name *</label>
               <input name="legal_name" required defaultValue={latest?.legal_name ?? ""} className={input} />
@@ -59,7 +59,7 @@ export default async function VerifyPage({ searchParams }: { searchParams: Promi
             </div>
             <div><label className={label}>Anything else</label><textarea name="notes" rows={2} defaultValue={latest?.notes ?? ""} className={input} /></div>
             <div className="flex justify-end">
-              <button className="rounded-xl bg-white px-4 py-2.5 text-sm font-semibold text-black transition hover:bg-white/90">Submit for review</button>
+              <button className="rounded-xl bg-ink px-4 py-2.5 text-sm font-semibold text-paper transition hover:bg-ink/90">Submit for review</button>
             </div>
           </form>
         </>

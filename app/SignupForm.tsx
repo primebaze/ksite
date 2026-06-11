@@ -5,7 +5,7 @@ import { submitSignup, type SignupState } from "./actions";
 
 const initial: SignupState = { ok: false, error: null };
 const field =
-  "w-full rounded-lg border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-white placeholder-white/30 outline-none focus:border-white/30";
+  "w-full rounded-lg border border-ink/10 bg-ink/[0.03] px-4 py-3 text-sm text-ink placeholder-ink/30 outline-none focus:border-ink/30";
 
 export default function SignupForm() {
   const [state, action, pending] = useActionState(submitSignup, initial);
@@ -13,11 +13,11 @@ export default function SignupForm() {
   if (state.ok) {
     return (
       <div className="rounded-2xl border border-emerald-400/30 bg-emerald-400/5 p-8 text-center">
-        <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-emerald-400/15 text-emerald-300">
+        <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-emerald-400/15 text-accent">
           ✓
         </div>
-        <h3 className="mt-4 text-lg font-semibold text-white">Thanks, we&apos;ll be in touch.</h3>
-        <p className="mt-1 text-sm text-white/50">
+        <h3 className="mt-4 text-lg font-semibold text-ink">Thanks, we&apos;ll be in touch.</h3>
+        <p className="mt-1 text-sm text-ink/50">
           We&apos;ll email you within one working day to get your site started.
         </p>
       </div>
@@ -48,11 +48,11 @@ export default function SignupForm() {
 
       <button
         disabled={pending}
-        className="mt-1 rounded-lg bg-white px-5 py-3 text-sm font-semibold text-black transition hover:bg-white/90 disabled:opacity-60"
+        className="mt-1 rounded-lg bg-ink px-5 py-3 text-sm font-semibold text-paper transition hover:bg-ink/90 disabled:opacity-60"
       >
         {pending ? "Sending…" : "Get started"}
       </button>
-      <p className="text-center text-xs text-white/30">No setup fee · No contract · Live in days</p>
+      <p className="text-center text-xs text-ink/30">No setup fee · No contract · Live in days</p>
     </form>
   );
 }

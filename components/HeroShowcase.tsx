@@ -26,12 +26,12 @@ export function HeroShowcase() {
   }, [i, story]);
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-white/10 bg-white/[0.02] shadow-[0_40px_120px_-25px_rgba(0,0,0,0.85)]">
-      <div className="flex items-center gap-2 border-b border-white/10 px-4 py-3">
-        <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
-        <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
-        <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
-        <span className="ml-2 flex items-center gap-1.5 rounded-md bg-white/[0.06] px-3 py-1 text-xs text-white/40">
+    <div className="overflow-hidden rounded-2xl border border-ink/10 bg-ink/[0.02] shadow-[0_40px_120px_-25px_rgba(0,0,0,0.85)]">
+      <div className="flex items-center gap-2 border-b border-ink/10 px-4 py-3">
+        <span className="h-2.5 w-2.5 rounded-full bg-ink/15" />
+        <span className="h-2.5 w-2.5 rounded-full bg-ink/15" />
+        <span className="h-2.5 w-2.5 rounded-full bg-ink/15" />
+        <span className="ml-2 flex items-center gap-1.5 rounded-md bg-ink/[0.06] px-3 py-1 text-xs text-ink/40">
           <svg width="11" height="11" viewBox="0 0 24 24" fill="none"><path d="M6 10V8a6 6 0 1112 0v2m-9 0h6a3 3 0 013 3v5a3 3 0 01-3 3H9a3 3 0 01-3-3v-5a3 3 0 013-3z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
           your custom domain
         </span>
@@ -49,15 +49,15 @@ export function HeroShowcase() {
               active={idx === i}
               className="absolute inset-0 h-full w-full object-cover opacity-70 [filter:saturate(0.8)_brightness(0.85)]"
             />
-            <div className="absolute inset-0 bg-black/30" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/20" />
+            <div className="absolute inset-0 bg-paper/30" />
+            <div className="absolute inset-0 bg-gradient-to-t from-paper/85 via-paper/40 to-paper/20" />
             <div className="absolute inset-0 flex flex-col justify-end gap-3 p-6 sm:p-10">
-              <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-white/45 sm:text-xs">{s.tag}</p>
-              <h3 className="max-w-xl text-3xl font-semibold tracking-tight text-white/65 drop-shadow-[0_2px_18px_rgba(0,0,0,0.45)] sm:text-5xl">
+              <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-ink/45 sm:text-xs">{s.tag}</p>
+              <h3 className="max-w-xl text-3xl font-semibold tracking-tight text-ink/65 drop-shadow-[0_2px_18px_rgba(0,0,0,0.45)] sm:text-5xl">
                 {s.name}
               </h3>
               <div className="mt-1">
-                <span className="inline-flex rounded-full bg-white/85 px-5 py-2 text-sm font-semibold text-black/80">{s.cta}</span>
+                <span className="inline-flex rounded-full bg-ink/85 px-5 py-2 text-sm font-semibold text-paper/80">{s.cta}</span>
               </div>
             </div>
           </div>

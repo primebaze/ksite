@@ -31,12 +31,12 @@ export default function PricingPage() {
         <Reveal>
           <h2 className="text-center text-3xl font-semibold tracking-tight">Questions</h2>
         </Reveal>
-        <div className="mt-10 divide-y divide-white/10 rounded-2xl border border-white/10">
+        <div className="mt-10 divide-y divide-ink/10 rounded-2xl border border-ink/10">
           {FAQS.map((f, i) => (
             <Reveal key={f.q} delay={i * 0.04}>
               <div className="p-6">
                 <h3 className="font-medium">{f.q}</h3>
-                <p className="mt-2 text-sm text-white/50">{f.a}</p>
+                <p className="mt-2 text-sm text-ink/50">{f.a}</p>
               </div>
             </Reveal>
           ))}

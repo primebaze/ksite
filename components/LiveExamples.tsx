@@ -34,7 +34,7 @@ const PLAN_INCLUDES = [
 
 function Check() {
   return (
-    <svg className="mt-0.5 h-4 w-4 shrink-0 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
+    <svg className="mt-0.5 h-4 w-4 shrink-0 text-accent" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
       <path d="M5 12.5l4.5 4.5L19 7" />
     </svg>
   );
@@ -46,22 +46,22 @@ function Check() {
 function BrowserCard({ e }: { e: Ex }) {
   return (
     <div
-      className="relative block overflow-hidden rounded-xl border border-white/15 bg-neutral-950 shadow-[0_20px_60px_-15px_rgba(0,0,0,0.8)]"
+      className="relative block overflow-hidden rounded-xl border border-ink/15 bg-panel shadow-[0_20px_60px_-15px_rgba(0,0,0,0.8)]"
     >
-      <div className="flex items-center gap-1.5 border-b border-white/10 bg-white/[0.03] px-3 py-2">
-        <span className="h-2 w-2 rounded-full bg-white/15" />
-        <span className="h-2 w-2 rounded-full bg-white/15" />
-        <span className="h-2 w-2 rounded-full bg-white/15" />
-        <span className="ml-2 flex h-5 flex-1 items-center truncate rounded-md bg-white/[0.06] px-2.5 text-[10px] text-white/40">
+      <div className="flex items-center gap-1.5 border-b border-ink/10 bg-ink/[0.03] px-3 py-2">
+        <span className="h-2 w-2 rounded-full bg-ink/15" />
+        <span className="h-2 w-2 rounded-full bg-ink/15" />
+        <span className="h-2 w-2 rounded-full bg-ink/15" />
+        <span className="ml-2 flex h-5 flex-1 items-center truncate rounded-md bg-ink/[0.06] px-2.5 text-[10px] text-ink/40">
           {e.domain}
         </span>
       </div>
-      <div className="relative w-full overflow-hidden bg-neutral-900" style={{ aspectRatio: "1 / 0.62" }}>
+      <div className="relative w-full overflow-hidden bg-panel-2" style={{ aspectRatio: "1 / 0.62" }}>
         <PreviewVideo src={e.video} className="absolute inset-0 h-full w-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/15 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-paper/75 via-paper/15 to-transparent" />
         <div className="absolute inset-x-0 bottom-0 flex flex-col gap-1 p-4 sm:p-5">
-          <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-white/65">{e.tag}</p>
-          <p className="text-lg font-semibold tracking-tight text-white drop-shadow-[0_2px_18px_rgba(0,0,0,0.6)] sm:text-xl">
+          <p className="text-[10px] font-medium uppercase tracking-[0.2em] text-ink/65">{e.tag}</p>
+          <p className="text-lg font-semibold tracking-tight text-ink drop-shadow-[0_2px_18px_rgba(0,0,0,0.6)] sm:text-xl">
             {e.name}
           </p>
         </div>
@@ -126,11 +126,11 @@ export function LiveExamples() {
   ];
 
   return (
-    <section ref={ref} className="relative z-10 h-[200vh] rounded-b-[2.5rem] border-t border-white/5 bg-black sm:rounded-b-[3.5rem]">
+    <section ref={ref} className="relative z-10 h-[200vh] rounded-b-[2.5rem] border-t border-ink/5 bg-paper sm:rounded-b-[3.5rem]">
       <div className="sticky top-0 flex h-screen items-center justify-center overflow-hidden">
         {/* Heading (fades as the cards part) */}
         <motion.div style={{ opacity: headingOpacity }} className="absolute inset-x-0 top-0 z-10 mx-auto max-w-6xl px-6 pt-[11vh] text-center">
-          <p className="text-xs font-medium uppercase tracking-widest text-emerald-400/80">Live examples</p>
+          <p className="text-xs font-medium uppercase tracking-widest text-accent/80">Live examples</p>
           <h2 className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">See what you get.</h2>
         </motion.div>
 
@@ -140,23 +140,23 @@ export function LiveExamples() {
           className="absolute inset-0 z-0 flex items-center justify-center px-6"
         >
           <div className="w-full max-w-xl text-left">
-            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-emerald-400/80">One simple plan</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-accent/80">One simple plan</p>
             <div className="mt-4 flex items-baseline gap-2">
               <span className="text-5xl font-semibold tracking-tight sm:text-6xl">£99</span>
-              <span className="text-lg text-white/45">/month</span>
-              <span className="ml-1 rounded-full bg-emerald-400/15 px-2.5 py-1 text-xs font-semibold text-emerald-300">Pay yearly, save 2 months</span>
+              <span className="text-lg text-ink/45">/month</span>
+              <span className="ml-1 rounded-full bg-emerald-400/15 px-2.5 py-1 text-xs font-semibold text-accent">Pay yearly, save 2 months</span>
             </div>
-            <p className="mt-3 text-base text-white/55">Everything included — free domain, hosting, booking. No setup fee, no contract, cancel anytime.</p>
+            <p className="mt-3 text-base text-ink/55">Everything included — free domain, hosting, booking. No setup fee, no contract, cancel anytime.</p>
             <ul className="mt-7 grid gap-x-6 gap-y-3 sm:grid-cols-2">
               {PLAN_INCLUDES.map((item) => (
-                <li key={item} className="flex items-start gap-2.5 text-sm leading-snug text-white/75">
+                <li key={item} className="flex items-start gap-2.5 text-sm leading-snug text-ink/75">
                   <Check />
                   {item}
                 </li>
               ))}
             </ul>
             <div className="mt-8">
-              <Link href="/get-started" className="inline-block rounded-xl bg-white px-8 py-3.5 text-sm font-semibold text-black transition hover:bg-white/90">
+              <Link href="/get-started" className="inline-block rounded-xl bg-ink px-8 py-3.5 text-sm font-semibold text-paper transition hover:bg-ink/90">
                 Get your site
               </Link>
             </div>

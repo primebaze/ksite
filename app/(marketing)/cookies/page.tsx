@@ -37,8 +37,8 @@ export default function CookiesPage() {
       <LSection heading="More information">
         <LP>
           For how we handle the data behind these cookies, see our{" "}
-          <Link href="/privacy" className="text-emerald-400/90 underline-offset-4 hover:underline">Privacy Policy</Link>.
-          Questions? Email <a href={`mailto:${LEGAL.email}`} className="text-emerald-400/90 underline-offset-4 hover:underline">{LEGAL.email}</a>.
+          <Link href="/privacy" className="text-accent/90 underline-offset-4 hover:underline">Privacy Policy</Link>.
+          Questions? Email <a href={`mailto:${LEGAL.email}`} className="text-accent/90 underline-offset-4 hover:underline">{LEGAL.email}</a>.
         </LP>
       </LSection>
     </LegalLayout>

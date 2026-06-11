@@ -29,18 +29,18 @@ export function StylePicker({
       <input type="hidden" name="style" value={style} />
 
       {/* Live preview of THIS business type in the chosen look */}
-      <div className="overflow-hidden rounded-2xl border border-white/10 bg-black">
-        <div className="flex items-center gap-1.5 border-b border-white/10 px-4 py-2.5">
-          <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
-          <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
-          <span className="h-2.5 w-2.5 rounded-full bg-white/15" />
-          <span className="ml-3 text-xs text-white/40">Live preview · {STYLES.find((s) => s.value === style)?.label}</span>
+      <div className="overflow-hidden rounded-2xl border border-ink/10 bg-paper">
+        <div className="flex items-center gap-1.5 border-b border-ink/10 px-4 py-2.5">
+          <span className="h-2.5 w-2.5 rounded-full bg-ink/15" />
+          <span className="h-2.5 w-2.5 rounded-full bg-ink/15" />
+          <span className="h-2.5 w-2.5 rounded-full bg-ink/15" />
+          <span className="ml-3 text-xs text-ink/40">Live preview · {STYLES.find((s) => s.value === style)?.label}</span>
         </div>
         <iframe
           key={style}
           src={`/samples/${presetKey}?style=${style}&embed=1`}
           title="Design preview"
-          className="h-[460px] w-full bg-white"
+          className="h-[460px] w-full bg-ink"
         />
       </div>
 
@@ -54,23 +54,23 @@ export function StylePicker({
               key={s.value}
               onClick={() => setStyle(s.value)}
               className={`rounded-xl border px-4 py-3 text-left transition active:scale-[0.98] ${
-                active ? "border-emerald-400/70 bg-emerald-400/10" : "border-white/10 bg-white/[0.02] hover:border-white/25"
+                active ? "border-emerald-400/70 bg-emerald-400/10" : "border-ink/10 bg-ink/[0.02] hover:border-ink/25"
               }`}
             >
               <span className="flex items-center gap-2">
-                <span className={`h-2.5 w-2.5 rounded-full ${active ? "bg-emerald-400" : "bg-white/20"}`} />
-                <span className="text-sm font-medium text-white">{s.label}</span>
+                <span className={`h-2.5 w-2.5 rounded-full ${active ? "bg-emerald-400" : "bg-ink/20"}`} />
+                <span className="text-sm font-medium text-ink">{s.label}</span>
               </span>
-              <span className="mt-1 block text-xs text-white/45">{s.blurb}</span>
+              <span className="mt-1 block text-xs text-ink/45">{s.blurb}</span>
             </button>
           );
         })}
       </div>
 
       <div className="mt-8 flex items-center justify-between">
-        <Link href="/dashboard/setup/look" className="text-sm text-white/45 hover:text-white">← Back</Link>
+        <Link href="/dashboard/setup/look" className="text-sm text-ink/45 hover:text-ink">← Back</Link>
         <SubmitButton
-          className="rounded-lg bg-white px-6 py-3 text-sm font-semibold text-black transition hover:bg-white/90"
+          className="rounded-lg bg-ink px-6 py-3 text-sm font-semibold text-paper transition hover:bg-ink/90"
           pendingText="Saving…"
         >
           Use this design →

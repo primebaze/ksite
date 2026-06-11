@@ -48,33 +48,33 @@ export function MobileTabBar({ onSignOut }: { onSignOut: (formData: FormData) =>
   const moreActive = MORE.some((m) => pathname.startsWith(m.href));
 
   const tabCls = (active: boolean) =>
-    `flex flex-1 flex-col items-center gap-1 py-2 text-[10px] font-medium transition ${active ? "text-white" : "text-white/45"}`;
+    `flex flex-1 flex-col items-center gap-1 py-2 text-[10px] font-medium transition ${active ? "text-ink" : "text-ink/45"}`;
 
   return (
     <>
       {/* More sheet */}
       {open && (
         <div className="fixed inset-0 z-[60] lg:hidden" onClick={() => setOpen(false)}>
-          <div className="absolute inset-0 bg-black/60 backdrop-blur-sm" />
+          <div className="absolute inset-0 bg-paper/60 backdrop-blur-sm" />
           <div
-            className="absolute inset-x-0 bottom-0 rounded-t-3xl border-t border-white/10 bg-neutral-950 p-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] shadow-2xl"
+            className="absolute inset-x-0 bottom-0 rounded-t-3xl border-t border-ink/10 bg-panel p-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] shadow-2xl"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="mx-auto mb-4 h-1.5 w-10 rounded-full bg-white/15" />
+            <div className="mx-auto mb-4 h-1.5 w-10 rounded-full bg-ink/15" />
             <div className="grid gap-2">
               {MORE.map((m) => (
                 <Link
                   key={m.href}
                   href={m.href}
                   onClick={() => setOpen(false)}
-                  className="flex items-center gap-3 rounded-2xl border border-white/[0.08] bg-white/[0.03] px-4 py-3.5 text-sm font-medium text-white/85 transition active:scale-[0.99]"
+                  className="flex items-center gap-3 rounded-2xl border border-ink/[0.08] bg-ink/[0.03] px-4 py-3.5 text-sm font-medium text-ink/85 transition active:scale-[0.99]"
                 >
-                  <Icon name={m.icon} className="size-5 text-white/60" />
+                  <Icon name={m.icon} className="size-5 text-ink/60" />
                   {m.label}
                 </Link>
               ))}
               <form action={onSignOut}>
-                <button className="mt-1 w-full rounded-2xl border border-white/[0.08] px-4 py-3.5 text-sm font-medium text-white/55 transition active:scale-[0.99]">
+                <button className="mt-1 w-full rounded-2xl border border-ink/[0.08] px-4 py-3.5 text-sm font-medium text-ink/55 transition active:scale-[0.99]">
                   Sign out
                 </button>
               </form>
@@ -84,7 +84,7 @@ export function MobileTabBar({ onSignOut }: { onSignOut: (formData: FormData) =>
       )}
 
       {/* Tab bar */}
-      <nav className="fixed inset-x-0 bottom-0 z-50 border-t border-white/10 bg-black/80 backdrop-blur-xl pb-[env(safe-area-inset-bottom)] lg:hidden">
+      <nav className="fixed inset-x-0 bottom-0 z-50 border-t border-ink/10 bg-paper/80 backdrop-blur-xl pb-[env(safe-area-inset-bottom)] lg:hidden">
         <div className="flex items-stretch px-1">
           {TABS.map((t) => {
             const active = isActive(pathname, t.match);

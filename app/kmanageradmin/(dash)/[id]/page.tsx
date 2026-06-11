@@ -28,11 +28,11 @@ import {
 
 export const dynamic = "force-dynamic";
 
-const card = "rounded-2xl border border-white/10 bg-white/[0.03] p-6";
+const card = "rounded-2xl border border-ink/10 bg-ink/[0.03] p-6";
 const input =
-  "mt-1 w-full rounded-lg border border-white/10 bg-white/[0.03] px-3 py-2 text-sm text-white placeholder-white/30 outline-none focus:border-white/30 [&>option]:bg-neutral-900";
-const label = "text-xs text-white/40";
-const btn = "rounded-lg bg-emerald-500 px-4 py-2 text-sm font-semibold text-black transition hover:bg-emerald-400";
+  "mt-1 w-full rounded-lg border border-ink/10 bg-ink/[0.03] px-3 py-2 text-sm text-ink placeholder-ink/30 outline-none focus:border-ink/30 [&>option]:bg-panel-2";
+const label = "text-xs text-ink/40";
+const btn = "rounded-lg bg-emerald-500 px-4 py-2 text-sm font-semibold text-neutral-950 transition hover:bg-emerald-400";
 
 // Shared editor uses the staff (service-role) actions so any tenant is editable.
 const editorActions: EditorActions = {
@@ -57,10 +57,10 @@ const PRESET_GROUPS = VERTICALS.reduce<Record<string, { key: string; label: stri
 
 function Badge({ tone, children }: { tone: "green" | "amber" | "red" | "neutral"; children: React.ReactNode }) {
   const tones = {
-    green: "bg-emerald-400/15 text-emerald-300",
+    green: "bg-emerald-400/15 text-accent",
     amber: "bg-amber-400/15 text-amber-300",
     red: "bg-red-400/15 text-red-300",
-    neutral: "bg-white/10 text-white/60",
+    neutral: "bg-ink/10 text-ink/60",
   };
   return <span className={`rounded-full px-2.5 py-0.5 text-xs font-medium ${tones[tone]}`}>{children}</span>;
 }
@@ -103,22 +103,22 @@ export default async function EditTenant({
 
   return (
     <div className="space-y-6">
-      <Link href="/kmanageradmin" className="text-sm text-white/45 hover:text-white">← Clients</Link>
+      <Link href="/kmanageradmin" className="text-sm text-ink/45 hover:text-ink">← Clients</Link>
 
       {/* Header */}
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0">
           <h1 className="text-2xl font-semibold">{tenant.business_name}</h1>
-          <p className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-white/45">
+          <p className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-ink/45">
             <span className="uppercase tracking-wide">{verticalLabel}</span>
             <span>·</span>
-            <a href={liveUrl} target="_blank" rel="noreferrer" className="text-emerald-400 hover:underline">{liveHost} ↗</a>
+            <a href={liveUrl} target="_blank" rel="noreferrer" className="text-accent hover:underline">{liveHost} ↗</a>
           </p>
         </div>
         <form action={togglePublish}>
           <input type="hidden" name="id" value={id} />
           <input type="hidden" name="publish" value={(!tenant.published).toString()} />
-          <button className={tenant.published ? "rounded-lg border border-white/15 px-4 py-2 text-sm font-medium text-white/80 transition hover:bg-white/5" : btn}>
+          <button className={tenant.published ? "rounded-lg border border-ink/15 px-4 py-2 text-sm font-medium text-ink/80 transition hover:bg-ink/5" : btn}>
             {tenant.published ? "Unpublish" : "Publish"}
           </button>
         </form>
@@ -140,16 +140,16 @@ export default async function EditTenant({
       </div>
 
       {error && <p className="rounded-lg bg-red-500/10 px-3 py-2 text-sm text-red-300">{error}</p>}
-      {notice && <p className="rounded-lg bg-emerald-400/10 px-3 py-2 text-sm text-emerald-300">{notice}</p>}
+      {notice && <p className="rounded-lg bg-emerald-400/10 px-3 py-2 text-sm text-accent">{notice}</p>}
 
       {/* Account & billing (staff) */}
       <section className={card}>
-        <h2 className="text-lg font-semibold">Account &amp; billing <span className="ml-1 align-middle text-xs font-normal text-white/35">staff only</span></h2>
+        <h2 className="text-lg font-semibold">Account &amp; billing <span className="ml-1 align-middle text-xs font-normal text-ink/35">staff only</span></h2>
         <div className="mt-5 grid gap-5 sm:grid-cols-2">
           {/* Account status */}
-          <div className="rounded-xl border border-white/[0.08] p-4">
-            <p className="text-sm font-medium text-white/80">Account status</p>
-            <p className="mt-0.5 text-xs text-white/45">
+          <div className="rounded-xl border border-ink/[0.08] p-4">
+            <p className="text-sm font-medium text-ink/80">Account status</p>
+            <p className="mt-0.5 text-xs text-ink/45">
               {tenant.account_status === "suspended" ? "Site offline + dashboard blocked." : "Active and editable."}
             </p>
             <form action={setAccountStatusAction} className="mt-3">
@@ -162,9 +162,9 @@ export default async function EditTenant({
           </div>
 
           {/* Subscription */}
-          <div className="rounded-xl border border-white/[0.08] p-4">
-            <p className="text-sm font-medium text-white/80">Subscription</p>
-            <p className="mt-0.5 text-xs text-white/45">
+          <div className="rounded-xl border border-ink/[0.08] p-4">
+            <p className="text-sm font-medium text-ink/80">Subscription</p>
+            <p className="mt-0.5 text-xs text-ink/45">
               {!subscribed
                 ? "No active subscription."
                 : billing?.cancel_at
@@ -180,25 +180,25 @@ export default async function EditTenant({
           </div>
 
           {/* KYC */}
-          <div className="rounded-xl border border-white/[0.08] p-4 sm:col-span-2">
+          <div className="rounded-xl border border-ink/[0.08] p-4 sm:col-span-2">
             <div className="flex flex-wrap items-center justify-between gap-2">
-              <p className="text-sm font-medium text-white/80">Verification (KYC)</p>
+              <p className="text-sm font-medium text-ink/80">Verification (KYC)</p>
               <Badge tone={tenant.kyc_status === "approved" ? "green" : tenant.kyc_status === "rejected" ? "red" : tenant.kyc_status === "none" ? "neutral" : "amber"}>{tenant.kyc_status}</Badge>
             </div>
             {kyc && (
               <dl className="mt-3 grid gap-x-6 gap-y-1 text-sm sm:grid-cols-2">
-                <div className="flex gap-2"><dt className="text-white/40">Legal name</dt><dd className="text-white/80">{kyc.legal_name}</dd></div>
-                {kyc.business_type && <div className="flex gap-2"><dt className="text-white/40">Type</dt><dd className="text-white/80">{kyc.business_type}</dd></div>}
-                {kyc.registration_no && <div className="flex gap-2"><dt className="text-white/40">Reg no.</dt><dd className="text-white/80">{kyc.registration_no}</dd></div>}
-                {kyc.address && <div className="flex gap-2"><dt className="text-white/40">Address</dt><dd className="text-white/80">{kyc.address}</dd></div>}
-                {kyc.contact_name && <div className="flex gap-2"><dt className="text-white/40">Contact</dt><dd className="text-white/80">{kyc.contact_name} {kyc.contact_phone}</dd></div>}
-                {kyc.notes && <div className="flex gap-2 sm:col-span-2"><dt className="text-white/40">Notes</dt><dd className="text-white/80">{kyc.notes}</dd></div>}
+                <div className="flex gap-2"><dt className="text-ink/40">Legal name</dt><dd className="text-ink/80">{kyc.legal_name}</dd></div>
+                {kyc.business_type && <div className="flex gap-2"><dt className="text-ink/40">Type</dt><dd className="text-ink/80">{kyc.business_type}</dd></div>}
+                {kyc.registration_no && <div className="flex gap-2"><dt className="text-ink/40">Reg no.</dt><dd className="text-ink/80">{kyc.registration_no}</dd></div>}
+                {kyc.address && <div className="flex gap-2"><dt className="text-ink/40">Address</dt><dd className="text-ink/80">{kyc.address}</dd></div>}
+                {kyc.contact_name && <div className="flex gap-2"><dt className="text-ink/40">Contact</dt><dd className="text-ink/80">{kyc.contact_name} {kyc.contact_phone}</dd></div>}
+                {kyc.notes && <div className="flex gap-2 sm:col-span-2"><dt className="text-ink/40">Notes</dt><dd className="text-ink/80">{kyc.notes}</dd></div>}
               </dl>
             )}
             <div className="mt-3 flex flex-wrap items-end gap-2">
               <form action={requestKycAction}>
                 <input type="hidden" name="id" value={id} />
-                <button className="rounded-lg border border-white/15 px-4 py-2 text-sm font-medium text-white/80 transition hover:bg-white/5">
+                <button className="rounded-lg border border-ink/15 px-4 py-2 text-sm font-medium text-ink/80 transition hover:bg-ink/5">
                   {tenant.kyc_status === "none" ? "Request KYC" : "Re-request KYC"}
                 </button>
               </form>
@@ -215,8 +215,8 @@ export default async function EditTenant({
           </div>
 
           {/* Email the client */}
-          <div className="rounded-xl border border-white/[0.08] p-4 sm:col-span-2">
-            <p className="text-sm font-medium text-white/80">Email the client</p>
+          <div className="rounded-xl border border-ink/[0.08] p-4 sm:col-span-2">
+            <p className="text-sm font-medium text-ink/80">Email the client</p>
             <form action={emailClientAction} className="mt-3 space-y-3">
               <input type="hidden" name="id" value={id} />
               <input name="subject" placeholder="Subject" className={`${input} mt-0`} />
@@ -229,8 +229,8 @@ export default async function EditTenant({
 
       {/* Staff-only settings */}
       <section className={card}>
-        <h2 className="text-lg font-semibold">Settings &amp; status <span className="ml-1 align-middle text-xs font-normal text-white/35">staff only</span></h2>
-        <p className="mt-0.5 text-sm text-white/45">Plan, vertical, domain and the bespoke design override. Clients can&apos;t change these.</p>
+        <h2 className="text-lg font-semibold">Settings &amp; status <span className="ml-1 align-middle text-xs font-normal text-ink/35">staff only</span></h2>
+        <p className="mt-0.5 text-sm text-ink/45">Plan, vertical, domain and the bespoke design override. Clients can&apos;t change these.</p>
         <form action={saveSettings} className="mt-5 space-y-4">
           <input type="hidden" name="id" value={id} />
           <div className="grid gap-4 sm:grid-cols-2">
@@ -277,10 +277,10 @@ export default async function EditTenant({
             </div>
           </div>
           <div className="flex flex-wrap gap-5">
-            <label className="flex items-center gap-2 text-sm text-white/70">
+            <label className="flex items-center gap-2 text-sm text-ink/70">
               <input type="checkbox" name="booking_enabled" defaultChecked={content.booking_enabled !== false} /> Booking form enabled
             </label>
-            <label className="flex items-center gap-2 text-sm text-white/70">
+            <label className="flex items-center gap-2 text-sm text-ink/70">
               <input type="checkbox" name="contact_form_enabled" defaultChecked={content.contact_form_enabled !== false} /> Contact form enabled
             </label>
           </div>
@@ -294,7 +294,7 @@ export default async function EditTenant({
       {/* Advanced raw JSON */}
       <section className={card}>
         <h2 className="text-lg font-semibold">Advanced: full content JSON</h2>
-        <p className="mt-0.5 text-sm text-white/45">Direct edit of the whole content blob (hours, links, variants, anything not above). Replaces it entirely.</p>
+        <p className="mt-0.5 text-sm text-ink/45">Direct edit of the whole content blob (hours, links, variants, anything not above). Replaces it entirely.</p>
         <form action={saveContentRaw} className="mt-4">
           <input type="hidden" name="id" value={id} />
           <textarea name="content_json" rows={12} defaultValue={JSON.stringify(content, null, 2)} className={`${input} font-mono text-xs`} />

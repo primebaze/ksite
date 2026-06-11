@@ -1,27 +1,54 @@
 @import "tailwindcss";
 
+/* Manual theme control: the `dark` variant matches when <html> has .dark
+   (toggle + system both set this class via the no-flash script in layout). */
+@custom-variant dark (&:where(.dark, .dark *));
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Light (default) — a soft off-white, never pure white, with near-black ink
+     for strong contrast. `ink` and `paper` invert per theme; almost the whole
+     app is expressed as ink-on-paper, so the entire UI flips cleanly. */
+  --paper: #f4f4f1; /* page background */
+  --panel: #ffffff; /* elevated cards / sidebars */
+  --panel-2: #ebebe7; /* secondary surfaces */
+  --ink: #18181b; /* foreground text */
+  --accent: #047857; /* emerald, darkened for contrast on light */
+  --accent-soft: #059669;
+  color-scheme: light;
+
+  --background: var(--paper);
+  --foreground: var(--ink);
+}
+
+.dark {
+  --paper: #000000;
+  --panel: #0a0a0a;
+  --panel-2: #070707;
+  --ink: #ffffff;
+  --accent: #34d399; /* emerald-400 */
+  --accent-soft: #6ee7b7;
+  color-scheme: dark;
+
+  --background: var(--paper);
+  --foreground: var(--ink);
 }
 
 @theme inline {
+  --color-paper: var(--paper);
+  --color-panel: var(--panel);
+  --color-panel-2: var(--panel-2);
+  --color-ink: var(--ink);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: var(--paper);
+  color: var(--ink);
   font-family: Arial, Helvetica, sans-serif;
 }
 

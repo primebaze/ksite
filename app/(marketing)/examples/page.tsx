@@ -26,15 +26,15 @@ export default function ExamplesPage() {
                 href={`http://${e.sub}.${SITE_BASE}`}
                 target="_blank"
                 rel="noreferrer"
-                className="group block h-full rounded-2xl border border-white/10 bg-white/[0.02] p-6 transition hover:border-white/25 hover:bg-white/[0.04]"
+                className="group block h-full rounded-2xl border border-ink/10 bg-ink/[0.02] p-6 transition hover:border-ink/25 hover:bg-ink/[0.04]"
               >
-                <div className="flex aspect-[16/10] items-center justify-center rounded-lg border border-white/10 bg-gradient-to-br from-white/[0.06] to-transparent text-3xl font-semibold text-white/70">
+                <div className="flex aspect-[16/10] items-center justify-center rounded-lg border border-ink/10 bg-gradient-to-br from-ink/[0.06] to-transparent text-3xl font-semibold text-ink/70">
                   {e.name.charAt(0)}
                 </div>
-                <p className="mt-4 text-xs uppercase tracking-widest text-white/30">{e.label}</p>
+                <p className="mt-4 text-xs uppercase tracking-widest text-ink/30">{e.label}</p>
                 <p className="mt-1 font-medium">{e.name}</p>
-                <p className="mt-2 text-sm leading-relaxed text-white/50">{e.blurb}</p>
-                <p className="mt-4 text-sm text-emerald-400/90 transition group-hover:text-emerald-300">View live →</p>
+                <p className="mt-2 text-sm leading-relaxed text-ink/50">{e.blurb}</p>
+                <p className="mt-4 text-sm text-accent/90 transition group-hover:text-accent">View live →</p>
               </a>
             </Reveal>
           ))}

@@ -15,7 +15,7 @@ export default function AcceptableUsePage() {
         <LP>
           This policy applies to every website and account on {LEGAL.brand}. It exists to keep the service safe and
           lawful for everyone. It forms part of our{" "}
-          <Link href="/terms" className="text-emerald-400/90 underline-offset-4 hover:underline">Terms &amp; Conditions</Link>.
+          <Link href="/terms" className="text-accent/90 underline-offset-4 hover:underline">Terms &amp; Conditions</Link>.
         </LP>
       </LSection>
 
@@ -50,7 +50,7 @@ export default function AcceptableUsePage() {
       <LSection heading="Reporting">
         <LP>
           To report a site or content that breaches this policy, email{" "}
-          <a href={`mailto:${LEGAL.email}`} className="text-emerald-400/90 underline-offset-4 hover:underline">{LEGAL.email}</a>.
+          <a href={`mailto:${LEGAL.email}`} className="text-accent/90 underline-offset-4 hover:underline">{LEGAL.email}</a>.
         </LP>
       </LSection>
     </LegalLayout>
