@@ -24,7 +24,7 @@ const EXAMPLES: Ex[] = [
 
 const PLAN_INCLUDES = [
   "Bespoke design & hosting",
-  "Custom domain & SSL",
+  "Free custom domain & SSL",
   "Booking & online ordering",
   "Local SEO & Google reviews",
   "Mobile-first & lightning fast",
@@ -144,8 +144,9 @@ export function LiveExamples() {
             <div className="mt-4 flex items-baseline gap-2">
               <span className="text-5xl font-semibold tracking-tight sm:text-6xl">£99</span>
               <span className="text-lg text-white/45">/month</span>
+              <span className="ml-1 rounded-full bg-emerald-400/15 px-2.5 py-1 text-xs font-semibold text-emerald-300">or save 10% yearly</span>
             </div>
-            <p className="mt-3 text-base text-white/55">Everything included. No setup fee, no contract, cancel anytime.</p>
+            <p className="mt-3 text-base text-white/55">Everything included — free domain, hosting, booking. No setup fee, no contract, cancel anytime.</p>
             <ul className="mt-7 grid gap-x-6 gap-y-3 sm:grid-cols-2">
               {PLAN_INCLUDES.map((item) => (
                 <li key={item} className="flex items-start gap-2.5 text-sm leading-snug text-white/75">

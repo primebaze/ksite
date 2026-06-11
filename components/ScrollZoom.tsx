@@ -124,7 +124,7 @@ export function ScrollZoom({ children }: { children: ReactNode }) {
           className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center px-6 text-center"
         >
           <p className="mx-auto max-w-md text-lg leading-relaxed text-white/70">
-            Design, hosting, domain and booking, all done for you. One flat price from £99 a month.
+            Design, hosting, a free domain and booking, all done for you. One flat price from £99 a month.
           </p>
           <Link
             href="/get-started"

@@ -28,7 +28,7 @@ export const NAV_LINKS = [
 // `icon` is an id resolved to an SVG in the marketing pages.
 export const FEATURES: { icon: string; title: string; body: string }[] = [
   { icon: "design", title: "Premium design", body: "Not a drag-and-drop template, but a site crafted for your industry that looks like it cost thousands." },
-  { icon: "shield", title: "Domain & SSL included", body: "We register your domain, handle DNS and HTTPS, and keep it renewed. You never touch it." },
+  { icon: "shield", title: "Free domain & SSL included", body: "We register your custom domain free, handle DNS and HTTPS, and keep it renewed. You never touch it." },
   { icon: "calendar", title: "Booking built in", body: "Reservations, appointments and online ordering embedded. Customers book directly, no commission." },
   { icon: "bolt", title: "Fast & mobile-first", body: "Loads instantly on a phone, where your customers are. Built for top Core Web Vitals scores." },
   { icon: "pin", title: "Found on Google", body: "Local SEO, Google Business Profile integration, and your best reviews shown front and centre." },
@@ -41,32 +41,31 @@ export const STEPS = [
   { n: "03", title: "You get bookings", body: "Customers find you and book. Need a change? Text us and we handle it, every month." },
 ];
 
-export interface Tier {
-  name: string;
-  price: string;
-  tagline: string;
-  features: string[];
-  cta: string;
-  highlight: boolean;
-}
+// Format a GBP amount: whole pounds drop the decimals, otherwise show pence.
+export const gbp = (n: number) =>
+  `£${n.toLocaleString("en-GB", { minimumFractionDigits: Number.isInteger(n) ? 0 : 2, maximumFractionDigits: 2 })}`;
 
-export const TIERS: Tier[] = [
-  {
-    name: "Basic", price: "£99", tagline: "Get online and take bookings.",
-    features: ["Bespoke-feel site + hosting", "Managed domain + SSL", "Booking embedded + Google reviews", "Direct ordering (skip delivery fees)", "Monthly content edits"],
-    cta: "Start with Basic", highlight: false,
-  },
-  {
-    name: "Standard", price: "£199", tagline: "Get found and grow.",
-    features: ["Everything in Basic", "Priority 48-hour edits + menu editor", "Local SEO + Google Business Profile", "Review-collection automation", "Email capture for offers", "Events / private-hire page"],
-    cta: "Choose Standard", highlight: true,
-  },
-  {
-    name: "Premium", price: "£349", tagline: "Hands-off marketing for growth.",
-    features: ["Everything in Standard", "Multiple locations", "Monthly social content + campaigns", "Gift vouchers + email marketing", "Analytics + monthly report", "Annual design refresh"],
-    cta: "Go Premium", highlight: false,
-  },
-];
+// One simple plan. Monthly is £99; paying yearly takes 10% off.
+export const PLAN = {
+  monthly: 99,
+  yearlyDiscountPct: 10,
+  /** Total billed once a year (£99 × 12, less 10%). */
+  yearlyTotal: +(99 * 12 * 0.9).toFixed(2), // 1069.20
+  /** Effective per-month cost when billed yearly. */
+  yearlyPerMonth: +(99 * 0.9).toFixed(2), // 89.10
+  /** What you save over a year vs paying monthly. */
+  yearlySaving: +(99 * 12 * 0.1).toFixed(2), // 118.80
+  features: [
+    "Bespoke design built for your business",
+    "Free custom domain + SSL, registered & renewed",
+    "Fast, mobile-first hosting",
+    "Booking & online ordering — no commission",
+    "Local SEO + Google Business Profile",
+    "Google reviews shown & collected",
+    "Tap any text to edit — change anything, anytime",
+    "Monthly edits, done for you",
+  ],
+};
 
 export const EXAMPLES = [
   { sub: "nonna", label: "Restaurant", name: "Nonna's Kitchen", blurb: "Menu, reservations and direct ordering for a family Italian kitchen." },

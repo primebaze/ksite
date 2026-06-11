@@ -16,7 +16,7 @@ import {
   upsertMyGalleryImage,
   upsertMyTeamMember,
 } from "@/lib/my-site";
-import { getStripe, priceForPlan, type Plan } from "@/lib/stripe";
+import { getStripe, priceForBilling, type BillingPeriod, type Plan } from "@/lib/stripe";
 import type { SiteContent } from "@/lib/types";
 
 const str = (f: FormData, k: string) => {
@@ -157,10 +157,20 @@ export async function teamDelete(formData: FormData) {
 // Publish = subscribe. Opens Stripe Checkout for the chosen plan; the webhook
 // flips the site live once payment succeeds.
 export async function startCheckout(formData: FormData) {
-  const plan = (String(formData.get("plan") ?? "standard") as Plan) || "standard";
+  // Single plan now, billed monthly or yearly. Stored plan stays "basic" so the
+  // webhook and existing subscribers are unaffected; the period only chooses the
+  // Stripe price.
+  const plan: Plan = "basic";
+  const period: BillingPeriod = String(formData.get("period") ?? "monthly") === "yearly" ? "yearly" : "monthly";
   const stripe = getStripe();
-  const price = priceForPlan(plan);
-  if (!stripe || !price) redirect("/dashboard/publish?error=Billing+is+not+configured+yet");
+  const price = priceForBilling(period);
+  if (!stripe || !price) {
+    redirect(
+      period === "yearly"
+        ? "/dashboard/publish?error=Yearly+billing+is+not+configured+yet"
+        : "/dashboard/publish?error=Billing+is+not+configured+yet",
+    );
+  }
 
   const supabase = await createSupabaseServerClient();
   const {
@@ -179,8 +189,8 @@ export async function startCheckout(formData: FormData) {
       line_items: [{ price: price!, quantity: 1 }],
       customer_email: user!.email ?? undefined,
       client_reference_id: tenant!.id,
-      metadata: { tenant_id: tenant!.id, plan },
-      subscription_data: { metadata: { tenant_id: tenant!.id, plan } },
+      metadata: { tenant_id: tenant!.id, plan, period },
+      subscription_data: { metadata: { tenant_id: tenant!.id, plan, period } },
       success_url: `${base}/dashboard/finishing?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${base}/dashboard/publish?canceled=1`,
     });

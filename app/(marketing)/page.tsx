@@ -23,8 +23,8 @@ export default function Home() {
           </Reveal>
           <Reveal delay={0.1}>
             <p className="mx-auto mt-6 max-w-xl text-lg text-white/55">
-              Tell us what you want, and you go live on your own custom domain: design, hosting, booking, reviews
-              and SEO all set up for you. Most sites are live in about 5 minutes, and they&apos;re built to convert.
+              Tell us what you want, and you go live on your own free custom domain: design, hosting, booking,
+              reviews and SEO all set up for you. Most sites are live in about 5 minutes, and they&apos;re built to convert.
             </p>
           </Reveal>
           <Reveal delay={0.18}>

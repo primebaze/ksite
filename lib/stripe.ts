@@ -26,3 +26,14 @@ export function priceForPlan(plan: Plan): string | undefined {
   };
   return map[plan];
 }
+
+export type BillingPeriod = "monthly" | "yearly";
+
+// We now sell a single plan, billed monthly (£99) or yearly (10% off). Monthly
+// reuses the existing £99 price; yearly needs its own Stripe price set in
+// STRIPE_PRICE_YEARLY (create a £1,069.20/yr recurring price for it).
+export function priceForBilling(period: BillingPeriod): string | undefined {
+  return period === "yearly"
+    ? process.env.STRIPE_PRICE_YEARLY
+    : process.env.STRIPE_PRICE_MONTHLY ?? process.env.STRIPE_PRICE_BASIC;
+}

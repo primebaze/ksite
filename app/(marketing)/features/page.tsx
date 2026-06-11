@@ -20,7 +20,7 @@ const WINDOWS: Record<string, () => React.ReactNode> = {
 
 const POINTS: Record<string, string[]> = {
   design: ["Crafted for your industry", "Looks bespoke, not templated", "Yours to tweak any time"],
-  shield: ["Domain registered & renewed", "HTTPS / SSL handled", "DNS configured for you"],
+  shield: ["Free custom domain, registered & renewed", "HTTPS / SSL handled", "DNS configured for you"],
   calendar: ["Tables, appointments & orders", "No per-booking commission", "Synced to your calendar"],
   bolt: ["Top Core Web Vitals", "Loads in well under a second", "Built mobile-first"],
 };
