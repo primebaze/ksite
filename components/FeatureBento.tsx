@@ -59,7 +59,7 @@ function Window({ label, children }: { label: ReactNode; children: ReactNode }) 
   );
 }
 
-function DesignWindow() {
+export function DesignWindow() {
   return (
     <Window label="yoursite.com">
       <div className="flex items-center justify-between">
@@ -84,7 +84,7 @@ function DesignWindow() {
   );
 }
 
-function ShieldWindow() {
+export function ShieldWindow() {
   const tld = useTypewriter(TLDS);
   return (
     <Window label="Domains & SSL">
@@ -113,7 +113,7 @@ function ShieldWindow() {
 const SLOTS = ["9:00", "9:30", "10:00", "10:30", "11:00", "11:30"];
 const SLOT_ORDER = [2, 4, 0, 5, 1, 3];
 
-function BookingWindow() {
+export function BookingWindow() {
   const [sel, setSel] = useState(2);
   useEffect(() => {
     let k = 0;
@@ -149,7 +149,7 @@ const METRICS: [string, string, number][] = [
   ["Interaction", "12ms", 99],
 ];
 
-function SpeedWindow() {
+export function SpeedWindow() {
   const [score, setScore] = useState(99);
   useEffect(() => {
     let timer: ReturnType<typeof setTimeout>;
@@ -221,8 +221,8 @@ function MobileFeatureScroll() {
   const Visual = WINDOWS[f.icon] ?? DesignWindow;
 
   return (
-    // Shorter track (≈0.7 screen per feature) so a swipe advances quickly.
-    <div ref={ref} className="mt-10 lg:hidden" style={{ height: `${SHOWN.length * 72}vh` }}>
+    // ≈0.95 screen of scroll per feature: snappy, but not a hair-trigger.
+    <div ref={ref} className="mt-10 lg:hidden" style={{ height: `${SHOWN.length * 95}vh` }}>
       <div className="sticky top-0 flex h-[100svh] flex-col justify-center gap-7 py-20">
         {/* progress: one pill per feature, the active one stretched */}
         <div className="flex items-center gap-2">
@@ -240,7 +240,7 @@ function MobileFeatureScroll() {
           key={f.title}
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.14, ease: EASE }}
+          transition={{ duration: 0.22, ease: EASE }}
           className="flex flex-col gap-7"
         >
           <div>
