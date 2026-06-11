@@ -8,7 +8,7 @@ import { StoryReelContext } from "./ScrollZoom";
 // hero built from a looping video plus a headline overlay. Only the active
 // slide's video decodes, so the homepage stays light on mobile.
 const SLIDES: { key: string; video: string; name: string; tag: string; cta: string }[] = [
-  { key: "motivational", video: "/hero/box.mp4", name: "Motivational", tag: "Personal Training", cta: "Start today" },
+  { key: "restaurant", video: "/hero/restaurant.mp4", name: "The Copper Fork", tag: "Restaurant", cta: "Book a table" },
   { key: "hair_salon", video: "/hero/hair.mp4", name: "The Chair Co.", tag: "Hair Studio", cta: "Book appointment" },
   { key: "gym", video: "/hero/gym.mp4", name: "Ironworks Gym", tag: "Strength & Conditioning", cta: "Start free trial" },
 ];

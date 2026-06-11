@@ -17,7 +17,7 @@ interface Ex {
 // They act as a cover that parts on scroll to reveal the pricing panel.
 const EXAMPLES: Ex[] = [
   { key: "cocktail_bar", name: "Velvet & Oak", tag: "Cocktail Bar", domain: "velvetandoak.com", video: "/hero/restaurant.mp4" },
-  { key: "boxing_gym", name: "Punch House", tag: "Boxing Gym", domain: "punchhouse.fit", video: "/hero/box.mp4" },
+  { key: "restaurant", name: "Saffron & Sage", tag: "Restaurant", domain: "saffronandsage.com", video: "/hero/cafe.mp4" },
   { key: "gym", name: "Ironworks Gym", tag: "Fitness Studio", domain: "ironworks.gym", video: "/hero/gym.mp4" },
   { key: "barber_shop", name: "Fade & Co.", tag: "Barbershop", domain: "fadeandco.co.uk", video: "/hero/barber.mp4" },
 ];
