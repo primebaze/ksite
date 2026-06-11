@@ -4,7 +4,12 @@ import { CTASection } from "@/components/CTASection";
 import { Reveal } from "@/components/motion/Reveal";
 import { STEPS } from "@/lib/marketing";
 
-export const metadata: Metadata = { title: "How it works · Kovasite" };
+export const metadata: Metadata = {
+  title: "How it works",
+  description: "Tell us about your business, we build and launch your site on your own domain in about 5 minutes, then you edit anything any time by tapping it. Here's the whole process.",
+  alternates: { canonical: "/how-it-works" },
+  openGraph: { title: "How it works | Kovasite", description: "From details to a live, bookable website in about 5 minutes.", url: "/how-it-works" },
+};
 
 // Small line icon per step (chat → build → bookings).
 const STEP_ICONS: React.ReactNode[] = [

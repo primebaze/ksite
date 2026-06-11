@@ -7,6 +7,7 @@ import { pageFromPath } from "@/lib/site-pages";
 import { saveInline } from "../actions";
 
 export const dynamic = "force-dynamic";
+export const metadata: import("next").Metadata = { robots: { index: false, follow: false } };
 
 // Owner-only multi-page preview of their site. Renders even while the site is a
 // draft (the public domain only shows published sites). With ?edit=1 the page

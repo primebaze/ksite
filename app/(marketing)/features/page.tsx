@@ -7,7 +7,12 @@ import { Reveal } from "@/components/motion/Reveal";
 import { DesignWindow, ShieldWindow, BookingWindow, SpeedWindow } from "@/components/FeatureBento";
 import { FEATURES } from "@/lib/marketing";
 
-export const metadata: Metadata = { title: "Features · Kovasite" };
+export const metadata: Metadata = {
+  title: "Features",
+  description: "Premium design, online booking, a free custom domain with SSL, local SEO and live editing — everything your local business website needs, done for you.",
+  alternates: { canonical: "/features" },
+  openGraph: { title: "Features | Kovasite", description: "Everything your local business website needs, done for you.", url: "/features" },
+};
 
 // The four headline features each get a live demo window; the rest read as
 // clean icon cards. Keyed by the `icon` id on each FEATURES entry.

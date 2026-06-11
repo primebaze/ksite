@@ -6,6 +6,7 @@ import { isStaff } from "./staff";
 import { revalidateTenant, revalidateSiteHost } from "./tenant";
 import { starterContent } from "./starter";
 import { getStripe } from "./stripe";
+import { sanitizeContentUrls } from "./url";
 import {
   sendAccountReactivatedEmail,
   sendAccountSuspendedEmail,
@@ -461,7 +462,7 @@ export async function updateTheme(id: string, theme: Partial<Theme>) {
 }
 
 export async function updateContent(id: string, content: SiteContent) {
-  const { error } = await client().from("site_content").update({ content }).eq("tenant_id", id);
+  const { error } = await client().from("site_content").update({ content: sanitizeContentUrls(content) }).eq("tenant_id", id);
   if (error) throw new Error(error.message);
   await revalidate(await tenantRef(id));
 }

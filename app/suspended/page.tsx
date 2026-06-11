@@ -4,6 +4,7 @@ import { isStaff } from "@/lib/staff";
 import { clientLogout } from "../dashboard/actions";
 
 export const dynamic = "force-dynamic";
+export const metadata: import("next").Metadata = { robots: { index: false, follow: false } };
 
 export default async function SuspendedPage() {
   const user = await getMyUser();

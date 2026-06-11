@@ -5,7 +5,7 @@ import { Reveal } from "@/components/motion/Reveal";
 import { SubmitButton } from "@/components/SubmitButton";
 import { clientLogin } from "./actions";
 
-export const metadata: Metadata = { title: "Sign in · Kovasite" };
+export const metadata: Metadata = { title: "Sign in", robots: { index: false, follow: false } };
 
 const input =
   "mt-1 w-full rounded-lg border border-white/10 bg-white/[0.03] px-4 py-3 text-sm text-white placeholder-white/30 outline-none focus:border-white/30";

@@ -5,6 +5,8 @@ import { isStaff } from "@/lib/staff";
 import { MobileTabBar } from "@/components/MobileTabBar";
 import { clientLogout } from "./actions";
 
+export const metadata: import("next").Metadata = { robots: { index: false, follow: false } };
+
 export default async function DashboardLayout({ children }: { children: React.ReactNode }) {
   const user = await getMyUser();
   if (!user) redirect("/login");

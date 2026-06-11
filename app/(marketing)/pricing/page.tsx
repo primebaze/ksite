@@ -4,7 +4,12 @@ import { PricingPlan } from "@/components/PricingPlan";
 import { Reveal } from "@/components/motion/Reveal";
 import { FAQS } from "@/lib/marketing";
 
-export const metadata: Metadata = { title: "Pricing · Kovasite" };
+export const metadata: Metadata = {
+  title: "Pricing",
+  description: "One simple plan at £99/month — or pay yearly and save two months. Design, hosting, a free custom domain, booking and SEO all included. No setup fee, cancel anytime.",
+  alternates: { canonical: "/pricing" },
+  openGraph: { title: "Pricing | Kovasite", description: "One simple plan, everything included. £99/month, cancel anytime.", url: "/pricing" },
+};
 
 export default function PricingPage() {
   return (

@@ -4,27 +4,82 @@ import { notFound } from "next/navigation";
 import { getSiteByHost } from "@/lib/tenant";
 import { getPresetComponent } from "@/presets";
 import { pageFromPath } from "@/lib/site-pages";
+import { archetypeFor } from "@/lib/verticals";
+import { APP_DOMAIN } from "@/lib/marketing";
+import { JsonLd } from "@/components/JsonLd";
 import HoldingPage from "../HoldingPage";
+import type { TenantSite } from "@/lib/types";
 
 interface Props {
   params: Promise<{ host: string; path?: string[] }>;
 }
 
+// Preferred public URL for a tenant — its custom domain once live, otherwise the
+// kovasite subdomain. Used as the canonical so subdomain + custom domain don't
+// compete as duplicate content.
+function canonicalBase(tenant: TenantSite["tenant"]): string {
+  if (tenant.custom_domain && tenant.domain_status === "active") return `https://${tenant.custom_domain}`;
+  return `https://${tenant.subdomain}.${APP_DOMAIN}`;
+}
+
+const SCHEMA_TYPE: Record<string, string> = {
+  menu: "Restaurant",
+  bookings: "HealthAndBeautyBusiness",
+  services: "LocalBusiness",
+};
+
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { host } = await params;
+  const { host, path } = await params;
   const site = await getSiteByHost(host);
-  if (!site) return { title: "Site not found" };
-  const { tenant } = site;
+  if (!site) return { title: "Site not found", robots: { index: false } };
+  const { tenant, content } = site;
+  const base = canonicalBase(tenant);
+  const pagePath = path && path.length ? `/${path.join("/")}` : "/";
+  const title = tenant.meta_title ?? tenant.business_name;
+  const description = tenant.meta_description ?? content.tagline ?? undefined;
+  const live = tenant.published && tenant.plan_status !== "suspended" && tenant.plan_status !== "canceled";
+  const image = tenant.og_image_url ?? content.hero_image_url ?? undefined;
   return {
-    title: tenant.meta_title ?? tenant.business_name,
-    description: tenant.meta_description ?? site.content.tagline ?? undefined,
+    title,
+    description,
+    metadataBase: new URL(base),
+    alternates: { canonical: pagePath },
     icons: tenant.favicon_url ? { icon: tenant.favicon_url } : undefined,
+    robots: live ? { index: true, follow: true } : { index: false, follow: false },
     openGraph: {
-      title: tenant.meta_title ?? tenant.business_name,
-      description: tenant.meta_description ?? undefined,
-      images: tenant.og_image_url ? [tenant.og_image_url] : undefined,
+      type: "website",
+      siteName: tenant.business_name,
+      url: `${base}${pagePath}`,
+      title,
+      description,
+      images: image ? [image] : undefined,
     },
+    twitter: { card: image ? "summary_large_image" : "summary", title, description },
   };
+}
+
+// schema.org LocalBusiness for the tenant — strong signal for local search.
+function tenantJsonLd(site: TenantSite, base: string) {
+  const { tenant, content } = site;
+  const type = SCHEMA_TYPE[archetypeFor(tenant.preset)] ?? "LocalBusiness";
+  const sameAs = (content.socials ?? []).map((s) => s.url).filter(Boolean);
+  const data: Record<string, unknown> = {
+    "@context": "https://schema.org",
+    "@type": type,
+    name: tenant.business_name,
+    url: base,
+    "@id": base,
+  };
+  if (content.tagline || tenant.meta_description) data.description = tenant.meta_description ?? content.tagline;
+  if (tenant.og_image_url || content.hero_image_url) data.image = tenant.og_image_url ?? content.hero_image_url;
+  if (content.phone) data.telephone = content.phone;
+  if (content.email) data.email = content.email;
+  if (content.address) data.address = { "@type": "PostalAddress", streetAddress: content.address };
+  if (Array.isArray(content.hours) && content.hours.length) {
+    data.openingHours = content.hours.map((h) => `${h.day} ${h.open}`.trim());
+  }
+  if (sameAs.length) data.sameAs = sameAs;
+  return data;
 }
 
 export default async function SitePage({ params }: Props) {
@@ -44,5 +99,10 @@ export default async function SitePage({ params }: Props) {
   }
 
   // Live tenant site: multi-page, nav at the domain root (basePath "").
-  return createElement(getPresetComponent(site.tenant.preset), { site, page, basePath: "", multiPage: true });
+  return (
+    <>
+      <JsonLd data={tenantJsonLd(site, canonicalBase(site.tenant))} />
+      {createElement(getPresetComponent(site.tenant.preset), { site, page, basePath: "", multiPage: true })}
+    </>
+  );
 }

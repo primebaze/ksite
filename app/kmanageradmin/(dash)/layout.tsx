@@ -7,6 +7,7 @@ import { AdminNav, type AdminNavItem } from "@/components/AdminNav";
 import { logout } from "../login/actions";
 
 export const dynamic = "force-dynamic";
+export const metadata: import("next").Metadata = { robots: { index: false, follow: false } };
 
 export default async function DashLayout({ children }: { children: React.ReactNode }) {
   const user = await getAdminUser();

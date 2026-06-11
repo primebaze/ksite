@@ -4,7 +4,12 @@ import { CTASection } from "@/components/CTASection";
 import { Reveal } from "@/components/motion/Reveal";
 import { EXAMPLES, SITE_BASE } from "@/lib/marketing";
 
-export const metadata: Metadata = { title: "Examples · Kovasite" };
+export const metadata: Metadata = {
+  title: "Examples",
+  description: "See real Kovasite websites built for restaurants, salons, gyms, barbers and trades — the standard of design every customer gets.",
+  alternates: { canonical: "/examples" },
+  openGraph: { title: "Examples | Kovasite", description: "Real websites built for local businesses on Kovasite.", url: "/examples" },
+};
 
 export default function ExamplesPage() {
   return (

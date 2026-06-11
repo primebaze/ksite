@@ -5,7 +5,12 @@ import { CTASection } from "@/components/CTASection";
 import { Reveal } from "@/components/motion/Reveal";
 import { FAQS } from "@/lib/marketing";
 
-export const metadata: Metadata = { title: "Support · Kovasite" };
+export const metadata: Metadata = {
+  title: "Support",
+  description: "Get help with your Kovasite website — editing, domains, billing and more. We're here when you need us.",
+  alternates: { canonical: "/support" },
+  openGraph: { title: "Support | Kovasite", description: "Help with your Kovasite website.", url: "/support" },
+};
 
 const CHANNELS = [
   {

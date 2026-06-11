@@ -6,10 +6,45 @@ import { ScrollZoom } from "@/components/ScrollZoom";
 import { LiveExamples } from "@/components/LiveExamples";
 import { FeatureBento } from "@/components/FeatureBento";
 import { ROTATING_WORDS } from "@/lib/marketing";
+import { JsonLd } from "@/components/JsonLd";
+import { SITE_URL, SITE_NAME, SITE_DESCRIPTION } from "@/lib/seo";
+
+const HOME_JSONLD = [
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: SITE_NAME,
+    url: SITE_URL,
+    description: SITE_DESCRIPTION,
+    logo: `${SITE_URL}/icon`,
+    sameAs: [] as string[],
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: SITE_NAME,
+    url: SITE_URL,
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: "Done-for-you website for local businesses",
+    provider: { "@type": "Organization", name: SITE_NAME, url: SITE_URL },
+    areaServed: "GB",
+    description: SITE_DESCRIPTION,
+    offers: {
+      "@type": "Offer",
+      price: "99",
+      priceCurrency: "GBP",
+      url: `${SITE_URL}/pricing`,
+    },
+  },
+];
 
 export default function Home() {
   return (
     <>
+      <JsonLd data={HOME_JSONLD} />
       {/* Hero */}
       <section className="relative border-b border-white/5">
         <div className="mx-auto max-w-3xl px-6 pt-24 pb-10 text-center sm:pt-28 sm:pb-20">

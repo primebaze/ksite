@@ -4,6 +4,7 @@ import { revalidateSiteHost, revalidateTenant } from "./tenant";
 import { addProjectDomain, createApexDnsRecord, isDomainLive, isVercelConfigured } from "./vercel";
 import { sendAdminDomainLiveNotification, sendAdminLifecycleAlert, sendCancellationScheduledEmail, sendDomainLiveEmail } from "./email";
 import { getStripe } from "./stripe";
+import { sanitizeContentUrls } from "./url";
 import type {
   CatalogItem,
   GalleryImage,
@@ -119,7 +120,7 @@ export async function updateMyContent(content: SiteContent) {
   const supabase = await db();
   const ref = await myRef();
   if (!ref) return;
-  await supabase.from("site_content").update({ content }).eq("tenant_id", ref.id);
+  await supabase.from("site_content").update({ content: sanitizeContentUrls(content) }).eq("tenant_id", ref.id);
   await bust(ref);
 }
 
