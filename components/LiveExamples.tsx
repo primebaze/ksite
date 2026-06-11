@@ -131,7 +131,6 @@ export function LiveExamples() {
         <motion.div style={{ opacity: headingOpacity }} className="absolute inset-x-0 top-0 z-10 mx-auto max-w-6xl px-6 pt-[11vh] text-center">
           <p className="text-xs font-medium uppercase tracking-widest text-emerald-400/80">Live examples</p>
           <h2 className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">See what you get.</h2>
-          <p className="mt-2 text-sm text-white/45">Real sample sites. Keep scrolling.</p>
         </motion.div>
 
         {/* Revealed pricing panel (behind the cards) */}
@@ -169,7 +168,7 @@ export function LiveExamples() {
             <motion.div
               key={e.key}
               style={{ x: xVals[i], y: yVals[i], rotate: rVals[i], scale: layout[i].scale, opacity: cardsOpacity, zIndex: layout[i].z }}
-              className="absolute w-[300px] sm:w-[420px] md:w-[520px] lg:w-[600px]"
+              className="absolute w-[88vw] max-w-[380px] sm:w-[420px] sm:max-w-none md:w-[520px] lg:w-[600px]"
             >
               <BrowserCard e={e} />
             </motion.div>
