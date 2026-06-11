@@ -6,6 +6,7 @@ export const SITE_BASE = process.env.NODE_ENV === "production" ? APP_DOMAIN : "l
 // Types shown after the "Businesses:" label in the hero (capitalised to match,
 // kept short so "Businesses: <type>" fits one line on a phone).
 export const ROTATING_WORDS = [
+  "Restaurants",
   "Cafés",
   "Salons",
   "Gyms",
