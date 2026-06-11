@@ -49,6 +49,12 @@ const CATEGORIES: { group: string; title: string; preset: string; desc: string }
   { group: "Education", title: "Driving school", preset: "driving_school", desc: "Driving lessons, intensive courses, theory and Pass Plus" },
 ];
 
+// Presets reached from a consolidated category card (Restaurants, Gyms…). These
+// are deliberately broad, so their design step shows a spread of the sector's
+// designs (recommended first, "View more" for the rest) rather than a single
+// type-locked look.
+const CATEGORY_PRESETS = new Set(CATEGORIES.map((c) => c.preset));
+
 export function GetStartedFlow({
   groups,
   builds,
@@ -160,46 +166,32 @@ export function GetStartedFlow({
     goToStep(2);
   }
 
-  // Switch to another sub-type within the same sector (e.g. Pets: dog groomer →
-  // vet) without leaving the design step, so its own samples are revealed.
-  function switchSubtype(key: string) {
-    const build = byKey.get(key);
-    setPreset(key);
-    setSelectedDesign(key);
-    setSelectedStyle(build?.style ?? "classic");
-    setDesignKey(buildDesigns[key] ?? "");
-    setPhotoId("");
-    setShowAllDesigns(false);
-    window.requestAnimationFrame(() => window.scrollTo({ top: 0, behavior: "smooth" }));
-  }
-
-  // Each business type shows its OWN bespoke design (no sector-wide pool — a bar
-  // must never be offered a sushi or fine-dining design). A few high-demand
-  // types (e.g. driving school) get a hand-picked set of several dedicated
-  // designs via typeDesigns; each preview uses a different on-theme photo.
+  // What the design step offers:
+  //  • A hand-picked set (typeDesigns) wins — e.g. driving school's 5 designs.
+  //  • A consolidated category card (Restaurants, Gyms…) shows a spread of the
+  //    sector's designs, recommended first, capped so each gets its own photo
+  //    (the rest sit behind "View more").
+  //  • A specific searched type shows ONLY its own bespoke design, so it is
+  //    never offered an off-type look (a bar must not see a sushi design).
+  // Each preview uses a different on-theme photo.
   const designOptions = useMemo(() => {
     if (!selected) return [];
     const all = groupDesigns[selected.group] ?? [];
     if (all.length === 0) return [];
     const photos = groupPhotos[selected.group] ?? [];
     const recommended = buildDesigns[preset] ?? all[0];
-    const list = typeDesigns[preset]?.length ? typeDesigns[preset] : [recommended];
+
+    let list: string[];
+    if (typeDesigns[preset]?.length) {
+      list = typeDesigns[preset];
+    } else if (CATEGORY_PRESETS.has(preset)) {
+      const cap = Math.min(12, photos.length || 12);
+      list = [recommended, ...all.filter((d) => d !== recommended)].slice(0, cap);
+    } else {
+      list = [recommended];
+    }
     return list.map((design, i) => ({ design, img: photos[i % Math.max(photos.length, 1)] ?? "" }));
   }, [selected, preset, groupDesigns, buildDesigns, groupPhotos, typeDesigns]);
-
-  // Other sub-types in the same sector (e.g. Pets → vet, dog walker, trainer),
-  // hidden behind buttons under the previews so each sub-category's own samples
-  // can be revealed without leaving the design step.
-  const subtypeOptions = useMemo(() => {
-    if (!selected) return [];
-    // Only Food & drink shows the "pick your exact type" switcher: there, each
-    // type has a genuinely different sample (pizzeria vs sushi vs bakery...).
-    // In other sectors the types share one look, so switching would show the
-    // same designs — hide it there.
-    if (selected.group !== "Food & drink") return [];
-    const inGroup = groups.find((g) => g.group === selected.group)?.builds ?? [];
-    return inGroup.filter((b) => b.key !== preset);
-  }, [selected, groups, preset]);
 
   return (
     <form ref={formRef} action={action} className="flex min-h-[calc(100vh-6rem)] flex-col overflow-hidden rounded-3xl border border-white/10 bg-white/[0.02] shadow-[0_40px_140px_-80px_rgba(16,185,129,0.9)]">
@@ -411,31 +403,6 @@ export function GetStartedFlow({
               >
                 View more designs ({designOptions.length - DESIGNS_SHOWN})
               </button>
-            )}
-
-            {/* Other sub-types in this sector — hidden behind buttons; tapping one
-                reveals that sub-category's own samples in place. */}
-            {subtypeOptions.length > 0 && (
-              <div className="mt-10 border-t border-white/10 pt-7">
-                <p className="text-sm font-medium text-white/75">
-                  Not a {selected.label.toLowerCase()}? Pick your exact type:
-                </p>
-                <p className="mt-1 text-xs text-white/40">
-                  We&apos;ll show samples built for that type — same easy editing afterwards.
-                </p>
-                <div className="mt-4 flex flex-wrap gap-2.5">
-                  {subtypeOptions.map((b) => (
-                    <button
-                      key={b.key}
-                      type="button"
-                      onClick={() => switchSubtype(b.key)}
-                      className="rounded-full border border-white/15 bg-white/[0.03] px-4 py-2 text-sm text-white/75 transition hover:-translate-y-0.5 hover:border-emerald-400/50 hover:text-white"
-                    >
-                      {b.label}
-                    </button>
-                  ))}
-                </div>
-              </div>
             )}
           </div>
         )}
