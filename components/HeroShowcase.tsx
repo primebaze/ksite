@@ -52,12 +52,12 @@ export function HeroShowcase() {
             <div className="absolute inset-0 bg-black/30" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/40 to-black/20" />
             <div className="absolute inset-0 flex flex-col justify-end gap-3 p-6 sm:p-10">
-              <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-white/65 sm:text-xs">{s.tag}</p>
-              <h3 className="max-w-xl text-3xl font-semibold tracking-tight text-white drop-shadow-[0_2px_24px_rgba(0,0,0,0.6)] sm:text-5xl">
+              <p className="text-[11px] font-medium uppercase tracking-[0.22em] text-white/45 sm:text-xs">{s.tag}</p>
+              <h3 className="max-w-xl text-3xl font-semibold tracking-tight text-white/65 drop-shadow-[0_2px_18px_rgba(0,0,0,0.45)] sm:text-5xl">
                 {s.name}
               </h3>
               <div className="mt-1">
-                <span className="inline-flex rounded-full bg-white px-5 py-2 text-sm font-semibold text-black">{s.cta}</span>
+                <span className="inline-flex rounded-full bg-white/85 px-5 py-2 text-sm font-semibold text-black/80">{s.cta}</span>
               </div>
             </div>
           </div>
