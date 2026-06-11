@@ -8,6 +8,13 @@ const COMPANY_LINKS = [
   { href: "/admin", label: "Admin" },
 ];
 
+const LEGAL_LINKS = [
+  { href: "/privacy", label: "Privacy Policy" },
+  { href: "/terms", label: "Terms & Conditions" },
+  { href: "/cookies", label: "Cookie Policy" },
+  { href: "/acceptable-use", label: "Acceptable Use" },
+];
+
 export default function Footer() {
   return (
     <footer className="relative overflow-hidden border-t border-white/10 bg-black">
@@ -80,8 +87,15 @@ export default function Footer() {
         >
           Kovasite
         </div>
-        <div className="mx-auto -mt-[5vw] max-w-6xl px-6 pb-8 text-xs text-white/35">
+        <div className="mx-auto -mt-[5vw] flex max-w-6xl flex-col gap-3 px-6 pb-8 text-xs text-white/35 sm:flex-row sm:items-center sm:justify-between">
           <p>© {new Date().getFullYear()} Kovasite. All rights reserved.</p>
+          <nav className="flex flex-wrap gap-x-5 gap-y-2">
+            {LEGAL_LINKS.map((l) => (
+              <Link key={l.href} href={l.href} className="transition hover:text-white/70">
+                {l.label}
+              </Link>
+            ))}
+          </nav>
         </div>
       </div>
     </footer>
