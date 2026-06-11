@@ -10,7 +10,7 @@ export async function replyTicket(formData: FormData) {
   const body = String(formData.get("body") ?? "").trim();
   if (!id || !body) return;
   await postStaffMessage(id, body);
-  revalidatePath(`/admin/support/${id}`);
+  revalidatePath(`/kmanageradmin/support/${id}`);
 }
 
 export async function updateStatus(formData: FormData) {
@@ -19,6 +19,6 @@ export async function updateStatus(formData: FormData) {
   const status = String(formData.get("status") ?? "") as TicketStatus;
   if (!id || !["open", "pending", "closed"].includes(status)) return;
   await setTicketStatus(id, status);
-  revalidatePath(`/admin/support/${id}`);
-  revalidatePath(`/admin/support`);
+  revalidatePath(`/kmanageradmin/support/${id}`);
+  revalidatePath(`/kmanageradmin/support`);
 }

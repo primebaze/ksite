@@ -14,7 +14,7 @@ export async function createTenantAction(formData: FormData) {
     .replace(/[^a-z0-9-]/g, "");
 
   if (!business_name || !subdomain || !isVertical(preset)) {
-    redirect("/admin/new?error=Please+fill+in+all+fields");
+    redirect("/kmanageradmin/new?error=Please+fill+in+all+fields");
   }
 
   let id: string;
@@ -22,7 +22,7 @@ export async function createTenantAction(formData: FormData) {
     id = await createTenant({ business_name, preset, subdomain });
   } catch (e) {
     const msg = e instanceof Error ? e.message : "Could not create client";
-    redirect(`/admin/new?error=${encodeURIComponent(msg)}`);
+    redirect(`/kmanageradmin/new?error=${encodeURIComponent(msg)}`);
   }
-  redirect(`/admin/${id}`);
+  redirect(`/kmanageradmin/${id}`);
 }

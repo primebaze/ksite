@@ -103,7 +103,7 @@ export default async function EditTenant({
 
   return (
     <div className="space-y-6">
-      <Link href="/admin" className="text-sm text-white/45 hover:text-white">← Clients</Link>
+      <Link href="/kmanageradmin" className="text-sm text-white/45 hover:text-white">← Clients</Link>
 
       {/* Header */}
       <div className="flex flex-wrap items-start justify-between gap-3">

@@ -9,7 +9,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
   const user = await getMyUser();
   if (!user) redirect("/login");
   // Staff use the operator console, not the client dashboard.
-  if (isStaff(user.email)) redirect("/admin");
+  if (isStaff(user.email)) redirect("/kmanageradmin");
   // Suspended accounts are blocked from the dashboard (site is also offline).
   const me = await getMyTenant();
   if (me?.account_status === "suspended") redirect("/suspended");

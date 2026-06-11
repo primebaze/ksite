@@ -10,16 +10,16 @@ export const dynamic = "force-dynamic";
 
 export default async function DashLayout({ children }: { children: React.ReactNode }) {
   const user = await getAdminUser();
-  if (!user) redirect("/admin/login");
+  if (!user) redirect("/kmanageradmin/login");
   // Clients who sign in land here only if they're on the staff allowlist;
   // everyone else is sent to their own dashboard.
   if (!isStaff(user.email)) redirect("/dashboard");
 
   const { newEnquiries, openTickets } = await getNavBadges();
   const items: AdminNavItem[] = [
-    { href: "/admin", label: "Overview", icon: "overview" },
-    { href: "/admin/enquiries", label: "Enquiries", icon: "enquiries", badge: newEnquiries },
-    { href: "/admin/support", label: "Support", icon: "support", badge: openTickets },
+    { href: "/kmanageradmin", label: "Overview", icon: "overview" },
+    { href: "/kmanageradmin/enquiries", label: "Enquiries", icon: "enquiries", badge: newEnquiries },
+    { href: "/kmanageradmin/support", label: "Support", icon: "support", badge: openTickets },
   ];
   const initial = user.email?.[0]?.toUpperCase() ?? "K";
 
@@ -27,7 +27,7 @@ export default async function DashLayout({ children }: { children: React.ReactNo
     <div className="min-h-screen bg-black font-sans text-white antialiased">
       {/* Sidebar (desktop) */}
       <aside className="fixed inset-y-0 left-0 hidden w-72 flex-col border-r border-white/10 bg-neutral-950 px-5 py-7 lg:flex">
-        <Link href="/admin" className="flex items-center gap-2.5 px-2 font-semibold tracking-tight">
+        <Link href="/kmanageradmin" className="flex items-center gap-2.5 px-2 font-semibold tracking-tight">
           <span className="grid h-9 w-9 place-items-center rounded-xl bg-emerald-500 text-sm font-bold text-black">K</span>
           <span>Kovasite <span className="text-white/40">admin</span></span>
         </Link>
@@ -55,7 +55,7 @@ export default async function DashLayout({ children }: { children: React.ReactNo
       {/* Mobile top bar */}
       <header className="sticky top-0 z-50 border-b border-white/10 bg-black/80 backdrop-blur-xl lg:hidden">
         <div className="flex items-center justify-between px-5 py-3.5">
-          <Link href="/admin" className="flex items-center gap-2 font-semibold tracking-tight">
+          <Link href="/kmanageradmin" className="flex items-center gap-2 font-semibold tracking-tight">
             <span className="grid h-8 w-8 place-items-center rounded-lg bg-emerald-500 text-xs font-bold text-black">K</span>
             <span>Kovasite <span className="text-white/40">admin</span></span>
           </Link>

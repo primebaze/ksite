@@ -24,7 +24,7 @@ export default async function AdminSupport({ searchParams }: { searchParams: Pro
     <div>
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-semibold">Support</h1>
-        <Link href="/admin" className="text-sm text-white/50 hover:text-white">← Clients</Link>
+        <Link href="/kmanageradmin" className="text-sm text-white/50 hover:text-white">← Clients</Link>
       </div>
       <p className="mt-1 text-sm text-white/45">Tickets from every client, newest activity first.</p>
 
@@ -32,7 +32,7 @@ export default async function AdminSupport({ searchParams }: { searchParams: Pro
         {FILTERS.map((f) => (
           <Link
             key={f.key}
-            href={`/admin/support?status=${f.key}`}
+            href={`/kmanageradmin/support?status=${f.key}`}
             className={`rounded-full px-3.5 py-1.5 text-sm font-medium transition ${
               f.key === active.key ? "bg-white text-black" : "border border-white/12 text-white/70 hover:bg-white/[0.06]"
             }`}
@@ -51,7 +51,7 @@ export default async function AdminSupport({ searchParams }: { searchParams: Pro
           tickets.map((t) => (
             <Link
               key={t.id}
-              href={`/admin/support/${t.id}`}
+              href={`/kmanageradmin/support/${t.id}`}
               className="flex items-center justify-between gap-4 rounded-2xl border border-white/[0.08] bg-white/[0.02] px-5 py-4 transition hover:border-white/20 hover:bg-white/[0.04]"
             >
               <div className="min-w-0">

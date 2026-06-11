@@ -9,13 +9,13 @@ export async function login(formData: FormData) {
   const supabase = await createSupabaseServerClient();
   const { error } = await supabase.auth.signInWithPassword({ email, password });
   if (error) {
-    redirect(`/admin/login?error=${encodeURIComponent(error.message)}`);
+    redirect(`/kmanageradmin/login?error=${encodeURIComponent(error.message)}`);
   }
-  redirect("/admin");
+  redirect("/kmanageradmin");
 }
 
 export async function logout() {
   const supabase = await createSupabaseServerClient();
   await supabase.auth.signOut();
-  redirect("/admin/login");
+  redirect("/kmanageradmin/login");
 }

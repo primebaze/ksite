@@ -25,7 +25,7 @@ import type {
 } from "./types";
 
 // Admin data layer. Uses the SECRET (service_role) client, which bypasses RLS.
-// Only call these from inside the authenticated /admin area.
+// Only call these from inside the authenticated /kmanageradmin area.
 
 // Authorization guard for the admin server actions. A page/layout guard does
 // NOT protect server actions — they're independently-callable POST endpoints —
@@ -34,7 +34,7 @@ import type {
 // edit/publish/delete ANY tenant by POSTing to these actions with its id.
 export async function requireStaff() {
   const user = await getAdminUser();
-  if (!user || !isStaff(user.email)) redirect("/admin/login");
+  if (!user || !isStaff(user.email)) redirect("/kmanageradmin/login");
 }
 
 function client() {

@@ -1,4 +1,4 @@
-// Operator allowlist. Staff (you) get the /admin override; everyone else who
+// Operator allowlist. Staff (you) get the /kmanageradmin override; everyone else who
 // signs up is a client and is sent to their own /dashboard.
 export function isStaff(email?: string | null): boolean {
   if (!email) return false;

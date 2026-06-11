@@ -18,13 +18,13 @@ export default async function AdminTicket({ params }: { params: Promise<{ id: st
 
   return (
     <div className="mx-auto max-w-3xl">
-      <Link href="/admin/support" className="text-sm text-white/50 hover:text-white">← Support</Link>
+      <Link href="/kmanageradmin/support" className="text-sm text-white/50 hover:text-white">← Support</Link>
 
       <div className="mt-3 flex flex-wrap items-start justify-between gap-3">
         <div className="min-w-0">
           <h1 className="text-2xl font-semibold">{ticket.subject}</h1>
           <p className="mt-1 text-sm text-white/45">
-            <Link href={`/admin/${ticket.tenant_id}`} className="text-emerald-400 hover:underline">{ticket.business_name}</Link>
+            <Link href={`/kmanageradmin/${ticket.tenant_id}`} className="text-emerald-400 hover:underline">{ticket.business_name}</Link>
             {clientEmail && <> · {clientEmail}</>}
           </p>
         </div>

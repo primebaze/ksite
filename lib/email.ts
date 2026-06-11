@@ -286,7 +286,7 @@ export async function sendSupportStaffNotification({
       title: escapeHtml(subject),
       body: `${escapeHtml(businessName)} wrote:<br/><br/>${escapeHtml(body)}`,
       cta: "Open in admin",
-      link: `${base}/admin/support/${ticketId}`,
+      link: `${base}/kmanageradmin/support/${ticketId}`,
     }),
   });
 }

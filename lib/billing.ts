@@ -129,7 +129,7 @@ async function sendPaymentNotifications({
   const siteUrl = appDomain === "localhost"
     ? `${base}/sites/${subdomain}`
     : `https://${subdomain}.${appDomain}`;
-  const dashboardUrl = `${base}/admin/${tenantId}`;
+  const dashboardUrl = `${base}/kmanageradmin/${tenantId}`;
 
   // Resolve the client's email: prefer the Stripe checkout email, but always
   // fall back to the tenant owner's account email (the subscription webhook

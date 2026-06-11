@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
 export default async function SuspendedPage() {
   const user = await getMyUser();
   if (!user) redirect("/login");
-  if (isStaff(user.email)) redirect("/admin");
+  if (isStaff(user.email)) redirect("/kmanageradmin");
   // If they're not actually suspended, send them back to the dashboard.
   const tenant = await getMyTenant();
   if (tenant && tenant.account_status !== "suspended") redirect("/dashboard");

@@ -29,7 +29,7 @@ const str = (f: FormData, k: string) => {
   const v = String(f.get(k) ?? "").trim();
   return v === "" ? null : v;
 };
-const refresh = (id: string) => revalidatePath(`/admin/${id}`);
+const refresh = (id: string) => revalidatePath(`/kmanageradmin/${id}`);
 
 // Zip repeated form fields (col[0..n]) into row objects, dropping empty rows.
 // Mirrors the client dashboard so the shared <SiteEditor> works identically.
@@ -79,7 +79,7 @@ export async function saveContent(formData: FormData) {
   await requireStaff();
   const id = String(formData.get("id"));
   const site = await getTenantFull(id);
-  if (!site) redirect("/admin");
+  if (!site) redirect("/kmanageradmin");
   const merged: SiteContent = {
     ...site.content,
     tagline: str(formData, "tagline") ?? undefined,
@@ -100,7 +100,7 @@ export async function saveHours(formData: FormData) {
   await requireStaff();
   const id = String(formData.get("id"));
   const site = await getTenantFull(id);
-  if (!site) redirect("/admin");
+  if (!site) redirect("/kmanageradmin");
   const hours = zipRows(formData, ["day", "open"]) as { day: string; open: string }[];
   await updateContent(id, { ...site.content, hours });
   refresh(id);
@@ -110,7 +110,7 @@ export async function saveSocials(formData: FormData) {
   await requireStaff();
   const id = String(formData.get("id"));
   const site = await getTenantFull(id);
-  if (!site) redirect("/admin");
+  if (!site) redirect("/kmanageradmin");
   const socials = zipRows(formData, ["label", "url"]).filter((r) => r.url) as { label: string; url: string }[];
   await updateContent(id, { ...site.content, socials });
   refresh(id);
@@ -120,7 +120,7 @@ export async function saveOrderingLinks(formData: FormData) {
   await requireStaff();
   const id = String(formData.get("id"));
   const site = await getTenantFull(id);
-  if (!site) redirect("/admin");
+  if (!site) redirect("/kmanageradmin");
   const ordering_links = zipRows(formData, ["label", "url"]).filter((r) => r.url) as { label: string; url: string }[];
   await updateContent(id, { ...site.content, ordering_links });
   refresh(id);
@@ -158,13 +158,13 @@ export async function emailClientAction(formData: FormData) {
   const id = String(formData.get("id"));
   const subject = String(formData.get("subject") ?? "").trim();
   const body = String(formData.get("body") ?? "").trim();
-  if (!subject || !body) redirect(`/admin/${id}?error=Add+a+subject+and+message`);
+  if (!subject || !body) redirect(`/kmanageradmin/${id}?error=Add+a+subject+and+message`);
   try {
     await emailClient(id, subject, body);
   } catch (e) {
-    redirect(`/admin/${id}?error=${encodeURIComponent(e instanceof Error ? e.message : "Email failed")}`);
+    redirect(`/kmanageradmin/${id}?error=${encodeURIComponent(e instanceof Error ? e.message : "Email failed")}`);
   }
-  redirect(`/admin/${id}?notice=Email+sent`);
+  redirect(`/kmanageradmin/${id}?notice=Email+sent`);
 }
 
 export async function setAccountStatusAction(formData: FormData) {
@@ -180,7 +180,7 @@ export async function requestKycAction(formData: FormData) {
   await requireStaff();
   const id = String(formData.get("id"));
   await requestKyc(id);
-  redirect(`/admin/${id}?notice=KYC+requested`);
+  redirect(`/kmanageradmin/${id}?notice=KYC+requested`);
 }
 
 export async function reviewKycAction(formData: FormData) {
@@ -199,9 +199,9 @@ export async function cancelSubscriptionAction(formData: FormData) {
   try {
     await cancelSubscriptionForTenant(id);
   } catch (e) {
-    redirect(`/admin/${id}?error=${encodeURIComponent(e instanceof Error ? e.message : "Cancel failed")}`);
+    redirect(`/kmanageradmin/${id}?error=${encodeURIComponent(e instanceof Error ? e.message : "Cancel failed")}`);
   }
-  redirect(`/admin/${id}?notice=Subscription+set+to+cancel+at+period+end`);
+  redirect(`/kmanageradmin/${id}?notice=Subscription+set+to+cancel+at+period+end`);
 }
 
 export async function togglePublish(formData: FormData) {
@@ -220,7 +220,7 @@ export async function saveContentRaw(formData: FormData) {
   try {
     parsed = JSON.parse(raw);
   } catch {
-    redirect(`/admin/${id}?error=Invalid+JSON`);
+    redirect(`/kmanageradmin/${id}?error=Invalid+JSON`);
   }
   await updateContent(id, parsed!);
   refresh(id);

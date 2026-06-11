@@ -6,7 +6,6 @@ const COMPANY_LINKS = [
   { href: "/samples", label: "Browse samples" },
   { href: "/support", label: "Support" },
   { href: "/login", label: "Sign in" },
-  { href: "/admin", label: "Admin" },
 ];
 
 const LEGAL_LINKS = [

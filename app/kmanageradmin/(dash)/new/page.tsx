@@ -10,7 +10,7 @@ export default async function NewClientPage({
   const { error } = await searchParams;
   return (
     <div className="max-w-lg">
-      <Link href="/admin" className="text-sm text-white/50 hover:underline">
+      <Link href="/kmanageradmin" className="text-sm text-white/50 hover:underline">
         ← Clients
       </Link>
       <h1 className="mt-2 text-2xl font-semibold">New client</h1>

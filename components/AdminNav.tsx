@@ -18,7 +18,7 @@ const ICONS: Record<AdminNavItem["icon"], React.ReactNode> = {
 };
 
 function isActive(pathname: string, href: string) {
-  return href === "/admin" ? pathname === "/admin" : pathname.startsWith(href);
+  return href === "/kmanageradmin" ? pathname === "/kmanageradmin" : pathname.startsWith(href);
 }
 
 export function AdminNav({ items, orientation = "vertical" }: { items: AdminNavItem[]; orientation?: "vertical" | "horizontal" }) {

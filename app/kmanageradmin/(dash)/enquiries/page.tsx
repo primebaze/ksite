@@ -13,7 +13,7 @@ export default async function AdminEnquiries() {
     <div>
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-semibold">Enquiries</h1>
-        <Link href="/admin" className="text-sm text-white/50 hover:text-white">← Clients</Link>
+        <Link href="/kmanageradmin" className="text-sm text-white/50 hover:text-white">← Clients</Link>
       </div>
       <p className="mt-1 text-sm text-white/50">Booking and contact submissions from every client site, newest first.</p>
 
@@ -50,7 +50,7 @@ export default async function AdminEnquiries() {
                     Reply to {s.reply_to}
                   </a>
                 )}
-                <Link href={`/admin/${s.tenant_id}`} className="text-white/50 hover:text-white">Open client</Link>
+                <Link href={`/kmanageradmin/${s.tenant_id}`} className="text-white/50 hover:text-white">Open client</Link>
               </div>
             </li>
           ))}

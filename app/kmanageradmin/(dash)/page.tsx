@@ -61,7 +61,7 @@ export default async function AdminHome() {
           <h1 className="text-3xl font-semibold tracking-tight">Overview</h1>
           <p className="mt-1 text-sm text-white/45">Every client site, billing and activity in one place.</p>
         </div>
-        <Link href="/admin/new" className="rounded-xl bg-emerald-500 px-4 py-2.5 text-sm font-semibold text-black transition hover:bg-emerald-400">
+        <Link href="/kmanageradmin/new" className="rounded-xl bg-emerald-500 px-4 py-2.5 text-sm font-semibold text-black transition hover:bg-emerald-400">
           + New client
         </Link>
       </div>
@@ -72,8 +72,8 @@ export default async function AdminHome() {
         <Stat label="Live" value={stats.live} accent="emerald" />
         <Stat label="Drafts" value={stats.drafts} />
         <Stat label="Domains" value={stats.domainsLive} />
-        <Stat label="Enquiries" value={stats.newEnquiries} accent="emerald" href="/admin/enquiries" />
-        <Stat label="Open tickets" value={openTickets} accent="amber" href="/admin/support?status=open" />
+        <Stat label="Enquiries" value={stats.newEnquiries} accent="emerald" href="/kmanageradmin/enquiries" />
+        <Stat label="Open tickets" value={openTickets} accent="amber" href="/kmanageradmin/support?status=open" />
       </div>
 
       {/* Clients */}
@@ -95,7 +95,7 @@ export default async function AdminHome() {
               </div>
               <div className="min-w-0 flex-1">
                 <div className="flex flex-wrap items-center gap-2">
-                  <Link href={`/admin/${t.id}`} className="font-medium text-white hover:underline">{t.business_name}</Link>
+                  <Link href={`/kmanageradmin/${t.id}`} className="font-medium text-white hover:underline">{t.business_name}</Link>
                   <StatusBadge published={t.published} planStatus={t.plan_status} />
                   {t.plan && <span className="rounded-full bg-white/10 px-2 py-0.5 text-xs capitalize text-white/50">{t.plan}</span>}
                 </div>
@@ -105,7 +105,7 @@ export default async function AdminHome() {
               </div>
               <div className="flex shrink-0 items-center gap-2">
                 <a href={liveUrl(t)} target="_blank" rel="noreferrer" className="hidden rounded-lg px-3 py-1.5 text-sm text-emerald-400 transition hover:bg-white/[0.06] sm:block">View ↗</a>
-                <Link href={`/admin/${t.id}`} className="rounded-lg border border-white/12 px-3 py-1.5 text-sm font-medium text-white/80 transition hover:bg-white/[0.06]">Manage</Link>
+                <Link href={`/kmanageradmin/${t.id}`} className="rounded-lg border border-white/12 px-3 py-1.5 text-sm font-medium text-white/80 transition hover:bg-white/[0.06]">Manage</Link>
               </div>
             </li>
           ))}
