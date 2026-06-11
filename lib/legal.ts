@@ -11,10 +11,8 @@ export const LEGAL = {
   companyNumber: process.env.LEGAL_COMPANY_NUMBER || "",
   /** Registered office / business address. Blank = line hidden. */
   address: process.env.LEGAL_ADDRESS || "",
-  /** Privacy / contact email. */
-  email: process.env.LEGAL_EMAIL || "hello@kovasite.com",
-  /** Complaints / legal email (kept separate from general contact). */
-  complaintsEmail: process.env.LEGAL_COMPLAINTS_EMAIL || "legal@kovasite.com",
+  /** Email used across all legal pages (privacy, terms, cookies, acceptable use). */
+  email: process.env.LEGAL_EMAIL || "legal@kovasite.com",
   /** Public website shown in the policy. */
   website: process.env.LEGAL_WEBSITE || "kovasite.com",
   governingLaw: process.env.LEGAL_GOVERNING_LAW || "England and Wales",

@@ -201,16 +201,8 @@ export default function PrivacyPage() {
 
       <LSection heading="13. Complaints">
         <LP>
-          If you are in the UK and are unhappy with how we handle your personal information, you can contact the UK
-          Information Commissioner&rsquo;s Office:
-        </LP>
-        <LUL>
-          <li>ICO website: <a href="https://ico.org.uk" target="_blank" rel="noreferrer" className="text-emerald-400/90 underline-offset-4 hover:underline">https://ico.org.uk</a></li>
-          <li>ICO complaints: <a href="https://ico.org.uk/make-a-complaint" target="_blank" rel="noreferrer" className="text-emerald-400/90 underline-offset-4 hover:underline">https://ico.org.uk/make-a-complaint</a></li>
-        </LUL>
-        <LP>
-          We would appreciate the chance to resolve your concern first, so please contact us at{" "}
-          <a href={`mailto:${LEGAL.complaintsEmail}`} className="text-emerald-400/90 underline-offset-4 hover:underline">{LEGAL.complaintsEmail}</a>.
+          If you are unhappy with how we handle your personal information, please contact us at {mail} and we will work
+          to resolve your concern.
         </LP>
       </LSection>
 
