@@ -50,7 +50,7 @@ export default async function PublishPage({
             className={`relative rounded-2xl border p-8 ${o.highlight ? "border-emerald-400/40 bg-gradient-to-b from-emerald-400/[0.08] to-transparent" : "border-white/10 bg-white/[0.02]"}`}
           >
             {o.highlight && (
-              <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-emerald-400 px-3 py-1 text-xs font-semibold text-black">Save {PLAN.yearlyDiscountPct}%</span>
+              <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full bg-emerald-400 px-3 py-1 text-xs font-semibold text-black">{PLAN.yearlyHook}</span>
             )}
             <h2 className="text-lg font-semibold">{o.label}</h2>
             <p className="mt-1 text-sm text-white/50">{o.note}</p>

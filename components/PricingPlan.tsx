@@ -5,8 +5,8 @@ import { useState } from "react";
 import { motion } from "motion/react";
 import { PLAN, gbp } from "@/lib/marketing";
 
-// One plan, billed monthly or yearly (yearly takes 10% off). A small segmented
-// toggle switches the headline price; the feature list is the same either way.
+// One plan, billed monthly or yearly (yearly gives 2 months free). A small
+// segmented toggle switches the headline price; the features are the same.
 export function PricingPlan() {
   const [yearly, setYearly] = useState(false);
 
@@ -27,7 +27,7 @@ export function PricingPlan() {
               {label}
               {key === "yearly" && (
                 <span className={`ml-1.5 rounded-full px-1.5 py-0.5 text-[10px] font-semibold ${active ? "bg-emerald-500/15 text-emerald-700" : "bg-emerald-400/15 text-emerald-300"}`}>
-                  −{PLAN.yearlyDiscountPct}%
+                  2 months free
                 </span>
               )}
             </button>

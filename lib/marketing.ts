@@ -45,16 +45,19 @@ export const STEPS = [
 export const gbp = (n: number) =>
   `£${n.toLocaleString("en-GB", { minimumFractionDigits: Number.isInteger(n) ? 0 : 2, maximumFractionDigits: 2 })}`;
 
-// One simple plan. Monthly is £99; paying yearly takes 10% off.
+// One simple plan. Monthly is £99; yearly gives 2 months free (pay for 10).
 export const PLAN = {
   monthly: 99,
-  yearlyDiscountPct: 10,
-  /** Total billed once a year (£99 × 12, less 10%). */
-  yearlyTotal: +(99 * 12 * 0.9).toFixed(2), // 1069.20
+  /** The headline yearly hook. */
+  yearlyHook: "2 months free",
+  /** Total billed once a year (12 months for the price of 10). */
+  yearlyTotal: 99 * 10, // 990
   /** Effective per-month cost when billed yearly. */
-  yearlyPerMonth: +(99 * 0.9).toFixed(2), // 89.10
+  yearlyPerMonth: +((99 * 10) / 12).toFixed(2), // 82.50
   /** What you save over a year vs paying monthly. */
-  yearlySaving: +(99 * 12 * 0.1).toFixed(2), // 118.80
+  yearlySaving: 99 * 12 - 99 * 10, // 198
+  /** Equivalent discount, for a percentage badge. */
+  yearlyDiscountPct: Math.round((1 - (99 * 10) / (99 * 12)) * 100), // 17
   features: [
     "Bespoke design built for your business",
     "Free custom domain + SSL, registered & renewed",

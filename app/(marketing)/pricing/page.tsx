@@ -11,7 +11,7 @@ export default function PricingPage() {
     <>
       <PageHero kicker="Pricing" title="One simple plan. Everything included.">
         Site, hosting, a free custom domain, SSL and booking are all included. No setup fee, no contract — pay
-        monthly, or save 10% a year.
+        monthly, or get 2 months free when you pay yearly.
       </PageHero>
 
       {/* Single plan, billed monthly or yearly */}
