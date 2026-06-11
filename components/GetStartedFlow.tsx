@@ -507,7 +507,7 @@ export function GetStartedFlow({
 
             {/* Trust strip — reassurance at the commitment point. */}
             <ul className="mt-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-xs text-white/45">
-              {["No setup fee", "Cancel anytime", "Online in under a day", "150+ designs"].map((t) => (
+              {["No setup fee", "Cancel anytime", "Live in 5 minutes", "150+ designs"].map((t) => (
                 <li key={t} className="flex items-center gap-1.5">
                   <svg className="h-3.5 w-3.5 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                     <path d="M5 12.5l4.5 4.5L19 7" />

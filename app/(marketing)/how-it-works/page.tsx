@@ -21,7 +21,7 @@ const STEP_ICONS: React.ReactNode[] = [
 
 const NEVER = [
   { t: "Wrestle a page builder", d: "No drag-and-drop, no templates to fight. We design it for you." },
-  { t: "Learn a dashboard", d: "Nothing to set up or maintain. Want a change? Text or email us." },
+  { t: "Learn complicated software", d: "Your dashboard is just your live site — tap any text to edit it. That's the whole learning curve." },
   { t: "Touch domains or hosting", d: "Domain, DNS, SSL and hosting are registered and renewed for you." },
   { t: "Chase updates", d: "Edits are included every month, with priority turnaround on higher plans." },
 ];
@@ -30,7 +30,8 @@ export default function HowItWorksPage() {
   return (
     <>
       <PageHero kicker="How it works" title="You run your business. We run your website.">
-        No dashboards to learn and no DIY builder. We set everything up and keep it running, every month.
+        No DIY builder to wrestle. We design and build your site, and managing it is just as easy: tap any text
+        to edit, or message us anytime.
       </PageHero>
 
       {/* Three-step timeline */}
@@ -61,7 +62,7 @@ export default function HowItWorksPage() {
         {/* timing reassurance */}
         <Reveal delay={0.1}>
           <p className="mt-14 text-center text-sm text-white/40">
-            Most sites are live on your own custom domain in <span className="text-white/70">under a day</span>.
+            Your site is live on your own custom domain in about <span className="text-white/70">5 minutes</span>.
           </p>
         </Reveal>
       </section>

@@ -100,7 +100,7 @@ export default function FeaturesPage() {
         {/* Reassurance strip */}
         <Reveal delay={0.08}>
           <div className="mt-6 flex flex-wrap items-center justify-center gap-x-6 gap-y-3 rounded-2xl border border-white/10 bg-black/40 px-6 py-5 text-sm text-white/55">
-            {["Everything included from £99/mo", "No setup fee", "No contract", "Online in under a day"].map((t) => (
+            {["Everything included from £99/mo", "No setup fee", "No contract", "Live in 5 minutes"].map((t) => (
               <span key={t} className="flex items-center gap-2">
                 <svg className="h-4 w-4 text-emerald-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2.5} strokeLinecap="round" strokeLinejoin="round" aria-hidden>
                   <path d="M5 12.5l4.5 4.5L19 7" />

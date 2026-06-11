@@ -32,12 +32,12 @@ export const FEATURES: { icon: string; title: string; body: string }[] = [
   { icon: "calendar", title: "Booking built in", body: "Reservations, appointments and online ordering embedded. Customers book directly, no commission." },
   { icon: "bolt", title: "Fast & mobile-first", body: "Loads instantly on a phone, where your customers are. Built for top Core Web Vitals scores." },
   { icon: "pin", title: "Found on Google", body: "Local SEO, Google Business Profile integration, and your best reviews shown front and centre." },
-  { icon: "edit", title: "Edit anything, any time", body: "Change your menu, prices, photos or hours, directly on the live page. No code, no waiting." },
+  { icon: "edit", title: "Edit anything, any time", body: "Tap any text on your live site to change your menu, prices, photos or hours. No code, no waiting." },
 ];
 
 export const STEPS = [
   { n: "01", title: "Tell us about your business", body: "A short chat or form: your services, hours, photos and the look you want." },
-  { n: "02", title: "We build and launch it", body: "Your site goes live on your own custom domain with booking and reviews set up, usually in under a day." },
+  { n: "02", title: "We build and launch it", body: "Your site goes live on your own custom domain with booking and reviews set up, in about 5 minutes." },
   { n: "03", title: "You get bookings", body: "Customers find you and book. Need a change? Text us and we handle it, every month." },
 ];
 
@@ -77,6 +77,6 @@ export const EXAMPLES = [
 export const FAQS = [
   { q: "Is there a contract?", a: "No. Cancel anytime. We earn your business by making the site genuinely good, not by locking you in." },
   { q: "Do I own my domain?", a: "Yes. We manage it for you, and if you ever leave we hand it over cleanly." },
-  { q: "How fast can I go live?", a: "Usually within a day of getting your details: your services, hours and a few photos." },
+  { q: "How fast can I go live?", a: "About 5 minutes: add your business details, services, hours and a few photos, and your site is live on your own domain." },
   { q: "What if I want changes?", a: "Text or email us. Edits are included; Standard and Premium get priority turnaround." },
 ];

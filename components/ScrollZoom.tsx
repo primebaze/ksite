@@ -17,7 +17,7 @@ export const StoryReelContext = createContext<{ setActiveVideo: (src: string) =>
 const CAPTIONS = [
   { text: "Tell us about your business.", start: 0.22, end: 0.42 },
   { text: "We design and build it.", start: 0.4, end: 0.57 },
-  { text: "You go live in a day.", start: 0.55, end: 0.7 },
+  { text: "You go live in 5 minutes.", start: 0.55, end: 0.7 },
 ];
 
 function Caption({

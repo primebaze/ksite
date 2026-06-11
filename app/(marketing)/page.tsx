@@ -24,7 +24,7 @@ export default function Home() {
           <Reveal delay={0.1}>
             <p className="mx-auto mt-6 max-w-xl text-lg text-white/55">
               Tell us what you want, and you go live on your own custom domain: design, hosting, booking, reviews
-              and SEO all set up for you. Most sites are online in under a day, and they&apos;re built to convert.
+              and SEO all set up for you. Most sites are live in about 5 minutes, and they&apos;re built to convert.
             </p>
           </Reveal>
           <Reveal delay={0.18}>
@@ -36,7 +36,7 @@ export default function Home() {
                 Browse samples
               </Link>
             </div>
-            <p className="mt-5 text-sm text-white/35">From £99/mo · No setup fee · No contract · Online in under a day</p>
+            <p className="mt-5 text-sm text-white/35">From £99/mo · No setup fee · No contract · Live in 5 minutes</p>
           </Reveal>
         </div>
       </section>
@@ -75,7 +75,7 @@ export default function Home() {
           <Reveal>
             <h2 className="text-5xl font-semibold tracking-tight text-white sm:text-7xl">Stand out online.</h2>
             <p className="mx-auto mt-5 max-w-md text-base leading-relaxed text-white/55">
-              Your site, live on your own domain in a day. Booking, SEO and reviews handled for you.
+              Your site, live on your own domain in minutes. Booking, SEO and reviews handled for you.
             </p>
             <Link
               href="/get-started"

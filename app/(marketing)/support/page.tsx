@@ -28,7 +28,7 @@ const CHANNELS = [
       </>
     ),
     title: "Request a change",
-    body: "New photos, prices, menu or hours? Send it over and we make the edit for you, no dashboard needed.",
+    body: "New photos, prices, menu or hours? Tap the text on your site to edit it yourself in seconds, or send it over and we'll do it for you.",
     cta: "changes@kovasite.com",
     href: "mailto:changes@kovasite.com",
   },
