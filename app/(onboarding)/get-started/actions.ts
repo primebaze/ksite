@@ -65,6 +65,8 @@ export async function startOnboarding(formData: FormData) {
   if (!business_name) err("Please add your business name.");
   if (!email || password.length < 8) err("Enter an email and a password of at least 8 characters.");
   if (!phone) err("Please add a phone number.");
+  // Terms must be explicitly accepted (the checkbox sends "on" when ticked).
+  if (formData.get("terms") !== "on") err("Please accept the Terms & Conditions to continue.");
 
   // Bot check (Cloudflare Turnstile).
   const passedBotCheck = await verifyTurnstile(String(formData.get("cf-turnstile-response") ?? ""));

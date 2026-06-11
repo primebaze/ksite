@@ -475,6 +475,27 @@ export function GetStartedFlow({
 
             {error && <p className="mt-4 rounded-lg bg-red-500/10 px-4 py-3 text-sm text-red-300">{error}</p>}
 
+            {/* Terms acceptance — required before the account can be created. */}
+            <label className="mt-6 flex cursor-pointer items-start gap-3 text-sm leading-relaxed text-white/60">
+              <input
+                type="checkbox"
+                name="terms"
+                required
+                className="mt-0.5 h-4 w-4 shrink-0 cursor-pointer rounded border-white/25 bg-white/[0.03] text-emerald-500 accent-emerald-500 focus:ring-emerald-400/40"
+              />
+              <span>
+                I agree to the{" "}
+                <Link href="/terms" target="_blank" className="text-white/80 underline underline-offset-2 hover:text-white">
+                  Terms &amp; Conditions
+                </Link>{" "}
+                and{" "}
+                <Link href="/privacy" target="_blank" className="text-white/80 underline underline-offset-2 hover:text-white">
+                  Privacy Policy
+                </Link>
+                .
+              </span>
+            </label>
+
             <div className="mt-6 flex flex-wrap items-center justify-between gap-4">
               <button type="button" onClick={() => setStep(preset === "other" ? 0 : 1)} className="text-sm text-white/45 transition hover:text-white">
                 Back
