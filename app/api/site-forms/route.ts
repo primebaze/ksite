@@ -1,5 +1,6 @@
 import { getServiceClient } from "@/lib/supabase";
 import { sendFormSubmission } from "@/lib/email";
+import { rateLimit, clientIp } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 
@@ -36,6 +37,12 @@ export async function POST(req: Request) {
   const kind = body.kind === "booking" ? "booking" : body.kind === "contact" ? "contact" : null;
   const tenantId = typeof body.tenantId === "string" ? body.tenantId : "";
   if (!kind || !tenantId) return Response.json({ ok: false, error: "Invalid request." }, { status: 400 });
+
+  // Rate limit public submissions per IP (they write the DB + send email).
+  const ip = clientIp(req);
+  if (!(await rateLimit(`forms:${ip}`, 10, 60)) || !(await rateLimit(`forms:${ip}:hr`, 40, 3600))) {
+    return Response.json({ ok: false, error: "Too many requests. Please try again shortly." }, { status: 429 });
+  }
 
   // Honeypot — real users never fill this; pretend success so bots don't retry.
   if (clean(body.company)) return Response.json({ ok: true });

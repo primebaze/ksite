@@ -8,6 +8,7 @@ import {
   updateMyTheme,
   upsertMyGalleryImage,
 } from "@/lib/my-site";
+import { rateLimit } from "@/lib/rate-limit";
 
 // Image upload. Node runtime + extra time for processing big photos. Every path
 // returns JSON (never an unhandled 500), and sharp re-encodes to a clean,
@@ -29,6 +30,9 @@ export async function POST(req: Request) {
 
     const tenant = await getMyTenant();
     if (!tenant) return Response.json({ ok: false, error: "Please sign in again." }, { status: 401 });
+    if (!(await rateLimit(`upload:${tenant.id}`, 40, 60))) {
+      return Response.json({ ok: false, error: "Too many uploads. Please wait a moment." }, { status: 429 });
+    }
     if (!(file instanceof File) || file.size === 0) return Response.json({ ok: false, error: "No file selected." });
     if (file.size > MAX_BYTES) return Response.json({ ok: false, error: "That image is too large. Please use one under 12MB." });
     if (!ALLOWED.includes(file.type)) return Response.json({ ok: false, error: "Please use a JPG, PNG, WEBP, AVIF or GIF." });

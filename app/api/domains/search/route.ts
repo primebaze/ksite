@@ -1,11 +1,15 @@
 import { checkAvailability, getDomainPrice, isVercelConfigured } from "@/lib/vercel";
 import { getMyTenant } from "@/lib/my-site";
+import { rateLimit } from "@/lib/rate-limit";
 
 export const runtime = "nodejs";
 
 export async function GET(req: Request) {
   const tenant = await getMyTenant();
   if (!tenant) return Response.json({ error: "Please sign in." }, { status: 401 });
+  if (!(await rateLimit(`domsearch:${tenant.id}`, 30, 60))) {
+    return Response.json({ error: "Too many searches. Please wait a moment." }, { status: 429 });
+  }
   if (!isVercelConfigured()) return Response.json({ error: "Domain search isn't switched on yet." }, { status: 503 });
 
   const name = (new URL(req.url).searchParams.get("name") ?? "").trim().toLowerCase();
