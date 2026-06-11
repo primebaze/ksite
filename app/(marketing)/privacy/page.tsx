@@ -1,128 +1,237 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import { LegalLayout, LSection, LP, LUL } from "@/components/legal/Legal";
 import { LEGAL, LEGAL_NAME } from "@/lib/legal";
 
 export const metadata: Metadata = {
   title: "Privacy Policy · Kovasite",
-  description: "How Kovasite collects, uses and protects personal data.",
+  description: "How we collect, use, store and share personal information.",
 };
+
+const mail = (
+  <a href={`mailto:${LEGAL.email}`} className="text-emerald-400/90 underline-offset-4 hover:underline">{LEGAL.email}</a>
+);
 
 export default function PrivacyPage() {
   return (
-    <LegalLayout title="Privacy Policy" intro="How we collect, use and protect your personal data.">
-      <LSection heading="Who we are">
+    <LegalLayout
+      title="Privacy Policy"
+      intro={`This policy explains how ${LEGAL_NAME}${LEGAL.entity ? `, trading as ${LEGAL.brand},` : ""} collects, uses, stores and shares personal information when you use our website, dashboard, services, hosted websites, domain services, contact forms, billing flows and support channels.`}
+    >
+      <LSection heading="1. Who we are">
+        <LUL>
+          <li>Controller: {LEGAL_NAME}</li>
+          {LEGAL.entity && <li>Trading name: {LEGAL.brand}</li>}
+          {LEGAL.companyNumber && <li>Company number: {LEGAL.companyNumber}</li>}
+          {LEGAL.address && <li>Address: {LEGAL.address}</li>}
+          <li>Email: {mail}</li>
+          {LEGAL.website && <li>Website: {LEGAL.website}</li>}
+        </LUL>
         <LP>
-          {LEGAL_NAME} (&ldquo;{LEGAL.brand}&rdquo;, &ldquo;we&rdquo;, &ldquo;us&rdquo;) provides a website-building and
-          hosting service for local businesses. We are the data controller for personal data we process about our
-          customers and visitors to {LEGAL.brand}.com.
+          For most data collected through our own website, onboarding flow, billing system, dashboard and support
+          channels, we are the data controller.
         </LP>
-        {(LEGAL.entity || LEGAL.companyNumber || LEGAL.address) && (
-          <LUL>
-            {LEGAL.entity && <li>Registered name: {LEGAL.entity}</li>}
-            {LEGAL.companyNumber && <li>Company number: {LEGAL.companyNumber}</li>}
-            {LEGAL.address && <li>Registered office: {LEGAL.address}</li>}
-          </LUL>
-        )}
         <LP>
-          Where we host a website for a business customer, that customer is the data controller for personal data
-          submitted through their own site (for example booking and enquiry details), and we act as their data
-          processor.
+          Where we host a website for one of our customers and collect enquiries from that customer&rsquo;s site
+          visitors, the customer may be the controller for that enquiry data and we may act as their processor.
         </LP>
       </LSection>
 
-      <LSection heading="The data we collect">
+      <LSection heading="2. Information we collect">
+        <LP>We may collect the following types of personal information:</LP>
         <LUL>
-          <li><strong>Account details</strong> — name, email, phone number and password (stored hashed) when you sign up.</li>
-          <li><strong>Business content</strong> — the text, images, opening hours, menu/services and contact details you add to your site.</li>
-          <li><strong>Payment data</strong> — handled by our payment processor. We do not store card numbers.</li>
-          <li><strong>Domain registrant data</strong> — where we register a domain on your behalf, the contact details required by the registry.</li>
-          <li><strong>Form submissions</strong> — booking and contact enquiries sent through a customer&rsquo;s website.</li>
-          <li><strong>Technical data</strong> — IP address, browser type, and cookies/usage data (see our <Link href="/cookies" className="text-emerald-400/90 underline-offset-4 hover:underline">Cookie Policy</Link>).</li>
+          <li><strong>Account and onboarding details:</strong> name, business name, email address, phone number, login information, business type, website preferences and setup answers.</li>
+          <li><strong>Business and website content:</strong> address, opening hours, service details, menus, images, team details, booking links, contact details and other content you provide for your website.</li>
+          <li><strong>Domain registration and management details:</strong> business name, contact name, address, email, phone number, country, postcode, domain name choices, domain status, DNS information and registrar-related records.</li>
+          <li><strong>Billing information:</strong> plan, subscription status, payment status, invoices, billing email and payment identifiers. We do not store full card numbers.</li>
+          <li><strong>Messages and support data:</strong> emails, form submissions, support requests, feedback and communications with us.</li>
+          <li><strong>Website visitor data:</strong> IP address, device/browser information, pages visited, referral URLs, timestamps and analytics events.</li>
+          <li><strong>Security and technical data:</strong> logs, authentication events, error reports, fraud prevention signals and usage data.</li>
+          <li><strong>Customer site enquiries:</strong> where a visitor submits a form on a hosted customer website, we may process their name, email, phone number, message and related metadata.</li>
         </LUL>
       </LSection>
 
-      <LSection heading="How and why we use it">
+      <LSection heading="3. How we use personal information">
+        <LP>We use personal information to:</LP>
         <LUL>
-          <li>To create, host, secure and operate your website (performance of our contract with you).</li>
-          <li>To take payment and manage your subscription (performance of our contract).</li>
-          <li>To register and configure custom domains you request (performance of our contract).</li>
-          <li>To send service emails such as confirmations, domain status and security notices (legitimate interests / contract).</li>
-          <li>To prevent fraud and abuse, including bot checks (legitimate interests).</li>
-          <li>To improve and support the service (legitimate interests).</li>
+          <li>create and manage user accounts;</li>
+          <li>build, host and maintain customer websites;</li>
+          <li>provide website editing, dashboard and publishing features;</li>
+          <li>register, configure, renew, verify, connect and manage domains;</li>
+          <li>provide SSL, DNS, routing and domain status checks;</li>
+          <li>process subscriptions, payments and invoices;</li>
+          <li>send service messages, account notices and important updates;</li>
+          <li>respond to enquiries and provide support;</li>
+          <li>prevent fraud, abuse, spam and unauthorised access;</li>
+          <li>improve our website, product and customer experience;</li>
+          <li>comply with legal, tax, accounting, registrar and regulatory obligations;</li>
+          <li>send marketing communications where permitted by law or with consent.</li>
+        </LUL>
+      </LSection>
+
+      <LSection heading="4. Domain registration and managed domains">
+        <LP>
+          If your plan includes a managed domain, we may register, configure and renew the domain on your behalf.
+        </LP>
+        <LP>
+          Depending on the setup, the domain may be registered using our business details as the legal registrant, or
+          using details you provide. If we are listed as the registrant, we manage the domain operationally for the
+          purpose of providing your website service.
+        </LP>
+        <LP>
+          You may request transfer of a managed domain, subject to applicable registrar rules, verification
+          requirements, unpaid fees, fraud prevention checks, and transfer restrictions such as registrar lock periods.
+        </LP>
+        <LP>
+          Domain-related information may be shared with domain registrars, DNS providers, hosting providers, registry
+          operators, ICANN-related systems, abuse prevention services and other parties required to register, maintain,
+          renew, secure or transfer a domain.
+        </LP>
+      </LSection>
+
+      <LSection heading="5. Lawful bases for processing">
+        <LP>We rely on different lawful bases depending on the activity:</LP>
+        <LUL>
+          <li><strong>Contract:</strong> to provide our services, create your website, manage your account, process payments, register or connect domains, provide support and deliver your subscription.</li>
+          <li><strong>Legitimate interests:</strong> to improve our service, secure our systems, prevent abuse, monitor performance, manage business operations and communicate about relevant service updates.</li>
+          <li><strong>Consent:</strong> for optional marketing, certain cookies or where we ask for specific permission.</li>
+          <li><strong>Legal obligation:</strong> for tax, accounting, fraud prevention, regulatory, domain registrar or legal compliance requirements.</li>
+        </LUL>
+        <LP>Where we rely on legitimate interests, we balance our interests against your rights and freedoms.</LP>
+      </LSection>
+
+      <LSection heading="6. Who we share information with">
+        <LP>
+          We may share personal information with trusted third parties where needed to operate our service, including:
+        </LP>
+        <LUL>
+          <li>hosting and deployment providers;</li>
+          <li>database, storage and authentication providers;</li>
+          <li>payment processors and billing platforms;</li>
+          <li>email and notification providers;</li>
+          <li>analytics, logging and security providers;</li>
+          <li>domain registrars, DNS providers and SSL/certificate providers;</li>
+          <li>professional advisers such as accountants, lawyers and insurers;</li>
+          <li>law enforcement, regulators, courts or authorities where required;</li>
+          <li>customers, where a website visitor submits an enquiry through that customer&rsquo;s hosted site.</li>
         </LUL>
         <LP>
-          We rely on the lawful bases in the UK GDPR shown above. We do not sell your personal data.
+          We only share information where necessary and require service providers to protect it appropriately. A list of
+          the specific processors we use is available on request by emailing {mail}.
         </LP>
       </LSection>
 
-      <LSection heading="Service providers we share data with">
-        <LP>We use trusted providers to run the service. Each only receives the data needed for their role:</LP>
+      <LSection heading="7. International transfers">
+        <LP>
+          Some providers we use may process personal information outside the UK or EEA. Where this happens, we use
+          appropriate safeguards where required, such as adequacy regulations, standard contractual clauses, data
+          processing agreements, or equivalent transfer protections.
+        </LP>
+      </LSection>
+
+      <LSection heading="8. How long we keep information">
+        <LP>We keep personal information only for as long as necessary for the purposes described in this policy.</LP>
+        <LP>Typical retention periods include:</LP>
         <LUL>
-          <li><strong>Hosting &amp; content delivery</strong> — to host and serve our platform and your website.</li>
-          <li><strong>Database, authentication &amp; file storage</strong> — to store your account, content and media securely.</li>
-          <li><strong>Payment processing</strong> — to take subscription payments (card details are handled by the processor; we do not store card numbers).</li>
-          <li><strong>Domain registration, DNS &amp; SSL</strong> — to register, secure and route custom domains.</li>
-          <li><strong>Email delivery</strong> — to send account, security and service emails.</li>
-          <li><strong>Bot &amp; abuse protection</strong> — to keep sign-up and forms secure.</li>
-          <li><strong>Analytics &amp; logging</strong> (where enabled) — to monitor performance and improve the service.</li>
+          <li>account data: while your account is active and for a reasonable period afterwards;</li>
+          <li>billing and invoice records: usually up to 6 years for tax and accounting purposes;</li>
+          <li>domain records: for the life of the domain management relationship and as required by registrar/registry rules;</li>
+          <li>support messages: for as long as needed to handle the issue and maintain business records;</li>
+          <li>website enquiry data: according to the customer&rsquo;s instructions or our default retention settings;</li>
+          <li>technical logs: for a limited period unless needed for security, fraud prevention or legal reasons.</li>
         </LUL>
         <LP>
-          We choose reputable providers and require them to protect your data under appropriate agreements. A list of the
-          specific processors we use is available on request by emailing{" "}
-          <a href={`mailto:${LEGAL.email}`} className="text-emerald-400/90 underline-offset-4 hover:underline">{LEGAL.email}</a>.
-          We may also disclose data where required by law, or to establish, exercise or defend legal claims.
+          We may retain limited records where necessary to resolve disputes, enforce agreements, prevent abuse or comply
+          with legal obligations.
         </LP>
       </LSection>
 
-      <LSection heading="International transfers">
-        <LP>
-          Some providers process data outside the UK/EEA. Where they do, we rely on appropriate safeguards such as the
-          UK International Data Transfer Agreement or addendum, or an adequacy decision.
-        </LP>
-      </LSection>
-
-      <LSection heading="How long we keep it">
-        <LP>
-          We keep account and site data for as long as your account is active, and for a reasonable period afterwards to
-          meet legal, accounting and dispute-resolution requirements. Form submissions are retained so you can manage
-          enquiries; you can delete them at any time from your dashboard.
-        </LP>
-      </LSection>
-
-      <LSection heading="Your rights">
-        <LP>Under UK data protection law you have the right to:</LP>
+      <LSection heading="9. Cookies and similar technologies">
+        <LP>We may use cookies and similar technologies to:</LP>
         <LUL>
-          <li>access a copy of your personal data;</li>
-          <li>have inaccurate data corrected;</li>
-          <li>have your data erased in certain circumstances;</li>
-          <li>restrict or object to processing;</li>
-          <li>data portability; and</li>
-          <li>withdraw consent where we rely on it.</li>
+          <li>keep users signed in;</li>
+          <li>remember preferences;</li>
+          <li>secure the service;</li>
+          <li>measure website performance;</li>
+          <li>understand how people use our website;</li>
+          <li>support marketing or analytics where permitted.</li>
         </LUL>
         <LP>
-          To exercise any of these, email <a href={`mailto:${LEGAL.email}`} className="text-emerald-400/90 underline-offset-4 hover:underline">{LEGAL.email}</a>.
-          You also have the right to complain to the UK Information Commissioner&rsquo;s Office (ICO) at ico.org.uk.
+          Where required, we will ask for consent before setting non-essential cookies. You can control cookies through
+          your browser settings.
         </LP>
       </LSection>
 
-      <LSection heading="Security">
+      <LSection heading="10. Marketing">
         <LP>
-          We use industry-standard measures including encryption in transit, row-level access controls and hashed
-          passwords. No method of transmission or storage is completely secure, but we work to protect your data and
-          will notify you of a breach where the law requires.
+          We may send marketing emails if you have opted in, requested information, or where otherwise permitted by law.
         </LP>
-      </LSection>
-
-      <LSection heading="Children">
-        <LP>The service is intended for businesses and is not directed at children under 16.</LP>
-      </LSection>
-
-      <LSection heading="Changes & contact">
+        <LP>You can unsubscribe at any time using the link in the email or by contacting us at {mail}.</LP>
         <LP>
-          We may update this policy from time to time; the &ldquo;last updated&rdquo; date above shows the latest version.
-          Questions about privacy? Contact us at <a href={`mailto:${LEGAL.email}`} className="text-emerald-400/90 underline-offset-4 hover:underline">{LEGAL.email}</a>.
+          We will still send service messages where necessary, such as billing, security, domain, account or website
+          status updates.
         </LP>
+      </LSection>
+
+      <LSection heading="11. Security">
+        <LP>
+          We use appropriate technical and organisational measures to protect personal information, including access
+          controls, secure hosting, encryption where appropriate, monitoring, backups and restricted access to sensitive
+          systems.
+        </LP>
+        <LP>
+          No system is completely secure, but we take reasonable steps to protect information against unauthorised
+          access, loss, misuse or disclosure.
+        </LP>
+      </LSection>
+
+      <LSection heading="12. Your rights">
+        <LP>Depending on your location and the applicable law, you may have rights to:</LP>
+        <LUL>
+          <li>access your personal information;</li>
+          <li>correct inaccurate information;</li>
+          <li>request deletion;</li>
+          <li>restrict processing;</li>
+          <li>object to certain processing;</li>
+          <li>request data portability;</li>
+          <li>withdraw consent where processing is based on consent;</li>
+          <li>complain to a supervisory authority.</li>
+        </LUL>
+        <LP>To exercise your rights, contact us at {mail}. We may need to verify your identity before responding.</LP>
+      </LSection>
+
+      <LSection heading="13. Complaints">
+        <LP>
+          If you are in the UK and are unhappy with how we handle your personal information, you can contact the UK
+          Information Commissioner&rsquo;s Office:
+        </LP>
+        <LUL>
+          <li>ICO website: <a href="https://ico.org.uk" target="_blank" rel="noreferrer" className="text-emerald-400/90 underline-offset-4 hover:underline">https://ico.org.uk</a></li>
+          <li>ICO complaints: <a href="https://ico.org.uk/make-a-complaint" target="_blank" rel="noreferrer" className="text-emerald-400/90 underline-offset-4 hover:underline">https://ico.org.uk/make-a-complaint</a></li>
+        </LUL>
+        <LP>We would appreciate the chance to resolve your concern first, so please contact us at {mail}.</LP>
+      </LSection>
+
+      <LSection heading="14. Children">
+        <LP>
+          Our services are intended for businesses and are not directed at children. We do not knowingly collect
+          personal information from children.
+        </LP>
+      </LSection>
+
+      <LSection heading="15. Changes to this policy">
+        <LP>
+          We may update this Privacy Policy from time to time. If we make significant changes, we may notify users by
+          email, dashboard notice or website notice.
+        </LP>
+      </LSection>
+
+      <LSection heading="16. Contact us">
+        <LP>For privacy questions or requests, contact:</LP>
+        <LUL>
+          <li>{LEGAL_NAME}</li>
+          <li>Email: {mail}</li>
+          {LEGAL.address && <li>Address: {LEGAL.address}</li>}
+        </LUL>
       </LSection>
     </LegalLayout>
   );

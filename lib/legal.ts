@@ -1,19 +1,23 @@
-// Central place for the details every legal page references, so they stay in
-// sync. IMPORTANT: fill in `entity`, `companyNumber` and `address` with your
-// real registered details before relying on these, and have a solicitor review
-// the policies. Leaving entity/number/address blank simply hides those lines.
+// Details every legal page reads, sourced from env so you fill them once (in
+// .env.local locally and in your host's env in production). Blank optional
+// fields simply hide their line. Server-only (legal pages are server
+// components), so these don't need the NEXT_PUBLIC prefix.
 export const LEGAL = {
-  brand: "Kovasite",
+  /** Trading / brand name, e.g. "Kovasite". */
+  brand: process.env.LEGAL_TRADING_NAME || "Kovasite",
   /** Registered company name, e.g. "Kovasite Ltd". Blank = use the brand name. */
-  entity: "",
-  /** Companies House number, e.g. "12345678". Blank = line hidden. */
-  companyNumber: "",
-  /** Registered office address. Blank = line hidden. */
-  address: "",
-  email: "hello@kovasite.com",
-  governingLaw: "England and Wales",
+  entity: process.env.LEGAL_COMPANY_NAME || "",
+  /** Companies House number. Blank = line hidden. */
+  companyNumber: process.env.LEGAL_COMPANY_NUMBER || "",
+  /** Registered office / business address. Blank = line hidden. */
+  address: process.env.LEGAL_ADDRESS || "",
+  /** Privacy / contact email. */
+  email: process.env.LEGAL_EMAIL || "hello@kovasite.com",
+  /** Public website shown in the policy. */
+  website: process.env.LEGAL_WEBSITE || "kovasite.com",
+  governingLaw: process.env.LEGAL_GOVERNING_LAW || "England and Wales",
   /** Shown as "Last updated" on each policy. */
-  lastUpdated: "11 June 2026",
+  lastUpdated: process.env.LEGAL_LAST_UPDATED || "11 June 2026",
 } as const;
 
 // How to refer to the operator in prose (registered entity if set, else brand).
