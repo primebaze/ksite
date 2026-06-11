@@ -3,7 +3,6 @@ import { notFound, redirect } from "next/navigation";
 import { getMyTenantFull } from "@/lib/my-site";
 import { getPresetComponent } from "@/presets";
 import { InlineEditor } from "@/components/InlineEditor";
-import { DesignPanel } from "@/components/DesignPanel";
 import { pageFromPath } from "@/lib/site-pages";
 import { saveInline } from "../actions";
 
@@ -37,17 +36,19 @@ export default async function PreviewPage({
   if (!edit) return preset;
 
   return (
-    <InlineEditor save={saveInline}>
+    <InlineEditor
+      save={saveInline}
+      design={{
+        style: site.content.style,
+        primary: site.theme.primary_color || "#141414",
+        accent: site.theme.accent_color || "#c8a24a",
+        footerVariant: site.content.footer_variant,
+        bodyVariant: site.content.body_variant,
+        bookingEnabled: site.content.booking_enabled !== false,
+        contactEnabled: site.content.contact_form_enabled !== false,
+      }}
+    >
       {preset}
-      <DesignPanel
-        style={site.content.style}
-        primary={site.theme.primary_color || "#141414"}
-        accent={site.theme.accent_color || "#c8a24a"}
-        footerVariant={site.content.footer_variant}
-        bodyVariant={site.content.body_variant}
-        bookingEnabled={site.content.booking_enabled !== false}
-        contactEnabled={site.content.contact_form_enabled !== false}
-      />
     </InlineEditor>
   );
 }

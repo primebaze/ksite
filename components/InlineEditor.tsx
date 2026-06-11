@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState, type ReactNode } from "react";
 import { EditOnboarding } from "./EditOnboarding";
+import { DesignPanel, type DesignProps } from "./DesignPanel";
 
 // Wraps the live site and makes editing happen in place:
 //  - any [data-edit] text is editable (saves on blur)
@@ -12,14 +13,17 @@ import { EditOnboarding } from "./EditOnboarding";
 export function InlineEditor({
   children,
   save,
+  design,
 }: {
   children: ReactNode;
   save: (changes: Record<string, string>) => Promise<{ ok: boolean }>;
+  design?: DesignProps;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const fileRef = useRef<HTMLInputElement>(null);
   const fieldRef = useRef<string>("hero");
   const [status, setStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
+  const [designOpen, setDesignOpen] = useState(false);
 
   const flash = (s: "saved" | "error") => {
     setStatus(s);
@@ -134,21 +138,41 @@ export function InlineEditor({
       <EditOnboarding />
       <input ref={fileRef} type="file" accept="image/*" hidden onChange={onFile} />
 
-      <div className="fixed bottom-5 left-1/2 z-[200] flex -translate-x-1/2 items-center gap-3 rounded-full border border-white/10 bg-black/85 px-5 py-2.5 text-sm text-white shadow-2xl backdrop-blur">
-        <span className="flex items-center gap-2">
-          <span className={`h-2 w-2 rounded-full ${status === "saving" ? "animate-pulse bg-amber-400" : status === "error" ? "bg-red-400" : "bg-emerald-400"}`} />
-          {status === "saving" ? "Saving…" : status === "saved" ? "Saved ✓" : status === "error" ? "Couldn’t save" : "Tap text to edit · tap a photo to change it"}
-        </span>
-        <button
-          type="button"
-          data-tour="cover"
-          onClick={() => pickImage("hero")}
-          className="rounded-full border border-white/20 px-3 py-1.5 font-medium text-white transition hover:bg-white/10"
-        >
-          Cover photo
-        </button>
-        <a href="/dashboard" data-tour="done" className="rounded-full bg-white px-4 py-1.5 font-semibold text-black transition hover:bg-white/90">Done</a>
+      {/* Edit dock — one responsive bar for status + design + photo + done */}
+      <div className="pointer-events-none fixed inset-x-0 bottom-0 z-[200] flex justify-center px-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
+        <div className="pointer-events-auto flex max-w-[calc(100vw-1.5rem)] items-center gap-1.5 rounded-full border border-white/10 bg-black/85 p-1.5 pl-3.5 text-sm text-white shadow-2xl backdrop-blur">
+          <span className="flex shrink-0 items-center gap-2 pr-0.5">
+            <span className={`h-2 w-2 rounded-full ${status === "saving" ? "animate-pulse bg-amber-400" : status === "error" ? "bg-red-400" : "bg-emerald-400"}`} />
+            <span className="text-white/65">
+              <span className="sm:hidden">{status === "saving" ? "Saving" : status === "saved" ? "Saved" : status === "error" ? "Error" : "Editing"}</span>
+              <span className="hidden sm:inline">{status === "saving" ? "Saving…" : status === "saved" ? "Saved ✓" : status === "error" ? "Couldn’t save" : "Tap text or a photo to edit"}</span>
+            </span>
+          </span>
+
+          {design && (
+            <button
+              type="button"
+              onClick={() => setDesignOpen(true)}
+              className="flex shrink-0 items-center gap-1.5 rounded-full border border-white/20 px-3 py-1.5 font-medium text-white transition hover:bg-white/10"
+            >
+              <span aria-hidden>🎨</span> Design
+            </button>
+          )}
+
+          <button
+            type="button"
+            data-tour="cover"
+            onClick={() => pickImage("hero")}
+            className="flex shrink-0 items-center gap-1.5 rounded-full border border-white/20 px-3 py-1.5 font-medium text-white transition hover:bg-white/10"
+          >
+            <span aria-hidden>🖼️</span> Photo
+          </button>
+
+          <a href="/dashboard" data-tour="done" className="shrink-0 rounded-full bg-white px-4 py-1.5 font-semibold text-black transition hover:bg-white/90">Done</a>
+        </div>
       </div>
+
+      {design && <DesignPanel open={designOpen} onClose={() => setDesignOpen(false)} {...design} />}
 
       {children}
     </div>

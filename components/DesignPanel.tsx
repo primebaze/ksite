@@ -14,18 +14,7 @@ const LOOKS: { value: string; label: string }[] = [
   { value: "classic", label: "Classic" },
 ];
 
-// On-screen design controls for the owner: switch the overall look and the
-// brand colours (curated palettes or custom). Each change saves and refreshes
-// the live preview so they see it instantly.
-export function DesignPanel({
-  style,
-  primary,
-  accent,
-  footerVariant,
-  bodyVariant,
-  bookingEnabled = true,
-  contactEnabled = true,
-}: {
+export interface DesignProps {
   style?: string;
   primary: string;
   accent: string;
@@ -33,9 +22,24 @@ export function DesignPanel({
   bodyVariant?: string;
   bookingEnabled?: boolean;
   contactEnabled?: boolean;
-}) {
+}
+
+// On-screen design controls for the owner: switch the overall look and the
+// brand colours (curated palettes or custom). Each change saves and refreshes
+// the live preview so they see it instantly. Controlled by the edit dock —
+// mobile renders it as a bottom sheet, desktop as a right-side popover.
+export function DesignPanel({
+  open,
+  onClose,
+  style,
+  primary,
+  accent,
+  footerVariant,
+  bodyVariant,
+  bookingEnabled = true,
+  contactEnabled = true,
+}: DesignProps & { open: boolean; onClose: () => void }) {
   const router = useRouter();
-  const [open, setOpen] = useState(false);
   const [pending, start] = useTransition();
   const [look, setLook] = useState(style ?? "classic");
   const [pri, setPri] = useState(primary);
@@ -60,23 +64,22 @@ export function DesignPanel({
     });
   };
 
+  if (!open) return null;
+
   return (
     <>
-      <button
-        type="button"
-        onClick={() => setOpen((v) => !v)}
-        className="fixed bottom-5 right-5 z-[210] flex h-12 w-12 items-center justify-center rounded-full border border-white/15 bg-black/85 text-lg shadow-2xl backdrop-blur transition hover:bg-black"
-        aria-label="Design options"
-      >
-        🎨
-      </button>
+      {/* Backdrop (mobile dismiss) */}
+      <div className="fixed inset-0 z-[230] bg-black/50 backdrop-blur-sm sm:bg-transparent sm:backdrop-blur-0" onClick={onClose} />
 
-      {open && (
-        <div className="fixed bottom-20 right-5 z-[210] max-h-[70vh] w-[300px] overflow-y-auto rounded-2xl border border-white/12 bg-neutral-950/95 p-5 text-white shadow-2xl backdrop-blur">
-          <div className="flex items-center justify-between">
-            <p className="text-sm font-semibold">Design</p>
+      <div className="fixed inset-x-0 bottom-0 z-[240] max-h-[82vh] overflow-y-auto rounded-t-3xl border-t border-white/12 bg-neutral-950/95 p-5 pb-[max(1.25rem,env(safe-area-inset-bottom))] text-white shadow-2xl backdrop-blur sm:inset-x-auto sm:bottom-24 sm:right-5 sm:max-h-[70vh] sm:w-[320px] sm:rounded-2xl sm:border">
+        <div className="mx-auto mb-3 h-1.5 w-10 rounded-full bg-white/15 sm:hidden" />
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <p className="text-base font-semibold">Design</p>
             {pending && <span className="text-xs text-emerald-300">Applying…</span>}
           </div>
+          <button type="button" onClick={onClose} aria-label="Close" className="grid size-8 place-items-center rounded-full border border-white/15 text-white/70 transition hover:bg-white/10">✕</button>
+        </div>
 
           {/* Look */}
           <p className="mt-4 text-xs font-medium uppercase tracking-widest text-white/40">Look</p>
@@ -207,8 +210,7 @@ export function DesignPanel({
               Accent
             </label>
           </div>
-        </div>
-      )}
+      </div>
     </>
   );
 }
