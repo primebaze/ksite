@@ -216,8 +216,9 @@ export function FeatureBento() {
               </p>
               <h3 className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl">{f.title}</h3>
               <p className="mt-4 max-w-md text-base leading-relaxed text-white/55">{f.body}</p>
-              {/* small screens: window under the text */}
-              <div className="mt-9 h-[420px] lg:hidden">
+              {/* small screens: window under the text — sizes to its content
+                  (no fixed height) so there's no empty gap or clipping */}
+              <div className="mt-9 lg:hidden">
                 <Visual />
               </div>
             </div>
