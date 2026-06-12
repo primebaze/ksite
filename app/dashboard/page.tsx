@@ -53,10 +53,10 @@ export default async function DashboardHome({ searchParams }: { searchParams: Pr
   return (
     <div className="mx-auto max-w-6xl">
       {(tenant.kyc_status === "requested" || tenant.kyc_status === "rejected") && (
-        <Link href="/dashboard/verify" className="mb-5 flex items-center justify-between gap-4 rounded-2xl border border-amber-400/30 bg-amber-400/10 px-5 py-4 text-amber-100 transition hover:bg-amber-400/15">
+        <Link href="/dashboard/verify" className="mb-5 flex items-center justify-between gap-4 rounded-2xl border border-amber-400/30 bg-amber-400/10 px-5 py-4 text-amber-700 dark:text-amber-100 transition hover:bg-amber-400/15">
           <span>
             <span className="font-semibold">Verification needed</span>
-            <span className="mt-0.5 block text-sm text-amber-100/70">
+            <span className="mt-0.5 block text-sm text-amber-700/80 dark:text-amber-100/70">
               {tenant.kyc_status === "rejected" ? "Your details need a small change — please resubmit." : "Confirm your business details to keep your account active."}
             </span>
           </span>
@@ -64,9 +64,9 @@ export default async function DashboardHome({ searchParams }: { searchParams: Pr
         </Link>
       )}
       {welcome === "1" && live && (
-        <div className="mb-5 rounded-2xl border border-emerald-400/30 bg-emerald-400/10 px-5 py-4 text-emerald-100">
+        <div className="mb-5 rounded-2xl border border-emerald-400/30 bg-emerald-400/10 px-5 py-4 text-accent">
           <p className="font-semibold">Your site is live.</p>
-          <p className="mt-1 text-sm text-emerald-100/70">
+          <p className="mt-1 text-sm text-accent/70">
             Online at <a href={url} target="_blank" rel="noreferrer" className="font-medium underline">{tenant.subdomain}.{SITE_BASE}</a>. Share it anywhere.
           </p>
         </div>
@@ -130,7 +130,7 @@ export default async function DashboardHome({ searchParams }: { searchParams: Pr
         <aside className="overflow-hidden rounded-[1.75rem] border border-ink/[0.08] bg-ink/[0.02]">
           <div className="relative">
             <TemplateThumb src="/preview" aspect={0.62} />
-            <span className={`absolute left-3 top-3 rounded-full px-2.5 py-1 text-xs font-semibold backdrop-blur ${live ? "bg-emerald-400/20 text-emerald-200" : "bg-paper/40 text-ink/70"}`}>
+            <span className={`absolute left-3 top-3 rounded-full px-2.5 py-1 text-xs font-semibold backdrop-blur ${live ? "bg-emerald-400/20 text-accent" : "bg-paper/40 text-ink/70"}`}>
               {live ? "Live" : "Draft"}
             </span>
           </div>

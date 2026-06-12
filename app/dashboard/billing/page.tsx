@@ -23,12 +23,12 @@ export default async function BillingPage({ searchParams }: { searchParams: Prom
       </div>
 
       {canceled && (
-        <p className="mt-5 rounded-xl border border-amber-400/25 bg-amber-400/10 px-4 py-3 text-sm text-amber-200">
+        <p className="mt-5 rounded-xl border border-amber-400/25 bg-amber-400/10 px-4 py-3 text-sm text-amber-700 dark:text-amber-200">
           Your subscription is set to cancel{billing.cancelAt ? ` on ${fmt(billing.cancelAt)}` : " at the end of your billing period"}. Your site stays live until then.
         </p>
       )}
       {resumed && (
-        <p className="mt-5 rounded-xl border border-emerald-400/25 bg-emerald-400/10 px-4 py-3 text-sm text-emerald-200">
+        <p className="mt-5 rounded-xl border border-emerald-400/25 bg-emerald-400/10 px-4 py-3 text-sm text-accent">
           Welcome back — your subscription will continue as normal.
         </p>
       )}

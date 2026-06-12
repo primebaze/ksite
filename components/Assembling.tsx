@@ -71,7 +71,7 @@ export function Assembling() {
           <div className="mt-8 flex items-center gap-4">
             <div className="relative h-20 w-20 shrink-0">
               {done ? (
-                <div className="grid h-full w-full place-items-center rounded-full border border-emerald-300/50 bg-emerald-400/15 text-3xl text-emerald-200">
+                <div className="grid h-full w-full place-items-center rounded-full border border-emerald-300/50 bg-emerald-400/15 text-3xl text-accent">
                   ✓
                 </div>
               ) : (
@@ -103,7 +103,7 @@ export function Assembling() {
                 <span className="h-2.5 w-2.5 rounded-full bg-amber-300/70" />
                 <span className="h-2.5 w-2.5 rounded-full bg-emerald-300/70" />
               </div>
-              <span className="rounded-full bg-emerald-300/10 px-3 py-1 text-xs text-emerald-200">secured</span>
+              <span className="rounded-full bg-emerald-300/10 px-3 py-1 text-xs text-accent">secured</span>
             </div>
             <div className="space-y-3 p-4">
               {STEPS.map((s, i) => {

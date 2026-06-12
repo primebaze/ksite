@@ -52,7 +52,7 @@ export default async function DomainsPage({
         <Link href="/dashboard" className="text-sm text-ink/55 hover:text-ink">← Overview</Link>
       </div>
 
-      {claimed && <p className="rounded-lg border border-emerald-400/30 bg-emerald-400/5 px-4 py-3 text-sm text-emerald-200">🎉 Your domain is live!</p>}
+      {claimed && <p className="rounded-lg border border-emerald-400/30 bg-emerald-400/5 px-4 py-3 text-sm text-accent">🎉 Your domain is live!</p>}
       {error && <p className="rounded-lg bg-red-500/10 px-4 py-3 text-sm text-red-300">{error}</p>}
       {!isVercelConfigured() && (
         <p className="rounded-lg border border-ink/10 bg-ink/[0.03] px-4 py-3 text-sm text-ink/55">Custom domains are being switched on. Check back shortly.</p>

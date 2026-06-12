@@ -131,7 +131,7 @@ export function BookingWindow() {
           <div
             key={t}
             className={`rounded-lg border px-2 py-2.5 text-center text-sm transition-colors duration-300 ${
-              i === sel ? "border-emerald-400/60 bg-emerald-400/15 font-medium text-emerald-200" : "border-ink/10 text-ink/55"
+              i === sel ? "border-emerald-400/60 bg-emerald-400/15 font-medium text-accent" : "border-ink/10 text-ink/55"
             }`}
           >
             {t}

@@ -5,13 +5,13 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 :root {
-  /* Light (default) — a soft off-white, never pure white, with near-black ink
-     for strong contrast. `ink` and `paper` invert per theme; almost the whole
-     app is expressed as ink-on-paper, so the entire UI flips cleanly. */
-  --paper: #f4f4f1; /* page background */
+  /* Light — Apple's clean light grey (#f5f5f7) with white cards floating on top.
+     `ink` and `paper` invert per theme; almost the whole app is expressed as
+     ink-on-paper, so the entire UI flips cleanly. */
+  --paper: #f5f5f7; /* page background (Apple) */
   --panel: #ffffff; /* elevated cards / sidebars */
-  --panel-2: #ebebe7; /* secondary surfaces */
-  --ink: #18181b; /* foreground text */
+  --panel-2: #ebebef; /* secondary / recessed surfaces */
+  --ink: #1d1d1f; /* foreground text (Apple) */
   --accent: #047857; /* emerald, darkened for contrast on light */
   --accent-soft: #059669;
   color-scheme: light;
@@ -21,10 +21,12 @@
 }
 
 .dark {
-  --paper: #000000;
-  --panel: #0a0a0a;
-  --panel-2: #070707;
-  --ink: #ffffff;
+  /* Soft charcoal rather than pure black — far easier on the eyes, with panels
+     lifted slightly lighter for elevation and a softly off-white ink. */
+  --paper: #131316; /* page background */
+  --panel: #1c1c20; /* elevated cards / sidebars */
+  --panel-2: #0e0e11; /* secondary / recessed surfaces */
+  --ink: #f4f4f6; /* foreground text (soft white) */
   --accent: #34d399; /* emerald-400 */
   --accent-soft: #6ee7b7;
   color-scheme: dark;

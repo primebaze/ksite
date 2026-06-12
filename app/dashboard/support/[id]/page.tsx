@@ -34,7 +34,7 @@ export default async function ClientTicket({ params }: { params: Promise<{ id: s
         <form action={replyTicket} className="mt-4">
           <input type="hidden" name="id" value={id} />
           <p className="text-sm text-ink/45">
-            This request is closed. <button name="body" value="Reopening this request." className="text-accent underline hover:text-emerald-200">Reopen it</button> if you still need help.
+            This request is closed. <button name="body" value="Reopening this request." className="text-accent underline hover:text-accent">Reopen it</button> if you still need help.
           </p>
         </form>
       ) : (

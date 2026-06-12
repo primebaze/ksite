@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { NAV_LINKS } from "@/lib/marketing";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 const COMPANY_LINKS = [
   { href: "/get-started", label: "Get started" },
@@ -88,7 +89,10 @@ export default function Footer() {
           Kovasite
         </div>
         <div className="mx-auto -mt-[5vw] flex max-w-6xl flex-col gap-3 px-6 pb-8 text-xs text-ink/35 sm:flex-row sm:items-center sm:justify-between">
-          <p>© {new Date().getFullYear()} Kovasite. All rights reserved.</p>
+          <div className="flex items-center gap-4">
+            <ThemeToggle />
+            <p>© {new Date().getFullYear()} Kovasite. All rights reserved.</p>
+          </div>
           <nav className="flex flex-wrap gap-x-5 gap-y-2">
             {LEGAL_LINKS.map((l) => (
               <Link key={l.href} href={l.href} className="transition hover:text-ink/70">

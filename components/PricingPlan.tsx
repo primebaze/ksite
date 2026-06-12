@@ -23,13 +23,13 @@ export function PricingPlan() {
               onClick={() => setYearly(key === "yearly")}
               className={`relative rounded-full px-4 py-1.5 font-medium transition ${active ? "text-paper" : "text-ink/60 hover:text-ink"}`}
             >
-              {active && <motion.span layoutId="billing-pill" className="absolute inset-0 -z-10 rounded-full bg-ink" transition={{ type: "spring", stiffness: 400, damping: 32 }} />}
-              {label}
-              {key === "yearly" && (
-                <span className={`ml-1.5 rounded-full px-1.5 py-0.5 text-[10px] font-semibold ${active ? "bg-emerald-500/15 text-emerald-700" : "bg-emerald-400/15 text-accent"}`}>
-                  2 months free
-                </span>
-              )}
+              {active && <motion.span layoutId="billing-pill" className="absolute inset-0 rounded-full bg-ink" transition={{ type: "spring", stiffness: 400, damping: 32 }} />}
+              <span className="relative flex items-center">
+                {label}
+                {key === "yearly" && (
+                  <span className="ml-1.5 rounded-full bg-emerald-500 px-1.5 py-0.5 text-[10px] font-semibold text-neutral-950">2 months free</span>
+                )}
+              </span>
             </button>
           );
         })}

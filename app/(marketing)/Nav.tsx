@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { NAV_LINKS } from "@/lib/marketing";
-import { ThemeToggle } from "@/components/ThemeToggle";
 
 export default function Nav() {
   const pathname = usePathname();
@@ -29,7 +28,6 @@ export default function Nav() {
           })}
         </div>
         <div className="flex items-center gap-3 text-sm">
-          <ThemeToggle />
           <Link href="/login" className="text-ink/55 transition hover:text-ink">Sign in</Link>
           <Link
             href="/get-started"

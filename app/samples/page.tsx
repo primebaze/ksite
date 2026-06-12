@@ -61,17 +61,17 @@ export default function SamplesIndex() {
   const all = [popular, ...groups];
 
   return (
-    <div className="min-h-screen bg-black font-sans text-white antialiased">
+    <div className="min-h-screen bg-paper font-sans text-ink antialiased">
       <Nav />
 
       <header className="mx-auto max-w-6xl px-6 pt-14 pb-2">
         <h1 className="text-3xl font-medium tracking-tight sm:text-4xl" style={{ fontFamily: "var(--font-fraunces)" }}>
           Sample sites
         </h1>
-        <p className="mt-3 max-w-xl text-white/55">
+        <p className="mt-3 max-w-xl text-ink/55">
           {BUILDS.length}+ designs, organised by trade. Pick a category, open a live sample, then make it your own.
         </p>
-        <Link href="/get-started" className="mt-6 inline-flex rounded-full bg-white px-6 py-3 text-sm font-semibold text-black transition hover:bg-white/90">
+        <Link href="/get-started" className="mt-6 inline-flex rounded-full bg-ink px-6 py-3 text-sm font-semibold text-paper transition hover:bg-ink/90">
           Get started
         </Link>
       </header>

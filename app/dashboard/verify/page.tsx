@@ -27,9 +27,9 @@ export default async function VerifyPage({ searchParams }: { searchParams: Promi
       {error && <p className="mt-5 rounded-xl bg-red-500/10 px-4 py-3 text-sm text-red-300">{error}</p>}
 
       {status === "approved" ? (
-        <div className="mt-6 rounded-2xl border border-emerald-400/25 bg-emerald-400/10 p-6 text-emerald-200">
+        <div className="mt-6 rounded-2xl border border-emerald-400/25 bg-emerald-400/10 p-6 text-accent">
           <p className="font-semibold">You&apos;re verified ✓</p>
-          <p className="mt-1 text-sm text-emerald-200/80">Thanks — no further action needed.</p>
+          <p className="mt-1 text-sm text-accent/80">Thanks — no further action needed.</p>
         </div>
       ) : status === "submitted" || done ? (
         <div className="mt-6 rounded-2xl border border-ink/[0.08] bg-ink/[0.02] p-6">
@@ -39,7 +39,7 @@ export default async function VerifyPage({ searchParams }: { searchParams: Promi
       ) : (
         <>
           {status === "rejected" && latest?.review_note && (
-            <p className="mt-5 rounded-xl border border-amber-400/25 bg-amber-400/10 px-4 py-3 text-sm text-amber-200">
+            <p className="mt-5 rounded-xl border border-amber-400/25 bg-amber-400/10 px-4 py-3 text-sm text-amber-700 dark:text-amber-200">
               Your last submission needs changes: {latest.review_note}
             </p>
           )}
