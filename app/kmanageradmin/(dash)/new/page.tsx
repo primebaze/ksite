@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { VERTICALS } from "@/lib/verticals";
+import { SITE_BASE } from "@/lib/marketing";
 import { createTenantAction } from "../actions";
 
 export default async function NewClientPage({
@@ -42,7 +43,7 @@ export default async function NewClientPage({
               className="w-full rounded-l-md border border-ink/10 bg-ink/5 px-3 py-2 text-sm lowercase text-ink placeholder-ink/30 outline-none focus:border-ink/30"
             />
             <span className="rounded-r-md border border-l-0 border-ink/10 bg-ink/[0.06] px-3 py-2 text-sm text-ink/50">
-              .yourapp.com
+              .{SITE_BASE}
             </span>
           </div>
           <p className="mt-1 text-xs text-ink/40">Lowercase letters, numbers and hyphens only.</p>
