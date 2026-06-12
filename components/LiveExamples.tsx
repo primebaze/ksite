@@ -41,13 +41,10 @@ function Check() {
   );
 }
 
-// Tapping a card opens that business type's live sample design.
+// Decorative preview cards — not clickable.
 function BrowserCard({ e }: { e: Ex }) {
   return (
-    <Link
-      href={`/samples/${e.key}`}
-      className="relative block overflow-hidden rounded-xl border border-ink/15 bg-panel shadow-[0_20px_60px_-15px_rgba(0,0,0,0.8)] transition hover:border-emerald-400/40"
-    >
+    <div className="relative block overflow-hidden rounded-xl border border-ink/15 bg-panel shadow-[0_20px_60px_-15px_rgba(0,0,0,0.8)]">
       <div className="flex items-center gap-1.5 border-b border-ink/10 bg-ink/[0.03] px-3 py-2">
         <span className="h-2 w-2 rounded-full bg-ink/15" />
         <span className="h-2 w-2 rounded-full bg-ink/15" />
@@ -66,7 +63,7 @@ function BrowserCard({ e }: { e: Ex }) {
           </p>
         </div>
       </div>
-    </Link>
+    </div>
   );
 }
 
