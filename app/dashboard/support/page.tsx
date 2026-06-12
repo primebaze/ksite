@@ -22,7 +22,7 @@ export default async function SupportPage({ searchParams }: { searchParams: Prom
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-semibold tracking-tight">Support</h1>
-          <p className="mt-1 text-sm text-ink/45">Questions, changes or anything not working — we&apos;re here.</p>
+          <p className="mt-1 text-sm text-ink/45">Message the Kovasite team about a question, a change to your site, or anything not working. This is for help from us, not your customers.</p>
         </div>
         <Link href="/dashboard" className="text-sm text-ink/50 hover:text-ink">← Home</Link>
       </div>

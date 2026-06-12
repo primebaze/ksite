@@ -44,10 +44,10 @@ export default async function DashboardHome({ searchParams }: { searchParams: Pr
   const actions: { href: string; icon: IconKey; title: string; desc: string }[] = [
     { href: "/preview?edit=1", icon: "edit", title: "Edit site", desc: "Tap any text or photo on the page." },
     { href: "/dashboard/edit", icon: "content", title: "Content & menu", desc: "Services, prices and details." },
-    { href: "/dashboard/inbox", icon: "inbox", title: "Enquiries", desc: "Bookings and messages." },
+    { href: "/dashboard/inbox", icon: "inbox", title: "Enquiries", desc: "Bookings & messages from your customers." },
     { href: "/dashboard/domains", icon: "domains", title: "Domains", desc: tenant.custom_domain ?? "Claim a custom domain." },
     { href: "/dashboard/billing", icon: "billing", title: "Billing", desc: live ? "Manage your subscription." : "Plans & invoices." },
-    { href: "/dashboard/support", icon: "support", title: "Support", desc: "We're here to help." },
+    { href: "/dashboard/support", icon: "support", title: "Support", desc: "Get help from the Kovasite team." },
   ];
 
   return (
