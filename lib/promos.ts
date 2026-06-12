@@ -1,11 +1,28 @@
 import "server-only";
-import type Stripe from "stripe";
-import { getStripe } from "./stripe";
+import Stripe from "stripe";
 
 // Promo codes are managed straight in Stripe (the source of truth that applies
 // them at checkout), driven from the admin console so staff never touch the
 // Stripe dashboard. A "promo code" in Stripe = a Coupon (the discount) + a
 // Promotion Code (the customer-facing string).
+//
+// Pinned to a 2024 API version: the SDK's default (2025) version restructured
+// promotion codes to reference a `promotion` instead of a `coupon`, which broke
+// both creating ("unknown parameter: coupon") and reading (coupon undefined).
+// We keep the proven coupon-based flow here; checkout/webhooks use the default.
+let promoClient: Stripe | null = null;
+function promoStripe(): Stripe | null {
+  const key = process.env.STRIPE_SECRET_KEY;
+  if (!key) return null;
+  if (!promoClient) {
+    try {
+      promoClient = new Stripe(key, { apiVersion: "2024-06-20" } as unknown as ConstructorParameters<typeof Stripe>[1]);
+    } catch {
+      return null;
+    }
+  }
+  return promoClient;
+}
 
 export interface PromoView {
   id: string;
@@ -32,7 +49,7 @@ function discountLabel(c?: Stripe.Coupon | null): string {
 }
 
 export async function listPromotions(): Promise<PromoView[]> {
-  const stripe = getStripe();
+  const stripe = promoStripe();
   if (!stripe) return [];
   const res = await stripe.promotionCodes.list({ limit: 100, expand: ["data.coupon"] });
   return res.data.map((pc) => {
@@ -60,7 +77,7 @@ export async function createPromotion(input: {
   months?: number;
   maxRedemptions?: number;
 }): Promise<void> {
-  const stripe = getStripe();
+  const stripe = promoStripe();
   if (!stripe) throw new Error("Billing isn't configured.");
   const code = input.code.toUpperCase().replace(/[^A-Z0-9]/g, "");
   if (!code) throw new Error("Enter a code (letters/numbers).");
@@ -87,7 +104,7 @@ export async function createPromotion(input: {
 }
 
 export async function setPromotionActive(id: string, active: boolean): Promise<void> {
-  const stripe = getStripe();
+  const stripe = promoStripe();
   if (!stripe) return;
   await stripe.promotionCodes.update(id, { active });
 }
