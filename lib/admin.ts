@@ -15,8 +15,10 @@ import {
   sendKycDecisionEmail,
   sendKycRequestEmail,
   sendOperatorEmail,
+  sendOwnerWelcomeEmail,
   sendSupportClientReply,
 } from "./email";
+import { SITE_URL } from "./seo";
 import type {
   AccountStatus,
   CatalogItem,
@@ -397,18 +399,31 @@ async function findUserIdByEmail(email: string): Promise<string | null> {
   return null;
 }
 
-export async function resolveOwnerId(email: string): Promise<string> {
+export async function resolveOwnerId(email: string): Promise<{ id: string; created: boolean }> {
   const e = email.trim().toLowerCase();
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e)) throw new Error("Enter a valid owner email.");
   const existing = await findUserIdByEmail(e);
-  if (existing) return existing;
+  if (existing) return { id: existing, created: false };
   const { data, error } = await client().auth.admin.createUser({
     email: e,
     email_confirm: true,
     password: `${crypto.randomUUID()}Aa1!`,
   });
   if (error) throw new Error(error.message);
-  return data.user.id;
+  return { id: data.user.id, created: true };
+}
+
+// Email a freshly created owner a one-time set-password link. We never email a
+// password: generateLink mints a short-lived recovery token, which we route
+// through /auth/confirm (same path as every other auth email). Best-effort —
+// the caller swallows failures so it never blocks client creation.
+export async function sendOwnerWelcome(email: string, businessName: string): Promise<void> {
+  const e = email.trim().toLowerCase();
+  const { data, error } = await client().auth.admin.generateLink({ type: "recovery", email: e });
+  const hashedToken = data?.properties?.hashed_token;
+  if (error || !hashedToken) throw new Error(error?.message ?? "Could not generate a set-password link.");
+  const link = `${SITE_URL}/auth/confirm?token_hash=${encodeURIComponent(hashedToken)}&type=recovery`;
+  await sendOwnerWelcomeEmail({ to: e, businessName, link });
 }
 
 export async function createTenant(input: {

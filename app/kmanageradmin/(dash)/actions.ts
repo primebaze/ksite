@@ -1,7 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { createTenant, requireStaff, resolveOwnerId } from "@/lib/admin";
+import { createTenant, requireStaff, resolveOwnerId, sendOwnerWelcome } from "@/lib/admin";
 import { isVertical } from "@/lib/verticals";
 
 export async function createTenantAction(formData: FormData) {
@@ -19,9 +19,12 @@ export async function createTenantAction(formData: FormData) {
   }
 
   let ownerId: string | null = null;
+  let ownerCreated = false;
   if (ownerEmail) {
     try {
-      ownerId = await resolveOwnerId(ownerEmail);
+      const owner = await resolveOwnerId(ownerEmail);
+      ownerId = owner.id;
+      ownerCreated = owner.created;
     } catch (e) {
       redirect(`/kmanageradmin/new?error=${encodeURIComponent(e instanceof Error ? e.message : "Couldn't link that owner email")}`);
     }
@@ -34,5 +37,17 @@ export async function createTenantAction(formData: FormData) {
     const msg = e instanceof Error ? e.message : "Could not create client";
     redirect(`/kmanageradmin/new?error=${encodeURIComponent(msg)}`);
   }
+
+  // Brand-new account: email them a one-time set-password link. Best-effort —
+  // never block creation if mail fails (staff can still set a password from the
+  // client's "Client login" card).
+  if (ownerCreated && ownerEmail) {
+    try {
+      await sendOwnerWelcome(ownerEmail, business_name);
+    } catch {
+      // swallow — surfaced via the absence of a welcome email, not a hard error
+    }
+  }
+
   redirect(`/kmanageradmin/${id}`);
 }

@@ -52,7 +52,7 @@ export default async function NewClientPage({
         <div>
           <label className="block text-sm font-medium">Owner email <span className="font-normal text-ink/40">(optional)</span></label>
           <input name="owner_email" type="email" placeholder="client@example.com" className="mt-1 w-full rounded-md border border-ink/10 bg-ink/5 px-3 py-2 text-sm text-ink placeholder-ink/30 outline-none focus:border-ink/30" />
-          <p className="mt-1 text-xs text-ink/40">Links a client account so they can log in and manage this site. We&apos;ll create the account if it doesn&apos;t exist — set their password afterwards from the client&apos;s &ldquo;Client login&rdquo; card.</p>
+          <p className="mt-1 text-xs text-ink/40">Links a client account so they can log in and manage this site. If the account is new, we email them a secure link to set their own password. You can also set one anytime from the client&apos;s &ldquo;Client login&rdquo; card.</p>
         </div>
 
         {error && <p className="rounded-md bg-red-500/10 px-3 py-2 text-sm text-red-300">{error}</p>}

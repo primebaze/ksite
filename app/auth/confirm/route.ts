@@ -22,6 +22,11 @@ export async function GET(request: Request) {
     // any stale session in the browser. Use the user it returns directly.
     const { data, error } = await supabase.auth.verifyOtp({ type, token_hash });
     if (!error && data.user) {
+      // A recovery link (forgot-password, or a staff-created account's welcome
+      // email) exists to set a new password — send them there to choose one.
+      if (type === "recovery") {
+        return NextResponse.redirect(`${origin}/set-password`);
+      }
       await ensureSite(supabase, data.user);
       // New clients land directly on the site so they can edit the chosen
       // design on-screen before publishing.

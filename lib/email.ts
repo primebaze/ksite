@@ -332,6 +332,24 @@ export async function sendOperatorEmail({ to, subject, body }: { to: string; sub
   });
 }
 
+// Sent to a brand-new client account created by staff from the admin. Carries a
+// one-time set-password link (we never email a password). The link routes
+// through /auth/confirm like every other auth email.
+export async function sendOwnerWelcomeEmail({ to, businessName, link }: { to: string; businessName: string; link: string }) {
+  await sendTransactionalEmail({
+    to: [to],
+    subject: "Welcome to Kovasite — set your password",
+    html: renderNotice({
+      eyebrow: "Welcome",
+      title: "Your account is ready",
+      body: `We've set up ${escapeHtml(businessName)} on Kovasite for you. Set a password to sign in and manage your site.`,
+      cta: "Set your password",
+      link,
+      secondary: "This link expires shortly for your security. If you weren't expecting this email, you can safely ignore it.",
+    }),
+  });
+}
+
 // Ask a client to complete identity / business verification.
 export async function sendKycRequestEmail({ to, businessName }: { to: string; businessName: string }) {
   const base = (process.env.NEXT_PUBLIC_SITE_URL || "https://kovasite.com").replace(/\/$/, "");
