@@ -154,7 +154,7 @@ export default async function SetupStep({ params }: { params: Promise<{ step: st
             <p className="text-sm font-medium">Video hero</p>
             <p className="mt-1 text-xs text-ink/40">A short looping video at the top, even more premium.</p>
             <div className="mt-3">
-              <ImageUploader field="hero" locked label="Video hero" lockedNote="Available on the Premium plan." aspect="aspect-[16/9]" />
+              <ImageUploader field="hero" locked label="Video hero" lockedNote="Ask us to enable a video hero." aspect="aspect-[16/9]" />
             </div>
           </div>
           <NavButtons prevKey={prev?.key} nextKey={next?.key} nextLabel="Continue" />

@@ -107,7 +107,7 @@ export default function SupportPage() {
               Same-day replies on business days
             </span>
             <span className="hidden text-ink/15 sm:inline">·</span>
-            <span>Priority turnaround on Standard &amp; Premium</span>
+            <span>Priority support, always included</span>
           </div>
         </Reveal>
       </section>
