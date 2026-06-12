@@ -40,13 +40,8 @@ export default async function AdminAccountPage({ searchParams }: { searchParams:
         <ul className="mt-4 divide-y divide-ink/[0.08]">
           {staff.map((s) => (
             <li key={s.email} className="flex items-center justify-between gap-3 py-3">
-              <span className="flex items-center gap-2">
-                <span className="font-medium text-ink">{s.email}</span>
-                {s.isEnv && <span className="rounded-full bg-ink/10 px-2 py-0.5 text-xs text-ink/55">Bootstrap</span>}
-              </span>
-              {s.isEnv ? (
-                <span className="text-xs text-ink/35">Set in env</span>
-              ) : (
+              <span className="font-medium text-ink">{s.email}</span>
+              {!s.isEnv && (
                 <form action={removeStaffAction}>
                   <input type="hidden" name="email" value={s.email} />
                   <button className="rounded-lg border border-red-400/30 px-3 py-1.5 text-sm font-medium text-red-400 transition hover:bg-red-400/10">Remove</button>
