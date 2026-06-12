@@ -16,7 +16,17 @@ const fmtDate = (unix: number) => new Date(unix * 1000).toLocaleDateString("en-G
 export default async function PromosPage({ searchParams }: { searchParams: Promise<{ error?: string; notice?: string }> }) {
   const { error, notice } = await searchParams;
   const configured = Boolean(getStripe());
-  const promos = configured ? await listPromotions() : [];
+  // A Stripe API error (bad/restricted key, network) must not 500 the admin —
+  // load defensively and surface the reason instead.
+  let promos: Awaited<ReturnType<typeof listPromotions>> = [];
+  let loadError: string | null = null;
+  if (configured) {
+    try {
+      promos = await listPromotions();
+    } catch (e) {
+      loadError = e instanceof Error ? e.message : "Couldn't load promo codes from Stripe.";
+    }
+  }
 
   return (
     <div className="space-y-6">
@@ -34,6 +44,12 @@ export default async function PromosPage({ searchParams }: { searchParams: Promi
       {!configured && (
         <p className="rounded-lg border border-amber-400/30 bg-amber-400/10 px-4 py-3 text-sm text-amber-700 dark:text-amber-200">
           Stripe isn&apos;t configured (no STRIPE_SECRET_KEY), so codes can&apos;t be created yet.
+        </p>
+      )}
+
+      {loadError && (
+        <p className="rounded-lg border border-amber-400/30 bg-amber-400/10 px-4 py-3 text-sm text-amber-700 dark:text-amber-200">
+          Couldn&apos;t load codes from Stripe: {loadError}
         </p>
       )}
 
