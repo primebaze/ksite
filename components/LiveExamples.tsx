@@ -14,12 +14,13 @@ interface Ex {
 }
 
 // Sample business sites shown as looping video heros inside a browser frame.
-// They act as a cover that parts on scroll to reveal the pricing panel.
+// On desktop they fan/part on scroll to reveal pricing; on mobile they're a
+// swipeable carousel. Each links to that type's live sample design.
 const EXAMPLES: Ex[] = [
-  { key: "cocktail_bar", name: "Velvet & Oak", tag: "Cocktail Bar", domain: "velvetandoak.com", video: "/hero/restaurant.mp4" },
-  { key: "restaurant", name: "Saffron & Sage", tag: "Restaurant", domain: "saffronandsage.com", video: "/hero/cafe.mp4" },
+  { key: "cafe", name: "Velvet & Oak", tag: "Café", domain: "velvetandoak.cafe", video: "/hero/cafe.mp4" },
+  { key: "restaurant", name: "Saffron & Sage", tag: "Restaurant", domain: "saffronandsage.com", video: "/hero/restaurant.mp4" },
   { key: "gym", name: "Ironworks Gym", tag: "Fitness Studio", domain: "ironworks.gym", video: "/hero/gym.mp4" },
-  { key: "barber_shop", name: "Fade & Co.", tag: "Barbershop", domain: "fadeandco.co.uk", video: "/hero/barber.mp4" },
+  { key: "barber", name: "Fade & Co.", tag: "Barbershop", domain: "fadeandco.co.uk", video: "/hero/barber.mp4" },
 ];
 
 const PLAN_INCLUDES = [
@@ -40,13 +41,12 @@ function Check() {
   );
 }
 
-// Decorative only: these are part of a scroll-driven reveal, not links. Making
-// them anchors caused the global navigation indicator ("Loading…") to fire on
-// taps that the pinned-scroll section then swallowed, so it looked stuck.
+// Tapping a card opens that business type's live sample design.
 function BrowserCard({ e }: { e: Ex }) {
   return (
-    <div
-      className="relative block overflow-hidden rounded-xl border border-ink/15 bg-panel shadow-[0_20px_60px_-15px_rgba(0,0,0,0.8)]"
+    <Link
+      href={`/samples/${e.key}`}
+      className="relative block overflow-hidden rounded-xl border border-ink/15 bg-panel shadow-[0_20px_60px_-15px_rgba(0,0,0,0.8)] transition hover:border-emerald-400/40"
     >
       <div className="flex items-center gap-1.5 border-b border-ink/10 bg-ink/[0.03] px-3 py-2">
         <span className="h-2 w-2 rounded-full bg-ink/15" />
@@ -66,7 +66,58 @@ function BrowserCard({ e }: { e: Ex }) {
           </p>
         </div>
       </div>
+    </Link>
+  );
+}
+
+// The £99 plan panel — shared by the desktop reveal and the mobile carousel.
+function PlanPanel() {
+  return (
+    <div className="w-full max-w-xl text-left">
+      <p className="text-xs font-semibold uppercase tracking-[0.22em] text-accent/80">One simple plan</p>
+      <div className="mt-4 flex flex-wrap items-baseline gap-2">
+        <span className="text-5xl font-semibold tracking-tight sm:text-6xl">£99</span>
+        <span className="text-lg text-ink/45">/month</span>
+        <span className="ml-1 rounded-full bg-emerald-400/15 px-2.5 py-1 text-xs font-semibold text-accent">Pay yearly, save 2 months</span>
+      </div>
+      <p className="mt-3 text-base text-ink/55">Everything included — free domain, hosting, booking. No setup fee, no contract, cancel anytime.</p>
+      <ul className="mt-7 grid gap-x-6 gap-y-3 sm:grid-cols-2">
+        {PLAN_INCLUDES.map((item) => (
+          <li key={item} className="flex items-start gap-2.5 text-sm leading-snug text-ink/75">
+            <Check />
+            {item}
+          </li>
+        ))}
+      </ul>
+      <div className="mt-8">
+        <Link href="/get-started" className="inline-block rounded-xl bg-ink px-8 py-3.5 text-sm font-semibold text-paper transition hover:bg-ink/90">
+          Get your site
+        </Link>
+      </div>
     </div>
+  );
+}
+
+// Mobile: a simple swipeable carousel of the example sites, then the plan panel.
+function MobileExamples() {
+  return (
+    <section className="bg-paper py-16 lg:hidden">
+      <div className="px-6 text-center">
+        <p className="text-xs font-medium uppercase tracking-widest text-accent/80">Live examples</p>
+        <h2 className="mt-3 text-3xl font-semibold tracking-tight">See what you get.</h2>
+        <p className="mt-2 text-sm text-ink/50">Swipe through — tap any one to explore the live design.</p>
+      </div>
+      <div className="mt-7 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        {EXAMPLES.map((e) => (
+          <div key={e.key} className="w-[82vw] max-w-[360px] shrink-0 snap-center">
+            <BrowserCard e={e} />
+          </div>
+        ))}
+      </div>
+      <div className="mt-10 px-6">
+        <PlanPanel />
+      </div>
+    </section>
   );
 }
 
@@ -126,7 +177,9 @@ export function LiveExamples() {
   ];
 
   return (
-    <section ref={ref} className="relative z-10 h-[200vh] rounded-b-[2.5rem] border-t border-ink/5 bg-paper sm:rounded-b-[3.5rem]">
+    <>
+      <MobileExamples />
+      <section ref={ref} className="relative z-10 hidden h-[200vh] rounded-b-[2.5rem] border-t border-ink/5 bg-paper sm:rounded-b-[3.5rem] lg:block">
       <div className="sticky top-0 flex h-screen items-center justify-center overflow-hidden">
         {/* Heading (fades as the cards part) */}
         <motion.div style={{ opacity: headingOpacity }} className="absolute inset-x-0 top-0 z-10 mx-auto max-w-6xl px-6 pt-[11vh] text-center">
@@ -139,28 +192,7 @@ export function LiveExamples() {
           style={{ opacity: pricingOpacity, scale: pricingScale, y: pricingY, pointerEvents: pricingPE }}
           className="absolute inset-0 z-0 flex items-center justify-center px-6"
         >
-          <div className="w-full max-w-xl text-left">
-            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-accent/80">One simple plan</p>
-            <div className="mt-4 flex items-baseline gap-2">
-              <span className="text-5xl font-semibold tracking-tight sm:text-6xl">£99</span>
-              <span className="text-lg text-ink/45">/month</span>
-              <span className="ml-1 rounded-full bg-emerald-400/15 px-2.5 py-1 text-xs font-semibold text-accent">Pay yearly, save 2 months</span>
-            </div>
-            <p className="mt-3 text-base text-ink/55">Everything included — free domain, hosting, booking. No setup fee, no contract, cancel anytime.</p>
-            <ul className="mt-7 grid gap-x-6 gap-y-3 sm:grid-cols-2">
-              {PLAN_INCLUDES.map((item) => (
-                <li key={item} className="flex items-start gap-2.5 text-sm leading-snug text-ink/75">
-                  <Check />
-                  {item}
-                </li>
-              ))}
-            </ul>
-            <div className="mt-8">
-              <Link href="/get-started" className="inline-block rounded-xl bg-ink px-8 py-3.5 text-sm font-semibold text-paper transition hover:bg-ink/90">
-                Get your site
-              </Link>
-            </div>
-          </div>
+          <PlanPanel />
         </motion.div>
 
         {/* The cards: a cover that parts to reveal the panel above */}
@@ -176,6 +208,7 @@ export function LiveExamples() {
           ))}
         </motion.div>
       </div>
-    </section>
+      </section>
+    </>
   );
 }
