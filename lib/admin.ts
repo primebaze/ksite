@@ -143,6 +143,15 @@ export async function listRecentSubmissions(limit = 100): Promise<AdminSubmissio
   });
 }
 
+// Mark an enquiry read/archived (clears the "new" badge), or mark all read.
+export async function setSubmissionStatus(id: string, status: "new" | "read" | "archived") {
+  const { error } = await client().from("form_submissions").update({ status }).eq("id", id);
+  if (error) throw new Error(error.message);
+}
+export async function markAllSubmissionsRead() {
+  await client().from("form_submissions").update({ status: "read" }).eq("status", "new");
+}
+
 // --- support tickets (staff side, service role) ----------------------------
 export interface AdminTicket extends SupportTicket {
   business_name: string;
