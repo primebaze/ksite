@@ -224,6 +224,9 @@ export async function startCheckout(formData: FormData) {
       line_items: [{ price: price!, quantity: 1 }],
       customer_email: user!.email ?? undefined,
       client_reference_id: tenant!.id,
+      // Shows an "Add promotion code" field on Stripe Checkout. Create the
+      // codes/coupons in the Stripe Dashboard → Stripe validates + applies them.
+      allow_promotion_codes: true,
       metadata: { tenant_id: tenant!.id, plan, period },
       subscription_data: { metadata: { tenant_id: tenant!.id, plan, period } },
       success_url: `${base}/dashboard/finishing?session_id={CHECKOUT_SESSION_ID}`,
