@@ -217,7 +217,7 @@ function MobileFeatureScroll() {
     <div ref={ref} className="mt-10 lg:hidden" style={{ height: `${SHOWN.length * 95}vh` }}>
       <div className="sticky top-0 flex h-[100svh] flex-col gap-7 py-20">
         <Pills progress={scrollYProgress} />
-        <div className="relative flex-1">
+        <div className="relative flex-1 overflow-hidden">
           {SHOWN.map((f, i) => (
             <FeatureCard key={f.title} feature={f} index={i} progress={scrollYProgress} />
           ))}
@@ -246,9 +246,10 @@ function Pills({ progress }: { progress: MotionValue<number> }) {
   );
 }
 
-// One feature card, stacked over the others and continuously faded/drifted by
-// scroll. Card i is centred at i/(N-1) of progress (so the first is full at the
-// top, the last at the bottom) and crossfades with its neighbours.
+// One feature card in the mobile carousel. Card i is centred at i/(N-1) of
+// scroll progress and slides horizontally: it sits centred while you read it,
+// then as you scroll it slides off to the left while the next slides in from
+// the right — they tile side-by-side during the swipe, so they never overlap.
 function FeatureCard({
   feature,
   index,
@@ -264,40 +265,27 @@ function FeatureCard({
   const isFirst = index === 0;
   const isLast = index === last;
 
-  // Each card holds a wide, stable plateau (you read one clean card), then does
-  // a short crossfade only right at the boundary with its neighbour, with a tiny
-  // drift — so transitions read as a quick in-place dissolve, not jumbled,
-  // offset double text. PLATEAU/EDGE are fractions of the half-window w.
-  const PLATEAU = 0.46; // full-opacity zone, ±PLATEAU·w around the centre
-  const EDGE = 0.6; // opacity hits 0 at ±EDGE·w — a tight crossfade band
-  const DRIFT = 16; // px, applied only inside the crossfade band
-
-  const opIn: number[] = [];
-  const opOut: number[] = [];
-  const yOut: number[] = [];
-  const add = (x: number, o: number, yo: number) => {
-    if (opIn.length === 0 || x > opIn[opIn.length - 1]) {
-      opIn.push(x);
-      opOut.push(o);
-      yOut.push(yo);
-    }
-  };
-  add(0, isFirst ? 1 : 0, isFirst ? 0 : DRIFT); // top endpoint
-  if (!isFirst) {
-    add(c - EDGE * w, 0, DRIFT); // fade-in start (just enters from below)
-    add(c - PLATEAU * w, 1, 0); // fully in
-  }
-  if (!isLast) {
-    add(c + PLATEAU * w, 1, 0); // start of fade-out
-    add(c + EDGE * w, 0, -DRIFT); // fully out (drifted up)
-  }
-  add(1, isLast ? 1 : 0, isLast ? 0 : -DRIFT); // bottom endpoint
-  const opacity = useTransform(progress, opIn, opOut);
-  const y = useTransform(progress, opIn, yOut);
+  // Horizontal position with a still reading plateau:
+  //  • centred (0%) and stationary while |d| ≤ P, so the text never clips;
+  //  • then slides to ±100% (off-screen) by |d| = S, where S = 1 − P.
+  // Because the slide completes exactly as the neighbour reaches its own plateau,
+  // at a boundary the outgoing card sits at −50% (left half) and the incoming at
+  // +50% (right half): perfectly tiled, no overlap, no gap. (d = (progress−c)/w)
+  const P = 0.28;
+  const S = 1 - P;
+  const x = useTransform(
+    progress,
+    isFirst
+      ? [c + P * w, c + S * w]
+      : isLast
+        ? [c - S * w, c - P * w]
+        : [c - S * w, c - P * w, c + P * w, c + S * w],
+    isFirst ? ["0%", "-100%"] : isLast ? ["100%", "0%"] : ["100%", "0%", "0%", "-100%"],
+  );
 
   const Visual = WINDOWS[feature.icon] ?? DesignWindow;
   return (
-    <motion.div style={{ opacity, y }} className="absolute inset-0 flex flex-col justify-center gap-7">
+    <motion.div style={{ x }} className="absolute inset-0 flex flex-col justify-center gap-7">
       <div>
         <p className="text-sm font-medium tracking-[0.2em] text-ink/30">
           {pad(index + 1)} <span className="text-ink/15">/ {pad(SHOWN.length)}</span>
