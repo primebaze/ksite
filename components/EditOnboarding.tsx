@@ -69,7 +69,14 @@ export function EditOnboarding() {
     if (phase !== "tour") return;
     const s = steps[idx];
     const el = s ? (document.querySelector(s.selector) as HTMLElement | null) : null;
-    el?.scrollIntoView({ behavior: "smooth", block: "center" });
+    // Only scroll if the target isn't already on screen — otherwise a hero step
+    // jumps the page down for no reason ("the step doesn't show until you scroll
+    // down"). Keep clear of the top nav (~64px) and the bottom dock (~96px).
+    if (el) {
+      const r = el.getBoundingClientRect();
+      const onScreen = r.top >= 64 && r.bottom <= window.innerHeight - 96;
+      if (!onScreen) el.scrollIntoView({ behavior: "smooth", block: "center" });
+    }
     const t = setTimeout(place, 320);
     window.addEventListener("resize", place);
     window.addEventListener("scroll", place, true);
@@ -97,7 +104,7 @@ export function EditOnboarding() {
       <button
         type="button"
         onClick={() => setPhase("intro")}
-        className="fixed right-5 top-5 z-[220] flex h-9 w-9 items-center justify-center rounded-full border border-white/15 bg-black/80 text-sm font-semibold text-white shadow-lg backdrop-blur transition hover:bg-black"
+        className="fixed bottom-[max(5.5rem,calc(env(safe-area-inset-bottom)+5rem))] left-4 z-[220] flex h-9 w-9 items-center justify-center rounded-full border border-white/15 bg-black/80 text-sm font-semibold text-white shadow-lg backdrop-blur transition hover:bg-black"
         aria-label="How to edit"
       >
         ?

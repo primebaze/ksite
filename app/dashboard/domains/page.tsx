@@ -110,7 +110,7 @@ export default async function DomainsPage({
           <details className="mt-6">
             <summary className="cursor-pointer text-sm text-ink/55">Already own a domain elsewhere?</summary>
             <form action={connectExisting} className="mt-3 flex gap-2">
-              <input name="domain" placeholder="yourbusiness.co.uk" className="w-full rounded-lg border border-ink/10 bg-ink/[0.03] px-4 py-3 text-sm text-ink placeholder-ink/30 outline-none focus:border-ink/30" />
+              <input name="domain" placeholder="yourbusiness.com" className="w-full rounded-lg border border-ink/10 bg-ink/[0.03] px-4 py-3 text-sm text-ink placeholder-ink/30 outline-none focus:border-ink/30" />
               <button className="shrink-0 rounded-lg border border-ink/15 px-5 py-3 text-sm font-medium hover:bg-ink/5">Connect</button>
             </form>
             <p className="mt-2 text-xs text-ink/35">You&apos;ll add one DNS record at your provider, and we&apos;ll show you exactly which.</p>

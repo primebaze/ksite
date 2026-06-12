@@ -36,7 +36,7 @@ export default async function PublishPage({
       </p>
       <p className="mt-3 max-w-2xl rounded-lg border border-ink/10 bg-ink/[0.02] px-4 py-3 text-sm text-ink/55">
         A <span className="text-ink">free custom domain</span> (like{" "}
-        <span className="text-ink">yourbusiness.co.uk</span>) is included — you can connect it any time after you
+        <span className="text-ink">yourbusiness.com</span>) is included — you can connect it any time after you
         subscribe, and we&apos;ll guide you through it from your dashboard.
       </p>
 
