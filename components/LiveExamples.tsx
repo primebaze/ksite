@@ -98,29 +98,6 @@ function PlanPanel() {
   );
 }
 
-// Mobile: a simple swipeable carousel of the example sites, then the plan panel.
-function MobileExamples() {
-  return (
-    <section className="bg-paper py-16 lg:hidden">
-      <div className="px-6 text-center">
-        <p className="text-xs font-medium uppercase tracking-widest text-accent/80">Live examples</p>
-        <h2 className="mt-3 text-3xl font-semibold tracking-tight">See what you get.</h2>
-        <p className="mt-2 text-sm text-ink/50">Swipe through — tap any one to explore the live design.</p>
-      </div>
-      <div className="mt-7 flex snap-x snap-mandatory gap-4 overflow-x-auto px-6 pb-4 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-        {EXAMPLES.map((e) => (
-          <div key={e.key} className="w-[82vw] max-w-[360px] shrink-0 snap-center">
-            <BrowserCard e={e} />
-          </div>
-        ))}
-      </div>
-      <div className="mt-10 px-6">
-        <PlanPanel />
-      </div>
-    </section>
-  );
-}
-
 export function LiveExamples() {
   const ref = useRef<HTMLElement>(null);
   const [win, setWin] = useState(0);
@@ -177,9 +154,7 @@ export function LiveExamples() {
   ];
 
   return (
-    <>
-      <MobileExamples />
-      <section ref={ref} className="relative z-10 hidden h-[200vh] rounded-b-[2.5rem] border-t border-ink/5 bg-paper sm:rounded-b-[3.5rem] lg:block">
+    <section ref={ref} className="relative z-10 h-[200vh] rounded-b-[2.5rem] border-t border-ink/5 bg-paper sm:rounded-b-[3.5rem]">
       <div className="sticky top-0 flex h-screen items-center justify-center overflow-hidden">
         {/* Heading (fades as the cards part) */}
         <motion.div style={{ opacity: headingOpacity }} className="absolute inset-x-0 top-0 z-10 mx-auto max-w-6xl px-6 pt-[11vh] text-center">
@@ -195,8 +170,16 @@ export function LiveExamples() {
           <PlanPanel />
         </motion.div>
 
-        {/* The cards: a cover that parts to reveal the panel above */}
-        <motion.div style={{ scale: groupScale, pointerEvents: cardsPE }} className="absolute inset-0 z-20 flex items-center justify-center">
+        {/* The cards: a cover that parts to reveal the panel above. Grab + swipe
+            the fan left/right; it springs back. (Taps still open the sample.) */}
+        <motion.div
+          style={{ scale: groupScale, pointerEvents: cardsPE }}
+          drag="x"
+          dragConstraints={{ left: 0, right: 0 }}
+          dragElastic={0.28}
+          dragSnapToOrigin
+          className="absolute inset-0 z-20 flex cursor-grab items-center justify-center active:cursor-grabbing"
+        >
           {EXAMPLES.map((e, i) => (
             <motion.div
               key={e.key}
@@ -208,7 +191,6 @@ export function LiveExamples() {
           ))}
         </motion.div>
       </div>
-      </section>
-    </>
+    </section>
   );
 }
