@@ -160,7 +160,7 @@ export default async function DashboardHome({ searchParams }: { searchParams: Pr
       {!live && (
         <section className="mt-5 overflow-hidden rounded-[1.75rem] border border-emerald-400/20 bg-gradient-to-br from-emerald-400/10 to-transparent p-7">
           <h2 className="text-lg font-semibold">Take your site live</h2>
-          <p className="mt-1 max-w-md text-sm text-ink/55">Subscribe to publish on your subdomain. No setup fee, cancel anytime.</p>
+          <p className="mt-1 max-w-md text-sm text-ink/55">Subscribe to go live on your subdomain — and a free custom domain too. No setup fee, cancel anytime.</p>
           <Link href="/dashboard/publish" className="mt-4 inline-block rounded-xl bg-ink px-5 py-3 text-sm font-semibold text-paper transition hover:bg-ink/90">Choose a plan</Link>
         </section>
       )}

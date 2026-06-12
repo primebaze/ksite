@@ -101,9 +101,13 @@ export default async function DomainsPage({
         </section>
       ) : subscribed ? (
         <section className="rounded-2xl border border-emerald-400/25 bg-emerald-400/[0.04] p-6">
-          <h2 className="font-semibold">Find a unique name</h2>
+          <div className="flex flex-wrap items-center gap-2">
+            <h2 className="font-semibold">Find a unique name</h2>
+            <span className="rounded-full bg-emerald-400/15 px-2.5 py-1 text-xs font-semibold text-accent">Free with your plan</span>
+          </div>
           <p className="mt-1 text-sm text-ink/50">
-            Domain names are global, so the name must be available. Try your business name, location, or a short brand variation.
+            Your custom domain is included free in your plan. Domain names are global, so the name must be available —
+            try your business name, location, or a short brand variation.
           </p>
           <div className="mt-4"><DomainSearch base={baseName} /></div>
 
