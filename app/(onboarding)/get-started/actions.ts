@@ -6,6 +6,7 @@ import { getServiceClient } from "@/lib/supabase";
 import { isVertical } from "@/lib/verticals";
 import { buildFor } from "@/lib/builds";
 import { moderate } from "@/lib/moderation";
+import { rateLimit, ipFromHeaders } from "@/lib/rate-limit";
 
 function err(msg: string): never {
   redirect(`/get-started?error=${encodeURIComponent(msg)}`);
@@ -71,6 +72,10 @@ export async function startOnboarding(formData: FormData) {
   // Bot check (Cloudflare Turnstile).
   const passedBotCheck = await verifyTurnstile(String(formData.get("cf-turnstile-response") ?? ""));
   if (!passedBotCheck) err("Verification failed. Please try again.");
+
+  // Throttle sign-ups per IP (Turnstile already gates bots; this caps abuse).
+  const ip = await ipFromHeaders();
+  if (!(await rateLimit(`signup:ip:${ip}`, 6, 3600))) err("Too many sign-ups from your network. Please try again later.");
 
   // Moderation: block offensive/spam business names.
   const nameCheck = moderate(business_name);
