@@ -343,7 +343,7 @@ export default function SobremesaDesign({ site, page = "home", basePath = "" }: 
           <section className="grid grid-cols-2 gap-1.5 p-1.5 sm:grid-cols-3" style={{ background: INK }}>
             {gallery.map((g) => (
               // eslint-disable-next-line @next/next/no-img-element
-              <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full object-cover" />
+              <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full object-cover" />
             ))}
           </section>
         ) : <p className="px-6 py-20 text-center text-[color:#5b4a3f]" style={AZULEJO}>Fotos próximamente.</p>}
@@ -451,7 +451,7 @@ export default function SobremesaDesign({ site, page = "home", basePath = "" }: 
           <div className="grid grid-cols-2 gap-1.5 p-1.5 sm:grid-cols-4">
             {gallery.slice(0, 4).map((g) => (
               // eslint-disable-next-line @next/next/no-img-element
-              <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-square w-full object-cover" />
+              <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-square w-full object-cover" />
             ))}
           </div>
         </section>

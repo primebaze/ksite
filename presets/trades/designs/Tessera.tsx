@@ -312,7 +312,7 @@ export default function TesseraDesign({ site, page = "home", basePath = "" }: Pr
               {gallery.map((g) => (
                 <figure key={g.id} className="relative overflow-hidden">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={g.image_url} alt={g.caption ?? ""} className="aspect-square w-full object-cover" />
+                  <img loading="lazy" decoding="async" src={g.image_url} alt={g.caption ?? ""} className="aspect-square w-full object-cover" />
                   {g.caption && <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-white">{g.caption}</figcaption>}
                 </figure>
               ))}
@@ -380,7 +380,7 @@ export default function TesseraDesign({ site, page = "home", basePath = "" }: Pr
           <div className="relative">
             {gallery[0] ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={gallery[0].image_url} alt={gallery[0].caption ?? ""} className="aspect-[4/3] w-full object-cover" />
+              <img loading="lazy" decoding="async" src={gallery[0].image_url} alt={gallery[0].caption ?? ""} className="aspect-[4/3] w-full object-cover" />
             ) : (
               <TileField rows={9} cols={12} className="aspect-[4/3] w-full" />
             )}
@@ -431,7 +431,7 @@ export default function TesseraDesign({ site, page = "home", basePath = "" }: Pr
             {gallery.slice(0, 4).map((g) => (
               <figure key={g.id} className="relative overflow-hidden">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={g.image_url} alt={g.caption ?? ""} className="aspect-square w-full object-cover" />
+                <img loading="lazy" decoding="async" src={g.image_url} alt={g.caption ?? ""} className="aspect-square w-full object-cover" />
                 {g.caption && <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.14em] text-white">{g.caption}</figcaption>}
               </figure>
             ))}

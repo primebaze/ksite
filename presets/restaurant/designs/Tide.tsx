@@ -261,7 +261,7 @@ export default function TideDesign({ site, page = "home", basePath = "" }: Prese
           <section className="grid grid-cols-2 gap-1 sm:grid-cols-3">
             {gallery.map((g) => (
               // eslint-disable-next-line @next/next/no-img-element
-              <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/3] w-full object-cover" />
+              <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/3] w-full object-cover" />
             ))}
           </section>
         ) : <p className="mx-auto max-w-6xl px-8 py-20 text-neutral-500">Photos coming soon.</p>}
@@ -290,7 +290,7 @@ export default function TideDesign({ site, page = "home", basePath = "" }: Prese
       <div className={`mx-auto grid max-w-6xl items-center gap-0 md:grid-cols-2`}>
         {img ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={img.image_url} alt={img.caption ?? ""} className={`h-72 w-full object-cover sm:h-[28rem] ${flip ? "md:order-2" : ""}`} />
+          <img loading="lazy" decoding="async" src={img.image_url} alt={img.caption ?? ""} className={`h-72 w-full object-cover sm:h-[28rem] ${flip ? "md:order-2" : ""}`} />
         ) : (
           <div className={`h-72 w-full sm:h-[28rem] ${flip ? "md:order-2" : ""}`} style={{ background: CREAM_DEEP }} />
         )}
@@ -354,7 +354,7 @@ export default function TideDesign({ site, page = "home", basePath = "" }: Prese
             <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-3">
               {gallery.slice(0, 6).map((gi) => (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img key={gi.id} src={gi.image_url} alt={gi.caption ?? ""} className="aspect-[4/5] w-full object-cover" />
+                <img loading="lazy" decoding="async" key={gi.id} src={gi.image_url} alt={gi.caption ?? ""} className="aspect-[4/5] w-full object-cover" />
               ))}
             </div>
             <div className="mt-10 text-center">
@@ -382,7 +382,7 @@ export default function TideDesign({ site, page = "home", basePath = "" }: Prese
                   <a key={item.id} href={href("menu")} className="group block">
                     {gi ? (
                       // eslint-disable-next-line @next/next/no-img-element
-                      <img src={gi.image_url} alt="" className="aspect-square w-full object-cover" />
+                      <img loading="lazy" decoding="async" src={gi.image_url} alt="" className="aspect-square w-full object-cover" />
                     ) : (
                       <div className="aspect-square w-full" style={{ background: "#3a3631" }} />
                     )}

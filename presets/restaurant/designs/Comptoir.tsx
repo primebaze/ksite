@@ -346,7 +346,7 @@ export default function ComptoirDesign({ site, page = "home", basePath = "" }: P
             <div className="mx-auto grid max-w-6xl grid-cols-2 gap-3 sm:grid-cols-3">
               {gallery.map((g) => (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full object-cover" style={{ border: `1px solid ${BRASS}55` }} />
+                <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full object-cover" style={{ border: `1px solid ${BRASS}55` }} />
               ))}
             </div>
           </section>
@@ -456,7 +456,7 @@ export default function ComptoirDesign({ site, page = "home", basePath = "" }: P
             <div className="relative overflow-hidden" style={{ borderRadius: "3px", border: `1px solid ${BRASS}`, boxShadow: `0 0 0 6px ${GREEN}, 0 0 0 7px ${BRASS}55` }}>
               {(gallery[0]?.image_url ?? hero) ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={gallery[0]?.image_url ?? hero} alt="" className="aspect-[4/3] w-full object-cover" />
+                <img loading="lazy" decoding="async" src={gallery[0]?.image_url ?? hero} alt="" className="aspect-[4/3] w-full object-cover" />
               ) : (
                 <div className="aspect-[4/3] w-full" style={{ background: TILE }} />
               )}
@@ -472,7 +472,7 @@ export default function ComptoirDesign({ site, page = "home", basePath = "" }: P
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
               {gallery.slice(0, 4).map((g) => (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[3/4] w-full object-cover" style={{ borderRadius: "2px", border: `1px solid ${BRASS}66` }} />
+                <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[3/4] w-full object-cover" style={{ borderRadius: "2px", border: `1px solid ${BRASS}66` }} />
               ))}
             </div>
             <div className="mt-10 text-center">

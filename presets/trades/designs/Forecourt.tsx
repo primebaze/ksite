@@ -268,7 +268,7 @@ export default function ForecourtDesign({ site, page = "home", basePath = "" }: 
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
               {gallery.map((g) => (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/3] w-full rounded-xl object-cover" />
+                <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/3] w-full rounded-xl object-cover" />
               ))}
             </div>
           </section>
@@ -345,7 +345,7 @@ export default function ForecourtDesign({ site, page = "home", basePath = "" }: 
                 <div className="relative aspect-[4/3] w-full overflow-hidden" style={{ background: WHITE }}>
                   {gallery[i] ? (
                     // eslint-disable-next-line @next/next/no-img-element
-                    <img src={gallery[i].image_url} alt={gallery[i].caption ?? ""} className="h-full w-full object-cover" />
+                    <img loading="lazy" decoding="async" src={gallery[i].image_url} alt={gallery[i].caption ?? ""} className="h-full w-full object-cover" />
                   ) : (
                     <div className="flex h-full w-full items-center justify-center" style={{ background: `linear-gradient(150deg, ${NAVY} 0%, ${NAVY_DEEP} 100%)` }}>
                       <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke={STEEL} strokeWidth="1.3" aria-hidden><path d="M5 11l1.5-4.5A2 2 0 0 1 8.4 5h7.2a2 2 0 0 1 1.9 1.5L19 11m-14 0h14m-14 0a2 2 0 0 0-2 2v3h2m14-5a2 2 0 0 1 2 2v3h-2m-14 0v2m0-2h14m0 0v2M7 14h.01M17 14h.01" /></svg>
@@ -413,7 +413,7 @@ export default function ForecourtDesign({ site, page = "home", basePath = "" }: 
           <div className="relative">
             {gallery[0] ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={gallery[0].image_url} alt={gallery[0].caption ?? ""} className="aspect-[4/3] w-full rounded-2xl object-cover" />
+              <img loading="lazy" decoding="async" src={gallery[0].image_url} alt={gallery[0].caption ?? ""} className="aspect-[4/3] w-full rounded-2xl object-cover" />
             ) : (
               <div className="aspect-[4/3] w-full rounded-2xl" style={{ background: `linear-gradient(150deg, ${NAVY} 0%, ${NAVY_DEEP} 100%)` }} />
             )}
@@ -437,7 +437,7 @@ export default function ForecourtDesign({ site, page = "home", basePath = "" }: 
             <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
               {gallery.slice(0, 4).map((g) => (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/3] w-full rounded-xl object-cover" />
+                <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/3] w-full rounded-xl object-cover" />
               ))}
             </div>
             <div className="mt-10">{ghostBtn("Full gallery", href("gallery"))}</div>

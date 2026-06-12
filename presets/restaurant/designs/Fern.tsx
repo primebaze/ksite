@@ -313,7 +313,7 @@ export default function FernDesign({ site, page = "home", basePath = "" }: Prese
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
               {gallery.map((g) => (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[3/4] w-full object-cover" />
+                <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[3/4] w-full object-cover" />
               ))}
             </div>
           </section>
@@ -423,7 +423,7 @@ export default function FernDesign({ site, page = "home", basePath = "" }: Prese
               <div className="relative">
                 {featureImg ? (
                   // eslint-disable-next-line @next/next/no-img-element
-                  <img src={featureImg} alt="" className="aspect-[3/4] w-full object-cover" />
+                  <img loading="lazy" decoding="async" src={featureImg} alt="" className="aspect-[3/4] w-full object-cover" />
                 ) : (
                   <div className="aspect-[3/4] w-full" style={{ background: `linear-gradient(160deg, ${GREEN}, ${INK})` }} />
                 )}

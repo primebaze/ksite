@@ -250,7 +250,7 @@ export default function AxisDesign({ site, page = "home", basePath = "" }: Prese
                     <div className="mx-auto h-44 w-44 overflow-hidden" style={{ background: SAGE, borderTop: `3px solid ${AMBER}` }}>
                       {m.photo_url && (
                         // eslint-disable-next-line @next/next/no-img-element
-                        <img src={m.photo_url} alt={m.name} className="h-full w-full object-cover" />
+                        <img loading="lazy" decoding="async" src={m.photo_url} alt={m.name} className="h-full w-full object-cover" />
                       )}
                     </div>
                     <p className="mt-5 text-lg font-medium" style={{ color: CHARCOAL }}>{m.name}</p>
@@ -294,7 +294,7 @@ export default function AxisDesign({ site, page = "home", basePath = "" }: Prese
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
               {gallery.map((g) => (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full object-cover" />
+                <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full object-cover" />
               ))}
             </div>
           </section>
@@ -565,7 +565,7 @@ export default function AxisDesign({ site, page = "home", basePath = "" }: Prese
         <div className="relative min-h-[360px] overflow-hidden" style={{ background: SAGE }}>
           {hero ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={hero} alt="" className="absolute inset-0 h-full w-full object-cover" />
+            <img loading="lazy" decoding="async" src={hero} alt="" className="absolute inset-0 h-full w-full object-cover" />
           ) : (
             <div className="absolute inset-0 grid place-items-center">
               <Spine />

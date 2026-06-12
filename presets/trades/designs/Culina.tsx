@@ -274,7 +274,7 @@ export default function CulinaDesign({ site, page = "home", basePath = "" }: Pre
               {gallery.map((g) => (
                 <figure key={g.id} className="overflow-hidden rounded-2xl" style={{ background: STONE }}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full object-cover transition duration-500 hover:scale-[1.03]" />
+                  <img loading="lazy" decoding="async" src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full object-cover transition duration-500 hover:scale-[1.03]" />
                   {g.caption && <figcaption className="px-4 py-3 text-[13px]" style={{ color: MUTE }}>{g.caption}</figcaption>}
                 </figure>
               ))}
@@ -348,7 +348,7 @@ export default function CulinaDesign({ site, page = "home", basePath = "" }: Pre
           <div className="relative">
             {gallery[0] ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={gallery[0].image_url} alt={gallery[0].caption ?? ""} className="aspect-[4/5] w-full rounded-[1.5rem] object-cover" />
+              <img loading="lazy" decoding="async" src={gallery[0].image_url} alt={gallery[0].caption ?? ""} className="aspect-[4/5] w-full rounded-[1.5rem] object-cover" />
             ) : (
               <div className="aspect-[4/5] w-full rounded-[1.5rem]" style={{ background: STONE }} />
             )}
@@ -405,7 +405,7 @@ export default function CulinaDesign({ site, page = "home", basePath = "" }: Pre
               {gallery.slice(0, 3).map((g) => (
                 <figure key={g.id} className="overflow-hidden rounded-2xl" style={{ background: STONE }}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full object-cover transition duration-500 hover:scale-[1.03]" />
+                  <img loading="lazy" decoding="async" src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full object-cover transition duration-500 hover:scale-[1.03]" />
                   {g.caption && <figcaption className="px-4 py-3 text-[13px]" style={{ color: MUTE }}>{g.caption}</figcaption>}
                 </figure>
               ))}

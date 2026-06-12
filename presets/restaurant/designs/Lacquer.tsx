@@ -273,7 +273,7 @@ export default function LacquerDesign({ site, page = "home", basePath = "" }: Pr
             <section className="grid grid-cols-2 gap-1.5 px-1.5 sm:grid-cols-3">
               {gallery.map((g) => (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/3] w-full object-cover" />
+                <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/3] w-full object-cover" />
               ))}
             </section>
           ) : <p className="mx-auto max-w-6xl px-7 text-center text-white/55">Photos coming soon.</p>}
@@ -360,7 +360,7 @@ export default function LacquerDesign({ site, page = "home", basePath = "" }: Pr
               {gallery.slice(0, 3).map((g) => (
                 <a key={g.id} href={href("gallery")} className="group block">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/3] w-full object-cover transition group-hover:opacity-90" />
+                  <img loading="lazy" decoding="async" src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/3] w-full object-cover transition group-hover:opacity-90" />
                   {g.caption && <p className="mt-4 text-center text-sm uppercase tracking-[0.18em] text-white/80">{g.caption}</p>}
                   <p className="mt-3 text-center text-[11px] font-semibold uppercase tracking-[0.2em]" style={{ color: GOLD_SOFT }}>See more</p>
                 </a>

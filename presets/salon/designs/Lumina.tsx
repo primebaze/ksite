@@ -280,7 +280,7 @@ export default function LuminaDesign({ site, page = "home", basePath = "" }: Pre
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
               {gallery.map((g) => (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full object-cover" />
+                <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full object-cover" />
               ))}
             </div>
           </section>
@@ -347,10 +347,10 @@ export default function LuminaDesign({ site, page = "home", basePath = "" }: Pre
           <div className="relative aspect-[5/4] w-full overflow-hidden bg-neutral-200">
             {gallery[0]?.image_url ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={gallery[0].image_url} alt={gallery[0].caption ?? ""} className="absolute inset-0 h-full w-full object-cover" />
+              <img loading="lazy" decoding="async" src={gallery[0].image_url} alt={gallery[0].caption ?? ""} className="absolute inset-0 h-full w-full object-cover" />
             ) : hero ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={hero} alt="" className="absolute inset-0 h-full w-full object-cover" />
+              <img loading="lazy" decoding="async" src={hero} alt="" className="absolute inset-0 h-full w-full object-cover" />
             ) : (
               <div className="absolute inset-0" style={{ background: ROSE }} />
             )}
@@ -377,7 +377,7 @@ export default function LuminaDesign({ site, page = "home", basePath = "" }: Pre
                   <a key={g.section ?? idx} href={href("services")} className="group relative block aspect-[3/4] overflow-hidden bg-neutral-300">
                     {img ? (
                       // eslint-disable-next-line @next/next/no-img-element
-                      <img src={img} alt="" className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-105" />
+                      <img loading="lazy" decoding="async" src={img} alt="" className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-105" />
                     ) : (
                       <div className="absolute inset-0" style={{ background: `linear-gradient(160deg, ${ROSE}, ${PLUM})` }} />
                     )}

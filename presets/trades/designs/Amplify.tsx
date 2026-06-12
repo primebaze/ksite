@@ -286,7 +286,7 @@ export default function AmplifyDesign({ site, page = "home", basePath = "" }: Pr
               {gallery.map((g, i) => (
                 <figure key={g.id} className="group relative overflow-hidden rounded-3xl" style={{ background: PANEL }}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full object-cover transition duration-500 group-hover:scale-105" />
+                  <img loading="lazy" decoding="async" src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full object-cover transition duration-500 group-hover:scale-105" />
                   <figcaption className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 bg-gradient-to-t from-[#14121C] to-transparent p-5">
                     <span style={{ ...display, color: OFF }} className="text-base font-black uppercase tracking-[-0.01em]">{g.caption || `Project ${String(i + 1).padStart(2, "0")}`}</span>
                     <span className="text-lg" style={{ color: LIME }}>↗</span>
@@ -423,7 +423,7 @@ export default function AmplifyDesign({ site, page = "home", basePath = "" }: Pr
             {gallery.slice(0, 3).map((g, i) => (
               <figure key={g.id} className="group relative overflow-hidden rounded-3xl" style={{ background: PANEL }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full object-cover transition duration-500 group-hover:scale-105" />
+                <img loading="lazy" decoding="async" src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full object-cover transition duration-500 group-hover:scale-105" />
                 <figcaption className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-3 bg-gradient-to-t from-[#14121C] to-transparent p-5">
                   <span style={{ ...display, color: OFF }} className="text-base font-black uppercase tracking-[-0.01em]">{g.caption || `Project ${String(i + 1).padStart(2, "0")}`}</span>
                   <span className="text-lg" style={{ color: LIME }}>↗</span>

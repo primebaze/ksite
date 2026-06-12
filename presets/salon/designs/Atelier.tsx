@@ -192,7 +192,7 @@ export default function AtelierDesign({ site, page = "home", basePath = "" }: Pr
                     <div className="mx-auto h-44 w-44 overflow-hidden rounded-full bg-neutral-200">
                       {m.photo_url && (
                         // eslint-disable-next-line @next/next/no-img-element
-                        <img src={m.photo_url} alt={m.name} className="h-full w-full object-cover" />
+                        <img loading="lazy" decoding="async" src={m.photo_url} alt={m.name} className="h-full w-full object-cover" />
                       )}
                     </div>
                     <p style={serif} className="mt-5 text-lg text-neutral-900">{m.name}</p>
@@ -217,7 +217,7 @@ export default function AtelierDesign({ site, page = "home", basePath = "" }: Pr
           <section className="grid grid-cols-2 gap-1 sm:grid-cols-3">
             {gallery.map((g) => (
               // eslint-disable-next-line @next/next/no-img-element
-              <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full object-cover" />
+              <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full object-cover" />
             ))}
           </section>
         ) : <p className="mx-auto max-w-6xl px-8 py-20 text-neutral-500">Photos coming soon.</p>}
@@ -363,10 +363,10 @@ export default function AtelierDesign({ site, page = "home", basePath = "" }: Pr
             <div className="overflow-hidden rounded-2xl bg-neutral-200">
               {gallery[0] ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={gallery[0].image_url} alt={gallery[0].caption ?? ""} className="aspect-[4/3] w-full object-cover" />
+                <img loading="lazy" decoding="async" src={gallery[0].image_url} alt={gallery[0].caption ?? ""} className="aspect-[4/3] w-full object-cover" />
               ) : hero ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={hero} alt="" className="aspect-[4/3] w-full object-cover" />
+                <img loading="lazy" decoding="async" src={hero} alt="" className="aspect-[4/3] w-full object-cover" />
               ) : (
                 <div className="aspect-[4/3] w-full bg-gradient-to-br from-neutral-300 to-neutral-400" />
               )}
@@ -399,7 +399,7 @@ export default function AtelierDesign({ site, page = "home", basePath = "" }: Pr
             <div className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
               {gallery.slice(0, 4).map((g) => (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full rounded-xl object-cover" />
+                <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full rounded-xl object-cover" />
               ))}
             </div>
           </div>

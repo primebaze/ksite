@@ -295,7 +295,7 @@ export default function RollwellDesign({ site, page = "home", basePath = "" }: P
               {gallery.map((g, i) => (
                 <figure key={g.id} className="overflow-hidden rounded-2xl" style={{ background: PAPER, border: `1px solid ${LINE}` }}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={g.image_url} alt={g.caption ?? ""} className="aspect-square w-full object-cover" />
+                  <img loading="lazy" decoding="async" src={g.image_url} alt={g.caption ?? ""} className="aspect-square w-full object-cover" />
                   <figcaption className="flex items-center gap-2 px-3 py-2 text-[11px] font-bold uppercase tracking-[0.12em]" style={{ color: i % 2 ? OCHRE : COBALT }}>
                     <span className="h-2 w-2 rounded-[2px]" style={{ background: i % 2 ? OCHRE : COBALT }} />
                     {g.caption || (i % 2 ? "After" : "Before")}
@@ -383,7 +383,7 @@ export default function RollwellDesign({ site, page = "home", basePath = "" }: P
           <div className="relative">
             {gallery[0] ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={gallery[0].image_url} alt={gallery[0].caption ?? ""} className="aspect-[4/3] w-full rounded-[2rem] object-cover" style={{ border: `1px solid ${LINE}` }} />
+              <img loading="lazy" decoding="async" src={gallery[0].image_url} alt={gallery[0].caption ?? ""} className="aspect-[4/3] w-full rounded-[2rem] object-cover" style={{ border: `1px solid ${LINE}` }} />
             ) : (
               <div className="aspect-[4/3] w-full rounded-[2rem]" style={{ background: `linear-gradient(150deg, ${OCHRE}, ${SAGE})` }} />
             )}
@@ -414,7 +414,7 @@ export default function RollwellDesign({ site, page = "home", basePath = "" }: P
             {gallery.slice(0, 4).map((g, i) => (
               <figure key={g.id} className="overflow-hidden rounded-2xl" style={{ background: PAPER, border: `1px solid ${LINE}` }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={g.image_url} alt={g.caption ?? ""} className="aspect-square w-full object-cover" />
+                <img loading="lazy" decoding="async" src={g.image_url} alt={g.caption ?? ""} className="aspect-square w-full object-cover" />
                 <figcaption className="flex items-center gap-2 px-3 py-2 text-[11px] font-bold uppercase tracking-[0.12em]" style={{ color: i % 2 ? OCHRE : COBALT }}>
                   <span className="h-2 w-2 rounded-[2px]" style={{ background: i % 2 ? OCHRE : COBALT }} />
                   {g.caption || (i % 2 ? "After" : "Before")}

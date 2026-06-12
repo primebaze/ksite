@@ -1,11 +1,11 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 // A lightweight, mobile-safe replacement for the live-site iframes: a muted,
-// looping hero video that only decodes while it's on screen and "active". This
-// keeps the homepage to a couple of video decoders at most instead of mounting
-// several full sample sites at once (which crashed mobile Safari's web process).
+// looping hero video. It only *loads* once near the viewport (and, for rotating
+// hero slides, only the active one), and only decodes while on screen + active —
+// so the homepage doesn't fetch ~17MB of video up front.
 export function PreviewVideo({
   src,
   poster,
@@ -18,36 +18,40 @@ export function PreviewVideo({
   className?: string;
 }) {
   const ref = useRef<HTMLVideoElement>(null);
+  const [load, setLoad] = useState(false);
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
     let inView = false;
     const sync = () => {
-      if (active && inView) el.play().catch(() => {});
+      if (active && inView && load) el.play().catch(() => {});
       else el.pause();
     };
     const io = new IntersectionObserver(
       ([entry]) => {
         inView = entry.isIntersecting;
+        // Start downloading only when the slide is near the viewport AND is the
+        // one being shown; once loaded it stays loaded.
+        if (inView && active) setLoad(true);
         sync();
       },
-      { threshold: 0.1 },
+      { threshold: 0.1, rootMargin: "300px" },
     );
     io.observe(el);
     sync();
     return () => io.disconnect();
-  }, [active]);
+  }, [active, load]);
 
   return (
     <video
       ref={ref}
-      src={src}
+      src={load ? src : undefined}
       poster={poster}
       muted
       loop
       playsInline
-      preload="metadata"
+      preload="none"
       tabIndex={-1}
       aria-hidden="true"
       className={className}

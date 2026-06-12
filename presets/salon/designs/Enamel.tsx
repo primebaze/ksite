@@ -265,7 +265,7 @@ export default function EnamelDesign({ site, page = "home", basePath = "" }: Pre
                     <div className="aspect-[4/5] w-full overflow-hidden" style={{ background: MINT }}>
                       {m.photo_url && (
                         // eslint-disable-next-line @next/next/no-img-element
-                        <img src={m.photo_url} alt={m.name} className="h-full w-full object-cover" />
+                        <img loading="lazy" decoding="async" src={m.photo_url} alt={m.name} className="h-full w-full object-cover" />
                       )}
                     </div>
                     <div className="px-5 py-6">
@@ -311,7 +311,7 @@ export default function EnamelDesign({ site, page = "home", basePath = "" }: Pre
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
               {gallery.map((g) => (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full rounded-2xl object-cover" />
+                <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full rounded-2xl object-cover" />
               ))}
             </div>
           </section>
@@ -548,7 +548,7 @@ export default function EnamelDesign({ site, page = "home", basePath = "" }: Pre
                   <div className="aspect-[4/5] w-full overflow-hidden" style={{ background: MINT }}>
                     {m.photo_url && (
                       // eslint-disable-next-line @next/next/no-img-element
-                      <img src={m.photo_url} alt={m.name} className="h-full w-full object-cover" />
+                      <img loading="lazy" decoding="async" src={m.photo_url} alt={m.name} className="h-full w-full object-cover" />
                     )}
                   </div>
                   <div className="px-5 py-6">

@@ -282,7 +282,7 @@ export default function GreenscapeDesign({ site, page = "home", basePath = "" }:
               {gallery.map((g) => (
                 <figure key={g.id} className="overflow-hidden rounded-2xl" style={{ background: PANEL }}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={g.image_url} alt={g.caption ?? ""} className="aspect-square w-full object-cover" />
+                  <img loading="lazy" decoding="async" src={g.image_url} alt={g.caption ?? ""} className="aspect-square w-full object-cover" />
                   {g.caption && <figcaption className="px-3 py-2 text-[11px] font-semibold uppercase tracking-[0.12em]" style={{ color: GARDEN }}>{g.caption}</figcaption>}
                 </figure>
               ))}
@@ -346,7 +346,7 @@ export default function GreenscapeDesign({ site, page = "home", basePath = "" }:
           <div className="relative">
             {gallery[0] ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={gallery[0].image_url} alt={gallery[0].caption ?? ""} className="aspect-[4/3] w-full rounded-3xl object-cover" />
+              <img loading="lazy" decoding="async" src={gallery[0].image_url} alt={gallery[0].caption ?? ""} className="aspect-[4/3] w-full rounded-3xl object-cover" />
             ) : (
               <div className="aspect-[4/3] w-full rounded-3xl" style={{ background: PANEL }} />
             )}
@@ -401,7 +401,7 @@ export default function GreenscapeDesign({ site, page = "home", basePath = "" }:
             <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
               {gallery.slice(0, 4).map((g) => (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-square w-full rounded-2xl object-cover" />
+                <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-square w-full rounded-2xl object-cover" />
               ))}
             </div>
             <div className="mt-10">{btnGhost("See more of our work", href("gallery"))}</div>

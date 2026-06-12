@@ -321,7 +321,7 @@ export default function SundaeDesign({ site, page = "home", basePath = "" }: Pre
           <section className="grid grid-cols-2 gap-2 p-2 sm:grid-cols-3" style={{ background: CREAM }}>
             {gallery.map((g) => (
               // eslint-disable-next-line @next/next/no-img-element
-              <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-square w-full rounded-[1.5rem] border-2 object-cover" style={{ borderColor: COCOA }} />
+              <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-square w-full rounded-[1.5rem] border-2 object-cover" style={{ borderColor: COCOA }} />
             ))}
           </section>
         ) : <p className="px-6 py-20 text-center text-[color:#4A352C]/60" style={{ background: CREAM }}>Photos coming soon.</p>}
@@ -443,7 +443,7 @@ export default function SundaeDesign({ site, page = "home", basePath = "" }: Pre
                   <a key={item.id} href={groups.length > 0 ? href("menu") : book} className="group flex flex-col overflow-hidden rounded-[2rem] border-2 bg-white transition hover:-translate-y-1.5" style={{ borderColor: COCOA }}>
                     {photo ? (
                       // eslint-disable-next-line @next/next/no-img-element
-                      <img src={photo} alt="" className="aspect-[5/4] w-full object-cover" />
+                      <img loading="lazy" decoding="async" src={photo} alt="" className="aspect-[5/4] w-full object-cover" />
                     ) : (
                       <div className="relative aspect-[5/4] w-full" style={{ background: tint }}>
                         <div className="absolute inset-0 opacity-30" style={dots("#fff", 20)} aria-hidden />

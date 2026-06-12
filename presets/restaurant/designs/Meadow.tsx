@@ -278,7 +278,7 @@ export default function MeadowDesign({ site, page = "home", basePath = "" }: Pre
           <section className="grid grid-cols-2 gap-1.5 p-1.5 sm:grid-cols-3" style={{ background: CREAM }}>
             {gallery.map((g) => (
               // eslint-disable-next-line @next/next/no-img-element
-              <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/3] w-full rounded-xl object-cover" />
+              <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/3] w-full rounded-xl object-cover" />
             ))}
           </section>
         ) : <p className="px-6 py-20 text-center text-neutral-500" style={{ background: CREAM }}>Photos coming soon.</p>}
@@ -350,7 +350,7 @@ export default function MeadowDesign({ site, page = "home", basePath = "" }: Pre
                   <a key={item.id} href={href("menu")} className="group flex flex-col overflow-hidden rounded-2xl bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-md">
                     {photo ? (
                       // eslint-disable-next-line @next/next/no-img-element
-                      <img src={photo} alt="" className="aspect-[4/3] w-full object-cover" />
+                      <img loading="lazy" decoding="async" src={photo} alt="" className="aspect-[4/3] w-full object-cover" />
                     ) : (
                       <div className="aspect-[4/3] w-full" style={{ background: tint }} />
                     )}

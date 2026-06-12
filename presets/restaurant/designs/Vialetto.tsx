@@ -62,7 +62,7 @@ function ArchImage({ src, editKey, className = "", ratio = "aspect-[3/4]" }: { s
     >
       {src ? (
         // eslint-disable-next-line @next/next/no-img-element
-        <img data-edit-image={editKey} src={src} alt="" className="absolute inset-0 h-full w-full object-cover" />
+        <img loading="lazy" decoding="async" data-edit-image={editKey} src={src} alt="" className="absolute inset-0 h-full w-full object-cover" />
       ) : (
         <div className="absolute inset-0" style={{ background: `linear-gradient(160deg, ${GREEN}, #20331f)` }} />
       )}
@@ -355,7 +355,7 @@ export default function VialettoDesign({ site, page = "home", basePath = "" }: P
             <div className="mx-auto grid max-w-6xl grid-cols-2 gap-3 sm:grid-cols-3">
               {gallery.map((g) => (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full object-cover" style={{ border: `1px solid ${GOLD}55` }} />
+                <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full object-cover" style={{ border: `1px solid ${GOLD}55` }} />
               ))}
             </div>
           </section>
@@ -457,7 +457,7 @@ export default function VialettoDesign({ site, page = "home", basePath = "" }: P
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
               {gallery.slice(0, 4).map((g) => (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[3/4] w-full object-cover" style={{ borderRadius: "9999px 9999px 8px 8px", border: `1px solid ${GOLD}66` }} />
+                <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[3/4] w-full object-cover" style={{ borderRadius: "9999px 9999px 8px 8px", border: `1px solid ${GOLD}66` }} />
               ))}
             </div>
             <div className="mt-10 text-center">

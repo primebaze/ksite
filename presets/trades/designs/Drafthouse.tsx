@@ -235,7 +235,7 @@ export default function DrafthouseDesign({ site, page = "home", basePath = "" }:
             <div className="grid gap-4 sm:grid-cols-2">
               {gallery.map((g, i) => (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className={`w-full object-cover ${i % 3 === 0 ? "aspect-[4/3]" : "aspect-square"}`} />
+                <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className={`w-full object-cover ${i % 3 === 0 ? "aspect-[4/3]" : "aspect-square"}`} />
               ))}
             </div>
           </section>
@@ -315,7 +315,7 @@ export default function DrafthouseDesign({ site, page = "home", basePath = "" }:
             <div className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-4">
               {gallery.slice(0, 4).map((g) => (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[3/4] w-full object-cover" />
+                <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[3/4] w-full object-cover" />
               ))}
             </div>
             <a href={href("gallery")} className="mt-10 inline-flex border px-8 py-3.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#f3efe7] transition hover:bg-white/10" style={{ borderColor: "#ffffff44" }}>View all work</a>

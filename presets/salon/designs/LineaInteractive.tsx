@@ -56,10 +56,10 @@ export function LineaBeforeAfter({ images }: { images: { id: string; image_url: 
     <div className="mx-auto max-w-3xl">
       <div className="relative isolate aspect-[4/3] w-full select-none overflow-hidden">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={after.image_url} alt={after.caption ?? "After"} className="absolute inset-0 h-full w-full object-cover" />
+        <img loading="lazy" decoding="async" src={after.image_url} alt={after.caption ?? "After"} className="absolute inset-0 h-full w-full object-cover" />
         <div className="absolute inset-0 h-full overflow-hidden" style={{ width: `${pos}%` }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={before.image_url} alt={before.caption ?? "Before"} className="absolute inset-0 h-full w-full object-cover" style={{ width: "100vw", maxWidth: "48rem" }} />
+          <img loading="lazy" decoding="async" src={before.image_url} alt={before.caption ?? "Before"} className="absolute inset-0 h-full w-full object-cover" style={{ width: "100vw", maxWidth: "48rem" }} />
           <span className="absolute bottom-3 left-3 bg-black/55 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-white">Before</span>
         </div>
         <span className="absolute bottom-3 right-3 bg-black/55 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-white">After</span>

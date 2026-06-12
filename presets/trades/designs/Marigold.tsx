@@ -239,7 +239,7 @@ export default function MarigoldDesign({ site, page = "home", basePath = "" }: P
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
               {gallery.map((g) => (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-square w-full rounded-2xl object-cover" />
+                <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-square w-full rounded-2xl object-cover" />
               ))}
             </div>
           </section>

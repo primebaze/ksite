@@ -216,7 +216,7 @@ export default function Flow({ site, page = "home", basePath = "" }: PresetProps
             <div className="columns-2 gap-4 sm:columns-3 [&>img]:mb-4">
               {gallery.map((g) => (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="w-full rounded-2xl object-cover" />
+                <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="w-full rounded-2xl object-cover" />
               ))}
             </div>
           </section>
@@ -305,7 +305,7 @@ export default function Flow({ site, page = "home", basePath = "" }: PresetProps
           <div className="relative">
             {gallery[0] ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={gallery[0].image_url} alt={gallery[0].caption ?? ""} className="aspect-[4/5] w-full rounded-[2rem] object-cover" />
+              <img loading="lazy" decoding="async" src={gallery[0].image_url} alt={gallery[0].caption ?? ""} className="aspect-[4/5] w-full rounded-[2rem] object-cover" />
             ) : (
               <div className="aspect-[4/5] w-full rounded-[2rem]" style={{ background: SAND }} />
             )}
@@ -359,7 +359,7 @@ export default function Flow({ site, page = "home", basePath = "" }: PresetProps
           <div className="mx-auto mt-12 grid max-w-6xl grid-cols-2 gap-3 px-4 sm:grid-cols-4 sm:px-6">
             {gallery.slice(0, 4).map((g) => (
               // eslint-disable-next-line @next/next/no-img-element
-              <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full rounded-2xl object-cover" />
+              <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full rounded-2xl object-cover" />
             ))}
           </div>
           <div className="mt-10 text-center">

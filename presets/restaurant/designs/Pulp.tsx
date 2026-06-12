@@ -315,7 +315,7 @@ export default function PulpDesign({ site, page = "home", basePath = "" }: Prese
           <section className="grid grid-cols-2 gap-1.5 p-1.5 sm:grid-cols-3" style={{ background: CREAM }}>
             {gallery.map((g) => (
               // eslint-disable-next-line @next/next/no-img-element
-              <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/3] w-full rounded-2xl object-cover" />
+              <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/3] w-full rounded-2xl object-cover" />
             ))}
           </section>
         ) : <p className="px-6 py-20 text-center text-neutral-500" style={{ background: CREAM }}>Photos coming soon.</p>}
@@ -415,7 +415,7 @@ export default function PulpDesign({ site, page = "home", basePath = "" }: Prese
                   <a key={item.id} href={href("menu")} className="group flex flex-col overflow-hidden rounded-[2rem] bg-white text-[color:#3A1F2B] shadow-lg transition hover:-translate-y-1">
                     {photo ? (
                       // eslint-disable-next-line @next/next/no-img-element
-                      <img src={photo} alt="" className="aspect-[4/3] w-full object-cover" />
+                      <img loading="lazy" decoding="async" src={photo} alt="" className="aspect-[4/3] w-full object-cover" />
                     ) : (
                       <div className="relative aspect-[4/3] w-full overflow-hidden" style={{ background: `${tint}26` }}>
                         <FruitBlob color={tint} className="left-1/2 top-1/2 h-32 w-32 -translate-x-1/2 -translate-y-1/2" />

@@ -230,7 +230,7 @@ export default function TerraceDesign({ site, page = "home", basePath = "" }: Pr
           <div className="relative">
             {gallery[0] ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={gallery[0].image_url} alt={gallery[0].caption ?? ""} className="aspect-[4/5] w-full object-cover" />
+              <img loading="lazy" decoding="async" src={gallery[0].image_url} alt={gallery[0].caption ?? ""} className="aspect-[4/5] w-full object-cover" />
             ) : (
               <div className="aspect-[4/5] w-full" style={{ background: STONE }} />
             )}
@@ -295,7 +295,7 @@ export default function TerraceDesign({ site, page = "home", basePath = "" }: Pr
               {gallery.map((g) => (
                 <figure key={g.id} className="break-inside-avoid">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={g.image_url} alt={g.caption ?? ""} className="w-full object-cover" />
+                  <img loading="lazy" decoding="async" src={g.image_url} alt={g.caption ?? ""} className="w-full object-cover" />
                   {g.caption && <figcaption className="mt-2 text-[11px] font-medium uppercase tracking-[0.18em]" style={{ color: MUTE }}>{g.caption}</figcaption>}
                 </figure>
               ))}
@@ -364,7 +364,7 @@ export default function TerraceDesign({ site, page = "home", basePath = "" }: Pr
           <div className="relative">
             {gallery[0] ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={gallery[0].image_url} alt={gallery[0].caption ?? ""} className="aspect-[4/5] w-full object-cover" />
+              <img loading="lazy" decoding="async" src={gallery[0].image_url} alt={gallery[0].caption ?? ""} className="aspect-[4/5] w-full object-cover" />
             ) : (
               <div className="aspect-[4/5] w-full" style={{ background: STONE }} />
             )}
@@ -416,7 +416,7 @@ export default function TerraceDesign({ site, page = "home", basePath = "" }: Pr
               {gallery.slice(0, 8).map((g, i) => (
                 <figure key={g.id} className={i % 5 === 0 ? "col-span-2 row-span-2" : ""}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={g.image_url} alt={g.caption ?? ""} className="h-full w-full object-cover" />
+                  <img loading="lazy" decoding="async" src={g.image_url} alt={g.caption ?? ""} className="h-full w-full object-cover" />
                 </figure>
               ))}
             </div>

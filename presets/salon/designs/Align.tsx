@@ -255,7 +255,7 @@ export default function AlignDesign({ site, page = "home", basePath = "" }: Pres
                     <div className="relative mx-auto h-44 w-44 overflow-hidden rounded-[2rem]" style={{ background: AQUA }}>
                       {m.photo_url && (
                         // eslint-disable-next-line @next/next/no-img-element
-                        <img src={m.photo_url} alt={m.name} className="h-full w-full object-cover" />
+                        <img loading="lazy" decoding="async" src={m.photo_url} alt={m.name} className="h-full w-full object-cover" />
                       )}
                     </div>
                     <p className="mt-5 text-lg font-medium" style={{ color: INK }}>{m.name}</p>
@@ -299,7 +299,7 @@ export default function AlignDesign({ site, page = "home", basePath = "" }: Pres
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
               {gallery.map((g) => (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full rounded-2xl object-cover" />
+                <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full rounded-2xl object-cover" />
               ))}
             </div>
           </section>
@@ -576,7 +576,7 @@ export default function AlignDesign({ site, page = "home", basePath = "" }: Pres
         <div className="relative min-h-[340px] overflow-hidden bg-neutral-900 lg:min-h-0">
           {gallery[0]?.image_url || hero ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={gallery[0]?.image_url || hero!} alt="" className="absolute inset-0 h-full w-full object-cover" />
+            <img loading="lazy" decoding="async" src={gallery[0]?.image_url || hero!} alt="" className="absolute inset-0 h-full w-full object-cover" />
           ) : (
             <div className="absolute inset-0" style={{ background: AQUA }} />
           )}
@@ -589,7 +589,7 @@ export default function AlignDesign({ site, page = "home", basePath = "" }: Pres
         <div className="relative min-h-[380px] overflow-hidden bg-neutral-200">
           {gallery[1]?.image_url || hero ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={gallery[1]?.image_url || hero!} alt="" className="absolute inset-0 h-full w-full object-cover" />
+            <img loading="lazy" decoding="async" src={gallery[1]?.image_url || hero!} alt="" className="absolute inset-0 h-full w-full object-cover" />
           ) : (
             <div className="absolute inset-0 grid place-items-center" style={{ background: AQUA }}><SmileArc color={TEAL} className="h-12 w-40" /></div>
           )}

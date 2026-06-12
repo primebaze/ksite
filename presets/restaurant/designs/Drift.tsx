@@ -323,7 +323,7 @@ export default function DriftDesign({ site, page = "home", basePath = "" }: Pres
           )}
           {gallery[0]?.image_url && (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={gallery[0].image_url} alt={gallery[0].caption ?? ""} className="mt-12 aspect-[16/9] w-full rounded-3xl object-cover" />
+            <img loading="lazy" decoding="async" src={gallery[0].image_url} alt={gallery[0].caption ?? ""} className="mt-12 aspect-[16/9] w-full rounded-3xl object-cover" />
           )}
         </section>
       </>,
@@ -339,7 +339,7 @@ export default function DriftDesign({ site, page = "home", basePath = "" }: Pres
           <section className="grid grid-cols-2 gap-1 sm:grid-cols-3">
             {gallery.map((g) => (
               // eslint-disable-next-line @next/next/no-img-element
-              <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-square w-full object-cover sm:aspect-[4/3]" />
+              <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-square w-full object-cover sm:aspect-[4/3]" />
             ))}
           </section>
         ) : (

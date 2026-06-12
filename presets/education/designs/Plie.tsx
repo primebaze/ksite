@@ -97,7 +97,7 @@ export default function PlieDesign({ site, page = "home", basePath = "" }: Prese
         <a href={href("home")} className="flex items-center gap-2.5">
           {theme.logo_url ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={theme.logo_url} alt={name} className="h-9 w-auto object-contain" />
+            <img loading="lazy" decoding="async" src={theme.logo_url} alt={name} className="h-9 w-auto object-contain" />
           ) : (
             <span aria-hidden className="flex h-9 w-9 items-center justify-center rounded-full" style={{ background: CORAL }}>
               <Star className="h-5 w-5" color="#fff" />
@@ -267,7 +267,7 @@ export default function PlieDesign({ site, page = "home", basePath = "" }: Prese
           )}
           {gallery[0] && (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={gallery[0].image_url} alt={gallery[0].caption ?? ""} className="mt-10 aspect-[16/9] w-full rounded-[2rem] object-cover" />
+            <img loading="lazy" decoding="async" src={gallery[0].image_url} alt={gallery[0].caption ?? ""} className="mt-10 aspect-[16/9] w-full rounded-[2rem] object-cover" />
           )}
         </section>
       </>,
@@ -284,7 +284,7 @@ export default function PlieDesign({ site, page = "home", basePath = "" }: Prese
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
               {gallery.map((g) => (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-square w-full rounded-[1.5rem] object-cover" />
+                <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-square w-full rounded-[1.5rem] object-cover" />
               ))}
             </div>
           </section>
@@ -493,7 +493,7 @@ export default function PlieDesign({ site, page = "home", basePath = "" }: Prese
           <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
             {gallery.slice(0, 4).map((g) => (
               // eslint-disable-next-line @next/next/no-img-element
-              <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-square w-full rounded-[1.5rem] object-cover" />
+              <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-square w-full rounded-[1.5rem] object-cover" />
             ))}
           </div>
           {gallery.length > 4 && (

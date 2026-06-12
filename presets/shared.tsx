@@ -24,8 +24,8 @@ export function resolveStyle(content: SiteContent): SiteStyle {
   return s && STYLES.includes(s) ? s : "classic";
 }
 
-// Make any content image editable + persistent. Spread onto an <img>:
-//   <img {...editImg(content, "story", gallery[0]?.image_url)} alt="" className="…" />
+// Make any content image editable + persistent. Spread onto an <img loading="lazy" decoding="async">:
+//   <img loading="lazy" decoding="async" {...editImg(content, "story", gallery[0]?.image_url)} alt="" className="…" />
 // `data-edit-image="img:<key>"` lets the live editor swap it (the upload API
 // saves the uploaded url to content.images[<key>]); on the next render the
 // override wins over the fallback, so it sticks with no flash. Public sites
@@ -311,7 +311,7 @@ export function SiteHeader({
         <a href={home} className="flex items-center gap-2.5">
           {theme.logo_url ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={theme.logo_url} alt={tenant.business_name} className="h-8 w-auto object-contain" />
+            <img loading="lazy" decoding="async" src={theme.logo_url} alt={tenant.business_name} className="h-8 w-auto object-contain" />
           ) : null}
           <span className={cx("font-display text-lg font-semibold tracking-tight", dark ? "text-white [text-shadow:0_1px_12px_rgba(0,0,0,0.55)]" : "text-neutral-900")}>{tenant.business_name}</span>
         </a>
@@ -391,7 +391,7 @@ export function GallerySection({ gallery }: { gallery: TenantSite["gallery"] }) 
       <div className="mx-auto grid max-w-6xl grid-cols-2 gap-1.5 p-1.5 sm:grid-cols-3">
         {gallery.map((g) => (
           // eslint-disable-next-line @next/next/no-img-element
-          <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full object-cover transition duration-500 hover:opacity-90" />
+          <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full object-cover transition duration-500 hover:opacity-90" />
         ))}
       </div>
     </section>

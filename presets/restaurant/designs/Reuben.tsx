@@ -304,7 +304,7 @@ export default function ReubenDesign({ site, page = "home", basePath = "" }: Pre
           <section className="grid grid-cols-2 gap-2 p-2 sm:grid-cols-3" style={{ background: CREAM }}>
             {gallery.map((g) => (
               // eslint-disable-next-line @next/next/no-img-element
-              <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/3] w-full border-2 object-cover" style={{ borderColor: INK }} />
+              <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/3] w-full border-2 object-cover" style={{ borderColor: INK }} />
             ))}
           </section>
         ) : <p className="px-6 py-20 text-center text-[color:#2A211A]/60" style={{ background: CREAM }}>Photos coming soon.</p>}
@@ -391,7 +391,7 @@ export default function ReubenDesign({ site, page = "home", basePath = "" }: Pre
                   <a key={item.id} href={href("menu")} className="group flex flex-col overflow-hidden border-[3px] bg-[#fbf7ec] shadow-[7px_7px_0_0_#2A211A] transition hover:-translate-x-[2px] hover:-translate-y-[2px] hover:shadow-[10px_10px_0_0_#2A211A]" style={{ borderColor: INK, borderRadius: "4px" }}>
                     {photo ? (
                       // eslint-disable-next-line @next/next/no-img-element
-                      <img src={photo} alt="" className="aspect-[4/3] w-full border-b-[3px] object-cover" style={{ borderColor: INK }} />
+                      <img loading="lazy" decoding="async" src={photo} alt="" className="aspect-[4/3] w-full border-b-[3px] object-cover" style={{ borderColor: INK }} />
                     ) : (
                       <div className="flex aspect-[4/3] w-full items-center justify-center border-b-[3px]" style={{ background: OLIVE, borderColor: INK }}>
                         <span style={display} className="text-3xl font-bold uppercase tracking-tight text-[color:#F3ECDC]/80">No. {String(i + 1).padStart(2, "0")}</span>

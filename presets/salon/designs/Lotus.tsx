@@ -258,7 +258,7 @@ export default function LotusDesign({ site, page = "home", basePath = "" }: Pres
                     <div className="mx-auto h-44 w-44 overflow-hidden rounded-full ring-1" style={{ background: CREAM, boxShadow: "0 16px 40px rgba(35,33,28,0.12)" }}>
                       {m.photo_url && (
                         // eslint-disable-next-line @next/next/no-img-element
-                        <img src={m.photo_url} alt={m.name} className="h-full w-full object-cover" />
+                        <img loading="lazy" decoding="async" src={m.photo_url} alt={m.name} className="h-full w-full object-cover" />
                       )}
                     </div>
                     <p style={serif} className="mt-5 text-lg" >{m.name}</p>
@@ -301,7 +301,7 @@ export default function LotusDesign({ site, page = "home", basePath = "" }: Pres
             <div className="mx-auto grid max-w-6xl grid-cols-2 gap-3 sm:grid-cols-3">
               {gallery.map((g) => (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full rounded-xl object-cover" />
+                <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full rounded-xl object-cover" />
               ))}
             </div>
           </section>

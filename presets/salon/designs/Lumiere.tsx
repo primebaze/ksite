@@ -265,7 +265,7 @@ export default function LumiereDesign({ site, page = "home", basePath = "" }: Pr
                     <div className="mx-auto aspect-[3/4] w-full max-w-[16rem] overflow-hidden bg-neutral-200">
                       {m.photo_url && (
                         // eslint-disable-next-line @next/next/no-img-element
-                        <img src={m.photo_url} alt={m.name} className="h-full w-full object-cover" />
+                        <img loading="lazy" decoding="async" src={m.photo_url} alt={m.name} className="h-full w-full object-cover" />
                       )}
                     </div>
                     <p style={serif} className="mt-5 text-lg">{m.name}</p>
@@ -290,7 +290,7 @@ export default function LumiereDesign({ site, page = "home", basePath = "" }: Pr
           <section className="grid grid-cols-2 gap-1 sm:grid-cols-3">
             {gallery.map((g) => (
               // eslint-disable-next-line @next/next/no-img-element
-              <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full object-cover" />
+              <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full object-cover" />
             ))}
           </section>
         ) : <p className="mx-auto max-w-6xl px-8 py-20 text-neutral-500">Photos coming soon.</p>}
@@ -334,7 +334,7 @@ export default function LumiereDesign({ site, page = "home", basePath = "" }: Pr
                   <a key={s.section} href={href("services")} className="group relative isolate flex aspect-[4/3] items-end overflow-hidden bg-neutral-900">
                     {img ? (
                       // eslint-disable-next-line @next/next/no-img-element
-                      <img src={img} alt="" className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-105" />
+                      <img loading="lazy" decoding="async" src={img} alt="" className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-105" />
                     ) : (
                       <div className="absolute inset-0 bg-gradient-to-br from-neutral-600 to-neutral-900" />
                     )}
@@ -364,10 +364,10 @@ export default function LumiereDesign({ site, page = "home", basePath = "" }: Pr
             <div className="aspect-[4/3] w-full overflow-hidden bg-neutral-200">
               {gallery[0]?.image_url ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={gallery[0].image_url} alt="" className="h-full w-full object-cover" />
+                <img loading="lazy" decoding="async" src={gallery[0].image_url} alt="" className="h-full w-full object-cover" />
               ) : hero ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={hero} alt="" className="h-full w-full object-cover" />
+                <img loading="lazy" decoding="async" src={hero} alt="" className="h-full w-full object-cover" />
               ) : null}
             </div>
           </div>
@@ -392,7 +392,7 @@ export default function LumiereDesign({ site, page = "home", basePath = "" }: Pr
           <div className="mt-12 grid grid-cols-2 gap-1.5 sm:grid-cols-3 lg:grid-cols-5">
             {gallery.slice(0, 5).map((g) => (
               // eslint-disable-next-line @next/next/no-img-element
-              <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[3/4] w-full object-cover" />
+              <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[3/4] w-full object-cover" />
             ))}
           </div>
           <div className="mt-12">

@@ -283,7 +283,7 @@ export default function ThermaeDesign({ site, page = "home", basePath = "" }: Pr
                     <div className="mx-auto h-48 w-48 overflow-hidden rounded-[40%_60%_55%_45%/55%_45%_55%_45%]" style={{ background: STONE }}>
                       {m.photo_url && (
                         // eslint-disable-next-line @next/next/no-img-element
-                        <img src={m.photo_url} alt={m.name} className="h-full w-full object-cover" />
+                        <img loading="lazy" decoding="async" src={m.photo_url} alt={m.name} className="h-full w-full object-cover" />
                       )}
                     </div>
                     <p className="mt-6 text-lg font-medium" style={{ color: SLATE }}>{m.name}</p>
@@ -327,7 +327,7 @@ export default function ThermaeDesign({ site, page = "home", basePath = "" }: Pr
               <div className="columns-2 gap-4 sm:columns-3 [&>*]:mb-4">
                 {gallery.map((g) => (
                   // eslint-disable-next-line @next/next/no-img-element
-                  <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="w-full break-inside-avoid rounded-[1.5rem] object-cover" />
+                  <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="w-full break-inside-avoid rounded-[1.5rem] object-cover" />
                 ))}
               </div>
             </div>
@@ -573,7 +573,7 @@ export default function ThermaeDesign({ site, page = "home", basePath = "" }: Pr
           <div className="relative min-h-[360px] overflow-hidden rounded-[2.5rem] lg:min-h-[480px]">
             {hero ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={hero} alt="" className="absolute inset-0 h-full w-full object-cover" />
+              <img loading="lazy" decoding="async" src={hero} alt="" className="absolute inset-0 h-full w-full object-cover" />
             ) : (
               <div className="absolute inset-0" style={{ background: EUCALYPTUS }} />
             )}
@@ -606,7 +606,7 @@ export default function ThermaeDesign({ site, page = "home", basePath = "" }: Pr
         <div className="relative min-h-[380px] overflow-hidden">
           {hero ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={hero} alt="" className="absolute inset-0 h-full w-full object-cover" />
+            <img loading="lazy" decoding="async" src={hero} alt="" className="absolute inset-0 h-full w-full object-cover" />
           ) : (
             <div className="absolute inset-0" style={{ background: STONE }} />
           )}

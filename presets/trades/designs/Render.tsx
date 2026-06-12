@@ -274,7 +274,7 @@ export default function RenderDesign({ site, page = "home", basePath = "" }: Pre
               {gallery.map((g) => (
                 <figure key={g.id} className="overflow-hidden rounded-2xl" style={{ background: CARD, border: `1px solid ${PUTTY}55` }}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/3] w-full object-cover" />
+                  <img loading="lazy" decoding="async" src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/3] w-full object-cover" />
                   {g.caption && <figcaption className="px-5 py-3 text-[13px]" style={{ color: MUTE }}>{g.caption}</figcaption>}
                 </figure>
               ))}
@@ -357,7 +357,7 @@ export default function RenderDesign({ site, page = "home", basePath = "" }: Pre
             <div className="overflow-hidden rounded-[24px]" style={{ border: `1px solid ${PUTTY}66` }}>
               {gallery[0] ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={gallery[0].image_url} alt={gallery[0].caption ?? ""} className="aspect-[5/4] w-full object-cover" />
+                <img loading="lazy" decoding="async" src={gallery[0].image_url} alt={gallery[0].caption ?? ""} className="aspect-[5/4] w-full object-cover" />
               ) : (
                 <div className="aspect-[5/4] w-full" style={{ background: sweep(PUTTY, CARD) }} />
               )}
@@ -421,7 +421,7 @@ export default function RenderDesign({ site, page = "home", basePath = "" }: Pre
               {gallery.slice(0, 4).map((g) => (
                 <figure key={g.id} className="overflow-hidden rounded-2xl" style={{ border: `1px solid ${STEEL}55` }}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={g.image_url} alt={g.caption ?? ""} className="aspect-square w-full object-cover" />
+                  <img loading="lazy" decoding="async" src={g.image_url} alt={g.caption ?? ""} className="aspect-square w-full object-cover" />
                 </figure>
               ))}
             </div>

@@ -219,7 +219,7 @@ export default function ConfettiDesign({ site, page = "home", basePath = "" }: P
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
               {gallery.map((g, i) => (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className={`w-full rounded-2xl object-cover ${i % 5 === 0 ? "aspect-square sm:row-span-2 sm:aspect-[3/4]" : "aspect-[4/3]"}`} style={{ border: `3px solid ${PARTY[i % PARTY.length]}22` }} />
+                <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className={`w-full rounded-2xl object-cover ${i % 5 === 0 ? "aspect-square sm:row-span-2 sm:aspect-[3/4]" : "aspect-[4/3]"}`} style={{ border: `3px solid ${PARTY[i % PARTY.length]}22` }} />
               ))}
             </div>
           </section>
@@ -284,7 +284,7 @@ export default function ConfettiDesign({ site, page = "home", basePath = "" }: P
           </div>
           {gallery[0] ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={gallery[0].image_url} alt={gallery[0].caption ?? ""} className="aspect-[4/5] w-full rounded-3xl object-cover" style={{ border: `4px solid ${YELLOW}33` }} />
+            <img loading="lazy" decoding="async" src={gallery[0].image_url} alt={gallery[0].caption ?? ""} className="aspect-[4/5] w-full rounded-3xl object-cover" style={{ border: `4px solid ${YELLOW}33` }} />
           ) : <div className="aspect-[4/5] w-full rounded-3xl" style={{ background: `linear-gradient(135deg,${PINK}22,${BLUE}22)` }} />}
         </section>
       </>,
@@ -513,7 +513,7 @@ export default function ConfettiDesign({ site, page = "home", basePath = "" }: P
             <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
               {gallery.slice(0, 8).map((g, i) => (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-square w-full rounded-2xl object-cover" style={{ border: `3px solid ${PARTY[i % PARTY.length]}22` }} />
+                <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-square w-full rounded-2xl object-cover" style={{ border: `3px solid ${PARTY[i % PARTY.length]}22` }} />
               ))}
             </div>
           </div>

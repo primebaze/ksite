@@ -130,7 +130,7 @@ export default function SalonSite(props: PresetProps) {
                 <div className="mx-auto h-44 w-44 overflow-hidden rounded-full bg-neutral-100">
                   {m.photo_url && (
                     // eslint-disable-next-line @next/next/no-img-element
-                    <img src={m.photo_url} alt={m.name} className="h-full w-full object-cover" />
+                    <img loading="lazy" decoding="async" src={m.photo_url} alt={m.name} className="h-full w-full object-cover" />
                   )}
                 </div>
                 <p className="mt-5 text-lg font-medium">{m.name}</p>

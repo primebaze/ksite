@@ -262,7 +262,7 @@ export default function IndigoDesign({ site, page = "home", basePath = "" }: Pre
             <div className="columns-1 gap-4 sm:columns-2 lg:columns-3 [&>*]:mb-4">
               {gallery.map((g) => (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="w-full rounded-2xl object-cover" />
+                <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="w-full rounded-2xl object-cover" />
               ))}
             </div>
           </section>
@@ -313,7 +313,7 @@ export default function IndigoDesign({ site, page = "home", basePath = "" }: Pre
               <a href={href("services")} className="group relative overflow-hidden rounded-3xl bg-neutral-100 lg:col-span-2">
                 {gallery[0] ? (
                   // eslint-disable-next-line @next/next/no-img-element
-                  <img src={gallery[0].image_url} alt="" className="aspect-[16/10] w-full object-cover transition duration-500 group-hover:scale-[1.02]" />
+                  <img loading="lazy" decoding="async" src={gallery[0].image_url} alt="" className="aspect-[16/10] w-full object-cover transition duration-500 group-hover:scale-[1.02]" />
                 ) : (
                   <div className="aspect-[16/10] w-full" style={{ background: `linear-gradient(135deg, ${PINK}, ${MINT})` }} />
                 )}
@@ -327,7 +327,7 @@ export default function IndigoDesign({ site, page = "home", basePath = "" }: Pre
             {gallery.length > 0 && (
               <a href={href("gallery")} className="group relative overflow-hidden rounded-3xl bg-neutral-100">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={(gallery[1] ?? gallery[0]).image_url} alt="" className="aspect-square w-full object-cover transition duration-500 group-hover:scale-[1.02]" />
+                <img loading="lazy" decoding="async" src={(gallery[1] ?? gallery[0]).image_url} alt="" className="aspect-square w-full object-cover transition duration-500 group-hover:scale-[1.02]" />
                 <span className="absolute left-4 top-4"><Chip color={BLUE}>Gallery</Chip></span>
               </a>
             )}
@@ -388,7 +388,7 @@ export default function IndigoDesign({ site, page = "home", basePath = "" }: Pre
                   <div className="overflow-hidden rounded-2xl bg-neutral-200">
                     {m.photo_url ? (
                       // eslint-disable-next-line @next/next/no-img-element
-                      <img src={m.photo_url} alt={m.name} className="aspect-[4/5] w-full object-cover" />
+                      <img loading="lazy" decoding="async" src={m.photo_url} alt={m.name} className="aspect-[4/5] w-full object-cover" />
                     ) : (
                       <div className="aspect-[4/5] w-full" style={{ background: `linear-gradient(135deg, ${BLUE}, ${MINT})` }} />
                     )}

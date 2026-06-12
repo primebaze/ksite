@@ -57,7 +57,7 @@ export default function IgnitionDesign({ site, page = "home", basePath = "" }: P
         <a href={href("home")} className="flex items-center gap-2.5">
           {theme.logo_url ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={theme.logo_url} alt={name} className="h-8 w-auto object-contain" />
+            <img loading="lazy" decoding="async" src={theme.logo_url} alt={name} className="h-8 w-auto object-contain" />
           ) : (
             <span aria-hidden className="flex h-9 w-9 items-center justify-center rounded-lg text-lg font-extrabold" style={{ background: GREEN, color: "#fff" }}>L</span>
           )}
@@ -215,7 +215,7 @@ export default function IgnitionDesign({ site, page = "home", basePath = "" }: P
           ) : <p style={{ color: MUTE }}>Our story is coming soon.</p>}
           {gallery[0] && (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={gallery[0].image_url} alt={gallery[0].caption ?? ""} className="mt-10 aspect-[16/9] w-full rounded-2xl object-cover" />
+            <img loading="lazy" decoding="async" src={gallery[0].image_url} alt={gallery[0].caption ?? ""} className="mt-10 aspect-[16/9] w-full rounded-2xl object-cover" />
           )}
         </section>
       </>,
@@ -232,7 +232,7 @@ export default function IgnitionDesign({ site, page = "home", basePath = "" }: P
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
               {gallery.map((g) => (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-square w-full rounded-2xl object-cover" />
+                <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-square w-full rounded-2xl object-cover" />
               ))}
             </div>
           </section>
@@ -377,7 +377,7 @@ export default function IgnitionDesign({ site, page = "home", basePath = "" }: P
             <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
               {gallery.slice(0, 4).map((g) => (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-square w-full rounded-2xl object-cover" />
+                <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-square w-full rounded-2xl object-cover" />
               ))}
             </div>
             {gallery.length > 4 && (

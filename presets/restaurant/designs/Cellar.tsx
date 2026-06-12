@@ -284,7 +284,7 @@ export default function CellarDesign({ site, page = "home", basePath = "" }: Pre
           <section className="grid grid-cols-2 gap-2 p-2 sm:grid-cols-3" style={{ background: PLUM }}>
             {gallery.map((g) => (
               // eslint-disable-next-line @next/next/no-img-element
-              <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full object-cover" />
+              <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full object-cover" />
             ))}
           </section>
         ) : <p className="px-6 py-24 text-center text-[#E7DECF]/55" style={{ background: PLUM }}>Photographs coming soon.</p>}
@@ -381,7 +381,7 @@ export default function CellarDesign({ site, page = "home", basePath = "" }: Pre
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
               {gallery.slice(0, 3).map((g) => (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full object-cover" />
+                <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full object-cover" />
               ))}
             </div>
             <div className="mt-8 text-center">

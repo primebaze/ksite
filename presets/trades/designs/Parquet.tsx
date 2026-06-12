@@ -298,7 +298,7 @@ export default function ParquetDesign({ site, page = "home", basePath = "" }: Pr
               {gallery.map((g) => (
                 <figure key={g.id} className="overflow-hidden rounded-xl bg-white" style={{ border: `1px solid ${ESPRESSO}14` }}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/3] w-full object-cover" />
+                  <img loading="lazy" decoding="async" src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/3] w-full object-cover" />
                   {g.caption && <figcaption className="px-4 py-3 text-sm" style={{ color: MUTE }}>{g.caption}</figcaption>}
                 </figure>
               ))}
@@ -407,7 +407,7 @@ export default function ParquetDesign({ site, page = "home", basePath = "" }: Pr
             <div className="relative">
               {gallery[0] ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={gallery[0].image_url} alt={gallery[0].caption ?? ""} className="aspect-[4/3] w-full rounded-2xl object-cover" style={{ border: `1px solid ${ESPRESSO}14` }} />
+                <img loading="lazy" decoding="async" src={gallery[0].image_url} alt={gallery[0].caption ?? ""} className="aspect-[4/3] w-full rounded-2xl object-cover" style={{ border: `1px solid ${ESPRESSO}14` }} />
               ) : (
                 <div className="aspect-[4/3] w-full rounded-2xl" style={{ background: GREIGE }} />
               )}
@@ -432,7 +432,7 @@ export default function ParquetDesign({ site, page = "home", basePath = "" }: Pr
               {gallery.slice(0, 6).map((g) => (
                 <figure key={g.id} className="overflow-hidden rounded-xl bg-white" style={{ border: `1px solid ${ESPRESSO}14` }}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/3] w-full object-cover" />
+                  <img loading="lazy" decoding="async" src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/3] w-full object-cover" />
                   {g.caption && <figcaption className="px-4 py-3 text-sm" style={{ color: MUTE }}>{g.caption}</figcaption>}
                 </figure>
               ))}

@@ -127,7 +127,7 @@ export default function BeautySite(props: PresetProps) {
           <div className="mt-12 columns-2 gap-3 sm:columns-3">
             {gallery.map((g) => (
               // eslint-disable-next-line @next/next/no-img-element
-              <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className={cx("mb-3 w-full break-inside-avoid object-cover", tokens.card)} />
+              <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className={cx("mb-3 w-full break-inside-avoid object-cover", tokens.card)} />
             ))}
           </div>
         </section>

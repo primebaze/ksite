@@ -339,7 +339,7 @@ export default function AgaveDesign({ site, page = "home", basePath = "" }: Pres
           <section className="grid grid-cols-2 gap-2 p-2 sm:grid-cols-3" style={{ background: CREAM }}>
             {gallery.map((g, i) => (
               // eslint-disable-next-line @next/next/no-img-element
-              <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className={`aspect-[4/3] w-full object-cover ${i % 5 === 0 ? "rounded-t-[3rem] rounded-b-2xl" : "rounded-2xl"}`} />
+              <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className={`aspect-[4/3] w-full object-cover ${i % 5 === 0 ? "rounded-t-[3rem] rounded-b-2xl" : "rounded-2xl"}`} />
             ))}
           </section>
         ) : <p className="px-6 py-20 text-center text-[color:#221A14]/60" style={{ background: CREAM }}>Photos coming soon.</p>}
@@ -425,7 +425,7 @@ export default function AgaveDesign({ site, page = "home", basePath = "" }: Pres
                   <a key={item.id} href={href("menu")} className="group flex flex-col overflow-hidden rounded-t-[3.5rem] rounded-b-[1.5rem] shadow-sm transition hover:-translate-y-1 hover:shadow-lg" style={{ background: tint }}>
                     {photo ? (
                       // eslint-disable-next-line @next/next/no-img-element
-                      <img src={photo} alt="" className="aspect-[4/3] w-full object-cover" />
+                      <img loading="lazy" decoding="async" src={photo} alt="" className="aspect-[4/3] w-full object-cover" />
                     ) : (
                       <div className="aspect-[4/3] w-full" style={{ background: `linear-gradient(160deg, ${SUNFLOWER}, ${tint})` }} />
                     )}

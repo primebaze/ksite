@@ -257,7 +257,7 @@ export default function StrollDesign({ site, page = "home", basePath = "" }: Pre
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
               {gallery.map((g, i) => (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-square w-full rounded-[1.75rem] object-cover" style={{ border: `3px solid ${ACCENTS[i % ACCENTS.length]}` }} />
+                <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-square w-full rounded-[1.75rem] object-cover" style={{ border: `3px solid ${ACCENTS[i % ACCENTS.length]}` }} />
               ))}
             </div>
           </section>
@@ -418,7 +418,7 @@ export default function StrollDesign({ site, page = "home", basePath = "" }: Pre
             <div className="relative">
               {gallery[0] ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={gallery[0].image_url} alt={gallery[0].caption ?? ""} className="aspect-[4/3] w-full rounded-[2rem] object-cover" style={{ border: `4px solid ${SUN}` }} />
+                <img loading="lazy" decoding="async" src={gallery[0].image_url} alt={gallery[0].caption ?? ""} className="aspect-[4/3] w-full rounded-[2rem] object-cover" style={{ border: `4px solid ${SUN}` }} />
               ) : (
                 <div className="aspect-[4/3] w-full rounded-[2rem]" style={{ background: `${SKY}22` }} />
               )}
@@ -444,7 +444,7 @@ export default function StrollDesign({ site, page = "home", basePath = "" }: Pre
             <div className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-4">
               {gallery.slice(0, 4).map((g, i) => (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-square w-full rounded-[1.75rem] object-cover" style={{ border: `3px solid ${ACCENTS[i % ACCENTS.length]}` }} />
+                <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-square w-full rounded-[1.75rem] object-cover" style={{ border: `3px solid ${ACCENTS[i % ACCENTS.length]}` }} />
               ))}
             </div>
             <div className="mt-10 text-center">

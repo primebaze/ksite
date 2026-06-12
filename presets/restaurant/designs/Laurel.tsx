@@ -332,7 +332,7 @@ export default function LaurelDesign({ site, page = "home", basePath = "" }: Pre
           <section className="grid grid-cols-2 gap-1.5 px-1.5 pb-1.5 sm:grid-cols-3">
             {gallery.map((g) => (
               // eslint-disable-next-line @next/next/no-img-element
-              <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full object-cover" />
+              <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full object-cover" />
             ))}
           </section>
         ) : (

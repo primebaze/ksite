@@ -282,7 +282,7 @@ export default function PixelDesign({ site, page = "home", basePath = "" }: Pres
                     {g.caption && <span className="ml-3 truncate text-[11px]" style={{ color: MUTE }}>{g.caption}</span>}
                   </div>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={g.image_url} alt={g.caption ?? ""} className="aspect-[16/10] w-full object-cover" />
+                  <img loading="lazy" decoding="async" src={g.image_url} alt={g.caption ?? ""} className="aspect-[16/10] w-full object-cover" />
                 </figure>
               ))}
             </div>
@@ -376,7 +376,7 @@ export default function PixelDesign({ site, page = "home", basePath = "" }: Pres
             <div className="overflow-hidden rounded-2xl" style={{ background: CARD, border: `1px solid ${LINE}` }}>
               {gallery[0] ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={gallery[0].image_url} alt={gallery[0].caption ?? ""} className="aspect-[4/3] w-full object-cover" />
+                <img loading="lazy" decoding="async" src={gallery[0].image_url} alt={gallery[0].caption ?? ""} className="aspect-[4/3] w-full object-cover" />
               ) : (
                 <div className="relative aspect-[4/3] w-full" style={{ background: "linear-gradient(150deg,#1c2030,#10121a)" }}>
                   <div className="absolute inset-0" style={{ backgroundImage: PIXEL_GRID, backgroundSize: "26px 26px" }} />
@@ -442,7 +442,7 @@ export default function PixelDesign({ site, page = "home", basePath = "" }: Pres
                     <span className="h-2.5 w-2.5 rounded-full" style={{ background: MINT }} />
                   </div>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={g.image_url} alt={g.caption ?? ""} className="aspect-[16/10] w-full object-cover" />
+                  <img loading="lazy" decoding="async" src={g.image_url} alt={g.caption ?? ""} className="aspect-[16/10] w-full object-cover" />
                 </figure>
               ))}
             </div>

@@ -71,7 +71,7 @@ function PhotoCarousel({
             <div key={it.id} className="relative aspect-[3/4] w-[78%] flex-none overflow-hidden sm:w-[calc(50%-0.5rem)] lg:w-[calc(25%-0.75rem)]">
               {it.image ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={it.image} alt={it.title} className="absolute inset-0 h-full w-full object-cover" />
+                <img loading="lazy" decoding="async" src={it.image} alt={it.title} className="absolute inset-0 h-full w-full object-cover" />
               ) : (
                 <div className="absolute inset-0" style={{ background: "linear-gradient(160deg,#cdc4b6,#8c8170)" }} />
               )}
@@ -132,7 +132,7 @@ function TeamCarousel({ team }: { team: { id: string; name: string; role: string
             <div key={m.id} className="relative aspect-[3/4] w-[82%] flex-none overflow-hidden sm:w-[calc(50%-0.5rem)] lg:w-[calc(33.333%-0.7rem)]">
               {m.photo_url ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={m.photo_url} alt={m.name} className="absolute inset-0 h-full w-full object-cover" />
+                <img loading="lazy" decoding="async" src={m.photo_url} alt={m.name} className="absolute inset-0 h-full w-full object-cover" />
               ) : (
                 <div className="absolute inset-0" style={{ background: "linear-gradient(160deg,#3a352c,#1c1812)" }} />
               )}
@@ -412,7 +412,7 @@ export default function AureliaDesign({ site, page = "home", basePath = "" }: Pr
           <section className="grid grid-cols-2 gap-1 sm:grid-cols-3">
             {gallery.map((g) => (
               // eslint-disable-next-line @next/next/no-img-element
-              <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/3] w-full object-cover" />
+              <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/3] w-full object-cover" />
             ))}
           </section>
         ) : <p className="mx-auto max-w-6xl px-8 py-20 text-neutral-500">Photos coming soon.</p>}
@@ -509,10 +509,10 @@ export default function AureliaDesign({ site, page = "home", basePath = "" }: Pr
           <div className="relative aspect-[4/3] overflow-hidden">
             {gallery[0]?.image_url ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={gallery[0].image_url} alt="" className="absolute inset-0 h-full w-full object-cover" />
+              <img loading="lazy" decoding="async" src={gallery[0].image_url} alt="" className="absolute inset-0 h-full w-full object-cover" />
             ) : hero ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={hero} alt="" className="absolute inset-0 h-full w-full object-cover" />
+              <img loading="lazy" decoding="async" src={hero} alt="" className="absolute inset-0 h-full w-full object-cover" />
             ) : (
               <div className="absolute inset-0" style={{ background: "linear-gradient(160deg,#cdc4b6,#8c8170)" }} />
             )}
@@ -541,7 +541,7 @@ export default function AureliaDesign({ site, page = "home", basePath = "" }: Pr
         <div className="relative order-2 hidden aspect-[3/4] overflow-hidden lg:order-1 lg:block">
           {gallery[1]?.image_url ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={gallery[1].image_url} alt="" className="absolute inset-0 h-full w-full object-cover" />
+            <img loading="lazy" decoding="async" src={gallery[1].image_url} alt="" className="absolute inset-0 h-full w-full object-cover" />
           ) : (
             <div className="absolute inset-0" style={{ background: "linear-gradient(160deg,#cdc4b6,#8c8170)" }} />
           )}
@@ -616,10 +616,10 @@ export default function AureliaDesign({ site, page = "home", basePath = "" }: Pr
       <section className="relative isolate overflow-hidden">
         {gallery[2]?.image_url ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={gallery[2].image_url} alt="" className="absolute inset-0 h-full w-full object-cover" />
+          <img loading="lazy" decoding="async" src={gallery[2].image_url} alt="" className="absolute inset-0 h-full w-full object-cover" />
         ) : hero ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={hero} alt="" className="absolute inset-0 h-full w-full object-cover" />
+          <img loading="lazy" decoding="async" src={hero} alt="" className="absolute inset-0 h-full w-full object-cover" />
         ) : (
           <div className="absolute inset-0" style={{ background: "linear-gradient(160deg,#3a352c,#16140f)" }} />
         )}

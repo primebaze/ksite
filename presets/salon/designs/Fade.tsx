@@ -229,7 +229,7 @@ export default function FadeDesign({ site, page = "home", basePath = "" }: Prese
                   <div className="mx-auto h-44 w-44 overflow-hidden rounded-full bg-neutral-100">
                     {m.photo_url && (
                       // eslint-disable-next-line @next/next/no-img-element
-                      <img src={m.photo_url} alt={m.name} className="h-full w-full object-cover" />
+                      <img loading="lazy" decoding="async" src={m.photo_url} alt={m.name} className="h-full w-full object-cover" />
                     )}
                   </div>
                   <p className="mt-5 text-lg font-medium">{m.name}</p>
@@ -254,7 +254,7 @@ export default function FadeDesign({ site, page = "home", basePath = "" }: Prese
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
               {gallery.map((g) => (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-square w-full object-cover" />
+                <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-square w-full object-cover" />
               ))}
             </div>
           </section>
@@ -298,10 +298,10 @@ export default function FadeDesign({ site, page = "home", basePath = "" }: Prese
             </div>
             {galleryStrip[0] ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={galleryStrip[0].image_url} alt={galleryStrip[0].caption ?? ""} className="h-72 w-full object-cover sm:h-[28rem]" />
+              <img loading="lazy" decoding="async" src={galleryStrip[0].image_url} alt={galleryStrip[0].caption ?? ""} className="h-72 w-full object-cover sm:h-[28rem]" />
             ) : hero ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={hero} alt="" className="h-72 w-full object-cover sm:h-[28rem]" />
+              <img loading="lazy" decoding="async" src={hero} alt="" className="h-72 w-full object-cover sm:h-[28rem]" />
             ) : (
               <div className="h-72 w-full bg-neutral-200 sm:h-[28rem]" />
             )}
@@ -328,7 +328,7 @@ export default function FadeDesign({ site, page = "home", basePath = "" }: Prese
             </div>
             {galleryStrip[1] ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={galleryStrip[1].image_url} alt={galleryStrip[1].caption ?? ""} className="h-80 w-full object-cover sm:h-[32rem]" />
+              <img loading="lazy" decoding="async" src={galleryStrip[1].image_url} alt={galleryStrip[1].caption ?? ""} className="h-80 w-full object-cover sm:h-[32rem]" />
             ) : (
               <div className="h-80 w-full bg-neutral-200 sm:h-[32rem]" />
             )}
@@ -346,7 +346,7 @@ export default function FadeDesign({ site, page = "home", basePath = "" }: Prese
           </div>
           {galleryStrip[2] ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={galleryStrip[2].image_url} alt={galleryStrip[2].caption ?? ""} className="h-72 w-full object-cover sm:h-96" />
+            <img loading="lazy" decoding="async" src={galleryStrip[2].image_url} alt={galleryStrip[2].caption ?? ""} className="h-72 w-full object-cover sm:h-96" />
           ) : (
             <div className="h-72 w-full bg-white/20 sm:h-96" />
           )}
@@ -360,7 +360,7 @@ export default function FadeDesign({ site, page = "home", basePath = "" }: Prese
           <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
             {galleryStrip.map((g) => (
               // eslint-disable-next-line @next/next/no-img-element
-              <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-square w-full object-cover" />
+              <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-square w-full object-cover" />
             ))}
           </div>
           {gallery.length > galleryStrip.length && (

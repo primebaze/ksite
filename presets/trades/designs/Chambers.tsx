@@ -273,7 +273,7 @@ export default function ChambersDesign({ site, page = "home", basePath = "" }: P
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {gallery.map((g) => (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/3] w-full object-cover" style={{ border: `1px solid ${LINE}` }} />
+                <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/3] w-full object-cover" style={{ border: `1px solid ${LINE}` }} />
               ))}
             </div>
           </section>
@@ -385,7 +385,7 @@ export default function ChambersDesign({ site, page = "home", basePath = "" }: P
           <div className="relative order-last lg:order-first">
             {gallery[0] ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={gallery[0].image_url} alt={gallery[0].caption ?? ""} className="aspect-[4/3] w-full object-cover" style={{ border: `1px solid ${LINE}` }} />
+              <img loading="lazy" decoding="async" src={gallery[0].image_url} alt={gallery[0].caption ?? ""} className="aspect-[4/3] w-full object-cover" style={{ border: `1px solid ${LINE}` }} />
             ) : (
               <div className="aspect-[4/3] w-full" style={{ background: `linear-gradient(160deg,#1f3457,${NAVY})` }} />
             )}
@@ -409,7 +409,7 @@ export default function ChambersDesign({ site, page = "home", basePath = "" }: P
             <div className="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-4">
               {gallery.slice(0, 4).map((g) => (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[3/4] w-full object-cover" style={{ border: `1px solid ${BRASS}40` }} />
+                <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[3/4] w-full object-cover" style={{ border: `1px solid ${BRASS}40` }} />
               ))}
             </div>
             <div className="mt-10">{btnOutlineLight("View all cases", href("gallery"))}</div>

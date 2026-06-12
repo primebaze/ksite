@@ -302,7 +302,7 @@ export default function SaffronDesign({ site, page = "home", basePath = "" }: Pr
             <section className="grid grid-cols-2 gap-2 p-2 sm:grid-cols-3">
               {gallery.map((g) => (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full object-cover" />
+                <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full object-cover" />
               ))}
             </section>
           ) : <p className="px-6 py-20 text-center text-[#7a5c52]">Photos coming soon.</p>}
@@ -430,7 +430,7 @@ export default function SaffronDesign({ site, page = "home", basePath = "" }: Pr
               {gallery.slice(0, 3).map((g) => (
                 <a key={g.id} href={href("gallery")} className="group block overflow-hidden">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full object-cover transition duration-500 group-hover:scale-[1.03]" />
+                  <img loading="lazy" decoding="async" src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full object-cover transition duration-500 group-hover:scale-[1.03]" />
                   {g.caption && <p className="mt-3 text-center text-[11px] font-semibold uppercase tracking-[0.2em] text-[#F6ECD9]/80">{g.caption}</p>}
                 </a>
               ))}

@@ -275,7 +275,7 @@ export default function LivewireDesign({ site, page = "home", basePath = "" }: P
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
               {gallery.map((g) => (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-square w-full rounded-lg object-cover" />
+                <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-square w-full rounded-lg object-cover" />
               ))}
             </div>
           </section>
@@ -384,7 +384,7 @@ export default function LivewireDesign({ site, page = "home", basePath = "" }: P
           <div className="relative">
             {gallery[0] ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={gallery[0].image_url} alt={gallery[0].caption ?? ""} className="aspect-[4/3] w-full rounded-2xl object-cover" />
+              <img loading="lazy" decoding="async" src={gallery[0].image_url} alt={gallery[0].caption ?? ""} className="aspect-[4/3] w-full rounded-2xl object-cover" />
             ) : (
               <div className="aspect-[4/3] w-full rounded-2xl" style={{ background: PANEL }} />
             )}
@@ -415,7 +415,7 @@ export default function LivewireDesign({ site, page = "home", basePath = "" }: P
           <div className="mt-10 grid grid-cols-2 gap-2 sm:grid-cols-4">
             {gallery.slice(0, 4).map((g) => (
               // eslint-disable-next-line @next/next/no-img-element
-              <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-square w-full rounded-lg object-cover" />
+              <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-square w-full rounded-lg object-cover" />
             ))}
           </div>
           <div className="mt-10">{btnDark("See more work", href("gallery"))}</div>

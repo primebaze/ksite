@@ -278,7 +278,7 @@ export default function PipeworksDesign({ site, page = "home", basePath = "" }: 
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
               {gallery.map((g) => (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-square w-full rounded-2xl object-cover" />
+                <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-square w-full rounded-2xl object-cover" />
               ))}
             </div>
           </section>
@@ -353,7 +353,7 @@ export default function PipeworksDesign({ site, page = "home", basePath = "" }: 
           <div className="relative order-2 lg:order-1">
             {gallery[0] ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={gallery[0].image_url} alt={gallery[0].caption ?? ""} className="aspect-[4/3] w-full rounded-3xl object-cover shadow-xl shadow-[#102A43]/15" />
+              <img loading="lazy" decoding="async" src={gallery[0].image_url} alt={gallery[0].caption ?? ""} className="aspect-[4/3] w-full rounded-3xl object-cover shadow-xl shadow-[#102A43]/15" />
             ) : (
               <div className="aspect-[4/3] w-full rounded-3xl" style={{ background: `linear-gradient(150deg, ${MIST}, ${AQUA}55)` }} />
             )}
@@ -422,7 +422,7 @@ export default function PipeworksDesign({ site, page = "home", basePath = "" }: 
             <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
               {gallery.slice(0, 4).map((g) => (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-square w-full rounded-2xl object-cover" />
+                <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-square w-full rounded-2xl object-cover" />
               ))}
             </div>
             <div className="mt-10"><a href={href("gallery")} className="inline-flex items-center justify-center rounded-full px-7 py-3.5 text-[13px] font-bold tracking-[0.01em] text-white transition hover:bg-white/10" style={{ border: "1.5px solid rgba(255,255,255,0.35)" }}>See more work</a></div>

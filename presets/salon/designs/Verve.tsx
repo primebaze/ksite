@@ -241,7 +241,7 @@ export default function VerveDesign({ site, page = "home", basePath = "" }: Pres
                     <div className="mx-auto h-48 w-48 overflow-hidden rounded-full bg-neutral-200">
                       {m.photo_url && (
                         // eslint-disable-next-line @next/next/no-img-element
-                        <img src={m.photo_url} alt={m.name} className="h-full w-full object-cover" />
+                        <img loading="lazy" decoding="async" src={m.photo_url} alt={m.name} className="h-full w-full object-cover" />
                       )}
                     </div>
                     <p style={serif} className="mt-5 text-lg">{m.name}</p>
@@ -266,7 +266,7 @@ export default function VerveDesign({ site, page = "home", basePath = "" }: Pres
           <section className="grid grid-cols-2 gap-1 sm:grid-cols-3">
             {gallery.map((g) => (
               // eslint-disable-next-line @next/next/no-img-element
-              <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full object-cover" />
+              <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full object-cover" />
             ))}
           </section>
         ) : <p className="mx-auto max-w-6xl px-8 py-20 text-center text-neutral-500">Photos coming soon.</p>}
@@ -303,10 +303,10 @@ export default function VerveDesign({ site, page = "home", basePath = "" }: Pres
           <div className="relative aspect-[4/3] overflow-hidden bg-neutral-100">
             {gallery[0] ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={gallery[0].image_url} alt={gallery[0].caption ?? ""} className="h-full w-full object-cover" />
+              <img loading="lazy" decoding="async" src={gallery[0].image_url} alt={gallery[0].caption ?? ""} className="h-full w-full object-cover" />
             ) : hero ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={hero} alt="" className="h-full w-full object-cover" />
+              <img loading="lazy" decoding="async" src={hero} alt="" className="h-full w-full object-cover" />
             ) : (
               <div className="h-full w-full bg-gradient-to-br from-neutral-200 to-neutral-300" />
             )}

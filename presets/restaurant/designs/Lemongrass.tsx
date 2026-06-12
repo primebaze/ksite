@@ -331,7 +331,7 @@ export default function LemongrassDesign({ site, page = "home", basePath = "" }:
           <section className="grid grid-cols-2 gap-2 p-2 sm:grid-cols-3" style={{ background: CREAM }}>
             {gallery.map((g) => (
               // eslint-disable-next-line @next/next/no-img-element
-              <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/3] w-full rounded-[1.5rem] object-cover" />
+              <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/3] w-full rounded-[1.5rem] object-cover" />
             ))}
           </section>
         ) : <p className="px-6 py-20 text-center text-neutral-500" style={{ background: CREAM }}>Photos coming soon.</p>}
@@ -446,7 +446,7 @@ export default function LemongrassDesign({ site, page = "home", basePath = "" }:
                   <a key={item.id} href={href("menu")} className="group flex flex-col overflow-hidden rounded-[1.75rem] bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-xl">
                     {photo ? (
                       // eslint-disable-next-line @next/next/no-img-element
-                      <img src={photo} alt="" className="aspect-[4/3] w-full object-cover" />
+                      <img loading="lazy" decoding="async" src={photo} alt="" className="aspect-[4/3] w-full object-cover" />
                     ) : (
                       <div className="aspect-[4/3] w-full" style={{ background: `radial-gradient(120% 120% at 30% 20%, ${CHARTREUSE} 0%, ${EMERALD} 100%)` }}>
                         <Leaf size={88} className="m-6 opacity-80" fill={CREAM} vein={EMERALD} />

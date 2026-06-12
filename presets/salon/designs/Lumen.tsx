@@ -255,7 +255,7 @@ export default function LumenDesign({ site, page = "home", basePath = "" }: Pres
                     <div className="aspect-[4/5] w-full overflow-hidden" style={{ background: WHITE }}>
                       {m.photo_url && (
                         // eslint-disable-next-line @next/next/no-img-element
-                        <img src={m.photo_url} alt={m.name} className="h-full w-full object-cover" />
+                        <img loading="lazy" decoding="async" src={m.photo_url} alt={m.name} className="h-full w-full object-cover" />
                       )}
                     </div>
                     <p className="mt-4 text-lg font-medium" style={serif}>{m.name}</p>
@@ -297,7 +297,7 @@ export default function LumenDesign({ site, page = "home", basePath = "" }: Pres
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
               {gallery.map((g) => (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-square w-full object-cover" />
+                <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-square w-full object-cover" />
               ))}
             </div>
           </section>
@@ -476,13 +476,13 @@ export default function LumenDesign({ site, page = "home", basePath = "" }: Pres
           </div>
           <div className="relative min-h-[320px] overflow-hidden md:min-h-0">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={splitImg} alt="" className="absolute inset-0 h-full w-full object-cover" />
+            <img loading="lazy" decoding="async" src={splitImg} alt="" className="absolute inset-0 h-full w-full object-cover" />
           </div>
         </div>
         <div className="mx-auto grid max-w-6xl gap-px px-6 py-0 md:grid-cols-2">
           <div className="relative order-last min-h-[320px] overflow-hidden md:order-first md:min-h-0">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={galleryShots[1] || heroImg} alt="" className="absolute inset-0 h-full w-full object-cover" />
+            <img loading="lazy" decoding="async" src={galleryShots[1] || heroImg} alt="" className="absolute inset-0 h-full w-full object-cover" />
           </div>
           <div className="flex flex-col justify-center px-2 py-16 md:pl-12">
             <span className="grid h-7 w-7 place-items-center rounded-full border-2" style={{ borderColor: AMBER }} aria-hidden>

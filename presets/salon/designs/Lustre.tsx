@@ -247,7 +247,7 @@ export default function LustreDesign({ site, page = "home", basePath = "" }: Pre
             <div className="mt-14 flex flex-col items-center gap-6 border-t border-neutral-200 pt-12 text-center">
               {lead.photo_url && (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={lead.photo_url} alt={lead.name} className="h-40 w-40 rounded-full object-cover" />
+                <img loading="lazy" decoding="async" src={lead.photo_url} alt={lead.name} className="h-40 w-40 rounded-full object-cover" />
               )}
               <div>
                 <p style={serif} className="text-2xl tracking-[0.04em] text-neutral-800">{lead.name}</p>
@@ -270,7 +270,7 @@ export default function LustreDesign({ site, page = "home", basePath = "" }: Pre
           <section className="grid grid-cols-2 gap-1 sm:grid-cols-3">
             {gallery.map((g) => (
               // eslint-disable-next-line @next/next/no-img-element
-              <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full object-cover" />
+              <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full object-cover" />
             ))}
           </section>
         ) : (
@@ -313,7 +313,7 @@ export default function LustreDesign({ site, page = "home", basePath = "" }: Pre
             </div>
             {(content.images?.story_portrait || lead?.photo_url || hero) && (
               // eslint-disable-next-line @next/next/no-img-element
-              <img {...editImg(content, "story_portrait", lead?.photo_url || hero)} alt="" className="aspect-[4/5] w-full object-cover" />
+              <img loading="lazy" decoding="async" {...editImg(content, "story_portrait", lead?.photo_url || hero)} alt="" className="aspect-[4/5] w-full object-cover" />
             )}
           </div>
         </section>
@@ -323,7 +323,7 @@ export default function LustreDesign({ site, page = "home", basePath = "" }: Pre
       <section style={{ background: MAUVE }} className="text-white">
         <div className="mx-auto grid max-w-6xl items-center gap-12 px-6 py-20 sm:py-24 lg:grid-cols-2">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img {...editImg(content, "why_choose", gallery[0]?.image_url || hero)} alt="" className="aspect-[4/3] w-full bg-white/20 object-cover" />
+          <img loading="lazy" decoding="async" {...editImg(content, "why_choose", gallery[0]?.image_url || hero)} alt="" className="aspect-[4/3] w-full bg-white/20 object-cover" />
           <div>
             <h2 style={serif} className="text-3xl tracking-[0.08em] sm:text-4xl">Why choose us</h2>
             <p className="mt-6 text-[15px] leading-[1.9] text-white/90">
@@ -399,7 +399,7 @@ export default function LustreDesign({ site, page = "home", basePath = "" }: Pre
       <section className="bg-white">
         <div className="mx-auto grid max-w-6xl items-stretch gap-0 px-6 py-20 sm:py-24 lg:grid-cols-2">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img {...editImg(content, "storefront", (gallery[1] ?? gallery[0])?.image_url || hero)} alt="" className="aspect-[3/4] w-full object-cover" style={{ background: MIST }} />
+          <img loading="lazy" decoding="async" {...editImg(content, "storefront", (gallery[1] ?? gallery[0])?.image_url || hero)} alt="" className="aspect-[3/4] w-full object-cover" style={{ background: MIST }} />
           <div className="flex flex-col justify-center px-0 pt-10 lg:px-12 lg:pt-0">
             <h2 style={serif} className="text-2xl tracking-[0.1em] text-neutral-800 underline decoration-neutral-300 underline-offset-8 sm:text-3xl">Opening hours</h2>
             <p className="mt-4 text-xs uppercase tracking-[0.2em] text-neutral-400">Come visit</p>

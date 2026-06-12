@@ -345,7 +345,7 @@ export default function CurbsideDesign({ site, page = "home", basePath = "" }: P
           <section className="grid grid-cols-2 gap-2 p-2 sm:grid-cols-3" style={{ background: CONCRETE }}>
             {gallery.map((g) => (
               // eslint-disable-next-line @next/next/no-img-element
-              <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-square w-full border-[3px] object-cover" style={{ borderColor: ASPHALT }} />
+              <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-square w-full border-[3px] object-cover" style={{ borderColor: ASPHALT }} />
             ))}
           </section>
         ) : <p className="px-6 py-20 text-center font-semibold text-[color:#1B1B1D]/60" style={{ background: CONCRETE }}>Photos coming soon.</p>}
@@ -424,7 +424,7 @@ export default function CurbsideDesign({ site, page = "home", basePath = "" }: P
                   <a key={item.id} href={href("menu")} className="group relative flex flex-col overflow-hidden border-[4px] bg-white shadow-[8px_8px_0_0_#1B1B1D] transition hover:-translate-x-[2px] hover:-translate-y-[2px] hover:shadow-[12px_12px_0_0_#1B1B1D]" style={{ borderColor: ASPHALT, borderRadius: "0.5rem" }}>
                     {photo ? (
                       // eslint-disable-next-line @next/next/no-img-element
-                      <img src={photo} alt="" className="aspect-[4/3] w-full border-b-[4px] object-cover" style={{ borderColor: ASPHALT }} />
+                      <img loading="lazy" decoding="async" src={photo} alt="" className="aspect-[4/3] w-full border-b-[4px] object-cover" style={{ borderColor: ASPHALT }} />
                     ) : (
                       <div className="flex aspect-[4/3] w-full items-center justify-center border-b-[4px]" style={{ background: tint, borderColor: ASPHALT }}>
                         <span style={display} className="text-6xl font-black uppercase text-[color:#1B1B1D]/30">{name.slice(0, 1)}</span>

@@ -281,7 +281,7 @@ export default function FornoDesign({ site, page = "home", basePath = "" }: Pres
           <section className="grid grid-cols-2 gap-1.5 p-1.5 sm:grid-cols-3" style={{ background: MOZZ }}>
             {gallery.map((g) => (
               // eslint-disable-next-line @next/next/no-img-element
-              <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/3] w-full rounded-md object-cover" />
+              <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/3] w-full rounded-md object-cover" />
             ))}
           </section>
         ) : <p className="px-6 py-20 text-center text-[color:#1C1A17]/60" style={{ background: MOZZ }}>Photos coming soon.</p>}
@@ -398,7 +398,7 @@ export default function FornoDesign({ site, page = "home", basePath = "" }: Pres
                   <a key={item.id} href={href("menu")} className="group flex flex-col overflow-hidden rounded-xl border-2 bg-white transition hover:-translate-y-1" style={{ borderColor: `${CHARCOAL}14` }}>
                     {photo ? (
                       // eslint-disable-next-line @next/next/no-img-element
-                      <img src={photo} alt="" className="aspect-[4/3] w-full object-cover" />
+                      <img loading="lazy" decoding="async" src={photo} alt="" className="aspect-[4/3] w-full object-cover" />
                     ) : (
                       <div className="flex aspect-[4/3] w-full items-center justify-center" style={{ background: CHARCOAL, backgroundImage: CHAR_TEXTURE }}>
                         <span className="text-4xl" aria-hidden>🍕</span>

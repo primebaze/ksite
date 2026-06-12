@@ -320,7 +320,7 @@ export default function ConcoursDesign({ site, page = "home", basePath = "" }: P
               {gallery.map((g) => (
                 <figure key={g.id} className="group relative overflow-hidden rounded-xl">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={g.image_url} alt={g.caption ?? ""} className="aspect-square w-full object-cover transition duration-700 group-hover:scale-105" />
+                  <img loading="lazy" decoding="async" src={g.image_url} alt={g.caption ?? ""} className="aspect-square w-full object-cover transition duration-700 group-hover:scale-105" />
                   <span className="pointer-events-none absolute inset-0 opacity-0 transition duration-500 group-hover:opacity-100" style={{ background: `linear-gradient(120deg, ${GOLD}22, transparent 60%)` }} />
                 </figure>
               ))}
@@ -386,7 +386,7 @@ export default function ConcoursDesign({ site, page = "home", basePath = "" }: P
           <div className="relative order-last lg:order-first">
             {gallery[0] ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={gallery[0].image_url} alt={gallery[0].caption ?? ""} className="aspect-[4/5] w-full rounded-2xl object-cover" />
+              <img loading="lazy" decoding="async" src={gallery[0].image_url} alt={gallery[0].caption ?? ""} className="aspect-[4/5] w-full rounded-2xl object-cover" />
             ) : (
               <div className="aspect-[4/5] w-full rounded-2xl" style={{ background: `radial-gradient(ellipse at 30% 25%, #20222a, ${CARD})` }} />
             )}
@@ -447,7 +447,7 @@ export default function ConcoursDesign({ site, page = "home", basePath = "" }: P
             {gallery.slice(0, 4).map((g) => (
               <figure key={g.id} className="group relative overflow-hidden rounded-xl">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={g.image_url} alt={g.caption ?? ""} className="aspect-[3/4] w-full object-cover transition duration-700 group-hover:scale-105" />
+                <img loading="lazy" decoding="async" src={g.image_url} alt={g.caption ?? ""} className="aspect-[3/4] w-full object-cover transition duration-700 group-hover:scale-105" />
                 <span className="pointer-events-none absolute inset-0 opacity-0 transition duration-500 group-hover:opacity-100" style={{ background: `linear-gradient(120deg, ${GOLD}22, transparent 60%)` }} />
               </figure>
             ))}

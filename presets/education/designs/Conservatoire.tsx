@@ -62,7 +62,7 @@ export default function ConservatoireDesign({ site, page = "home", basePath = ""
         <a href={href("home")} className="flex items-center gap-2.5">
           {theme.logo_url ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={theme.logo_url} alt={name} className="h-9 w-auto object-contain" />
+            <img loading="lazy" decoding="async" src={theme.logo_url} alt={name} className="h-9 w-auto object-contain" />
           ) : null}
           <span data-edit="tenant.business_name" style={{ ...serif, color: INK }} className="text-xl font-medium tracking-tight">{name}</span>
         </a>
@@ -226,7 +226,7 @@ export default function ConservatoireDesign({ site, page = "home", basePath = ""
           ) : <p style={{ color: MUTE }}>Our story is coming soon.</p>}
           {gallery[0] && (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={gallery[0].image_url} alt={gallery[0].caption ?? ""} className="mt-12 aspect-[16/9] w-full object-cover" />
+            <img loading="lazy" decoding="async" src={gallery[0].image_url} alt={gallery[0].caption ?? ""} className="mt-12 aspect-[16/9] w-full object-cover" />
           )}
         </section>
       </>,
@@ -243,7 +243,7 @@ export default function ConservatoireDesign({ site, page = "home", basePath = ""
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
               {gallery.map((g) => (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full object-cover" />
+                <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full object-cover" />
               ))}
             </div>
           </section>
@@ -328,7 +328,7 @@ export default function ConservatoireDesign({ site, page = "home", basePath = ""
           <div className="relative">
             {gallery[0] ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={gallery[0].image_url} alt={gallery[0].caption ?? ""} className="aspect-[4/3] w-full object-cover" />
+              <img loading="lazy" decoding="async" src={gallery[0].image_url} alt={gallery[0].caption ?? ""} className="aspect-[4/3] w-full object-cover" />
             ) : (
               <div className="aspect-[4/3] w-full" style={{ background: GOLD_SOFT, border: `1px solid ${GOLD}40` }} />
             )}
@@ -399,7 +399,7 @@ export default function ConservatoireDesign({ site, page = "home", basePath = ""
           <div className="mx-auto mt-12 grid max-w-6xl grid-cols-2 gap-2 px-4 sm:grid-cols-4">
             {gallery.slice(0, 4).map((g) => (
               // eslint-disable-next-line @next/next/no-img-element
-              <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full object-cover" />
+              <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full object-cover" />
             ))}
           </div>
           <div className="mt-10 text-center">

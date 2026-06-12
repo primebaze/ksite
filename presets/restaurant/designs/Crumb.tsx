@@ -324,7 +324,7 @@ export default function CrumbDesign({ site, page = "home", basePath = "" }: Pres
             <div className="mx-auto grid max-w-6xl grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3">
               {gallery.map((g) => (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full rounded-[1.5rem] object-cover" />
+                <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full rounded-[1.5rem] object-cover" />
               ))}
             </div>
           </section>
@@ -399,7 +399,7 @@ export default function CrumbDesign({ site, page = "home", basePath = "" }: Pres
                   <a key={item.id} href={href("menu")} className="group flex w-[16rem] shrink-0 snap-start flex-col overflow-hidden rounded-[1.75rem] border bg-white transition hover:-translate-y-1" style={{ borderColor: "#e2d3ba" }}>
                     {photo ? (
                       // eslint-disable-next-line @next/next/no-img-element
-                      <img src={photo} alt="" className="aspect-[5/4] w-full object-cover" />
+                      <img loading="lazy" decoding="async" src={photo} alt="" className="aspect-[5/4] w-full object-cover" />
                     ) : (
                       <div className="flex aspect-[5/4] w-full items-center justify-center" style={{ background: CREAM }}>
                         <Wheat color={CRUST} />
@@ -425,7 +425,7 @@ export default function CrumbDesign({ site, page = "home", basePath = "" }: Pres
             <div className="relative order-last lg:order-first">
               {gallery[0]?.image_url ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={gallery[0].image_url} alt="" className="aspect-[3/4] w-full rounded-[2rem] object-cover shadow-[0_50px_90px_-60px_rgba(67,52,42,0.6)]" />
+                <img loading="lazy" decoding="async" src={gallery[0].image_url} alt="" className="aspect-[3/4] w-full rounded-[2rem] object-cover shadow-[0_50px_90px_-60px_rgba(67,52,42,0.6)]" />
               ) : (
                 <div className="flex aspect-[3/4] w-full items-center justify-center rounded-[2rem]" style={{ background: PAPER }}>
                   <Wheat color={CRUST} />

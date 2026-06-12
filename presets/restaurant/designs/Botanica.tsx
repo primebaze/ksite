@@ -316,7 +316,7 @@ export default function BotanicaDesign({ site, page = "home", basePath = "" }: P
             <div className="grid grid-cols-2 gap-1 sm:grid-cols-3">
               {gallery.map((g) => (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full object-cover" />
+                <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full object-cover" />
               ))}
             </div>
           </section>
@@ -436,7 +436,7 @@ export default function BotanicaDesign({ site, page = "home", basePath = "" }: P
       <section className="relative isolate overflow-hidden">
         {hero ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={hero} alt="" className="absolute inset-0 h-full w-full object-cover" />
+          <img loading="lazy" decoding="async" src={hero} alt="" className="absolute inset-0 h-full w-full object-cover" />
         ) : (
           <div className="absolute inset-0" style={{ background: GREEN }} />
         )}

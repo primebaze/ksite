@@ -79,7 +79,7 @@ export function RadianceCommunitySlider({
             className="group relative aspect-[3/4] w-[72%] flex-none snap-start overflow-hidden sm:w-[42%] lg:w-[25%]"
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={t.image} alt={t.label} className="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
+            <img loading="lazy" decoding="async" src={t.image} alt={t.label} className="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent" />
             <span style={{ fontFamily: "var(--font-fraunces)" }} className="absolute inset-x-0 bottom-0 p-5 text-center text-lg text-white">
               {t.label}

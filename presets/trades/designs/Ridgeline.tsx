@@ -275,7 +275,7 @@ export default function RidgelineDesign({ site, page = "home", basePath = "" }: 
               {gallery.map((g) => (
                 <figure key={g.id} className="overflow-hidden rounded-lg" style={{ background: "#fff", border: "1px solid #34404C1a" }}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/3] w-full object-cover" />
+                  <img loading="lazy" decoding="async" src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/3] w-full object-cover" />
                   {g.caption && <figcaption className="px-4 py-3 text-[13px] font-medium" style={{ color: SLATE }}>{g.caption}</figcaption>}
                 </figure>
               ))}
@@ -342,7 +342,7 @@ export default function RidgelineDesign({ site, page = "home", basePath = "" }: 
           <div className="relative">
             {gallery[0] ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={gallery[0].image_url} alt={gallery[0].caption ?? ""} className="aspect-[4/3] w-full rounded-xl object-cover" />
+              <img loading="lazy" decoding="async" src={gallery[0].image_url} alt={gallery[0].caption ?? ""} className="aspect-[4/3] w-full rounded-xl object-cover" />
             ) : (
               <div className="aspect-[4/3] w-full rounded-xl" style={{ background: SLATE }} />
             )}
@@ -386,7 +386,7 @@ export default function RidgelineDesign({ site, page = "home", basePath = "" }: 
             {gallery.slice(0, 3).map((g) => (
               <figure key={g.id} className="overflow-hidden rounded-lg" style={{ background: "#fff", border: "1px solid #34404C1a" }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/3] w-full object-cover" />
+                <img loading="lazy" decoding="async" src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/3] w-full object-cover" />
                 {g.caption && <figcaption className="px-4 py-3 text-[13px] font-medium" style={{ color: SLATE }}>{g.caption}</figcaption>}
               </figure>
             ))}

@@ -312,7 +312,7 @@ export default function GateauDesign({ site, page = "home", basePath = "" }: Pre
               {gallery.map((g) => (
                 <div key={g.id} className="overflow-hidden rounded-t-[999px] border" style={{ borderColor: `${GOLD}40` }}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={g.image_url} alt={g.caption ?? ""} className="aspect-[3/4] w-full object-cover transition duration-500 hover:scale-105" />
+                  <img loading="lazy" decoding="async" src={g.image_url} alt={g.caption ?? ""} className="aspect-[3/4] w-full object-cover transition duration-500 hover:scale-105" />
                 </div>
               ))}
             </div>
@@ -394,7 +394,7 @@ export default function GateauDesign({ site, page = "home", basePath = "" }: Pre
                       <div className="overflow-hidden rounded-t-[999px]">
                         {photo ? (
                           // eslint-disable-next-line @next/next/no-img-element
-                          <img src={photo} alt="" className="aspect-[3/4] w-full object-cover" />
+                          <img loading="lazy" decoding="async" src={photo} alt="" className="aspect-[3/4] w-full object-cover" />
                         ) : (
                           <div className="aspect-[3/4] w-full" style={{ background: `linear-gradient(160deg, #ffffff80, ${tint})` }} />
                         )}

@@ -283,7 +283,7 @@ export default function LagoonDesign({ site, page = "home", basePath = "" }: Pre
               {gallery.map((g) => (
                 <figure key={g.id} className="mb-4 break-inside-avoid overflow-hidden rounded-2xl" style={{ border: `1px solid ${SLATE}14` }}>
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={g.image_url} alt={g.caption ?? ""} className="w-full object-cover" />
+                  <img loading="lazy" decoding="async" src={g.image_url} alt={g.caption ?? ""} className="w-full object-cover" />
                   {g.caption && <figcaption className="px-4 py-3 text-xs uppercase tracking-[0.16em]" style={{ background: "#ffffff", color: MUTE }}>{g.caption}</figcaption>}
                 </figure>
               ))}
@@ -372,7 +372,7 @@ export default function LagoonDesign({ site, page = "home", basePath = "" }: Pre
             <div className="overflow-hidden rounded-[2rem]" style={{ aspectRatio: "5 / 4", background: SEAFOAM }}>
               {gallery[0] ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={gallery[0].image_url} alt={gallery[0].caption ?? ""} className="h-full w-full object-cover" />
+                <img loading="lazy" decoding="async" src={gallery[0].image_url} alt={gallery[0].caption ?? ""} className="h-full w-full object-cover" />
               ) : (
                 <div className="h-full w-full" style={{ backgroundImage: RIPPLE, backgroundColor: SEAFOAM }} />
               )}
@@ -419,7 +419,7 @@ export default function LagoonDesign({ site, page = "home", basePath = "" }: Pre
             {gallery.slice(0, 4).map((g) => (
               <div key={g.id} className="overflow-hidden rounded-2xl" style={{ border: `1px solid ${SLATE}14` }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={g.image_url} alt={g.caption ?? ""} className="aspect-square w-full object-cover" />
+                <img loading="lazy" decoding="async" src={g.image_url} alt={g.caption ?? ""} className="aspect-square w-full object-cover" />
               </div>
             ))}
           </div>

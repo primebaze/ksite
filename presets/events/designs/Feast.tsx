@@ -211,7 +211,7 @@ export default function FeastDesign({ site, page = "home", basePath = "" }: Pres
         <section className="mx-auto grid max-w-6xl items-start gap-12 px-6 py-16 sm:px-8 sm:py-20 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
           {gallery[0] ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={gallery[0].image_url} alt={gallery[0].caption ?? ""} className="aspect-[4/5] w-full rounded-3xl object-cover" />
+            <img loading="lazy" decoding="async" src={gallery[0].image_url} alt={gallery[0].caption ?? ""} className="aspect-[4/5] w-full rounded-3xl object-cover" />
           ) : <div className="aspect-[4/5] w-full rounded-3xl" style={{ background: "#dfe6d4" }} />}
           <div>
             {content.about ? <p data-edit="content.about" className="text-[17px] leading-[1.9]" style={{ color: SUB }}>{content.about}</p> : <p style={{ color: SUB }}>Our story is coming soon.</p>}
@@ -232,7 +232,7 @@ export default function FeastDesign({ site, page = "home", basePath = "" }: Pres
             <div className="columns-1 gap-3 sm:columns-2 lg:columns-3 [&>*]:mb-3">
               {gallery.map((g) => (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="w-full break-inside-avoid rounded-2xl object-cover" />
+                <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="w-full break-inside-avoid rounded-2xl object-cover" />
               ))}
             </div>
           </section>
@@ -404,7 +404,7 @@ export default function FeastDesign({ site, page = "home", basePath = "" }: Pres
           <div className="mx-auto mt-12 grid max-w-6xl grid-cols-2 gap-3 px-3 sm:grid-cols-3 sm:px-6">
             {gallery.slice(0, 5).map((g, i) => (
               // eslint-disable-next-line @next/next/no-img-element
-              <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className={`w-full rounded-2xl object-cover ${i === 0 ? "col-span-2 row-span-2 aspect-square sm:aspect-[4/5]" : "aspect-[4/5]"}`} />
+              <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className={`w-full rounded-2xl object-cover ${i === 0 ? "col-span-2 row-span-2 aspect-square sm:aspect-[4/5]" : "aspect-[4/5]"}`} />
             ))}
           </div>
         </section>

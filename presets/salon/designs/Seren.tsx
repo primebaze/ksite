@@ -236,7 +236,7 @@ export default function SerenDesign({ site, page = "home", basePath = "" }: Pres
                     <div className="mx-auto h-44 w-44 overflow-hidden rounded-full" style={{ background: ROSE_SOFT }}>
                       {m.photo_url && (
                         // eslint-disable-next-line @next/next/no-img-element
-                        <img src={m.photo_url} alt={m.name} className="h-full w-full object-cover" />
+                        <img loading="lazy" decoding="async" src={m.photo_url} alt={m.name} className="h-full w-full object-cover" />
                       )}
                     </div>
                     <p className="mt-5 text-lg font-medium">{m.name}</p>
@@ -270,7 +270,7 @@ export default function SerenDesign({ site, page = "home", basePath = "" }: Pres
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
               {gallery.map((g) => (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full rounded-xl object-cover" />
+                <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full rounded-xl object-cover" />
               ))}
             </div>
           </section>
@@ -481,7 +481,7 @@ export default function SerenDesign({ site, page = "home", basePath = "" }: Pres
             />
           ) : hero ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={hero} alt="" className="absolute inset-0 h-full w-full object-cover opacity-85" />
+            <img loading="lazy" decoding="async" src={hero} alt="" className="absolute inset-0 h-full w-full object-cover opacity-85" />
           ) : (
             <div className="absolute inset-0" style={{ background: INK }} />
           )}
@@ -502,7 +502,7 @@ export default function SerenDesign({ site, page = "home", basePath = "" }: Pres
         <div className="relative min-h-[360px] overflow-hidden bg-neutral-200">
           {slides[1] || hero ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={slides[1] || hero!} alt="" className="absolute inset-0 h-full w-full object-cover" />
+            <img loading="lazy" decoding="async" src={slides[1] || hero!} alt="" className="absolute inset-0 h-full w-full object-cover" />
           ) : (
             <div className="absolute inset-0" style={{ background: ROSE_SOFT }} />
           )}

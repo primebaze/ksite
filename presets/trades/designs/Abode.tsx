@@ -236,7 +236,7 @@ export default function AbodeDesign({ site, page = "home", basePath = "" }: Pres
             <div className="columns-1 gap-4 sm:columns-2 lg:columns-3 [&>*]:mb-4">
               {gallery.map((g) => (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="w-full rounded-2xl object-cover" />
+                <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="w-full rounded-2xl object-cover" />
               ))}
             </div>
           </section>
@@ -329,7 +329,7 @@ export default function AbodeDesign({ site, page = "home", basePath = "" }: Pres
             <div key={i} className={`overflow-hidden rounded-2xl ${i > 2 ? "" : ""}`} style={{ background: tileTints[i] }}>
               {tiles[i] ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={tiles[i] as string} alt="" className="aspect-square w-full object-cover" />
+                <img loading="lazy" decoding="async" src={tiles[i] as string} alt="" className="aspect-square w-full object-cover" />
               ) : (
                 <div className="aspect-square w-full" />
               )}
@@ -393,7 +393,7 @@ export default function AbodeDesign({ site, page = "home", basePath = "" }: Pres
           <div className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-4">
             {gallery.slice(0, 4).map((g) => (
               // eslint-disable-next-line @next/next/no-img-element
-              <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full rounded-2xl object-cover" />
+              <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full rounded-2xl object-cover" />
             ))}
           </div>
           <div className="mt-10 text-center">{pill("View the lookbook", href("gallery"))}</div>

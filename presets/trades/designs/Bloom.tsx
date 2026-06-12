@@ -119,7 +119,7 @@ export default function BloomDesign({ site, page = "home", basePath = "" }: Pres
       <div className="relative overflow-hidden" style={{ background: PETAL }}>
         {img ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={img} alt="" className="aspect-square w-full object-cover transition duration-700 group-hover:scale-[1.05]" />
+          <img loading="lazy" decoding="async" src={img} alt="" className="aspect-square w-full object-cover transition duration-700 group-hover:scale-[1.05]" />
         ) : (
           <div className="grid aspect-square w-full place-items-center text-4xl" style={{ color: `${BLUSH}aa` }}>❀</div>
         )}
@@ -184,7 +184,7 @@ export default function BloomDesign({ site, page = "home", basePath = "" }: Pres
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
               {gallery.map((g) => (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-square w-full rounded-2xl object-cover" />
+                <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-square w-full rounded-2xl object-cover" />
               ))}
             </div>
           </section>
@@ -292,7 +292,7 @@ export default function BloomDesign({ site, page = "home", basePath = "" }: Pres
           <div className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-4">
             {gallery.slice(0, 4).map((g) => (
               // eslint-disable-next-line @next/next/no-img-element
-              <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-square w-full rounded-2xl object-cover" />
+              <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-square w-full rounded-2xl object-cover" />
             ))}
           </div>
           <div className="mt-10 text-center">

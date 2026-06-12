@@ -252,7 +252,7 @@ export default function LineaDesign({ site, page = "home", basePath = "" }: Pres
                     <div className="mx-auto aspect-[3/4] w-full max-w-[16rem] overflow-hidden bg-neutral-200">
                       {m.photo_url && (
                         // eslint-disable-next-line @next/next/no-img-element
-                        <img src={m.photo_url} alt={m.name} className="h-full w-full object-cover" />
+                        <img loading="lazy" decoding="async" src={m.photo_url} alt={m.name} className="h-full w-full object-cover" />
                       )}
                     </div>
                     <p style={{ ...serif, color: TAUPE }} className="mt-5 text-lg">{m.name}</p>
@@ -294,7 +294,7 @@ export default function LineaDesign({ site, page = "home", basePath = "" }: Pres
           <section className="grid grid-cols-2 gap-1 sm:grid-cols-3">
             {gallery.map((g) => (
               // eslint-disable-next-line @next/next/no-img-element
-              <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full object-cover" />
+              <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full object-cover" />
             ))}
           </section>
         ) : <p className="mx-auto max-w-6xl px-8 py-20 text-neutral-500">Photos coming soon.</p>}
@@ -351,7 +351,7 @@ export default function LineaDesign({ site, page = "home", basePath = "" }: Pres
                     <div className="aspect-square w-full overflow-hidden bg-neutral-200">
                       {img ? (
                         // eslint-disable-next-line @next/next/no-img-element
-                        <img src={img} alt="" className="h-full w-full object-cover" />
+                        <img loading="lazy" decoding="async" src={img} alt="" className="h-full w-full object-cover" />
                       ) : (
                         <div className="h-full w-full bg-gradient-to-br from-[#cdbfae] to-[#8d7d6c]" />
                       )}
@@ -417,10 +417,10 @@ export default function LineaDesign({ site, page = "home", basePath = "" }: Pres
           <div className="aspect-[4/3] w-full overflow-hidden bg-neutral-200 lg:aspect-auto">
             {gallery[0]?.image_url ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={gallery[0].image_url} alt="" className="h-full w-full object-cover" />
+              <img loading="lazy" decoding="async" src={gallery[0].image_url} alt="" className="h-full w-full object-cover" />
             ) : hero ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={hero} alt="" className="h-full w-full object-cover" />
+              <img loading="lazy" decoding="async" src={hero} alt="" className="h-full w-full object-cover" />
             ) : <div className="h-full w-full bg-gradient-to-br from-[#cdbfae] to-[#8d7d6c]" />}
           </div>
           <div className="flex flex-col justify-center px-8 py-16 sm:px-14">
@@ -445,7 +445,7 @@ export default function LineaDesign({ site, page = "home", basePath = "" }: Pres
                 <div className="aspect-[4/3] w-full overflow-hidden bg-neutral-200">
                   {img ? (
                     // eslint-disable-next-line @next/next/no-img-element
-                    <img src={img} alt="" className="h-full w-full object-cover" />
+                    <img loading="lazy" decoding="async" src={img} alt="" className="h-full w-full object-cover" />
                   ) : <div className="h-full w-full bg-gradient-to-br from-[#cdbfae] to-[#8d7d6c]" />}
                 </div>
                 <h3 style={{ ...serif, color: TAUPE }} className="mt-5 text-xl leading-snug">{post.title}</h3>
@@ -468,10 +468,10 @@ export default function LineaDesign({ site, page = "home", basePath = "" }: Pres
           <div className="aspect-[4/3] w-full overflow-hidden bg-neutral-200">
             {gallery[1]?.image_url ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={gallery[1].image_url} alt="" className="h-full w-full object-cover" />
+              <img loading="lazy" decoding="async" src={gallery[1].image_url} alt="" className="h-full w-full object-cover" />
             ) : hero ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={hero} alt="" className="h-full w-full object-cover" />
+              <img loading="lazy" decoding="async" src={hero} alt="" className="h-full w-full object-cover" />
             ) : <div className="h-full w-full bg-gradient-to-br from-[#cdbfae] to-[#8d7d6c]" />}
           </div>
         </div>

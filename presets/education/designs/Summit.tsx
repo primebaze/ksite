@@ -55,7 +55,7 @@ export default function SummitDesign({ site, page = "home", basePath = "" }: Pre
         <a href={href("home")} className="flex items-center gap-2.5">
           {theme.logo_url ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={theme.logo_url} alt={name} className="h-8 w-auto object-contain" />
+            <img loading="lazy" decoding="async" src={theme.logo_url} alt={name} className="h-8 w-auto object-contain" />
           ) : (
             <span aria-hidden className="flex h-8 w-8 items-center justify-center rounded text-sm font-bold" style={{ background: INDIGO }}>▲</span>
           )}
@@ -214,7 +214,7 @@ export default function SummitDesign({ site, page = "home", basePath = "" }: Pre
           ) : <p style={{ color: MUTE }}>Our story is coming soon.</p>}
           {gallery[0] && (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={gallery[0].image_url} alt={gallery[0].caption ?? ""} className="mt-10 aspect-[16/9] w-full rounded-lg object-cover" />
+            <img loading="lazy" decoding="async" src={gallery[0].image_url} alt={gallery[0].caption ?? ""} className="mt-10 aspect-[16/9] w-full rounded-lg object-cover" />
           )}
         </section>
       </>,
@@ -231,7 +231,7 @@ export default function SummitDesign({ site, page = "home", basePath = "" }: Pre
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
               {gallery.map((g) => (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full rounded-lg object-cover" />
+                <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full rounded-lg object-cover" />
               ))}
             </div>
           </section>

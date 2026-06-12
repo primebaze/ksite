@@ -278,7 +278,7 @@ export default function RadianceDesign({ site, page = "home", basePath = "" }: P
                     <div className="mx-auto h-44 w-44 overflow-hidden rounded-full bg-neutral-100">
                       {m.photo_url && (
                         // eslint-disable-next-line @next/next/no-img-element
-                        <img src={m.photo_url} alt={m.name} className="h-full w-full object-cover" />
+                        <img loading="lazy" decoding="async" src={m.photo_url} alt={m.name} className="h-full w-full object-cover" />
                       )}
                     </div>
                     <p className="mt-5 text-lg" style={{ ...serif, color: GREEN }}>{m.name}</p>
@@ -303,7 +303,7 @@ export default function RadianceDesign({ site, page = "home", basePath = "" }: P
           <section className="grid grid-cols-2 gap-1 sm:grid-cols-3">
             {gallery.map((g) => (
               // eslint-disable-next-line @next/next/no-img-element
-              <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[3/4] w-full object-cover" />
+              <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[3/4] w-full object-cover" />
             ))}
           </section>
         ) : <p className="mx-auto max-w-6xl px-8 py-20 text-neutral-500">Photos coming soon.</p>}
@@ -386,7 +386,7 @@ export default function RadianceDesign({ site, page = "home", basePath = "" }: P
             <a key={c.label} href={href("services")} className="group relative aspect-[3/4] overflow-hidden sm:aspect-[3/4]">
               {c.image ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={c.image} alt={c.label} className="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
+                <img loading="lazy" decoding="async" src={c.image} alt={c.label} className="h-full w-full object-cover transition duration-500 group-hover:scale-105" />
               ) : <div className="h-full w-full bg-neutral-200" />}
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent" />
               <span style={serif} className="absolute bottom-6 left-6 text-2xl text-white sm:text-3xl">{c.label}</span>
@@ -410,7 +410,7 @@ export default function RadianceDesign({ site, page = "home", basePath = "" }: P
           <div className="aspect-[4/3] overflow-hidden lg:aspect-auto lg:h-full lg:min-h-[28rem]">
             {gallery[3]?.image_url || hero ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={gallery[3]?.image_url ?? hero} alt="" className="h-full w-full object-cover" />
+              <img loading="lazy" decoding="async" src={gallery[3]?.image_url ?? hero} alt="" className="h-full w-full object-cover" />
             ) : <div className="h-full w-full bg-neutral-200" />}
           </div>
           <div className="px-8 py-16 sm:px-14">

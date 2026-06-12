@@ -349,7 +349,7 @@ export default function DaybreakDesign({ site, page = "home", basePath = "" }: P
           <section className="grid grid-cols-2 gap-1 sm:grid-cols-3">
             {gallery.map((g) => (
               // eslint-disable-next-line @next/next/no-img-element
-              <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/3] w-full object-cover transition duration-500 hover:opacity-90" />
+              <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/3] w-full object-cover transition duration-500 hover:opacity-90" />
             ))}
           </section>
         ) : (

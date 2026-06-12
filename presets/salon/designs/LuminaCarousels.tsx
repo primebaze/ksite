@@ -81,7 +81,7 @@ export function LuminaTeamSlider({ team }: { team: TeamMember[] }) {
             <div className="mx-auto aspect-[4/5] w-full overflow-hidden bg-neutral-100">
               {m.photo_url && (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={m.photo_url} alt={m.name} className="h-full w-full object-cover" />
+                <img loading="lazy" decoding="async" src={m.photo_url} alt={m.name} className="h-full w-full object-cover" />
               )}
             </div>
             <p className="mt-5 text-sm font-semibold uppercase tracking-[0.18em]" style={{ color: INK }}>{m.name}</p>

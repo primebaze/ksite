@@ -266,7 +266,7 @@ export default function ClarityDesign({ site, page = "home", basePath = "" }: Pr
                     <div className="mx-auto h-40 w-40 overflow-hidden rounded-full ring-4" style={{ background: SKY, ["--tw-ring-color" as string]: CREAM }}>
                       {m.photo_url && (
                         // eslint-disable-next-line @next/next/no-img-element
-                        <img src={m.photo_url} alt={m.name} className="h-full w-full object-cover" />
+                        <img loading="lazy" decoding="async" src={m.photo_url} alt={m.name} className="h-full w-full object-cover" />
                       )}
                     </div>
                     <p className="mt-5 text-xl font-semibold" style={{ color: NAVY }}>{m.name}</p>
@@ -310,7 +310,7 @@ export default function ClarityDesign({ site, page = "home", basePath = "" }: Pr
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
               {gallery.map((g) => (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full rounded-2xl object-cover" />
+                <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full rounded-2xl object-cover" />
               ))}
             </div>
           </section>

@@ -355,7 +355,7 @@ export default function GildedDesign({ site, page = "home", basePath = "" }: Pre
           <section className="grid grid-cols-2 gap-2 p-2 sm:grid-cols-3" style={{ background: PANEL }}>
             {gallery.map((g) => (
               // eslint-disable-next-line @next/next/no-img-element
-              <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full object-cover" />
+              <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full object-cover" />
             ))}
           </section>
         ) : <p className="px-6 py-24 text-center text-[#EFE7D6]/55" style={{ background: PANEL }}>Photographs coming soon.</p>}
@@ -438,7 +438,7 @@ export default function GildedDesign({ site, page = "home", basePath = "" }: Pre
                   <a key={item.id} href={href("menu")} className="group relative flex flex-col overflow-hidden border transition hover:-translate-y-1" style={{ borderColor: `${GOLD}55`, background: PANEL }}>
                     {photo ? (
                       // eslint-disable-next-line @next/next/no-img-element
-                      <img src={photo} alt="" className="aspect-[4/5] w-full object-cover opacity-85 transition group-hover:opacity-100" />
+                      <img loading="lazy" decoding="async" src={photo} alt="" className="aspect-[4/5] w-full object-cover opacity-85 transition group-hover:opacity-100" />
                     ) : (
                       <div className="relative aspect-[4/5] w-full" style={{ background: `radial-gradient(120% 120% at 50% 0%, ${TEAL} 0%, ${BLACK} 70%)` }}>
                         <Sunburst className="absolute left-1/2 top-1/2 h-[120%] w-[120%] -translate-x-1/2 -translate-y-1/2 opacity-20" />
@@ -502,7 +502,7 @@ export default function GildedDesign({ site, page = "home", basePath = "" }: Pre
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
               {gallery.slice(0, 3).map((g) => (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full object-cover" />
+                <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full object-cover" />
               ))}
             </div>
             <div className="mt-8 text-center">

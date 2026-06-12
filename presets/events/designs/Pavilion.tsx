@@ -192,7 +192,7 @@ export default function Pavilion({ site, page = "home", basePath = "" }: PresetP
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
               {gallery.map((g, i) => (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className={`w-full object-cover ${i % 3 === 0 ? "aspect-[16/10] sm:col-span-2" : "aspect-[4/3]"}`} />
+                <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className={`w-full object-cover ${i % 3 === 0 ? "aspect-[16/10] sm:col-span-2" : "aspect-[4/3]"}`} />
               ))}
             </div>
           </section>
@@ -209,7 +209,7 @@ export default function Pavilion({ site, page = "home", basePath = "" }: PresetP
         <section className="mx-auto grid max-w-6xl items-center gap-12 px-6 py-16 sm:px-8 sm:py-20 lg:grid-cols-2 lg:gap-16">
           {gallery[0] ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={gallery[0].image_url} alt={gallery[0].caption ?? ""} className="aspect-[4/3] w-full object-cover" />
+            <img loading="lazy" decoding="async" src={gallery[0].image_url} alt={gallery[0].caption ?? ""} className="aspect-[4/3] w-full object-cover" />
           ) : <div className="aspect-[4/3] w-full" style={{ background: "#e7e3db" }} />}
           <div>
             {content.about ? <p data-edit="content.about" className="text-[17px] leading-[1.9]" style={{ color: SUB }}>{content.about}</p> : <p style={{ color: SUB }}>Our story is coming soon.</p>}
@@ -302,10 +302,10 @@ export default function Pavilion({ site, page = "home", basePath = "" }: PresetP
           </div>
           {gallery[1] ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={gallery[1].image_url} alt={gallery[1].caption ?? ""} className="aspect-[4/5] w-full object-cover" />
+            <img loading="lazy" decoding="async" src={gallery[1].image_url} alt={gallery[1].caption ?? ""} className="aspect-[4/5] w-full object-cover" />
           ) : gallery[0] ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={gallery[0].image_url} alt={gallery[0].caption ?? ""} className="aspect-[4/5] w-full object-cover" />
+            <img loading="lazy" decoding="async" src={gallery[0].image_url} alt={gallery[0].caption ?? ""} className="aspect-[4/5] w-full object-cover" />
           ) : <div className="aspect-[4/5] w-full" style={{ background: "#e7e3db" }} />}
         </section>
       )}
@@ -351,7 +351,7 @@ export default function Pavilion({ site, page = "home", basePath = "" }: PresetP
           <div className="mx-auto mt-12 grid max-w-6xl grid-cols-2 gap-3 px-3 sm:grid-cols-3 sm:px-6">
             {gallery.slice(0, 3).map((g) => (
               // eslint-disable-next-line @next/next/no-img-element
-              <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full object-cover" />
+              <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full object-cover" />
             ))}
           </div>
         </section>

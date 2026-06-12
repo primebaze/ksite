@@ -32,7 +32,7 @@ export function SerenHeroSlider({
     <section className="relative isolate flex min-h-[100svh] items-center overflow-hidden bg-neutral-200">
       {slides.map((src, idx) => (
         // eslint-disable-next-line @next/next/no-img-element
-        <img
+        <img loading="lazy" decoding="async"
           key={idx}
           src={src}
           alt=""

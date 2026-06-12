@@ -341,7 +341,7 @@ export default function KonaDesign({ site, page = "home", basePath = "" }: Prese
           <section className="grid grid-cols-2 gap-1.5 p-1.5 sm:grid-cols-3" style={{ background: SAND }}>
             {gallery.map((g) => (
               // eslint-disable-next-line @next/next/no-img-element
-              <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/3] w-full rounded-[1.25rem] object-cover" />
+              <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/3] w-full rounded-[1.25rem] object-cover" />
             ))}
           </section>
         ) : <p className="px-6 py-20 text-center text-[color:#14242E]/60" style={{ background: SAND }}>Photos coming soon.</p>}
@@ -453,7 +453,7 @@ export default function KonaDesign({ site, page = "home", basePath = "" }: Prese
                   <a key={item.id} href={href("menu")} className="group flex flex-col overflow-hidden rounded-[2rem] bg-white shadow-sm transition hover:-translate-y-1 hover:shadow-lg">
                     {photo ? (
                       // eslint-disable-next-line @next/next/no-img-element
-                      <img src={photo} alt="" className="aspect-[4/3] w-full object-cover" />
+                      <img loading="lazy" decoding="async" src={photo} alt="" className="aspect-[4/3] w-full object-cover" />
                     ) : (
                       <div className="aspect-[4/3] w-full" style={{ background: `linear-gradient(150deg, ${TEAL}, ${NAVY})` }} />
                     )}

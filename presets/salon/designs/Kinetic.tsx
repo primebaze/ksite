@@ -252,7 +252,7 @@ export default function KineticDesign({ site, page = "home", basePath = "" }: Pr
                     <div className="relative aspect-[4/5] bg-neutral-200">
                       {m.photo_url ? (
                         // eslint-disable-next-line @next/next/no-img-element
-                        <img src={m.photo_url} alt={m.name} className="absolute inset-0 h-full w-full object-cover" />
+                        <img loading="lazy" decoding="async" src={m.photo_url} alt={m.name} className="absolute inset-0 h-full w-full object-cover" />
                       ) : (
                         <div className="absolute inset-0" style={{ background: NAVY }} />
                       )}
@@ -299,7 +299,7 @@ export default function KineticDesign({ site, page = "home", basePath = "" }: Pr
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
               {gallery.map((g) => (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full rounded-xl object-cover" />
+                <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full rounded-xl object-cover" />
               ))}
             </div>
           </section>
@@ -551,7 +551,7 @@ export default function KineticDesign({ site, page = "home", basePath = "" }: Pr
         <div className="relative min-h-[360px] overflow-hidden bg-neutral-200">
           {gallery[0]?.image_url || hero ? (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={gallery[0]?.image_url || hero!} alt="" className="absolute inset-0 h-full w-full object-cover" />
+            <img loading="lazy" decoding="async" src={gallery[0]?.image_url || hero!} alt="" className="absolute inset-0 h-full w-full object-cover" />
           ) : (
             <div className="absolute inset-0" style={{ background: NAVY }} />
           )}

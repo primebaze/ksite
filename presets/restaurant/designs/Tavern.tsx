@@ -314,7 +314,7 @@ export default function TavernDesign({ site, page = "home", basePath = "" }: Pre
             <div className="grid grid-cols-2 gap-1.5 sm:grid-cols-3">
               {gallery.map((g) => (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/3] w-full object-cover" style={{ border: `1px solid rgba(176,141,46,0.4)` }} />
+                <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/3] w-full object-cover" style={{ border: `1px solid rgba(176,141,46,0.4)` }} />
               ))}
             </div>
           </section>

@@ -304,7 +304,7 @@ export default function KerbsideDesign({ site, page = "home", basePath = "" }: P
               {gallery.map((g) => (
                 <figure key={g.id} className="group relative overflow-hidden rounded-lg">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={g.image_url} alt={g.caption ?? ""} className="aspect-square w-full object-cover transition duration-500 group-hover:scale-[1.04]" />
+                  <img loading="lazy" decoding="async" src={g.image_url} alt={g.caption ?? ""} className="aspect-square w-full object-cover transition duration-500 group-hover:scale-[1.04]" />
                   {g.caption && <figcaption className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/70 to-transparent p-3 text-xs font-semibold text-white opacity-0 transition group-hover:opacity-100">{g.caption}</figcaption>}
                 </figure>
               ))}
@@ -385,7 +385,7 @@ export default function KerbsideDesign({ site, page = "home", basePath = "" }: P
           <div className="relative">
             {gallery[0] ? (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={gallery[0].image_url} alt={gallery[0].caption ?? ""} className="aspect-[4/3] w-full rounded-2xl object-cover" />
+              <img loading="lazy" decoding="async" src={gallery[0].image_url} alt={gallery[0].caption ?? ""} className="aspect-[4/3] w-full rounded-2xl object-cover" />
             ) : (
               <div className="aspect-[4/3] w-full rounded-2xl" style={{ background: ASPHALT }}>
                 <div className="h-full w-full rounded-2xl" style={herringbone(SAND, 0.25)} />
@@ -469,7 +469,7 @@ export default function KerbsideDesign({ site, page = "home", basePath = "" }: P
           <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
             {gallery.slice(0, 4).map((g) => (
               // eslint-disable-next-line @next/next/no-img-element
-              <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-square w-full rounded-lg object-cover" />
+              <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-square w-full rounded-lg object-cover" />
             ))}
           </div>
           <div className="mt-10">{btnOutline("See more work", href("gallery"))}</div>

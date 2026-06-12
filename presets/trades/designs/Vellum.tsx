@@ -241,7 +241,7 @@ export default function VellumDesign({ site, page = "home", basePath = "" }: Pre
             <div className="columns-2 gap-3 sm:columns-3 [&>*]:mb-3">
               {gallery.map((g) => (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="w-full rounded-[3px] object-cover" />
+                <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="w-full rounded-[3px] object-cover" />
               ))}
             </div>
           </section>
@@ -349,7 +349,7 @@ export default function VellumDesign({ site, page = "home", basePath = "" }: Pre
                   <div className="relative overflow-hidden rounded-[4px]" style={{ background: "#E4D4B4" }}>
                     {gallery[i % Math.max(gallery.length, 1)]?.image_url ? (
                       // eslint-disable-next-line @next/next/no-img-element
-                      <img src={gallery[i % gallery.length].image_url} alt="" className="aspect-[3/4] w-full object-cover" />
+                      <img loading="lazy" decoding="async" src={gallery[i % gallery.length].image_url} alt="" className="aspect-[3/4] w-full object-cover" />
                     ) : (
                       <div className="grid aspect-[3/4] w-full place-items-center" style={{ background: SPINES[i % SPINES.length] }}>
                         <span style={{ ...serif }} className="px-4 text-center text-lg font-medium text-[#F3EAD8]">{s.name}</span>
@@ -418,7 +418,7 @@ export default function VellumDesign({ site, page = "home", basePath = "" }: Pre
           <div className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-4">
             {gallery.slice(0, 4).map((g) => (
               // eslint-disable-next-line @next/next/no-img-element
-              <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full rounded-[3px] object-cover" />
+              <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full rounded-[3px] object-cover" />
             ))}
           </div>
           <div className="mt-10 text-center">{btnOutline("See the shop", href("gallery"))}</div>

@@ -370,7 +370,7 @@ export default function CamelliaDesign({ site, page = "home", basePath = "" }: P
             <div className="mx-auto grid max-w-6xl grid-cols-2 gap-3 sm:grid-cols-3">
               {gallery.map((g) => (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full rounded-[1.25rem] object-cover shadow-[0_18px_44px_-30px_rgba(74,63,58,0.6)] ring-1 transition duration-500 hover:opacity-95" style={{ borderColor: `${GOLD}55` }} />
+                <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full rounded-[1.25rem] object-cover shadow-[0_18px_44px_-30px_rgba(74,63,58,0.6)] ring-1 transition duration-500 hover:opacity-95" style={{ borderColor: `${GOLD}55` }} />
               ))}
             </div>
           </section>
@@ -505,7 +505,7 @@ export default function CamelliaDesign({ site, page = "home", basePath = "" }: P
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
               {gallery.slice(0, 4).map((g) => (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full rounded-[1.25rem] object-cover shadow-[0_18px_44px_-30px_rgba(74,63,58,0.6)]" />
+                <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/5] w-full rounded-[1.25rem] object-cover shadow-[0_18px_44px_-30px_rgba(74,63,58,0.6)]" />
               ))}
             </div>
             <div className="mt-8 text-center">
