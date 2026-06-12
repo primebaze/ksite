@@ -25,6 +25,7 @@ export default async function DashLayout({ children }: { children: React.ReactNo
     { href: "/kmanageradmin", label: "Overview", icon: "overview" },
     { href: "/kmanageradmin/enquiries", label: "Enquiries", icon: "enquiries", badge: newEnquiries },
     { href: "/kmanageradmin/support", label: "Support", icon: "support", badge: openTickets },
+    { href: "/kmanageradmin/promos", label: "Promo codes", icon: "promos" },
   ];
   const initial = user.email?.[0]?.toUpperCase() ?? "K";
 
