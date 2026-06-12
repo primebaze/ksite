@@ -36,7 +36,11 @@ export async function getMyUser() {
 /** The tenant owned by the current user (one site per client for now). */
 export async function getMyTenant(): Promise<Tenant | null> {
   const supabase = await db();
-  const { data } = await supabase.from("tenants").select("*").limit(1);
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return null;
+  const { data } = await supabase.from("tenants").select("*").eq("owner_id", user.id).limit(1);
   return (data?.[0] as Tenant) ?? null;
 }
 
@@ -72,7 +76,11 @@ export async function createMyTenant(input: {
 
 export async function getMyTenantFull(): Promise<TenantSite | null> {
   const supabase = await db();
-  const { data: tRows } = await supabase.from("tenants").select("*").limit(1);
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return null;
+  const { data: tRows } = await supabase.from("tenants").select("*").eq("owner_id", user.id).limit(1);
   const t = tRows?.[0];
   if (!t) return null;
   const id = t.id as string;
@@ -112,7 +120,11 @@ async function bust(t: Pick<Tenant, "id" | "subdomain" | "custom_domain">) {
 
 async function myRef() {
   const supabase = await db();
-  const { data } = await supabase.from("tenants").select("id,subdomain,custom_domain").limit(1);
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return undefined;
+  const { data } = await supabase.from("tenants").select("id,subdomain,custom_domain").eq("owner_id", user.id).limit(1);
   return data?.[0] as Pick<Tenant, "id" | "subdomain" | "custom_domain"> | undefined;
 }
 
@@ -353,7 +365,11 @@ export async function submitMyKyc(fields: {
   notes?: string | null;
 }): Promise<void> {
   const supabase = await db();
-  const { data: tenant } = await supabase.from("tenants").select("id").limit(1).maybeSingle();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) throw new Error("Not signed in.");
+  const { data: tenant } = await supabase.from("tenants").select("id").eq("owner_id", user.id).limit(1).maybeSingle();
   if (!tenant) throw new Error("No site found.");
   const { error } = await supabase.from("kyc_submissions").insert({ tenant_id: tenant.id, ...fields });
   if (error) throw new Error(error.message);
