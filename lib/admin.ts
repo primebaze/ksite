@@ -381,10 +381,41 @@ export async function cancelSubscriptionForTenant(tenantId: string): Promise<voi
   sendAdminLifecycleAlert({ subject: "Cancellation scheduled", businessName: name, detail: endDate ? `Ends ${endDate}.` : "Ends at period end.", tenantId }).catch(() => {});
 }
 
+// Find a Supabase auth user id by email, or create the account (so a new client
+// can be linked at site-creation). The owner won't know this password — staff
+// set one from the tenant's "Client login" card afterwards.
+async function findUserIdByEmail(email: string): Promise<string | null> {
+  const c = client();
+  const e = email.toLowerCase();
+  for (let page = 1; page <= 20; page++) {
+    const { data, error } = await c.auth.admin.listUsers({ page, perPage: 200 });
+    if (error) break;
+    const u = data.users.find((x) => (x.email ?? "").toLowerCase() === e);
+    if (u) return u.id;
+    if (data.users.length < 200) break;
+  }
+  return null;
+}
+
+export async function resolveOwnerId(email: string): Promise<string> {
+  const e = email.trim().toLowerCase();
+  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e)) throw new Error("Enter a valid owner email.");
+  const existing = await findUserIdByEmail(e);
+  if (existing) return existing;
+  const { data, error } = await client().auth.admin.createUser({
+    email: e,
+    email_confirm: true,
+    password: `${crypto.randomUUID()}Aa1!`,
+  });
+  if (error) throw new Error(error.message);
+  return data.user.id;
+}
+
 export async function createTenant(input: {
   business_name: string;
   preset: Preset;
   subdomain: string;
+  ownerId?: string | null;
 }): Promise<string> {
   const c = client();
   const { data, error } = await c
@@ -394,6 +425,7 @@ export async function createTenant(input: {
       preset: input.preset,
       subdomain: input.subdomain,
       published: false,
+      ...(input.ownerId ? { owner_id: input.ownerId } : {}),
     })
     .select("id")
     .single();

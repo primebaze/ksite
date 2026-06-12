@@ -49,6 +49,12 @@ export default async function NewClientPage({
           <p className="mt-1 text-xs text-ink/40">Lowercase letters, numbers and hyphens only.</p>
         </div>
 
+        <div>
+          <label className="block text-sm font-medium">Owner email <span className="font-normal text-ink/40">(optional)</span></label>
+          <input name="owner_email" type="email" placeholder="client@example.com" className="mt-1 w-full rounded-md border border-ink/10 bg-ink/5 px-3 py-2 text-sm text-ink placeholder-ink/30 outline-none focus:border-ink/30" />
+          <p className="mt-1 text-xs text-ink/40">Links a client account so they can log in and manage this site. We&apos;ll create the account if it doesn&apos;t exist — set their password afterwards from the client&apos;s &ldquo;Client login&rdquo; card.</p>
+        </div>
+
         {error && <p className="rounded-md bg-red-500/10 px-3 py-2 text-sm text-red-300">{error}</p>}
 
         <button className="rounded-md bg-emerald-500 px-4 py-2 text-sm font-semibold text-neutral-950 transition hover:bg-emerald-400">Create client</button>
