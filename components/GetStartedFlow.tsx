@@ -230,7 +230,7 @@ export function GetStartedFlow({
                 <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                   {categories.map((c) => (
                     <button
-                      key={c.group}
+                      key={c.preset}
                       type="button"
                       onClick={() => chooseType(c.preset)}
                       className="rounded-2xl border border-ink/10 bg-paper/30 p-5 text-left transition hover:-translate-y-0.5 hover:border-emerald-400/50 hover:bg-emerald-400/[0.04]"
