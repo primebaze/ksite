@@ -264,40 +264,36 @@ function FeatureCard({
   const isFirst = index === 0;
   const isLast = index === last;
 
-  // Build keyframes spanning the FULL [0,1] with explicit endpoint stops, so the
-  // value is correct everywhere without relying on clamping/extrapolation (which
-  // let the first card reappear at the bottom). Stops stay in range and strictly
-  // increasing — required by Framer's WAAPI path.
+  // Each card holds a wide, stable plateau (you read one clean card), then does
+  // a short crossfade only right at the boundary with its neighbour, with a tiny
+  // drift — so transitions read as a quick in-place dissolve, not jumbled,
+  // offset double text. PLATEAU/EDGE are fractions of the half-window w.
+  const PLATEAU = 0.46; // full-opacity zone, ±PLATEAU·w around the centre
+  const EDGE = 0.6; // opacity hits 0 at ±EDGE·w — a tight crossfade band
+  const DRIFT = 16; // px, applied only inside the crossfade band
+
   const opIn: number[] = [];
   const opOut: number[] = [];
-  const add = (i: number, o: number) => {
-    if (opIn.length === 0 || i > opIn[opIn.length - 1]) {
-      opIn.push(i);
-      opOut.push(o);
-    }
-  };
-  add(0, isFirst ? 1 : 0); // top endpoint
-  if (c - w > 0) add(c - w, 0); // fade-in start
-  add(c, 1); // peak
-  if (c + w < 1) add(c + w, 0); // fade-out end
-  add(1, isLast ? 1 : 0); // bottom endpoint
-  const opacity = useTransform(progress, opIn, opOut);
-
-  // Gentle scroll-linked drift, pinned at the endpoints so it never extrapolates.
-  const yIn: number[] = [];
   const yOut: number[] = [];
-  const addY = (i: number, o: number) => {
-    if (yIn.length === 0 || i > yIn[yIn.length - 1]) {
-      yIn.push(i);
-      yOut.push(o);
+  const add = (x: number, o: number, yo: number) => {
+    if (opIn.length === 0 || x > opIn[opIn.length - 1]) {
+      opIn.push(x);
+      opOut.push(o);
+      yOut.push(yo);
     }
   };
-  addY(0, isFirst ? 0 : 64);
-  if (c - w > 0) addY(c - w, 64);
-  addY(c, 0);
-  if (c + w < 1) addY(c + w, -64);
-  addY(1, isLast ? 0 : -64);
-  const y = useTransform(progress, yIn, yOut);
+  add(0, isFirst ? 1 : 0, isFirst ? 0 : DRIFT); // top endpoint
+  if (!isFirst) {
+    add(c - EDGE * w, 0, DRIFT); // fade-in start (just enters from below)
+    add(c - PLATEAU * w, 1, 0); // fully in
+  }
+  if (!isLast) {
+    add(c + PLATEAU * w, 1, 0); // start of fade-out
+    add(c + EDGE * w, 0, -DRIFT); // fully out (drifted up)
+  }
+  add(1, isLast ? 1 : 0, isLast ? 0 : -DRIFT); // bottom endpoint
+  const opacity = useTransform(progress, opIn, opOut);
+  const y = useTransform(progress, opIn, yOut);
 
   const Visual = WINDOWS[feature.icon] ?? DesignWindow;
   return (
