@@ -42,6 +42,9 @@ export interface SiteContent {
   hero_image_url?: string;
   /** Looping background video for the hero (Premium). Takes priority over the image. */
   hero_video_url?: string;
+  /** Per-slot content image overrides (key -> uploaded url), set by tapping any
+   *  editable image in the live editor. See `editImg` in presets/shared. */
+  images?: Record<string, string>;
   about?: string;
   cuisine_type?: string; // restaurant
   hours?: { day: string; open: string }[];

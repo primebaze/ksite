@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editImg, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { LustreHeader } from "./LustreHeader";
 import { LustreBooking } from "./LustreBooking";
@@ -311,9 +311,9 @@ export default function LustreDesign({ site, page = "home", basePath = "" }: Pre
               <p data-edit="content.about" className="mt-6 line-clamp-[12] whitespace-pre-line text-[16px] leading-[1.9] text-neutral-600">{content.about}</p>
               <a href={href("about")} className="mt-7 inline-flex text-xs font-semibold uppercase tracking-[0.2em]" style={{ color: INK }}>Read more →</a>
             </div>
-            {(hero || lead?.photo_url) && (
+            {(content.images?.story_portrait || lead?.photo_url || hero) && (
               // eslint-disable-next-line @next/next/no-img-element
-              <img src={lead?.photo_url || hero} alt="" className="aspect-[4/5] w-full object-cover" />
+              <img {...editImg(content, "story_portrait", lead?.photo_url || hero)} alt="" className="aspect-[4/5] w-full object-cover" />
             )}
           </div>
         </section>
@@ -322,12 +322,8 @@ export default function LustreDesign({ site, page = "home", basePath = "" }: Pre
       {/* why choose us — mauve split */}
       <section style={{ background: MAUVE }} className="text-white">
         <div className="mx-auto grid max-w-6xl items-center gap-12 px-6 py-20 sm:py-24 lg:grid-cols-2">
-          {gallery[0] ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={gallery[0].image_url} alt="" className="aspect-[4/3] w-full object-cover" />
-          ) : (
-            <div className="aspect-[4/3] w-full bg-white/20" />
-          )}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img {...editImg(content, "why_choose", gallery[0]?.image_url || hero)} alt="" className="aspect-[4/3] w-full bg-white/20 object-cover" />
           <div>
             <h2 style={serif} className="text-3xl tracking-[0.08em] sm:text-4xl">Why choose us</h2>
             <p className="mt-6 text-[15px] leading-[1.9] text-white/90">
@@ -402,12 +398,8 @@ export default function LustreDesign({ site, page = "home", basePath = "" }: Pre
       {/* opening hours over storefront */}
       <section className="bg-white">
         <div className="mx-auto grid max-w-6xl items-stretch gap-0 px-6 py-20 sm:py-24 lg:grid-cols-2">
-          {gallery[1] || gallery[0] ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={(gallery[1] ?? gallery[0]).image_url} alt="" className="aspect-[3/4] w-full object-cover" />
-          ) : (
-            <div className="aspect-[3/4] w-full" style={{ background: MIST }} />
-          )}
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img {...editImg(content, "storefront", (gallery[1] ?? gallery[0])?.image_url || hero)} alt="" className="aspect-[3/4] w-full object-cover" style={{ background: MIST }} />
           <div className="flex flex-col justify-center px-0 pt-10 lg:px-12 lg:pt-0">
             <h2 style={serif} className="text-2xl tracking-[0.1em] text-neutral-800 underline decoration-neutral-300 underline-offset-8 sm:text-3xl">Opening hours</h2>
             <p className="mt-4 text-xs uppercase tracking-[0.2em] text-neutral-400">Come visit</p>

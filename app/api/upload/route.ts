@@ -63,6 +63,12 @@ export async function POST(req: Request) {
     } else if (field === "gallery") {
       const site = await getMyTenantFull();
       await upsertMyGalleryImage({ image_url: url, caption: null, sort_order: (site?.gallery.length ?? 0) + 1 });
+    } else if (field.startsWith("img:")) {
+      // A tapped content image (any section photo) → store a per-slot override.
+      const key = field.slice(4).slice(0, 80);
+      const site = await getMyTenantFull();
+      const images = { ...(site?.content.images ?? {}), [key]: url };
+      await updateMyContent({ ...(site?.content ?? {}), images });
     } else {
       const site = await getMyTenantFull();
       await updateMyContent({ ...(site?.content ?? {}), hero_image_url: url });

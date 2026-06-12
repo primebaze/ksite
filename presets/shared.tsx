@@ -24,6 +24,16 @@ export function resolveStyle(content: SiteContent): SiteStyle {
   return s && STYLES.includes(s) ? s : "classic";
 }
 
+// Make any content image editable + persistent. Spread onto an <img>:
+//   <img {...editImg(content, "story", gallery[0]?.image_url)} alt="" className="…" />
+// `data-edit-image="img:<key>"` lets the live editor swap it (the upload API
+// saves the uploaded url to content.images[<key>]); on the next render the
+// override wins over the fallback, so it sticks with no flash. Public sites
+// just render the resolved src — the attribute is inert until the editor loads.
+export function editImg(content: SiteContent, key: string, fallback?: string) {
+  return { src: content.images?.[key] ?? fallback ?? "", "data-edit-image": `img:${key}` } as const;
+}
+
 export interface StyleTokens {
   style: SiteStyle;
   serif: boolean;
