@@ -44,7 +44,7 @@ import type {
 // edit/publish/delete ANY tenant by POSTing to these actions with its id.
 export async function requireStaff() {
   const user = await getAdminUser();
-  if (!user || !isStaff(user.email)) redirect("/kmanageradmin/login");
+  if (!user || !(await isStaff(user.email))) redirect("/kmanageradmin/login");
 }
 
 function client() {

@@ -18,7 +18,7 @@ export default async function DashLayout({ children }: { children: React.ReactNo
   if (sessionExpired(user.last_sign_in_at, ADMIN_SESSION_MAX_AGE_MS)) redirect("/auth/signout?to=admin");
   // Clients who sign in land here only if they're on the staff allowlist;
   // everyone else is sent to their own dashboard.
-  if (!isStaff(user.email)) redirect("/dashboard");
+  if (!(await isStaff(user.email))) redirect("/dashboard");
 
   const { newEnquiries, openTickets } = await getNavBadges();
   const items: AdminNavItem[] = [

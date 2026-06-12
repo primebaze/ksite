@@ -15,7 +15,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
   // Time-box: force re-login once the session exceeds the max age.
   if (sessionExpired(user.last_sign_in_at)) redirect("/auth/signout");
   // Staff use the operator console, not the client dashboard.
-  if (isStaff(user.email)) redirect("/kmanageradmin");
+  if (await isStaff(user.email)) redirect("/kmanageradmin");
   // Suspended accounts are blocked from the dashboard (site is also offline).
   const me = await getMyTenant();
   if (me?.account_status === "suspended") redirect("/suspended");
