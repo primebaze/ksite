@@ -90,13 +90,23 @@ export function EditOnboarding() {
   const next = () => (idx < steps.length - 1 ? setIdx((i) => i + 1) : finish());
   const back = () => setIdx((i) => Math.max(0, i - 1));
 
-  // Tooltip placement: below the target, or above if it's low on screen.
+  // Tooltip placement. Prefer below the target, else above — but ALWAYS clamp
+  // into the viewport so a tall hero element (which fills the screen) can't push
+  // the step card off-screen. Keep clear of the bottom edit dock (~96px).
+  const vw = typeof window !== "undefined" ? window.innerWidth : 360;
   const vh = typeof window !== "undefined" ? window.innerHeight : 800;
-  const below = !rect || rect.bottom + 190 < vh;
+  const TIP_H = 210; // approximate tooltip height
+  const BOTTOM_SAFE = 96; // leave room for the edit dock
+  let tipTop = 0;
+  if (rect) {
+    const below = rect.bottom + 16;
+    const above = rect.top - TIP_H - 16;
+    if (below + TIP_H <= vh - BOTTOM_SAFE) tipTop = below;
+    else if (above >= 16) tipTop = above;
+    else tipTop = Math.max(16, Math.min(vh - TIP_H - BOTTOM_SAFE, below));
+  }
   const tipStyle: React.CSSProperties = rect
-    ? below
-      ? { top: rect.bottom + 16, left: Math.min(Math.max(rect.left, 16), (typeof window !== "undefined" ? window.innerWidth : 360) - 336) }
-      : { bottom: vh - rect.top + 16, left: Math.min(Math.max(rect.left, 16), (typeof window !== "undefined" ? window.innerWidth : 360) - 336) }
+    ? { top: tipTop, left: Math.min(Math.max(rect.left, 16), vw - 336) }
     : { top: "50%", left: "50%", transform: "translate(-50%,-50%)" };
 
   return (
