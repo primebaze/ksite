@@ -4,7 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-type IconKey = "home" | "edit" | "content" | "support" | "more" | "inbox" | "domains" | "billing";
+type IconKey = "home" | "edit" | "content" | "support" | "more" | "inbox" | "domains" | "billing" | "account";
 
 const ICONS: Record<IconKey, React.ReactNode> = {
   home: <path d="M3 11.5L12 4l9 7.5M5.5 10v9.5h13V10" />,
@@ -15,6 +15,7 @@ const ICONS: Record<IconKey, React.ReactNode> = {
   inbox: <path d="M4 5h16v12H7l-3 3V5z" />,
   domains: <path d="M12 21a9 9 0 100-18 9 9 0 000 18zM3 12h18M12 3c2.5 2.5 2.5 15 0 18M12 3c-2.5 2.5-2.5 15 0 18" />,
   billing: <path d="M3 7h18v10H3zM3 11h18" />,
+  account: <path d="M4 20a8 8 0 0116 0M12 11a4 4 0 100-8 4 4 0 000 8z" />,
 };
 
 function Icon({ name, className }: { name: IconKey; className?: string }) {
@@ -36,6 +37,7 @@ const MORE: { href: string; label: string; icon: IconKey }[] = [
   { href: "/dashboard/inbox", label: "Enquiries", icon: "inbox" },
   { href: "/dashboard/domains", label: "Domains", icon: "domains" },
   { href: "/dashboard/billing", label: "Billing", icon: "billing" },
+  { href: "/dashboard/account", label: "Account", icon: "account" },
 ];
 
 function isActive(pathname: string, match: string) {

@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import {
+  adminUpdateClientAuth,
   cancelSubscriptionForTenant,
   deleteCatalogItem,
   deleteGalleryImage,
@@ -202,6 +203,20 @@ export async function cancelSubscriptionAction(formData: FormData) {
     redirect(`/kmanageradmin/${id}?error=${encodeURIComponent(e instanceof Error ? e.message : "Cancel failed")}`);
   }
   redirect(`/kmanageradmin/${id}?notice=Subscription+set+to+cancel+at+period+end`);
+}
+
+export async function updateClientAuthAction(formData: FormData) {
+  await requireStaff();
+  const id = String(formData.get("id"));
+  try {
+    await adminUpdateClientAuth(id, {
+      email: String(formData.get("client_email") ?? "").trim() || null,
+      password: String(formData.get("client_password") ?? "").trim() || null,
+    });
+  } catch (e) {
+    redirect(`/kmanageradmin/${id}?error=${encodeURIComponent(e instanceof Error ? e.message : "Couldn't update the client login.")}`);
+  }
+  redirect(`/kmanageradmin/${id}?notice=Client+login+updated`);
 }
 
 export async function togglePublish(formData: FormData) {

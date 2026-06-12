@@ -287,6 +287,34 @@ export async function setAccountStatus(tenantId: string, status: AccountStatus) 
   }
 }
 
+// The client's auth account (id + email) for this tenant.
+export async function getClientAuth(tenantId: string): Promise<{ id: string; email: string | null } | null> {
+  const c = client();
+  const { data: t } = await c.from("tenants").select("owner_id").eq("id", tenantId).maybeSingle();
+  const ownerId = (t as { owner_id?: string } | null)?.owner_id;
+  if (!ownerId) return null;
+  const { data } = await c.auth.admin.getUserById(ownerId);
+  return { id: ownerId, email: data?.user?.email ?? null };
+}
+
+// Staff override: reset a client's password and/or change their login email.
+export async function adminUpdateClientAuth(tenantId: string, fields: { email?: string | null; password?: string | null }): Promise<void> {
+  const auth = await getClientAuth(tenantId);
+  if (!auth) throw new Error("No client account is linked to this site.");
+  const patch: { email?: string; password?: string; email_confirm?: boolean } = {};
+  if (fields.email && fields.email.trim() && fields.email.trim() !== auth.email) {
+    patch.email = fields.email.trim();
+    patch.email_confirm = true; // staff override → no confirmation email needed
+  }
+  if (fields.password && fields.password.trim()) {
+    if (fields.password.trim().length < 8) throw new Error("Password must be at least 8 characters.");
+    patch.password = fields.password.trim();
+  }
+  if (!patch.email && !patch.password) throw new Error("Nothing to change.");
+  const { error } = await client().auth.admin.updateUserById(auth.id, patch);
+  if (error) throw new Error(error.message);
+}
+
 export async function emailClient(tenantId: string, subject: string, body: string) {
   const to = await ownerEmail(tenantId);
   if (!to) throw new Error("No client email on file.");

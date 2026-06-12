@@ -7,7 +7,7 @@ export interface AdminNavItem {
   href: string;
   label: string;
   badge?: number;
-  icon: "overview" | "clients" | "enquiries" | "support" | "promos";
+  icon: "overview" | "clients" | "enquiries" | "support" | "promos" | "account";
 }
 
 const ICONS: Record<AdminNavItem["icon"], React.ReactNode> = {
@@ -16,6 +16,7 @@ const ICONS: Record<AdminNavItem["icon"], React.ReactNode> = {
   enquiries: <path d="M4 5h16v12H7l-3 3V5z" />,
   support: <path d="M12 19a7 7 0 100-14 7 7 0 000 14zM9.5 9.5a2.5 2.5 0 113.5 2.3c-.8.4-1 .8-1 1.7M12 16.5h.01" />,
   promos: <path d="M9 7h6l5 5-8 8-8-8 5-5zM9.5 11.5h.01" />,
+  account: <path d="M4 20a8 8 0 0116 0M12 11a4 4 0 100-8 4 4 0 000 8z" />,
 };
 
 function isActive(pathname: string, href: string) {

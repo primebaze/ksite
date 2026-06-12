@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getTenantFull, getTenantBilling, getLatestKyc } from "@/lib/admin";
+import { getTenantFull, getTenantBilling, getLatestKyc, getClientAuth } from "@/lib/admin";
 import { SITE_BASE } from "@/lib/marketing";
 import { VERTICALS, verticalFor } from "@/lib/verticals";
 import { SiteEditor, type EditorActions } from "@/components/SiteEditor";
@@ -24,6 +24,7 @@ import {
   teamDelete,
   teamSave,
   togglePublish,
+  updateClientAuthAction,
 } from "./actions";
 
 export const dynamic = "force-dynamic";
@@ -92,7 +93,7 @@ export default async function EditTenant({
   const site = await getTenantFull(id);
   if (!site) notFound();
   const { tenant, content } = site;
-  const [billing, kyc] = await Promise.all([getTenantBilling(id), getLatestKyc(id)]);
+  const [billing, kyc, clientAuth] = await Promise.all([getTenantBilling(id), getLatestKyc(id), getClientAuth(id)]);
   const subscribed = tenant.plan_status === "active" || tenant.plan_status === "trialing" || tenant.published;
   const fmtDay = (iso: string) => new Date(iso).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
 
@@ -212,6 +213,28 @@ export default async function EditTenant({
                 </form>
               )}
             </div>
+          </div>
+
+          {/* Client login (staff override) */}
+          <div className="rounded-xl border border-ink/[0.08] p-4 sm:col-span-2">
+            <p className="text-sm font-medium text-ink/80">Client login</p>
+            <p className="mt-0.5 text-xs text-ink/45">
+              {clientAuth ? "Change their sign-in email or set a new password for them." : "No client account is linked to this site."}
+            </p>
+            {clientAuth && (
+              <form action={updateClientAuthAction} className="mt-3 grid gap-3 sm:grid-cols-2">
+                <input type="hidden" name="id" value={id} />
+                <div>
+                  <label className={label}>Login email</label>
+                  <input name="client_email" type="email" defaultValue={clientAuth.email ?? ""} className={input} />
+                </div>
+                <div>
+                  <label className={label}>New password (optional)</label>
+                  <input name="client_password" type="text" placeholder="Leave blank to keep" className={input} />
+                </div>
+                <div className="sm:col-span-2"><button className={btn}>Update client login</button></div>
+              </form>
+            )}
           </div>
 
           {/* Email the client */}
