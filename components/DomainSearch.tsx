@@ -1,19 +1,42 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import Link from "next/link";
 import { claimDomain } from "@/app/dashboard/domains/actions";
 
 interface Result {
   name?: string;
   available?: boolean;
-  supported?: boolean; // false → Vercel can't register this TLD (connect instead)
+  supported?: boolean; // false → Vercel can't register this TLD (e.g. .co.uk)
   error?: string;
 }
 
-export function DomainSearch({ suggestions = [] }: { suggestions?: string[] }) {
+// Strip a typed value down to a domain-safe base (no TLD, no spaces/punctuation).
+function toBase(input: string): string {
+  return input
+    .toLowerCase()
+    .normalize("NFKD")
+    .replace(/[̀-ͯ]/g, "")
+    .replace(/\.[a-z.]+$/, "") // drop a trailing ".com" / ".co.uk" etc.
+    .replace(/[^a-z0-9]+/g, "")
+    .slice(0, 28);
+}
+
+export function DomainSearch({ base = "" }: { base?: string }) {
   const [name, setName] = useState("");
   const [result, setResult] = useState<Result | null>(null);
   const [loading, setLoading] = useState(false);
+
+  // Suggestions follow what's being typed (falling back to the business name),
+  // and we only ever suggest .com — .co.uk and friends go through support.
+  const suggestions = useMemo(() => {
+    const root = toBase(name) || base;
+    if (!root) return [];
+    const current = name.trim().toLowerCase();
+    return [...new Set([`${root}.com`, `${root}studio.com`, `hello${root}.com`, `get${root}.com`])]
+      .filter((s) => s !== current)
+      .slice(0, 4);
+  }, [name, base]);
 
   async function search() {
     const q = name.trim().toLowerCase();
@@ -73,10 +96,12 @@ export function DomainSearch({ suggestions = [] }: { suggestions?: string[] }) {
 
       {result && result.available && result.supported === false && (
         <p className="mt-3 rounded-lg border border-ink/10 bg-ink/[0.02] px-4 py-3 text-sm text-ink/60">
-          <span className="text-ink">{result.name}</span> is available, but we can&apos;t auto-register that ending (e.g.{" "}
-          <span className="text-ink">.co.uk</span>). Register it with any provider, then use{" "}
-          <span className="text-ink">&ldquo;Already own a domain elsewhere?&rdquo;</span> below to connect it. Or try a{" "}
-          <span className="text-ink">.com</span>.
+          <span className="text-ink">{result.name}</span> is available. To register a{" "}
+          <span className="text-ink">.co.uk</span> (or another ending we don&apos;t sell directly),{" "}
+          <Link href="/dashboard/support" className="font-medium text-accent underline-offset-2 hover:underline">
+            contact support
+          </Link>{" "}
+          and we&apos;ll set it up for you — or try a <span className="text-ink">.com</span> above.
         </p>
       )}
 

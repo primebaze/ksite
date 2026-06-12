@@ -41,12 +41,12 @@ export async function claimDomain(formData: FormData) {
   if (!avail.ok || avail.data.available !== true) back("?error=That+domain+isn%27t+available");
 
   // Vercel only sells a subset of TLDs (e.g. not .co.uk / .uk). For anything it
-  // can't register, steer the client to the "connect a domain you own" path.
+  // can't register, route the client to support, who set it up for them.
   const price = await getDomainPrice(domain);
   if (!price.supported) {
     back(
       `?error=${encodeURIComponent(
-        "We can’t auto-register that ending (e.g. .co.uk). Register it with any provider, then use “Already own a domain elsewhere?” below to connect it.",
+        "To register a .co.uk (or another ending we don’t sell directly), please contact support and we’ll set it up for you. Or choose a .com.",
       )}`,
     );
   }

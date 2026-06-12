@@ -28,13 +28,6 @@ export default async function DomainsPage({
     .replace(/[̀-ͯ]/g, "")
     .replace(/[^a-z0-9]+/g, "")
     .slice(0, 28) || tenant.subdomain;
-  // Suggest endings Vercel can actually register (it can't sell .co.uk/.uk).
-  const suggestions = [
-    `${baseName}.com`,
-    `${baseName}.co`,
-    `${baseName}studio.com`,
-    `hello${baseName}.com`,
-  ];
 
   return (
     <div className="max-w-3xl space-y-8">
@@ -112,7 +105,7 @@ export default async function DomainsPage({
           <p className="mt-1 text-sm text-ink/50">
             Domain names are global, so the name must be available. Try your business name, location, or a short brand variation.
           </p>
-          <div className="mt-4"><DomainSearch suggestions={suggestions} /></div>
+          <div className="mt-4"><DomainSearch base={baseName} /></div>
 
           <details className="mt-6">
             <summary className="cursor-pointer text-sm text-ink/55">Already own a domain elsewhere?</summary>
