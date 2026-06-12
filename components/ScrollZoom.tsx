@@ -15,8 +15,8 @@ export const StoryReelContext = createContext<{ setActiveVideo: (src: string) =>
 // Timings live inside the pinned band (~0.22 to ~0.78 of progress for a 360vh
 // track), so the whole story plays while the reel is held full-screen.
 const CAPTIONS = [
-  { text: "Tell us about your business.", start: 0.22, end: 0.42 },
-  { text: "We design and build it.", start: 0.4, end: 0.57 },
+  { text: "Pick a design you love.", start: 0.22, end: 0.42 },
+  { text: "It's built for you, instantly.", start: 0.4, end: 0.57 },
   { text: "You go live in 5 minutes.", start: 0.55, end: 0.7 },
 ];
 
@@ -124,7 +124,7 @@ export function ScrollZoom({ children }: { children: ReactNode }) {
           className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center px-6 text-center"
         >
           <p className="mx-auto max-w-md text-lg leading-relaxed text-ink/70">
-            Design, hosting, a free domain and booking, all done for you. One flat price from £99 a month.
+            Design, hosting, a free domain and booking — all included. One flat price from £99 a month.
           </p>
           <Link
             href="/get-started"
