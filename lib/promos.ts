@@ -17,7 +17,10 @@ export interface PromoView {
   expiresAt: number | null;
 }
 
-function discountLabel(c: Stripe.Coupon): string {
+function discountLabel(c?: Stripe.Coupon | null): string {
+  // A promo code can outlive its coupon (deleted in Stripe), so the coupon may
+  // be missing even with expand — don't crash, just show a dash.
+  if (!c) return "—";
   const amount = c.percent_off
     ? `${c.percent_off}% off`
     : c.amount_off
@@ -34,7 +37,7 @@ export async function listPromotions(): Promise<PromoView[]> {
   const res = await stripe.promotionCodes.list({ limit: 100, expand: ["data.coupon"] });
   return res.data.map((pc) => {
     const p = pc as unknown as {
-      id: string; code: string; active: boolean; coupon: Stripe.Coupon;
+      id: string; code: string; active: boolean; coupon?: Stripe.Coupon | null;
       times_redeemed: number; max_redemptions: number | null; expires_at: number | null;
     };
     return {
