@@ -33,7 +33,8 @@ export default async function AdminAccountPage({ searchParams }: { searchParams:
       <section className="rounded-2xl border border-ink/[0.08] bg-ink/[0.02] p-6">
         <h2 className="text-lg font-semibold">Admin access</h2>
         <p className="mt-0.5 text-sm text-ink/45">
-          Anyone here can sign in to this console. They still need a Kovasite account with that email to log in.
+          Only the emails listed below can open this admin console — no one else. Each also needs a Kovasite
+          account with that email and password to actually sign in.
         </p>
 
         <ul className="mt-4 divide-y divide-ink/[0.08]">
