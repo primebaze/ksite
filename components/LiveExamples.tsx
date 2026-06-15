@@ -67,13 +67,13 @@ function BrowserCard({ e }: { e: Ex }) {
   );
 }
 
-// The £99 plan panel — shared by the desktop reveal and the mobile carousel.
+// The £49.99 plan panel — shared by the desktop reveal and the mobile carousel.
 function PlanPanel() {
   return (
     <div className="w-full max-w-xl text-left">
       <p className="text-xs font-semibold uppercase tracking-[0.22em] text-accent/80">One simple plan</p>
       <div className="mt-4 flex flex-wrap items-baseline gap-2">
-        <span className="text-5xl font-semibold tracking-tight sm:text-6xl">£99</span>
+        <span className="text-5xl font-semibold tracking-tight sm:text-6xl">£49.99</span>
         <span className="text-lg text-ink/45">/month</span>
         <span className="ml-1 rounded-full bg-emerald-400/15 px-2.5 py-1 text-xs font-semibold text-accent">Pay yearly, save 2 months</span>
       </div>

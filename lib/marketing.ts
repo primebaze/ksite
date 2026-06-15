@@ -45,19 +45,19 @@ export const STEPS = [
 export const gbp = (n: number) =>
   `£${n.toLocaleString("en-GB", { minimumFractionDigits: Number.isInteger(n) ? 0 : 2, maximumFractionDigits: 2 })}`;
 
-// One simple plan. Monthly is £99; yearly gives 2 months free (pay for 10).
+// One simple plan. Monthly is £49.99; yearly gives 2 months free (pay for 10).
 export const PLAN = {
-  monthly: 99,
+  monthly: 49.99,
   /** The headline yearly hook. */
   yearlyHook: "2 months free",
   /** Total billed once a year (12 months for the price of 10). */
-  yearlyTotal: 99 * 10, // 990
+  yearlyTotal: 49.99 * 10, // 499.90
   /** Effective per-month cost when billed yearly. */
-  yearlyPerMonth: +((99 * 10) / 12).toFixed(2), // 82.50
+  yearlyPerMonth: +((49.99 * 10) / 12).toFixed(2), // 41.66
   /** What you save over a year vs paying monthly. */
-  yearlySaving: 99 * 12 - 99 * 10, // 198
+  yearlySaving: +(49.99 * 12 - 49.99 * 10).toFixed(2), // 99.98
   /** Equivalent discount, for a percentage badge. */
-  yearlyDiscountPct: Math.round((1 - (99 * 10) / (99 * 12)) * 100), // 17
+  yearlyDiscountPct: Math.round((1 - (49.99 * 10) / (49.99 * 12)) * 100), // 17
   features: [
     "Bespoke design built for your business",
     "Free custom domain + SSL, registered & renewed",
@@ -80,6 +80,6 @@ export const FAQS = [
   { q: "Is there a contract?", a: "No. Cancel anytime. We earn your business by making the site genuinely good, not by locking you in." },
   { q: "Do I own my domain?", a: "Yes. We manage it for you, and if you ever leave we hand it over cleanly." },
   { q: "How fast can I go live?", a: "About 5 minutes: add your business details, services, hours and a few photos, and your site is live on your own domain." },
-  { q: "Do you offer annual billing?", a: "Yes. Pay yearly and get 2 months free — £990 a year (works out at £82.50/month) instead of £1,188. Same plan, everything included." },
+  { q: "Do you offer annual billing?", a: "Yes. Pay yearly and get 2 months free — £499.90 a year (works out at £41.66/month) instead of £599.88. Same plan, everything included." },
   { q: "What if I want changes?", a: "Tap any text on your live site to edit it yourself in seconds, or text/email us and we'll make the change for you. Monthly edits are included." },
 ];

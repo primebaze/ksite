@@ -71,7 +71,7 @@ export default function Home() {
                 Browse samples
               </Link>
             </div>
-            <p className="mt-5 text-sm text-ink/35">From £99/mo · No setup fee · No contract · Live in 5 minutes</p>
+            <p className="mt-5 text-sm text-ink/35">From £49.99/mo · No setup fee · No contract · Live in 5 minutes</p>
           </Reveal>
         </div>
       </section>

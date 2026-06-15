@@ -6,9 +6,9 @@ import { FAQS } from "@/lib/marketing";
 
 export const metadata: Metadata = {
   title: "Pricing",
-  description: "One simple plan at £99/month — or pay yearly and save two months. Design, hosting, a free custom domain, booking and SEO all included. No setup fee, cancel anytime.",
+  description: "One simple plan at £49.99/month — or pay yearly and save two months. Design, hosting, a free custom domain, booking and SEO all included. No setup fee, cancel anytime.",
   alternates: { canonical: "/pricing" },
-  openGraph: { title: "Pricing | Kovasite", description: "One simple plan, everything included. £99/month, cancel anytime.", url: "/pricing" },
+  openGraph: { title: "Pricing | Kovasite", description: "One simple plan, everything included. £49.99/month, cancel anytime.", url: "/pricing" },
 };
 
 export default function PricingPage() {

@@ -74,7 +74,7 @@ export default function Footer() {
               Get your site
               <span aria-hidden>→</span>
             </Link>
-            <p className="mt-4 text-xs text-ink/35">From £99/mo · No setup fee · No contract</p>
+            <p className="mt-4 text-xs text-ink/35">From £49.99/mo · No setup fee · No contract</p>
           </div>
         </div>
 

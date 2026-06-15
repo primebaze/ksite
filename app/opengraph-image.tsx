@@ -46,7 +46,7 @@ export default function OpengraphImage() {
           Websites for local businesses
         </div>
         <div style={{ marginTop: 28, fontSize: 30, color: "rgba(255,255,255,0.6)" }}>
-          Live in under 5 minutes · booking · free domain · £99/mo
+          Live in under 5 minutes · booking · free domain · £49.99/mo
         </div>
       </div>
     ),
