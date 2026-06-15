@@ -63,14 +63,10 @@ export const PLAN = {
     "Free custom domain + SSL, registered & renewed",
     "Fast, mobile-first hosting",
     "Booking & online ordering — no commission",
-    "Booking & enquiry messages emailed straight to you",
     "Local SEO + Google Business Profile",
     "Google reviews shown & collected",
-    "Photo gallery to showcase your work",
     "Tap any text to edit — change anything, anytime",
     "Monthly edits, done for you",
-    "No setup fee — one simple monthly price",
-    "No contract, cancel anytime — your domain is yours to keep",
   ],
 };
 
