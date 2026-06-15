@@ -12,6 +12,18 @@ const OPTIONS = [
   { period: "yearly", label: "Yearly", price: gbp(PLAN.yearlyPerMonth), unit: "/month", note: `Billed ${gbp(PLAN.yearlyTotal)} a year — save ${gbp(PLAN.yearlySaving)}`, highlight: true },
 ] as const;
 
+// The Publish screen lists the full set of what's included — a few more than
+// the marketing pricing page's headline list. Built from PLAN.features so the
+// shared ones never drift, plus extras that are true but not already stated
+// above (the intro line already covers no setup fee / cancel anytime / domain).
+const PUBLISH_FEATURES = [
+  ...PLAN.features,
+  "Booking & enquiry messages emailed straight to you",
+  "Photo gallery to showcase your work",
+  "Live in minutes once you subscribe",
+  "Support from our team whenever you need it",
+];
+
 export default async function PublishPage({
   searchParams,
 }: {
@@ -72,7 +84,7 @@ export default async function PublishPage({
       </div>
 
       <ul className="mt-8 grid max-w-3xl gap-x-6 gap-y-3 text-sm text-ink/65 sm:grid-cols-2">
-        {PLAN.features.map((f) => (
+        {PUBLISH_FEATURES.map((f) => (
           <li key={f} className="flex gap-2.5">
             <span className="mt-0.5 text-accent">✓</span>
             {f}
