@@ -28,9 +28,15 @@ const trimOrNull = (f: FormData, k: string) => {
 };
 
 export async function cancelSubscriptionAction() {
-  await cancelMySubscription();
+  let failed: string | null = null;
+  try {
+    await cancelMySubscription();
+  } catch (e) {
+    // No Stripe subscription on file (e.g. a comped/admin-published site) — never 500.
+    failed = e instanceof Error ? e.message : "Couldn't cancel right now.";
+  }
   revalidatePath("/dashboard/billing");
-  redirect("/dashboard/billing?canceled=1");
+  redirect(failed ? `/dashboard/billing?error=${encodeURIComponent(failed)}` : "/dashboard/billing?canceled=1");
 }
 
 export async function resumeSubscriptionAction() {

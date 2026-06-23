@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { getMyTenant, getMyUser } from "@/lib/my-site";
 import { isStaff } from "@/lib/staff";
 import { MobileTabBar } from "@/components/MobileTabBar";
+import { DashNav } from "@/components/DashNav";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { sessionExpired } from "@/lib/session";
 import { clientLogout } from "./actions";
@@ -43,21 +44,7 @@ export default async function DashboardLayout({ children }: { children: React.Re
           Kovasite
         </Link>
 
-        <nav className="mt-16 space-y-1">
-          {nav.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={
-                item.primary
-                  ? "block rounded-xl bg-emerald-400/10 px-3 py-2.5 text-sm font-semibold text-accent ring-1 ring-inset ring-emerald-400/25 transition hover:bg-emerald-400/15"
-                  : "block rounded-xl px-3 py-2.5 text-sm font-medium text-ink/50 transition hover:bg-ink/[0.06] hover:text-ink"
-              }
-            >
-              {item.label}
-            </Link>
-          ))}
-        </nav>
+        <DashNav items={nav} />
 
         <div className="mt-auto flex items-center justify-between gap-2">
           <div className="grid h-11 w-11 place-items-center rounded-full bg-ink text-sm font-semibold text-paper">{initial}</div>

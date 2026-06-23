@@ -7,12 +7,16 @@ export const dynamic = "force-dynamic";
 
 const fmt = (iso: string) => new Date(iso).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
 
-export default async function BillingPage({ searchParams }: { searchParams: Promise<{ canceled?: string; resumed?: string }> }) {
-  const { canceled, resumed } = await searchParams;
+export default async function BillingPage({ searchParams }: { searchParams: Promise<{ canceled?: string; resumed?: string; error?: string }> }) {
+  const { canceled, resumed, error } = await searchParams;
   const tenant = await getMyTenant();
   if (!tenant) redirect("/get-started");
   const billing = await getMyBilling();
-  const subscribed = tenant.plan_status === "active" || tenant.plan_status === "trialing" || tenant.published;
+  // A real, cancellable subscription requires a Stripe subscription on file.
+  const hasSubscription = !!billing.subscriptionId;
+  // The site can be live (published) without a paid subscription (e.g. comped
+  // or admin-published) — that's "live", but there's nothing to cancel.
+  const live = tenant.published || tenant.plan_status === "active" || tenant.plan_status === "trialing";
   const planLabel = tenant.plan ? tenant.plan[0].toUpperCase() + tenant.plan.slice(1) : "Subscription";
 
   return (
@@ -32,15 +36,35 @@ export default async function BillingPage({ searchParams }: { searchParams: Prom
           Welcome back — your subscription will continue as normal.
         </p>
       )}
+      {error && (
+        <p className="mt-5 rounded-xl border border-red-400/25 bg-red-400/10 px-4 py-3 text-sm text-red-300">{error}</p>
+      )}
 
       <div className="mt-6 rounded-2xl border border-ink/[0.08] bg-ink/[0.02] p-6">
-        {!subscribed ? (
+        {!hasSubscription && !live ? (
           <>
             <h2 className="text-lg font-semibold">No active subscription</h2>
             <p className="mt-1 text-sm text-ink/50">Publish your site to take it live on your subdomain.</p>
             <Link href="/dashboard/publish" className="mt-4 inline-block rounded-xl bg-ink px-5 py-2.5 text-sm font-semibold text-paper transition hover:bg-ink/90">
               Choose a plan
             </Link>
+          </>
+        ) : !hasSubscription ? (
+          // Live, but no Stripe subscription to manage (comped / admin-published).
+          <>
+            <div className="flex items-center justify-between gap-3">
+              <div>
+                <h2 className="text-lg font-semibold">Your site is live</h2>
+                <p className="mt-0.5 text-sm text-ink/50">No subscription is billed to this account.</p>
+              </div>
+              <span className="rounded-full bg-emerald-400/15 px-2.5 py-0.5 text-xs font-medium text-accent">Live</span>
+            </div>
+            <div className="mt-6 border-t border-ink/[0.08] pt-5">
+              <p className="text-sm text-ink/50">
+                This site is managed for you. To make billing changes, contact{" "}
+                <a href="mailto:hello@kovasite.com" className="text-accent hover:underline">hello@kovasite.com</a>.
+              </p>
+            </div>
           </>
         ) : (
           <>

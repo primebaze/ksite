@@ -53,9 +53,22 @@ export default async function DomainsPage({
 
       {/* Free address */}
       <section className="rounded-2xl border border-ink/10 bg-ink/[0.02] p-6">
-        <p className="text-xs uppercase tracking-widest text-ink/40">Free address</p>
-        <p className="mt-1 font-medium">{tenant.subdomain}.{SITE_BASE}</p>
-        <a href={subUrl} target="_blank" rel="noreferrer" className="mt-3 inline-block text-sm text-accent/90 hover:text-accent">Visit ↗</a>
+        <div className="flex items-center justify-between gap-3">
+          <p className="text-xs uppercase tracking-widest text-ink/40">Free address</p>
+          {/* Active once the site is published/paid; inactive (not live) until then. */}
+          <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-medium ${subscribed ? "bg-emerald-400/15 text-accent" : "bg-ink/10 text-ink/55"}`}>
+            <span className={`h-1.5 w-1.5 rounded-full ${subscribed ? "bg-emerald-400" : "bg-ink/40"}`} />
+            {subscribed ? "Active" : "Inactive"}
+          </span>
+        </div>
+        <p className="mt-2 font-medium">{tenant.subdomain}.{SITE_BASE}</p>
+        {subscribed ? (
+          <a href={subUrl} target="_blank" rel="noreferrer" className="mt-3 inline-block text-sm text-accent/90 hover:text-accent">Visit ↗</a>
+        ) : (
+          <p className="mt-2 text-sm text-ink/45">
+            Not live yet — <Link href="/dashboard/publish" className="text-accent hover:underline">publish your site</Link> to activate this address.
+          </p>
+        )}
       </section>
 
       {/* Custom domain */}
