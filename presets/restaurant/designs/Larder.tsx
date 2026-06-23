@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { LarderHeader } from "./LarderHeader";
 import { LarderBooking } from "./LarderBooking";
@@ -79,7 +79,7 @@ export default function LarderDesign({ site, page = "home", basePath = "" }: Pre
           </div>
 
           <div>
-            <h4 className="text-[10px] font-medium uppercase tracking-[0.28em]" style={{ color: SAGE }}>Explore</h4>
+            <h4 className="text-[10px] font-medium uppercase tracking-[0.28em]" style={{ color: SAGE }} {...editCopy(content, "footer_explore", "Explore")} />
             <ul className="mt-5 space-y-3 text-sm text-[color:#2A2A26]/70">
               {([
                 groups.length > 0 && { label: "Menu", href: href("menu") },
@@ -94,7 +94,7 @@ export default function LarderDesign({ site, page = "home", basePath = "" }: Pre
           </div>
 
           <div>
-            <h4 className="text-[10px] font-medium uppercase tracking-[0.28em]" style={{ color: SAGE }}>Hours</h4>
+            <h4 className="text-[10px] font-medium uppercase tracking-[0.28em]" style={{ color: SAGE }} {...editCopy(content, "footer_hours", "Hours")} />
             {content.hours && content.hours.length > 0 ? (
               <ul className="mt-5 space-y-2 text-sm text-[color:#2A2A26]/70">
                 {content.hours.map((h, i) => (
@@ -105,7 +105,7 @@ export default function LarderDesign({ site, page = "home", basePath = "" }: Pre
           </div>
 
           <div>
-            <h4 className="text-[10px] font-medium uppercase tracking-[0.28em]" style={{ color: SAGE }}>Find us</h4>
+            <h4 className="text-[10px] font-medium uppercase tracking-[0.28em]" style={{ color: SAGE }} {...editCopy(content, "footer_findus", "Find us")} />
             {content.address && <p data-edit="content.address" className="mt-5 whitespace-pre-line text-sm leading-[1.8] text-[color:#2A2A26]/70">{content.address}</p>}
             <div className="mt-3 space-y-1.5 text-sm text-[color:#2A2A26]/70">
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block hover:text-[color:#2A2A26]">{content.phone}</a>}
@@ -129,11 +129,11 @@ export default function LarderDesign({ site, page = "home", basePath = "" }: Pre
 
   // Quiet, generously-margined sub-page banner that clears the fixed header.
   // A small sage kicker over a large, calm Fraunces headline, on stone.
-  const banner = (kicker: string, title: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string) => (
     <section className="border-b" style={{ background: STONE, borderColor: `${INK}1f` }}>
       <div className="mx-auto max-w-6xl px-6 pb-14 pt-36 sm:px-8 sm:pb-20 sm:pt-44">
-        <p className="text-[11px] font-medium uppercase tracking-[0.34em]" style={{ color: SAGE }}>{kicker}</p>
-        <h1 style={display} className="mt-5 max-w-3xl text-5xl font-normal leading-[1.04] sm:text-7xl">{title}</h1>
+        <p className="text-[11px] font-medium uppercase tracking-[0.34em]" style={{ color: SAGE }} {...editCopy(content, kickerKey, kicker)} />
+        <h1 style={display} className="mt-5 max-w-3xl text-5xl font-normal leading-[1.04] sm:text-7xl" {...editCopy(content, titleKey, title)} />
       </div>
     </section>
   );
@@ -142,7 +142,7 @@ export default function LarderDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "menu") {
     return shell(
       <>
-        {banner("The menu", "From the kitchen, daily")}
+        {banner("The menu", "menu_kicker", "From the kitchen, daily", "menu_title")}
         <section className="px-6 py-20 sm:px-8 sm:py-28">
           <div className="mx-auto max-w-3xl">
             {groups.length > 0 ? (
@@ -205,12 +205,10 @@ export default function LarderDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "reservations") {
     return shell(
       <>
-        {banner("Reservations", "Book a table")}
+        {banner("Reservations", "reservations_kicker", "Book a table", "reservations_title")}
         <section className="px-6 py-20 sm:px-8 sm:py-28">
           <div className="mx-auto max-w-xl">
-            <p className="mb-10 text-[17px] leading-[1.9] text-[color:#2A2A26]/75">
-              We would be glad to have you. Choose a day and a time below and we will confirm by phone or email. For parties of eight or more, or to enquire about the private room, please call us directly.
-            </p>
+            <p className="mb-10 text-[17px] leading-[1.9] text-[color:#2A2A26]/75" {...editCopy(content, "reservations_intro", "We would be glad to have you. Choose a day and a time below and we will confirm by phone or email. For parties of eight or more, or to enquire about the private room, please call us directly.")} />
             <LarderBooking tenantId={tenant.id} name={name} />
           </div>
         </section>
@@ -222,7 +220,7 @@ export default function LarderDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "contact") {
     return shell(
       <>
-        {banner("Contact", "Find us")}
+        {banner("Contact", "contact_kicker", "Find us", "contact_title")}
         <section className="px-6 py-20 sm:px-8 sm:py-28">
           <div className="mx-auto grid max-w-6xl gap-14 lg:grid-cols-2 lg:gap-24">
             <div>
@@ -233,7 +231,7 @@ export default function LarderDesign({ site, page = "home", basePath = "" }: Pre
               </div>
               {content.hours && content.hours.length > 0 && (
                 <div className="mt-10 border-t pt-8" style={{ borderColor: `${INK}1f` }}>
-                  <p className="text-[10px] font-medium uppercase tracking-[0.28em]" style={{ color: SAGE }}>Opening hours</p>
+                  <p className="text-[10px] font-medium uppercase tracking-[0.28em]" style={{ color: SAGE }} {...editCopy(content, "contact_hours_label", "Opening hours")} />
                   <ul className="mt-4 max-w-xs space-y-2.5 text-sm text-[color:#2A2A26]/75">
                     {content.hours.map((h, i) => (
                       <li key={i} className="flex justify-between gap-6"><span data-edit={`hours:${i}:day`}>{h.day}</span><span data-edit={`hours:${i}:open`} className="text-[color:#2A2A26]/45">{h.open}</span></li>
@@ -242,7 +240,7 @@ export default function LarderDesign({ site, page = "home", basePath = "" }: Pre
                 </div>
               )}
               {content.map_url && (
-                <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-9 inline-flex border px-7 py-3 text-[10px] font-medium uppercase tracking-[0.22em] transition hover:border-[color:#7C8567] hover:text-[color:#7C8567]" style={{ borderColor: `${INK}40` }}>Get directions</a>
+                <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-9 inline-flex border px-7 py-3 text-[10px] font-medium uppercase tracking-[0.22em] transition hover:border-[color:#7C8567] hover:text-[color:#7C8567]" style={{ borderColor: `${INK}40` }} {...editCopy(content, "contact_directions", "Get directions")} />
               )}
             </div>
             {contactOn && (
@@ -268,13 +266,13 @@ export default function LarderDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "about") {
     return shell(
       <>
-        {banner("About", "Seasonal, local, unhurried")}
+        {banner("About", "about_kicker", "Seasonal, local, unhurried", "about_title")}
         <section className="px-6 py-20 sm:px-8 sm:py-28">
           <div className="mx-auto max-w-3xl">
             {content.about ? <p data-edit="content.about" className="text-[19px] leading-[1.95] text-[color:#2A2A26]/80">{content.about}</p> : <p className="text-[color:#2A2A26]/50">Our story is coming soon.</p>}
             {content.cuisine_type && (
               <div className="mt-16 border-t pt-12" style={{ borderColor: `${INK}1f` }}>
-                <p className="text-[10px] font-medium uppercase tracking-[0.28em]" style={{ color: SAGE }}>In the kitchen</p>
+                <p className="text-[10px] font-medium uppercase tracking-[0.28em]" style={{ color: SAGE }} {...editCopy(content, "about_kitchen_label", "In the kitchen")} />
                 <p data-edit="content.cuisine_type" className="mt-5 text-[17px] leading-[1.85] text-[color:#2A2A26]/75">{content.cuisine_type}</p>
               </div>
             )}
@@ -288,7 +286,7 @@ export default function LarderDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Gallery", "A look around")}
+        {banner("Gallery", "gallery_kicker", "A look around", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-6xl px-6 py-16 sm:px-8 sm:py-20">
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
@@ -321,9 +319,7 @@ export default function LarderDesign({ site, page = "home", basePath = "" }: Pre
               <h1 data-edit="content.tagline" style={display} className="mt-6 max-w-xl text-5xl font-normal leading-[1.03] sm:text-7xl">
                 {content.tagline ?? "A seasonal kitchen and bar"}
               </h1>
-              <p className="mt-7 max-w-md text-[17px] leading-[1.85] text-[color:#2A2A26]/70">
-                Produce-led plates and a well-kept bar, in unhurried rooms. We cook what the season gives us.
-              </p>
+              <p className="mt-7 max-w-md text-[17px] leading-[1.85] text-[color:#2A2A26]/70" {...editCopy(content, "hero_sub", "Produce-led plates and a well-kept bar, in unhurried rooms. We cook what the season gives us.")} />
               {!bookingOn && (
                 <a href={book} className="mt-9 inline-flex px-9 py-4 text-[11px] font-medium uppercase tracking-[0.24em] text-[#F6F3EC] transition hover:opacity-90" style={{ background: INK }}>Get in touch</a>
               )}
@@ -352,10 +348,10 @@ export default function LarderDesign({ site, page = "home", basePath = "" }: Pre
       {content.about && (
         <section className="border-y" style={{ background: STONE, borderColor: `${INK}1f` }}>
           <div className="mx-auto grid max-w-6xl gap-8 px-6 py-24 sm:px-8 sm:py-28 lg:grid-cols-[auto_1fr] lg:gap-16">
-            <p className="text-[11px] font-medium uppercase tracking-[0.32em] lg:pt-3" style={{ color: SAGE }}>About</p>
+            <p className="text-[11px] font-medium uppercase tracking-[0.32em] lg:pt-3" style={{ color: SAGE }} {...editCopy(content, "home_about_label", "About")} />
             <div>
               <p data-edit="content.about" style={display} className="max-w-3xl text-2xl font-normal leading-[1.45] text-[color:#2A2A26] sm:text-[2rem] sm:leading-[1.4]">{content.about}</p>
-              <a href={href("about")} className="mt-8 inline-flex text-[11px] font-medium uppercase tracking-[0.22em] transition hover:text-[color:#7C8567]" style={{ color: INK }}>Our story →</a>
+              <a href={href("about")} className="mt-8 inline-flex text-[11px] font-medium uppercase tracking-[0.22em] transition hover:text-[color:#7C8567]" style={{ color: INK }} {...editCopy(content, "home_about_cta", "Our story →")} />
             </div>
           </div>
         </section>
@@ -377,11 +373,9 @@ export default function LarderDesign({ site, page = "home", basePath = "" }: Pre
               </div>
               {/* note + this week's plates */}
               <div className="lg:pt-4">
-                <p className="text-[11px] font-medium uppercase tracking-[0.34em]" style={{ color: SAGE }}>From the larder — this week</p>
-                <h2 style={display} className="mt-5 max-w-md text-4xl font-normal leading-[1.08] sm:text-5xl">What is good right now</h2>
-                <p className="mt-6 max-w-md text-[16px] leading-[1.85] text-[color:#2A2A26]/70">
-                  A short list that shifts with the markets and the garden. Here is a little of what we are cooking this week.
-                </p>
+                <p className="text-[11px] font-medium uppercase tracking-[0.34em]" style={{ color: SAGE }} {...editCopy(content, "feature_eyebrow", "From the larder — this week")} />
+                <h2 style={display} className="mt-5 max-w-md text-4xl font-normal leading-[1.08] sm:text-5xl" {...editCopy(content, "feature_heading", "What is good right now")} />
+                <p className="mt-6 max-w-md text-[16px] leading-[1.85] text-[color:#2A2A26]/70" {...editCopy(content, "feature_sub", "A short list that shifts with the markets and the garden. Here is a little of what we are cooking this week.")} />
                 {featured.length > 0 && (
                   <ul className="mt-9 divide-y" style={{ borderColor: `${INK}1f` }}>
                     {featured.map((item) => (
@@ -396,7 +390,7 @@ export default function LarderDesign({ site, page = "home", basePath = "" }: Pre
                   </ul>
                 )}
                 {groups.length > 0 && (
-                  <a href={href("menu")} className="mt-9 inline-flex text-[11px] font-medium uppercase tracking-[0.22em] transition hover:text-[color:#7C8567]" style={{ color: INK }}>See the full menu →</a>
+                  <a href={href("menu")} className="mt-9 inline-flex text-[11px] font-medium uppercase tracking-[0.22em] transition hover:text-[color:#7C8567]" style={{ color: INK }} {...editCopy(content, "feature_menu_link", "See the full menu →")} />
                 )}
               </div>
             </div>
@@ -407,11 +401,9 @@ export default function LarderDesign({ site, page = "home", basePath = "" }: Pre
       {/* QUIET CTA band on sage — the one place colour comes forward */}
       <section style={{ background: SAGE }} className="text-[#F6F3EC]">
         <div className="mx-auto max-w-4xl px-6 py-24 text-center sm:px-8 sm:py-28">
-          <p className="text-[11px] font-medium uppercase tracking-[0.34em] text-[#F6F3EC]/75">An evening with us</p>
-          <h2 style={display} className="mt-4 text-4xl font-normal leading-[1.1] sm:text-6xl">Pull up a chair</h2>
-          <p className="mx-auto mt-6 max-w-lg text-[16px] leading-[1.85] text-[#F6F3EC]/85">
-            Whether a quiet dinner for two or a long table with friends, we will look after you.
-          </p>
+          <p className="text-[11px] font-medium uppercase tracking-[0.34em] text-[#F6F3EC]/75" {...editCopy(content, "cta_eyebrow", "An evening with us")} />
+          <h2 style={display} className="mt-4 text-4xl font-normal leading-[1.1] sm:text-6xl" {...editCopy(content, "cta_heading", "Pull up a chair")} />
+          <p className="mx-auto mt-6 max-w-lg text-[16px] leading-[1.85] text-[#F6F3EC]/85" {...editCopy(content, "cta_sub", "Whether a quiet dinner for two or a long table with friends, we will look after you.")} />
           <a href={book} className="mt-10 inline-flex px-9 py-4 text-[11px] font-medium uppercase tracking-[0.24em] transition hover:opacity-90" style={{ background: OFFWHITE, color: INK }}>
             {bookingOn ? "Reserve a table" : "Get in touch"}
           </a>

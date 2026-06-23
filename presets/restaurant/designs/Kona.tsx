@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { KonaHeader } from "./KonaHeader";
 import { KonaBooking } from "./KonaBooking";
@@ -110,7 +110,7 @@ export default function KonaDesign({ site, page = "home", basePath = "" }: Prese
           {content.tagline && <p data-edit="content.tagline" className="mt-4 max-w-xs text-sm leading-relaxed text-white/70">{content.tagline}</p>}
           {content.socials && content.socials.length > 0 && (
             <>
-              <h4 className="mt-8 text-xs font-bold uppercase tracking-[0.2em]" style={{ color: YUZU }}>Find us online</h4>
+              <h4 className="mt-8 text-xs font-bold uppercase tracking-[0.2em]" style={{ color: YUZU }} {...editCopy(content, "footer_socials", "Find us online")} />
               <div className="mt-4 flex gap-4 text-white">
                 {content.socials.map((s) => (
                   <a key={s.url} href={s.url} target="_blank" rel="noreferrer" aria-label={s.label} className="transition hover:opacity-60"><SocialIcon kind={`${s.label} ${s.url}`} /></a>
@@ -121,7 +121,7 @@ export default function KonaDesign({ site, page = "home", basePath = "" }: Prese
         </div>
 
         <div>
-          <h4 className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: YUZU }}>Explore</h4>
+          <h4 className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: YUZU }} {...editCopy(content, "footer_explore", "Explore")} />
           <ul className="mt-5 space-y-3 text-sm text-white/70">
             {([
               groups.length > 0 && { label: "Menu", href: href("menu") },
@@ -136,7 +136,7 @@ export default function KonaDesign({ site, page = "home", basePath = "" }: Prese
         </div>
 
         <div>
-          <h4 className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: YUZU }}>Open hours</h4>
+          <h4 className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: YUZU }} {...editCopy(content, "footer_hours", "Open hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm text-white/70">
               {content.hours.map((h, i) => (
@@ -153,8 +153,8 @@ export default function KonaDesign({ site, page = "home", basePath = "" }: Prese
 
         {/* CTA panel: a real button on a coral card */}
         <div className="rounded-[2rem] px-7 py-9" style={{ background: CORAL, color: "#fff" }}>
-          <h4 style={display} className="text-2xl font-semibold leading-tight">Hungry for the islands?</h4>
-          <p className="mt-2 text-sm leading-relaxed text-white/90">Order ahead or book a table by the water. Fresh fish, big aloha.</p>
+          <h4 style={display} className="text-2xl font-semibold leading-tight" {...editCopy(content, "footer_cta_heading", "Hungry for the islands?")} />
+          <p className="mt-2 text-sm leading-relaxed text-white/90" {...editCopy(content, "footer_cta_sub", "Order ahead or book a table by the water. Fresh fish, big aloha.")} />
           <a href={book} className="mt-6 inline-flex rounded-full px-7 py-3 text-xs font-bold uppercase tracking-[0.16em] transition hover:opacity-90" style={{ background: SAND, color: NAVY }}>{bookingOn ? "Order ahead" : "Get in touch"}</a>
         </div>
       </div>
@@ -172,11 +172,11 @@ export default function KonaDesign({ site, page = "home", basePath = "" }: Prese
 
   // Ocean banner that clears the fixed header on sub-pages: a teal→navy water
   // wash with the wave signature along the bottom.
-  const banner = (kicker: string, title: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string) => (
     <section className="relative isolate overflow-hidden" style={{ background: `linear-gradient(160deg, ${TEAL}, ${NAVY})` }}>
       <div className="mx-auto max-w-6xl px-6 pb-20 pt-32 sm:px-8 sm:pb-24 sm:pt-40">
-        <p className="text-xs font-bold uppercase tracking-[0.28em]" style={{ color: YUZU }}>{kicker}</p>
-        <h1 style={display} className="mt-3 text-5xl font-semibold leading-[0.95] text-white sm:text-6xl">{title}</h1>
+        <p className="text-xs font-bold uppercase tracking-[0.28em]" style={{ color: YUZU }} {...editCopy(content, kickerKey, kicker)} />
+        <h1 style={display} className="mt-3 text-5xl font-semibold leading-[0.95] text-white sm:text-6xl" {...editCopy(content, titleKey, title)} />
       </div>
       <Wave color={SAND} className="h-[44px] -mb-px" />
     </section>
@@ -186,7 +186,7 @@ export default function KonaDesign({ site, page = "home", basePath = "" }: Prese
   if (page === "menu") {
     return shell(
       <>
-        {banner("The good stuff", "Bowls & bites")}
+        {banner("The good stuff", "menu_kicker", "Bowls & bites", "menu_title")}
         <section className="px-6 py-16 sm:px-8 sm:py-20" style={{ background: SAND }}>
           <div className="mx-auto max-w-5xl">
           {groups.length > 0 ? (
@@ -250,10 +250,10 @@ export default function KonaDesign({ site, page = "home", basePath = "" }: Prese
   if (page === "reservations") {
     return shell(
       <>
-        {banner("Order ahead / Book a table", "Save your spot")}
+        {banner("Order ahead / Book a table", "reservations_kicker", "Save your spot", "reservations_title")}
         <section className="px-6 py-16 sm:px-8 sm:py-20" style={{ background: SAND }}>
           <div className="mx-auto max-w-xl">
-            <p className="mb-8 text-center text-[17px] leading-[1.8] text-[color:#14242E]/75">Grab a bowl to go or save a table by the water. Big group of 8 or more? Give us a ring and we&apos;ll sort the spread.</p>
+            <p className="mb-8 text-center text-[17px] leading-[1.8] text-[color:#14242E]/75" {...editCopy(content, "reservations_intro", "Grab a bowl to go or save a table by the water. Big group of 8 or more? Give us a ring and we'll sort the spread.")} />
             <KonaBooking tenantId={tenant.id} name={name} />
             {(content.phone || content.email) && (
               <p className="mt-8 text-center text-sm text-[color:#14242E]/60">
@@ -273,7 +273,7 @@ export default function KonaDesign({ site, page = "home", basePath = "" }: Prese
   if (page === "contact") {
     return shell(
       <>
-        {banner("Come find us", "Say aloha")}
+        {banner("Come find us", "contact_kicker", "Say aloha", "contact_title")}
         <section className="px-6 py-16 sm:px-8 sm:py-20" style={{ background: SAND }}>
           <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-2 lg:gap-20">
             <div>
@@ -290,7 +290,7 @@ export default function KonaDesign({ site, page = "home", basePath = "" }: Prese
                 </ul>
               )}
               {content.map_url && (
-                <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex rounded-full px-7 py-3 text-xs font-bold uppercase tracking-[0.16em] text-white transition hover:opacity-90" style={{ background: TEAL }}>Get directions</a>
+                <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex rounded-full px-7 py-3 text-xs font-bold uppercase tracking-[0.16em] text-white transition hover:opacity-90" style={{ background: TEAL }} {...editCopy(content, "contact_directions", "Get directions")} />
               )}
             </div>
             {contactOn && (
@@ -316,13 +316,13 @@ export default function KonaDesign({ site, page = "home", basePath = "" }: Prese
   if (page === "about") {
     return shell(
       <>
-        {banner("Our story", "Fresh fish, big aloha")}
+        {banner("Our story", "about_kicker", "Fresh fish, big aloha", "about_title")}
         <section className="px-6 py-16 sm:px-8 sm:py-20" style={{ background: SAND }}>
           <div className="mx-auto max-w-3xl">
             {content.about ? <p data-edit="content.about" className="text-[18px] leading-[1.9] text-[color:#14242E]/80">{content.about}</p> : <p className="text-[color:#14242E]/60">Our story is coming soon.</p>}
             {content.cuisine_type && (
               <>
-                <h3 style={{ ...display, color: NAVY }} className="mt-12 text-3xl font-semibold">What we serve</h3>
+                <h3 style={{ ...display, color: NAVY }} className="mt-12 text-3xl font-semibold" {...editCopy(content, "about_serve_heading", "What we serve")} />
                 <p data-edit="content.cuisine_type" className="mt-4 text-[17px] leading-[1.8] text-[color:#14242E]/80">{content.cuisine_type}</p>
               </>
             )}
@@ -336,7 +336,7 @@ export default function KonaDesign({ site, page = "home", basePath = "" }: Prese
   if (page === "gallery") {
     return shell(
       <>
-        {banner("A look around", "By the water")}
+        {banner("A look around", "gallery_kicker", "By the water", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="grid grid-cols-2 gap-1.5 p-1.5 sm:grid-cols-3" style={{ background: SAND }}>
             {gallery.map((g) => (
@@ -368,13 +368,13 @@ export default function KonaDesign({ site, page = "home", basePath = "" }: Prese
 
         <div className="relative z-10 mt-auto px-6 pb-0 pt-32 sm:px-8">
           <div className="mx-auto max-w-5xl">
-            <p className="text-xs font-bold uppercase tracking-[0.3em]" style={{ color: YUZU }}>Coastal poke bar · catch of the day</p>
+            <p className="text-xs font-bold uppercase tracking-[0.3em]" style={{ color: YUZU }} {...editCopy(content, "hero_eyebrow", "Coastal poke bar · catch of the day")} />
             {content.tagline ? (
               <p data-edit="content.tagline" style={display} className="mt-3 max-w-3xl text-4xl font-semibold leading-[0.98] text-white [text-shadow:0_2px_24px_rgba(18,58,82,0.55)] sm:text-6xl">{content.tagline}</p>
             ) : (
               <h1 data-edit="tenant.business_name" style={display} className="mt-3 max-w-3xl text-5xl font-semibold leading-[0.98] text-white [text-shadow:0_2px_24px_rgba(18,58,82,0.55)] sm:text-7xl">{name}</h1>
             )}
-            <p className="mt-4 max-w-xl text-base text-white/90 [text-shadow:0_1px_12px_rgba(18,58,82,0.6)] sm:text-lg">Fresh-cut fish, sunny bowls, good vibes by the water. Build your own or grab a house favourite.</p>
+            <p className="mt-4 max-w-xl text-base text-white/90 [text-shadow:0_1px_12px_rgba(18,58,82,0.6)] sm:text-lg" {...editCopy(content, "hero_sub", "Fresh-cut fish, sunny bowls, good vibes by the water. Build your own or grab a house favourite.")} />
             {bookingOn ? (
               <div className="mt-7 max-w-3xl">
                 <KonaBooking tenantId={tenant.id} name={name} inline />
@@ -392,9 +392,9 @@ export default function KonaDesign({ site, page = "home", basePath = "" }: Prese
       <section style={{ background: SAND }}>
         <div className="mx-auto max-w-6xl px-6 py-20 sm:px-8 sm:py-24">
           <div className="max-w-2xl">
-            <p className="text-xs font-bold uppercase tracking-[0.28em]" style={{ color: TEAL }}>Build your bowl</p>
+            <p className="text-xs font-bold uppercase tracking-[0.28em]" style={{ color: TEAL }} {...editCopy(content, "bowl_eyebrow", "Build your bowl")} />
             <h2 style={{ ...display, color: NAVY }} className="mt-3 text-4xl font-semibold leading-[0.95] sm:text-5xl">Four steps to your<br />perfect bowl</h2>
-            <p className="mt-4 text-[17px] leading-[1.8] text-[color:#14242E]/75">Base, catch, toppings, sauce. Make it yours in the shop or order ahead — we&apos;ll have it ready.</p>
+            <p className="mt-4 text-[17px] leading-[1.8] text-[color:#14242E]/75" {...editCopy(content, "bowl_sub", "Base, catch, toppings, sauce. Make it yours in the shop or order ahead — we'll have it ready.")} />
           </div>
           <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {bowlSteps.map((step) => (
@@ -413,7 +413,7 @@ export default function KonaDesign({ site, page = "home", basePath = "" }: Prese
           </div>
           {groups.length > 0 && (
             <div className="mt-10">
-              <a href={href("menu")} className="inline-flex rounded-full px-8 py-3.5 text-xs font-bold uppercase tracking-[0.16em] text-white transition hover:opacity-90" style={{ background: NAVY }}>See the full menu</a>
+              <a href={href("menu")} className="inline-flex rounded-full px-8 py-3.5 text-xs font-bold uppercase tracking-[0.16em] text-white transition hover:opacity-90" style={{ background: NAVY }} {...editCopy(content, "bowl_menu_cta", "See the full menu")} />
             </div>
           )}
         </div>
@@ -423,13 +423,13 @@ export default function KonaDesign({ site, page = "home", basePath = "" }: Prese
       {/* ABOUT band: teal water with a sand intro */}
       <section style={{ background: TEAL }} className="text-white">
         <div className="mx-auto max-w-6xl px-6 py-20 sm:px-8 sm:py-24">
-          <p className="text-xs font-bold uppercase tracking-[0.28em]" style={{ color: YUZU }}>Aloha from us</p>
+          <p className="text-xs font-bold uppercase tracking-[0.28em]" style={{ color: YUZU }} {...editCopy(content, "home_about_eyebrow", "Aloha from us")} />
           <div className="mt-4 grid gap-8 lg:grid-cols-[1.1fr_1fr] lg:items-end lg:gap-16">
             <h2 style={display} className="text-5xl font-semibold leading-[0.95] sm:text-6xl">Fresh fish,<br />big aloha</h2>
             {content.about && <p data-edit="content.about" className="text-[17px] leading-[1.85] text-white/90">{content.about}</p>}
           </div>
           {content.about && (
-            <a href={href("about")} className="mt-8 inline-flex rounded-full border-2 px-7 py-3 text-xs font-bold uppercase tracking-[0.16em] transition hover:bg-white hover:text-[color:#0E7C86]" style={{ borderColor: "rgba(255,255,255,0.7)" }}>Our story</a>
+            <a href={href("about")} className="mt-8 inline-flex rounded-full border-2 px-7 py-3 text-xs font-bold uppercase tracking-[0.16em] transition hover:bg-white hover:text-[color:#0E7C86]" style={{ borderColor: "rgba(255,255,255,0.7)" }} {...editCopy(content, "home_about_cta", "Our story")} />
           )}
         </div>
         <Wave color={SAND} className="h-[44px] -mb-px" flip />
@@ -441,10 +441,10 @@ export default function KonaDesign({ site, page = "home", basePath = "" }: Prese
           <div className="mx-auto max-w-6xl px-6 py-20 sm:px-8 sm:py-24">
             <div className="flex flex-wrap items-end justify-between gap-4">
               <div>
-                <p className="text-xs font-bold uppercase tracking-[0.28em]" style={{ color: TEAL }}>Catch of the day</p>
-                <h2 style={{ ...display, color: NAVY }} className="mt-3 text-4xl font-semibold sm:text-5xl">House favourites</h2>
+                <p className="text-xs font-bold uppercase tracking-[0.28em]" style={{ color: TEAL }} {...editCopy(content, "catch_eyebrow", "Catch of the day")} />
+                <h2 style={{ ...display, color: NAVY }} className="mt-3 text-4xl font-semibold sm:text-5xl" {...editCopy(content, "catch_heading", "House favourites")} />
               </div>
-              {groups.length > 0 && <a href={href("menu")} className="text-xs font-bold uppercase tracking-[0.16em]" style={{ color: CORAL }}>View all →</a>}
+              {groups.length > 0 && <a href={href("menu")} className="text-xs font-bold uppercase tracking-[0.16em]" style={{ color: CORAL }} {...editCopy(content, "catch_viewall", "View all →")} />}
             </div>
             <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {featured.map((item, i) => {
@@ -478,13 +478,13 @@ export default function KonaDesign({ site, page = "home", basePath = "" }: Prese
       <section style={{ background: NAVY }} className="text-white">
         <div className="mx-auto max-w-6xl px-6 py-16 sm:px-8 sm:py-20">
           <div className="rounded-[2.5rem] px-8 py-12 text-center" style={{ background: `linear-gradient(150deg, ${TEAL}, ${INK})` }}>
-            <h2 style={display} className="text-5xl font-semibold leading-[0.95] sm:text-6xl">Catch you by the water</h2>
-            <p className="mt-3 text-sm font-bold uppercase tracking-[0.18em]" style={{ color: YUZU }}>Order ahead · dine in · grab and go</p>
+            <h2 style={display} className="text-5xl font-semibold leading-[0.95] sm:text-6xl" {...editCopy(content, "cta_heading", "Catch you by the water")} />
+            <p className="mt-3 text-sm font-bold uppercase tracking-[0.18em]" style={{ color: YUZU }} {...editCopy(content, "cta_sub", "Order ahead · dine in · grab and go")} />
             <a href={book} className="mt-7 inline-flex rounded-full px-9 py-4 text-sm font-bold uppercase tracking-[0.16em] text-white transition hover:opacity-90" style={{ background: CORAL }}>{bookingOn ? "Order ahead" : "Get in touch"}</a>
           </div>
           <div className="mt-14 grid gap-10 md:grid-cols-3">
             <div>
-              <h3 className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: YUZU }}>Open hours</h3>
+              <h3 className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: YUZU }} {...editCopy(content, "home_hours_heading", "Open hours")} />
               {content.hours && content.hours.length > 0 ? (
                 <ul className="mt-5 space-y-2 text-sm text-white/80">
                   {content.hours.map((h, i) => (
@@ -494,19 +494,19 @@ export default function KonaDesign({ site, page = "home", basePath = "" }: Prese
               ) : <p className="mt-5 text-sm text-white/70">Open daily by the water.</p>}
             </div>
             <div>
-              <h3 className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: YUZU }}>Find us</h3>
+              <h3 className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: YUZU }} {...editCopy(content, "home_findus_heading", "Find us")} />
               {content.address && <p data-edit="content.address" className="mt-5 whitespace-pre-line text-sm leading-relaxed text-white/80">{content.address}</p>}
               <div className="mt-3 space-y-1.5 text-sm text-white/80">
                 {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block hover:text-white">{content.phone}</a>}
                 {content.email && <a data-edit="content.email" href={`mailto:${content.email}`} className="block hover:text-white">{content.email}</a>}
               </div>
               {content.map_url && (
-                <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-4 inline-flex rounded-full border border-white/50 px-6 py-2.5 text-xs font-bold uppercase tracking-[0.16em] text-white transition hover:bg-white hover:text-[color:#123A52]">Get directions</a>
+                <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-4 inline-flex rounded-full border border-white/50 px-6 py-2.5 text-xs font-bold uppercase tracking-[0.16em] text-white transition hover:bg-white hover:text-[color:#123A52]" {...editCopy(content, "home_directions", "Get directions")} />
               )}
             </div>
             <div>
-              <h3 className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: YUZU }}>Order ahead</h3>
-              <p className="mt-5 text-sm text-white/80">Build your bowl online and skip the line. Ready when you are.</p>
+              <h3 className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: YUZU }} {...editCopy(content, "home_order_heading", "Order ahead")} />
+              <p className="mt-5 text-sm text-white/80" {...editCopy(content, "home_order_sub", "Build your bowl online and skip the line. Ready when you are.")} />
               <a href={book} className="mt-5 inline-flex rounded-full px-7 py-3 text-xs font-bold uppercase tracking-[0.16em] transition hover:opacity-90" style={{ background: YUZU, color: INK }}>{bookingOn ? "Order ahead" : "Contact us"}</a>
             </div>
           </div>

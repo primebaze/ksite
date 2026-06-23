@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { CrumbHeader } from "./CrumbHeader";
 import { CrumbBooking } from "./CrumbBooking";
@@ -95,7 +95,7 @@ export default function CrumbDesign({ site, page = "home", basePath = "" }: Pres
       </div>
       <div className="mx-auto grid max-w-6xl gap-12 px-6 py-14 sm:px-8 md:grid-cols-3">
         <div>
-          <h4 className="text-[11px] font-medium uppercase tracking-[0.24em] text-[color:#C98A3C]">Explore</h4>
+          <h4 className="text-[11px] font-medium uppercase tracking-[0.24em] text-[color:#C98A3C]" {...editCopy(content, "footer_explore_heading", "Explore")} />
           <ul className="mt-5 space-y-3 text-sm font-light text-[color:#F3E9D8]/75">
             {([
               groups.length > 0 && { label: "Menu", href: href("menu") },
@@ -110,7 +110,7 @@ export default function CrumbDesign({ site, page = "home", basePath = "" }: Pres
         </div>
 
         <div>
-          <h4 className="text-[11px] font-medium uppercase tracking-[0.24em] text-[color:#C98A3C]">Bakery hours</h4>
+          <h4 className="text-[11px] font-medium uppercase tracking-[0.24em] text-[color:#C98A3C]" {...editCopy(content, "footer_hours_heading", "Bakery hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm font-light text-[color:#F3E9D8]/75">
               {content.hours.map((h, i) => (
@@ -121,7 +121,7 @@ export default function CrumbDesign({ site, page = "home", basePath = "" }: Pres
         </div>
 
         <div>
-          <h4 className="text-[11px] font-medium uppercase tracking-[0.24em] text-[color:#C98A3C]">Find us</h4>
+          <h4 className="text-[11px] font-medium uppercase tracking-[0.24em] text-[color:#C98A3C]" {...editCopy(content, "footer_findus_heading", "Find us")} />
           {content.address && <p data-edit="content.address" className="mt-5 whitespace-pre-line text-sm font-light leading-relaxed text-[color:#F3E9D8]/75">{content.address}</p>}
           <div className="mt-3 space-y-1.5 text-sm font-light text-[color:#F3E9D8]/75">
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-[color:#F3E9D8]">{content.phone}</a>}
@@ -149,13 +149,13 @@ export default function CrumbDesign({ site, page = "home", basePath = "" }: Pres
   );
 
   // Cream page banner that clears the fixed header on sub-pages.
-  const banner = (kicker: string, title: string, blurb?: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string, blurb?: string, blurbKey?: string) => (
     <section style={{ background: CREAM }}>
       <div className="mx-auto max-w-3xl px-6 pb-12 pt-36 text-center sm:px-8 sm:pb-16 sm:pt-44">
-        <p className="text-[11px] font-medium uppercase tracking-[0.32em]" style={{ color: BERRY }}>{kicker}</p>
-        <h1 style={display} className="mt-4 text-4xl font-light leading-[1.05] text-[color:#43342A] sm:text-6xl">{title}</h1>
+        <p className="text-[11px] font-medium uppercase tracking-[0.32em]" style={{ color: BERRY }} {...editCopy(content, kickerKey, kicker)} />
+        <h1 style={display} className="mt-4 text-4xl font-light leading-[1.05] text-[color:#43342A] sm:text-6xl" {...editCopy(content, titleKey, title)} />
         <div className="mx-auto mt-4 w-40 sm:w-52"><Sketch /></div>
-        {blurb && <p className="mx-auto mt-5 max-w-xl text-[15px] font-light leading-[1.8] text-[color:#43342A]/70">{blurb}</p>}
+        {blurb && <p className="mx-auto mt-5 max-w-xl text-[15px] font-light leading-[1.8] text-[color:#43342A]/70" {...editCopy(content, blurbKey!, blurb)} />}
       </div>
     </section>
   );
@@ -164,7 +164,7 @@ export default function CrumbDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "menu") {
     return shell(
       <>
-        {banner("Baked fresh this morning", "The day's bakes", "Sourdoughs proved overnight, viennoiserie laminated by hand, and the small sweet things we can't stop making.")}
+        {banner("Baked fresh this morning", "menu_kicker", "The day's bakes", "menu_title", "Sourdoughs proved overnight, viennoiserie laminated by hand, and the small sweet things we can't stop making.", "menu_blurb")}
         <section className="px-6 py-16 sm:px-8 sm:py-24" style={{ background: CREAM }}>
           <div className="mx-auto max-w-3xl">
             {groups.length > 0 ? (
@@ -214,7 +214,7 @@ export default function CrumbDesign({ site, page = "home", basePath = "" }: Pres
 
                 {bookingOn && (
                   <div className="mt-14 text-center">
-                    <a href={href("reservations")} className="inline-flex rounded-full border px-9 py-3.5 text-[11px] font-medium uppercase tracking-[0.22em] text-[color:#43342A] transition hover:bg-[color:#43342A] hover:text-[color:#F3E9D8]" style={{ borderColor: INK }}>Reserve a table</a>
+                    <a href={href("reservations")} className="inline-flex rounded-full border px-9 py-3.5 text-[11px] font-medium uppercase tracking-[0.22em] text-[color:#43342A] transition hover:bg-[color:#43342A] hover:text-[color:#F3E9D8]" style={{ borderColor: INK }} {...editCopy(content, "menu_reserve_cta", "Reserve a table")} />
                   </div>
                 )}
               </>
@@ -229,7 +229,7 @@ export default function CrumbDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "reservations") {
     return shell(
       <>
-        {banner("Pull up a chair", "Reserve a table", "Mornings are our busiest, loveliest hours. Tell us when you'd like to come and we'll set a place at the bakery counter.")}
+        {banner("Pull up a chair", "book_kicker", "Reserve a table", "book_title", "Mornings are our busiest, loveliest hours. Tell us when you'd like to come and we'll set a place at the bakery counter.", "book_blurb")}
         <section className="px-6 pb-20 sm:px-8 sm:pb-28" style={{ background: CREAM }}>
           <div className="mx-auto max-w-xl">
             <CrumbBooking tenantId={tenant.id} name={name} />
@@ -250,7 +250,7 @@ export default function CrumbDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "contact") {
     return shell(
       <>
-        {banner("Come and see us", "Visit the bakery", "We're easiest to find by the smell of warm bread. Here's how to reach us and where to knock.")}
+        {banner("Come and see us", "contact_kicker", "Visit the bakery", "contact_title", "We're easiest to find by the smell of warm bread. Here's how to reach us and where to knock.", "contact_blurb")}
         <section className="px-6 pb-20 sm:px-8 sm:pb-28" style={{ background: CREAM }}>
           <div className="mx-auto grid max-w-6xl gap-14 lg:grid-cols-2 lg:gap-20">
             <div>
@@ -268,7 +268,7 @@ export default function CrumbDesign({ site, page = "home", basePath = "" }: Pres
                   </ul>
                 )}
                 {content.map_url && (
-                  <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex rounded-full px-8 py-3.5 text-[11px] font-medium uppercase tracking-[0.22em] text-[color:#F3E9D8] transition hover:opacity-90" style={{ background: CRUST }}>Get directions</a>
+                  <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex rounded-full px-8 py-3.5 text-[11px] font-medium uppercase tracking-[0.22em] text-[color:#F3E9D8] transition hover:opacity-90" style={{ background: CRUST }} {...editCopy(content, "contact_directions_cta", "Get directions")} />
                 )}
               </div>
             </div>
@@ -295,7 +295,7 @@ export default function CrumbDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "about") {
     return shell(
       <>
-        {banner("From our bakers", "Our story")}
+        {banner("From our bakers", "about_kicker", "Our story", "about_title")}
         <section className="px-6 pb-20 sm:px-8 sm:pb-28" style={{ background: CREAM }}>
           <div className="mx-auto max-w-3xl">
             {content.about ? (
@@ -303,7 +303,7 @@ export default function CrumbDesign({ site, page = "home", basePath = "" }: Pres
             ) : <p className="font-light text-[color:#43342A]/60">Our story is rising. Check back soon.</p>}
             {content.cuisine_type && (
               <div className="mt-12">
-                <h3 style={display} className="text-2xl font-light tracking-tight text-[color:#43342A]">What we bake</h3>
+                <h3 style={display} className="text-2xl font-light tracking-tight text-[color:#43342A]" {...editCopy(content, "about_bake_heading", "What we bake")} />
                 <div className="mt-3 w-20"><Sketch /></div>
                 <p data-edit="content.cuisine_type" className="mt-4 text-[16px] font-light leading-[1.8] text-[color:#43342A]/70">{content.cuisine_type}</p>
               </div>
@@ -318,7 +318,7 @@ export default function CrumbDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "gallery") {
     return shell(
       <>
-        {banner("A peek at the bench", "Gallery")}
+        {banner("A peek at the bench", "gallery_kicker", "Gallery", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="px-2 pb-2 sm:px-3 sm:pb-3" style={{ background: CREAM }}>
             <div className="mx-auto grid max-w-6xl grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3">
@@ -345,7 +345,7 @@ export default function CrumbDesign({ site, page = "home", basePath = "" }: Pres
         <div className="relative mx-auto max-w-4xl px-6 pb-16 pt-40 text-center sm:px-8 sm:pb-24 sm:pt-48">
           <div className="flex items-center justify-center gap-3 text-[color:#C98A3C]">
             <Wheat />
-            <p className="text-[11px] font-medium uppercase tracking-[0.36em]">Baked fresh this morning</p>
+            <p className="text-[11px] font-medium uppercase tracking-[0.36em]" {...editCopy(content, "hero_kicker", "Baked fresh this morning")} />
             <Wheat />
           </div>
           <h1 data-edit="tenant.business_name" style={display} className="mx-auto mt-7 max-w-3xl text-5xl font-light leading-[1.02] tracking-tight text-[color:#43342A] sm:text-7xl">
@@ -382,12 +382,12 @@ export default function CrumbDesign({ site, page = "home", basePath = "" }: Pres
           <div className="mx-auto max-w-6xl px-6 py-16 sm:px-8 sm:py-20">
             <div className="flex flex-wrap items-end justify-between gap-4">
               <div>
-                <p className="text-[11px] font-medium uppercase tracking-[0.3em]" style={{ color: BERRY }}>Fresh today</p>
-                <h2 style={display} className="mt-3 text-4xl font-light tracking-tight text-[color:#43342A] sm:text-5xl">Out of the oven</h2>
+                <p className="text-[11px] font-medium uppercase tracking-[0.3em]" style={{ color: BERRY }} {...editCopy(content, "home_fresh_kicker", "Fresh today")} />
+                <h2 style={display} className="mt-3 text-4xl font-light tracking-tight text-[color:#43342A] sm:text-5xl" {...editCopy(content, "home_fresh_heading", "Out of the oven")} />
                 <div className="mt-3 w-28"><Sketch /></div>
               </div>
               {groups.length > 0 && (
-                <a href={href("menu")} className="text-[11px] font-medium uppercase tracking-[0.2em] text-[color:#43342A]/70 transition hover:text-[color:#C98A3C]">See the full menu →</a>
+                <a href={href("menu")} className="text-[11px] font-medium uppercase tracking-[0.2em] text-[color:#43342A]/70 transition hover:text-[color:#C98A3C]" {...editCopy(content, "home_fresh_link", "See the full menu →")} />
               )}
             </div>
 
@@ -433,16 +433,16 @@ export default function CrumbDesign({ site, page = "home", basePath = "" }: Pres
               )}
               {/* a soft "since" stamp, hand-drawn feel */}
               <div className="absolute -right-3 -top-3 flex h-20 w-20 flex-col items-center justify-center rounded-full text-center sm:-right-5 sm:-top-5 sm:h-24 sm:w-24" style={{ background: BERRY, color: CREAM }}>
-                <span className="text-[9px] font-medium uppercase tracking-[0.18em] opacity-80">Baked</span>
-                <span style={display} className="text-base font-light leading-none">daily</span>
+                <span className="text-[9px] font-medium uppercase tracking-[0.18em] opacity-80" {...editCopy(content, "home_stamp_top", "Baked")} />
+                <span style={display} className="text-base font-light leading-none" {...editCopy(content, "home_stamp_bottom", "daily")} />
               </div>
             </div>
             <div>
-              <p className="text-[11px] font-medium uppercase tracking-[0.3em]" style={{ color: BERRY }}>From our bakers</p>
-              <h2 style={display} className="mt-4 text-4xl font-light leading-[1.1] tracking-tight text-[color:#43342A] sm:text-5xl">A loaf takes time, and we have plenty of it</h2>
+              <p className="text-[11px] font-medium uppercase tracking-[0.3em]" style={{ color: BERRY }} {...editCopy(content, "home_bakers_kicker", "From our bakers")} />
+              <h2 style={display} className="mt-4 text-4xl font-light leading-[1.1] tracking-tight text-[color:#43342A] sm:text-5xl" {...editCopy(content, "home_bakers_heading", "A loaf takes time, and we have plenty of it")} />
               <div className="mt-4 w-32"><Sketch /></div>
               <p data-edit="content.about" className="mt-6 text-[16px] font-light leading-[1.9] text-[color:#43342A]/75">{content.about}</p>
-              <a href={href("about")} className="mt-8 inline-flex rounded-full border px-8 py-3.5 text-[11px] font-medium uppercase tracking-[0.22em] text-[color:#43342A] transition hover:bg-[color:#43342A] hover:text-[color:#F3E9D8]" style={{ borderColor: INK }}>Read our story</a>
+              <a href={href("about")} className="mt-8 inline-flex rounded-full border px-8 py-3.5 text-[11px] font-medium uppercase tracking-[0.22em] text-[color:#43342A] transition hover:bg-[color:#43342A] hover:text-[color:#F3E9D8]" style={{ borderColor: INK }} {...editCopy(content, "home_bakers_cta", "Read our story")} />
             </div>
           </div>
         </section>
@@ -452,7 +452,7 @@ export default function CrumbDesign({ site, page = "home", basePath = "" }: Pres
       <section style={{ background: CRUST }} className="text-[color:#43342A]">
         <div className="mx-auto max-w-3xl px-6 py-20 text-center sm:py-24">
           <div className="flex justify-center text-[color:#43342A]/70"><Wheat color={INK} /></div>
-          <h2 style={display} className="mt-5 text-4xl font-light leading-[1.1] tracking-tight sm:text-5xl">Warm bread is best shared</h2>
+          <h2 style={display} className="mt-5 text-4xl font-light leading-[1.1] tracking-tight sm:text-5xl" {...editCopy(content, "home_cta_heading", "Warm bread is best shared")} />
           <p className="mx-auto mt-4 max-w-md text-[15px] font-light leading-relaxed text-[color:#43342A]/80">{bookingOn ? "Save a spot at the counter for a slow weekend breakfast." : "We'd love to bake for your next gathering."}</p>
           <a href={book} className="mt-8 inline-flex rounded-full px-10 py-4 text-[11px] font-medium uppercase tracking-[0.24em] text-[color:#F3E9D8] transition hover:opacity-90" style={{ background: INK }}>{bookingOn ? "Reserve a table" : "Get in touch"}</a>
         </div>
@@ -462,7 +462,7 @@ export default function CrumbDesign({ site, page = "home", basePath = "" }: Pres
       <section style={{ background: PAPER }}>
         <div className="mx-auto grid max-w-6xl gap-12 px-6 py-16 sm:px-8 sm:py-20 md:grid-cols-3">
           <div>
-            <h3 className="text-[11px] font-medium uppercase tracking-[0.24em]" style={{ color: BERRY }}>Bakery hours</h3>
+            <h3 className="text-[11px] font-medium uppercase tracking-[0.24em]" style={{ color: BERRY }} {...editCopy(content, "home_info_hours_heading", "Bakery hours")} />
             {content.hours && content.hours.length > 0 ? (
               <ul className="mt-5 space-y-2 text-sm font-light text-[color:#43342A]/75">
                 {content.hours.map((h, i) => (
@@ -472,14 +472,14 @@ export default function CrumbDesign({ site, page = "home", basePath = "" }: Pres
             ) : <p className="mt-5 text-sm font-light text-[color:#43342A]/60">Baked fresh, daily.</p>}
           </div>
           <div>
-            <h3 className="text-[11px] font-medium uppercase tracking-[0.24em]" style={{ color: BERRY }}>Find us</h3>
+            <h3 className="text-[11px] font-medium uppercase tracking-[0.24em]" style={{ color: BERRY }} {...editCopy(content, "home_info_findus_heading", "Find us")} />
             {content.address && <p data-edit="content.address" className="mt-5 whitespace-pre-line text-sm font-light leading-relaxed text-[color:#43342A]/75">{content.address}</p>}
             <div className="mt-3 space-y-1.5 text-sm font-light text-[color:#43342A]/75">
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-[color:#9B3B54]">{content.phone}</a>}
               {content.email && <a data-edit="content.email" href={`mailto:${content.email}`} className="block transition hover:text-[color:#9B3B54]">{content.email}</a>}
             </div>
             {content.map_url && (
-              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-4 inline-flex rounded-full border px-6 py-2.5 text-[11px] font-medium uppercase tracking-[0.2em] text-[color:#43342A] transition hover:bg-[color:#43342A] hover:text-[color:#F3E9D8]" style={{ borderColor: INK }}>Get directions</a>
+              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-4 inline-flex rounded-full border px-6 py-2.5 text-[11px] font-medium uppercase tracking-[0.2em] text-[color:#43342A] transition hover:bg-[color:#43342A] hover:text-[color:#F3E9D8]" style={{ borderColor: INK }} {...editCopy(content, "home_info_directions", "Get directions")} />
             )}
           </div>
           <div>

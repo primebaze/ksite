@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { GildedHeader } from "./GildedHeader";
 import { GildedBooking } from "./GildedBooking";
@@ -145,7 +145,7 @@ export default function GildedDesign({ site, page = "home", basePath = "" }: Pre
           </div>
 
           <div>
-            <h4 className="text-[10px] font-medium uppercase tracking-[0.34em]" style={{ color: GOLD }}>Explore</h4>
+            <h4 className="text-[10px] font-medium uppercase tracking-[0.34em]" style={{ color: GOLD }} {...editCopy(content, "footer_explore", "Explore")} />
             <ul className="mt-5 space-y-3 text-sm text-[#EFE7D6]/70">
               {([
                 groups.length > 0 && { label: "The list", href: href("menu") },
@@ -160,7 +160,7 @@ export default function GildedDesign({ site, page = "home", basePath = "" }: Pre
           </div>
 
           <div>
-            <h4 className="text-[10px] font-medium uppercase tracking-[0.34em]" style={{ color: GOLD }}>Hours</h4>
+            <h4 className="text-[10px] font-medium uppercase tracking-[0.34em]" style={{ color: GOLD }} {...editCopy(content, "footer_hours", "Hours")} />
             {content.hours && content.hours.length > 0 ? (
               <ul className="mt-5 space-y-2 text-sm text-[#EFE7D6]/70">
                 {content.hours.map((h, i) => (
@@ -171,7 +171,7 @@ export default function GildedDesign({ site, page = "home", basePath = "" }: Pre
           </div>
 
           <div>
-            <h4 className="text-[10px] font-medium uppercase tracking-[0.34em]" style={{ color: GOLD }}>Find us</h4>
+            <h4 className="text-[10px] font-medium uppercase tracking-[0.34em]" style={{ color: GOLD }} {...editCopy(content, "footer_findus", "Find us")} />
             {content.address && <p data-edit="content.address" className="mt-5 whitespace-pre-line text-sm leading-[1.8] text-[#EFE7D6]/70">{content.address}</p>}
             <div className="mt-3 space-y-1.5 text-sm text-[#EFE7D6]/70">
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-[#CBA14B]">{content.phone}</a>}
@@ -195,12 +195,12 @@ export default function GildedDesign({ site, page = "home", basePath = "" }: Pre
 
   // Black deco page banner with a sunburst whisper + gold divider — clears the
   // fixed header on sub-pages.
-  const banner = (kicker: string, title: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string) => (
     <section className="relative overflow-hidden text-[#EFE7D6]" style={{ background: BLACK }}>
       <Sunburst className="pointer-events-none absolute -right-24 -top-24 h-[26rem] w-[26rem] opacity-[0.12]" />
       <div className="relative mx-auto max-w-6xl px-6 pb-14 pt-32 text-center sm:px-9 sm:pb-20 sm:pt-40">
-        <p className="text-[11px] font-medium uppercase tracking-[0.44em]" style={{ color: GOLD }}>{kicker}</p>
-        <h1 style={serif} className="mt-5 text-5xl font-normal uppercase tracking-[0.08em] sm:text-6xl">{title}</h1>
+        <p className="text-[11px] font-medium uppercase tracking-[0.44em]" style={{ color: GOLD }} {...editCopy(content, kickerKey, kicker)} />
+        <h1 style={serif} className="mt-5 text-5xl font-normal uppercase tracking-[0.08em] sm:text-6xl" {...editCopy(content, titleKey, title)} />
         <DecoDivider className="mt-8" />
       </div>
     </section>
@@ -212,7 +212,7 @@ export default function GildedDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "menu") {
     return shell(
       <>
-        {banner("The list", "Cocktails & cellar")}
+        {banner("The list", "menu_kicker", "Cocktails & cellar", "menu_title")}
         <section className="px-6 py-16 sm:px-9 sm:py-24" style={{ background: PANEL }}>
           <div className="mx-auto max-w-4xl">
           {groups.length > 0 ? (
@@ -271,7 +271,7 @@ export default function GildedDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "reservations") {
     return shell(
       <>
-        {banner("Reservations", "Reserve a table")}
+        {banner("Reservations", "reservations_kicker", "Reserve a table", "reservations_title")}
         <section className="px-6 py-16 sm:px-9 sm:py-24" style={{ background: PANEL }}>
           <div className="mx-auto max-w-xl">
             <p className="mb-10 text-center text-[16px] leading-[1.9] text-[#EFE7D6]/70">Booths are few and the evenings are long. Choose a night and we will hold a place beneath the gilt. For parties of seven or more, a word by telephone is best.</p>
@@ -286,7 +286,7 @@ export default function GildedDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "contact") {
     return shell(
       <>
-        {banner("Contact", "Find the door")}
+        {banner("Contact", "contact_kicker", "Find the door", "contact_title")}
         <section className="px-6 py-16 sm:px-9 sm:py-24" style={{ background: PANEL }}>
           <div className="mx-auto grid max-w-6xl gap-14 lg:grid-cols-2 lg:gap-20">
             <div>
@@ -329,14 +329,14 @@ export default function GildedDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "about") {
     return shell(
       <>
-        {banner("About", "After midnight")}
+        {banner("About", "about_kicker", "After midnight", "about_title")}
         <section className="px-6 py-16 sm:px-9 sm:py-24" style={{ background: PANEL }}>
           <div className="mx-auto max-w-3xl text-center">
             {content.about ? <p data-edit="content.about" className="text-[19px] leading-[2] text-[#EFE7D6]/80" style={serif}>{content.about}</p> : <p className="text-[#EFE7D6]/55">Our story is being written.</p>}
             {content.cuisine_type && (
               <>
                 <DecoDivider className="mt-14" />
-                <h3 style={{ ...serif, color: IVORY }} className="mt-8 text-3xl font-normal uppercase tracking-[0.1em]">What we pour</h3>
+                <h3 style={{ ...serif, color: IVORY }} className="mt-8 text-3xl font-normal uppercase tracking-[0.1em]" {...editCopy(content, "about_pour_heading", "What we pour")} />
                 <p data-edit="content.cuisine_type" className="mt-4 text-[16px] leading-[1.9] text-[#EFE7D6]/70">{content.cuisine_type}</p>
               </>
             )}
@@ -350,7 +350,7 @@ export default function GildedDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Gallery", "The room")}
+        {banner("Gallery", "gallery_kicker", "The room", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="grid grid-cols-2 gap-2 p-2 sm:grid-cols-3" style={{ background: PANEL }}>
             {gallery.map((g) => (
@@ -386,14 +386,14 @@ export default function GildedDesign({ site, page = "home", basePath = "" }: Pre
 
         <div className="relative z-10 mt-auto px-6 pb-12 pt-36 text-center sm:px-9 sm:pb-16">
           <div className="mx-auto max-w-4xl">
-            <p className="text-[11px] font-medium uppercase tracking-[0.46em]" style={{ color: GOLD }}>An art-deco cocktail lounge</p>
+            <p className="text-[11px] font-medium uppercase tracking-[0.46em]" style={{ color: GOLD }} {...editCopy(content, "hero_eyebrow", "An art-deco cocktail lounge")} />
             {content.tagline ? (
               <p data-edit="content.tagline" style={serif} className="mx-auto mt-6 max-w-3xl text-4xl font-normal uppercase leading-[1.05] tracking-[0.08em] text-[#EFE7D6] sm:text-6xl">{content.tagline}</p>
             ) : (
-              <p style={serif} className="mx-auto mt-6 max-w-3xl text-4xl font-normal uppercase leading-[1.05] tracking-[0.08em] text-[#EFE7D6] sm:text-6xl">Gilded nights, low light, exquisite serves.</p>
+              <p style={serif} className="mx-auto mt-6 max-w-3xl text-4xl font-normal uppercase leading-[1.05] tracking-[0.08em] text-[#EFE7D6] sm:text-6xl" {...editCopy(content, "hero_headline", "Gilded nights, low light, exquisite serves.")} />
             )}
             <DecoDivider className="mt-7" />
-            <p className="mx-auto mt-6 max-w-md text-[15px] leading-relaxed text-[#EFE7D6]/70">Vintage spirits, theatrical serves and a long brass bar — open from dusk until the small hours.</p>
+            <p className="mx-auto mt-6 max-w-md text-[15px] leading-relaxed text-[#EFE7D6]/70" {...editCopy(content, "hero_sub", "Vintage spirits, theatrical serves and a long brass bar — open from dusk until the small hours.")} />
             {bookingOn ? (
               <div className="mx-auto mt-9 max-w-3xl text-left">
                 <GildedBooking tenantId={tenant.id} name={name} inline />
@@ -409,15 +409,15 @@ export default function GildedDesign({ site, page = "home", basePath = "" }: Pre
       <section style={{ background: TEAL }} className="relative overflow-hidden text-[#EFE7D6]">
         <Fluting className="absolute inset-x-0 top-0 h-2 w-full opacity-40" />
         <div className="mx-auto max-w-4xl px-6 py-24 text-center sm:px-9 sm:py-32">
-          <p className="text-[11px] font-medium uppercase tracking-[0.44em]" style={{ color: GOLD }}>The art of the serve</p>
+          <p className="text-[11px] font-medium uppercase tracking-[0.44em]" style={{ color: GOLD }} {...editCopy(content, "philosophy_eyebrow", "The art of the serve")} />
           <DecoDivider className="mt-6" />
           {content.about ? (
             <p data-edit="content.about" style={serif} className="mt-9 text-2xl font-normal leading-[1.6] tracking-[0.01em] text-[#EFE7D6]/90 sm:text-[2rem] sm:leading-[1.55]">{content.about}</p>
           ) : (
-            <p style={serif} className="mt-9 text-2xl font-normal leading-[1.6] text-[#EFE7D6]/90 sm:text-[2rem] sm:leading-[1.55]">Every glass is built with intent — rare spirits, house cordials, and a flourish of theatre at the bar.</p>
+            <p style={serif} className="mt-9 text-2xl font-normal leading-[1.6] text-[#EFE7D6]/90 sm:text-[2rem] sm:leading-[1.55]" {...editCopy(content, "philosophy_fallback", "Every glass is built with intent — rare spirits, house cordials, and a flourish of theatre at the bar.")} />
           )}
           {content.about && (
-            <a href={href("about")} className="mt-10 inline-flex border px-8 py-3 text-[11px] font-medium uppercase tracking-[0.28em] transition hover:bg-[#CBA14B] hover:text-[#0E0E10]" style={{ borderColor: GOLD, color: IVORY }}>Our story</a>
+            <a href={href("about")} className="mt-10 inline-flex border px-8 py-3 text-[11px] font-medium uppercase tracking-[0.28em] transition hover:bg-[#CBA14B] hover:text-[#0E0E10]" style={{ borderColor: GOLD, color: IVORY }} {...editCopy(content, "philosophy_cta", "Our story")} />
           )}
         </div>
       </section>
@@ -427,8 +427,8 @@ export default function GildedDesign({ site, page = "home", basePath = "" }: Pre
         <section style={{ background: BLACK }} className="text-[#EFE7D6]">
           <div className="mx-auto max-w-6xl px-6 py-20 sm:px-9 sm:py-28">
             <div className="text-center">
-              <p className="text-[11px] font-medium uppercase tracking-[0.44em]" style={{ color: BLUSH }}>Signature serves</p>
-              <h2 style={{ ...serif, color: IVORY }} className="mt-3 text-4xl font-normal uppercase tracking-[0.1em] sm:text-5xl">From the bar</h2>
+              <p className="text-[11px] font-medium uppercase tracking-[0.44em]" style={{ color: BLUSH }} {...editCopy(content, "signatures_eyebrow", "Signature serves")} />
+              <h2 style={{ ...serif, color: IVORY }} className="mt-3 text-4xl font-normal uppercase tracking-[0.1em] sm:text-5xl" {...editCopy(content, "signatures_heading", "From the bar")} />
               <DecoDivider className="mt-6" />
             </div>
             <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -456,7 +456,7 @@ export default function GildedDesign({ site, page = "home", basePath = "" }: Pre
             </div>
             {groups.length > 0 && (
               <div className="mt-12 text-center">
-                <a href={href("menu")} className="inline-flex px-8 py-3 text-[11px] font-semibold uppercase tracking-[0.28em] transition hover:brightness-110" style={{ background: GOLD, color: BLACK }}>The full list</a>
+                <a href={href("menu")} className="inline-flex px-8 py-3 text-[11px] font-semibold uppercase tracking-[0.28em] transition hover:brightness-110" style={{ background: GOLD, color: BLACK }} {...editCopy(content, "signatures_cta", "The full list")} />
               </div>
             )}
           </div>
@@ -470,10 +470,10 @@ export default function GildedDesign({ site, page = "home", basePath = "" }: Pre
             <div className="border p-7 sm:p-12" style={{ borderColor: `${GOLD}40`, background: `${BLACK}66` }}>
               <div className="flex flex-wrap items-end justify-between gap-4">
                 <div>
-                  <p className="text-[11px] font-medium uppercase tracking-[0.4em]" style={{ color: GOLD }}>A taste of the list</p>
-                  <h2 style={{ ...serif, color: IVORY }} className="mt-3 text-3xl font-normal uppercase tracking-[0.08em] sm:text-4xl">Tonight we pour</h2>
+                  <p className="text-[11px] font-medium uppercase tracking-[0.4em]" style={{ color: GOLD }} {...editCopy(content, "list_eyebrow", "A taste of the list")} />
+                  <h2 style={{ ...serif, color: IVORY }} className="mt-3 text-3xl font-normal uppercase tracking-[0.08em] sm:text-4xl" {...editCopy(content, "list_heading", "Tonight we pour")} />
                 </div>
-                <a href={href("menu")} className="text-[11px] font-medium uppercase tracking-[0.24em] transition hover:text-[#D9A9A0]" style={{ color: GOLD }}>The full list →</a>
+                <a href={href("menu")} className="text-[11px] font-medium uppercase tracking-[0.24em] transition hover:text-[#D9A9A0]" style={{ color: GOLD }} {...editCopy(content, "list_link", "The full list →")} />
               </div>
               <ul className="mt-10 divide-y" style={{ borderColor: `${GOLD}24` }}>
                 {featured.map((item) => (
@@ -506,7 +506,7 @@ export default function GildedDesign({ site, page = "home", basePath = "" }: Pre
               ))}
             </div>
             <div className="mt-8 text-center">
-              <a href={href("gallery")} className="inline-flex text-[11px] font-medium uppercase tracking-[0.28em] transition hover:text-[#D9A9A0]" style={{ color: GOLD }}>Step inside →</a>
+              <a href={href("gallery")} className="inline-flex text-[11px] font-medium uppercase tracking-[0.28em] transition hover:text-[#D9A9A0]" style={{ color: GOLD }} {...editCopy(content, "gallery_link", "Step inside →")} />
             </div>
           </div>
         </section>
@@ -516,9 +516,9 @@ export default function GildedDesign({ site, page = "home", basePath = "" }: Pre
       <section className="relative overflow-hidden text-[#EFE7D6]" style={{ background: BLACK }}>
         <Sunburst className="pointer-events-none absolute left-1/2 top-1/2 h-[40rem] w-[40rem] -translate-x-1/2 -translate-y-1/2 opacity-[0.12]" />
         <div className="relative mx-auto max-w-3xl px-6 py-24 text-center sm:px-9 sm:py-32">
-          <h2 style={{ ...serif, color: IVORY }} className="text-4xl font-normal uppercase leading-tight tracking-[0.08em] sm:text-5xl">Until the small hours</h2>
+          <h2 style={{ ...serif, color: IVORY }} className="text-4xl font-normal uppercase leading-tight tracking-[0.08em] sm:text-5xl" {...editCopy(content, "cta_heading", "Until the small hours")} />
           <DecoDivider className="mt-7" />
-          <p className="mt-6 text-[15px] leading-relaxed text-[#EFE7D6]/70">A booth beneath the gilt, a glass in hand. Reserve your evening with us.</p>
+          <p className="mt-6 text-[15px] leading-relaxed text-[#EFE7D6]/70" {...editCopy(content, "cta_sub", "A booth beneath the gilt, a glass in hand. Reserve your evening with us.")} />
           <a href={book} className="mt-9 inline-flex px-10 py-4 text-[11px] font-semibold uppercase tracking-[0.3em] transition hover:brightness-110" style={{ background: GOLD, color: BLACK }}>{bookingOn ? "Reserve a table" : "Get in touch"}</a>
         </div>
       </section>

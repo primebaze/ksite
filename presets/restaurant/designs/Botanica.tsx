@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { BotanicaHeader } from "./BotanicaHeader";
 import { BotanicaBooking } from "./BotanicaBooking";
@@ -68,10 +68,10 @@ export default function BotanicaDesign({ site, page = "home", basePath = "" }: P
   ].filter(Boolean) as { label: string; href: string }[];
 
   // Kicker label with flanking diamonds (reference uses this above every block).
-  const kicker = (text: string, light = false) => (
+  const kicker = (text: string, light = false, key?: string) => (
     <p className="flex items-center justify-center gap-3 text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: light ? GOLD : GREEN }}>
       <Diamond color={light ? GOLD : GREEN} />
-      <span>{text}</span>
+      {key ? <span {...editCopy(content, key, text)} /> : <span>{text}</span>}
       <Diamond color={light ? GOLD : GREEN} />
     </p>
   );
@@ -100,7 +100,7 @@ export default function BotanicaDesign({ site, page = "home", basePath = "" }: P
             )}
           </div>
           <div>
-            <h4 className="text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: GREEN }}>Explore</h4>
+            <h4 className="text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: GREEN }} {...editCopy(content, "footer_explore_heading", "Explore")} />
             <ul className="mt-5 space-y-3 text-[15px]" style={serif}>
               {([
                 { label: "Home", href: href("home") },
@@ -114,7 +114,7 @@ export default function BotanicaDesign({ site, page = "home", basePath = "" }: P
             </ul>
           </div>
           <div>
-            <h4 className="text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: GREEN }}>Opening times</h4>
+            <h4 className="text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: GREEN }} {...editCopy(content, "footer_hours_heading", "Opening times")} />
             {content.hours && content.hours.length > 0 ? (
               <ul className="mt-5 space-y-2 text-sm">
                 {content.hours.map((h, i) => (
@@ -124,7 +124,7 @@ export default function BotanicaDesign({ site, page = "home", basePath = "" }: P
             ) : <p className="mt-5 text-sm text-[#7a7a6e]">Open daily.</p>}
           </div>
           <div>
-            <h4 className="text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: GREEN }}>Find us</h4>
+            <h4 className="text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: GREEN }} {...editCopy(content, "footer_findus_heading", "Find us")} />
             {content.address && <p data-edit="content.address" className="mt-5 whitespace-pre-line text-sm leading-relaxed">{content.address}</p>}
             <div className="mt-3 space-y-1.5 text-sm">
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block hover:text-[#0d3b2e]">{content.phone}</a>}
@@ -146,11 +146,11 @@ export default function BotanicaDesign({ site, page = "home", basePath = "" }: P
   );
 
   // Green page banner with diamond motif. Also clears the fixed header on sub-pages.
-  const banner = (kickerText: string, title: string) => (
+  const banner = (kickerText: string, kickerKey: string, title: string, titleKey: string) => (
     <section style={DIAMONDS} className="text-white">
       <div className="mx-auto max-w-6xl px-8 pb-16 pt-32 text-center sm:pt-40">
-        {kicker(kickerText, true)}
-        <h1 style={serif} className="mt-4 text-4xl font-medium sm:text-5xl">{title}</h1>
+        {kicker(kickerText, true, kickerKey)}
+        <h1 style={serif} className="mt-4 text-4xl font-medium sm:text-5xl" {...editCopy(content, titleKey, title)} />
       </div>
     </section>
   );
@@ -159,7 +159,7 @@ export default function BotanicaDesign({ site, page = "home", basePath = "" }: P
   if (page === "menu") {
     return shell(
       <>
-        {banner("The menu", "Seasonal dishes")}
+        {banner("The menu", "menu_kicker", "Seasonal dishes", "menu_title")}
         <section style={{ background: CREAM }}>
           <div className="mx-auto max-w-4xl px-8 py-20">
             {groups.length > 0 ? (
@@ -205,7 +205,7 @@ export default function BotanicaDesign({ site, page = "home", basePath = "" }: P
             ) : <p className="text-center text-neutral-500">Our menu is coming soon.</p>}
             {bookingOn && (
               <div className="mt-16 text-center">
-                <a href={book} className="inline-flex px-10 py-4 text-[11px] font-semibold uppercase tracking-[0.24em] transition hover:brightness-110" style={{ background: GOLD, color: GREEN }}>Book a table</a>
+                <a href={book} className="inline-flex px-10 py-4 text-[11px] font-semibold uppercase tracking-[0.24em] transition hover:brightness-110" style={{ background: GOLD, color: GREEN }} {...editCopy(content, "menu_book_cta", "Book a table")} />
               </div>
             )}
           </div>
@@ -218,12 +218,10 @@ export default function BotanicaDesign({ site, page = "home", basePath = "" }: P
   if (page === "reservations") {
     return shell(
       <>
-        {banner("Reservations", "Book a table")}
+        {banner("Reservations", "book_kicker", "Book a table", "book_title")}
         <section style={{ background: CREAM }}>
           <div className="mx-auto max-w-xl px-8 py-20">
-            <p className="mb-9 text-center text-[17px] leading-[1.85] text-[#5a5a4e]">
-              Reserve your table below and we will confirm by phone or email. For parties of eight or more, or private dining, please call us and we will look after the details.
-            </p>
+            <p className="mb-9 text-center text-[17px] leading-[1.85] text-[#5a5a4e]" {...editCopy(content, "book_intro", "Reserve your table below and we will confirm by phone or email. For parties of eight or more, or private dining, please call us and we will look after the details.")} />
             <BotanicaBooking tenantId={tenant.id} name={name} />
             {content.phone && (
               <p className="mt-7 text-center text-sm text-[#6b6b5f]">
@@ -240,11 +238,11 @@ export default function BotanicaDesign({ site, page = "home", basePath = "" }: P
   if (page === "contact") {
     return shell(
       <>
-        {banner("Contact", "Visit us")}
+        {banner("Contact", "contact_kicker", "Visit us", "contact_title")}
         <section style={{ background: CREAM }}>
           <div className="mx-auto grid max-w-6xl gap-14 px-8 py-20 lg:grid-cols-2 lg:gap-20">
             <div>
-              <h2 style={{ ...serif, color: GREEN }} className="text-2xl">Where to find us</h2>
+              <h2 style={{ ...serif, color: GREEN }} className="text-2xl" {...editCopy(content, "contact_findus_heading", "Where to find us")} />
               <div className="mt-6 space-y-4 text-[15px] leading-relaxed text-[#5a5a4e]">
                 {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
                 {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block font-medium hover:text-[#0d3b2e]" style={{ color: GREEN }}>{content.phone}</a>}
@@ -258,7 +256,7 @@ export default function BotanicaDesign({ site, page = "home", basePath = "" }: P
                 </ul>
               )}
               {content.map_url && (
-                <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-8 inline-flex px-8 py-3.5 text-[11px] font-semibold uppercase tracking-[0.22em] transition hover:brightness-110" style={{ background: GREEN, color: "#fff" }}>Get directions</a>
+                <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-8 inline-flex px-8 py-3.5 text-[11px] font-semibold uppercase tracking-[0.22em] transition hover:brightness-110" style={{ background: GREEN, color: "#fff" }} {...editCopy(content, "contact_directions_cta", "Get directions")} />
               )}
             </div>
             {contactOn && (
@@ -284,20 +282,20 @@ export default function BotanicaDesign({ site, page = "home", basePath = "" }: P
   if (page === "about") {
     return shell(
       <>
-        {banner("Our story", "A passion for hospitality")}
+        {banner("Our story", "about_kicker", "A passion for hospitality", "about_title")}
         <section style={{ background: CREAM }}>
           <div className="mx-auto max-w-3xl px-8 py-20 text-center">
             {content.about ? <p data-edit="content.about" className="text-[18px] leading-[1.95] text-[#5a5a4e]">{content.about}</p> : <p className="text-neutral-500">Our story is coming soon.</p>}
             {content.cuisine_type && (
               <>
                 <span className="mx-auto mt-12 block h-px w-10" style={{ background: GOLD }} />
-                <h3 style={{ ...serif, color: GREEN }} className="mt-8 text-2xl">From our kitchen</h3>
+                <h3 style={{ ...serif, color: GREEN }} className="mt-8 text-2xl" {...editCopy(content, "about_kitchen_heading", "From our kitchen")} />
                 <p data-edit="content.cuisine_type" className="mt-4 text-[17px] leading-[1.85] text-[#5a5a4e]">{content.cuisine_type}</p>
               </>
             )}
             {bookingOn && (
               <div className="mt-12">
-                <a href={book} className="inline-flex px-10 py-4 text-[11px] font-semibold uppercase tracking-[0.24em] transition hover:brightness-110" style={{ background: GOLD, color: GREEN }}>Book a table</a>
+                <a href={book} className="inline-flex px-10 py-4 text-[11px] font-semibold uppercase tracking-[0.24em] transition hover:brightness-110" style={{ background: GOLD, color: GREEN }} {...editCopy(content, "about_book_cta", "Book a table")} />
               </div>
             )}
           </div>
@@ -310,7 +308,7 @@ export default function BotanicaDesign({ site, page = "home", basePath = "" }: P
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Gallery", "A look inside")}
+        {banner("Gallery", "gallery_kicker", "A look inside", "gallery_title")}
         {gallery.length > 0 ? (
           <section style={{ background: CREAM }} className="px-1 py-1">
             <div className="grid grid-cols-2 gap-1 sm:grid-cols-3">
@@ -354,9 +352,9 @@ export default function BotanicaDesign({ site, page = "home", basePath = "" }: P
             <h1 style={serif} className="max-w-3xl text-4xl leading-tight text-white [text-shadow:0_2px_24px_rgba(0,0,0,0.55)] sm:text-6xl">{name}</h1>
           )}
           <div className="mt-2 flex flex-col gap-3 sm:flex-row sm:gap-4">
-            <a href={book} className="px-10 py-4 text-xs font-semibold uppercase tracking-[0.24em] shadow-2xl transition hover:brightness-110" style={{ background: GOLD, color: GREEN }}>Book a table</a>
+            <a href={book} className="px-10 py-4 text-xs font-semibold uppercase tracking-[0.24em] shadow-2xl transition hover:brightness-110" style={{ background: GOLD, color: GREEN }} {...editCopy(content, "hero_book_cta", "Book a table")} />
             {groups.length > 0 && (
-              <a href={href("menu")} className="border border-white/70 px-10 py-4 text-xs font-semibold uppercase tracking-[0.24em] text-white backdrop-blur-sm transition hover:bg-white hover:text-[#0d3b2e]">Find out more</a>
+              <a href={href("menu")} className="border border-white/70 px-10 py-4 text-xs font-semibold uppercase tracking-[0.24em] text-white backdrop-blur-sm transition hover:bg-white hover:text-[#0d3b2e]" {...editCopy(content, "hero_menu_cta", "Find out more")} />
             )}
           </div>
         </div>
@@ -368,9 +366,9 @@ export default function BotanicaDesign({ site, page = "home", basePath = "" }: P
           <div className="mx-auto flex max-w-5xl flex-col items-center justify-between gap-5 px-8 py-8 text-center sm:flex-row sm:text-left">
             <div className="flex items-center gap-4">
               <Diamond />
-              <p style={serif} className="text-xl sm:text-2xl">A table is always waiting</p>
+              <p style={serif} className="text-xl sm:text-2xl" {...editCopy(content, "resstrip_heading", "A table is always waiting")} />
             </div>
-            <a href={book} className="px-9 py-3.5 text-[11px] font-semibold uppercase tracking-[0.24em] transition hover:brightness-110" style={{ background: GOLD, color: GREEN }}>Find a table</a>
+            <a href={book} className="px-9 py-3.5 text-[11px] font-semibold uppercase tracking-[0.24em] transition hover:brightness-110" style={{ background: GOLD, color: GREEN }} {...editCopy(content, "resstrip_cta", "Find a table")} />
           </div>
         </section>
       )}
@@ -399,9 +397,9 @@ export default function BotanicaDesign({ site, page = "home", basePath = "" }: P
           {/* faint crest watermark, like the reference's central emblem */}
           <div aria-hidden className="pointer-events-none absolute left-1/2 top-1/2 h-72 w-72 -translate-x-1/2 -translate-y-1/2 rotate-45 rounded-3xl border opacity-10" style={{ borderColor: GOLD, boxShadow: `inset 0 0 0 14px ${GREEN_DEEP}, inset 0 0 0 15px ${GOLD}` }} />
           <div className="relative mx-auto max-w-3xl px-8 py-24 text-center">
-            {kicker("Our story", true)}
+            {kicker("Our story", true, "home_story_kicker")}
             <p data-edit="content.about" style={serif} className="mt-6 text-2xl leading-[1.6] sm:text-[28px]">{content.about}</p>
-            <a href={content.about ? href("about") : href("contact")} className="mt-8 inline-block text-[12px] font-semibold uppercase tracking-[0.24em]" style={{ color: GOLD }}>Discover our signature menus →</a>
+            <a href={content.about ? href("about") : href("contact")} className="mt-8 inline-block text-[12px] font-semibold uppercase tracking-[0.24em]" style={{ color: GOLD }} {...editCopy(content, "home_story_link", "Discover our signature menus →")} />
           </div>
         </section>
       )}
@@ -410,8 +408,8 @@ export default function BotanicaDesign({ site, page = "home", basePath = "" }: P
       {featured.length > 0 && (
         <section style={{ background: CREAM }}>
           <div className="mx-auto max-w-4xl px-8 py-24 text-center">
-            {kicker("The menu")}
-            <h2 style={{ ...serif, color: GREEN }} className="mt-4 text-4xl sm:text-5xl">Signature dishes</h2>
+            {kicker("The menu", false, "home_menu_kicker")}
+            <h2 style={{ ...serif, color: GREEN }} className="mt-4 text-4xl sm:text-5xl" {...editCopy(content, "home_menu_heading", "Signature dishes")} />
             <ul className="mx-auto mt-12 max-w-xl divide-y text-left" style={{ borderColor: "rgba(13,59,46,0.25)" }}>
               {featured.map((item) => (
                 <li key={item.id} className="flex items-baseline justify-between gap-8 py-5">
@@ -427,7 +425,7 @@ export default function BotanicaDesign({ site, page = "home", basePath = "" }: P
                 </li>
               ))}
             </ul>
-            <a href={href("menu")} className="mt-14 inline-flex px-10 py-4 text-[11px] font-semibold uppercase tracking-[0.24em] transition hover:brightness-110" style={{ background: GREEN, color: "#fff" }}>View the full menu</a>
+            <a href={href("menu")} className="mt-14 inline-flex px-10 py-4 text-[11px] font-semibold uppercase tracking-[0.24em] transition hover:brightness-110" style={{ background: GREEN, color: "#fff" }} {...editCopy(content, "home_menu_cta", "View the full menu")} />
           </div>
         </section>
       )}
@@ -442,9 +440,9 @@ export default function BotanicaDesign({ site, page = "home", basePath = "" }: P
         )}
         <div className="absolute inset-0" style={{ background: "rgba(8,42,32,0.82)" }} />
         <div className="relative mx-auto max-w-2xl px-8 py-24 text-center text-white">
-          {kicker("Special occasions", true)}
-          <h2 style={serif} className="mt-5 text-3xl sm:text-4xl">Celebrate your special moments with us</h2>
-          <p className="mx-auto mt-5 max-w-lg text-[16px] leading-relaxed text-white/80">Whether it is an intimate dinner or a private celebration, our team will make every occasion feel effortless.</p>
+          {kicker("Special occasions", true, "home_cta_kicker")}
+          <h2 style={serif} className="mt-5 text-3xl sm:text-4xl" {...editCopy(content, "home_cta_heading", "Celebrate your special moments with us")} />
+          <p className="mx-auto mt-5 max-w-lg text-[16px] leading-relaxed text-white/80" {...editCopy(content, "home_cta_blurb", "Whether it is an intimate dinner or a private celebration, our team will make every occasion feel effortless.")} />
           <a href={bookingOn ? book : href("contact")} className="mt-9 inline-flex px-10 py-4 text-[11px] font-semibold uppercase tracking-[0.24em] transition hover:brightness-110" style={{ background: GOLD, color: GREEN }}>{bookingOn ? "Make an enquiry" : "Get in touch"}</a>
         </div>
       </section>
@@ -453,7 +451,7 @@ export default function BotanicaDesign({ site, page = "home", basePath = "" }: P
       <section style={{ background: IVORY }} className="text-[#3a3a32]">
         <div className="mx-auto grid max-w-6xl gap-12 px-8 py-16 md:grid-cols-3">
           <div className="text-center md:text-left">
-            <h3 className="text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: GREEN }}>Opening times</h3>
+            <h3 className="text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: GREEN }} {...editCopy(content, "home_info_hours_heading", "Opening times")} />
             {content.hours && content.hours.length > 0 ? (
               <ul className="mt-5 space-y-2 text-sm">
                 {content.hours.map((h, i) => (
@@ -463,19 +461,19 @@ export default function BotanicaDesign({ site, page = "home", basePath = "" }: P
             ) : <p className="mt-5 text-sm text-[#9a9a8c]">Open daily.</p>}
           </div>
           <div className="text-center md:text-left">
-            <h3 className="text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: GREEN }}>Find us</h3>
+            <h3 className="text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: GREEN }} {...editCopy(content, "home_info_findus_heading", "Find us")} />
             {content.address && <p data-edit="content.address" className="mt-5 whitespace-pre-line text-sm leading-relaxed">{content.address}</p>}
             <div className="mt-3 space-y-1.5 text-sm">
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block hover:text-[#0d3b2e]">{content.phone}</a>}
               {content.email && <a data-edit="content.email" href={`mailto:${content.email}`} className="block hover:text-[#0d3b2e]">{content.email}</a>}
             </div>
             {content.map_url && (
-              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-4 inline-block text-[11px] font-semibold uppercase tracking-[0.2em]" style={{ color: GREEN }}>Get directions →</a>
+              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-4 inline-block text-[11px] font-semibold uppercase tracking-[0.2em]" style={{ color: GREEN }} {...editCopy(content, "home_info_directions", "Get directions →")} />
             )}
           </div>
           <div className="flex flex-col items-center md:items-start">
-            <h3 className="text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: GREEN }}>Reservations</h3>
-            <p className="mt-5 text-sm text-[#6b6b5f]">A table is always waiting. Book online in moments.</p>
+            <h3 className="text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: GREEN }} {...editCopy(content, "home_info_reserve_heading", "Reservations")} />
+            <p className="mt-5 text-sm text-[#6b6b5f]" {...editCopy(content, "home_info_reserve_blurb", "A table is always waiting. Book online in moments.")} />
             <a href={book} className="mt-6 inline-flex px-8 py-3.5 text-[11px] font-semibold uppercase tracking-[0.22em] transition hover:brightness-110" style={{ background: GREEN, color: "#fff" }}>{bookingOn ? "Book a table" : "Contact us"}</a>
           </div>
         </div>

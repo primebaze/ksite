@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { SobremesaHeader } from "./SobremesaHeader";
 import { SobremesaBooking } from "./SobremesaBooking";
@@ -108,7 +108,7 @@ export default function SobremesaDesign({ site, page = "home", basePath = "" }: 
           {content.tagline && <p data-edit="content.tagline" className="mt-4 max-w-xs text-sm leading-relaxed text-[color:#F2E7D2]/65">{content.tagline}</p>}
           {content.socials && content.socials.length > 0 && (
             <>
-              <h4 className="mt-8 text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: OCHRE }}>Síguenos</h4>
+              <h4 className="mt-8 text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: OCHRE }} {...editCopy(content, "footer_social", "Síguenos")} />
               <div className="mt-4 flex gap-4 text-[color:#F2E7D2]">
                 {content.socials.map((s) => (
                   <a key={s.url} href={s.url} target="_blank" rel="noreferrer" aria-label={s.label} className="transition hover:text-[color:#C77B33]"><SocialIcon kind={`${s.label} ${s.url}`} /></a>
@@ -119,7 +119,7 @@ export default function SobremesaDesign({ site, page = "home", basePath = "" }: 
         </div>
 
         <div>
-          <h4 className="text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: OCHRE }}>Explorar</h4>
+          <h4 className="text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: OCHRE }} {...editCopy(content, "footer_explore", "Explorar")} />
           <ul className="mt-5 space-y-3 text-sm text-[color:#F2E7D2]/70">
             {([
               groups.length > 0 && { label: "Carta", href: href("menu") },
@@ -134,7 +134,7 @@ export default function SobremesaDesign({ site, page = "home", basePath = "" }: 
         </div>
 
         <div>
-          <h4 className="text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: OCHRE }}>Horario</h4>
+          <h4 className="text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: OCHRE }} {...editCopy(content, "footer_hours", "Horario")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm text-[color:#F2E7D2]/70">
               {content.hours.map((h, i) => (
@@ -151,8 +151,8 @@ export default function SobremesaDesign({ site, page = "home", basePath = "" }: 
 
         {/* lingering-table CTA panel */}
         <div className="px-7 py-9" style={{ background: RIOJA, color: PARCHMENT, boxShadow: `inset 0 -5px 0 ${OCHRE}` }}>
-          <h4 style={serif} className="text-2xl font-medium leading-tight">Quédese a la sobremesa</h4>
-          <p className="mt-2 text-sm leading-relaxed text-[color:#F2E7D2]/85">A table, a glass of sherry and an afternoon with nowhere to be. Reserve yours.</p>
+          <h4 style={serif} className="text-2xl font-medium leading-tight" {...editCopy(content, "footer_cta_heading", "Quédese a la sobremesa")} />
+          <p className="mt-2 text-sm leading-relaxed text-[color:#F2E7D2]/85" {...editCopy(content, "footer_cta_body", "A table, a glass of sherry and an afternoon with nowhere to be. Reserve yours.")} />
           <a href={book} className="mt-6 inline-flex px-7 py-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-[color:#241813] transition hover:opacity-90" style={{ background: OCHRE }}>{bookingOn ? "Reservar mesa" : "Contáctenos"}</a>
         </div>
       </div>
@@ -230,7 +230,7 @@ export default function SobremesaDesign({ site, page = "home", basePath = "" }: 
           ) : <p className="text-[color:#5b4a3f]">Nuestra carta llegará pronto.</p>}
           {bookingOn && (
             <div className="mt-16 text-center">
-              <a href={book} className="inline-flex px-10 py-4 text-[11px] font-semibold uppercase tracking-[0.22em] text-[color:#241813] transition hover:opacity-90" style={{ background: OCHRE }}>Reservar mesa</a>
+              <a href={book} className="inline-flex px-10 py-4 text-[11px] font-semibold uppercase tracking-[0.22em] text-[color:#241813] transition hover:opacity-90" style={{ background: OCHRE }} {...editCopy(content, "menu_book_cta", "Reservar mesa")} />
             </div>
           )}
           </div>
@@ -269,7 +269,7 @@ export default function SobremesaDesign({ site, page = "home", basePath = "" }: 
         <section className="px-6 py-16 sm:px-8 sm:py-24" style={AZULEJO}>
           <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-2 lg:gap-20">
             <div>
-              <h2 style={{ ...serif, color: RIOJA }} className="text-2xl font-medium">Dónde encontrarnos</h2>
+              <h2 style={{ ...serif, color: RIOJA }} className="text-2xl font-medium" {...editCopy(content, "contact_heading", "Dónde encontrarnos")} />
               <div className="mt-6 space-y-4 text-[15px] leading-relaxed text-[color:#5b4a3f]">
                 {content.address && <p data-edit="content.address" className="whitespace-pre-line text-lg font-medium text-[color:#241813]">{content.address}</p>}
                 {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block hover:text-[color:#6E1F26]">{content.phone}</a>}
@@ -283,7 +283,7 @@ export default function SobremesaDesign({ site, page = "home", basePath = "" }: 
                 </ul>
               )}
               {content.map_url && (
-                <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-8 inline-flex px-8 py-3.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-[color:#F2E7D2] transition hover:opacity-90" style={{ background: RIOJA }}>Cómo llegar</a>
+                <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-8 inline-flex px-8 py-3.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-[color:#F2E7D2] transition hover:opacity-90" style={{ background: RIOJA }} {...editCopy(content, "contact_directions_cta", "Cómo llegar")} />
               )}
             </div>
             {contactOn && (
@@ -319,13 +319,13 @@ export default function SobremesaDesign({ site, page = "home", basePath = "" }: 
             {content.cuisine_type && (
               <>
                 <span className="mt-12 block h-px w-10" style={{ background: OCHRE }} />
-                <h3 style={{ ...serif, color: RIOJA }} className="mt-8 text-3xl font-medium">De nuestra cocina</h3>
+                <h3 style={{ ...serif, color: RIOJA }} className="mt-8 text-3xl font-medium" {...editCopy(content, "about_cuisine_heading", "De nuestra cocina")} />
                 <p data-edit="content.cuisine_type" className="mt-4 text-[17px] leading-[1.85] text-[color:#3b2e26]">{content.cuisine_type}</p>
               </>
             )}
             {bookingOn && (
               <div className="mt-12">
-                <a href={book} className="inline-flex px-10 py-4 text-[11px] font-semibold uppercase tracking-[0.22em] text-[color:#241813] transition hover:opacity-90" style={{ background: OCHRE }}>Reservar mesa</a>
+                <a href={book} className="inline-flex px-10 py-4 text-[11px] font-semibold uppercase tracking-[0.22em] text-[color:#241813] transition hover:opacity-90" style={{ background: OCHRE }} {...editCopy(content, "about_book_cta", "Reservar mesa")} />
               </div>
             )}
           </div>
@@ -379,7 +379,7 @@ export default function SobremesaDesign({ site, page = "home", basePath = "" }: 
               ) : (
                 <h1 style={serif} className="mx-auto mt-3 max-w-3xl text-4xl font-medium leading-[1.02] text-[color:#F2E7D2] [text-shadow:0_2px_26px_rgba(0,0,0,0.6)] sm:text-6xl">{name}</h1>
               )}
-              <p className="mx-auto mt-4 max-w-md text-[15px] text-[color:#F2E7D2]/85 [text-shadow:0_1px_12px_rgba(0,0,0,0.6)]">Long, lazy lunches and small plates worth lingering over.</p>
+              <p className="mx-auto mt-4 max-w-md text-[15px] text-[color:#F2E7D2]/85 [text-shadow:0_1px_12px_rgba(0,0,0,0.6)]" {...editCopy(content, "hero_subtitle", "Long, lazy lunches and small plates worth lingering over.")} />
             </div>
           </div>
           {/* inline booking row under the arch */}
@@ -421,9 +421,9 @@ export default function SobremesaDesign({ site, page = "home", basePath = "" }: 
             <div className="flex flex-wrap items-end justify-between gap-4">
               <div>
                 {kicker("Para picar", OCHRE)}
-                <h2 style={serif} className="mt-3 text-4xl font-medium sm:text-5xl">Pequeños placeres</h2>
+                <h2 style={serif} className="mt-3 text-4xl font-medium sm:text-5xl" {...editCopy(content, "home_featured_heading", "Pequeños placeres")} />
               </div>
-              {groups.length > 0 && <a href={href("menu")} className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[color:#F2E7D2]/85 hover:text-[color:#F2E7D2]">Ver la carta entera →</a>}
+              {groups.length > 0 && <a href={href("menu")} className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[color:#F2E7D2]/85 hover:text-[color:#F2E7D2]" {...editCopy(content, "home_featured_link", "Ver la carta entera →")} />}
             </div>
             <ul className="mt-10 divide-y" style={{ borderColor: "rgba(242,231,210,0.22)" }}>
               {featured.map((item) => (
@@ -438,7 +438,7 @@ export default function SobremesaDesign({ site, page = "home", basePath = "" }: 
             </ul>
             {groups.length > 0 && (
               <div className="mt-12">
-                <a href={href("menu")} className="inline-flex px-9 py-3.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-[color:#241813] transition hover:opacity-90" style={{ background: OCHRE }}>Ver la carta</a>
+                <a href={href("menu")} className="inline-flex px-9 py-3.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-[color:#241813] transition hover:opacity-90" style={{ background: OCHRE }} {...editCopy(content, "home_featured_cta", "Ver la carta")} />
               </div>
             )}
           </div>
@@ -462,8 +462,8 @@ export default function SobremesaDesign({ site, page = "home", basePath = "" }: 
         <div aria-hidden className="pointer-events-none absolute left-1/2 top-0 h-48 w-72 -translate-x-1/2 opacity-30" style={{ borderRadius: "9999px 9999px 0 0", border: `2px solid ${OCHRE}` }} />
         <div className="relative mx-auto max-w-2xl px-6 py-24 text-center">
           {kicker("Reservas", OCHRE)}
-          <h2 style={serif} className="mx-auto mt-5 max-w-xl text-4xl font-medium leading-[1.05] sm:text-5xl">Una mesa, una copa, una tarde entera</h2>
-          <p className="mx-auto mt-5 max-w-lg text-[16px] leading-relaxed text-[color:#F2E7D2]/80">Reserve su mesa y déjese llevar — del aperitivo a la sobremesa, sin mirar el reloj.</p>
+          <h2 style={serif} className="mx-auto mt-5 max-w-xl text-4xl font-medium leading-[1.05] sm:text-5xl" {...editCopy(content, "reserve_heading", "Una mesa, una copa, una tarde entera")} />
+          <p className="mx-auto mt-5 max-w-lg text-[16px] leading-relaxed text-[color:#F2E7D2]/80" {...editCopy(content, "reserve_body", "Reserve su mesa y déjese llevar — del aperitivo a la sobremesa, sin mirar el reloj.")} />
           <a href={book} className="mt-9 inline-flex px-10 py-4 text-[11px] font-semibold uppercase tracking-[0.22em] text-[color:#241813] transition hover:opacity-90" style={{ background: OCHRE }}>{bookingOn ? "Reservar mesa" : "Contáctenos"}</a>
         </div>
       </section>
@@ -472,7 +472,7 @@ export default function SobremesaDesign({ site, page = "home", basePath = "" }: 
       <section style={{ background: PARCHMENT }} className="text-[color:#3b2e26]">
         <div className="mx-auto grid max-w-6xl gap-12 px-6 py-16 sm:px-8 md:grid-cols-3">
           <div>
-            <h3 className="text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: RIOJA }}>Horario</h3>
+            <h3 className="text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: RIOJA }} {...editCopy(content, "info_hours_label", "Horario")} />
             {content.hours && content.hours.length > 0 ? (
               <ul className="mt-5 space-y-2 text-sm">
                 {content.hours.map((h, i) => (
@@ -482,19 +482,19 @@ export default function SobremesaDesign({ site, page = "home", basePath = "" }: 
             ) : <p className="mt-5 text-sm text-[color:#8a7665]">Abierto a diario.</p>}
           </div>
           <div>
-            <h3 className="text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: RIOJA }}>Dónde estamos</h3>
+            <h3 className="text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: RIOJA }} {...editCopy(content, "info_findus_label", "Dónde estamos")} />
             {content.address && <p data-edit="content.address" className="mt-5 whitespace-pre-line text-sm leading-relaxed">{content.address}</p>}
             <div className="mt-3 space-y-1.5 text-sm">
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block hover:text-[color:#6E1F26]">{content.phone}</a>}
               {content.email && <a data-edit="content.email" href={`mailto:${content.email}`} className="block hover:text-[color:#6E1F26]">{content.email}</a>}
             </div>
             {content.map_url && (
-              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-4 inline-block text-[11px] font-semibold uppercase tracking-[0.18em]" style={{ color: RIOJA }}>Cómo llegar →</a>
+              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-4 inline-block text-[11px] font-semibold uppercase tracking-[0.18em]" style={{ color: RIOJA }} {...editCopy(content, "info_directions_link", "Cómo llegar →")} />
             )}
           </div>
           <div>
-            <h3 className="text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: RIOJA }}>Reservas</h3>
-            <p className="mt-5 text-sm text-[color:#5b4a3f]">Su mesa le espera. Reserve en un momento.</p>
+            <h3 className="text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: RIOJA }} {...editCopy(content, "info_reserve_label", "Reservas")} />
+            <p className="mt-5 text-sm text-[color:#5b4a3f]" {...editCopy(content, "info_reserve_body", "Su mesa le espera. Reserve en un momento.")} />
             <a href={book} className="mt-5 inline-flex px-7 py-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-[color:#F2E7D2] transition hover:opacity-90" style={{ background: RIOJA }}>{bookingOn ? "Reservar mesa" : "Contáctenos"}</a>
           </div>
         </div>

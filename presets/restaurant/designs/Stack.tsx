@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { StackHeader } from "./StackHeader";
 import { StackBooking } from "./StackBooking";
@@ -89,7 +89,7 @@ export default function StackDesign({ site, page = "home", basePath = "" }: Pres
           {content.tagline && <p data-edit="content.tagline" className="mt-4 max-w-xs text-sm font-semibold leading-relaxed text-white/70">{content.tagline}</p>}
           {content.socials && content.socials.length > 0 && (
             <>
-              <h4 className="mt-8 text-xs font-black uppercase tracking-[0.2em]" style={{ color: MUSTARD }}>Follow us</h4>
+              <h4 className="mt-8 text-xs font-black uppercase tracking-[0.2em]" style={{ color: MUSTARD }} {...editCopy(content, "footer_social", "Follow us")} />
               <div className="mt-4 flex gap-4 text-white">
                 {content.socials.map((s) => (
                   <a key={s.url} href={s.url} target="_blank" rel="noreferrer" aria-label={s.label} className="transition hover:text-[color:#F2B705]"><SocialIcon kind={`${s.label} ${s.url}`} /></a>
@@ -100,7 +100,7 @@ export default function StackDesign({ site, page = "home", basePath = "" }: Pres
         </div>
 
         <div>
-          <h4 className="text-xs font-black uppercase tracking-[0.2em]" style={{ color: MUSTARD }}>The goods</h4>
+          <h4 className="text-xs font-black uppercase tracking-[0.2em]" style={{ color: MUSTARD }} {...editCopy(content, "footer_explore", "The goods")} />
           <ul className="mt-5 space-y-3 text-sm font-semibold text-white/70">
             {([
               groups.length > 0 && { label: "Menu", href: href("menu") },
@@ -115,7 +115,7 @@ export default function StackDesign({ site, page = "home", basePath = "" }: Pres
         </div>
 
         <div>
-          <h4 className="text-xs font-black uppercase tracking-[0.2em]" style={{ color: MUSTARD }}>Open hours</h4>
+          <h4 className="text-xs font-black uppercase tracking-[0.2em]" style={{ color: MUSTARD }} {...editCopy(content, "footer_hours", "Open hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm font-semibold text-white/70">
               {content.hours.map((h, i) => (
@@ -132,8 +132,8 @@ export default function StackDesign({ site, page = "home", basePath = "" }: Pres
 
         {/* stamped CTA panel */}
         <div className="border-[4px] px-7 py-9 shadow-[8px_8px_0_0_#D62828]" style={{ background: MUSTARD, color: CHARCOAL, borderColor: CREAM }}>
-          <h4 style={display} className="text-3xl font-black uppercase leading-none tracking-tight">Hungry?</h4>
-          <p className="mt-3 text-sm font-semibold leading-relaxed">Smashed-to-order patties, crispy edges, no waiting around. Get your order on the rail.</p>
+          <h4 style={display} className="text-3xl font-black uppercase leading-none tracking-tight" {...editCopy(content, "footer_cta_heading", "Hungry?")} />
+          <p className="mt-3 text-sm font-semibold leading-relaxed" {...editCopy(content, "footer_cta_body", "Smashed-to-order patties, crispy edges, no waiting around. Get your order on the rail.")} />
           <a href={book} className="mt-6 inline-flex border-[3px] px-7 py-3 text-xs font-black uppercase tracking-[0.16em] text-white transition hover:opacity-90" style={{ background: CHARCOAL, borderColor: CHARCOAL }}>{bookingOn ? "Order ahead" : "Get in touch"}</a>
         </div>
       </div>
@@ -260,7 +260,7 @@ export default function StackDesign({ site, page = "home", basePath = "" }: Pres
                 </ul>
               )}
               {content.map_url && (
-                <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex border-[3px] px-7 py-3 text-xs font-black uppercase tracking-[0.16em] text-white shadow-[5px_5px_0_0_#F2B705] transition hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0_0_#F2B705]" style={{ background: CHARCOAL, borderColor: CHARCOAL }}>Get directions</a>
+                <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex border-[3px] px-7 py-3 text-xs font-black uppercase tracking-[0.16em] text-white shadow-[5px_5px_0_0_#F2B705] transition hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0_0_#F2B705]" style={{ background: CHARCOAL, borderColor: CHARCOAL }} {...editCopy(content, "contact_directions_cta", "Get directions")} />
               )}
             </div>
             {contactOn && (
@@ -292,7 +292,7 @@ export default function StackDesign({ site, page = "home", basePath = "" }: Pres
             {content.about ? <p data-edit="content.about" className="text-[19px] font-semibold leading-[1.85] text-[color:#161616]/85">{content.about}</p> : <p className="font-semibold text-[color:#161616]/60">Our story is coming soon.</p>}
             {content.cuisine_type && (
               <>
-                <h3 style={display} className="mt-12 text-4xl font-black uppercase tracking-tight text-[color:#161616]">What we cook</h3>
+                <h3 style={display} className="mt-12 text-4xl font-black uppercase tracking-tight text-[color:#161616]" {...editCopy(content, "about_cuisine_heading", "What we cook")} />
                 <p data-edit="content.cuisine_type" className="mt-4 text-[17px] font-semibold leading-[1.8] text-[color:#161616]/80">{content.cuisine_type}</p>
               </>
             )}
@@ -340,7 +340,7 @@ export default function StackDesign({ site, page = "home", basePath = "" }: Pres
 
         <div className="relative z-10 mt-auto px-6 pb-10 pt-32 sm:px-8 sm:pb-14">
           <div className="mx-auto max-w-6xl">
-            <span className="inline-flex -rotate-2 border-[3px] px-3 py-1 text-[11px] font-black uppercase tracking-[0.2em] shadow-[4px_4px_0_0_#161616]" style={{ background: KETCHUP, borderColor: CHARCOAL, color: CREAM }}>Est. &amp; proud · smash burgers</span>
+            <span className="inline-flex -rotate-2 border-[3px] px-3 py-1 text-[11px] font-black uppercase tracking-[0.2em] shadow-[4px_4px_0_0_#161616]" style={{ background: KETCHUP, borderColor: CHARCOAL, color: CREAM }} {...editCopy(content, "hero_eyebrow", "Est. & proud · smash burgers")} />
             <h1 data-edit="tenant.business_name" style={display} className="mt-4 text-[18vw] font-black uppercase leading-[0.8] tracking-tighter text-[color:#F2B705] [text-shadow:6px_6px_0_#161616] sm:text-[14vw] lg:text-[11rem]">{name}</h1>
             {content.tagline && (
               <p data-edit="content.tagline" className="mt-4 max-w-2xl text-lg font-black uppercase leading-tight tracking-tight text-white [text-shadow:0_2px_16px_rgba(0,0,0,0.6)] sm:text-2xl">{content.tagline}</p>
@@ -363,13 +363,13 @@ export default function StackDesign({ site, page = "home", basePath = "" }: Pres
       <section className="relative overflow-hidden" style={{ background: CHARCOAL }}>
         <div className="absolute inset-0 opacity-[0.08]" style={{ backgroundImage: `radial-gradient(${MUSTARD} 1.4px, transparent 1.4px)`, backgroundSize: "16px 16px" }} aria-hidden />
         <div className="relative mx-auto max-w-6xl px-6 py-20 sm:px-8 sm:py-24">
-          <span className="inline-flex border-[3px] px-3 py-1 text-[11px] font-black uppercase tracking-[0.2em]" style={{ borderColor: MUSTARD, color: MUSTARD }}>The story</span>
+          <span className="inline-flex border-[3px] px-3 py-1 text-[11px] font-black uppercase tracking-[0.2em]" style={{ borderColor: MUSTARD, color: MUSTARD }} {...editCopy(content, "home_about_kicker", "The story")} />
           <div className="mt-5 grid gap-8 lg:grid-cols-[1.1fr_1fr] lg:items-end lg:gap-16">
             <h2 style={display} className="text-6xl font-black uppercase leading-[0.82] tracking-tight text-[color:#F2B705] sm:text-7xl">Smashed,<br />never<br /><span style={{ color: KETCHUP }}>frozen</span></h2>
             {content.about && <p data-edit="content.about" className="text-[17px] font-semibold leading-[1.8] text-white/80">{content.about}</p>}
           </div>
           {content.about && (
-            <a href={href("about")} className="mt-8 inline-flex border-[3px] px-7 py-3 text-xs font-black uppercase tracking-[0.16em] text-[color:#161616] transition hover:opacity-90" style={{ background: MUSTARD, borderColor: MUSTARD }}>Our story</a>
+            <a href={href("about")} className="mt-8 inline-flex border-[3px] px-7 py-3 text-xs font-black uppercase tracking-[0.16em] text-[color:#161616] transition hover:opacity-90" style={{ background: MUSTARD, borderColor: MUSTARD }} {...editCopy(content, "home_about_cta", "Our story")} />
           )}
         </div>
       </section>
@@ -379,8 +379,8 @@ export default function StackDesign({ site, page = "home", basePath = "" }: Pres
         <section style={{ background: CREAM }}>
           <div className="mx-auto max-w-6xl px-6 py-16 sm:px-8 sm:py-20">
             <div className="flex flex-wrap items-end justify-between gap-4">
-              <h2 style={display} className="text-5xl font-black uppercase leading-[0.85] tracking-tight text-[color:#161616] sm:text-6xl">The line-up</h2>
-              {groups.length > 0 && <a href={href("menu")} className="text-xs font-black uppercase tracking-[0.16em] text-[color:#D62828] hover:opacity-70">See the full menu →</a>}
+              <h2 style={display} className="text-5xl font-black uppercase leading-[0.85] tracking-tight text-[color:#161616] sm:text-6xl" {...editCopy(content, "home_lineup_heading", "The line-up")} />
+              {groups.length > 0 && <a href={href("menu")} className="text-xs font-black uppercase tracking-[0.16em] text-[color:#D62828] hover:opacity-70" {...editCopy(content, "home_lineup_link", "See the full menu →")} />}
             </div>
             <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {featured.map((item, i) => {
@@ -410,7 +410,7 @@ export default function StackDesign({ site, page = "home", basePath = "" }: Pres
             </div>
             {groups.length > 0 && (
               <div className="mt-10 text-center">
-                <a href={href("menu")} className="inline-flex border-[3px] px-8 py-3 text-xs font-black uppercase tracking-[0.16em] text-white shadow-[5px_5px_0_0_#F2B705] transition hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0_0_#F2B705]" style={{ background: CHARCOAL, borderColor: CHARCOAL }}>Build the stack</a>
+                <a href={href("menu")} className="inline-flex border-[3px] px-8 py-3 text-xs font-black uppercase tracking-[0.16em] text-white shadow-[5px_5px_0_0_#F2B705] transition hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0_0_#F2B705]" style={{ background: CHARCOAL, borderColor: CHARCOAL }} {...editCopy(content, "home_lineup_cta", "Build the stack")} />
               </div>
             )}
           </div>
@@ -422,8 +422,8 @@ export default function StackDesign({ site, page = "home", basePath = "" }: Pres
         <div className="absolute inset-0 opacity-[0.12]" style={{ backgroundImage: `radial-gradient(${CREAM} 1.4px, transparent 1.4px)`, backgroundSize: "16px 16px" }} aria-hidden />
         <div className="relative mx-auto max-w-5xl px-6 py-16 sm:px-8 sm:py-20">
           <div className="border-[4px] px-8 py-12 text-center shadow-[10px_10px_0_0_#161616]" style={{ background: CREAM, borderColor: CHARCOAL }}>
-            <h2 style={display} className="text-5xl font-black uppercase leading-[0.85] tracking-tight text-[color:#161616] sm:text-6xl">Come get smashed</h2>
-            <p className="mt-3 text-sm font-black uppercase tracking-[0.18em] text-[color:#161616]/70">Crispy edges · stacked high · no freezer ever</p>
+            <h2 style={display} className="text-5xl font-black uppercase leading-[0.85] tracking-tight text-[color:#161616] sm:text-6xl" {...editCopy(content, "cta_heading", "Come get smashed")} />
+            <p className="mt-3 text-sm font-black uppercase tracking-[0.18em] text-[color:#161616]/70" {...editCopy(content, "cta_subheading", "Crispy edges · stacked high · no freezer ever")} />
             <a href={book} className="mt-7 inline-flex border-[3px] px-9 py-4 text-sm font-black uppercase tracking-[0.16em] text-white shadow-[6px_6px_0_0_#F2B705] transition hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[3px_3px_0_0_#F2B705]" style={{ background: CHARCOAL, borderColor: CHARCOAL }}>{bookingOn ? "Order ahead" : "Get in touch"}</a>
           </div>
         </div>
@@ -433,7 +433,7 @@ export default function StackDesign({ site, page = "home", basePath = "" }: Pres
       <section style={{ background: CHARCOAL }} className="text-white">
         <div className="mx-auto grid max-w-6xl gap-10 px-6 py-16 sm:px-8 md:grid-cols-3">
           <div>
-            <h3 className="text-xs font-black uppercase tracking-[0.2em]" style={{ color: MUSTARD }}>Open hours</h3>
+            <h3 className="text-xs font-black uppercase tracking-[0.2em]" style={{ color: MUSTARD }} {...editCopy(content, "info_hours_label", "Open hours")} />
             {content.hours && content.hours.length > 0 ? (
               <ul className="mt-5 space-y-2 text-sm font-semibold text-white/80">
                 {content.hours.map((h, i) => (
@@ -443,19 +443,19 @@ export default function StackDesign({ site, page = "home", basePath = "" }: Pres
             ) : <p className="mt-5 text-sm text-white/70">Open daily.</p>}
           </div>
           <div>
-            <h3 className="text-xs font-black uppercase tracking-[0.2em]" style={{ color: MUSTARD }}>Find us</h3>
+            <h3 className="text-xs font-black uppercase tracking-[0.2em]" style={{ color: MUSTARD }} {...editCopy(content, "info_findus_label", "Find us")} />
             {content.address && <p data-edit="content.address" className="mt-5 whitespace-pre-line text-sm font-semibold leading-relaxed text-white/80">{content.address}</p>}
             <div className="mt-3 space-y-1.5 text-sm font-semibold text-white/80">
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block hover:text-white">{content.phone}</a>}
               {content.email && <a data-edit="content.email" href={`mailto:${content.email}`} className="block hover:text-white">{content.email}</a>}
             </div>
             {content.map_url && (
-              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-4 inline-flex border-[3px] px-6 py-2.5 text-xs font-black uppercase tracking-[0.16em] text-white transition hover:bg-white hover:text-[color:#161616]" style={{ borderColor: "rgba(255,255,255,0.5)" }}>Get directions</a>
+              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-4 inline-flex border-[3px] px-6 py-2.5 text-xs font-black uppercase tracking-[0.16em] text-white transition hover:bg-white hover:text-[color:#161616]" style={{ borderColor: "rgba(255,255,255,0.5)" }} {...editCopy(content, "info_directions_link", "Get directions")} />
             )}
           </div>
           <div>
-            <h3 className="text-xs font-black uppercase tracking-[0.2em]" style={{ color: MUSTARD }}>Order</h3>
-            <p className="mt-5 text-sm font-semibold text-white/80">Skip the line — get your order on the rail in seconds.</p>
+            <h3 className="text-xs font-black uppercase tracking-[0.2em]" style={{ color: MUSTARD }} {...editCopy(content, "info_order_label", "Order")} />
+            <p className="mt-5 text-sm font-semibold text-white/80" {...editCopy(content, "info_order_body", "Skip the line — get your order on the rail in seconds.")} />
             <a href={book} className="mt-5 inline-flex border-[3px] px-7 py-3 text-xs font-black uppercase tracking-[0.16em] text-[color:#161616] transition hover:opacity-90" style={{ background: MUSTARD, borderColor: MUSTARD }}>{bookingOn ? "Order ahead" : "Contact us"}</a>
           </div>
         </div>

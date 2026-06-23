@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { TavernHeader } from "./TavernHeader";
 import { TavernBooking } from "./TavernBooking";
@@ -93,7 +93,7 @@ export default function TavernDesign({ site, page = "home", basePath = "" }: Pre
               {content.tagline && <p data-edit="content.tagline" className="mt-4 max-w-xs text-sm leading-relaxed text-[#EFE7D3]/70">{content.tagline}</p>}
               {content.socials && content.socials.length > 0 && (
                 <>
-                  <h4 className="mt-7 text-[11px] font-semibold uppercase tracking-[0.24em]" style={{ color: BRASS }}>Find us online</h4>
+                  <h4 className="mt-7 text-[11px] font-semibold uppercase tracking-[0.24em]" style={{ color: BRASS }} {...editCopy(content, "footer_social", "Find us online")} />
                   <div className="mt-3.5 flex gap-4">
                     {content.socials.map((s) => (
                       <a key={s.url} href={s.url} target="_blank" rel="noreferrer" aria-label={s.label} className="transition hover:text-[#B08D2E]"><SocialIcon kind={`${s.label} ${s.url}`} /></a>
@@ -104,7 +104,7 @@ export default function TavernDesign({ site, page = "home", basePath = "" }: Pre
             </div>
 
             <div>
-              <h4 className="text-[11px] font-semibold uppercase tracking-[0.24em]" style={{ color: BRASS }}>The house</h4>
+              <h4 className="text-[11px] font-semibold uppercase tracking-[0.24em]" style={{ color: BRASS }} {...editCopy(content, "footer_explore", "The house")} />
               <ul className="mt-4 space-y-2.5 text-sm text-[#EFE7D3]/75">
                 {([
                   groups.length > 0 && { label: "Our menu", href: href("menu") },
@@ -119,7 +119,7 @@ export default function TavernDesign({ site, page = "home", basePath = "" }: Pre
             </div>
 
             <div>
-              <h4 className="text-[11px] font-semibold uppercase tracking-[0.24em]" style={{ color: BRASS }}>Opening times</h4>
+              <h4 className="text-[11px] font-semibold uppercase tracking-[0.24em]" style={{ color: BRASS }} {...editCopy(content, "footer_hours", "Opening times")} />
               {content.hours && content.hours.length > 0 ? (
                 <ul className="mt-4 space-y-2 text-sm text-[#EFE7D3]/75">
                   {content.hours.map((h, i) => (
@@ -137,8 +137,8 @@ export default function TavernDesign({ site, page = "home", basePath = "" }: Pre
             {/* CTA panel: a real booking button, framed in brass like a sign */}
             <div className="border px-7 py-9" style={{ borderColor: BRASS, background: "rgba(90,34,48,0.35)" }}>
               <Crest size={26} />
-              <h4 style={display} className="mt-3 text-2xl font-semibold italic leading-tight">Pull up a chair</h4>
-              <p className="mt-2 text-sm leading-relaxed text-[#EFE7D3]/80">Real ales, a roaring fire and a proper Sunday roast. Save your spot by the fire.</p>
+              <h4 style={display} className="mt-3 text-2xl font-semibold italic leading-tight" {...editCopy(content, "footer_cta_heading", "Pull up a chair")} />
+              <p className="mt-2 text-sm leading-relaxed text-[#EFE7D3]/80" {...editCopy(content, "footer_cta_body", "Real ales, a roaring fire and a proper Sunday roast. Save your spot by the fire.")} />
               <a href={book} className="mt-6 inline-flex px-7 py-3 text-[11px] font-semibold uppercase tracking-[0.2em] transition hover:brightness-110" style={{ background: BRASS, color: FOREST, borderRadius: "2px" }}>{bookingOn ? "Book a table" : "Get in touch"}</a>
             </div>
           </div>
@@ -261,7 +261,7 @@ export default function TavernDesign({ site, page = "home", basePath = "" }: Pre
                 </ul>
               )}
               {content.map_url && (
-                <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex px-7 py-3 text-[11px] font-semibold uppercase tracking-[0.2em] transition hover:brightness-110" style={{ background: FOREST, color: CREAM, borderRadius: "2px", border: `1px solid ${BRASS}` }}>Get directions</a>
+                <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex px-7 py-3 text-[11px] font-semibold uppercase tracking-[0.2em] transition hover:brightness-110" style={{ background: FOREST, color: CREAM, borderRadius: "2px", border: `1px solid ${BRASS}` }} {...editCopy(content, "contact_directions_cta", "Get directions")} />
               )}
             </div>
             {contactOn && (
@@ -294,7 +294,7 @@ export default function TavernDesign({ site, page = "home", basePath = "" }: Pre
             {content.cuisine_type && (
               <>
                 <div className="my-12"><BrassRule /></div>
-                <h3 style={display} className="text-3xl font-semibold italic text-[#2E2419]">From our kitchen</h3>
+                <h3 style={display} className="text-3xl font-semibold italic text-[#2E2419]" {...editCopy(content, "about_cuisine_heading", "From our kitchen")} />
                 <p data-edit="content.cuisine_type" className="mt-4 text-[17px] leading-[1.85] text-[#3A2A1C]/80">{content.cuisine_type}</p>
               </>
             )}
@@ -344,13 +344,13 @@ export default function TavernDesign({ site, page = "home", basePath = "" }: Pre
               <span style={{ color: BRASS }}><Crest size={30} /></span>
               <span className="mt-3 text-[10px] font-semibold uppercase tracking-[0.42em]" style={{ color: BRASS }}>The</span>
               <span data-edit="tenant.business_name" style={display} className="mt-1 text-4xl font-semibold italic leading-none text-[#EFE7D3] [text-shadow:0_2px_18px_rgba(0,0,0,0.6)] sm:text-6xl">{name}</span>
-              <span className="mt-3 text-[10px] font-semibold uppercase tracking-[0.34em] text-[#EFE7D3]/70">Free house · Est. 1842</span>
+              <span className="mt-3 text-[10px] font-semibold uppercase tracking-[0.34em] text-[#EFE7D3]/70" {...editCopy(content, "hero_eyebrow", "Free house · Est. 1842")} />
             </div>
 
             {content.tagline && (
               <p data-edit="content.tagline" style={display} className="mt-7 max-w-2xl text-2xl font-medium italic text-[#EFE7D3]/95 [text-shadow:0_1px_12px_rgba(0,0,0,0.6)] sm:text-3xl">{content.tagline}</p>
             )}
-            <p className="mt-3 max-w-xl text-base text-[#EFE7D3]/80 [text-shadow:0_1px_10px_rgba(0,0,0,0.6)]">Real ales, a roaring log fire and a proper Sunday roast.</p>
+            <p className="mt-3 max-w-xl text-base text-[#EFE7D3]/80 [text-shadow:0_1px_10px_rgba(0,0,0,0.6)]" {...editCopy(content, "hero_subtitle", "Real ales, a roaring log fire and a proper Sunday roast.")} />
 
             {bookingOn ? (
               <div className="mt-7 max-w-3xl">
@@ -366,14 +366,14 @@ export default function TavernDesign({ site, page = "home", basePath = "" }: Pre
       {/* WELCOME — cream band, dropped serif statement */}
       <section style={{ background: PARCHMENT }} className="text-[#2E2419]">
         <div className="mx-auto max-w-5xl px-6 py-20 text-center sm:px-8 sm:py-24">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: BRASS }}>Welcome to the house</p>
+          <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: BRASS }} {...editCopy(content, "home_welcome_kicker", "Welcome to the house")} />
           {content.about ? (
             <p data-edit="content.about" style={display} className="mx-auto mt-6 max-w-3xl text-3xl font-medium italic leading-[1.4] text-[#2E2419] sm:text-[2.3rem]">{content.about}</p>
           ) : (
             <p style={display} className="mx-auto mt-6 max-w-3xl text-3xl font-medium italic leading-[1.4] text-[#2E2419] sm:text-[2.3rem]">A warm welcome, a well-kept cellar and good food by the fire.</p>
           )}
           {content.about && (
-            <a href={href("about")} className="mt-8 inline-flex border px-7 py-3 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#2E2419] transition hover:bg-[#1E2B22] hover:text-[#EFE7D3]" style={{ borderColor: FOREST, borderRadius: "2px" }}>Our story</a>
+            <a href={href("about")} className="mt-8 inline-flex border px-7 py-3 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#2E2419] transition hover:bg-[#1E2B22] hover:text-[#EFE7D3]" style={{ borderColor: FOREST, borderRadius: "2px" }} {...editCopy(content, "home_welcome_cta", "Our story")} />
           )}
         </div>
       </section>
@@ -386,7 +386,7 @@ export default function TavernDesign({ site, page = "home", basePath = "" }: Pre
               {/* What's on tap */}
               <div className="flex flex-col border p-8 sm:p-10" style={{ borderColor: BRASS, background: "rgba(20,28,22,0.4)" }}>
                 <div className="flex items-center justify-between gap-4">
-                  <h3 style={display} className="text-3xl font-semibold italic">What&apos;s on tap</h3>
+                  <h3 style={display} className="text-3xl font-semibold italic" {...editCopy(content, "home_tap_heading", "What's on tap")} />
                   <span style={{ color: BRASS }}><Crest size={26} /></span>
                 </div>
                 <span className="mt-4 mb-5 block h-px w-full" style={{ background: "rgba(176,141,46,0.5)" }} />
@@ -402,14 +402,14 @@ export default function TavernDesign({ site, page = "home", basePath = "" }: Pre
                 ) : (
                   <p className="text-sm text-[#EFE7D3]/70">A rotating cellar of cask ales, craft kegs and proper ciders, kept just so.</p>
                 )}
-                {groups.length > 0 && <a href={href("menu")} className="mt-6 inline-flex text-[11px] font-semibold uppercase tracking-[0.2em]" style={{ color: BRASS }}>See the full list →</a>}
+                {groups.length > 0 && <a href={href("menu")} className="mt-6 inline-flex text-[11px] font-semibold uppercase tracking-[0.2em]" style={{ color: BRASS }} {...editCopy(content, "home_tap_link", "See the full list →")} />}
               </div>
 
               {/* Sunday roast */}
               <div className="flex flex-col justify-center border p-8 text-center sm:p-10" style={{ borderColor: BRASS, background: "rgba(90,34,48,0.4)" }}>
-                <p className="text-[11px] font-semibold uppercase tracking-[0.3em]" style={{ color: BRASS }}>Every Sunday, 12 till late</p>
-                <h3 style={display} className="mt-3 text-4xl font-semibold italic leading-tight sm:text-5xl">The Sunday roast</h3>
-                <p className="mx-auto mt-4 max-w-sm text-sm leading-relaxed text-[#EFE7D3]/85">Slow-roasted joints, duck-fat potatoes, Yorkshire puddings the size of your head and lashings of gravy. Book early — they go fast.</p>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.3em]" style={{ color: BRASS }} {...editCopy(content, "home_roast_kicker", "Every Sunday, 12 till late")} />
+                <h3 style={display} className="mt-3 text-4xl font-semibold italic leading-tight sm:text-5xl" {...editCopy(content, "home_roast_heading", "The Sunday roast")} />
+                <p className="mx-auto mt-4 max-w-sm text-sm leading-relaxed text-[#EFE7D3]/85" {...editCopy(content, "home_roast_body", "Slow-roasted joints, duck-fat potatoes, Yorkshire puddings the size of your head and lashings of gravy. Book early — they go fast.")} />
                 <div className="mt-7">
                   <a href={book} className="inline-flex px-8 py-3.5 text-[11px] font-semibold uppercase tracking-[0.2em] transition hover:brightness-110" style={{ background: BRASS, color: FOREST, borderRadius: "2px" }}>{bookingOn ? "Reserve a roast" : "Get in touch"}</a>
                 </div>
@@ -424,8 +424,8 @@ export default function TavernDesign({ site, page = "home", basePath = "" }: Pre
         <section style={{ background: PARCHMENT }}>
           <div className="mx-auto max-w-3xl px-6 py-16 sm:px-8 sm:py-20">
             <div className="text-center">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: BRASS }}>From the kitchen</p>
-              <h2 style={display} className="mt-3 text-4xl font-semibold italic text-[#2E2419] sm:text-5xl">House favourites</h2>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: BRASS }} {...editCopy(content, "home_menu_kicker", "From the kitchen")} />
+              <h2 style={display} className="mt-3 text-4xl font-semibold italic text-[#2E2419] sm:text-5xl" {...editCopy(content, "home_menu_heading", "House favourites")} />
               <div className="mx-auto mt-6 max-w-xs"><BrassRule /></div>
             </div>
             <ul className="mx-auto mt-12 divide-y" style={{ borderColor: "rgba(58,42,28,0.18)" }}>
@@ -441,7 +441,7 @@ export default function TavernDesign({ site, page = "home", basePath = "" }: Pre
             </ul>
             {groups.length > 0 && (
               <div className="mt-10 text-center">
-                <a href={href("menu")} className="inline-flex border px-8 py-3 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#2E2419] transition hover:bg-[#1E2B22] hover:text-[#EFE7D3]" style={{ borderColor: FOREST, borderRadius: "2px" }}>View the full menu</a>
+                <a href={href("menu")} className="inline-flex border px-8 py-3 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#2E2419] transition hover:bg-[#1E2B22] hover:text-[#EFE7D3]" style={{ borderColor: FOREST, borderRadius: "2px" }} {...editCopy(content, "home_menu_cta", "View the full menu")} />
               </div>
             )}
           </div>
@@ -452,7 +452,7 @@ export default function TavernDesign({ site, page = "home", basePath = "" }: Pre
       <section style={{ background: WOOD, color: CREAM }}>
         <div className="mx-auto grid max-w-6xl gap-10 px-6 py-16 sm:px-8 md:grid-cols-3">
           <div>
-            <h3 className="text-[11px] font-semibold uppercase tracking-[0.24em]" style={{ color: BRASS }}>Opening times</h3>
+            <h3 className="text-[11px] font-semibold uppercase tracking-[0.24em]" style={{ color: BRASS }} {...editCopy(content, "info_hours_label", "Opening times")} />
             {content.hours && content.hours.length > 0 ? (
               <ul className="mt-5 space-y-2 text-sm text-[#EFE7D3]/85">
                 {content.hours.map((h, i) => (
@@ -462,19 +462,19 @@ export default function TavernDesign({ site, page = "home", basePath = "" }: Pre
             ) : <p className="mt-5 text-sm text-[#EFE7D3]/70">Open daily.</p>}
           </div>
           <div>
-            <h3 className="text-[11px] font-semibold uppercase tracking-[0.24em]" style={{ color: BRASS }}>Find us</h3>
+            <h3 className="text-[11px] font-semibold uppercase tracking-[0.24em]" style={{ color: BRASS }} {...editCopy(content, "info_findus_label", "Find us")} />
             {content.address && <p data-edit="content.address" className="mt-5 whitespace-pre-line text-sm leading-relaxed text-[#EFE7D3]/85">{content.address}</p>}
             <div className="mt-3 space-y-1.5 text-sm text-[#EFE7D3]/85">
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block hover:text-[#EFE7D3]">{content.phone}</a>}
               {content.email && <a data-edit="content.email" href={`mailto:${content.email}`} className="block hover:text-[#EFE7D3]">{content.email}</a>}
             </div>
             {content.map_url && (
-              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-4 inline-flex border px-6 py-2.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#EFE7D3] transition hover:bg-[#EFE7D3] hover:text-[#3A2A1C]" style={{ borderColor: "rgba(239,231,211,0.5)", borderRadius: "2px" }}>Get directions</a>
+              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-4 inline-flex border px-6 py-2.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#EFE7D3] transition hover:bg-[#EFE7D3] hover:text-[#3A2A1C]" style={{ borderColor: "rgba(239,231,211,0.5)", borderRadius: "2px" }} {...editCopy(content, "info_directions_link", "Get directions")} />
             )}
           </div>
           <div>
-            <h3 className="text-[11px] font-semibold uppercase tracking-[0.24em]" style={{ color: BRASS }}>Reserve</h3>
-            <p className="mt-5 text-sm text-[#EFE7D3]/85">Save a table by the fire in seconds.</p>
+            <h3 className="text-[11px] font-semibold uppercase tracking-[0.24em]" style={{ color: BRASS }} {...editCopy(content, "info_reserve_label", "Reserve")} />
+            <p className="mt-5 text-sm text-[#EFE7D3]/85" {...editCopy(content, "info_reserve_body", "Save a table by the fire in seconds.")} />
             <a href={book} className="mt-5 inline-flex px-7 py-3 text-[11px] font-semibold uppercase tracking-[0.2em] transition hover:brightness-110" style={{ background: BRASS, color: WOOD, borderRadius: "2px" }}>{bookingOn ? "Book a table" : "Contact us"}</a>
           </div>
         </div>

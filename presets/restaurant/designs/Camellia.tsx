@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { CamelliaHeader } from "./CamelliaHeader";
 import { CamelliaBooking } from "./CamelliaBooking";
@@ -133,7 +133,7 @@ export default function CamelliaDesign({ site, page = "home", basePath = "" }: P
           {content.tagline && <p data-edit="content.tagline" className="mt-4 max-w-xs text-sm leading-relaxed text-white/65">{content.tagline}</p>}
           {content.socials && content.socials.length > 0 && (
             <>
-              <h4 className="mt-8 text-[11px] font-semibold uppercase tracking-[0.24em]" style={{ color: DUCK }}>Find us social</h4>
+              <h4 className="mt-8 text-[11px] font-semibold uppercase tracking-[0.24em]" style={{ color: DUCK }} {...editCopy(content, "footer_social_heading", "Find us social")} />
               <div className="mt-4 flex gap-4 text-white/85">
                 {content.socials.map((s) => (
                   <a key={s.url} href={s.url} target="_blank" rel="noreferrer" aria-label={s.label} className="transition hover:text-[color:#C56B7A]"><SocialIcon kind={`${s.label} ${s.url}`} /></a>
@@ -144,7 +144,7 @@ export default function CamelliaDesign({ site, page = "home", basePath = "" }: P
         </div>
 
         <div>
-          <h4 className="text-[11px] font-semibold uppercase tracking-[0.24em]" style={{ color: DUCK }}>Wander</h4>
+          <h4 className="text-[11px] font-semibold uppercase tracking-[0.24em]" style={{ color: DUCK }} {...editCopy(content, "footer_wander_heading", "Wander")} />
           <ul className="mt-5 space-y-3 text-sm text-white/70">
             {([
               groups.length > 0 && { label: "The menu", href: href("menu") },
@@ -159,7 +159,7 @@ export default function CamelliaDesign({ site, page = "home", basePath = "" }: P
         </div>
 
         <div>
-          <h4 className="text-[11px] font-semibold uppercase tracking-[0.24em]" style={{ color: DUCK }}>The kettle&apos;s on</h4>
+          <h4 className="text-[11px] font-semibold uppercase tracking-[0.24em]" style={{ color: DUCK }} {...editCopy(content, "footer_hours_heading", "The kettle's on")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm text-white/70">
               {content.hours.map((h, i) => (
@@ -177,8 +177,8 @@ export default function CamelliaDesign({ site, page = "home", basePath = "" }: P
         {/* CTA panel: a rose card, never a dead newsletter input */}
         <div className="rounded-[1.5rem] px-7 py-9" style={{ background: ROSE, color: "#fff", boxShadow: `0 0 0 1px ${GOLD}55 inset` }}>
           <Bloom color="#ffffff" size={28} />
-          <h4 style={{ ...display, fontStyle: "italic" }} className="mt-3 text-2xl font-medium leading-tight">A table by the window?</h4>
-          <p className="mt-2 text-sm leading-relaxed text-white/90">Scones, sandwiches and a pot of something lovely. Do come and join us.</p>
+          <h4 style={{ ...display, fontStyle: "italic" }} className="mt-3 text-2xl font-medium leading-tight" {...editCopy(content, "footer_cta_heading", "A table by the window?")} />
+          <p className="mt-2 text-sm leading-relaxed text-white/90" {...editCopy(content, "footer_cta_blurb", "Scones, sandwiches and a pot of something lovely. Do come and join us.")} />
           <a href={book} className="mt-6 inline-flex rounded-full px-7 py-3 text-[11px] font-semibold uppercase tracking-[0.2em] text-[color:#4A3F3A] transition hover:opacity-90" style={{ background: CREAM }}>{bookingOn ? "Book afternoon tea" : "Get in touch"}</a>
         </div>
       </div>
@@ -195,13 +195,13 @@ export default function CamelliaDesign({ site, page = "home", basePath = "" }: P
   );
 
   // Cream page banner with floral field, clearing the fixed header on sub-pages.
-  const banner = (kicker: string, title: string, blurb?: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string, blurb?: string, blurbKey?: string) => (
     <section className="relative isolate overflow-hidden" style={{ background: CREAM }}>
       <FloralField opacity={0.4} />
       <div className="relative mx-auto max-w-6xl px-6 pb-14 pt-32 text-center sm:px-8 sm:pb-16 sm:pt-40">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: ROSE }}>{kicker}</p>
-        <h1 style={{ ...display, fontStyle: "italic" }} className="mx-auto mt-4 max-w-3xl text-5xl font-medium leading-[1.02] text-[color:#4A3F3A] sm:text-6xl">{title}</h1>
-        {blurb && <p className="mx-auto mt-5 max-w-xl text-[16px] leading-[1.8] text-[color:#4A3F3A]/65">{blurb}</p>}
+        <p className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: ROSE }} {...editCopy(content, kickerKey, kicker)} />
+        <h1 style={{ ...display, fontStyle: "italic" }} className="mx-auto mt-4 max-w-3xl text-5xl font-medium leading-[1.02] text-[color:#4A3F3A] sm:text-6xl" {...editCopy(content, titleKey, title)} />
+        {blurb && <p className="mx-auto mt-5 max-w-xl text-[16px] leading-[1.8] text-[color:#4A3F3A]/65" {...editCopy(content, blurbKey!, blurb)} />}
         <SprigDivider className="mt-8" />
       </div>
     </section>
@@ -211,7 +211,7 @@ export default function CamelliaDesign({ site, page = "home", basePath = "" }: P
   if (page === "menu") {
     return shell(
       <>
-        {banner("Loose-leaf & cake stands", "The menu", "Loose-leaf teas, warm scones and a proper afternoon spread, served on heritage china.")}
+        {banner("Loose-leaf & cake stands", "menu_kicker", "The menu", "menu_title", "Loose-leaf teas, warm scones and a proper afternoon spread, served on heritage china.", "menu_blurb")}
         <section className="px-6 py-16 sm:px-8 sm:py-20" style={{ background: "#fff" }}>
           <div className="mx-auto max-w-3xl">
             {groups.length > 0 ? (
@@ -257,7 +257,7 @@ export default function CamelliaDesign({ site, page = "home", basePath = "" }: P
                 )}
                 {bookingOn && (
                   <div className="mt-14 text-center">
-                    <a href={href("reservations")} className="inline-flex rounded-full px-9 py-4 text-[11px] font-semibold uppercase tracking-[0.2em] text-white transition hover:opacity-90" style={{ background: ROSE, boxShadow: `0 0 0 1px ${GOLD}55, 0 14px 32px -18px ${ROSE}` }}>Book afternoon tea</a>
+                    <a href={href("reservations")} className="inline-flex rounded-full px-9 py-4 text-[11px] font-semibold uppercase tracking-[0.2em] text-white transition hover:opacity-90" style={{ background: ROSE, boxShadow: `0 0 0 1px ${GOLD}55, 0 14px 32px -18px ${ROSE}` }} {...editCopy(content, "menu_book_cta", "Book afternoon tea")} />
                   </div>
                 )}
               </>
@@ -272,7 +272,7 @@ export default function CamelliaDesign({ site, page = "home", basePath = "" }: P
   if (page === "reservations") {
     return shell(
       <>
-        {banner("Reservations", "Book afternoon tea", "Choose your sitting and the number in your party; we will save you a table and pop the kettle on.")}
+        {banner("Reservations", "book_kicker", "Book afternoon tea", "book_title", "Choose your sitting and the number in your party; we will save you a table and pop the kettle on.", "book_blurb")}
         <section className="px-6 py-16 sm:px-8 sm:py-20" style={{ background: CREAM }}>
           <div className="mx-auto max-w-xl">
             <CamelliaBooking tenantId={tenant.id} name={name} />
@@ -292,7 +292,7 @@ export default function CamelliaDesign({ site, page = "home", basePath = "" }: P
   if (page === "contact") {
     return shell(
       <>
-        {banner("Do come and see us", "Find the tearoom", "Tucked into the village and always happy to see you. Here is how to find us and how to call.")}
+        {banner("Do come and see us", "contact_kicker", "Find the tearoom", "contact_title", "Tucked into the village and always happy to see you. Here is how to find us and how to call.", "contact_blurb")}
         <section className="px-6 py-16 sm:px-8 sm:py-20" style={{ background: "#fff" }}>
           <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-2 lg:gap-20">
             <div>
@@ -338,20 +338,20 @@ export default function CamelliaDesign({ site, page = "home", basePath = "" }: P
   if (page === "about") {
     return shell(
       <>
-        {banner("A little heritage", "Our story", "A village tearoom in the English tradition — heritage china, country-garden flowers and a warm welcome.")}
+        {banner("A little heritage", "about_kicker", "Our story", "about_title", "A village tearoom in the English tradition — heritage china, country-garden flowers and a warm welcome.", "about_blurb")}
         <section className="px-6 py-16 sm:px-8 sm:py-20" style={{ background: CREAM }}>
           <div className="mx-auto max-w-3xl">
             {content.about ? <p data-edit="content.about" style={display} className="text-center text-2xl font-normal italic leading-[1.6] text-[color:#4A3F3A] sm:text-[1.9rem]">{content.about}</p> : <p className="text-center text-[color:#4A3F3A]/55">Our story is coming soon.</p>}
             {content.cuisine_type && (
               <>
                 <SprigDivider className="my-12" />
-                <h3 style={{ ...display, color: ROSE, fontStyle: "italic" }} className="text-center text-3xl font-medium">What we serve</h3>
+                <h3 style={{ ...display, color: ROSE, fontStyle: "italic" }} className="text-center text-3xl font-medium" {...editCopy(content, "about_serve_heading", "What we serve")} />
                 <p data-edit="content.cuisine_type" className="mx-auto mt-4 max-w-xl text-center text-[16px] leading-[1.8] text-[color:#4A3F3A]/70">{content.cuisine_type}</p>
               </>
             )}
             {groups.length > 0 && (
               <div className="mt-12 text-center">
-                <a href={href("menu")} className="inline-flex rounded-full px-9 py-4 text-[11px] font-semibold uppercase tracking-[0.2em] text-white transition hover:opacity-90" style={{ background: ROSE, boxShadow: `0 0 0 1px ${GOLD}55` }}>See the menu</a>
+                <a href={href("menu")} className="inline-flex rounded-full px-9 py-4 text-[11px] font-semibold uppercase tracking-[0.2em] text-white transition hover:opacity-90" style={{ background: ROSE, boxShadow: `0 0 0 1px ${GOLD}55` }} {...editCopy(content, "about_menu_cta", "See the menu")} />
               </div>
             )}
           </div>
@@ -364,7 +364,7 @@ export default function CamelliaDesign({ site, page = "home", basePath = "" }: P
   if (page === "gallery") {
     return shell(
       <>
-        {banner("A peek inside", "Gallery", "Cake stands, country flowers and pretty corners of the tearoom.")}
+        {banner("A peek inside", "gallery_kicker", "Gallery", "gallery_title", "Cake stands, country flowers and pretty corners of the tearoom.", "gallery_blurb")}
         {gallery.length > 0 ? (
           <section className="px-3 py-3 sm:px-4 sm:py-4" style={{ background: "#fff" }}>
             <div className="mx-auto grid max-w-6xl grid-cols-2 gap-3 sm:grid-cols-3">
@@ -389,7 +389,7 @@ export default function CamelliaDesign({ site, page = "home", basePath = "" }: P
         <FloralField opacity={0.6} />
         <div className="relative mx-auto max-w-5xl px-6 pb-16 pt-36 text-center sm:px-8 sm:pb-20 sm:pt-44">
           <div className="flex justify-center"><Bloom color={ROSE} size={40} /></div>
-          <p className="mt-5 text-[11px] font-semibold uppercase tracking-[0.36em]" style={{ color: SAGE }}>An English afternoon tearoom</p>
+          <p className="mt-5 text-[11px] font-semibold uppercase tracking-[0.36em]" style={{ color: SAGE }} {...editCopy(content, "hero_kicker", "An English afternoon tearoom")} />
           <h1 data-edit="tenant.business_name" style={{ ...display, fontStyle: "italic" }} className="mt-4 text-6xl font-medium leading-[0.98] text-[color:#4A3F3A] sm:text-8xl">{name}</h1>
           {content.tagline && (
             <p data-edit="content.tagline" className="mx-auto mt-6 max-w-xl text-[17px] leading-[1.85] text-[color:#4A3F3A]/70 sm:text-lg">{content.tagline}</p>
@@ -420,9 +420,9 @@ export default function CamelliaDesign({ site, page = "home", basePath = "" }: P
       {/* THE AFTERNOON TEA — tiered cake-stand feature */}
       <section style={{ background: "#fff" }}>
         <div className="mx-auto max-w-5xl px-6 py-20 text-center sm:px-8 sm:py-24">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: ROSE }}>Our speciality</p>
-          <h2 style={{ ...display, fontStyle: "italic" }} className="mt-3 text-4xl font-medium text-[color:#4A3F3A] sm:text-5xl">The afternoon tea</h2>
-          <p className="mx-auto mt-4 max-w-lg text-[16px] leading-[1.8] text-[color:#4A3F3A]/65">A tiered stand laid for two, with loose-leaf tea poured at the table.</p>
+          <p className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: ROSE }} {...editCopy(content, "home_feature_kicker", "Our speciality")} />
+          <h2 style={{ ...display, fontStyle: "italic" }} className="mt-3 text-4xl font-medium text-[color:#4A3F3A] sm:text-5xl" {...editCopy(content, "home_feature_heading", "The afternoon tea")} />
+          <p className="mx-auto mt-4 max-w-lg text-[16px] leading-[1.8] text-[color:#4A3F3A]/65" {...editCopy(content, "home_feature_blurb", "A tiered stand laid for two, with loose-leaf tea poured at the table.")} />
 
           {/* the tiered stand: three tiers stacked, each a china-plate row */}
           <div className="mx-auto mt-12 flex max-w-2xl flex-col items-center">
@@ -460,8 +460,8 @@ export default function CamelliaDesign({ site, page = "home", basePath = "" }: P
           <FloralField opacity={0.3} />
           <div className="relative mx-auto max-w-3xl px-6 py-20 sm:px-8 sm:py-24">
             <div className="text-center">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: SAGE }}>From the menu</p>
-              <h2 style={{ ...display, fontStyle: "italic" }} className="mt-3 text-4xl font-medium text-[color:#4A3F3A] sm:text-5xl">Our teas & treats</h2>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: SAGE }} {...editCopy(content, "home_teas_kicker", "From the menu")} />
+              <h2 style={{ ...display, fontStyle: "italic" }} className="mt-3 text-4xl font-medium text-[color:#4A3F3A] sm:text-5xl" {...editCopy(content, "home_teas_heading", "Our teas & treats")} />
             </div>
             <ul className="mt-12 divide-y" style={{ borderColor: `${GOLD}44` }}>
               {featured.map((item) => (
@@ -499,8 +499,8 @@ export default function CamelliaDesign({ site, page = "home", basePath = "" }: P
         <section style={{ background: "#fff" }}>
           <div className="mx-auto max-w-6xl px-6 py-16 sm:px-8 sm:py-20">
             <div className="mb-8 text-center">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: ROSE }}>A peek inside</p>
-              <h2 style={{ ...display, fontStyle: "italic" }} className="mt-3 text-4xl font-medium text-[color:#4A3F3A] sm:text-5xl">The tearoom</h2>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: ROSE }} {...editCopy(content, "home_gallery_kicker", "A peek inside")} />
+              <h2 style={{ ...display, fontStyle: "italic" }} className="mt-3 text-4xl font-medium text-[color:#4A3F3A] sm:text-5xl" {...editCopy(content, "home_gallery_heading", "The tearoom")} />
             </div>
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
               {gallery.slice(0, 4).map((g) => (
@@ -520,7 +520,7 @@ export default function CamelliaDesign({ site, page = "home", basePath = "" }: P
         <div className="mx-auto max-w-6xl px-6 pt-14 sm:px-8"><SprigDivider tint={CREAM} className="opacity-90" /></div>
         <div className="mx-auto grid max-w-6xl gap-10 px-6 py-14 sm:px-8 md:grid-cols-3">
           <div>
-            <h3 className="text-[11px] font-semibold uppercase tracking-[0.24em] text-white/85">The kettle&apos;s on</h3>
+            <h3 className="text-[11px] font-semibold uppercase tracking-[0.24em] text-white/85" {...editCopy(content, "home_info_hours_heading", "The kettle's on")} />
             {content.hours && content.hours.length > 0 ? (
               <ul className="mt-5 space-y-2 text-sm text-white/90">
                 {content.hours.map((h, i) => (
@@ -530,7 +530,7 @@ export default function CamelliaDesign({ site, page = "home", basePath = "" }: P
             ) : <p className="mt-5 text-sm text-white/80">Open daily for tea.</p>}
           </div>
           <div>
-            <h3 className="text-[11px] font-semibold uppercase tracking-[0.24em] text-white/85">Find us</h3>
+            <h3 className="text-[11px] font-semibold uppercase tracking-[0.24em] text-white/85" {...editCopy(content, "home_info_findus_heading", "Find us")} />
             {content.address && <p data-edit="content.address" className="mt-5 whitespace-pre-line text-sm leading-relaxed text-white/90">{content.address}</p>}
             <div className="mt-3 space-y-1.5 text-sm text-white/90">
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block hover:text-white">{content.phone}</a>}

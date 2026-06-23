@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { VialettoHeader } from "./VialettoHeader";
 import { VialettoBooking } from "./VialettoBooking";
@@ -104,7 +104,7 @@ export default function VialettoDesign({ site, page = "home", basePath = "" }: P
 
         <div className="mt-12 grid gap-12 sm:grid-cols-2 lg:grid-cols-4">
           <div>
-            <h4 className="text-[10px] font-semibold uppercase tracking-[0.26em]" style={{ color: GOLD }}>Naviga</h4>
+            <h4 className="text-[10px] font-semibold uppercase tracking-[0.26em]" style={{ color: GOLD }} {...editCopy(content, "footer_explore", "Naviga")} />
             <ul className="mt-5 space-y-2.5 text-sm text-[color:#F4EFE3]/75">
               {([
                 groups.length > 0 && { label: "Il menu", href: href("menu") },
@@ -119,7 +119,7 @@ export default function VialettoDesign({ site, page = "home", basePath = "" }: P
           </div>
 
           <div>
-            <h4 className="text-[10px] font-semibold uppercase tracking-[0.26em]" style={{ color: GOLD }}>Orari</h4>
+            <h4 className="text-[10px] font-semibold uppercase tracking-[0.26em]" style={{ color: GOLD }} {...editCopy(content, "footer_hours", "Orari")} />
             {content.hours && content.hours.length > 0 ? (
               <ul className="mt-5 space-y-2 text-sm text-[color:#F4EFE3]/75">
                 {content.hours.map((h, i) => (
@@ -130,7 +130,7 @@ export default function VialettoDesign({ site, page = "home", basePath = "" }: P
           </div>
 
           <div>
-            <h4 className="text-[10px] font-semibold uppercase tracking-[0.26em]" style={{ color: GOLD }}>Dove siamo</h4>
+            <h4 className="text-[10px] font-semibold uppercase tracking-[0.26em]" style={{ color: GOLD }} {...editCopy(content, "footer_findus", "Dove siamo")} />
             <div className="mt-5 space-y-2 text-sm text-[color:#F4EFE3]/75">
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block hover:text-[color:#F4EFE3]">{content.phone}</a>}
@@ -139,7 +139,7 @@ export default function VialettoDesign({ site, page = "home", basePath = "" }: P
           </div>
 
           <div>
-            <h4 className="text-[10px] font-semibold uppercase tracking-[0.26em]" style={{ color: GOLD }}>Seguici</h4>
+            <h4 className="text-[10px] font-semibold uppercase tracking-[0.26em]" style={{ color: GOLD }} {...editCopy(content, "footer_social", "Seguici")} />
             {content.socials && content.socials.length > 0 && (
               <div className="mt-5 flex gap-4 text-[color:#F4EFE3]">
                 {content.socials.map((s) => (
@@ -270,7 +270,7 @@ export default function VialettoDesign({ site, page = "home", basePath = "" }: P
         <section className="px-6 py-16 sm:py-24" style={{ background: CREAM }}>
           <div className="mx-auto grid max-w-6xl gap-14 lg:grid-cols-2 lg:gap-20">
             <div>
-              <h2 style={serif} className="text-3xl italic lowercase">come raggiungerci</h2>
+              <h2 style={serif} className="text-3xl italic lowercase" {...editCopy(content, "contact_heading", "come raggiungerci")} />
               <div className="mt-6 space-y-4 text-[15px] leading-relaxed text-[color:#2F4A36]/80">
                 {content.address && <p data-edit="content.address" className="whitespace-pre-line text-lg text-[color:#2F4A36]" style={serif}>{content.address}</p>}
                 {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block hover:opacity-70">{content.phone}</a>}
@@ -279,7 +279,7 @@ export default function VialettoDesign({ site, page = "home", basePath = "" }: P
 
               {content.hours && content.hours.length > 0 && (
                 <div className="mt-9 p-7" style={{ background: PAPER, border: `1px solid ${GOLD}` }}>
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.28em]" style={{ color: TERRA }}>Orari di apertura</p>
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.28em]" style={{ color: TERRA }} {...editCopy(content, "contact_hours_label", "Orari di apertura")} />
                   <ul className="mt-4 space-y-2.5 text-sm text-[color:#2F4A36]/80">
                     {content.hours.map((h, i) => (
                       <li key={i} className="flex justify-between gap-6 border-b border-dashed py-1.5" style={{ borderColor: `${GREEN}22` }}>
@@ -292,9 +292,7 @@ export default function VialettoDesign({ site, page = "home", basePath = "" }: P
               )}
 
               {content.map_url && (
-                <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-8 inline-flex px-7 py-3 text-[11px] font-semibold uppercase tracking-[0.2em] text-[color:#F4EFE3] transition hover:opacity-90" style={{ background: GREEN }}>
-                  Indicazioni stradali
-                </a>
+                <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-8 inline-flex px-7 py-3 text-[11px] font-semibold uppercase tracking-[0.2em] text-[color:#F4EFE3] transition hover:opacity-90" style={{ background: GREEN }} {...editCopy(content, "contact_directions_cta", "Indicazioni stradali")} />
               )}
             </div>
 
@@ -333,7 +331,7 @@ export default function VialettoDesign({ site, page = "home", basePath = "" }: P
               {content.cuisine_type && (
                 <>
                   <div className="mt-10"><Flourish /></div>
-                  <h3 style={serif} className="mt-8 text-3xl italic lowercase">la nostra cucina</h3>
+                  <h3 style={serif} className="mt-8 text-3xl italic lowercase" {...editCopy(content, "about_cuisine_heading", "la nostra cucina")} />
                   <p data-edit="content.cuisine_type" className="mt-4 text-[17px] leading-[1.85] text-[color:#2F4A36]/80">{content.cuisine_type}</p>
                 </>
               )}
@@ -408,12 +406,10 @@ export default function VialettoDesign({ site, page = "home", basePath = "" }: P
           <div className="mx-auto grid max-w-6xl items-center gap-12 px-6 py-20 sm:py-28 md:grid-cols-[0.8fr_1fr] md:gap-16">
             <ArchImage src={gallery[0]?.image_url ?? hero} className="mx-auto w-full max-w-xs md:max-w-none" />
             <div>
-              <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: GOLD }}>La famiglia</p>
-              <h2 style={serif} className="mt-4 text-4xl italic lowercase sm:text-5xl">una storia di famiglia</h2>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: GOLD }} {...editCopy(content, "home_heritage_kicker", "La famiglia")} />
+              <h2 style={serif} className="mt-4 text-4xl italic lowercase sm:text-5xl" {...editCopy(content, "home_heritage_heading", "una storia di famiglia")} />
               <p data-edit="content.about" className="mt-7 max-w-xl text-[17px] leading-[1.9] text-[color:#F4EFE3]/80">{content.about}</p>
-              <a href={href("about")} className="mt-8 inline-flex px-7 py-3 text-[11px] font-semibold uppercase tracking-[0.2em] transition hover:opacity-90" style={{ background: CREAM, color: GREEN }}>
-                La nostra storia
-              </a>
+              <a href={href("about")} className="mt-8 inline-flex px-7 py-3 text-[11px] font-semibold uppercase tracking-[0.2em] transition hover:opacity-90" style={{ background: CREAM, color: GREEN }} {...editCopy(content, "home_heritage_cta", "La nostra storia")} />
             </div>
           </div>
         </section>
@@ -423,8 +419,8 @@ export default function VialettoDesign({ site, page = "home", basePath = "" }: P
       {featured.length > 0 && (
         <section className="px-6 py-20 sm:py-28" style={{ background: CREAM }}>
           <div className="mx-auto max-w-3xl text-center">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: TERRA }}>Dalla cucina</p>
-            <h2 style={serif} className="mt-4 text-4xl italic lowercase sm:text-5xl">qualche assaggio</h2>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: TERRA }} {...editCopy(content, "home_menu_kicker", "Dalla cucina")} />
+            <h2 style={serif} className="mt-4 text-4xl italic lowercase sm:text-5xl" {...editCopy(content, "home_menu_heading", "qualche assaggio")} />
             <div className="mt-5"><Flourish /></div>
             <ul className="mx-auto mt-10 max-w-xl divide-y text-left" style={{ borderColor: `${GOLD}33` }}>
               {featured.map((item) => (
@@ -442,9 +438,7 @@ export default function VialettoDesign({ site, page = "home", basePath = "" }: P
               ))}
             </ul>
             <div className="mt-12">
-              <a href={href("menu")} className="inline-flex px-9 py-4 text-[11px] font-semibold uppercase tracking-[0.22em] text-[color:#F4EFE3] transition hover:opacity-90" style={{ background: GREEN }}>
-                Tutto il menu
-              </a>
+              <a href={href("menu")} className="inline-flex px-9 py-4 text-[11px] font-semibold uppercase tracking-[0.22em] text-[color:#F4EFE3] transition hover:opacity-90" style={{ background: GREEN }} {...editCopy(content, "home_menu_cta", "Tutto il menu")} />
             </div>
           </div>
         </section>
@@ -461,7 +455,7 @@ export default function VialettoDesign({ site, page = "home", basePath = "" }: P
               ))}
             </div>
             <div className="mt-10 text-center">
-              <a href={href("gallery")} className="text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: GREEN }}>Tutta la galleria →</a>
+              <a href={href("gallery")} className="text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: GREEN }} {...editCopy(content, "home_gallery_link", "Tutta la galleria →")} />
             </div>
           </div>
         </section>
@@ -472,17 +466,13 @@ export default function VialettoDesign({ site, page = "home", basePath = "" }: P
         <div className="mx-auto max-w-2xl">
           <Flourish />
           <p className="mt-6 text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: TERRA }}>Una serata da {name}</p>
-          <h2 style={serif} className="mt-4 text-4xl italic lowercase sm:text-5xl">vi aspettiamo a tavola</h2>
-          <p className="mx-auto mt-6 max-w-xl text-[17px] leading-[1.9] text-[color:#2F4A36]/75">
-            Una cena intima o una grande festa di famiglia: la nostra tavola è pronta ad accogliervi. Prenotate online in un istante, o scriveteci per organizzare qualcosa di speciale.
-          </p>
+          <h2 style={serif} className="mt-4 text-4xl italic lowercase sm:text-5xl" {...editCopy(content, "cta_heading", "vi aspettiamo a tavola")} />
+          <p className="mx-auto mt-6 max-w-xl text-[17px] leading-[1.9] text-[color:#2F4A36]/75" {...editCopy(content, "cta_body", "Una cena intima o una grande festa di famiglia: la nostra tavola è pronta ad accogliervi. Prenotate online in un istante, o scriveteci per organizzare qualcosa di speciale.")} />
           <div className="mt-10 flex flex-wrap justify-center gap-4">
             <a href={book} className="inline-flex px-9 py-4 text-[11px] font-semibold uppercase tracking-[0.22em] text-[color:#F4EFE3] transition hover:opacity-90" style={{ background: GREEN }}>
               {bookingOn ? "Prenota un tavolo" : "Contattaci"}
             </a>
-            <a href={href("contact")} className="inline-flex px-9 py-4 text-[11px] font-semibold uppercase tracking-[0.22em] transition hover:opacity-90" style={{ border: `1px solid ${GREEN}`, color: GREEN }}>
-              Venite a trovarci
-            </a>
+            <a href={href("contact")} className="inline-flex px-9 py-4 text-[11px] font-semibold uppercase tracking-[0.22em] transition hover:opacity-90" style={{ border: `1px solid ${GREEN}`, color: GREEN }} {...editCopy(content, "cta_contact_link", "Venite a trovarci")} />
           </div>
         </div>
       </section>

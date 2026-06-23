@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { CurbsideHeader } from "./CurbsideHeader";
 import { CurbsideBooking } from "./CurbsideBooking";
@@ -88,7 +88,7 @@ export default function CurbsideDesign({ site, page = "home", basePath = "" }: P
         <div className="flex flex-wrap items-center gap-4">
           <span className="inline-flex shrink-0 items-center gap-2 border-[3px] bg-[color:#1B1B1D] px-4 py-2" style={{ borderColor: ASPHALT, borderRadius: "0.4rem" }}>
             <span className="h-2.5 w-2.5 animate-pulse rounded-full" style={{ background: TANGERINE }} aria-hidden />
-            <span style={{ ...display, color: HAZARD }} className="text-sm font-black uppercase tracking-[0.18em]">Find us today</span>
+            <span style={{ ...display, color: HAZARD }} className="text-sm font-black uppercase tracking-[0.18em]" {...editCopy(content, "findus_label", "Find us today")} />
           </span>
           {content.address ? (
             <p data-edit="content.address" style={display} className="text-2xl font-black uppercase leading-none tracking-tight text-[color:#1B1B1D] sm:text-3xl">{content.address}</p>
@@ -96,7 +96,7 @@ export default function CurbsideDesign({ site, page = "home", basePath = "" }: P
             <p style={display} className="text-2xl font-black uppercase leading-none tracking-tight text-[color:#1B1B1D] sm:text-3xl">Chasing the city · check the stops</p>
           )}
           {content.map_url && (
-            <a href={content.map_url} target="_blank" rel="noreferrer" className="ml-auto inline-flex border-[3px] bg-white px-5 py-2.5 text-[11px] font-black uppercase tracking-[0.16em] text-[color:#1B1B1D] shadow-[4px_4px_0_0_#1B1B1D] transition hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0_0_#1B1B1D]" style={{ borderColor: ASPHALT, borderRadius: "0.4rem" }}>Map it →</a>
+            <a href={content.map_url} target="_blank" rel="noreferrer" className="ml-auto inline-flex border-[3px] bg-white px-5 py-2.5 text-[11px] font-black uppercase tracking-[0.16em] text-[color:#1B1B1D] shadow-[4px_4px_0_0_#1B1B1D] transition hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0_0_#1B1B1D]" style={{ borderColor: ASPHALT, borderRadius: "0.4rem" }} {...editCopy(content, "findus_map_cta", "Map it →")} />
           )}
         </div>
         {/* quick day chips — a glance at where the truck rolls this week */}
@@ -124,7 +124,7 @@ export default function CurbsideDesign({ site, page = "home", basePath = "" }: P
           {content.tagline && <p data-edit="content.tagline" className="mt-4 max-w-xs text-sm font-semibold leading-relaxed text-white/65">{content.tagline}</p>}
           {content.socials && content.socials.length > 0 && (
             <>
-              <h4 className="mt-8 text-xs font-black uppercase tracking-[0.2em]" style={{ color: HAZARD }}>Track the truck</h4>
+              <h4 className="mt-8 text-xs font-black uppercase tracking-[0.2em]" style={{ color: HAZARD }} {...editCopy(content, "footer_track_heading", "Track the truck")} />
               <div className="mt-4 flex gap-4 text-white">
                 {content.socials.map((s) => (
                   <a key={s.url} href={s.url} target="_blank" rel="noreferrer" aria-label={s.label} className="transition hover:text-[color:#F5631E]"><SocialIcon kind={`${s.label} ${s.url}`} /></a>
@@ -135,7 +135,7 @@ export default function CurbsideDesign({ site, page = "home", basePath = "" }: P
         </div>
 
         <div>
-          <h4 className="text-xs font-black uppercase tracking-[0.2em]" style={{ color: HAZARD }}>The truck</h4>
+          <h4 className="text-xs font-black uppercase tracking-[0.2em]" style={{ color: HAZARD }} {...editCopy(content, "footer_truck_heading", "The truck")} />
           <ul className="mt-5 space-y-3 text-sm font-semibold text-white/65">
             {([
               groups.length > 0 && { label: "Menu", href: href("menu") },
@@ -150,7 +150,7 @@ export default function CurbsideDesign({ site, page = "home", basePath = "" }: P
         </div>
 
         <div>
-          <h4 className="text-xs font-black uppercase tracking-[0.2em]" style={{ color: HAZARD }}>This week&apos;s stops</h4>
+          <h4 className="text-xs font-black uppercase tracking-[0.2em]" style={{ color: HAZARD }} {...editCopy(content, "footer_stops_heading", "This week's stops")} />
           <ul className="mt-5 space-y-2 text-sm font-semibold text-white/65">
             {stops.map((h, i) => (
               <li key={i} className="flex justify-between gap-5"><span data-edit={usingOwnHours ? `hours:${i}:day` : undefined} className="text-[color:#FFD23F]">{h.day}</span><span data-edit={usingOwnHours ? `hours:${i}:open` : undefined} className="text-right text-white/50">{h.open}</span></li>
@@ -164,7 +164,7 @@ export default function CurbsideDesign({ site, page = "home", basePath = "" }: P
 
         {/* sticker CTA panel */}
         <div className="border-[4px] px-7 py-9 shadow-[8px_8px_0_0_#18A39B]" style={{ background: TANGERINE, color: ASPHALT, borderColor: HAZARD, borderRadius: "0.6rem" }}>
-          <h4 style={display} className="text-3xl font-black uppercase leading-none tracking-tight">Got a gig?</h4>
+          <h4 style={display} className="text-3xl font-black uppercase leading-none tracking-tight" {...editCopy(content, "footer_cta_heading", "Got a gig?")} />
           <p className="mt-3 text-sm font-semibold leading-relaxed">Festivals, weddings, office lunches, street parties — wherever there&apos;s a hungry crowd, we&apos;ll roll up.</p>
           <a href={book} className="mt-6 inline-flex border-[3px] px-7 py-3 text-xs font-black uppercase tracking-[0.16em] text-white transition hover:opacity-90" style={{ background: ASPHALT, borderColor: ASPHALT, borderRadius: "0.4rem" }}>{bookingOn ? "Book us" : "Get in touch"}</a>
         </div>
@@ -182,13 +182,13 @@ export default function CurbsideDesign({ site, page = "home", basePath = "" }: P
   );
 
   // Asphalt page banner with spray-paint title + sticker kicker; clears header.
-  const banner = (kicker: string, title: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string) => (
     <section className="relative overflow-hidden" style={{ background: ASPHALT }}>
       <div className="absolute inset-0 opacity-[0.06]" style={{ backgroundImage: `radial-gradient(${HAZARD} 1.5px, transparent 1.5px)`, backgroundSize: "16px 16px" }} aria-hidden />
       <div className="absolute bottom-0 left-0 h-2 w-full" style={{ backgroundImage: HAZARD_STRIPE }} aria-hidden />
       <div className="relative mx-auto max-w-6xl px-6 pb-14 pt-28 sm:px-8 sm:pb-18 sm:pt-36">
-        <span className="inline-flex -rotate-2 border-[3px] px-3 py-1 text-[11px] font-black uppercase tracking-[0.2em] shadow-[4px_4px_0_0_#18A39B]" style={{ background: TANGERINE, borderColor: HAZARD, color: "#FFFFFF", borderRadius: "0.3rem" }}>{kicker}</span>
-        <h1 style={display} className="mt-4 text-6xl font-black uppercase leading-[0.82] tracking-tight text-white [text-shadow:4px_4px_0_#F5631E] sm:text-7xl">{title}</h1>
+        <span className="inline-flex -rotate-2 border-[3px] px-3 py-1 text-[11px] font-black uppercase tracking-[0.2em] shadow-[4px_4px_0_0_#18A39B]" style={{ background: TANGERINE, borderColor: HAZARD, color: "#FFFFFF", borderRadius: "0.3rem" }} {...editCopy(content, kickerKey, kicker)} />
+        <h1 style={display} className="mt-4 text-6xl font-black uppercase leading-[0.82] tracking-tight text-white [text-shadow:4px_4px_0_#F5631E] sm:text-7xl" {...editCopy(content, titleKey, title)} />
       </div>
     </section>
   );
@@ -197,7 +197,7 @@ export default function CurbsideDesign({ site, page = "home", basePath = "" }: P
   if (page === "menu") {
     return shell(
       <>
-        {banner("From the hatch", "The board")}
+        {banner("From the hatch", "menu_kicker", "The board", "menu_title")}
         <section className="px-6 py-16 sm:px-8 sm:py-20" style={{ background: CONCRETE }}>
           <div className="mx-auto max-w-4xl">
             {groups.length > 0 ? (
@@ -260,7 +260,7 @@ export default function CurbsideDesign({ site, page = "home", basePath = "" }: P
   if (page === "reservations") {
     return shell(
       <>
-        {banner("Roll up to yours", "Book the truck")}
+        {banner("Roll up to yours", "book_kicker", "Book the truck", "book_title")}
         <section className="px-6 py-16 sm:px-8 sm:py-20" style={{ background: CONCRETE }}>
           <div className="mx-auto max-w-xl">
             <p className="mb-8 text-center text-[17px] font-semibold leading-[1.7] text-[color:#1B1B1D]/75">Festivals, weddings, office lunches, street parties — tell us the where and the when and we&apos;ll roll back with menus and a quote.</p>
@@ -275,7 +275,7 @@ export default function CurbsideDesign({ site, page = "home", basePath = "" }: P
   if (page === "contact") {
     return shell(
       <>
-        {banner("Catch the truck", "Find us")}
+        {banner("Catch the truck", "contact_kicker", "Find us", "contact_title")}
         {findUsBanner}
         <section className="px-6 py-16 sm:px-8 sm:py-20" style={{ background: CONCRETE }}>
           <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-2 lg:gap-20">
@@ -286,7 +286,7 @@ export default function CurbsideDesign({ site, page = "home", basePath = "" }: P
                 {content.email && <a data-edit="content.email" href={`mailto:${content.email}`} className="block hover:text-[color:#F5631E]">{content.email}</a>}
               </div>
               <div className="mt-8 max-w-xs border-t-[3px] pt-6" style={{ borderColor: ASPHALT }}>
-                <p className="mb-3 text-xs font-black uppercase tracking-[0.18em]" style={{ color: TEAL }}>Where we roll this week</p>
+                <p className="mb-3 text-xs font-black uppercase tracking-[0.18em]" style={{ color: TEAL }} {...editCopy(content, "contact_stops_label", "Where we roll this week")} />
                 <ul className="space-y-2 text-sm font-semibold text-[color:#1B1B1D]/80">
                   {stops.map((h, i) => (
                     <li key={i} className="flex justify-between gap-6"><span data-edit={usingOwnHours ? `hours:${i}:day` : undefined} className="text-[color:#F5631E]">{h.day}</span><span data-edit={usingOwnHours ? `hours:${i}:open` : undefined} className="text-right text-[color:#1B1B1D]/55">{h.open}</span></li>
@@ -294,7 +294,7 @@ export default function CurbsideDesign({ site, page = "home", basePath = "" }: P
                 </ul>
               </div>
               {content.map_url && (
-                <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex border-[3px] px-7 py-3 text-xs font-black uppercase tracking-[0.16em] text-white shadow-[5px_5px_0_0_#18A39B] transition hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0_0_#18A39B]" style={{ background: ASPHALT, borderColor: ASPHALT, borderRadius: "0.4rem" }}>Map the truck</a>
+                <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex border-[3px] px-7 py-3 text-xs font-black uppercase tracking-[0.16em] text-white shadow-[5px_5px_0_0_#18A39B] transition hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0_0_#18A39B]" style={{ background: ASPHALT, borderColor: ASPHALT, borderRadius: "0.4rem" }} {...editCopy(content, "contact_map_cta", "Map the truck")} />
               )}
             </div>
             {contactOn && (
@@ -320,13 +320,13 @@ export default function CurbsideDesign({ site, page = "home", basePath = "" }: P
   if (page === "about") {
     return shell(
       <>
-        {banner("Our lane", "Born on the curb")}
+        {banner("Our lane", "about_kicker", "Born on the curb", "about_title")}
         <section className="px-6 py-16 sm:px-8 sm:py-20" style={{ background: CONCRETE }}>
           <div className="mx-auto max-w-3xl">
             {content.about ? <p data-edit="content.about" className="text-[19px] font-semibold leading-[1.85] text-[color:#1B1B1D]/85">{content.about}</p> : <p className="font-semibold text-[color:#1B1B1D]/60">Our story is coming soon.</p>}
             {content.cuisine_type && (
               <>
-                <h3 style={display} className="mt-12 text-4xl font-black uppercase tracking-tight text-[color:#1B1B1D]">What we sling</h3>
+                <h3 style={display} className="mt-12 text-4xl font-black uppercase tracking-tight text-[color:#1B1B1D]" {...editCopy(content, "about_cuisine_heading", "What we sling")} />
                 <p data-edit="content.cuisine_type" className="mt-4 text-[17px] font-semibold leading-[1.8] text-[color:#1B1B1D]/80">{content.cuisine_type}</p>
               </>
             )}
@@ -340,7 +340,7 @@ export default function CurbsideDesign({ site, page = "home", basePath = "" }: P
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Out on the street", "Gallery")}
+        {banner("Out on the street", "gallery_kicker", "Gallery", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="grid grid-cols-2 gap-2 p-2 sm:grid-cols-3" style={{ background: CONCRETE }}>
             {gallery.map((g) => (
@@ -374,7 +374,7 @@ export default function CurbsideDesign({ site, page = "home", basePath = "" }: P
 
         <div className="relative z-10 mt-auto px-6 pb-10 pt-32 sm:px-8 sm:pb-14">
           <div className="mx-auto max-w-6xl">
-            <span className="inline-flex -rotate-2 border-[3px] px-3 py-1 text-[11px] font-black uppercase tracking-[0.2em] shadow-[4px_4px_0_0_#1B1B1D]" style={{ background: TEAL, borderColor: HAZARD, color: "#FFFFFF", borderRadius: "0.3rem" }}>Always on the move · catch us if you can</span>
+            <span className="inline-flex -rotate-2 border-[3px] px-3 py-1 text-[11px] font-black uppercase tracking-[0.2em] shadow-[4px_4px_0_0_#1B1B1D]" style={{ background: TEAL, borderColor: HAZARD, color: "#FFFFFF", borderRadius: "0.3rem" }} {...editCopy(content, "hero_eyebrow", "Always on the move · catch us if you can")} />
             <h1 data-edit="tenant.business_name" style={display} className="mt-4 text-[18vw] font-black uppercase leading-[0.78] tracking-tighter text-white [text-shadow:6px_6px_0_#F5631E] sm:text-[14vw] lg:text-[11rem]">{name}</h1>
             {content.tagline && (
               <p data-edit="content.tagline" className="mt-4 max-w-2xl text-lg font-black uppercase leading-tight tracking-tight text-white [text-shadow:0_2px_16px_rgba(0,0,0,0.6)] sm:text-2xl">{content.tagline}</p>
@@ -397,13 +397,13 @@ export default function CurbsideDesign({ site, page = "home", basePath = "" }: P
       <section className="relative overflow-hidden" style={{ background: TANGERINE }}>
         <div className="absolute inset-0 opacity-[0.1]" style={{ backgroundImage: `radial-gradient(${ASPHALT} 1.5px, transparent 1.5px)`, backgroundSize: "16px 16px" }} aria-hidden />
         <div className="relative mx-auto max-w-6xl px-6 py-20 sm:px-8 sm:py-24">
-          <span className="inline-flex border-[3px] px-3 py-1 text-[11px] font-black uppercase tracking-[0.2em] text-[color:#1B1B1D]" style={{ borderColor: ASPHALT, background: HAZARD, borderRadius: "0.3rem" }}>Our lane</span>
+          <span className="inline-flex border-[3px] px-3 py-1 text-[11px] font-black uppercase tracking-[0.2em] text-[color:#1B1B1D]" style={{ borderColor: ASPHALT, background: HAZARD, borderRadius: "0.3rem" }} {...editCopy(content, "home_about_eyebrow", "Our lane")} />
           <div className="mt-5 grid gap-8 lg:grid-cols-[1.1fr_1fr] lg:items-end lg:gap-16">
             <h2 style={display} className="text-6xl font-black uppercase leading-[0.82] tracking-tight text-[color:#1B1B1D] [text-shadow:4px_4px_0_#FFD23F] sm:text-7xl">No fixed<br />address,<br /><span style={{ color: "#FFFFFF", textShadow: `4px 4px 0 ${ASPHALT}` }}>big flavour</span></h2>
             {content.about && <p data-edit="content.about" className="text-[17px] font-semibold leading-[1.8] text-[color:#1B1B1D]/85">{content.about}</p>}
           </div>
           {content.about && (
-            <a href={href("about")} className="mt-8 inline-flex border-[3px] px-7 py-3 text-xs font-black uppercase tracking-[0.16em] text-white transition hover:opacity-90" style={{ background: ASPHALT, borderColor: ASPHALT, borderRadius: "0.4rem" }}>Our story</a>
+            <a href={href("about")} className="mt-8 inline-flex border-[3px] px-7 py-3 text-xs font-black uppercase tracking-[0.16em] text-white transition hover:opacity-90" style={{ background: ASPHALT, borderColor: ASPHALT, borderRadius: "0.4rem" }} {...editCopy(content, "home_about_link", "Our story")} />
           )}
         </div>
       </section>
@@ -413,8 +413,8 @@ export default function CurbsideDesign({ site, page = "home", basePath = "" }: P
         <section style={{ background: CONCRETE }}>
           <div className="mx-auto max-w-6xl px-6 py-16 sm:px-8 sm:py-20">
             <div className="flex flex-wrap items-end justify-between gap-4">
-              <h2 style={display} className="text-5xl font-black uppercase leading-[0.85] tracking-tight text-[color:#1B1B1D] sm:text-6xl">Off the board</h2>
-              {groups.length > 0 && <a href={href("menu")} className="text-xs font-black uppercase tracking-[0.16em] text-[color:#18A39B] hover:opacity-70">See the full menu →</a>}
+              <h2 style={display} className="text-5xl font-black uppercase leading-[0.85] tracking-tight text-[color:#1B1B1D] sm:text-6xl" {...editCopy(content, "home_board_heading", "Off the board")} />
+              {groups.length > 0 && <a href={href("menu")} className="text-xs font-black uppercase tracking-[0.16em] text-[color:#18A39B] hover:opacity-70" {...editCopy(content, "home_board_link", "See the full menu →")} />}
             </div>
             <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {featured.map((item, i) => {
@@ -443,7 +443,7 @@ export default function CurbsideDesign({ site, page = "home", basePath = "" }: P
             </div>
             {groups.length > 0 && (
               <div className="mt-10 text-center">
-                <a href={href("menu")} className="inline-flex border-[3px] px-8 py-3 text-xs font-black uppercase tracking-[0.16em] text-white shadow-[5px_5px_0_0_#18A39B] transition hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0_0_#18A39B]" style={{ background: ASPHALT, borderColor: ASPHALT, borderRadius: "0.4rem" }}>See the whole board</a>
+                <a href={href("menu")} className="inline-flex border-[3px] px-8 py-3 text-xs font-black uppercase tracking-[0.16em] text-white shadow-[5px_5px_0_0_#18A39B] transition hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[2px_2px_0_0_#18A39B]" style={{ background: ASPHALT, borderColor: ASPHALT, borderRadius: "0.4rem" }} {...editCopy(content, "home_board_cta", "See the whole board")} />
               </div>
             )}
           </div>
@@ -455,8 +455,8 @@ export default function CurbsideDesign({ site, page = "home", basePath = "" }: P
         <div className="absolute inset-0 opacity-[0.08]" style={{ backgroundImage: `radial-gradient(${HAZARD} 1.5px, transparent 1.5px)`, backgroundSize: "16px 16px" }} aria-hidden />
         <div className="relative mx-auto max-w-5xl px-6 py-16 sm:px-8 sm:py-20">
           <div className="border-[4px] px-8 py-12 text-center shadow-[10px_10px_0_0_#18A39B]" style={{ background: TANGERINE, borderColor: HAZARD, borderRadius: "0.6rem" }}>
-            <h2 style={display} className="text-5xl font-black uppercase leading-[0.85] tracking-tight text-[color:#1B1B1D] sm:text-6xl">Book us for your gig</h2>
-            <p className="mt-3 text-sm font-black uppercase tracking-[0.18em] text-[color:#1B1B1D]/80">Festivals · weddings · markets · street parties</p>
+            <h2 style={display} className="text-5xl font-black uppercase leading-[0.85] tracking-tight text-[color:#1B1B1D] sm:text-6xl" {...editCopy(content, "cta_heading", "Book us for your gig")} />
+            <p className="mt-3 text-sm font-black uppercase tracking-[0.18em] text-[color:#1B1B1D]/80" {...editCopy(content, "cta_sub", "Festivals · weddings · markets · street parties")} />
             <a href={book} className="mt-7 inline-flex border-[3px] px-9 py-4 text-sm font-black uppercase tracking-[0.16em] text-white shadow-[6px_6px_0_0_#1B1B1D] transition hover:translate-x-[2px] hover:translate-y-[2px] hover:shadow-[3px_3px_0_0_#1B1B1D]" style={{ background: ASPHALT, borderColor: ASPHALT, borderRadius: "0.4rem" }}>{bookingOn ? "Book the truck" : "Get in touch"}</a>
           </div>
         </div>
@@ -467,7 +467,7 @@ export default function CurbsideDesign({ site, page = "home", basePath = "" }: P
         <div className="h-2.5 w-full" style={{ backgroundImage: HAZARD_STRIPE }} aria-hidden />
         <div className="mx-auto grid max-w-6xl gap-10 px-6 py-16 sm:px-8 md:grid-cols-3">
           <div>
-            <h3 className="text-xs font-black uppercase tracking-[0.2em]" style={{ color: HAZARD }}>This week&apos;s stops</h3>
+            <h3 className="text-xs font-black uppercase tracking-[0.2em]" style={{ color: HAZARD }} {...editCopy(content, "info_stops_heading", "This week's stops")} />
             <ul className="mt-5 space-y-2 text-sm font-semibold text-white/80">
               {stops.map((h, i) => (
                 <li key={i} className="flex justify-between gap-6"><span data-edit={usingOwnHours ? `hours:${i}:day` : undefined} className="text-[color:#F5631E]">{h.day}</span><span data-edit={usingOwnHours ? `hours:${i}:open` : undefined} className="text-right text-white/55">{h.open}</span></li>
@@ -475,19 +475,19 @@ export default function CurbsideDesign({ site, page = "home", basePath = "" }: P
             </ul>
           </div>
           <div>
-            <h3 className="text-xs font-black uppercase tracking-[0.2em]" style={{ color: HAZARD }}>Find us</h3>
+            <h3 className="text-xs font-black uppercase tracking-[0.2em]" style={{ color: HAZARD }} {...editCopy(content, "info_findus_heading", "Find us")} />
             {content.address && <p data-edit="content.address" className="mt-5 whitespace-pre-line text-sm font-semibold leading-relaxed text-white/80">{content.address}</p>}
             <div className="mt-3 space-y-1.5 text-sm font-semibold text-white/80">
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block hover:text-white">{content.phone}</a>}
               {content.email && <a data-edit="content.email" href={`mailto:${content.email}`} className="block hover:text-white">{content.email}</a>}
             </div>
             {content.map_url && (
-              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-4 inline-flex border-[3px] px-6 py-2.5 text-xs font-black uppercase tracking-[0.16em] text-white transition hover:bg-white hover:text-[color:#1B1B1D]" style={{ borderColor: "rgba(255,255,255,0.5)", borderRadius: "0.4rem" }}>Map the truck</a>
+              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-4 inline-flex border-[3px] px-6 py-2.5 text-xs font-black uppercase tracking-[0.16em] text-white transition hover:bg-white hover:text-[color:#1B1B1D]" style={{ borderColor: "rgba(255,255,255,0.5)", borderRadius: "0.4rem" }} {...editCopy(content, "info_map_cta", "Map the truck")} />
             )}
           </div>
           <div>
-            <h3 className="text-xs font-black uppercase tracking-[0.2em]" style={{ color: HAZARD }}>Book us</h3>
-            <p className="mt-5 text-sm font-semibold text-white/80">Want the truck at your event? Get us pencilled in.</p>
+            <h3 className="text-xs font-black uppercase tracking-[0.2em]" style={{ color: HAZARD }} {...editCopy(content, "info_book_heading", "Book us")} />
+            <p className="mt-5 text-sm font-semibold text-white/80" {...editCopy(content, "info_book_sub", "Want the truck at your event? Get us pencilled in.")} />
             <a href={book} className="mt-5 inline-flex border-[3px] px-7 py-3 text-xs font-black uppercase tracking-[0.16em] text-[color:#1B1B1D] transition hover:opacity-90" style={{ background: HAZARD, borderColor: HAZARD, borderRadius: "0.4rem" }}>{bookingOn ? "Book the truck" : "Contact us"}</a>
           </div>
         </div>

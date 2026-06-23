@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { CSSProperties, ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { SundaeHeader } from "./SundaeHeader";
 import { SundaeBooking } from "./SundaeBooking";
@@ -106,7 +106,7 @@ export default function SundaeDesign({ site, page = "home", basePath = "" }: Pre
           {content.tagline && <p data-edit="content.tagline" className="mt-4 max-w-xs text-sm leading-relaxed text-white/70">{content.tagline}</p>}
           {content.socials && content.socials.length > 0 && (
             <>
-              <h4 className="mt-8 text-xs font-extrabold lowercase tracking-wide" style={{ color: SKY }}>say hi</h4>
+              <h4 className="mt-8 text-xs font-extrabold lowercase tracking-wide" style={{ color: SKY }} {...editCopy(content, "footer_social", "say hi")} />
               <div className="mt-4 flex gap-4 text-white">
                 {content.socials.map((s) => (
                   <a key={s.url} href={s.url} target="_blank" rel="noreferrer" aria-label={s.label} className="transition hover:opacity-60"><SocialIcon kind={`${s.label} ${s.url}`} /></a>
@@ -117,7 +117,7 @@ export default function SundaeDesign({ site, page = "home", basePath = "" }: Pre
         </div>
 
         <div>
-          <h4 className="text-xs font-extrabold lowercase tracking-wide" style={{ color: SKY }}>wander</h4>
+          <h4 className="text-xs font-extrabold lowercase tracking-wide" style={{ color: SKY }} {...editCopy(content, "footer_explore", "wander")} />
           <ul className="mt-5 space-y-3 text-sm text-white/75">
             {([
               groups.length > 0 && { label: "the scoops", href: href("menu") },
@@ -132,7 +132,7 @@ export default function SundaeDesign({ site, page = "home", basePath = "" }: Pre
         </div>
 
         <div>
-          <h4 className="text-xs font-extrabold lowercase tracking-wide" style={{ color: SKY }}>scoop o&apos;clock</h4>
+          <h4 className="text-xs font-extrabold lowercase tracking-wide" style={{ color: SKY }} {...editCopy(content, "footer_hours", "scoop o'clock")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm text-white/75">
               {content.hours.map((h, i) => (
@@ -149,8 +149,8 @@ export default function SundaeDesign({ site, page = "home", basePath = "" }: Pre
 
         {/* CTA panel: a real button, never a dead newsletter input */}
         <div className="rounded-[2rem] border-2 px-7 py-9" style={{ background: PINK, borderColor: "#fff", color: COCOA }}>
-          <h4 style={display} className="text-2xl font-bold leading-tight">Throwing a party?</h4>
-          <p className="mt-2 text-sm leading-relaxed opacity-90">Birthdays, big groups or a just-because treat. We&apos;ll scoop the whole thing.</p>
+          <h4 style={display} className="text-2xl font-bold leading-tight" {...editCopy(content, "footer_cta_heading", "Throwing a party?")} />
+          <p className="mt-2 text-sm leading-relaxed opacity-90" {...editCopy(content, "footer_cta_body", "Birthdays, big groups or a just-because treat. We'll scoop the whole thing.")} />
           <a href={book} className="mt-6 inline-flex rounded-full border-2 px-7 py-3 text-xs font-extrabold lowercase tracking-wide transition hover:-translate-y-0.5" style={{ background: CHERRY, borderColor: COCOA, color: "#fff" }}>{bookingOn ? "book a party" : "get in touch"}</a>
         </div>
       </div>
@@ -270,7 +270,7 @@ export default function SundaeDesign({ site, page = "home", basePath = "" }: Pre
                 </ul>
               )}
               {content.map_url && (
-                <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex rounded-full border-2 px-7 py-3 text-xs font-extrabold lowercase tracking-wide transition hover:-translate-y-0.5" style={{ background: SKY, borderColor: COCOA, color: COCOA }}>get directions</a>
+                <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex rounded-full border-2 px-7 py-3 text-xs font-extrabold lowercase tracking-wide transition hover:-translate-y-0.5" style={{ background: SKY, borderColor: COCOA, color: COCOA }} {...editCopy(content, "contact_directions_cta", "get directions")} />
               )}
             </div>
             {contactOn && (
@@ -302,7 +302,7 @@ export default function SundaeDesign({ site, page = "home", basePath = "" }: Pre
             {content.about ? <p data-edit="content.about" className="text-[18px] leading-[1.9] text-[color:#4A352C]/80">{content.about}</p> : <p className="text-[color:#4A352C]/60">Our story is coming soon.</p>}
             {content.cuisine_type && (
               <>
-                <h3 style={display} className="mt-12 text-3xl font-bold text-[color:#4A352C]">What we churn</h3>
+                <h3 style={display} className="mt-12 text-3xl font-bold text-[color:#4A352C]" {...editCopy(content, "about_cuisine_heading", "What we churn")} />
                 <p data-edit="content.cuisine_type" className="mt-4 text-[17px] leading-[1.8] text-[color:#4A352C]/75">{content.cuisine_type}</p>
               </>
             )}
@@ -387,10 +387,10 @@ export default function SundaeDesign({ site, page = "home", basePath = "" }: Pre
           <div className="relative mx-auto max-w-6xl px-6 py-20 sm:px-8 sm:py-24">
             <div className="flex flex-wrap items-end justify-between gap-4">
               <div>
-                <p className="text-xs font-extrabold lowercase tracking-[0.2em] text-[color:#4A352C]/70">scooping now</p>
-                <h2 style={display} className="mt-2 text-5xl font-bold leading-[0.9] text-[color:#4A352C] sm:text-6xl">Today&apos;s flavours</h2>
+                <p className="text-xs font-extrabold lowercase tracking-[0.2em] text-[color:#4A352C]/70" {...editCopy(content, "home_scoops_kicker", "scooping now")} />
+                <h2 style={display} className="mt-2 text-5xl font-bold leading-[0.9] text-[color:#4A352C] sm:text-6xl" {...editCopy(content, "home_scoops_heading", "Today's flavours")} />
               </div>
-              {groups.length > 0 && <a href={href("menu")} className="rounded-full border-2 bg-white px-5 py-2 text-xs font-extrabold lowercase tracking-wide text-[color:#4A352C] transition hover:-translate-y-0.5" style={{ borderColor: COCOA }}>see the whole case →</a>}
+              {groups.length > 0 && <a href={href("menu")} className="rounded-full border-2 bg-white px-5 py-2 text-xs font-extrabold lowercase tracking-wide text-[color:#4A352C] transition hover:-translate-y-0.5" style={{ borderColor: COCOA }} {...editCopy(content, "home_scoops_link", "see the whole case →")} />}
             </div>
             <div className="mt-10 flex flex-wrap gap-3">
               {scoops.map((item, i) => (
@@ -414,13 +414,13 @@ export default function SundaeDesign({ site, page = "home", basePath = "" }: Pre
       {/* ABOUT: cream band with big bouncy headline + drip accent */}
       <section className="relative" style={{ background: CREAM }}>
         <div className="mx-auto max-w-6xl px-6 py-20 sm:px-8 sm:py-24">
-          <p className="text-xs font-extrabold lowercase tracking-[0.22em]" style={{ color: CHERRY }}>scoop scoop hooray</p>
+          <p className="text-xs font-extrabold lowercase tracking-[0.22em]" style={{ color: CHERRY }} {...editCopy(content, "home_about_kicker", "scoop scoop hooray")} />
           <div className="mt-4 grid gap-8 lg:grid-cols-[1.1fr_1fr] lg:items-end lg:gap-16">
             <h2 style={display} className="text-6xl font-bold leading-[0.86] text-[color:#4A352C] sm:text-7xl">Made fresh,<br />eaten faster</h2>
             {content.about && <p data-edit="content.about" className="text-[17px] leading-[1.85] text-[color:#4A352C]/80">{content.about}</p>}
           </div>
           {content.about && (
-            <a href={href("about")} className="mt-8 inline-flex rounded-full border-2 px-7 py-3 text-xs font-extrabold lowercase tracking-wide transition hover:-translate-y-0.5" style={{ background: PISTACHIO, borderColor: COCOA, color: COCOA }}>our story</a>
+            <a href={href("about")} className="mt-8 inline-flex rounded-full border-2 px-7 py-3 text-xs font-extrabold lowercase tracking-wide transition hover:-translate-y-0.5" style={{ background: PISTACHIO, borderColor: COCOA, color: COCOA }} {...editCopy(content, "home_about_cta", "our story")} />
           )}
         </div>
         <Scallop fill={PINK} />
@@ -432,8 +432,8 @@ export default function SundaeDesign({ site, page = "home", basePath = "" }: Pre
           <div className="absolute inset-0 opacity-[0.12]" style={dots(COCOA, 28)} aria-hidden />
           <div className="relative mx-auto max-w-6xl px-6 py-20 sm:px-8 sm:py-24">
             <div className="text-center">
-              <p className="text-xs font-extrabold lowercase tracking-[0.22em] text-[color:#4A352C]/70">crowd-pleasers</p>
-              <h2 style={display} className="mt-2 text-5xl font-bold text-[color:#4A352C] sm:text-6xl">Fan favourites</h2>
+              <p className="text-xs font-extrabold lowercase tracking-[0.22em] text-[color:#4A352C]/70" {...editCopy(content, "home_picks_kicker", "crowd-pleasers")} />
+              <h2 style={display} className="mt-2 text-5xl font-bold text-[color:#4A352C] sm:text-6xl" {...editCopy(content, "home_picks_heading", "Fan favourites")} />
             </div>
             <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {featured.map((item, i) => {
@@ -468,8 +468,8 @@ export default function SundaeDesign({ site, page = "home", basePath = "" }: Pre
         <div className="mx-auto max-w-5xl px-6 py-16 sm:px-8 sm:py-20">
           <div className="relative overflow-hidden rounded-[2.5rem] border-2 px-8 py-14 text-center" style={{ ...stripes(SKY, CREAM), borderColor: COCOA }}>
             <div className="relative">
-              <h2 style={display} className="text-5xl font-bold leading-[0.9] text-[color:#4A352C] sm:text-6xl">Let&apos;s throw a party</h2>
-              <p className="mt-3 text-sm font-extrabold lowercase tracking-wide text-[color:#4A352C]/70">birthdays · big groups · just because</p>
+              <h2 style={display} className="text-5xl font-bold leading-[0.9] text-[color:#4A352C] sm:text-6xl" {...editCopy(content, "party_cta_heading", "Let's throw a party")} />
+              <p className="mt-3 text-sm font-extrabold lowercase tracking-wide text-[color:#4A352C]/70" {...editCopy(content, "party_cta_sub", "birthdays · big groups · just because")} />
               <a href={book} className="mt-7 inline-flex rounded-full border-2 px-9 py-4 text-sm font-extrabold lowercase tracking-wide transition hover:-translate-y-0.5" style={{ background: CHERRY, borderColor: COCOA, color: "#fff" }}>{bookingOn ? "book a party" : "get in touch"}</a>
             </div>
           </div>
@@ -480,7 +480,7 @@ export default function SundaeDesign({ site, page = "home", basePath = "" }: Pre
       <section style={{ background: COCOA }} className="text-white">
         <div className="mx-auto grid max-w-6xl gap-10 px-6 py-16 sm:px-8 md:grid-cols-3">
           <div>
-            <h3 className="text-xs font-extrabold lowercase tracking-wide" style={{ color: PINK }}>scoop o&apos;clock</h3>
+            <h3 className="text-xs font-extrabold lowercase tracking-wide" style={{ color: PINK }} {...editCopy(content, "info_hours_label", "scoop o'clock")} />
             {content.hours && content.hours.length > 0 ? (
               <ul className="mt-5 space-y-2 text-sm text-white/80">
                 {content.hours.map((h, i) => (
@@ -490,14 +490,14 @@ export default function SundaeDesign({ site, page = "home", basePath = "" }: Pre
             ) : <p className="mt-5 text-sm text-white/70">Open daily.</p>}
           </div>
           <div>
-            <h3 className="text-xs font-extrabold lowercase tracking-wide" style={{ color: PINK }}>find us</h3>
+            <h3 className="text-xs font-extrabold lowercase tracking-wide" style={{ color: PINK }} {...editCopy(content, "info_findus_label", "find us")} />
             {content.address && <p data-edit="content.address" className="mt-5 whitespace-pre-line text-sm leading-relaxed text-white/80">{content.address}</p>}
             <div className="mt-3 space-y-1.5 text-sm text-white/80">
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block hover:text-white">{content.phone}</a>}
               {content.email && <a data-edit="content.email" href={`mailto:${content.email}`} className="block hover:text-white">{content.email}</a>}
             </div>
             {content.map_url && (
-              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-4 inline-flex rounded-full border-2 border-white/50 px-6 py-2.5 text-xs font-extrabold lowercase tracking-wide text-white transition hover:bg-white hover:text-[color:#4A352C]">get directions</a>
+              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-4 inline-flex rounded-full border-2 border-white/50 px-6 py-2.5 text-xs font-extrabold lowercase tracking-wide text-white transition hover:bg-white hover:text-[color:#4A352C]" {...editCopy(content, "info_directions_link", "get directions")} />
             )}
           </div>
           <div>

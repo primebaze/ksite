@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { DaybreakHeader } from "./DaybreakHeader";
 import { DaybreakBooking } from "./DaybreakBooking";
@@ -81,7 +81,7 @@ export default function DaybreakDesign({ site, page = "home", basePath = "" }: P
         </div>
 
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white/40">Explore</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white/40" {...editCopy(content, "footer_explore_heading", "Explore")} />
           <ul className="mt-4 space-y-2.5 text-sm text-white/75">
             {([
               groups.length > 0 && { label: "Menu", href: href("menu") },
@@ -97,7 +97,7 @@ export default function DaybreakDesign({ site, page = "home", basePath = "" }: P
 
         {(content.phone || content.email || content.address) && (
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white/40">Find us</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white/40" {...editCopy(content, "footer_find_heading", "Find us")} />
             <div className="mt-4 space-y-2 text-sm text-white/75">
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -108,7 +108,7 @@ export default function DaybreakDesign({ site, page = "home", basePath = "" }: P
 
         {content.hours && content.hours.length > 0 && (
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white/40">Hours</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-white/40" {...editCopy(content, "footer_hours_heading", "Hours")} />
             <ul className="mt-4 space-y-1.5 text-sm text-white/75">
               {content.hours.map((h, i) => (
                 <li key={i} className="flex justify-between gap-6">
@@ -134,11 +134,11 @@ export default function DaybreakDesign({ site, page = "home", basePath = "" }: P
   );
 
   // Cream page banner — also clears the fixed header on sub-pages.
-  const banner = (kicker: string, title: string, blurb?: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string, blurb?: string) => (
     <section style={{ background: CREAM }} className="border-b border-black/[0.06]">
       <div className="mx-auto max-w-6xl px-6 pb-14 pt-32 sm:px-8 sm:pt-36">
-        <p className="text-xs font-semibold uppercase tracking-[0.3em]" style={{ color: TOMATO }}>{kicker}</p>
-        <h1 style={serif} className="mt-3 text-4xl font-semibold text-[#20201d] sm:text-5xl">{title}</h1>
+        <p className="text-xs font-semibold uppercase tracking-[0.3em]" style={{ color: TOMATO }} {...editCopy(content, kickerKey, kicker)} />
+        <h1 style={serif} className="mt-3 text-4xl font-semibold text-[#20201d] sm:text-5xl" {...editCopy(content, titleKey, title)} />
         {blurb && <p className="mt-4 max-w-xl text-[16px] leading-relaxed text-neutral-600">{blurb}</p>}
       </div>
     </section>
@@ -150,7 +150,7 @@ export default function DaybreakDesign({ site, page = "home", basePath = "" }: P
   if (page === "menu") {
     return shell(
       <>
-        {banner("All day, every day", "Our menu", "From first-light breakfasts to long, lazy dinners. Here's everything we're plating up.")}
+        {banner("All day, every day", "menu_banner_kicker", "Our menu", "menu_banner_title", "From first-light breakfasts to long, lazy dinners. Here's everything we're plating up.")}
         <section style={{ background: CREAM }}>
           <div className="mx-auto max-w-5xl px-6 py-16 sm:px-8 sm:py-20">
             {groups.length > 0 ? (
@@ -194,9 +194,7 @@ export default function DaybreakDesign({ site, page = "home", basePath = "" }: P
 
                 {bookingOn && (
                   <div className="mt-14 text-center">
-                    <a href={href("reservations")} className="inline-flex rounded-full px-9 py-4 text-sm font-semibold uppercase tracking-[0.14em] text-white shadow-lg transition hover:opacity-90" style={{ background: TOMATO }}>
-                      Book a table
-                    </a>
+                    <a href={href("reservations")} className="inline-flex rounded-full px-9 py-4 text-sm font-semibold uppercase tracking-[0.14em] text-white shadow-lg transition hover:opacity-90" style={{ background: TOMATO }} {...editCopy(content, "menu_book_cta", "Book a table")} />
                   </div>
                 )}
               </>
@@ -215,12 +213,12 @@ export default function DaybreakDesign({ site, page = "home", basePath = "" }: P
   if (page === "reservations") {
     return shell(
       <>
-        {banner("Reservations", "Grab yourself a table", "Breakfast, a long lunch or dinner with the gang. Tell us when and we'll save you a spot.")}
+        {banner("Reservations", "reservations_banner_kicker", "Grab yourself a table", "reservations_banner_title", "Breakfast, a long lunch or dinner with the gang. Tell us when and we'll save you a spot.")}
         <section style={{ background: GREEN }} className="text-white">
           <div className="mx-auto grid max-w-6xl items-center gap-12 px-6 py-16 sm:px-8 sm:py-20 lg:grid-cols-[1fr_0.9fr] lg:gap-16">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-white/70">How it works</p>
-              <h2 style={serif} className="mt-3 text-3xl font-semibold sm:text-4xl">A warm welcome awaits</h2>
+              <p className="text-xs font-semibold uppercase tracking-[0.3em] text-white/70" {...editCopy(content, "reservations_how_kicker", "How it works")} />
+              <h2 style={serif} className="mt-3 text-3xl font-semibold sm:text-4xl" {...editCopy(content, "reservations_how_heading", "A warm welcome awaits")} />
               <p className="mt-5 max-w-md text-lg leading-relaxed text-white/85">
                 Pop your details in the form and we&apos;ll confirm by phone or email. For larger groups, give us a call and we&apos;ll sort it out together.
               </p>
@@ -243,7 +241,7 @@ export default function DaybreakDesign({ site, page = "home", basePath = "" }: P
   if (page === "contact") {
     return shell(
       <>
-        {banner("Come and see us", "Visit us", "We're easy to find and always happy to see you. Here's how to get here and how to reach us.")}
+        {banner("Come and see us", "contact_banner_kicker", "Visit us", "contact_banner_title", "We're easy to find and always happy to see you. Here's how to get here and how to reach us.")}
         <section className="bg-white">
           <div className="mx-auto grid max-w-6xl gap-12 px-6 py-16 sm:px-8 sm:py-20 lg:grid-cols-2 lg:gap-16">
             {/* left — map / directions */}
@@ -260,9 +258,7 @@ export default function DaybreakDesign({ site, page = "home", basePath = "" }: P
                     <p className="mt-4 text-[16px] text-neutral-500">Find us in the heart of town.</p>
                   )}
                   {content.map_url && (
-                    <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-6 inline-flex rounded-full px-8 py-3.5 text-sm font-semibold uppercase tracking-[0.14em] text-white shadow-md transition hover:opacity-90" style={{ background: GREEN }}>
-                      Get directions
-                    </a>
+                    <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-6 inline-flex rounded-full px-8 py-3.5 text-sm font-semibold uppercase tracking-[0.14em] text-white shadow-md transition hover:opacity-90" style={{ background: GREEN }} {...editCopy(content, "contact_directions_cta", "Get directions")} />
                   )}
                 </div>
               </div>
@@ -274,7 +270,7 @@ export default function DaybreakDesign({ site, page = "home", basePath = "" }: P
 
               {content.hours && content.hours.length > 0 && (
                 <div className="mt-8">
-                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-neutral-400">Opening hours</p>
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-neutral-400" {...editCopy(content, "contact_hours_heading", "Opening hours")} />
                   <ul className="mt-3 max-w-sm space-y-1.5 text-sm text-neutral-700">
                     {content.hours.map((h, i) => (
                       <li key={i} className="flex justify-between gap-6 border-b border-dashed border-neutral-200 py-1.5">
@@ -299,7 +295,7 @@ export default function DaybreakDesign({ site, page = "home", basePath = "" }: P
                 />
               ) : (
                 <div className="rounded-[1.5rem] p-8" style={{ background: CREAM }}>
-                  <h2 style={serif} className="text-2xl font-semibold">Say hello</h2>
+                  <h2 style={serif} className="text-2xl font-semibold" {...editCopy(content, "contact_hello_heading", "Say hello")} />
                   <p className="mt-3 text-[16px] leading-relaxed text-neutral-600">Give us a call or drop us an email and we&apos;ll get right back to you.</p>
                 </div>
               )}
@@ -316,7 +312,7 @@ export default function DaybreakDesign({ site, page = "home", basePath = "" }: P
   if (page === "about") {
     return shell(
       <>
-        {banner("Hello there", "Our story")}
+        {banner("Hello there", "about_banner_kicker", "Our story", "about_banner_title")}
         <section className="bg-white">
           <div className="mx-auto max-w-3xl px-6 py-16 text-center sm:py-20">
             {content.about ? (
@@ -328,9 +324,7 @@ export default function DaybreakDesign({ site, page = "home", basePath = "" }: P
               <p data-edit="content.cuisine_type" className="mx-auto mt-7 max-w-xl text-[16px] leading-relaxed text-neutral-600">{content.cuisine_type}</p>
             )}
             {groups.length > 0 && (
-              <a href={href("menu")} className="mt-10 inline-flex rounded-full px-9 py-4 text-sm font-semibold uppercase tracking-[0.14em] text-white shadow-lg transition hover:opacity-90" style={{ background: TOMATO }}>
-                See the menu
-              </a>
+              <a href={href("menu")} className="mt-10 inline-flex rounded-full px-9 py-4 text-sm font-semibold uppercase tracking-[0.14em] text-white shadow-lg transition hover:opacity-90" style={{ background: TOMATO }} {...editCopy(content, "about_menu_cta", "See the menu")} />
             )}
           </div>
         </section>
@@ -344,7 +338,7 @@ export default function DaybreakDesign({ site, page = "home", basePath = "" }: P
   if (page === "gallery") {
     return shell(
       <>
-        {banner("A look inside", "Gallery")}
+        {banner("A look inside", "gallery_banner_kicker", "Gallery", "gallery_banner_title")}
         {gallery.length > 0 ? (
           <section className="grid grid-cols-2 gap-1 sm:grid-cols-3">
             {gallery.map((g) => (
@@ -390,13 +384,9 @@ export default function DaybreakDesign({ site, page = "home", basePath = "" }: P
             {content.tagline ?? "Breakfast, lunch and dinner, all day every day. Bright food and a warm welcome."}
           </p>
           <div className="mt-8 flex flex-wrap gap-3">
-            <a href={book} className="rounded-full px-8 py-4 text-sm font-semibold uppercase tracking-[0.14em] text-white shadow-xl transition hover:opacity-90" style={{ background: TOMATO }}>
-              Book a table
-            </a>
+            <a href={book} className="rounded-full px-8 py-4 text-sm font-semibold uppercase tracking-[0.14em] text-white shadow-xl transition hover:opacity-90" style={{ background: TOMATO }} {...editCopy(content, "hero_book_cta", "Book a table")} />
             {groups.length > 0 && (
-              <a href={href("menu")} className="rounded-full border-2 border-white/80 px-8 py-4 text-sm font-semibold uppercase tracking-[0.14em] text-white backdrop-blur-sm transition hover:bg-white hover:text-[#20201d]">
-                See the menu
-              </a>
+              <a href={href("menu")} className="rounded-full border-2 border-white/80 px-8 py-4 text-sm font-semibold uppercase tracking-[0.14em] text-white backdrop-blur-sm transition hover:bg-white hover:text-[#20201d]" {...editCopy(content, "hero_menu_cta", "See the menu")} />
             )}
           </div>
         </div>
@@ -406,8 +396,8 @@ export default function DaybreakDesign({ site, page = "home", basePath = "" }: P
       <section style={{ background: CREAM }}>
         <div className="mx-auto max-w-6xl px-6 py-20 sm:px-8 sm:py-24">
           <div className="text-center">
-            <p className="text-xs font-semibold uppercase tracking-[0.3em]" style={{ color: TOMATO }}>What&apos;s on</p>
-            <h2 style={serif} className="mt-3 text-4xl font-semibold text-[#20201d] sm:text-5xl">Always something good</h2>
+            <p className="text-xs font-semibold uppercase tracking-[0.3em]" style={{ color: TOMATO }} {...editCopy(content, "home_whatson_kicker", "What's on")} />
+            <h2 style={serif} className="mt-3 text-4xl font-semibold text-[#20201d] sm:text-5xl" {...editCopy(content, "home_whatson_heading", "Always something good")} />
           </div>
           <div className="mt-12 grid gap-6 md:grid-cols-3">
             {HIGHLIGHTS.map((h) => (
@@ -428,7 +418,7 @@ export default function DaybreakDesign({ site, page = "home", basePath = "" }: P
       {content.about && (
         <section className="bg-white">
           <div className="mx-auto max-w-3xl px-6 py-20 text-center sm:py-24">
-            <p className="text-xs font-semibold uppercase tracking-[0.3em]" style={{ color: GREEN }}>Hello there</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.3em]" style={{ color: GREEN }} {...editCopy(content, "home_intro_kicker", "Hello there")} />
             <p data-edit="content.about" style={serif} className="mt-6 text-2xl font-normal leading-[1.45] text-neutral-800 sm:text-[2rem]">
               {content.about}
             </p>
@@ -445,10 +435,10 @@ export default function DaybreakDesign({ site, page = "home", basePath = "" }: P
           <div className="mx-auto max-w-5xl px-6 py-20 sm:px-8 sm:py-24">
             <div className="flex flex-wrap items-end justify-between gap-4">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.3em]" style={{ color: TOMATO }}>A taste of it</p>
-                <h2 style={serif} className="mt-3 text-4xl font-semibold sm:text-5xl">Menu favourites</h2>
+                <p className="text-xs font-semibold uppercase tracking-[0.3em]" style={{ color: TOMATO }} {...editCopy(content, "home_taste_kicker", "A taste of it")} />
+                <h2 style={serif} className="mt-3 text-4xl font-semibold sm:text-5xl" {...editCopy(content, "home_taste_heading", "Menu favourites")} />
               </div>
-              <a href={href("menu")} className="text-sm font-semibold transition hover:opacity-70" style={{ color: GREEN }}>View full menu →</a>
+              <a href={href("menu")} className="text-sm font-semibold transition hover:opacity-70" style={{ color: GREEN }} {...editCopy(content, "home_view_full_menu", "View full menu →")} />
             </div>
             <div className="mt-10 grid items-start gap-x-10 gap-y-5 md:grid-cols-2">
               {featured.map((item) => (
@@ -469,7 +459,7 @@ export default function DaybreakDesign({ site, page = "home", basePath = "" }: P
       <section style={{ background: GREEN }} className="text-white">
         <div className="mx-auto grid max-w-6xl gap-12 px-6 py-20 sm:px-8 md:grid-cols-3">
           <div>
-            <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-white/70">Opening hours</h3>
+            <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-white/70" {...editCopy(content, "home_band_hours_heading", "Opening hours")} />
             {content.hours && content.hours.length > 0 ? (
               <ul className="mt-4 space-y-1.5 text-sm text-white/85">
                 {content.hours.map((h, i) => (
@@ -479,7 +469,7 @@ export default function DaybreakDesign({ site, page = "home", basePath = "" }: P
             ) : <p className="mt-4 text-sm text-white/70">Open all day, every day.</p>}
           </div>
           <div>
-            <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-white/70">Find us</h3>
+            <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-white/70" {...editCopy(content, "home_band_find_heading", "Find us")} />
             {content.address && <p data-edit="content.address" className="mt-4 whitespace-pre-line text-sm leading-relaxed text-white/85">{content.address}</p>}
             <div className="mt-3 space-y-1.5 text-sm text-white/85">
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}

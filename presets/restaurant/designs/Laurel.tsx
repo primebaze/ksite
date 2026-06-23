@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { LaurelHeader } from "./LaurelHeader";
 import { LaurelBooking } from "./LaurelBooking";
@@ -91,7 +91,7 @@ export default function LaurelDesign({ site, page = "home", basePath = "" }: Pre
 
         <div className="mt-12 grid gap-12 sm:grid-cols-2 lg:grid-cols-4">
           <div>
-            <h4 className="text-xs font-semibold uppercase tracking-[0.2em]" style={{ color: GOLD }}>Explore</h4>
+            <h4 className="text-xs font-semibold uppercase tracking-[0.2em]" style={{ color: GOLD }} {...editCopy(content, "footer_explore", "Explore")} />
             <ul className="mt-5 space-y-2.5 text-sm text-white/75">
               {([
                 groups.length > 0 && { label: "Our menu", href: href("menu") },
@@ -106,7 +106,7 @@ export default function LaurelDesign({ site, page = "home", basePath = "" }: Pre
           </div>
 
           <div>
-            <h4 className="text-xs font-semibold uppercase tracking-[0.2em]" style={{ color: GOLD }}>Opening hours</h4>
+            <h4 className="text-xs font-semibold uppercase tracking-[0.2em]" style={{ color: GOLD }} {...editCopy(content, "footer_hours", "Opening hours")} />
             {content.hours && content.hours.length > 0 ? (
               <ul className="mt-5 space-y-2 text-sm text-white/75">
                 {content.hours.map((h, i) => (
@@ -119,7 +119,7 @@ export default function LaurelDesign({ site, page = "home", basePath = "" }: Pre
           </div>
 
           <div>
-            <h4 className="text-xs font-semibold uppercase tracking-[0.2em]" style={{ color: GOLD }}>Find us</h4>
+            <h4 className="text-xs font-semibold uppercase tracking-[0.2em]" style={{ color: GOLD }} {...editCopy(content, "footer_findus", "Find us")} />
             <div className="mt-5 space-y-2 text-sm text-white/75">
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block hover:text-white">{content.phone}</a>}
@@ -128,7 +128,7 @@ export default function LaurelDesign({ site, page = "home", basePath = "" }: Pre
           </div>
 
           <div>
-            <h4 className="text-xs font-semibold uppercase tracking-[0.2em]" style={{ color: GOLD }}>Follow</h4>
+            <h4 className="text-xs font-semibold uppercase tracking-[0.2em]" style={{ color: GOLD }} {...editCopy(content, "footer_follow", "Follow")} />
             {content.socials && content.socials.length > 0 && (
               <div className="mt-5 flex gap-4">
                 {content.socials.map((s) => (
@@ -159,11 +159,15 @@ export default function LaurelDesign({ site, page = "home", basePath = "" }: Pre
   );
 
   // Cream sub-page banner — sets the elegant tone and clears the fixed header.
-  const banner = (kicker: string, title: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string) => (
     <section className="border-b text-center" style={{ background: CREAM, borderColor: `${GOLD}33` }}>
       <div className="mx-auto max-w-3xl px-6 pb-14 pt-32 sm:pt-36">
-        <p className="text-xs font-semibold uppercase tracking-[0.35em]" style={{ color: GOLD }}>{kicker}</p>
-        <h1 style={serif} className="mt-3 text-4xl font-medium sm:text-5xl">{title}</h1>
+        <p className="text-xs font-semibold uppercase tracking-[0.35em]" style={{ color: GOLD }} {...editCopy(content, kickerKey, kicker)} />
+        {titleKey ? (
+          <h1 style={serif} className="mt-3 text-4xl font-medium sm:text-5xl" {...editCopy(content, titleKey, title)} />
+        ) : (
+          <h1 style={serif} className="mt-3 text-4xl font-medium sm:text-5xl">{title}</h1>
+        )}
         <div className="mt-6"><Sprig /></div>
       </div>
     </section>
@@ -173,7 +177,7 @@ export default function LaurelDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "menu") {
     return shell(
       <>
-        {banner("Our menu", "The seasonal table")}
+        {banner("Our menu", "menu_kicker", "The seasonal table", "menu_title")}
         <section className="mx-auto max-w-2xl px-6 py-20">
           {groups.length > 0 ? (
             <>
@@ -235,7 +239,7 @@ export default function LaurelDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "reservations") {
     return shell(
       <>
-        {banner("Reservations", "Book a table")}
+        {banner("Reservations", "reservations_kicker", "Book a table", "reservations_title")}
         <section className="mx-auto max-w-xl px-6 py-20">
           <p className="mb-10 text-center text-[17px] leading-[1.9] text-neutral-700">
             We would be delighted to welcome you to {name}. Reserve your table below and we will confirm by phone or email. For parties of eight or more, or private dining, please call us directly.
@@ -250,10 +254,10 @@ export default function LaurelDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "contact") {
     return shell(
       <>
-        {banner("Visit us", "Find us")}
+        {banner("Visit us", "contact_kicker", "Find us", "contact_title")}
         <section className="mx-auto grid max-w-6xl gap-12 px-6 py-20 lg:grid-cols-2 lg:gap-20">
           <div>
-            <h2 style={serif} className="text-3xl font-medium">How to find us</h2>
+            <h2 style={serif} className="text-3xl font-medium" {...editCopy(content, "contact_findus_heading", "How to find us")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed text-neutral-700">
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block hover:opacity-70">{content.phone}</a>}
@@ -263,7 +267,7 @@ export default function LaurelDesign({ site, page = "home", basePath = "" }: Pre
             {/* Opening hours emphasised in a bordered card */}
             {content.hours && content.hours.length > 0 && (
               <div className="mt-9 p-7" style={{ border: `1px solid ${GOLD}`, boxShadow: `inset 0 0 0 4px ${CREAM}, inset 0 0 0 5px ${GOLD}33` }}>
-                <p className="text-xs font-semibold uppercase tracking-[0.3em]" style={{ color: GOLD }}>Opening hours</p>
+                <p className="text-xs font-semibold uppercase tracking-[0.3em]" style={{ color: GOLD }} {...editCopy(content, "contact_hours_label", "Opening hours")} />
                 <ul className="mt-4 space-y-2.5 text-sm text-neutral-700">
                   {content.hours.map((h, i) => (
                     <li key={i} className="flex justify-between gap-6 border-b border-dashed py-1.5" style={{ borderColor: `${GREEN}22` }}>
@@ -276,9 +280,7 @@ export default function LaurelDesign({ site, page = "home", basePath = "" }: Pre
             )}
 
             {content.map_url && (
-              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-8 inline-flex px-7 py-3 text-xs font-semibold uppercase tracking-[0.2em] text-white transition hover:opacity-90" style={{ background: GREEN }}>
-                Get directions
-              </a>
+              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-8 inline-flex px-7 py-3 text-xs font-semibold uppercase tracking-[0.2em] text-white transition hover:opacity-90" style={{ background: GREEN }} {...editCopy(content, "contact_directions", "Get directions")} />
             )}
           </div>
 
@@ -304,7 +306,7 @@ export default function LaurelDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "about") {
     return shell(
       <>
-        {banner("About", `Welcome to ${name}`)}
+        {banner("About", "about_kicker", `Welcome to ${name}`, "")}
         <section className="mx-auto max-w-3xl px-6 py-20 text-center">
           {content.about ? (
             <p data-edit="content.about" className="text-[18px] leading-[1.95] text-neutral-700">{content.about}</p>
@@ -314,7 +316,7 @@ export default function LaurelDesign({ site, page = "home", basePath = "" }: Pre
           {content.cuisine_type && (
             <>
               <GoldDivider />
-              <h2 style={serif} className="mt-2 text-3xl font-medium">A taste of what we do</h2>
+              <h2 style={serif} className="mt-2 text-3xl font-medium" {...editCopy(content, "about_taste_heading", "A taste of what we do")} />
               <p data-edit="content.cuisine_type" className="mx-auto mt-5 max-w-2xl text-[17px] leading-[1.85] text-neutral-700">{content.cuisine_type}</p>
             </>
           )}
@@ -327,7 +329,7 @@ export default function LaurelDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Gallery", "A look inside")}
+        {banner("Gallery", "gallery_kicker", "A look inside", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="grid grid-cols-2 gap-1.5 px-1.5 pb-1.5 sm:grid-cols-3">
             {gallery.map((g) => (
@@ -365,9 +367,7 @@ export default function LaurelDesign({ site, page = "home", basePath = "" }: Pre
           </h1>
           <p style={serif} className="mt-5 text-lg italic text-white/90 [text-shadow:0_1px_14px_rgba(0,0,0,0.5)] sm:text-2xl">{name}</p>
           <div className="mt-9">
-            <a href={book} className="inline-flex px-10 py-4 text-xs font-semibold uppercase tracking-[0.22em] shadow-xl transition hover:opacity-90" style={{ background: CREAM, color: GREEN }}>
-              Reserve a table
-            </a>
+            <a href={book} className="inline-flex px-10 py-4 text-xs font-semibold uppercase tracking-[0.22em] shadow-xl transition hover:opacity-90" style={{ background: CREAM, color: GREEN }} {...editCopy(content, "hero_reserve_cta", "Reserve a table")} />
           </div>
         </div>
       </section>
@@ -380,7 +380,7 @@ export default function LaurelDesign({ site, page = "home", basePath = "" }: Pre
           <p data-edit="content.about" className="mx-auto mt-7 max-w-2xl text-[17px] leading-[1.9] text-neutral-700">{content.about}</p>
           {content.about.length > 0 && (
             <div className="mt-9">
-              <a href={href("about")} className="text-xs font-semibold uppercase tracking-[0.2em]" style={{ color: GREEN }}>Read our story →</a>
+              <a href={href("about")} className="text-xs font-semibold uppercase tracking-[0.2em]" style={{ color: GREEN }} {...editCopy(content, "home_about_cta", "Read our story →")} />
             </div>
           )}
         </section>
@@ -390,8 +390,8 @@ export default function LaurelDesign({ site, page = "home", basePath = "" }: Pre
       {featured.length > 0 && (
         <section style={{ background: GREEN }} className="text-white">
           <div className="mx-auto max-w-3xl px-6 py-24 text-center">
-            <p className="text-xs font-semibold uppercase tracking-[0.35em]" style={{ color: GOLD }}>Our menu</p>
-            <h2 style={serif} className="mt-3 text-4xl font-medium sm:text-5xl">The seasonal table</h2>
+            <p className="text-xs font-semibold uppercase tracking-[0.35em]" style={{ color: GOLD }} {...editCopy(content, "home_menu_eyebrow", "Our menu")} />
+            <h2 style={serif} className="mt-3 text-4xl font-medium sm:text-5xl" {...editCopy(content, "home_menu_heading", "The seasonal table")} />
             <ul className="mx-auto mt-12 max-w-xl divide-y text-left" style={{ borderColor: `${GOLD}55` }}>
               {featured.map((item) => (
                 <li key={item.id} className="flex items-baseline justify-between gap-8 py-5">
@@ -408,9 +408,7 @@ export default function LaurelDesign({ site, page = "home", basePath = "" }: Pre
               ))}
             </ul>
             <div className="mt-12">
-              <a href={href("menu")} className="inline-flex px-9 py-3.5 text-xs font-semibold uppercase tracking-[0.22em] transition hover:opacity-90" style={{ background: CREAM, color: GREEN }}>
-                View the full menu
-              </a>
+              <a href={href("menu")} className="inline-flex px-9 py-3.5 text-xs font-semibold uppercase tracking-[0.22em] transition hover:opacity-90" style={{ background: CREAM, color: GREEN }} {...editCopy(content, "home_menu_cta", "View the full menu")} />
             </div>
           </div>
         </section>
@@ -420,17 +418,13 @@ export default function LaurelDesign({ site, page = "home", basePath = "" }: Pre
       <section className="mx-auto max-w-5xl px-6 py-24 text-center">
         <Sprig />
         <p className="mt-6 text-xs font-semibold uppercase tracking-[0.35em]" style={{ color: GOLD }}>An evening at {name}</p>
-        <h2 style={serif} className="mt-3 text-4xl font-medium sm:text-5xl">Reserve your table</h2>
-        <p className="mx-auto mt-6 max-w-2xl text-[17px] leading-[1.9] text-neutral-700">
-          Whether an intimate dinner or a milestone celebration, our team is ready to welcome you. Book online in moments, or get in touch to plan something special.
-        </p>
+        <h2 style={serif} className="mt-3 text-4xl font-medium sm:text-5xl" {...editCopy(content, "cta_heading", "Reserve your table")} />
+        <p className="mx-auto mt-6 max-w-2xl text-[17px] leading-[1.9] text-neutral-700" {...editCopy(content, "cta_sub", "Whether an intimate dinner or a milestone celebration, our team is ready to welcome you. Book online in moments, or get in touch to plan something special.")} />
         <div className="mt-10 flex flex-wrap justify-center gap-4">
           <a href={book} className="inline-flex px-9 py-3.5 text-xs font-semibold uppercase tracking-[0.2em] text-white transition hover:opacity-90" style={{ background: GREEN }}>
             {bookingOn ? "Book a table" : "Contact us"}
           </a>
-          <a href={href("contact")} className="inline-flex px-9 py-3.5 text-xs font-semibold uppercase tracking-[0.2em] transition hover:opacity-90" style={{ border: `1px solid ${GREEN}`, color: GREEN }}>
-            Visit us
-          </a>
+          <a href={href("contact")} className="inline-flex px-9 py-3.5 text-xs font-semibold uppercase tracking-[0.2em] transition hover:opacity-90" style={{ border: `1px solid ${GREEN}`, color: GREEN }} {...editCopy(content, "cta_visit_link", "Visit us")} />
         </div>
       </section>
     </>,

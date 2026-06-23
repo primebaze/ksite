@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { GateauHeader } from "./GateauHeader";
 import { GateauBooking } from "./GateauBooking";
@@ -90,11 +90,11 @@ export default function GateauDesign({ site, page = "home", basePath = "" }: Pre
 
         <div className="mx-auto mt-10 grid max-w-3xl gap-8 border-t pt-10 text-sm sm:grid-cols-3" style={{ borderColor: `${COCOA}1f` }}>
           <div>
-            <p className="text-[10px] font-medium uppercase tracking-[0.26em] text-[color:#3B2C28]/55">La maison</p>
+            <p className="text-[10px] font-medium uppercase tracking-[0.26em] text-[color:#3B2C28]/55" {...editCopy(content, "footer_maison", "La maison")} />
             {content.address && <p data-edit="content.address" className="mt-3 whitespace-pre-line leading-relaxed text-[color:#3B2C28]/80">{content.address}</p>}
           </div>
           <div>
-            <p className="text-[10px] font-medium uppercase tracking-[0.26em] text-[color:#3B2C28]/55">Heures</p>
+            <p className="text-[10px] font-medium uppercase tracking-[0.26em] text-[color:#3B2C28]/55" {...editCopy(content, "footer_hours", "Heures")} />
             {content.hours && content.hours.length > 0 ? (
               <ul className="mt-3 space-y-1.5 text-[color:#3B2C28]/80">
                 {content.hours.map((h, i) => (
@@ -104,7 +104,7 @@ export default function GateauDesign({ site, page = "home", basePath = "" }: Pre
             ) : <p className="mt-3 text-[color:#3B2C28]/70">Open daily.</p>}
           </div>
           <div>
-            <p className="text-[10px] font-medium uppercase tracking-[0.26em] text-[color:#3B2C28]/55">Nous écrire</p>
+            <p className="text-[10px] font-medium uppercase tracking-[0.26em] text-[color:#3B2C28]/55" {...editCopy(content, "footer_contact", "Nous écrire")} />
             <div className="mt-3 space-y-1.5 text-[color:#3B2C28]/80">
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition-colors hover:text-[color:#C9A24A]">{content.phone}</a>}
               {content.email && <a data-edit="content.email" href={`mailto:${content.email}`} className="block transition-colors hover:text-[color:#C9A24A]">{content.email}</a>}
@@ -133,11 +133,11 @@ export default function GateauDesign({ site, page = "home", basePath = "" }: Pre
   );
 
   // Ivory sub-page banner — centred, scalloped, clears the fixed header.
-  const banner = (kicker: string, title: string, blurb?: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string, blurb?: string) => (
     <section style={{ background: IVORY }}>
       <div className="mx-auto max-w-3xl px-6 pb-14 pt-32 text-center sm:px-8 sm:pt-40">
-        <p className="text-[11px] font-medium uppercase tracking-[0.36em]" style={{ color: GOLD }}>{kicker}</p>
-        <h1 style={display} className="mt-3 text-5xl font-normal italic lowercase leading-[1.0] text-[color:#3B2C28] sm:text-6xl">{title}</h1>
+        <p className="text-[11px] font-medium uppercase tracking-[0.36em]" style={{ color: GOLD }} {...editCopy(content, kickerKey, kicker)} />
+        <h1 style={display} className="mt-3 text-5xl font-normal italic lowercase leading-[1.0] text-[color:#3B2C28] sm:text-6xl" {...editCopy(content, titleKey, title)} />
         <Scallop className="mx-auto mt-6" />
         {blurb && <p className="mx-auto mt-5 max-w-xl text-[15px] leading-[1.9] text-[color:#3B2C28]/70">{blurb}</p>}
       </div>
@@ -150,7 +150,7 @@ export default function GateauDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "menu") {
     return shell(
       <>
-        {banner("Le menu", "la carte", "Composed each morning, by hand. A small, seasonal selection of our jewel-box pâtisserie.")}
+        {banner("Le menu", "menu_kicker", "la carte", "menu_title", "Composed each morning, by hand. A small, seasonal selection of our jewel-box pâtisserie.")}
         <section className="px-6 pb-24 sm:px-8" style={{ background: IVORY }}>
           <div className="mx-auto max-w-3xl">
             {groups.length > 0 ? (
@@ -200,7 +200,7 @@ export default function GateauDesign({ site, page = "home", basePath = "" }: Pre
 
                 {bookingOn && (
                   <div className="mt-14 text-center">
-                    <a href={href("reservations")} className="inline-flex rounded-full px-9 py-4 text-[11px] font-medium uppercase tracking-[0.24em] text-[color:#FBF7F1] transition hover:opacity-90" style={{ background: COCOA }}>Order a cake</a>
+                    <a href={href("reservations")} className="inline-flex rounded-full px-9 py-4 text-[11px] font-medium uppercase tracking-[0.24em] text-[color:#FBF7F1] transition hover:opacity-90" style={{ background: COCOA }} {...editCopy(content, "menu_order_cta", "Order a cake")} />
                   </div>
                 )}
               </>
@@ -217,7 +217,7 @@ export default function GateauDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "reservations") {
     return shell(
       <>
-        {banner("Sur commande", "order & reserve", "A celebration cake, a box of pâtisserie or a table in the salon — tell us what you have in mind.")}
+        {banner("Sur commande", "reserve_kicker", "order & reserve", "reserve_title", "A celebration cake, a box of pâtisserie or a table in the salon — tell us what you have in mind.")}
         <section className="px-6 pb-24 sm:px-8" style={{ background: IVORY }}>
           <div className="mx-auto max-w-xl">
             <GateauBooking tenantId={tenant.id} name={name} />
@@ -233,7 +233,7 @@ export default function GateauDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "contact") {
     return shell(
       <>
-        {banner("Bonjour", "find the maison")}
+        {banner("Bonjour", "contact_kicker", "find the maison", "contact_title")}
         <section className="px-6 pb-24 sm:px-8" style={{ background: IVORY }}>
           <div className="mx-auto grid max-w-5xl gap-12 lg:grid-cols-2 lg:gap-20">
             <div>
@@ -250,7 +250,7 @@ export default function GateauDesign({ site, page = "home", basePath = "" }: Pre
                 </ul>
               )}
               {content.map_url && (
-                <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex rounded-full border px-7 py-3 text-[11px] font-medium uppercase tracking-[0.24em] transition hover:bg-[color:#3B2C28] hover:text-[color:#FBF7F1]" style={{ borderColor: GOLD, color: COCOA }}>Get directions</a>
+                <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex rounded-full border px-7 py-3 text-[11px] font-medium uppercase tracking-[0.24em] transition hover:bg-[color:#3B2C28] hover:text-[color:#FBF7F1]" style={{ borderColor: GOLD, color: COCOA }} {...editCopy(content, "contact_directions_cta", "Get directions")} />
               )}
             </div>
             {contactOn && (
@@ -278,7 +278,7 @@ export default function GateauDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "about") {
     return shell(
       <>
-        {banner("Notre histoire", "the maison")}
+        {banner("Notre histoire", "about_kicker", "the maison", "about_title")}
         <section className="px-6 pb-24 sm:px-8" style={{ background: IVORY }}>
           <div className="mx-auto max-w-2xl text-center">
             {content.about ? (
@@ -291,7 +291,7 @@ export default function GateauDesign({ site, page = "home", basePath = "" }: Pre
               </>
             )}
             {groups.length > 0 && (
-              <a href={href("menu")} className="mt-10 inline-flex rounded-full px-9 py-4 text-[11px] font-medium uppercase tracking-[0.24em] text-[color:#FBF7F1] transition hover:opacity-90" style={{ background: COCOA }}>View la carte</a>
+              <a href={href("menu")} className="mt-10 inline-flex rounded-full px-9 py-4 text-[11px] font-medium uppercase tracking-[0.24em] text-[color:#FBF7F1] transition hover:opacity-90" style={{ background: COCOA }} {...editCopy(content, "about_carte_cta", "View la carte")} />
             )}
           </div>
         </section>
@@ -305,7 +305,7 @@ export default function GateauDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "gallery") {
     return shell(
       <>
-        {banner("La vitrine", "gallery")}
+        {banner("La vitrine", "gallery_kicker", "gallery", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="px-3 pb-20 sm:px-6" style={{ background: IVORY }}>
             <div className="mx-auto grid max-w-6xl grid-cols-2 gap-3 sm:grid-cols-3">
@@ -337,7 +337,7 @@ export default function GateauDesign({ site, page = "home", basePath = "" }: Pre
         <div className="pointer-events-none absolute -right-32 top-10 h-72 w-72 rounded-full opacity-40 blur-3xl" style={{ background: PISTACHIO }} aria-hidden />
 
         <div className="relative mx-auto max-w-3xl text-center">
-          <p className="text-[11px] font-medium uppercase tracking-[0.4em]" style={{ color: GOLD }}>Pâtisserie · de luxe</p>
+          <p className="text-[11px] font-medium uppercase tracking-[0.4em]" style={{ color: GOLD }} {...editCopy(content, "hero_eyebrow", "Pâtisserie · de luxe")} />
           <div className="mx-auto mt-5 inline-flex flex-col items-center">
             <span className="h-px w-16" style={{ background: GOLD }} aria-hidden />
             <h1 data-edit="tenant.business_name" style={display} className="my-3 text-6xl font-normal italic lowercase leading-[0.95] tracking-[0.02em] text-[color:#3B2C28] sm:text-8xl">{name}</h1>
@@ -369,7 +369,7 @@ export default function GateauDesign({ site, page = "home", basePath = "" }: Pre
             <GateauBooking tenantId={tenant.id} name={name} inline />
           ) : (
             <div className="text-center">
-              <a href={book} className="inline-flex rounded-full px-10 py-4 text-[11px] font-medium uppercase tracking-[0.24em] text-[color:#FBF7F1] transition hover:opacity-90" style={{ background: COCOA }}>Get in touch</a>
+              <a href={book} className="inline-flex rounded-full px-10 py-4 text-[11px] font-medium uppercase tracking-[0.24em] text-[color:#FBF7F1] transition hover:opacity-90" style={{ background: COCOA }} {...editCopy(content, "hero_contact_cta", "Get in touch")} />
             </div>
           )}
         </div>
@@ -380,8 +380,8 @@ export default function GateauDesign({ site, page = "home", basePath = "" }: Pre
         <section style={{ background: "#fff" }}>
           <div className="mx-auto max-w-6xl px-6 py-20 sm:px-8 sm:py-28">
             <div className="text-center">
-              <p className="text-[11px] font-medium uppercase tracking-[0.36em]" style={{ color: GOLD }}>Nos créations</p>
-              <h2 style={display} className="mt-3 text-4xl font-normal italic lowercase text-[color:#3B2C28] sm:text-5xl">signature creations</h2>
+              <p className="text-[11px] font-medium uppercase tracking-[0.36em]" style={{ color: GOLD }} {...editCopy(content, "creations_eyebrow", "Nos créations")} />
+              <h2 style={display} className="mt-3 text-4xl font-normal italic lowercase text-[color:#3B2C28] sm:text-5xl" {...editCopy(content, "creations_heading", "signature creations")} />
               <Scallop className="mx-auto mt-5" color={ROSE} />
             </div>
             <div className="mt-14 grid gap-7 sm:grid-cols-3">
@@ -409,7 +409,7 @@ export default function GateauDesign({ site, page = "home", basePath = "" }: Pre
             </div>
             {groups.length > 0 && (
               <div className="mt-14 text-center">
-                <a href={href("menu")} className="inline-flex rounded-full border px-9 py-3.5 text-[11px] font-medium uppercase tracking-[0.24em] transition hover:bg-[color:#3B2C28] hover:text-[color:#FBF7F1]" style={{ borderColor: GOLD, color: COCOA }}>See la carte</a>
+                <a href={href("menu")} className="inline-flex rounded-full border px-9 py-3.5 text-[11px] font-medium uppercase tracking-[0.24em] transition hover:bg-[color:#3B2C28] hover:text-[color:#FBF7F1]" style={{ borderColor: GOLD, color: COCOA }} {...editCopy(content, "creations_carte_cta", "See la carte")} />
               </div>
             )}
           </div>
@@ -420,7 +420,7 @@ export default function GateauDesign({ site, page = "home", basePath = "" }: Pre
       {content.about && (
         <section style={{ background: ROSE }}>
           <div className="mx-auto max-w-3xl px-6 py-20 text-center sm:py-28">
-            <p className="text-[11px] font-medium uppercase tracking-[0.36em] text-[color:#3B2C28]/60">Notre histoire</p>
+            <p className="text-[11px] font-medium uppercase tracking-[0.36em] text-[color:#3B2C28]/60" {...editCopy(content, "home_histoire_eyebrow", "Notre histoire")} />
             <p data-edit="content.about" style={display} className="mt-6 text-2xl font-normal italic leading-[1.55] text-[color:#3B2C28] sm:text-[2rem]">{content.about}</p>
             <a href={href("about")} className="mt-9 inline-flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.24em] text-[color:#3B2C28] transition hover:gap-3">
               The maison <span aria-hidden>→</span>
@@ -434,8 +434,8 @@ export default function GateauDesign({ site, page = "home", basePath = "" }: Pre
         <div className="mx-auto max-w-4xl px-6 py-20 sm:px-8 sm:py-24">
           <div className="rounded-[2rem] border px-8 py-14 text-center" style={{ borderColor: `${GOLD}55`, background: "#fff" }}>
             <Scallop className="mx-auto" color={PISTACHIO} />
-            <h2 style={display} className="mt-5 text-4xl font-normal italic lowercase text-[color:#3B2C28] sm:text-5xl">a cake to remember</h2>
-            <p className="mx-auto mt-4 max-w-md text-[15px] leading-[1.9] text-[color:#3B2C28]/65">Bespoke gâteaux for weddings, fêtes and the quietest of celebrations — composed entirely by hand.</p>
+            <h2 style={display} className="mt-5 text-4xl font-normal italic lowercase text-[color:#3B2C28] sm:text-5xl" {...editCopy(content, "commande_heading", "a cake to remember")} />
+            <p className="mx-auto mt-4 max-w-md text-[15px] leading-[1.9] text-[color:#3B2C28]/65" {...editCopy(content, "commande_blurb", "Bespoke gâteaux for weddings, fêtes and the quietest of celebrations — composed entirely by hand.")} />
             <a href={book} className="mt-8 inline-flex rounded-full px-10 py-4 text-[11px] font-medium uppercase tracking-[0.24em] text-[color:#FBF7F1] transition hover:opacity-90" style={{ background: COCOA }}>{bookingOn ? "Order a cake" : "Get in touch"}</a>
           </div>
         </div>
@@ -445,7 +445,7 @@ export default function GateauDesign({ site, page = "home", basePath = "" }: Pre
       <section style={{ background: PISTACHIO }} className="text-[color:#3B2C28]">
         <div className="mx-auto grid max-w-6xl gap-12 px-6 py-16 sm:px-8 sm:py-20 md:grid-cols-3">
           <div>
-            <h3 className="text-[10px] font-medium uppercase tracking-[0.3em] text-[color:#3B2C28]/55">Heures</h3>
+            <h3 className="text-[10px] font-medium uppercase tracking-[0.3em] text-[color:#3B2C28]/55" {...editCopy(content, "info_hours_heading", "Heures")} />
             {content.hours && content.hours.length > 0 ? (
               <ul className="mt-5 space-y-2 text-sm text-[color:#3B2C28]/80">
                 {content.hours.map((h, i) => (
@@ -455,14 +455,14 @@ export default function GateauDesign({ site, page = "home", basePath = "" }: Pre
             ) : <p className="mt-5 text-sm text-[color:#3B2C28]/70">Open daily.</p>}
           </div>
           <div>
-            <h3 className="text-[10px] font-medium uppercase tracking-[0.3em] text-[color:#3B2C28]/55">La maison</h3>
+            <h3 className="text-[10px] font-medium uppercase tracking-[0.3em] text-[color:#3B2C28]/55" {...editCopy(content, "info_maison_heading", "La maison")} />
             {content.address && <p data-edit="content.address" className="mt-5 whitespace-pre-line text-sm leading-relaxed text-[color:#3B2C28]/80">{content.address}</p>}
             <div className="mt-3 space-y-1.5 text-sm text-[color:#3B2C28]/80">
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition-colors hover:text-[color:#C9A24A]">{content.phone}</a>}
               {content.email && <a data-edit="content.email" href={`mailto:${content.email}`} className="block transition-colors hover:text-[color:#C9A24A]">{content.email}</a>}
             </div>
             {content.map_url && (
-              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-4 inline-flex rounded-full border px-6 py-2.5 text-[10px] font-medium uppercase tracking-[0.24em] transition hover:bg-[color:#3B2C28] hover:text-[color:#FBF7F1]" style={{ borderColor: COCOA }}>Get directions</a>
+              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-4 inline-flex rounded-full border px-6 py-2.5 text-[10px] font-medium uppercase tracking-[0.24em] transition hover:bg-[color:#3B2C28] hover:text-[color:#FBF7F1]" style={{ borderColor: COCOA }} {...editCopy(content, "info_directions_cta", "Get directions")} />
             )}
           </div>
           <div>

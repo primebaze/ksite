@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { LemongrassHeader } from "./LemongrassHeader";
 import { LemongrassBooking } from "./LemongrassBooking";
@@ -106,7 +106,7 @@ export default function LemongrassDesign({ site, page = "home", basePath = "" }:
           {content.tagline && <p data-edit="content.tagline" className="mt-4 max-w-xs text-sm leading-relaxed text-[color:#F7F3E6]/70">{content.tagline}</p>}
           {content.socials && content.socials.length > 0 && (
             <>
-              <h4 className="mt-8 text-xs font-bold uppercase tracking-[0.2em]" style={{ color: CHARTREUSE }}>Follow us</h4>
+              <h4 className="mt-8 text-xs font-bold uppercase tracking-[0.2em]" style={{ color: CHARTREUSE }} {...editCopy(content, "footer_follow", "Follow us")} />
               <div className="mt-4 flex gap-4" style={{ color: CREAM }}>
                 {content.socials.map((s) => (
                   <a key={s.url} href={s.url} target="_blank" rel="noreferrer" aria-label={s.label} className="transition hover:opacity-60"><SocialIcon kind={`${s.label} ${s.url}`} /></a>
@@ -117,7 +117,7 @@ export default function LemongrassDesign({ site, page = "home", basePath = "" }:
         </div>
 
         <div>
-          <h4 className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: CHARTREUSE }}>Explore</h4>
+          <h4 className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: CHARTREUSE }} {...editCopy(content, "footer_explore", "Explore")} />
           <ul className="mt-5 space-y-3 text-sm text-[color:#F7F3E6]/70">
             {([
               groups.length > 0 && { label: "Menu", href: href("menu") },
@@ -132,7 +132,7 @@ export default function LemongrassDesign({ site, page = "home", basePath = "" }:
         </div>
 
         <div>
-          <h4 className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: CHARTREUSE }}>Opening times</h4>
+          <h4 className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: CHARTREUSE }} {...editCopy(content, "footer_hours", "Opening times")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm text-[color:#F7F3E6]/70">
               {content.hours.map((h, i) => (
@@ -150,8 +150,8 @@ export default function LemongrassDesign({ site, page = "home", basePath = "" }:
         {/* CTA panel: a real button, never a dead newsletter input */}
         <div className="rounded-[2rem] px-7 py-9" style={{ background: CHARTREUSE, color: EMERALD_DEEP }}>
           <Leaf size={30} fill={EMERALD} vein={CHARTREUSE} />
-          <h4 style={display} className="mt-3 text-2xl font-semibold leading-tight">Hungry for something fresh?</h4>
-          <p className="mt-2 text-sm leading-relaxed opacity-90">Bright, aromatic Thai cooking, made to share. Save your table now.</p>
+          <h4 style={display} className="mt-3 text-2xl font-semibold leading-tight" {...editCopy(content, "footer_cta_heading", "Hungry for something fresh?")} />
+          <p className="mt-2 text-sm leading-relaxed opacity-90" {...editCopy(content, "footer_cta_blurb", "Bright, aromatic Thai cooking, made to share. Save your table now.")} />
           <a href={book} className="mt-6 inline-flex rounded-full px-7 py-3 text-xs font-bold uppercase tracking-[0.16em] text-white transition hover:opacity-90" style={{ background: CHILLI }}>{bookingOn ? "Reserve a table" : "Get in touch"}</a>
         </div>
       </div>
@@ -169,7 +169,7 @@ export default function LemongrassDesign({ site, page = "home", basePath = "" }:
 
   // Emerald page banner that clears the fixed header on sub-pages, with a faint
   // botanical scatter and a leafy divider into the page body.
-  const banner = (kicker: string, title: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string) => (
     <section className="relative overflow-hidden" style={{ background: EMERALD }}>
       <div aria-hidden className="pointer-events-none absolute -right-6 -top-6 opacity-[0.14]">
         <Leaf size={220} fill={CHARTREUSE} vein={EMERALD} />
@@ -177,9 +177,9 @@ export default function LemongrassDesign({ site, page = "home", basePath = "" }:
       <div className="relative mx-auto max-w-6xl px-6 pb-14 pt-28 sm:px-8 sm:pb-20 sm:pt-36">
         <div className="flex items-center gap-2.5">
           <Leaf size={18} />
-          <p className="text-xs font-bold uppercase tracking-[0.24em]" style={{ color: CHARTREUSE }}>{kicker}</p>
+          <p className="text-xs font-bold uppercase tracking-[0.24em]" style={{ color: CHARTREUSE }} {...editCopy(content, kickerKey, kicker)} />
         </div>
-        <h1 style={display} className="mt-3 text-5xl font-semibold leading-[0.95] text-[color:#F7F3E6] sm:text-6xl">{title}</h1>
+        <h1 style={display} className="mt-3 text-5xl font-semibold leading-[0.95] text-[color:#F7F3E6] sm:text-6xl" {...editCopy(content, titleKey, title)} />
       </div>
       <LeafyDivider color={CREAM} />
     </section>
@@ -189,7 +189,7 @@ export default function LemongrassDesign({ site, page = "home", basePath = "" }:
   if (page === "menu") {
     return shell(
       <>
-        {banner("Our kitchen", "The menu")}
+        {banner("Our kitchen", "menu_kicker", "The menu", "menu_title")}
         <section className="px-6 py-16 sm:px-8 sm:py-20" style={{ background: CREAM }}>
           <div className="mx-auto max-w-5xl">
           {groups.length > 0 ? (
@@ -245,7 +245,7 @@ export default function LemongrassDesign({ site, page = "home", basePath = "" }:
   if (page === "reservations") {
     return shell(
       <>
-        {banner("Reservations", "Book a table")}
+        {banner("Reservations", "book_kicker", "Book a table", "book_title")}
         <section className="px-6 py-16 sm:px-8 sm:py-20" style={{ background: CREAM }}>
           <div className="mx-auto max-w-xl">
             <p className="mb-8 text-center text-[17px] leading-[1.8] text-neutral-700">Pick a day and a time and we will save you a spot. For groups of 8 or more, give us a call and we will look after you.</p>
@@ -260,7 +260,7 @@ export default function LemongrassDesign({ site, page = "home", basePath = "" }:
   if (page === "contact") {
     return shell(
       <>
-        {banner("Say hello", "Find us")}
+        {banner("Say hello", "contact_kicker", "Find us", "contact_title")}
         <section className="px-6 py-16 sm:px-8 sm:py-20" style={{ background: CREAM }}>
           <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-2 lg:gap-20">
             <div>
@@ -277,7 +277,7 @@ export default function LemongrassDesign({ site, page = "home", basePath = "" }:
                 </ul>
               )}
               {content.map_url && (
-                <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex rounded-full px-7 py-3 text-xs font-bold uppercase tracking-[0.16em] text-white transition hover:opacity-90" style={{ background: EMERALD }}>Get directions</a>
+                <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex rounded-full px-7 py-3 text-xs font-bold uppercase tracking-[0.16em] text-white transition hover:opacity-90" style={{ background: EMERALD }} {...editCopy(content, "contact_directions", "Get directions")} />
               )}
             </div>
             {contactOn && (
@@ -303,7 +303,7 @@ export default function LemongrassDesign({ site, page = "home", basePath = "" }:
   if (page === "about") {
     return shell(
       <>
-        {banner("About us", "Fresh, aromatic, alive")}
+        {banner("About us", "about_kicker", "Fresh, aromatic, alive", "about_title")}
         <section className="px-6 py-16 sm:px-8 sm:py-20" style={{ background: CREAM }}>
           <div className="mx-auto max-w-3xl">
             {content.about ? <p data-edit="content.about" className="text-[18px] leading-[1.9] text-neutral-700">{content.about}</p> : <p className="text-neutral-500">Our story is coming soon.</p>}
@@ -311,7 +311,7 @@ export default function LemongrassDesign({ site, page = "home", basePath = "" }:
               <>
                 <div className="mt-12 flex items-center gap-2.5">
                   <Leaf size={22} fill={CHARTREUSE} vein={EMERALD} />
-                  <h3 style={display} className="text-3xl font-semibold text-[color:#14532D]">What we cook</h3>
+                  <h3 style={display} className="text-3xl font-semibold text-[color:#14532D]" {...editCopy(content, "about_cook_heading", "What we cook")} />
                 </div>
                 <p data-edit="content.cuisine_type" className="mt-4 text-[17px] leading-[1.8] text-neutral-700">{content.cuisine_type}</p>
               </>
@@ -326,7 +326,7 @@ export default function LemongrassDesign({ site, page = "home", basePath = "" }:
   if (page === "gallery") {
     return shell(
       <>
-        {banner("A look around", "Gallery")}
+        {banner("A look around", "gallery_kicker", "Gallery", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="grid grid-cols-2 gap-2 p-2 sm:grid-cols-3" style={{ background: CREAM }}>
             {gallery.map((g) => (
@@ -363,14 +363,14 @@ export default function LemongrassDesign({ site, page = "home", basePath = "" }:
           <div className="mx-auto max-w-5xl">
             <div className="flex items-center gap-2.5">
               <Leaf size={20} />
-              <span className="text-xs font-bold uppercase tracking-[0.28em]" style={{ color: CHARTREUSE }}>Fresh Thai kitchen</span>
+              <span className="text-xs font-bold uppercase tracking-[0.28em]" style={{ color: CHARTREUSE }} {...editCopy(content, "hero_eyebrow", "Fresh Thai kitchen")} />
             </div>
             {content.tagline ? (
               <p data-edit="content.tagline" style={display} className="mt-4 max-w-3xl text-5xl font-semibold leading-[0.95] text-[color:#F7F3E6] sm:text-7xl">{content.tagline}</p>
             ) : (
               <p style={display} className="mt-4 max-w-3xl text-5xl font-semibold leading-[0.95] text-[color:#F7F3E6] sm:text-7xl">Bright, herbal,<br /><span style={{ color: CHARTREUSE }}>alive with flavour</span></p>
             )}
-            <p className="mt-5 max-w-xl text-base text-[color:#F7F3E6]/85 sm:text-lg">Lemongrass, lime and chilli — Thai cooking built for sharing, served fresh from the wok.</p>
+            <p className="mt-5 max-w-xl text-base text-[color:#F7F3E6]/85 sm:text-lg" {...editCopy(content, "hero_sub", "Lemongrass, lime and chilli — Thai cooking built for sharing, served fresh from the wok.")} />
             {bookingOn ? (
               <div className="mt-8 max-w-3xl">
                 <LemongrassBooking tenantId={tenant.id} name={name} inline />
@@ -387,14 +387,14 @@ export default function LemongrassDesign({ site, page = "home", basePath = "" }:
         <div className="mx-auto max-w-6xl px-6 py-20 sm:px-8 sm:py-24">
           <div className="flex items-center gap-2.5">
             <Leaf size={20} fill={CHARTREUSE} vein={EMERALD} />
-            <p className="text-xs font-bold uppercase tracking-[0.28em]" style={{ color: CHILLI }}>About us</p>
+            <p className="text-xs font-bold uppercase tracking-[0.28em]" style={{ color: CHILLI }} {...editCopy(content, "home_about_eyebrow", "About us")} />
           </div>
           <div className="mt-4 grid gap-8 lg:grid-cols-[1.1fr_1fr] lg:items-end lg:gap-16">
             <h2 style={display} className="text-5xl font-semibold leading-[0.95] text-[color:#14532D] sm:text-6xl">A table full of<br />fresh herbs &amp; fire</h2>
             {content.about && <p data-edit="content.about" className="text-[17px] leading-[1.85] text-neutral-700">{content.about}</p>}
           </div>
           {content.about && (
-            <a href={href("about")} className="mt-8 inline-flex rounded-full border-2 px-7 py-3 text-xs font-bold uppercase tracking-[0.16em] transition hover:bg-[color:#14532D] hover:text-[color:#F7F3E6]" style={{ borderColor: EMERALD, color: EMERALD }}>Our story</a>
+            <a href={href("about")} className="mt-8 inline-flex rounded-full border-2 px-7 py-3 text-xs font-bold uppercase tracking-[0.16em] transition hover:bg-[color:#14532D] hover:text-[color:#F7F3E6]" style={{ borderColor: EMERALD, color: EMERALD }} {...editCopy(content, "home_about_cta", "Our story")} />
           )}
         </div>
       </section>
@@ -406,10 +406,10 @@ export default function LemongrassDesign({ site, page = "home", basePath = "" }:
           <div className="text-center">
             <div className="flex items-center justify-center gap-2.5">
               <Leaf size={20} />
-              <p className="text-xs font-bold uppercase tracking-[0.28em]" style={{ color: CHARTREUSE }}>The Thai way</p>
+              <p className="text-xs font-bold uppercase tracking-[0.28em]" style={{ color: CHARTREUSE }} {...editCopy(content, "flavours_eyebrow", "The Thai way")} />
             </div>
-            <h2 style={display} className="mt-3 text-4xl font-semibold leading-tight text-[color:#F7F3E6] sm:text-5xl">A balance of five flavours</h2>
-            <p className="mx-auto mt-4 max-w-2xl text-[15px] leading-relaxed text-[color:#F7F3E6]/75">Every plate we cook chases harmony between the five — hot, sour, salty, sweet and umami — so each mouthful lands in balance.</p>
+            <h2 style={display} className="mt-3 text-4xl font-semibold leading-tight text-[color:#F7F3E6] sm:text-5xl" {...editCopy(content, "flavours_heading", "A balance of five flavours")} />
+            <p className="mx-auto mt-4 max-w-2xl text-[15px] leading-relaxed text-[color:#F7F3E6]/75" {...editCopy(content, "flavours_sub", "Every plate we cook chases harmony between the five — hot, sour, salty, sweet and umami — so each mouthful lands in balance.")} />
           </div>
           <div className="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-5">
             {FLAVOURS.map((f) => (
@@ -433,11 +433,11 @@ export default function LemongrassDesign({ site, page = "home", basePath = "" }:
               <div>
                 <div className="flex items-center gap-2.5">
                   <Leaf size={20} fill={CHARTREUSE} vein={EMERALD} />
-                  <p className="text-xs font-bold uppercase tracking-[0.28em]" style={{ color: CHILLI }}>From the wok</p>
+                  <p className="text-xs font-bold uppercase tracking-[0.28em]" style={{ color: CHILLI }} {...editCopy(content, "menu_feature_eyebrow", "From the wok")} />
                 </div>
-                <h2 style={display} className="mt-3 text-4xl font-semibold text-[color:#14532D] sm:text-5xl">Fresh off the pass</h2>
+                <h2 style={display} className="mt-3 text-4xl font-semibold text-[color:#14532D] sm:text-5xl" {...editCopy(content, "menu_feature_heading", "Fresh off the pass")} />
               </div>
-              {groups.length > 0 && <a href={href("menu")} className="text-xs font-bold uppercase tracking-[0.16em] transition hover:opacity-70" style={{ color: EMERALD }}>See the full menu &rarr;</a>}
+              {groups.length > 0 && <a href={href("menu")} className="text-xs font-bold uppercase tracking-[0.16em] transition hover:opacity-70" style={{ color: EMERALD }} {...editCopy(content, "menu_feature_link", "See the full menu →")} />}
             </div>
             <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {featured.map((item, i) => {
@@ -463,7 +463,7 @@ export default function LemongrassDesign({ site, page = "home", basePath = "" }:
             </div>
             {groups.length > 0 && (
               <div className="mt-10 text-center">
-                <a href={href("menu")} className="inline-flex rounded-full px-8 py-3.5 text-xs font-bold uppercase tracking-[0.16em] text-white transition hover:opacity-90" style={{ background: EMERALD }}>View all dishes</a>
+                <a href={href("menu")} className="inline-flex rounded-full px-8 py-3.5 text-xs font-bold uppercase tracking-[0.16em] text-white transition hover:opacity-90" style={{ background: EMERALD }} {...editCopy(content, "menu_feature_all_cta", "View all dishes")} />
               </div>
             )}
           </div>
@@ -475,8 +475,8 @@ export default function LemongrassDesign({ site, page = "home", basePath = "" }:
         <div className="mx-auto max-w-5xl px-6 py-16 sm:px-8 sm:py-20">
           <div className="rounded-[2.5rem] border-2 px-8 py-12 text-center" style={{ borderColor: CREAM, background: `${EMERALD_DEEP}1a` }}>
             <Leaf size={36} className="mx-auto" fill={CHARTREUSE} vein={EMERALD} />
-            <h2 style={display} className="mt-4 text-4xl font-semibold leading-[1] text-[color:#F7F3E6] sm:text-5xl">Pull up a chair</h2>
-            <p className="mt-3 text-sm font-bold uppercase tracking-[0.18em] text-[color:#F7F3E6]/85">Bright plates, big flavour, made to share</p>
+            <h2 style={display} className="mt-4 text-4xl font-semibold leading-[1] text-[color:#F7F3E6] sm:text-5xl" {...editCopy(content, "cta_heading", "Pull up a chair")} />
+            <p className="mt-3 text-sm font-bold uppercase tracking-[0.18em] text-[color:#F7F3E6]/85" {...editCopy(content, "cta_sub", "Bright plates, big flavour, made to share")} />
             <a href={book} className="mt-7 inline-flex rounded-full px-9 py-4 text-sm font-bold uppercase tracking-[0.16em] transition hover:opacity-90" style={{ background: CREAM, color: EMERALD }}>{bookingOn ? "Reserve your table" : "Get in touch"}</a>
           </div>
         </div>
@@ -486,7 +486,7 @@ export default function LemongrassDesign({ site, page = "home", basePath = "" }:
       <section style={{ background: EMERALD_DEEP }} className="text-[color:#F7F3E6]">
         <div className="mx-auto grid max-w-6xl gap-10 px-6 py-16 sm:px-8 md:grid-cols-3">
           <div>
-            <h3 className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: CHARTREUSE }}>Opening times</h3>
+            <h3 className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: CHARTREUSE }} {...editCopy(content, "info_hours_heading", "Opening times")} />
             {content.hours && content.hours.length > 0 ? (
               <ul className="mt-5 space-y-2 text-sm text-[color:#F7F3E6]/80">
                 {content.hours.map((h, i) => (
@@ -496,19 +496,19 @@ export default function LemongrassDesign({ site, page = "home", basePath = "" }:
             ) : <p className="mt-5 text-sm text-[color:#F7F3E6]/70">Open daily.</p>}
           </div>
           <div>
-            <h3 className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: CHARTREUSE }}>Find us</h3>
+            <h3 className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: CHARTREUSE }} {...editCopy(content, "info_findus_heading", "Find us")} />
             {content.address && <p data-edit="content.address" className="mt-5 whitespace-pre-line text-sm leading-relaxed text-[color:#F7F3E6]/80">{content.address}</p>}
             <div className="mt-3 space-y-1.5 text-sm text-[color:#F7F3E6]/80">
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-[color:#A3C847]">{content.phone}</a>}
               {content.email && <a data-edit="content.email" href={`mailto:${content.email}`} className="block transition hover:text-[color:#A3C847]">{content.email}</a>}
             </div>
             {content.map_url && (
-              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-4 inline-flex rounded-full border px-6 py-2.5 text-xs font-bold uppercase tracking-[0.16em] transition hover:bg-[color:#F7F3E6] hover:text-[color:#14532D]" style={{ borderColor: `${CHARTREUSE}66`, color: CREAM }}>Get directions</a>
+              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-4 inline-flex rounded-full border px-6 py-2.5 text-xs font-bold uppercase tracking-[0.16em] transition hover:bg-[color:#F7F3E6] hover:text-[color:#14532D]" style={{ borderColor: `${CHARTREUSE}66`, color: CREAM }} {...editCopy(content, "info_directions", "Get directions")} />
             )}
           </div>
           <div>
-            <h3 className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: CHARTREUSE }}>Reserve</h3>
-            <p className="mt-5 text-sm text-[color:#F7F3E6]/80">Save a table in seconds, lunch or dinner.</p>
+            <h3 className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: CHARTREUSE }} {...editCopy(content, "info_reserve_heading", "Reserve")} />
+            <p className="mt-5 text-sm text-[color:#F7F3E6]/80" {...editCopy(content, "info_reserve_sub", "Save a table in seconds, lunch or dinner.")} />
             <a href={book} className="mt-5 inline-flex rounded-full px-7 py-3 text-xs font-bold uppercase tracking-[0.16em] text-white transition hover:opacity-90" style={{ background: CHILLI }}>{bookingOn ? "Reserve a table" : "Contact us"}</a>
           </div>
         </div>

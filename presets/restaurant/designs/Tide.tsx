@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { TideHeader } from "./TideHeader";
 import { TideBooking } from "./TideBooking";
@@ -58,7 +58,7 @@ export default function TideDesign({ site, page = "home", basePath = "" }: Prese
     <footer style={{ background: CREAM }} className="text-neutral-800">
       <div className="mx-auto grid max-w-6xl gap-12 px-8 py-16 sm:grid-cols-2 lg:grid-cols-[1.1fr_1fr_1fr_1.2fr]">
         <div>
-          <h4 className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: RED }}>Contact info</h4>
+          <h4 className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: RED }} {...editCopy(content, "footer_contact", "Contact info")} />
           <div className="mt-5 space-y-1.5 text-sm text-neutral-700">
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block text-lg font-bold text-neutral-900 hover:text-neutral-700">{content.phone}</a>}
             {content.email && <a data-edit="content.email" href={`mailto:${content.email}`} className="block hover:text-neutral-950">{content.email}</a>}
@@ -66,7 +66,7 @@ export default function TideDesign({ site, page = "home", basePath = "" }: Prese
           </div>
           {content.socials && content.socials.length > 0 && (
             <>
-              <h4 className="mt-7 text-xs font-bold uppercase tracking-[0.2em]" style={{ color: RED }}>Follow us</h4>
+              <h4 className="mt-7 text-xs font-bold uppercase tracking-[0.2em]" style={{ color: RED }} {...editCopy(content, "footer_social", "Follow us")} />
               <div className="mt-3 flex gap-4 text-neutral-800">
                 {content.socials.map((s) => (
                   <a key={s.url} href={s.url} target="_blank" rel="noreferrer" aria-label={s.label} className="transition hover:opacity-60"><SocialIcon kind={`${s.label} ${s.url}`} /></a>
@@ -76,7 +76,7 @@ export default function TideDesign({ site, page = "home", basePath = "" }: Prese
           )}
         </div>
         <div>
-          <h4 className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: RED }}>Explore</h4>
+          <h4 className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: RED }} {...editCopy(content, "footer_explore", "Explore")} />
           <ul className="mt-5 space-y-2.5 text-sm text-neutral-700">
             {([
               { label: "Home", href: href("home") },
@@ -91,7 +91,7 @@ export default function TideDesign({ site, page = "home", basePath = "" }: Prese
           </ul>
         </div>
         <div>
-          <h4 className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: RED }}>Opening times</h4>
+          <h4 className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: RED }} {...editCopy(content, "footer_hours", "Opening times")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm text-neutral-700">
               {content.hours.map((h, i) => (
@@ -102,12 +102,12 @@ export default function TideDesign({ site, page = "home", basePath = "" }: Prese
         </div>
         <div className="flex flex-col justify-between rounded-2xl p-7 text-white" style={{ background: CHARCOAL }}>
           <div>
-            <h4 className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: RED }}>Hungry already?</h4>
+            <h4 className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: RED }} {...editCopy(content, "footer_cta_heading", "Hungry already?")} />
             <p className="mt-3 text-lg font-bold leading-snug">Book a table or order in for the full {name} experience.</p>
           </div>
           <div className="mt-6 flex flex-col gap-3">
             <a href={book} className="px-5 py-3 text-center text-xs font-semibold uppercase tracking-[0.16em] text-white transition hover:opacity-90" style={{ background: RED }}>{bookingOn ? "Book a table" : "Get in touch"}</a>
-            {order && <a href={order} target="_blank" rel="noreferrer" className="border border-white/40 px-5 py-3 text-center text-xs font-semibold uppercase tracking-[0.16em] text-white transition hover:bg-white hover:text-neutral-900">Order takeaway</a>}
+            {order && <a href={order} target="_blank" rel="noreferrer" className="border border-white/40 px-5 py-3 text-center text-xs font-semibold uppercase tracking-[0.16em] text-white transition hover:bg-white hover:text-neutral-900" {...editCopy(content, "footer_order_cta", "Order takeaway")} />}
           </div>
         </div>
       </div>
@@ -213,7 +213,7 @@ export default function TideDesign({ site, page = "home", basePath = "" }: Prese
               </ul>
             )}
             {content.map_url && (
-              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex px-7 py-3.5 text-xs font-semibold uppercase tracking-[0.16em] text-white transition hover:opacity-90" style={{ background: CHARCOAL }}>Get directions</a>
+              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex px-7 py-3.5 text-xs font-semibold uppercase tracking-[0.16em] text-white transition hover:opacity-90" style={{ background: CHARCOAL }} {...editCopy(content, "contact_directions_cta", "Get directions")} />
             )}
           </div>
           {contactOn && (
@@ -243,7 +243,7 @@ export default function TideDesign({ site, page = "home", basePath = "" }: Prese
           {content.about ? <p data-edit="content.about" className="text-[17px] leading-[1.9] text-neutral-700">{content.about}</p> : <p className="text-neutral-500">Our story is coming soon.</p>}
           {content.cuisine_type && (
             <>
-              <h3 className="mt-12 text-2xl font-extrabold uppercase tracking-[0.04em]" style={{ color: CHARCOAL }}>What we serve</h3>
+              <h3 className="mt-12 text-2xl font-extrabold uppercase tracking-[0.04em]" style={{ color: CHARCOAL }} {...editCopy(content, "about_cuisine_heading", "What we serve")} />
               <p data-edit="content.cuisine_type" className="mt-4 text-[17px] leading-[1.8] text-neutral-700">{content.cuisine_type}</p>
             </>
           )}
@@ -298,7 +298,7 @@ export default function TideDesign({ site, page = "home", basePath = "" }: Prese
           <p className="text-xs font-bold uppercase tracking-[0.22em]" style={{ color: RED }}>{kicker}</p>
           <h2 className="mt-3 text-3xl font-extrabold uppercase leading-tight tracking-[0.01em] sm:text-4xl" style={{ color: CHARCOAL }}>{title}</h2>
           <div data-edit={editKey} className="mt-5 text-[15px] leading-[1.8] text-neutral-700">{body}</div>
-          <a href={href("menu")} className="mt-7 inline-block text-xs font-bold uppercase tracking-[0.16em]" style={{ color: CHARCOAL }}>Read more &rarr;</a>
+          <a href={href("menu")} className="mt-7 inline-block text-xs font-bold uppercase tracking-[0.16em]" style={{ color: CHARCOAL }} {...editCopy(content, "promo_read_more", "Read more →")} />
         </div>
       </div>
     </section>
@@ -350,7 +350,7 @@ export default function TideDesign({ site, page = "home", basePath = "" }: Prese
       {gallery.length > 0 && (
         <section style={{ background: CREAM }} className="py-16 sm:py-20">
           <div className="mx-auto max-w-6xl px-8">
-            <h2 className="text-center text-2xl font-extrabold uppercase tracking-[0.18em]" style={{ color: CHARCOAL }}>Explore the restaurant</h2>
+            <h2 className="text-center text-2xl font-extrabold uppercase tracking-[0.18em]" style={{ color: CHARCOAL }} {...editCopy(content, "home_explore_heading", "Explore the restaurant")} />
             <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-3">
               {gallery.slice(0, 6).map((gi) => (
                 // eslint-disable-next-line @next/next/no-img-element
@@ -358,7 +358,7 @@ export default function TideDesign({ site, page = "home", basePath = "" }: Prese
               ))}
             </div>
             <div className="mt-10 text-center">
-              <a href={href("gallery")} className="inline-block text-xs font-bold uppercase tracking-[0.16em]" style={{ color: CHARCOAL }}>View the gallery &rarr;</a>
+              <a href={href("gallery")} className="inline-block text-xs font-bold uppercase tracking-[0.16em]" style={{ color: CHARCOAL }} {...editCopy(content, "home_explore_link", "View the gallery →")} />
             </div>
           </div>
         </section>
@@ -370,10 +370,10 @@ export default function TideDesign({ site, page = "home", basePath = "" }: Prese
           <div className="mx-auto max-w-6xl px-8">
             <div className="flex flex-wrap items-end justify-between gap-4">
               <div>
-                <p className="text-xs font-bold uppercase tracking-[0.22em]" style={{ color: RED }}>From the menu</p>
-                <h2 className="mt-3 text-3xl font-extrabold uppercase tracking-[0.02em] sm:text-4xl">Signature plates</h2>
+                <p className="text-xs font-bold uppercase tracking-[0.22em]" style={{ color: RED }} {...editCopy(content, "home_menu_kicker", "From the menu")} />
+                <h2 className="mt-3 text-3xl font-extrabold uppercase tracking-[0.02em] sm:text-4xl" {...editCopy(content, "home_menu_heading", "Signature plates")} />
               </div>
-              <a href={href("menu")} className="text-xs font-bold uppercase tracking-[0.16em] text-white/80 hover:text-white">See the full menu &rarr;</a>
+              <a href={href("menu")} className="text-xs font-bold uppercase tracking-[0.16em] text-white/80 hover:text-white" {...editCopy(content, "home_menu_link", "See the full menu →")} />
             </div>
             <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-4">
               {featured.map((item, i) => {
@@ -399,11 +399,11 @@ export default function TideDesign({ site, page = "home", basePath = "" }: Prese
       {/* "Catch the latest news" — real CTA (links to booking/contact), no dead inputs */}
       <section style={{ background: CREAM }} className="py-16 text-center sm:py-24">
         <div className="mx-auto max-w-2xl px-8">
-          <h2 className="text-3xl font-extrabold uppercase tracking-[0.04em] sm:text-4xl" style={{ color: CHARCOAL }}>Pull up a seat</h2>
-          <p className="mt-4 text-[16px] leading-[1.8] text-neutral-700">Seasonal specials, late tables and rolling events. The best way to keep up is to come in and see for yourself.</p>
+          <h2 className="text-3xl font-extrabold uppercase tracking-[0.04em] sm:text-4xl" style={{ color: CHARCOAL }} {...editCopy(content, "cta_heading", "Pull up a seat")} />
+          <p className="mt-4 text-[16px] leading-[1.8] text-neutral-700" {...editCopy(content, "cta_body", "Seasonal specials, late tables and rolling events. The best way to keep up is to come in and see for yourself.")} />
           <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
             <a href={book} className="px-8 py-4 text-xs font-semibold uppercase tracking-[0.18em] text-white transition hover:opacity-90" style={{ background: RED }}>{bookingOn ? "Book a table" : "Get in touch"}</a>
-            <a href={href("contact")} className="px-8 py-4 text-xs font-semibold uppercase tracking-[0.18em] transition hover:opacity-70" style={{ border: `1px solid ${CHARCOAL}`, color: CHARCOAL }}>Contact us</a>
+            <a href={href("contact")} className="px-8 py-4 text-xs font-semibold uppercase tracking-[0.18em] transition hover:opacity-70" style={{ border: `1px solid ${CHARCOAL}`, color: CHARCOAL }} {...editCopy(content, "cta_contact_link", "Contact us")} />
           </div>
         </div>
       </section>

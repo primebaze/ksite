@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { EmberHeader } from "./EmberHeader";
 import { EmberBooking } from "./EmberBooking";
@@ -53,7 +53,7 @@ export default function EmberDesign({ site, page = "home", basePath = "" }: Pres
     <footer style={{ background: CREAM, backgroundImage: "repeating-linear-gradient(45deg,rgba(0,0,0,0.012) 0 2px,transparent 2px 5px)" }} className="text-neutral-800">
       <div className="mx-auto grid max-w-6xl gap-12 px-8 py-20 sm:grid-cols-2 lg:grid-cols-[1fr_1fr_1fr_1.3fr]">
         <div>
-          <h4 className="text-sm font-semibold uppercase tracking-[0.18em]" style={{ color: GOLD }}>Information</h4>
+          <h4 className="text-sm font-semibold uppercase tracking-[0.18em]" style={{ color: GOLD }} {...editCopy(content, "footer_info_heading", "Information")} />
           <ul className="mt-5 space-y-2.5 text-sm text-neutral-700">
             {([
               groups.length > 0 && { label: "Our menu", href: href("menu") },
@@ -73,7 +73,7 @@ export default function EmberDesign({ site, page = "home", basePath = "" }: Pres
           )}
         </div>
         <div>
-          <h4 className="text-sm font-semibold uppercase tracking-[0.18em]" style={{ color: GOLD }}>Opening times</h4>
+          <h4 className="text-sm font-semibold uppercase tracking-[0.18em]" style={{ color: GOLD }} {...editCopy(content, "footer_hours_heading", "Opening times")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm text-neutral-700">
               {content.hours.map((h, i) => (
@@ -83,7 +83,7 @@ export default function EmberDesign({ site, page = "home", basePath = "" }: Pres
           ) : <p className="mt-5 text-sm text-neutral-500">Open daily.</p>}
         </div>
         <div>
-          <h4 className="text-sm font-semibold uppercase tracking-[0.18em]" style={{ color: GOLD }}>Find us</h4>
+          <h4 className="text-sm font-semibold uppercase tracking-[0.18em]" style={{ color: GOLD }} {...editCopy(content, "footer_find_heading", "Find us")} />
           {content.address && <p data-edit="content.address" className="mt-5 whitespace-pre-line text-sm leading-relaxed text-neutral-700">{content.address}</p>}
           <div className="mt-4 space-y-1.5 text-sm text-neutral-700">
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block hover:text-neutral-950">{content.phone}</a>}
@@ -91,8 +91,8 @@ export default function EmberDesign({ site, page = "home", basePath = "" }: Pres
           </div>
         </div>
         <div className="relative flex flex-col items-center justify-center rounded-[2rem] px-8 py-10 text-center" style={{ border: `2px solid ${GOLD}`, boxShadow: `inset 0 0 0 4px ${CREAM}, inset 0 0 0 5px ${GOLD}55` }}>
-          <h4 style={serif} className="text-2xl">Get in touch</h4>
-          <p className="mt-2 text-sm text-neutral-600">Reservations, private dining &amp; enquiries</p>
+          <h4 style={serif} className="text-2xl" {...editCopy(content, "footer_cta_heading", "Get in touch")} />
+          <p className="mt-2 text-sm text-neutral-600" {...editCopy(content, "footer_cta_blurb", "Reservations, private dining & enquiries")} />
           <a href={bookingOn ? href("reservations") : href("contact")} className="mt-5 inline-flex px-9 py-3.5 text-sm font-semibold uppercase tracking-[0.18em] text-white transition hover:opacity-90" style={{ background: NAVY }}>{bookingOn ? "Book a table" : "Contact us"}</a>
         </div>
       </div>
@@ -109,11 +109,11 @@ export default function EmberDesign({ site, page = "home", basePath = "" }: Pres
   );
 
   // Navy page banner — also clears the fixed header on sub-pages.
-  const banner = (kicker: string, title: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string) => (
     <section style={{ background: NAVY }} className="text-white">
       <div className="mx-auto max-w-6xl px-8 pb-14 pt-32 sm:pt-36">
-        <p className="text-sm font-semibold uppercase tracking-[0.3em]" style={{ color: GOLD }}>{kicker}</p>
-        <h1 style={serif} className="mt-3 text-4xl font-medium sm:text-5xl">{title}</h1>
+        <p className="text-sm font-semibold uppercase tracking-[0.3em]" style={{ color: GOLD }} {...editCopy(content, kickerKey, kicker)} />
+        <h1 style={serif} className="mt-3 text-4xl font-medium sm:text-5xl" {...editCopy(content, titleKey, title)} />
       </div>
     </section>
   );
@@ -122,7 +122,7 @@ export default function EmberDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "menu") {
     return shell(
       <>
-      {banner("The menu", "Signature dishes")}
+      {banner("The menu", "menu_banner_kicker", "Signature dishes", "menu_banner_title")}
       <section className="mx-auto max-w-5xl px-8 py-20">
         {groups.length > 0 ? (
           <>
@@ -168,7 +168,7 @@ export default function EmberDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "reservations") {
     return shell(
       <>
-        {banner("Reservations", "Book a table")}
+        {banner("Reservations", "reservations_banner_kicker", "Book a table", "reservations_banner_title")}
         <section className="mx-auto max-w-xl px-8 py-20">
           <p className="mb-8 text-center text-[17px] leading-[1.8] text-neutral-700">Reserve your table below and we will confirm by phone or email. For parties of 8 or more, please call us.</p>
           <EmberBooking tenantId={tenant.id} name={name} />
@@ -181,7 +181,7 @@ export default function EmberDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "contact") {
     return shell(
       <>
-        {banner("Visit us", "Find us")}
+        {banner("Visit us", "contact_banner_kicker", "Find us", "contact_banner_title")}
         <section className="mx-auto grid max-w-6xl gap-12 px-8 py-20 lg:grid-cols-2 lg:gap-20">
           <div>
             <div className="space-y-5 text-[15px] leading-relaxed text-neutral-700">
@@ -197,7 +197,7 @@ export default function EmberDesign({ site, page = "home", basePath = "" }: Pres
               </ul>
             )}
             {content.map_url && (
-              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex border px-7 py-3 text-xs font-semibold uppercase tracking-[0.2em] transition hover:bg-neutral-900 hover:text-white" style={{ borderColor: NAVY, color: NAVY }}>Get directions</a>
+              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex border px-7 py-3 text-xs font-semibold uppercase tracking-[0.2em] transition hover:bg-neutral-900 hover:text-white" style={{ borderColor: NAVY, color: NAVY }} {...editCopy(content, "contact_directions_cta", "Get directions")} />
             )}
           </div>
           {contactOn && (
@@ -221,12 +221,12 @@ export default function EmberDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "about") {
     return shell(
       <>
-        {banner("About", "Our story")}
+        {banner("About", "about_banner_kicker", "Our story", "about_banner_title")}
         <section className="mx-auto max-w-3xl px-8 py-20">
           {content.about ? <p data-edit="content.about" className="text-[17px] leading-[1.9] text-neutral-700">{content.about}</p> : <p className="text-neutral-500">Our story is coming soon.</p>}
           {content.cuisine_type && (
             <>
-              <h3 style={serif} className="mt-12 text-2xl font-medium">A taste of what we do</h3>
+              <h3 style={serif} className="mt-12 text-2xl font-medium" {...editCopy(content, "about_taste_heading", "A taste of what we do")} />
               <p data-edit="content.cuisine_type" className="mt-4 text-[17px] leading-[1.8] text-neutral-700">{content.cuisine_type}</p>
             </>
           )}
@@ -239,7 +239,7 @@ export default function EmberDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Gallery", "A look inside")}
+        {banner("Gallery", "gallery_banner_kicker", "A look inside", "gallery_banner_title")}
         {gallery.length > 0 ? (
           <section className="grid grid-cols-2 gap-1 sm:grid-cols-3">
             {gallery.map((g) => (
@@ -267,14 +267,14 @@ export default function EmberDesign({ site, page = "home", basePath = "" }: Pres
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/55 via-transparent to-transparent" />
         <div className="relative z-10 mt-auto flex flex-col items-center gap-7 px-6 pb-20 text-center sm:pb-24">
           {content.tagline && <p data-edit="content.tagline" style={serif} className="max-w-2xl text-2xl leading-snug text-white [text-shadow:0_2px_20px_rgba(0,0,0,0.5)] sm:text-3xl">{content.tagline}</p>}
-          <a href={book} style={{ background: NAVY }} className="w-full max-w-sm px-8 py-4 text-center text-xs font-semibold uppercase tracking-[0.22em] text-white shadow-2xl transition hover:opacity-90 sm:w-auto sm:px-12 sm:text-sm">Make a reservation</a>
+          <a href={book} style={{ background: NAVY }} className="w-full max-w-sm px-8 py-4 text-center text-xs font-semibold uppercase tracking-[0.22em] text-white shadow-2xl transition hover:opacity-90 sm:w-auto sm:px-12 sm:text-sm" {...editCopy(content, "hero_cta", "Make a reservation")} />
         </div>
       </section>
 
       {/* intro */}
       {content.about && (
         <section className="mx-auto max-w-3xl px-8 py-24 text-center">
-          <p className="text-sm font-semibold uppercase tracking-[0.3em]" style={{ color: GOLD }}>Welcome</p>
+          <p className="text-sm font-semibold uppercase tracking-[0.3em]" style={{ color: GOLD }} {...editCopy(content, "intro_eyebrow", "Welcome")} />
           <p data-edit="content.about" className="mt-6 text-[19px] leading-[1.9] text-neutral-700">{content.about}</p>
         </section>
       )}
@@ -285,10 +285,10 @@ export default function EmberDesign({ site, page = "home", basePath = "" }: Pres
           <div className="mx-auto max-w-5xl px-8 py-24">
             <div className="flex flex-wrap items-end justify-between gap-4">
               <div>
-                <p className="text-sm font-semibold uppercase tracking-[0.3em]" style={{ color: GOLD }}>The menu</p>
-                <h2 style={serif} className="mt-3 text-4xl font-medium sm:text-5xl">Signature dishes</h2>
+                <p className="text-sm font-semibold uppercase tracking-[0.3em]" style={{ color: GOLD }} {...editCopy(content, "home_menu_eyebrow", "The menu")} />
+                <h2 style={serif} className="mt-3 text-4xl font-medium sm:text-5xl" {...editCopy(content, "home_menu_heading", "Signature dishes")} />
               </div>
-              <a href={href("menu")} className="text-sm font-semibold uppercase tracking-[0.15em]" style={{ color: OLIVE }}>View full menu →</a>
+              <a href={href("menu")} className="text-sm font-semibold uppercase tracking-[0.15em]" style={{ color: OLIVE }} {...editCopy(content, "home_menu_link", "View full menu →")} />
             </div>
             <ul className="mx-auto mt-12 max-w-xl divide-y" style={{ borderColor: `${NAVY}1f` }}>
               {featured.map((item) => (
@@ -313,7 +313,7 @@ export default function EmberDesign({ site, page = "home", basePath = "" }: Pres
       <section style={{ background: NAVY }} className="text-white">
         <div className="mx-auto grid max-w-6xl gap-12 px-8 py-20 md:grid-cols-3">
           <div>
-            <h3 className="text-sm font-semibold uppercase tracking-[0.18em]" style={{ color: GOLD }}>Opening times</h3>
+            <h3 className="text-sm font-semibold uppercase tracking-[0.18em]" style={{ color: GOLD }} {...editCopy(content, "home_hours_heading", "Opening times")} />
             {content.hours && content.hours.length > 0 && (
               <ul className="mt-5 space-y-2 text-sm text-white/80">
                 {content.hours.map((h, i) => (
@@ -323,7 +323,7 @@ export default function EmberDesign({ site, page = "home", basePath = "" }: Pres
             )}
           </div>
           <div>
-            <h3 className="text-sm font-semibold uppercase tracking-[0.18em]" style={{ color: GOLD }}>Find us</h3>
+            <h3 className="text-sm font-semibold uppercase tracking-[0.18em]" style={{ color: GOLD }} {...editCopy(content, "home_find_heading", "Find us")} />
             {content.address && <p data-edit="content.address" className="mt-5 whitespace-pre-line text-sm leading-relaxed text-white/80">{content.address}</p>}
             <div className="mt-4 space-y-1.5 text-sm text-white/80">
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block hover:text-white">{content.phone}</a>}
@@ -331,9 +331,9 @@ export default function EmberDesign({ site, page = "home", basePath = "" }: Pres
             </div>
           </div>
           <div className="flex flex-col items-start">
-            <h3 className="text-sm font-semibold uppercase tracking-[0.18em]" style={{ color: GOLD }}>Reserve</h3>
-            <p className="mt-5 text-sm text-white/80">Book your table online in seconds.</p>
-            <a href={book} className="mt-6 inline-flex border border-white/60 px-7 py-3 text-xs font-semibold uppercase tracking-[0.2em] text-white transition hover:bg-white hover:text-neutral-900">Make a reservation</a>
+            <h3 className="text-sm font-semibold uppercase tracking-[0.18em]" style={{ color: GOLD }} {...editCopy(content, "home_reserve_heading", "Reserve")} />
+            <p className="mt-5 text-sm text-white/80" {...editCopy(content, "home_reserve_blurb", "Book your table online in seconds.")} />
+            <a href={book} className="mt-6 inline-flex border border-white/60 px-7 py-3 text-xs font-semibold uppercase tracking-[0.2em] text-white transition hover:bg-white hover:text-neutral-900" {...editCopy(content, "home_reserve_cta", "Make a reservation")} />
           </div>
         </div>
       </section>

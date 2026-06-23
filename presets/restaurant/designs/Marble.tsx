@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { MarbleHeader } from "./MarbleHeader";
 import { MarbleBooking } from "./MarbleBooking";
@@ -76,7 +76,7 @@ export default function MarbleDesign({ site, page = "home", basePath = "" }: Pre
         </div>
 
         <div>
-          <h4 className="text-xs font-semibold uppercase tracking-[0.2em]" style={{ color: GOLD }}>Opening hours</h4>
+          <h4 className="text-xs font-semibold uppercase tracking-[0.2em]" style={{ color: GOLD }} {...editCopy(content, "footer_hours", "Opening hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm text-[#efe8db]/75">
               {content.hours.map((h, i) => (
@@ -92,7 +92,7 @@ export default function MarbleDesign({ site, page = "home", basePath = "" }: Pre
         </div>
 
         <div>
-          <h4 className="text-xs font-semibold uppercase tracking-[0.2em]" style={{ color: GOLD }}>Explore</h4>
+          <h4 className="text-xs font-semibold uppercase tracking-[0.2em]" style={{ color: GOLD }} {...editCopy(content, "footer_explore", "Explore")} />
           <ul className="mt-5 space-y-2.5 text-sm text-[#efe8db]/75">
             {([
               groups.length > 0 && { label: "The menu", href: href("menu") },
@@ -107,12 +107,12 @@ export default function MarbleDesign({ site, page = "home", basePath = "" }: Pre
         </div>
 
         <div>
-          <h4 className="text-xs font-semibold uppercase tracking-[0.2em]" style={{ color: GOLD }}>Find us</h4>
+          <h4 className="text-xs font-semibold uppercase tracking-[0.2em]" style={{ color: GOLD }} {...editCopy(content, "footer_findus", "Find us")} />
           <div className="mt-5 space-y-2.5 text-sm text-[#efe8db]/75">
             {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-[#c9a227]">{content.phone}</a>}
             {content.email && <a data-edit="content.email" href={`mailto:${content.email}`} className="block transition hover:text-[#c9a227]">{content.email}</a>}
-            {content.map_url && <a href={content.map_url} target="_blank" rel="noreferrer" className="block transition hover:text-[#c9a227]">Get directions</a>}
+            {content.map_url && <a href={content.map_url} target="_blank" rel="noreferrer" className="block transition hover:text-[#c9a227]" {...editCopy(content, "footer_directions", "Get directions")} />}
           </div>
         </div>
       </div>
@@ -129,12 +129,12 @@ export default function MarbleDesign({ site, page = "home", basePath = "" }: Pre
   );
 
   // Charcoal page banner — also clears the fixed header on sub-pages.
-  const banner = (kicker: string, title: string, sub?: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string, sub?: string, subKey?: string) => (
     <section className="border-b border-white/10" style={{ background: `radial-gradient(120% 100% at 50% 0%, #2a2520 0%, ${CHARCOAL} 70%)` }}>
       <div className="mx-auto max-w-6xl px-8 pb-14 pt-32 text-center sm:pt-40">
-        <p className="text-xs font-semibold uppercase tracking-[0.4em]" style={{ color: GOLD }}>{kicker}</p>
-        <h1 style={serif} className="mt-4 text-4xl font-medium text-[#efe8db] sm:text-6xl">{title}</h1>
-        {sub && <p className="mx-auto mt-5 max-w-xl text-[15px] leading-relaxed text-[#efe8db]/65">{sub}</p>}
+        <p className="text-xs font-semibold uppercase tracking-[0.4em]" style={{ color: GOLD }} {...editCopy(content, kickerKey, kicker)} />
+        <h1 style={serif} className="mt-4 text-4xl font-medium text-[#efe8db] sm:text-6xl" {...editCopy(content, titleKey, title)} />
+        {sub && <p className="mx-auto mt-5 max-w-xl text-[15px] leading-relaxed text-[#efe8db]/65" {...editCopy(content, subKey ?? "", sub)} />}
       </div>
     </section>
   );
@@ -143,7 +143,7 @@ export default function MarbleDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "menu") {
     return shell(
       <>
-        {banner("The menu", "Signature cuts")}
+        {banner("The menu", "menu_kicker", "Signature cuts", "menu_title")}
         <section className="mx-auto max-w-4xl px-8 py-20 sm:py-24">
           {groups.length > 0 ? (
             <>
@@ -191,9 +191,7 @@ export default function MarbleDesign({ site, page = "home", basePath = "" }: Pre
 
               {bookingOn && (
                 <div className="mt-16 text-center">
-                  <a href={book} className="inline-flex px-10 py-4 text-xs font-semibold uppercase tracking-[0.2em] text-[#efe8db] transition hover:opacity-90 sm:text-sm" style={{ background: EMBER }}>
-                    Reserve a table
-                  </a>
+                  <a href={book} className="inline-flex px-10 py-4 text-xs font-semibold uppercase tracking-[0.2em] text-[#efe8db] transition hover:opacity-90 sm:text-sm" style={{ background: EMBER }} {...editCopy(content, "menu_reserve_cta", "Reserve a table")} />
                 </div>
               )}
             </>
@@ -209,7 +207,7 @@ export default function MarbleDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "reservations") {
     return shell(
       <>
-        {banner("Reservations", "Book a table", "Reserve below and we will confirm by phone or email. For larger parties or private dining, please get in touch directly.")}
+        {banner("Reservations", "book_kicker", "Book a table", "book_title", "Reserve below and we will confirm by phone or email. For larger parties or private dining, please get in touch directly.", "book_sub")}
         <section className="mx-auto max-w-6xl px-8 py-20 sm:py-24">
           <div className="grid gap-12 lg:grid-cols-[1.4fr_1fr] lg:gap-16">
             {/* form (party size led) */}
@@ -255,7 +253,7 @@ export default function MarbleDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "contact") {
     return shell(
       <>
-        {banner("Visit us", "Find us")}
+        {banner("Visit us", "contact_kicker", "Find us", "contact_title")}
         <section className="mx-auto max-w-2xl px-8 py-20 text-center sm:py-24">
           <div className="space-y-4 text-[16px] leading-relaxed text-[#efe8db]/85">
             {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
@@ -264,9 +262,7 @@ export default function MarbleDesign({ site, page = "home", basePath = "" }: Pre
           </div>
 
           {content.map_url && (
-            <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-8 inline-flex border px-8 py-3.5 text-xs font-semibold uppercase tracking-[0.2em] transition hover:bg-[#c9a227] hover:text-[#1c1a17]" style={{ borderColor: GOLD, color: GOLD }}>
-              Get directions
-            </a>
+            <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-8 inline-flex border px-8 py-3.5 text-xs font-semibold uppercase tracking-[0.2em] transition hover:bg-[#c9a227] hover:text-[#1c1a17]" style={{ borderColor: GOLD, color: GOLD }} {...editCopy(content, "contact_directions", "Get directions")} />
           )}
 
           {content.hours && content.hours.length > 0 && (
@@ -301,7 +297,7 @@ export default function MarbleDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "about") {
     return shell(
       <>
-        {banner("Our table", "About us")}
+        {banner("Our table", "about_kicker", "About us", "about_title")}
         <section className="mx-auto max-w-3xl px-8 py-20 sm:py-24">
           {content.about ? (
             <p data-edit="content.about" className="text-[18px] leading-[1.95] text-[#efe8db]/80">{content.about}</p>
@@ -312,23 +308,17 @@ export default function MarbleDesign({ site, page = "home", basePath = "" }: Pre
           {/* Lounge & private dining teaser lives on About */}
           <div className="mt-16 grid gap-6 border-t border-white/10 pt-14 md:grid-cols-2">
             <div className="border border-white/12 p-8" style={{ background: "rgba(0,0,0,0.2)" }}>
-              <h3 className="text-2xl" style={{ color: GOLD, fontFamily: "var(--font-fraunces)" }}>Lounge &amp; bar</h3>
-              <p className="mt-3 text-sm leading-relaxed text-[#efe8db]/70">
-                Settle into the low light of our cocktail lounge for classics, house creations and a deep cellar of old-world reds and rare whiskies. Walk-ins welcome at the bar.
-              </p>
+              <h3 className="text-2xl" style={{ color: GOLD, fontFamily: "var(--font-fraunces)" }} {...editCopy(content, "about_lounge_heading", "Lounge & bar")} />
+              <p className="mt-3 text-sm leading-relaxed text-[#efe8db]/70" {...editCopy(content, "about_lounge_blurb", "Settle into the low light of our cocktail lounge for classics, house creations and a deep cellar of old-world reds and rare whiskies. Walk-ins welcome at the bar.")} />
             </div>
             <div className="border border-white/12 p-8" style={{ background: "rgba(0,0,0,0.2)" }}>
-              <h3 className="text-2xl" style={{ color: GOLD, fontFamily: "var(--font-fraunces)" }}>Private dining</h3>
-              <p className="mt-3 text-sm leading-relaxed text-[#efe8db]/70">
-                From intimate dinners to celebrations, our private rooms are yours for the night with a dedicated team and bespoke menus. Enquire for availability.
-              </p>
+              <h3 className="text-2xl" style={{ color: GOLD, fontFamily: "var(--font-fraunces)" }} {...editCopy(content, "about_private_heading", "Private dining")} />
+              <p className="mt-3 text-sm leading-relaxed text-[#efe8db]/70" {...editCopy(content, "about_private_blurb", "From intimate dinners to celebrations, our private rooms are yours for the night with a dedicated team and bespoke menus. Enquire for availability.")} />
             </div>
           </div>
 
           <div className="mt-12 text-center">
-            <a href={book} className="inline-flex px-10 py-4 text-xs font-semibold uppercase tracking-[0.2em] text-[#efe8db] transition hover:opacity-90 sm:text-sm" style={{ background: EMBER }}>
-              Reserve a table
-            </a>
+            <a href={book} className="inline-flex px-10 py-4 text-xs font-semibold uppercase tracking-[0.2em] text-[#efe8db] transition hover:opacity-90 sm:text-sm" style={{ background: EMBER }} {...editCopy(content, "about_reserve_cta", "Reserve a table")} />
           </div>
         </section>
       </>,
@@ -339,7 +329,7 @@ export default function MarbleDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Gallery", "A look inside")}
+        {banner("Gallery", "gallery_kicker", "A look inside", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="grid grid-cols-2 gap-1 sm:grid-cols-3">
             {gallery.map((g) => (
@@ -381,13 +371,9 @@ export default function MarbleDesign({ site, page = "home", basePath = "" }: Pre
             </p>
           )}
           <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row">
-            <a href={book} style={{ background: EMBER }} className="w-full px-10 py-4 text-center text-xs font-semibold uppercase tracking-[0.22em] text-[#efe8db] shadow-2xl transition hover:opacity-90 sm:w-auto sm:text-sm">
-              Reserve a table
-            </a>
+            <a href={book} style={{ background: EMBER }} className="w-full px-10 py-4 text-center text-xs font-semibold uppercase tracking-[0.22em] text-[#efe8db] shadow-2xl transition hover:opacity-90 sm:w-auto sm:text-sm" {...editCopy(content, "hero_reserve_cta", "Reserve a table")} />
             {groups.length > 0 && (
-              <a href={href("menu")} className="w-full border px-10 py-4 text-center text-xs font-semibold uppercase tracking-[0.22em] backdrop-blur-sm transition hover:bg-[#c9a227] hover:text-[#1c1a17] sm:w-auto sm:text-sm" style={{ borderColor: GOLD, color: GOLD }}>
-                View the menu
-              </a>
+              <a href={href("menu")} className="w-full border px-10 py-4 text-center text-xs font-semibold uppercase tracking-[0.22em] backdrop-blur-sm transition hover:bg-[#c9a227] hover:text-[#1c1a17] sm:w-auto sm:text-sm" style={{ borderColor: GOLD, color: GOLD }} {...editCopy(content, "hero_menu_cta", "View the menu")} />
             )}
           </div>
         </div>
@@ -395,7 +381,7 @@ export default function MarbleDesign({ site, page = "home", basePath = "" }: Pre
 
       {/* INTRO / ABOUT teaser */}
       <section className="mx-auto max-w-3xl px-8 py-24 text-center sm:py-28">
-        <p className="text-xs font-semibold uppercase tracking-[0.4em]" style={{ color: GOLD }}>Our table</p>
+        <p className="text-xs font-semibold uppercase tracking-[0.4em]" style={{ color: GOLD }} {...editCopy(content, "intro_eyebrow", "Our table")} />
         <h2 style={serif} className="mt-5 text-3xl font-medium leading-tight text-[#efe8db] sm:text-[2.6rem]">
           {content.tagline ?? `Welcome to ${name}`}
         </h2>
@@ -405,9 +391,7 @@ export default function MarbleDesign({ site, page = "home", basePath = "" }: Pre
           </p>
         )}
         {content.about && (
-          <a href={href("about")} className="mt-8 inline-flex text-xs font-semibold uppercase tracking-[0.2em] transition hover:opacity-80" style={{ color: GOLD }}>
-            Our story →
-          </a>
+          <a href={href("about")} className="mt-8 inline-flex text-xs font-semibold uppercase tracking-[0.2em] transition hover:opacity-80" style={{ color: GOLD }} {...editCopy(content, "intro_story_link", "Our story →")} />
         )}
       </section>
 
@@ -417,10 +401,10 @@ export default function MarbleDesign({ site, page = "home", basePath = "" }: Pre
           <div className="mx-auto max-w-5xl px-8 py-24 sm:py-28">
             <div className="flex flex-wrap items-end justify-between gap-4">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.4em]" style={{ color: GOLD }}>The menu</p>
-                <h2 style={serif} className="mt-3 text-4xl font-medium text-[#efe8db] sm:text-5xl">Signature cuts</h2>
+                <p className="text-xs font-semibold uppercase tracking-[0.4em]" style={{ color: GOLD }} {...editCopy(content, "highlights_eyebrow", "The menu")} />
+                <h2 style={serif} className="mt-3 text-4xl font-medium text-[#efe8db] sm:text-5xl" {...editCopy(content, "highlights_heading", "Signature cuts")} />
               </div>
-              <a href={href("menu")} className="text-xs font-semibold uppercase tracking-[0.2em] transition hover:opacity-80" style={{ color: GOLD }}>View full menu →</a>
+              <a href={href("menu")} className="text-xs font-semibold uppercase tracking-[0.2em] transition hover:opacity-80" style={{ color: GOLD }} {...editCopy(content, "highlights_link", "View full menu →")} />
             </div>
             <ul className="mx-auto mt-14 max-w-xl divide-y" style={{ borderColor: "rgba(255,255,255,0.12)" }}>
               {featured.map((item) => (
@@ -445,7 +429,7 @@ export default function MarbleDesign({ site, page = "home", basePath = "" }: Pre
       <section className="border-t border-white/10">
         <div className="mx-auto grid max-w-6xl gap-12 px-8 py-20 md:grid-cols-3">
           <div>
-            <h3 className="text-xs font-semibold uppercase tracking-[0.2em]" style={{ color: GOLD }}>Opening hours</h3>
+            <h3 className="text-xs font-semibold uppercase tracking-[0.2em]" style={{ color: GOLD }} {...editCopy(content, "info_hours_heading", "Opening hours")} />
             {content.hours && content.hours.length > 0 ? (
               <ul className="mt-5 space-y-2 text-sm text-[#efe8db]/75">
                 {content.hours.map((h, i) => (
@@ -460,17 +444,17 @@ export default function MarbleDesign({ site, page = "home", basePath = "" }: Pre
             )}
           </div>
           <div>
-            <h3 className="text-xs font-semibold uppercase tracking-[0.2em]" style={{ color: GOLD }}>Find us</h3>
+            <h3 className="text-xs font-semibold uppercase tracking-[0.2em]" style={{ color: GOLD }} {...editCopy(content, "info_findus_heading", "Find us")} />
             {content.address && <p data-edit="content.address" className="mt-5 whitespace-pre-line text-sm leading-relaxed text-[#efe8db]/75">{content.address}</p>}
             <div className="mt-4 space-y-1.5 text-sm text-[#efe8db]/75">
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-[#c9a227]">{content.phone}</a>}
               {content.email && <a data-edit="content.email" href={`mailto:${content.email}`} className="block transition hover:text-[#c9a227]">{content.email}</a>}
             </div>
-            <a href={href("contact")} className="mt-5 inline-flex text-xs font-semibold uppercase tracking-[0.2em] transition hover:opacity-80" style={{ color: GOLD }}>Visit us →</a>
+            <a href={href("contact")} className="mt-5 inline-flex text-xs font-semibold uppercase tracking-[0.2em] transition hover:opacity-80" style={{ color: GOLD }} {...editCopy(content, "info_visit_link", "Visit us →")} />
           </div>
           <div className="flex flex-col items-start">
-            <h3 className="text-xs font-semibold uppercase tracking-[0.2em]" style={{ color: GOLD }}>Reserve</h3>
-            <p className="mt-5 text-sm text-[#efe8db]/75">Book your table for dinner, the lounge or a private room.</p>
+            <h3 className="text-xs font-semibold uppercase tracking-[0.2em]" style={{ color: GOLD }} {...editCopy(content, "info_reserve_heading", "Reserve")} />
+            <p className="mt-5 text-sm text-[#efe8db]/75" {...editCopy(content, "info_reserve_sub", "Book your table for dinner, the lounge or a private room.")} />
             <a href={book} className="mt-6 inline-flex px-8 py-3.5 text-xs font-semibold uppercase tracking-[0.2em] text-[#efe8db] transition hover:opacity-90" style={{ background: EMBER }}>
               {bookingOn ? "Reserve a table" : "Contact us"}
             </a>

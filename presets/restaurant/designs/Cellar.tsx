@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { CellarHeader } from "./CellarHeader";
 import { CellarBooking } from "./CellarBooking";
@@ -78,7 +78,7 @@ export default function CellarDesign({ site, page = "home", basePath = "" }: Pre
           </div>
 
           <div>
-            <h4 className="text-[10px] font-medium uppercase tracking-[0.3em]" style={{ color: GOLD }}>Visit</h4>
+            <h4 className="text-[10px] font-medium uppercase tracking-[0.3em]" style={{ color: GOLD }} {...editCopy(content, "footer_visit_heading", "Visit")} />
             <ul className="mt-5 space-y-3 text-sm text-[#E7DECF]/70">
               {([
                 groups.length > 0 && { label: "Wine list", href: href("menu") },
@@ -93,7 +93,7 @@ export default function CellarDesign({ site, page = "home", basePath = "" }: Pre
           </div>
 
           <div>
-            <h4 className="text-[10px] font-medium uppercase tracking-[0.3em]" style={{ color: GOLD }}>Hours</h4>
+            <h4 className="text-[10px] font-medium uppercase tracking-[0.3em]" style={{ color: GOLD }} {...editCopy(content, "footer_hours_heading", "Hours")} />
             {content.hours && content.hours.length > 0 ? (
               <ul className="mt-5 space-y-2 text-sm text-[#E7DECF]/70">
                 {content.hours.map((h, i) => (
@@ -104,7 +104,7 @@ export default function CellarDesign({ site, page = "home", basePath = "" }: Pre
           </div>
 
           <div>
-            <h4 className="text-[10px] font-medium uppercase tracking-[0.3em]" style={{ color: GOLD }}>Find us</h4>
+            <h4 className="text-[10px] font-medium uppercase tracking-[0.3em]" style={{ color: GOLD }} {...editCopy(content, "footer_findus_heading", "Find us")} />
             {content.address && <p data-edit="content.address" className="mt-5 whitespace-pre-line text-sm leading-[1.8] text-[#E7DECF]/70">{content.address}</p>}
             <div className="mt-3 space-y-1.5 text-sm text-[#E7DECF]/70">
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-[#C98F86]">{content.phone}</a>}
@@ -128,11 +128,11 @@ export default function CellarDesign({ site, page = "home", basePath = "" }: Pre
 
   // Charcoal page banner with a thin gold rule + candle glow — clears the fixed
   // header on sub-pages.
-  const banner = (kicker: string, title: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string) => (
     <section style={{ background: CHARCOAL, backgroundImage: GLOW }} className="text-[#E7DECF]">
       <div className="mx-auto max-w-6xl px-6 pb-14 pt-32 sm:px-9 sm:pb-20 sm:pt-40">
-        <p className="text-[11px] font-medium uppercase tracking-[0.4em]" style={{ color: ROSE }}>{kicker}</p>
-        <h1 style={serif} className="mt-4 text-5xl font-normal tracking-[0.01em] sm:text-6xl">{title}</h1>
+        <p className="text-[11px] font-medium uppercase tracking-[0.4em]" style={{ color: ROSE }} {...editCopy(content, kickerKey, kicker)} />
+        <h1 style={serif} className="mt-4 text-5xl font-normal tracking-[0.01em] sm:text-6xl" {...editCopy(content, titleKey, title)} />
         <div className="mt-7 h-px w-20" style={{ background: GOLD }} />
       </div>
     </section>
@@ -144,7 +144,7 @@ export default function CellarDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "menu") {
     return shell(
       <>
-        {banner("The list", "What we pour")}
+        {banner("The list", "menu_kicker", "What we pour", "menu_title")}
         <section className="px-6 py-16 sm:px-9 sm:py-24" style={{ background: PLUM }}>
           <div className="mx-auto max-w-4xl">
           {groups.length > 0 ? (
@@ -200,10 +200,10 @@ export default function CellarDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "reservations") {
     return shell(
       <>
-        {banner("Reservations", "Join us for the evening")}
+        {banner("Reservations", "book_kicker", "Join us for the evening", "book_title")}
         <section className="px-6 py-16 sm:px-9 sm:py-24" style={{ background: PLUM }}>
           <div className="mx-auto max-w-xl">
-            <p className="mb-10 text-center text-[16px] leading-[1.9] text-[#E7DECF]/70">Tables are intimate and few. Choose an evening and we will hold a spot by candlelight. For parties of six or more, a quiet word by phone is best.</p>
+            <p className="mb-10 text-center text-[16px] leading-[1.9] text-[#E7DECF]/70" {...editCopy(content, "book_intro", "Tables are intimate and few. Choose an evening and we will hold a spot by candlelight. For parties of six or more, a quiet word by phone is best.")} />
             <CellarBooking tenantId={tenant.id} name={name} />
           </div>
         </section>
@@ -215,7 +215,7 @@ export default function CellarDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "contact") {
     return shell(
       <>
-        {banner("Contact", "Find the door")}
+        {banner("Contact", "contact_kicker", "Find the door", "contact_title")}
         <section className="px-6 py-16 sm:px-9 sm:py-24" style={{ background: PLUM }}>
           <div className="mx-auto grid max-w-6xl gap-14 lg:grid-cols-2 lg:gap-20">
             <div>
@@ -258,14 +258,14 @@ export default function CellarDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "about") {
     return shell(
       <>
-        {banner("About", "A small room, low light")}
+        {banner("About", "about_kicker", "A small room, low light", "about_title")}
         <section className="px-6 py-16 sm:px-9 sm:py-24" style={{ background: PLUM }}>
           <div className="mx-auto max-w-3xl">
             {content.about ? <p data-edit="content.about" className="text-[19px] leading-[2] text-[#E7DECF]/80" style={serif}>{content.about}</p> : <p className="text-[#E7DECF]/55">Our story is being written.</p>}
             {content.cuisine_type && (
               <>
                 <div className="mt-14 h-px w-20" style={{ background: GOLD }} />
-                <h3 style={{ ...serif, color: OAT }} className="mt-8 text-3xl font-normal tracking-tight">What we pour</h3>
+                <h3 style={{ ...serif, color: OAT }} className="mt-8 text-3xl font-normal tracking-tight" {...editCopy(content, "about_pour_heading", "What we pour")} />
                 <p data-edit="content.cuisine_type" className="mt-4 text-[16px] leading-[1.9] text-[#E7DECF]/70">{content.cuisine_type}</p>
               </>
             )}
@@ -279,7 +279,7 @@ export default function CellarDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Gallery", "By candlelight")}
+        {banner("Gallery", "gallery_kicker", "By candlelight", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="grid grid-cols-2 gap-2 p-2 sm:grid-cols-3" style={{ background: PLUM }}>
             {gallery.map((g) => (
@@ -310,13 +310,13 @@ export default function CellarDesign({ site, page = "home", basePath = "" }: Pre
         <div className="pointer-events-none absolute inset-0" style={{ backgroundImage: `radial-gradient(50% 55% at 50% 42%, ${ROSE}30 0%, transparent 62%)` }} />
         <div className="relative z-10 mt-auto px-6 pb-12 pt-36 sm:px-9 sm:pb-16">
           <div className="mx-auto max-w-5xl">
-            <p className="text-[11px] font-medium uppercase tracking-[0.42em]" style={{ color: ROSE }}>An intimate wine bar</p>
+            <p className="text-[11px] font-medium uppercase tracking-[0.42em]" style={{ color: ROSE }} {...editCopy(content, "hero_kicker", "An intimate wine bar")} />
             {content.tagline ? (
               <p data-edit="content.tagline" style={serif} className="mt-5 max-w-3xl text-4xl font-normal leading-[1.1] tracking-[0.01em] text-[#E7DECF] sm:text-6xl">{content.tagline}</p>
             ) : (
               <p style={serif} className="mt-5 max-w-3xl text-4xl font-normal leading-[1.1] tracking-[0.01em] text-[#E7DECF] sm:text-6xl">Low light, natural wine, and time slowed down.</p>
             )}
-            <p className="mt-5 max-w-md text-[15px] leading-relaxed text-[#E7DECF]/70">Natural &amp; low-intervention bottles, a short plate menu, and a candle at every table.</p>
+            <p className="mt-5 max-w-md text-[15px] leading-relaxed text-[#E7DECF]/70" {...editCopy(content, "hero_sub", "Natural & low-intervention bottles, a short plate menu, and a candle at every table.")} />
             {bookingOn ? (
               <div className="mt-9 max-w-3xl">
                 <CellarBooking tenantId={tenant.id} name={name} inline />
@@ -331,7 +331,7 @@ export default function CellarDesign({ site, page = "home", basePath = "" }: Pre
       {/* "what we pour" philosophy — deep plum, generous negative space */}
       <section style={{ background: PLUM, backgroundImage: GLOW }} className="text-[#E7DECF]">
         <div className="mx-auto max-w-4xl px-6 py-24 text-center sm:px-9 sm:py-32">
-          <p className="text-[11px] font-medium uppercase tracking-[0.4em]" style={{ color: ROSE }}>What we pour</p>
+          <p className="text-[11px] font-medium uppercase tracking-[0.4em]" style={{ color: ROSE }} {...editCopy(content, "home_philosophy_kicker", "What we pour")} />
           <div className="mx-auto mt-7 h-px w-16" style={{ background: GOLD }} />
           {content.about ? (
             <p data-edit="content.about" style={serif} className="mt-9 text-2xl font-normal leading-[1.6] tracking-[0.005em] text-[#E7DECF]/90 sm:text-[2rem] sm:leading-[1.55]">{content.about}</p>
@@ -339,7 +339,7 @@ export default function CellarDesign({ site, page = "home", basePath = "" }: Pre
             <p style={serif} className="mt-9 text-2xl font-normal leading-[1.6] text-[#E7DECF]/90 sm:text-[2rem] sm:leading-[1.55]">Growers we trust, bottles made with patience, and a list that changes as often as the season turns.</p>
           )}
           {content.about && (
-            <a href={href("about")} className="mt-10 inline-flex border px-8 py-3 text-[11px] font-medium uppercase tracking-[0.28em] transition hover:bg-[#B79653] hover:text-[#1A1720]" style={{ borderColor: GOLD, color: OAT }}>Our story</a>
+            <a href={href("about")} className="mt-10 inline-flex border px-8 py-3 text-[11px] font-medium uppercase tracking-[0.28em] transition hover:bg-[#B79653] hover:text-[#1A1720]" style={{ borderColor: GOLD, color: OAT }} {...editCopy(content, "home_philosophy_cta", "Our story")} />
           )}
         </div>
       </section>
@@ -350,10 +350,10 @@ export default function CellarDesign({ site, page = "home", basePath = "" }: Pre
           <div className="mx-auto max-w-4xl px-6 py-20 sm:px-9 sm:py-28">
             <div className="flex flex-wrap items-end justify-between gap-4">
               <div>
-                <p className="text-[11px] font-medium uppercase tracking-[0.4em]" style={{ color: ROSE }}>From the list</p>
-                <h2 style={{ ...serif, color: OAT }} className="mt-3 text-4xl font-normal tracking-tight sm:text-5xl">A few we love</h2>
+                <p className="text-[11px] font-medium uppercase tracking-[0.4em]" style={{ color: ROSE }} {...editCopy(content, "home_list_kicker", "From the list")} />
+                <h2 style={{ ...serif, color: OAT }} className="mt-3 text-4xl font-normal tracking-tight sm:text-5xl" {...editCopy(content, "home_list_heading", "A few we love")} />
               </div>
-              <a href={href("menu")} className="text-[11px] font-medium uppercase tracking-[0.24em] transition hover:text-[#C98F86]" style={{ color: GOLD }}>The full list →</a>
+              <a href={href("menu")} className="text-[11px] font-medium uppercase tracking-[0.24em] transition hover:text-[#C98F86]" style={{ color: GOLD }} {...editCopy(content, "home_list_link", "The full list →")} />
             </div>
             <ul className="mt-12 divide-y" style={{ borderColor: `${OAT}1f` }}>
               {featured.map((item) => (
@@ -385,7 +385,7 @@ export default function CellarDesign({ site, page = "home", basePath = "" }: Pre
               ))}
             </div>
             <div className="mt-8 text-center">
-              <a href={href("gallery")} className="inline-flex text-[11px] font-medium uppercase tracking-[0.28em] transition hover:text-[#C98F86]" style={{ color: GOLD }}>More by candlelight →</a>
+              <a href={href("gallery")} className="inline-flex text-[11px] font-medium uppercase tracking-[0.28em] transition hover:text-[#C98F86]" style={{ color: GOLD }} {...editCopy(content, "home_gallery_link", "More by candlelight →")} />
             </div>
           </div>
         </section>
@@ -394,8 +394,8 @@ export default function CellarDesign({ site, page = "home", basePath = "" }: Pre
       {/* closing reserve band — charcoal with the glow, one quiet CTA */}
       <section style={{ background: CHARCOAL, backgroundImage: GLOW }} className="text-[#E7DECF]">
         <div className="mx-auto max-w-3xl px-6 py-24 text-center sm:px-9 sm:py-32">
-          <h2 style={{ ...serif, color: OAT }} className="text-4xl font-normal leading-tight tracking-tight sm:text-5xl">Stay a while.</h2>
-          <p className="mt-5 text-[15px] leading-relaxed text-[#E7DECF]/70">A handful of tables, lit by candle. Reserve yours for the evening.</p>
+          <h2 style={{ ...serif, color: OAT }} className="text-4xl font-normal leading-tight tracking-tight sm:text-5xl" {...editCopy(content, "home_cta_heading", "Stay a while.")} />
+          <p className="mt-5 text-[15px] leading-relaxed text-[#E7DECF]/70" {...editCopy(content, "home_cta_blurb", "A handful of tables, lit by candle. Reserve yours for the evening.")} />
           <a href={book} className="mt-9 inline-flex px-10 py-4 text-[11px] font-medium uppercase tracking-[0.3em] transition hover:opacity-90" style={{ background: GOLD, color: CHARCOAL }}>{bookingOn ? "Reserve a table" : "Get in touch"}</a>
         </div>
       </section>

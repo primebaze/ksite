@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { ReubenHeader } from "./ReubenHeader";
 import { ReubenBooking } from "./ReubenBooking";
@@ -83,7 +83,7 @@ export default function ReubenDesign({ site, page = "home", basePath = "" }: Pre
           {content.tagline && <p data-edit="content.tagline" className="mt-4 max-w-xs text-sm leading-relaxed text-[color:#F3ECDC]/70">{content.tagline}</p>}
           {content.socials && content.socials.length > 0 && (
             <>
-              <h4 className="mt-8 text-xs font-bold uppercase tracking-[0.2em]" style={{ color: MUSTARD }}>Follow us</h4>
+              <h4 className="mt-8 text-xs font-bold uppercase tracking-[0.2em]" style={{ color: MUSTARD }} {...editCopy(content, "footer_follow", "Follow us")} />
               <div className="mt-4 flex gap-4 text-[color:#F3ECDC]">
                 {content.socials.map((s) => (
                   <a key={s.url} href={s.url} target="_blank" rel="noreferrer" aria-label={s.label} className="transition hover:text-[color:#E0A526]"><SocialIcon kind={`${s.label} ${s.url}`} /></a>
@@ -94,7 +94,7 @@ export default function ReubenDesign({ site, page = "home", basePath = "" }: Pre
         </div>
 
         <div>
-          <h4 className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: MUSTARD }}>The counter</h4>
+          <h4 className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: MUSTARD }} {...editCopy(content, "footer_counter", "The counter")} />
           <ul className="mt-5 space-y-3 text-sm text-[color:#F3ECDC]/70">
             {([
               groups.length > 0 && { label: "Menu", href: href("menu") },
@@ -109,7 +109,7 @@ export default function ReubenDesign({ site, page = "home", basePath = "" }: Pre
         </div>
 
         <div>
-          <h4 className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: MUSTARD }}>Counter hours</h4>
+          <h4 className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: MUSTARD }} {...editCopy(content, "footer_hours", "Counter hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm text-[color:#F3ECDC]/70">
               {content.hours.map((h, i) => (
@@ -126,8 +126,8 @@ export default function ReubenDesign({ site, page = "home", basePath = "" }: Pre
 
         {/* enamel CTA panel */}
         <div className="border-[3px] px-7 py-9 shadow-[7px_7px_0_0_#2F5D50]" style={{ background: MUSTARD, color: INK, borderColor: CREAM, borderRadius: "4px" }}>
-          <h4 style={display} className="text-3xl font-bold leading-none tracking-tight">Hungry?</h4>
-          <p className="mt-3 text-sm leading-relaxed">Piled-high pastrami, half-sours and rye, the way it&apos;s always been done. Order ahead or grab a table.</p>
+          <h4 style={display} className="text-3xl font-bold leading-none tracking-tight" {...editCopy(content, "footer_cta_heading", "Hungry?")} />
+          <p className="mt-3 text-sm leading-relaxed" {...editCopy(content, "footer_cta_blurb", "Piled-high pastrami, half-sours and rye, the way it's always been done. Order ahead or grab a table.")} />
           <a href={book} className="mt-6 inline-flex border-2 px-7 py-3 text-xs font-bold uppercase tracking-[0.16em] text-[color:#F3ECDC] transition hover:opacity-90" style={{ background: DELI, borderColor: INK, borderRadius: "2px" }}>{bookingOn ? "Order ahead" : "Get in touch"}</a>
         </div>
       </div>
@@ -144,11 +144,11 @@ export default function ReubenDesign({ site, page = "home", basePath = "" }: Pre
   );
 
   // Deli-green page banner with awning ribbon; clears the fixed header.
-  const banner = (kicker: string, title: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string) => (
     <section className="relative overflow-hidden" style={{ background: DELI, color: CREAM }}>
       <div className="relative mx-auto max-w-6xl px-6 pb-12 pt-28 sm:px-8 sm:pb-16 sm:pt-36">
-        <Pin bg={MUSTARD} fg={INK}>{kicker}</Pin>
-        <h1 style={display} className="mt-4 text-5xl font-bold leading-[0.95] tracking-tight sm:text-6xl">{title}</h1>
+        <Pin bg={MUSTARD} fg={INK}><span {...editCopy(content, kickerKey, kicker)} /></Pin>
+        <h1 style={display} className="mt-4 text-5xl font-bold leading-[0.95] tracking-tight sm:text-6xl" {...editCopy(content, titleKey, title)} />
       </div>
       <div className="h-2 w-full" style={{ backgroundImage: AWNING_MUSTARD }} aria-hidden />
     </section>
@@ -158,7 +158,7 @@ export default function ReubenDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "menu") {
     return shell(
       <>
-        {banner("The board", "On rye, on the counter")}
+        {banner("The board", "menu_kicker", "On rye, on the counter", "menu_title")}
         <section className="px-6 py-16 sm:px-8 sm:py-20" style={{ background: CREAM }}>
           <div className="mx-auto max-w-4xl">
             {groups.length > 0 ? (
@@ -166,8 +166,8 @@ export default function ReubenDesign({ site, page = "home", basePath = "" }: Pre
                 {/* the order-ticket panel: cream paper, ink border, perforated top */}
                 <div className="border-[3px] shadow-[8px_8px_0_0_rgba(42,33,26,0.85)]" style={{ background: "#fbf7ec", borderColor: INK, borderRadius: "4px" }}>
                   <div className="flex items-center justify-between gap-4 border-b-2 border-dashed px-6 py-4 sm:px-8" style={{ borderColor: "#cdbf9e" }}>
-                    <span style={{ ...display, color: DELI }} className="text-xl font-bold uppercase tracking-[0.06em]">The menu</span>
-                    <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[color:#6F7A3A]">Guest check · No. ___</span>
+                    <span style={{ ...display, color: DELI }} className="text-xl font-bold uppercase tracking-[0.06em]" {...editCopy(content, "menu_ticket_title", "The menu")} />
+                    <span className="text-[10px] font-bold uppercase tracking-[0.2em] text-[color:#6F7A3A]" {...editCopy(content, "menu_ticket_no", "Guest check · No. ___")} />
                   </div>
                   <div className="space-y-12 px-6 py-8 sm:px-8 sm:py-10">
                     {groups.map((section) => (
@@ -221,7 +221,7 @@ export default function ReubenDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "reservations") {
     return shell(
       <>
-        {banner("At the counter", "Order ahead / reserve a table")}
+        {banner("At the counter", "book_kicker", "Order ahead / reserve a table", "book_title")}
         <section className="px-6 py-16 sm:px-8 sm:py-20" style={{ background: CREAM }}>
           <div className="mx-auto max-w-xl">
             <p className="mb-8 text-center text-[17px] leading-[1.8] text-[color:#2A211A]/75">Put your order in ahead of the lunch rush, or save yourself a table. Big party of 8 or more? Give the counter a call and we&apos;ll sort it.</p>
@@ -236,7 +236,7 @@ export default function ReubenDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "contact") {
     return shell(
       <>
-        {banner("Find the counter", "Come on in")}
+        {banner("Find the counter", "contact_kicker", "Come on in", "contact_title")}
         <section className="px-6 py-16 sm:px-8 sm:py-20" style={{ background: CREAM }}>
           <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-2 lg:gap-20">
             <div>
@@ -253,7 +253,7 @@ export default function ReubenDesign({ site, page = "home", basePath = "" }: Pre
                 </ul>
               )}
               {content.map_url && (
-                <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex border-2 px-7 py-3 text-xs font-bold uppercase tracking-[0.16em] text-[color:#F3ECDC] transition hover:opacity-90" style={{ background: DELI, borderColor: INK, borderRadius: "2px" }}>Get directions</a>
+                <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex border-2 px-7 py-3 text-xs font-bold uppercase tracking-[0.16em] text-[color:#F3ECDC] transition hover:opacity-90" style={{ background: DELI, borderColor: INK, borderRadius: "2px" }} {...editCopy(content, "contact_directions", "Get directions")} />
               )}
             </div>
             {contactOn && (
@@ -279,13 +279,13 @@ export default function ReubenDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "about") {
     return shell(
       <>
-        {banner("Our story", "Since the corner stood")}
+        {banner("Our story", "about_kicker", "Since the corner stood", "about_title")}
         <section className="px-6 py-16 sm:px-8 sm:py-20" style={{ background: CREAM }}>
           <div className="mx-auto max-w-3xl">
             {content.about ? <p data-edit="content.about" className="text-[18px] leading-[1.9] text-[color:#2A211A]/85">{content.about}</p> : <p className="text-[color:#2A211A]/60">Our story is coming soon.</p>}
             {content.cuisine_type && (
               <>
-                <h3 style={display} className="mt-12 text-3xl font-bold tracking-tight text-[color:#2A211A]">What we make</h3>
+                <h3 style={display} className="mt-12 text-3xl font-bold tracking-tight text-[color:#2A211A]" {...editCopy(content, "about_make_heading", "What we make")} />
                 <p data-edit="content.cuisine_type" className="mt-4 text-[17px] leading-[1.8] text-[color:#2A211A]/80">{content.cuisine_type}</p>
               </>
             )}
@@ -299,7 +299,7 @@ export default function ReubenDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "gallery") {
     return shell(
       <>
-        {banner("A look inside", "Gallery")}
+        {banner("A look inside", "gallery_kicker", "Gallery", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="grid grid-cols-2 gap-2 p-2 sm:grid-cols-3" style={{ background: CREAM }}>
             {gallery.map((g) => (
@@ -340,7 +340,7 @@ export default function ReubenDesign({ site, page = "home", basePath = "" }: Pre
           <div className="mx-auto max-w-6xl">
             {/* hand-painted-sign wordmark plate */}
             <div className="inline-block border-[3px] px-6 py-5 shadow-[8px_8px_0_0_rgba(42,33,26,0.6)] sm:px-9 sm:py-7" style={{ background: DELI, borderColor: CREAM, borderRadius: "6px" }}>
-              <span className="block text-[10px] font-bold uppercase tracking-[0.32em]" style={{ color: MUSTARD }}>Est. New York · Delicatessen</span>
+              <span className="block text-[10px] font-bold uppercase tracking-[0.32em]" style={{ color: MUSTARD }} {...editCopy(content, "hero_eyebrow", "Est. New York · Delicatessen")} />
               <h1 data-edit="tenant.business_name" style={display} className="mt-1.5 text-6xl font-bold leading-[0.85] tracking-tight text-[color:#F3ECDC] sm:text-8xl lg:text-[8rem]">{name}</h1>
               <div className="mt-3 h-1 w-full" style={{ backgroundImage: AWNING_MUSTARD, borderRadius: "2px" }} />
             </div>
@@ -362,13 +362,13 @@ export default function ReubenDesign({ site, page = "home", basePath = "" }: Pre
       <section className="relative overflow-hidden" style={{ background: DELI }}>
         <div className="h-2 w-full" style={{ backgroundImage: AWNING_MUSTARD }} aria-hidden />
         <div className="relative mx-auto max-w-6xl px-6 py-20 sm:px-8 sm:py-24">
-          <Pin bg={MUSTARD} fg={INK}>Our story</Pin>
+          <Pin bg={MUSTARD} fg={INK}><span {...editCopy(content, "home_about_pin", "Our story")} /></Pin>
           <div className="mt-5 grid gap-8 lg:grid-cols-[1.1fr_1fr] lg:items-end lg:gap-16">
             <h2 style={display} className="text-5xl font-bold leading-[0.92] tracking-tight text-[color:#F3ECDC] sm:text-6xl">Piled high,<br />the way it<br /><span style={{ color: MUSTARD }}>always was</span></h2>
             {content.about && <p data-edit="content.about" className="text-[17px] leading-[1.85] text-[color:#F3ECDC]/85">{content.about}</p>}
           </div>
           {content.about && (
-            <a href={href("about")} className="mt-8 inline-flex border-2 px-7 py-3 text-xs font-bold uppercase tracking-[0.16em] text-[color:#2A211A] transition hover:opacity-90" style={{ background: MUSTARD, borderColor: MUSTARD, borderRadius: "2px" }}>Our story</a>
+            <a href={href("about")} className="mt-8 inline-flex border-2 px-7 py-3 text-xs font-bold uppercase tracking-[0.16em] text-[color:#2A211A] transition hover:opacity-90" style={{ background: MUSTARD, borderColor: MUSTARD, borderRadius: "2px" }} {...editCopy(content, "home_about_cta", "Our story")} />
           )}
         </div>
       </section>
@@ -379,10 +379,10 @@ export default function ReubenDesign({ site, page = "home", basePath = "" }: Pre
           <div className="mx-auto max-w-6xl px-6 py-16 sm:px-8 sm:py-20">
             <div className="flex flex-wrap items-end justify-between gap-4">
               <div>
-                <Pin bg={DELI} fg={CREAM}>By the pound</Pin>
-                <h2 style={display} className="mt-4 text-5xl font-bold leading-[0.9] tracking-tight text-[color:#2A211A] sm:text-6xl">The classics</h2>
+                <Pin bg={DELI} fg={CREAM}><span {...editCopy(content, "classics_pin", "By the pound")} /></Pin>
+                <h2 style={display} className="mt-4 text-5xl font-bold leading-[0.9] tracking-tight text-[color:#2A211A] sm:text-6xl" {...editCopy(content, "classics_heading", "The classics")} />
               </div>
-              {groups.length > 0 && <a href={href("menu")} className="text-xs font-bold uppercase tracking-[0.16em] text-[color:#B23A2E] hover:opacity-70">See the full board →</a>}
+              {groups.length > 0 && <a href={href("menu")} className="text-xs font-bold uppercase tracking-[0.16em] text-[color:#B23A2E] hover:opacity-70" {...editCopy(content, "classics_link", "See the full board →")} />}
             </div>
             <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {featured.map((item, i) => {
@@ -408,7 +408,7 @@ export default function ReubenDesign({ site, page = "home", basePath = "" }: Pre
             </div>
             {groups.length > 0 && (
               <div className="mt-10 text-center">
-                <a href={href("menu")} className="inline-flex border-2 px-8 py-3 text-xs font-bold uppercase tracking-[0.16em] text-[color:#F3ECDC] transition hover:opacity-90" style={{ background: DELI, borderColor: INK, borderRadius: "2px" }}>See the full board</a>
+                <a href={href("menu")} className="inline-flex border-2 px-8 py-3 text-xs font-bold uppercase tracking-[0.16em] text-[color:#F3ECDC] transition hover:opacity-90" style={{ background: DELI, borderColor: INK, borderRadius: "2px" }} {...editCopy(content, "classics_all_cta", "See the full board")} />
               </div>
             )}
           </div>
@@ -420,8 +420,8 @@ export default function ReubenDesign({ site, page = "home", basePath = "" }: Pre
         <div className="h-2 w-full" style={{ backgroundImage: AWNING_MUSTARD }} aria-hidden />
         <div className="relative mx-auto max-w-5xl px-6 py-16 sm:px-8 sm:py-20">
           <div className="border-[3px] px-8 py-12 text-center shadow-[9px_9px_0_0_#2A211A]" style={{ background: CREAM, borderColor: INK, borderRadius: "4px" }}>
-            <h2 style={display} className="text-5xl font-bold leading-[0.9] tracking-tight text-[color:#2A211A] sm:text-6xl">Pull up a stool</h2>
-            <p className="mt-3 text-sm font-bold uppercase tracking-[0.18em] text-[color:#2A211A]/65">Pastrami on rye · half-sour pickles · egg creams</p>
+            <h2 style={display} className="text-5xl font-bold leading-[0.9] tracking-tight text-[color:#2A211A] sm:text-6xl" {...editCopy(content, "cta_heading", "Pull up a stool")} />
+            <p className="mt-3 text-sm font-bold uppercase tracking-[0.18em] text-[color:#2A211A]/65" {...editCopy(content, "cta_sub", "Pastrami on rye · half-sour pickles · egg creams")} />
             <a href={book} className="mt-7 inline-flex border-2 px-9 py-4 text-sm font-bold uppercase tracking-[0.16em] text-[color:#F3ECDC] transition hover:opacity-90" style={{ background: DELI, borderColor: INK, borderRadius: "2px" }}>{bookingOn ? "Order ahead" : "Get in touch"}</a>
           </div>
         </div>
@@ -432,7 +432,7 @@ export default function ReubenDesign({ site, page = "home", basePath = "" }: Pre
       <section style={{ background: INK }} className="text-[color:#F3ECDC]">
         <div className="mx-auto grid max-w-6xl gap-10 px-6 py-16 sm:px-8 md:grid-cols-3">
           <div>
-            <h3 className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: MUSTARD }}>Counter hours</h3>
+            <h3 className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: MUSTARD }} {...editCopy(content, "info_hours_heading", "Counter hours")} />
             {content.hours && content.hours.length > 0 ? (
               <ul className="mt-5 space-y-2 text-sm text-[color:#F3ECDC]/80">
                 {content.hours.map((h, i) => (
@@ -442,19 +442,19 @@ export default function ReubenDesign({ site, page = "home", basePath = "" }: Pre
             ) : <p className="mt-5 text-sm text-[color:#F3ECDC]/70">Open daily.</p>}
           </div>
           <div>
-            <h3 className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: MUSTARD }}>Find us</h3>
+            <h3 className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: MUSTARD }} {...editCopy(content, "info_findus_heading", "Find us")} />
             {content.address && <p data-edit="content.address" className="mt-5 whitespace-pre-line text-sm leading-relaxed text-[color:#F3ECDC]/80">{content.address}</p>}
             <div className="mt-3 space-y-1.5 text-sm text-[color:#F3ECDC]/80">
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block hover:text-[color:#F3ECDC]">{content.phone}</a>}
               {content.email && <a data-edit="content.email" href={`mailto:${content.email}`} className="block hover:text-[color:#F3ECDC]">{content.email}</a>}
             </div>
             {content.map_url && (
-              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-4 inline-flex border-2 px-6 py-2.5 text-xs font-bold uppercase tracking-[0.16em] text-[color:#F3ECDC] transition hover:bg-[color:#F3ECDC] hover:text-[color:#2A211A]" style={{ borderColor: "rgba(243,236,220,0.5)", borderRadius: "2px" }}>Get directions</a>
+              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-4 inline-flex border-2 px-6 py-2.5 text-xs font-bold uppercase tracking-[0.16em] text-[color:#F3ECDC] transition hover:bg-[color:#F3ECDC] hover:text-[color:#2A211A]" style={{ borderColor: "rgba(243,236,220,0.5)", borderRadius: "2px" }} {...editCopy(content, "info_directions", "Get directions")} />
             )}
           </div>
           <div>
-            <h3 className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: MUSTARD }}>Order</h3>
-            <p className="mt-5 text-sm text-[color:#F3ECDC]/80">Put your order in ahead and skip the lunchtime line.</p>
+            <h3 className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: MUSTARD }} {...editCopy(content, "info_order_heading", "Order")} />
+            <p className="mt-5 text-sm text-[color:#F3ECDC]/80" {...editCopy(content, "info_order_sub", "Put your order in ahead and skip the lunchtime line.")} />
             <a href={book} className="mt-5 inline-flex border-2 px-7 py-3 text-xs font-bold uppercase tracking-[0.16em] text-[color:#2A211A] transition hover:opacity-90" style={{ background: MUSTARD, borderColor: MUSTARD, borderRadius: "2px" }}>{bookingOn ? "Order ahead" : "Contact us"}</a>
           </div>
         </div>

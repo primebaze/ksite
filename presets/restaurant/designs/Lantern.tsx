@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { LanternHeader } from "./LanternHeader";
 import { LanternBooking } from "./LanternBooking";
@@ -58,9 +58,7 @@ export default function LanternDesign({ site, page = "home", basePath = "" }: Pr
       <div className="mx-auto grid max-w-6xl gap-12 px-8 py-20 sm:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1fr]">
         <div>
           <p data-edit="tenant.business_name" style={serif} className="text-2xl text-[#f3ede1]">{name}</p>
-          <a href={book} className="mt-5 inline-flex px-7 py-3.5 text-sm font-semibold uppercase tracking-[0.18em] text-white transition hover:opacity-90" style={{ background: RED }}>
-            Book a table
-          </a>
+          <a href={book} className="mt-5 inline-flex px-7 py-3.5 text-sm font-semibold uppercase tracking-[0.18em] text-white transition hover:opacity-90" style={{ background: RED }} {...editCopy(content, "footer_book_cta", "Book a table")} />
           {content.socials && content.socials.length > 0 && (
             <div className="mt-7 flex gap-4 text-[#f3ede1]">
               {content.socials.map((s) => (
@@ -73,7 +71,7 @@ export default function LanternDesign({ site, page = "home", basePath = "" }: Pr
         </div>
 
         <div>
-          <h4 className="text-sm font-semibold uppercase tracking-[0.18em]" style={{ color: GOLD }}>Opening hours</h4>
+          <h4 className="text-sm font-semibold uppercase tracking-[0.18em]" style={{ color: GOLD }} {...editCopy(content, "footer_hours", "Opening hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm text-[#f3ede1]/80">
               {content.hours.map((h, i) => (
@@ -89,7 +87,7 @@ export default function LanternDesign({ site, page = "home", basePath = "" }: Pr
         </div>
 
         <div>
-          <h4 className="text-sm font-semibold uppercase tracking-[0.18em]" style={{ color: GOLD }}>Explore</h4>
+          <h4 className="text-sm font-semibold uppercase tracking-[0.18em]" style={{ color: GOLD }} {...editCopy(content, "footer_explore", "Explore")} />
           <ul className="mt-5 space-y-2.5 text-sm text-[#f3ede1]/80">
             {([
               groups.length > 0 && { label: "Menu", href: href("menu") },
@@ -115,11 +113,11 @@ export default function LanternDesign({ site, page = "home", basePath = "" }: Pr
   );
 
   // Dark top banner — also clears the fixed header on sub-pages.
-  const banner = (kicker: string, title: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string) => (
     <section className="border-b border-white/10" style={{ background: NEAR_BLACK }}>
       <div className="mx-auto max-w-6xl px-8 pb-14 pt-32 sm:pt-36">
-        <p className="text-sm font-semibold uppercase tracking-[0.3em]" style={{ color: GOLD }}>{kicker}</p>
-        <h1 style={serif} className="mt-3 text-4xl font-medium text-[#f3ede1] sm:text-5xl">{title}</h1>
+        <p className="text-sm font-semibold uppercase tracking-[0.3em]" style={{ color: GOLD }} {...editCopy(content, kickerKey, kicker)} />
+        <h1 style={serif} className="mt-3 text-4xl font-medium text-[#f3ede1] sm:text-5xl" {...editCopy(content, titleKey, title)} />
       </div>
     </section>
   );
@@ -128,7 +126,7 @@ export default function LanternDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "menu") {
     return shell(
       <>
-        {banner("The menu", "Dim sum & mains")}
+        {banner("The menu", "menu_kicker", "Dim sum & mains", "menu_title")}
         <section className="mx-auto max-w-5xl px-8 py-20">
           {groups.length > 0 ? (
             <>
@@ -183,11 +181,9 @@ export default function LanternDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "reservations") {
     return shell(
       <>
-        {banner("Reservations", "Book a table")}
+        {banner("Reservations", "reservations_kicker", "Book a table", "reservations_title")}
         <section className="mx-auto max-w-2xl px-8 py-20">
-          <p className="mb-8 text-[17px] leading-[1.8] text-[#f3ede1]/75">
-            Reserve your table below and we will confirm by phone or email. For parties of 8 or more, please call us.
-          </p>
+          <p className="mb-8 text-[17px] leading-[1.8] text-[#f3ede1]/75" {...editCopy(content, "reservations_intro", "Reserve your table below and we will confirm by phone or email. For parties of 8 or more, please call us.")} />
           <LanternBooking tenantId={tenant.id} name={name} />
         </section>
       </>,
@@ -198,7 +194,7 @@ export default function LanternDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "contact") {
     return shell(
       <>
-        {banner("Visit us", "Find us")}
+        {banner("Visit us", "contact_kicker", "Find us", "contact_title")}
         <section className="mx-auto max-w-2xl px-8 py-20">
           <div className="border border-white/12 p-8 sm:p-10" style={{ background: PANEL }}>
             <div className="space-y-4 text-[15px] leading-relaxed text-[#f3ede1]/80">
@@ -214,9 +210,7 @@ export default function LanternDesign({ site, page = "home", basePath = "" }: Pr
               </ul>
             )}
             {content.map_url && (
-              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex w-full justify-center px-7 py-4 text-xs font-semibold uppercase tracking-[0.2em] text-white transition hover:opacity-90 sm:w-auto" style={{ background: RED }}>
-                Get directions
-              </a>
+              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex w-full justify-center px-7 py-4 text-xs font-semibold uppercase tracking-[0.2em] text-white transition hover:opacity-90 sm:w-auto" style={{ background: RED }} {...editCopy(content, "contact_directions", "Get directions")} />
             )}
           </div>
 
@@ -240,7 +234,7 @@ export default function LanternDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "about") {
     return shell(
       <>
-        {banner("About", "Our story")}
+        {banner("About", "about_kicker", "Our story", "about_title")}
         <section className="mx-auto max-w-3xl px-8 py-20">
           {content.about ? (
             <p data-edit="content.about" className="text-[17px] leading-[1.9] text-[#f3ede1]/80">{content.about}</p>
@@ -249,7 +243,7 @@ export default function LanternDesign({ site, page = "home", basePath = "" }: Pr
           )}
           {content.cuisine_type && (
             <>
-              <h3 style={serif} className="mt-12 text-2xl font-medium text-[#f3ede1]">A taste of what we do</h3>
+              <h3 style={serif} className="mt-12 text-2xl font-medium text-[#f3ede1]" {...editCopy(content, "about_taste_heading", "A taste of what we do")} />
               <p data-edit="content.cuisine_type" className="mt-4 text-[17px] leading-[1.8] text-[#f3ede1]/80">{content.cuisine_type}</p>
             </>
           )}
@@ -262,7 +256,7 @@ export default function LanternDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Gallery", "A look inside")}
+        {banner("Gallery", "gallery_kicker", "A look inside", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="grid grid-cols-2 gap-1 sm:grid-cols-3">
             {gallery.map((g) => (
@@ -302,9 +296,7 @@ export default function LanternDesign({ site, page = "home", basePath = "" }: Pr
             </p>
           )}
           <div className="mt-9 flex justify-center">
-            <a href={book} style={{ background: RED }} className="inline-flex w-full max-w-xs justify-center px-10 py-4 text-xs font-semibold uppercase tracking-[0.22em] text-white shadow-2xl transition hover:opacity-90 sm:w-auto sm:text-sm">
-              Book a table
-            </a>
+            <a href={book} style={{ background: RED }} className="inline-flex w-full max-w-xs justify-center px-10 py-4 text-xs font-semibold uppercase tracking-[0.22em] text-white shadow-2xl transition hover:opacity-90 sm:w-auto sm:text-sm" {...editCopy(content, "hero_book_cta", "Book a table")} />
           </div>
         </div>
       </section>
@@ -312,12 +304,12 @@ export default function LanternDesign({ site, page = "home", basePath = "" }: Pr
       {/* INTRO / ABOUT teaser */}
       {content.about && (
         <section className="mx-auto max-w-3xl px-8 py-24 text-center">
-          <p className="text-sm font-semibold uppercase tracking-[0.3em]" style={{ color: RED }}>Welcome</p>
+          <p className="text-sm font-semibold uppercase tracking-[0.3em]" style={{ color: RED }} {...editCopy(content, "home_welcome_eyebrow", "Welcome")} />
           <p data-edit="content.about" className="mx-auto mt-7 max-w-2xl text-[19px] leading-[1.9] text-[#f3ede1]/80">
             {content.about}
           </p>
           <div className="mt-7">
-            <a href={href("about")} className="inline-flex text-sm font-semibold uppercase tracking-[0.15em]" style={{ color: GOLD }}>Our story →</a>
+            <a href={href("about")} className="inline-flex text-sm font-semibold uppercase tracking-[0.15em]" style={{ color: GOLD }} {...editCopy(content, "home_about_cta", "Our story →")} />
           </div>
         </section>
       )}
@@ -328,10 +320,10 @@ export default function LanternDesign({ site, page = "home", basePath = "" }: Pr
           <div className="mx-auto max-w-5xl px-8 py-24">
             <div className="flex flex-wrap items-end justify-between gap-4">
               <div>
-                <p className="text-sm font-semibold uppercase tracking-[0.3em]" style={{ color: GOLD }}>The menu</p>
-                <h2 style={serif} className="mt-3 text-4xl font-medium text-[#f3ede1] sm:text-5xl">Signature plates</h2>
+                <p className="text-sm font-semibold uppercase tracking-[0.3em]" style={{ color: GOLD }} {...editCopy(content, "home_menu_eyebrow", "The menu")} />
+                <h2 style={serif} className="mt-3 text-4xl font-medium text-[#f3ede1] sm:text-5xl" {...editCopy(content, "home_menu_heading", "Signature plates")} />
               </div>
-              <a href={href("menu")} className="text-sm font-semibold uppercase tracking-[0.15em]" style={{ color: RED }}>View full menu →</a>
+              <a href={href("menu")} className="text-sm font-semibold uppercase tracking-[0.15em]" style={{ color: RED }} {...editCopy(content, "home_menu_link", "View full menu →")} />
             </div>
             <ul className="mx-auto mt-12 max-w-xl divide-y" style={{ borderColor: "rgba(255,255,255,0.12)" }}>
               {featured.map((item) => (
@@ -356,7 +348,7 @@ export default function LanternDesign({ site, page = "home", basePath = "" }: Pr
       <section style={{ background: NEAR_BLACK }}>
         <div className="mx-auto grid max-w-6xl gap-12 px-8 py-20 md:grid-cols-3">
           <div>
-            <h3 className="text-sm font-semibold uppercase tracking-[0.18em]" style={{ color: GOLD }}>Opening hours</h3>
+            <h3 className="text-sm font-semibold uppercase tracking-[0.18em]" style={{ color: GOLD }} {...editCopy(content, "home_hours_heading", "Opening hours")} />
             {content.hours && content.hours.length > 0 && (
               <ul className="mt-5 space-y-2 text-sm text-[#f3ede1]/80">
                 {content.hours.map((h, i) => (
@@ -366,7 +358,7 @@ export default function LanternDesign({ site, page = "home", basePath = "" }: Pr
             )}
           </div>
           <div>
-            <h3 className="text-sm font-semibold uppercase tracking-[0.18em]" style={{ color: GOLD }}>Find us</h3>
+            <h3 className="text-sm font-semibold uppercase tracking-[0.18em]" style={{ color: GOLD }} {...editCopy(content, "home_findus_heading", "Find us")} />
             {content.address && <p data-edit="content.address" className="mt-5 whitespace-pre-line text-sm leading-relaxed text-[#f3ede1]/80">{content.address}</p>}
             <div className="mt-4 space-y-1.5 text-sm text-[#f3ede1]/80">
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block hover:text-white">{content.phone}</a>}
@@ -374,9 +366,9 @@ export default function LanternDesign({ site, page = "home", basePath = "" }: Pr
             </div>
           </div>
           <div className="flex flex-col items-start">
-            <h3 className="text-sm font-semibold uppercase tracking-[0.18em]" style={{ color: GOLD }}>Reserve</h3>
-            <p className="mt-5 text-sm text-[#f3ede1]/80">Book your table online in seconds.</p>
-            <a href={book} className="mt-6 inline-flex border border-white/40 px-7 py-3 text-xs font-semibold uppercase tracking-[0.2em] text-[#f3ede1] transition hover:bg-[#f3ede1] hover:text-neutral-900">Book a table</a>
+            <h3 className="text-sm font-semibold uppercase tracking-[0.18em]" style={{ color: GOLD }} {...editCopy(content, "home_reserve_heading", "Reserve")} />
+            <p className="mt-5 text-sm text-[#f3ede1]/80" {...editCopy(content, "home_reserve_sub", "Book your table online in seconds.")} />
+            <a href={book} className="mt-6 inline-flex border border-white/40 px-7 py-3 text-xs font-semibold uppercase tracking-[0.2em] text-[#f3ede1] transition hover:bg-[#f3ede1] hover:text-neutral-900" {...editCopy(content, "home_reserve_cta", "Book a table")} />
           </div>
         </div>
       </section>

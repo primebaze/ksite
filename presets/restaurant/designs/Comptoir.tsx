@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { ComptoirHeader } from "./ComptoirHeader";
 import { ComptoirBooking } from "./ComptoirBooking";
@@ -97,7 +97,7 @@ export default function ComptoirDesign({ site, page = "home", basePath = "" }: P
             {content.tagline && <p data-edit="content.tagline" className="mt-4 max-w-xs text-sm leading-relaxed text-[color:#F2ECDD]/65">{content.tagline}</p>}
             {content.socials && content.socials.length > 0 && (
               <>
-                <h4 className="mt-8 text-[10px] font-semibold uppercase tracking-[0.24em]" style={{ color: BRASS }}>Suivez-nous</h4>
+                <h4 className="mt-8 text-[10px] font-semibold uppercase tracking-[0.24em]" style={{ color: BRASS }} {...editCopy(content, "footer_social_heading", "Suivez-nous")} />
                 <div className="mt-4 flex gap-4 text-[color:#F2ECDD]">
                   {content.socials.map((s) => (
                     <a key={s.url} href={s.url} target="_blank" rel="noreferrer" aria-label={s.label} className="transition hover:opacity-60"><SocialIcon kind={`${s.label} ${s.url}`} /></a>
@@ -108,7 +108,7 @@ export default function ComptoirDesign({ site, page = "home", basePath = "" }: P
           </div>
 
           <div>
-            <h4 className="text-[10px] font-semibold uppercase tracking-[0.24em]" style={{ color: BRASS }}>Le Bistrot</h4>
+            <h4 className="text-[10px] font-semibold uppercase tracking-[0.24em]" style={{ color: BRASS }} {...editCopy(content, "footer_bistro_heading", "Le Bistrot")} />
             <ul className="mt-5 space-y-2.5 text-sm text-[color:#F2ECDD]/70">
               {([
                 groups.length > 0 && { label: "La carte", href: href("menu") },
@@ -123,7 +123,7 @@ export default function ComptoirDesign({ site, page = "home", basePath = "" }: P
           </div>
 
           <div>
-            <h4 className="text-[10px] font-semibold uppercase tracking-[0.24em]" style={{ color: BRASS }}>Horaires</h4>
+            <h4 className="text-[10px] font-semibold uppercase tracking-[0.24em]" style={{ color: BRASS }} {...editCopy(content, "footer_hours_heading", "Horaires")} />
             {content.hours && content.hours.length > 0 ? (
               <ul className="mt-5 space-y-2 text-sm text-[color:#F2ECDD]/70">
                 {content.hours.map((h, i) => (
@@ -140,8 +140,8 @@ export default function ComptoirDesign({ site, page = "home", basePath = "" }: P
 
           {/* CTA panel — bottle-green card with a brass keyline */}
           <div className="px-7 py-9" style={{ background: GREEN, borderRadius: "3px", border: `1px solid ${BRASS}55` }}>
-            <h4 style={{ ...serif, color: CREAM }} className="text-2xl leading-tight">Une table vous attend</h4>
-            <p className="mt-2 text-sm leading-relaxed text-[color:#F2ECDD]/80">Déjeuner sur la terrasse ou dîner au comptoir — réservez en quelques instants.</p>
+            <h4 style={{ ...serif, color: CREAM }} className="text-2xl leading-tight" {...editCopy(content, "footer_cta_heading", "Une table vous attend")} />
+            <p className="mt-2 text-sm leading-relaxed text-[color:#F2ECDD]/80" {...editCopy(content, "footer_cta_blurb", "Déjeuner sur la terrasse ou dîner au comptoir — réservez en quelques instants.")} />
             <a href={book} className="mt-6 inline-flex px-7 py-3 text-[10px] font-semibold uppercase tracking-[0.2em] text-[color:#F2ECDD] transition hover:opacity-90" style={{ background: RED, borderRadius: "2px" }}>{bookingOn ? "Réserver une table" : "Nous contacter"}</a>
           </div>
         </div>
@@ -161,11 +161,11 @@ export default function ComptoirDesign({ site, page = "home", basePath = "" }: P
   );
 
   // Cream sub-page banner that clears the fixed header; a thin tile rule below.
-  const banner = (kicker: string, title: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey?: string) => (
     <section className="text-center" style={{ background: PAPER, borderBottom: `1px solid ${BRASS}33` }}>
       <div className="mx-auto max-w-3xl px-6 pb-14 pt-32 sm:pt-40">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: RED }}>{kicker}</p>
-        <h1 style={serif} className="mt-4 text-5xl sm:text-6xl">{title}</h1>
+        <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: RED }} {...editCopy(content, kickerKey, kicker)} />
+        {titleKey ? <h1 style={serif} className="mt-4 text-5xl sm:text-6xl" {...editCopy(content, titleKey, title)} /> : <h1 style={serif} className="mt-4 text-5xl sm:text-6xl">{title}</h1>}
         <div className="mt-6"><Fleuron /></div>
       </div>
       <div className="h-2 w-full" style={{ background: TILE, opacity: 0.5 }} aria-hidden />
@@ -176,7 +176,7 @@ export default function ComptoirDesign({ site, page = "home", basePath = "" }: P
   if (page === "menu") {
     return shell(
       <>
-        {banner("La carte", "À la carte")}
+        {banner("La carte", "menu_kicker", "À la carte", "menu_title")}
         <section className="px-6 py-16 sm:py-24" style={{ background: CREAM }}>
           <div className="mx-auto max-w-5xl">
             {groups.length > 0 ? (
@@ -243,7 +243,7 @@ export default function ComptoirDesign({ site, page = "home", basePath = "" }: P
   if (page === "reservations") {
     return shell(
       <>
-        {banner("Réservations", "Réserver une table")}
+        {banner("Réservations", "book_kicker", "Réserver une table", "book_title")}
         <section className="px-6 py-16 sm:py-24" style={{ background: CREAM }}>
           <div className="mx-auto max-w-xl">
             <p className="mb-10 text-center text-[17px] italic leading-[1.9] text-[color:#2B2B2E]/75" style={serif}>
@@ -260,11 +260,11 @@ export default function ComptoirDesign({ site, page = "home", basePath = "" }: P
   if (page === "contact") {
     return shell(
       <>
-        {banner("Nous trouver", "Au coin de la rue")}
+        {banner("Nous trouver", "contact_kicker", "Au coin de la rue", "contact_title")}
         <section className="px-6 py-16 sm:py-24" style={{ background: CREAM }}>
           <div className="mx-auto grid max-w-6xl gap-14 lg:grid-cols-2 lg:gap-20">
             <div>
-              <h2 style={serif} className="text-3xl">Comment nous rejoindre</h2>
+              <h2 style={serif} className="text-3xl" {...editCopy(content, "contact_heading", "Comment nous rejoindre")} />
               <div className="mt-6 space-y-4 text-[15px] leading-relaxed text-[color:#2B2B2E]/80">
                 {content.address && <p data-edit="content.address" className="whitespace-pre-line text-lg text-[color:#2B2B2E]" style={serif}>{content.address}</p>}
                 {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block hover:text-[color:#9E2B25]">{content.phone}</a>}
@@ -273,7 +273,7 @@ export default function ComptoirDesign({ site, page = "home", basePath = "" }: P
 
               {content.hours && content.hours.length > 0 && (
                 <div className="mt-9 p-7" style={{ background: PAPER, border: `1px solid ${BRASS}`, borderRadius: "2px" }}>
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.26em]" style={{ color: RED }}>Horaires d&apos;ouverture</p>
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.26em]" style={{ color: RED }} {...editCopy(content, "contact_hours_label", "Horaires d'ouverture")} />
                   <ul className="mt-4 space-y-2.5 text-sm text-[color:#2B2B2E]/80">
                     {content.hours.map((h, i) => (
                       <li key={i} className="flex justify-between gap-6 border-b border-dashed py-1.5" style={{ borderColor: `${ZINC}22` }}>
@@ -286,9 +286,7 @@ export default function ComptoirDesign({ site, page = "home", basePath = "" }: P
               )}
 
               {content.map_url && (
-                <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-8 inline-flex px-7 py-3 text-[11px] font-semibold uppercase tracking-[0.2em] text-[color:#F2ECDD] transition hover:opacity-90" style={{ background: ZINC, borderRadius: "2px" }}>
-                  Itinéraire
-                </a>
+                <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-8 inline-flex px-7 py-3 text-[11px] font-semibold uppercase tracking-[0.2em] text-[color:#F2ECDD] transition hover:opacity-90" style={{ background: ZINC, borderRadius: "2px" }} {...editCopy(content, "contact_directions_cta", "Itinéraire")} />
               )}
             </div>
 
@@ -315,7 +313,7 @@ export default function ComptoirDesign({ site, page = "home", basePath = "" }: P
   if (page === "about") {
     return shell(
       <>
-        {banner("La maison", `Bienvenue chez ${name}`)}
+        {banner("La maison", "about_kicker", `Bienvenue chez ${name}`, undefined)}
         <section className="px-6 py-16 sm:py-24" style={{ background: CREAM }}>
           <div className="mx-auto max-w-3xl">
             {content.about ? (
@@ -326,7 +324,7 @@ export default function ComptoirDesign({ site, page = "home", basePath = "" }: P
             {content.cuisine_type && (
               <>
                 <div className="mt-10"><Fleuron /></div>
-                <h3 style={serif} className="mt-8 text-center text-3xl">Notre cuisine</h3>
+                <h3 style={serif} className="mt-8 text-center text-3xl" {...editCopy(content, "about_cuisine_heading", "Notre cuisine")} />
                 <p data-edit="content.cuisine_type" className="mt-4 text-center text-[17px] leading-[1.85] text-[color:#2B2B2E]/80">{content.cuisine_type}</p>
               </>
             )}
@@ -340,7 +338,7 @@ export default function ComptoirDesign({ site, page = "home", basePath = "" }: P
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Galerie", "L'ambiance")}
+        {banner("Galerie", "gallery_kicker", "L'ambiance", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="px-6 py-12 sm:py-16" style={{ background: CREAM }}>
             <div className="mx-auto grid max-w-6xl grid-cols-2 gap-3 sm:grid-cols-3">
@@ -411,8 +409,8 @@ export default function ComptoirDesign({ site, page = "home", basePath = "" }: P
             style={{ background: ZINC, borderRadius: "4px", border: `2px solid ${BRASS}`, boxShadow: `inset 0 0 60px rgba(0,0,0,0.45), 0 24px 60px -28px rgba(0,0,0,0.6)` }}
           >
             <div className="text-center">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: BRASS }}>L&apos;ardoise du jour</p>
-              <h2 style={{ ...serif, color: CREAM }} className="mt-3 text-4xl sm:text-5xl">Le menu</h2>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: BRASS }} {...editCopy(content, "home_ardoise_kicker", "L'ardoise du jour")} />
+              <h2 style={{ ...serif, color: CREAM }} className="mt-3 text-4xl sm:text-5xl" {...editCopy(content, "home_ardoise_heading", "Le menu")} />
               <div className="mt-4"><Fleuron light /></div>
             </div>
             <ul className="mx-auto mt-9 max-w-xl divide-y text-left" style={{ borderColor: `${CREAM}22` }}>
@@ -432,9 +430,7 @@ export default function ComptoirDesign({ site, page = "home", basePath = "" }: P
             </ul>
             {groups.length > 0 && (
               <div className="mt-10 text-center">
-                <a href={href("menu")} className="inline-flex px-9 py-3.5 text-[11px] font-semibold uppercase tracking-[0.22em] transition hover:opacity-90" style={{ background: CREAM, color: ZINC, borderRadius: "2px" }}>
-                  Voir toute la carte
-                </a>
+                <a href={href("menu")} className="inline-flex px-9 py-3.5 text-[11px] font-semibold uppercase tracking-[0.22em] transition hover:opacity-90" style={{ background: CREAM, color: ZINC, borderRadius: "2px" }} {...editCopy(content, "home_ardoise_cta", "Voir toute la carte")} />
               </div>
             )}
           </div>
@@ -446,12 +442,10 @@ export default function ComptoirDesign({ site, page = "home", basePath = "" }: P
         <section style={{ background: GREEN }} className="text-[color:#F2ECDD]">
           <div className="mx-auto grid max-w-6xl items-center gap-12 px-6 py-20 sm:py-28 md:grid-cols-[1fr_0.82fr] md:gap-16">
             <div>
-              <p className="text-[11px] font-semibold uppercase tracking-[0.3em]" style={{ color: BRASS }}>La maison</p>
-              <h2 style={{ ...serif, color: CREAM }} className="mt-4 text-4xl sm:text-5xl">Une histoire de quartier</h2>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.3em]" style={{ color: BRASS }} {...editCopy(content, "home_maison_kicker", "La maison")} />
+              <h2 style={{ ...serif, color: CREAM }} className="mt-4 text-4xl sm:text-5xl" {...editCopy(content, "home_maison_heading", "Une histoire de quartier")} />
               <p data-edit="content.about" className="mt-7 max-w-xl text-[17px] leading-[1.9] text-[color:#F2ECDD]/80">{content.about}</p>
-              <a href={href("about")} className="mt-8 inline-flex px-7 py-3 text-[11px] font-semibold uppercase tracking-[0.2em] transition hover:opacity-90" style={{ background: CREAM, color: GREEN, borderRadius: "2px" }}>
-                Notre histoire
-              </a>
+              <a href={href("about")} className="mt-8 inline-flex px-7 py-3 text-[11px] font-semibold uppercase tracking-[0.2em] transition hover:opacity-90" style={{ background: CREAM, color: GREEN, borderRadius: "2px" }} {...editCopy(content, "home_maison_cta", "Notre histoire")} />
             </div>
             <div className="relative overflow-hidden" style={{ borderRadius: "3px", border: `1px solid ${BRASS}`, boxShadow: `0 0 0 6px ${GREEN}, 0 0 0 7px ${BRASS}55` }}>
               {(gallery[0]?.image_url ?? hero) ? (
@@ -476,7 +470,7 @@ export default function ComptoirDesign({ site, page = "home", basePath = "" }: P
               ))}
             </div>
             <div className="mt-10 text-center">
-              <a href={href("gallery")} className="text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: RED }}>Toute la galerie →</a>
+              <a href={href("gallery")} className="text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: RED }} {...editCopy(content, "home_gallery_link", "Toute la galerie →")} />
             </div>
           </div>
         </section>
@@ -486,18 +480,14 @@ export default function ComptoirDesign({ site, page = "home", basePath = "" }: P
       <section className="px-6 py-20 text-center sm:py-28" style={{ background: CREAM }}>
         <div className="mx-auto max-w-2xl">
           <Fleuron />
-          <p className="mt-6 text-[11px] font-semibold uppercase tracking-[0.3em]" style={{ color: RED }}>Le prix fixe · midi et soir</p>
-          <h2 style={serif} className="mt-4 text-4xl sm:text-5xl">Passez nous voir au comptoir</h2>
-          <p className="mx-auto mt-6 max-w-xl text-[17px] leading-[1.9] text-[color:#2B2B2E]/75">
-            Un déjeuner rapide en terrasse ou un dîner qui s&apos;éternise au comptoir : notre table vous attend. Réservez en ligne en un instant, ou écrivez-nous pour organiser une occasion particulière.
-          </p>
+          <p className="mt-6 text-[11px] font-semibold uppercase tracking-[0.3em]" style={{ color: RED }} {...editCopy(content, "home_cta_kicker", "Le prix fixe · midi et soir")} />
+          <h2 style={serif} className="mt-4 text-4xl sm:text-5xl" {...editCopy(content, "home_cta_heading", "Passez nous voir au comptoir")} />
+          <p className="mx-auto mt-6 max-w-xl text-[17px] leading-[1.9] text-[color:#2B2B2E]/75" {...editCopy(content, "home_cta_blurb", "Un déjeuner rapide en terrasse ou un dîner qui s'éternise au comptoir : notre table vous attend. Réservez en ligne en un instant, ou écrivez-nous pour organiser une occasion particulière.")} />
           <div className="mt-10 flex flex-wrap justify-center gap-4">
             <a href={book} className="inline-flex px-9 py-4 text-[11px] font-semibold uppercase tracking-[0.22em] text-[color:#F2ECDD] transition hover:opacity-90" style={{ background: RED, borderRadius: "2px" }}>
               {bookingOn ? "Réserver une table" : "Nous contacter"}
             </a>
-            <a href={href("contact")} className="inline-flex px-9 py-4 text-[11px] font-semibold uppercase tracking-[0.22em] transition hover:opacity-90" style={{ border: `1px solid ${ZINC}`, color: ZINC, borderRadius: "2px" }}>
-              Nous trouver
-            </a>
+            <a href={href("contact")} className="inline-flex px-9 py-4 text-[11px] font-semibold uppercase tracking-[0.22em] transition hover:opacity-90" style={{ border: `1px solid ${ZINC}`, color: ZINC, borderRadius: "2px" }} {...editCopy(content, "home_cta_findus", "Nous trouver")} />
           </div>
           <div className="mx-auto mt-12 h-2 max-w-md" style={{ background: TILE, opacity: 0.5 }} aria-hidden />
         </div>

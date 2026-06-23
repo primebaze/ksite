@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { CinderHeader } from "./CinderHeader";
 import { CinderBooking } from "./CinderBooking";
@@ -83,7 +83,7 @@ export default function CinderDesign({ site, page = "home", basePath = "" }: Pre
         </div>
         {/* quick links */}
         <div>
-          <h4 style={{ ...serif, color: CREAM }} className="text-lg">Quick Links</h4>
+          <h4 style={{ ...serif, color: CREAM }} className="text-lg" {...editCopy(content, "footer_links_heading", "Quick Links")} />
           <ul className="mt-5 space-y-3 text-sm" style={{ color: MUTE }}>
             {([
               bookingOn && { label: "Book a table", href: book },
@@ -98,7 +98,7 @@ export default function CinderDesign({ site, page = "home", basePath = "" }: Pre
         </div>
         {/* contact */}
         <div>
-          <h4 style={{ ...serif, color: CREAM }} className="text-lg">Contact</h4>
+          <h4 style={{ ...serif, color: CREAM }} className="text-lg" {...editCopy(content, "footer_contact_heading", "Contact")} />
           <div className="mt-5 space-y-3 text-sm" style={{ color: MUTE }}>
             {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -107,7 +107,7 @@ export default function CinderDesign({ site, page = "home", basePath = "" }: Pre
         </div>
         {/* opening hours */}
         <div>
-          <h4 style={{ ...serif, color: CREAM }} className="text-lg">Opening Hours</h4>
+          <h4 style={{ ...serif, color: CREAM }} className="text-lg" {...editCopy(content, "footer_hours_heading", "Opening Hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm" style={{ color: MUTE }}>
               {content.hours.map((h, i) => (
@@ -133,11 +133,11 @@ export default function CinderDesign({ site, page = "home", basePath = "" }: Pre
   );
 
   // Dark page banner — also clears the fixed header on sub-pages.
-  const banner = (kicker: string, title: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string) => (
     <section style={{ background: PANEL, borderBottom: `1px solid ${GOLD}26` }}>
       <div className="mx-auto max-w-6xl px-8 pb-16 pt-32 text-center sm:pt-40">
-        <Kicker>{kicker}</Kicker>
-        <h1 style={{ ...serif, color: CREAM }} className="mt-4 text-4xl font-medium sm:text-5xl">{title}</h1>
+        <Kicker><span {...editCopy(content, kickerKey, kicker)} /></Kicker>
+        <h1 style={{ ...serif, color: CREAM }} className="mt-4 text-4xl font-medium sm:text-5xl" {...editCopy(content, titleKey, title)} />
       </div>
     </section>
   );
@@ -146,7 +146,7 @@ export default function CinderDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "menu") {
     return shell(
       <>
-        {banner("Our Menus", "Culinary Excellence")}
+        {banner("Our Menus", "menu_kicker", "Culinary Excellence", "menu_title")}
         <section className="mx-auto max-w-3xl px-6 py-20 sm:px-8">
           {groups.length > 0 ? (
             <>
@@ -195,10 +195,10 @@ export default function CinderDesign({ site, page = "home", basePath = "" }: Pre
                   </div>
                 ))}
 
-                <p className="mt-12 text-center text-[11px] uppercase tracking-[0.2em]" style={{ color: "#ffffff55" }}>Please inform us of any allergies.</p>
+                <p className="mt-12 text-center text-[11px] uppercase tracking-[0.2em]" style={{ color: "#ffffff55" }} {...editCopy(content, "menu_allergy_note", "Please inform us of any allergies.")} />
                 {bookingOn && (
                   <div className="mt-8 text-center">
-                    <a href={book} className="inline-flex px-9 py-3.5 text-[11px] font-semibold uppercase tracking-[0.22em] transition hover:bg-white hover:text-neutral-900" style={{ border: `1px solid ${GOLD}`, color: CREAM }}>Book a table</a>
+                    <a href={book} className="inline-flex px-9 py-3.5 text-[11px] font-semibold uppercase tracking-[0.22em] transition hover:bg-white hover:text-neutral-900" style={{ border: `1px solid ${GOLD}`, color: CREAM }} {...editCopy(content, "menu_book_cta", "Book a table")} />
                   </div>
                 )}
               </div>
@@ -221,11 +221,9 @@ export default function CinderDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "reservations") {
     return shell(
       <>
-        {banner("Reservations", "Reserve a Table")}
+        {banner("Reservations", "book_kicker", "Reserve a Table", "book_title")}
         <section className="mx-auto max-w-xl px-6 py-20 sm:px-8">
-          <p className="mb-10 text-center text-[16px] leading-[1.8]" style={{ color: MUTE }}>
-            Book your table below and we will confirm by phone or email. For parties of 8 or more, or private dining enquiries, please call us directly.
-          </p>
+          <p className="mb-10 text-center text-[16px] leading-[1.8]" style={{ color: MUTE }} {...editCopy(content, "book_intro", "Book your table below and we will confirm by phone or email. For parties of 8 or more, or private dining enquiries, please call us directly.")} />
           <CinderBooking tenantId={tenant.id} name={name} />
         </section>
       </>,
@@ -236,10 +234,10 @@ export default function CinderDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "contact") {
     return shell(
       <>
-        {banner("Visit Us", "Get in Touch")}
+        {banner("Visit Us", "contact_kicker", "Get in Touch", "contact_title")}
         <section className="mx-auto grid max-w-6xl gap-12 px-6 py-20 sm:px-8 lg:grid-cols-2 lg:gap-20">
           <div>
-            <h2 style={{ ...serif, color: CREAM }} className="text-2xl">Find us</h2>
+            <h2 style={{ ...serif, color: CREAM }} className="text-2xl" {...editCopy(content, "contact_findus_heading", "Find us")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: MUTE }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -253,7 +251,7 @@ export default function CinderDesign({ site, page = "home", basePath = "" }: Pre
               </ul>
             )}
             {content.map_url && (
-              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex px-7 py-3 text-[11px] font-semibold uppercase tracking-[0.2em] transition hover:bg-white hover:text-neutral-900" style={{ border: `1px solid ${GOLD}`, color: CREAM }}>Get directions</a>
+              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex px-7 py-3 text-[11px] font-semibold uppercase tracking-[0.2em] transition hover:bg-white hover:text-neutral-900" style={{ border: `1px solid ${GOLD}`, color: CREAM }} {...editCopy(content, "contact_directions_cta", "Get directions")} />
             )}
           </div>
           {contactOn && (
@@ -278,18 +276,18 @@ export default function CinderDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "about") {
     return shell(
       <>
-        {banner("Our Story", "A Dining Experience Like No Other")}
+        {banner("Our Story", "about_kicker", "A Dining Experience Like No Other", "about_title")}
         <section className="mx-auto max-w-3xl px-6 py-20 sm:px-8">
           {content.about ? <p data-edit="content.about" className="text-[17px] leading-[1.9]" style={{ color: MUTE }}>{content.about}</p> : <p style={{ color: MUTE }}>Our story is coming soon.</p>}
           {content.cuisine_type && (
             <>
-              <h3 style={{ ...serif, color: CREAM }} className="mt-12 text-2xl">A taste of what we do</h3>
+              <h3 style={{ ...serif, color: CREAM }} className="mt-12 text-2xl" {...editCopy(content, "about_taste_heading", "A taste of what we do")} />
               <p data-edit="content.cuisine_type" className="mt-4 text-[17px] leading-[1.8]" style={{ color: MUTE }}>{content.cuisine_type}</p>
             </>
           )}
           {bookingOn && (
             <div className="mt-12">
-              <a href={book} className="inline-flex px-9 py-3.5 text-[11px] font-semibold uppercase tracking-[0.22em] transition hover:bg-white hover:text-neutral-900" style={{ border: `1px solid ${GOLD}`, color: CREAM }}>Book a table</a>
+              <a href={book} className="inline-flex px-9 py-3.5 text-[11px] font-semibold uppercase tracking-[0.22em] transition hover:bg-white hover:text-neutral-900" style={{ border: `1px solid ${GOLD}`, color: CREAM }} {...editCopy(content, "about_book_cta", "Book a table")} />
             </div>
           )}
         </section>
@@ -301,7 +299,7 @@ export default function CinderDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Inside", "A Look Inside")}
+        {banner("Inside", "gallery_kicker", "A Look Inside", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-6xl px-2 py-12 sm:px-4">
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
@@ -334,16 +332,16 @@ export default function CinderDesign({ site, page = "home", basePath = "" }: Pre
         )}
         <div className="pointer-events-none absolute inset-0" style={{ background: "linear-gradient(to top, rgba(10,8,6,0.85) 0%, rgba(10,8,6,0.35) 45%, rgba(10,8,6,0.45) 100%)" }} />
         <div className="relative z-10 m-auto flex max-w-3xl flex-col items-center gap-6 px-6 text-center">
-          <span className="inline-flex px-4 py-1.5 text-[10px] font-semibold uppercase tracking-[0.3em] text-white/90" style={{ border: `1px solid ${GOLD}` }}>Now Taking Bookings</span>
+          <span className="inline-flex px-4 py-1.5 text-[10px] font-semibold uppercase tracking-[0.3em] text-white/90" style={{ border: `1px solid ${GOLD}` }} {...editCopy(content, "hero_badge", "Now Taking Bookings")} />
           <h1 style={{ ...serif, color: "#ffffff" }} className="text-5xl font-medium leading-[1.05] [text-shadow:0_2px_24px_rgba(0,0,0,0.55)] sm:text-7xl">
             <span data-edit="tenant.business_name" className="block">{heroTop}</span>
             {heroRest && <span className="block" style={{ color: GOLD }}>{heroRest}</span>}
           </h1>
           {content.tagline && <p data-edit="content.tagline" className="max-w-xl text-[15px] leading-relaxed text-white/85 [text-shadow:0_2px_16px_rgba(0,0,0,0.5)] sm:text-base">{content.tagline}</p>}
           <div className="mt-2 flex w-full flex-col items-center gap-3 sm:w-auto sm:flex-row sm:gap-4">
-            <a href={book} className="w-full px-9 py-4 text-center text-[11px] font-semibold uppercase tracking-[0.22em] text-neutral-900 shadow-2xl transition hover:opacity-90 sm:w-auto" style={{ background: GOLD }}>Book a table</a>
+            <a href={book} className="w-full px-9 py-4 text-center text-[11px] font-semibold uppercase tracking-[0.22em] text-neutral-900 shadow-2xl transition hover:opacity-90 sm:w-auto" style={{ background: GOLD }} {...editCopy(content, "hero_book_cta", "Book a table")} />
             {groups.length > 0 && (
-              <a href={href("menu")} className="w-full px-9 py-4 text-center text-[11px] font-semibold uppercase tracking-[0.22em] text-white backdrop-blur-sm transition hover:bg-white hover:text-neutral-900 sm:w-auto" style={{ border: "1px solid rgba(255,255,255,0.6)" }}>View menus</a>
+              <a href={href("menu")} className="w-full px-9 py-4 text-center text-[11px] font-semibold uppercase tracking-[0.22em] text-white backdrop-blur-sm transition hover:bg-white hover:text-neutral-900 sm:w-auto" style={{ border: "1px solid rgba(255,255,255,0.6)" }} {...editCopy(content, "hero_menu_cta", "View menus")} />
             )}
           </div>
         </div>
@@ -362,11 +360,11 @@ export default function CinderDesign({ site, page = "home", basePath = "" }: Pre
             <span className="pointer-events-none absolute -bottom-3 -right-3 h-20 w-20 border-b border-r" style={{ borderColor: GOLD }} />
           </div>
           <div>
-            <Kicker center={false}>Our Story</Kicker>
-            <h2 style={{ ...serif, color: CREAM }} className="mt-4 text-4xl font-medium leading-tight sm:text-5xl">A Dining Experience Like No Other</h2>
+            <Kicker center={false}><span {...editCopy(content, "home_story_kicker", "Our Story")} /></Kicker>
+            <h2 style={{ ...serif, color: CREAM }} className="mt-4 text-4xl font-medium leading-tight sm:text-5xl" {...editCopy(content, "home_story_heading", "A Dining Experience Like No Other")} />
             {content.about && <p data-edit="content.about" className="mt-6 text-[16px] leading-[1.9]" style={{ color: MUTE }}>{content.about}</p>}
             {content.about && (
-              <a href={href("about")} className="mt-7 inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em]" style={{ color: GOLD }}>Read more &rarr;</a>
+              <a href={href("about")} className="mt-7 inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em]" style={{ color: GOLD }} {...editCopy(content, "home_story_link", "Read more →")} />
             )}
           </div>
         </section>
@@ -376,14 +374,14 @@ export default function CinderDesign({ site, page = "home", basePath = "" }: Pre
       <section style={{ background: PANEL, borderTop: `1px solid ${GOLD}26`, borderBottom: `1px solid ${GOLD}26` }}>
         <div className="mx-auto grid max-w-6xl gap-12 px-8 py-20 text-center md:grid-cols-3">
           <div className="flex flex-col items-center">
-            <h3 style={{ ...serif, color: CREAM }} className="text-xl">Location</h3>
+            <h3 style={{ ...serif, color: CREAM }} className="text-xl" {...editCopy(content, "home_loc_heading", "Location")} />
             {content.address && <p data-edit="content.address" className="mt-4 max-w-xs whitespace-pre-line text-sm leading-relaxed" style={{ color: MUTE }}>{content.address}</p>}
             {content.map_url && (
-              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-5 inline-flex px-6 py-2.5 text-[10px] font-semibold uppercase tracking-[0.2em] transition hover:bg-white hover:text-neutral-900" style={{ border: `1px solid ${GOLD}`, color: CREAM }}>Get directions</a>
+              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-5 inline-flex px-6 py-2.5 text-[10px] font-semibold uppercase tracking-[0.2em] transition hover:bg-white hover:text-neutral-900" style={{ border: `1px solid ${GOLD}`, color: CREAM }} {...editCopy(content, "home_loc_directions", "Get directions")} />
             )}
           </div>
           <div className="flex flex-col items-center">
-            <h3 style={{ ...serif, color: CREAM }} className="text-xl">Opening Hours</h3>
+            <h3 style={{ ...serif, color: CREAM }} className="text-xl" {...editCopy(content, "home_hours_heading", "Opening Hours")} />
             {content.hours && content.hours.length > 0 ? (
               <ul className="mt-4 w-full max-w-xs space-y-2 text-sm" style={{ color: MUTE }}>
                 {content.hours.map((h, i) => (
@@ -393,12 +391,12 @@ export default function CinderDesign({ site, page = "home", basePath = "" }: Pre
             ) : <p className="mt-4 text-sm" style={{ color: MUTE }}>Open daily.</p>}
           </div>
           <div className="flex flex-col items-center">
-            <h3 style={{ ...serif, color: CREAM }} className="text-xl">Contact Us</h3>
+            <h3 style={{ ...serif, color: CREAM }} className="text-xl" {...editCopy(content, "home_contact_heading", "Contact Us")} />
             <div className="mt-4 space-y-2 text-sm" style={{ color: MUTE }}>
               {content.email && <a data-edit="content.email" href={`mailto:${content.email}`} className="block transition hover:text-white">{content.email}</a>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
             </div>
-            <a href={href("contact")} className="mt-5 inline-flex px-6 py-2.5 text-[10px] font-semibold uppercase tracking-[0.2em] transition hover:bg-white hover:text-neutral-900" style={{ border: `1px solid ${GOLD}`, color: CREAM }}>Email us</a>
+            <a href={href("contact")} className="mt-5 inline-flex px-6 py-2.5 text-[10px] font-semibold uppercase tracking-[0.2em] transition hover:bg-white hover:text-neutral-900" style={{ border: `1px solid ${GOLD}`, color: CREAM }} {...editCopy(content, "home_contact_cta", "Email us")} />
           </div>
         </div>
       </section>
@@ -406,13 +404,13 @@ export default function CinderDesign({ site, page = "home", basePath = "" }: Pre
       {/* reservation teaser */}
       {bookingOn && (
         <section className="mx-auto max-w-3xl px-8 py-24 text-center">
-          <Kicker>Reservations</Kicker>
-          <h2 style={{ ...serif, color: CREAM }} className="mt-4 text-4xl font-medium sm:text-5xl">Reserve a Table</h2>
-          <p className="mx-auto mt-5 max-w-md text-[15px] leading-relaxed" style={{ color: MUTE }}>Reserve your table for an unforgettable evening of warm hospitality, fine cuts and considered cocktails.</p>
+          <Kicker><span {...editCopy(content, "home_reserve_kicker", "Reservations")} /></Kicker>
+          <h2 style={{ ...serif, color: CREAM }} className="mt-4 text-4xl font-medium sm:text-5xl" {...editCopy(content, "home_reserve_heading", "Reserve a Table")} />
+          <p className="mx-auto mt-5 max-w-md text-[15px] leading-relaxed" style={{ color: MUTE }} {...editCopy(content, "home_reserve_blurb", "Reserve your table for an unforgettable evening of warm hospitality, fine cuts and considered cocktails.")} />
           <div className="relative mx-auto mt-10 max-w-md px-8 py-10" style={{ background: PANEL, border: `1px solid ${GOLD}55` }}>
             <span className="pointer-events-none absolute left-3 top-3 h-5 w-5 border-l border-t" style={{ borderColor: GOLD }} />
             <span className="pointer-events-none absolute bottom-3 right-3 h-5 w-5 border-b border-r" style={{ borderColor: GOLD }} />
-            <a href={book} className="inline-flex w-full justify-center px-9 py-4 text-[11px] font-semibold uppercase tracking-[0.22em] text-neutral-900 transition hover:opacity-90" style={{ background: GOLD }}>Book a table</a>
+            <a href={book} className="inline-flex w-full justify-center px-9 py-4 text-[11px] font-semibold uppercase tracking-[0.22em] text-neutral-900 transition hover:opacity-90" style={{ background: GOLD }} {...editCopy(content, "home_reserve_cta", "Book a table")} />
           </div>
         </section>
       )}
@@ -422,8 +420,8 @@ export default function CinderDesign({ site, page = "home", basePath = "" }: Pre
         <section style={{ background: PANEL, borderTop: `1px solid ${GOLD}26` }}>
           <div className="mx-auto max-w-4xl px-8 py-24">
             <div className="text-center">
-              <Kicker>Our Menus</Kicker>
-              <h2 style={{ ...serif, color: CREAM }} className="mt-4 text-4xl font-medium sm:text-5xl">Culinary Excellence</h2>
+              <Kicker><span {...editCopy(content, "home_menu_kicker", "Our Menus")} /></Kicker>
+              <h2 style={{ ...serif, color: CREAM }} className="mt-4 text-4xl font-medium sm:text-5xl" {...editCopy(content, "home_menu_heading", "Culinary Excellence")} />
             </div>
             <ul className="mx-auto mt-14 max-w-xl divide-y" style={{ borderColor: "#ffffff26" }}>
               {featured.map((item) => (
@@ -441,7 +439,7 @@ export default function CinderDesign({ site, page = "home", basePath = "" }: Pre
               ))}
             </ul>
             <div className="mt-14 text-center">
-              <a href={href("menu")} className="inline-flex px-9 py-3.5 text-[11px] font-semibold uppercase tracking-[0.22em] transition hover:bg-white hover:text-neutral-900" style={{ border: `1px solid ${GOLD}`, color: CREAM }}>View full menu</a>
+              <a href={href("menu")} className="inline-flex px-9 py-3.5 text-[11px] font-semibold uppercase tracking-[0.22em] transition hover:bg-white hover:text-neutral-900" style={{ border: `1px solid ${GOLD}`, color: CREAM }} {...editCopy(content, "home_menu_cta", "View full menu")} />
             </div>
           </div>
         </section>
@@ -452,7 +450,7 @@ export default function CinderDesign({ site, page = "home", basePath = "" }: Pre
         <section className="py-24">
           <div className="mx-auto max-w-6xl px-8 text-center">
             <Kicker>Inside {heroTop}</Kicker>
-            <h2 style={{ ...serif, color: CREAM }} className="mx-auto mt-4 max-w-2xl text-3xl font-medium leading-snug sm:text-4xl">Warm, welcoming rooms and a cosy cocktail lounge for every occasion.</h2>
+            <h2 style={{ ...serif, color: CREAM }} className="mx-auto mt-4 max-w-2xl text-3xl font-medium leading-snug sm:text-4xl" {...editCopy(content, "home_gallery_heading", "Warm, welcoming rooms and a cosy cocktail lounge for every occasion.")} />
           </div>
           <div className="mx-auto mt-12 grid max-w-6xl grid-cols-2 gap-2 px-2 sm:grid-cols-4 sm:px-4">
             {gallery.slice(0, 4).map((g) => (
@@ -461,7 +459,7 @@ export default function CinderDesign({ site, page = "home", basePath = "" }: Pre
             ))}
           </div>
           <div className="mt-10 text-center">
-            <a href={href("gallery")} className="inline-flex px-9 py-3.5 text-[11px] font-semibold uppercase tracking-[0.22em] transition hover:bg-white hover:text-neutral-900" style={{ border: `1px solid ${GOLD}`, color: CREAM }}>View gallery</a>
+            <a href={href("gallery")} className="inline-flex px-9 py-3.5 text-[11px] font-semibold uppercase tracking-[0.22em] transition hover:bg-white hover:text-neutral-900" style={{ border: `1px solid ${GOLD}`, color: CREAM }} {...editCopy(content, "home_gallery_cta", "View gallery")} />
           </div>
         </section>
       )}
@@ -469,8 +467,8 @@ export default function CinderDesign({ site, page = "home", basePath = "" }: Pre
       {/* closing CTA band */}
       <section style={{ background: PANEL, borderTop: `1px solid ${GOLD}26` }}>
         <div className="mx-auto max-w-2xl px-8 py-20 text-center">
-          <h2 style={{ ...serif, color: CREAM }} className="text-3xl font-medium sm:text-4xl">Celebrate with us</h2>
-          <p className="mx-auto mt-5 max-w-md text-[15px] leading-relaxed" style={{ color: MUTE }}>Treat your loved ones and friends to an exceptional dining experience where premium ingredients, expert hospitality and a warm atmosphere come together.</p>
+          <h2 style={{ ...serif, color: CREAM }} className="text-3xl font-medium sm:text-4xl" {...editCopy(content, "home_cta_heading", "Celebrate with us")} />
+          <p className="mx-auto mt-5 max-w-md text-[15px] leading-relaxed" style={{ color: MUTE }} {...editCopy(content, "home_cta_blurb", "Treat your loved ones and friends to an exceptional dining experience where premium ingredients, expert hospitality and a warm atmosphere come together.")} />
           <a href={book} className="mt-8 inline-flex px-10 py-4 text-[11px] font-semibold uppercase tracking-[0.22em] text-neutral-900 transition hover:opacity-90" style={{ background: GOLD }}>{bookingOn ? "Book a table" : "Contact us"}</a>
         </div>
       </section>

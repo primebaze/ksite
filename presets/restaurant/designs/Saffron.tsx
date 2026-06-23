@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { SaffronHeader } from "./SaffronHeader";
 import { SaffronBooking } from "./SaffronBooking";
@@ -84,7 +84,7 @@ export default function SaffronDesign({ site, page = "home", basePath = "" }: Pr
           {content.tagline && <p data-edit="content.tagline" className="mt-5 max-w-xs text-sm leading-relaxed text-[#F6ECD9]/65">{content.tagline}</p>}
           {content.socials && content.socials.length > 0 && (
             <>
-              <h4 className="mt-8 text-[11px] font-semibold uppercase tracking-[0.24em]" style={{ color: GOLD_SOFT }}>Follow</h4>
+              <h4 className="mt-8 text-[11px] font-semibold uppercase tracking-[0.24em]" style={{ color: GOLD_SOFT }} {...editCopy(content, "footer_follow", "Follow")} />
               <div className="mt-4 flex gap-4 text-[#F6ECD9]">
                 {content.socials.map((s) => (
                   <a key={s.url} href={s.url} target="_blank" rel="noreferrer" aria-label={s.label} className="transition hover:text-[#E0A02E]"><SocialIcon kind={`${s.label} ${s.url}`} /></a>
@@ -95,7 +95,7 @@ export default function SaffronDesign({ site, page = "home", basePath = "" }: Pr
         </div>
 
         <div>
-          <h4 className="text-[11px] font-semibold uppercase tracking-[0.24em]" style={{ color: GOLD_SOFT }}>Explore</h4>
+          <h4 className="text-[11px] font-semibold uppercase tracking-[0.24em]" style={{ color: GOLD_SOFT }} {...editCopy(content, "footer_explore", "Explore")} />
           <ul className="mt-5 space-y-3 text-sm text-[#F6ECD9]/70">
             {([
               groups.length > 0 && { label: "Menu", href: href("menu") },
@@ -110,7 +110,7 @@ export default function SaffronDesign({ site, page = "home", basePath = "" }: Pr
         </div>
 
         <div>
-          <h4 className="text-[11px] font-semibold uppercase tracking-[0.24em]" style={{ color: GOLD_SOFT }}>Visit us</h4>
+          <h4 className="text-[11px] font-semibold uppercase tracking-[0.24em]" style={{ color: GOLD_SOFT }} {...editCopy(content, "footer_visit", "Visit us")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm text-[#F6ECD9]/70">
               {content.hours.map((h, i) => (
@@ -124,7 +124,7 @@ export default function SaffronDesign({ site, page = "home", basePath = "" }: Pr
             {content.email && <a data-edit="content.email" href={`mailto:${content.email}`} className="block transition hover:text-[#E0A02E]">{content.email}</a>}
           </div>
           {content.map_url && (
-            <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-5 inline-flex border px-6 py-2.5 text-[11px] font-semibold uppercase tracking-[0.2em] transition hover:bg-[#E0A02E] hover:text-[#1A1413]" style={{ borderColor: `${GOLD}66`, color: CREAM }}>Get directions</a>
+            <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-5 inline-flex border px-6 py-2.5 text-[11px] font-semibold uppercase tracking-[0.2em] transition hover:bg-[#E0A02E] hover:text-[#1A1413]" style={{ borderColor: `${GOLD}66`, color: CREAM }} {...editCopy(content, "footer_directions", "Get directions")} />
           )}
         </div>
       </div>
@@ -143,11 +143,11 @@ export default function SaffronDesign({ site, page = "home", basePath = "" }: Pr
   );
 
   // Dark, gold-framed page banner that clears the fixed header on sub-pages.
-  const banner = (kicker: string, title: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string) => (
     <section style={{ background: MAROON, backgroundImage: LATTICE }} className="relative text-[#F6ECD9]">
       <div className="mx-auto max-w-6xl px-6 pb-14 pt-32 text-center sm:px-8 sm:pt-40">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: GOLD }}>{kicker}</p>
-        <h1 style={serif} className="mt-4 text-4xl tracking-[0.04em] sm:text-5xl">{title}</h1>
+        <p className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: GOLD }} {...editCopy(content, kickerKey, kicker)} />
+        <h1 style={serif} className="mt-4 text-4xl tracking-[0.04em] sm:text-5xl" {...editCopy(content, titleKey, title)} />
         <GoldDivider className="mt-7" />
       </div>
     </section>
@@ -157,7 +157,7 @@ export default function SaffronDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "menu") {
     return shell(
       <>
-        {banner("The kitchen", "Our menu")}
+        {banner("The kitchen", "menu_kicker", "Our menu", "menu_title")}
         <section className="px-6 py-16 sm:px-8 sm:py-24" style={{ background: CREAM }}>
           <div className="mx-auto max-w-4xl">
             {groups.length > 0 ? (
@@ -216,7 +216,7 @@ export default function SaffronDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "reservations") {
     return shell(
       <>
-        {banner("Join us", "Reservations")}
+        {banner("Join us", "book_kicker", "Reservations", "book_title")}
         <section className="px-6 py-16 sm:px-8 sm:py-24" style={{ background: CREAM }}>
           <div className="mx-auto max-w-xl">
             <p className="mb-9 text-center text-[16px] leading-[1.9] text-[#5B1F2A]/80">Reserve your table below and we will confirm by phone or email. For private dining or parties of eight or more, please call us directly.</p>
@@ -231,11 +231,11 @@ export default function SaffronDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "contact") {
     return shell(
       <>
-        {banner("Say hello", "Find us")}
+        {banner("Say hello", "contact_kicker", "Find us", "contact_title")}
         <section className="px-6 py-16 sm:px-8 sm:py-24" style={{ background: CREAM }}>
           <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-2 lg:gap-20">
             <div>
-              <h2 className="text-2xl tracking-[0.06em]" style={{ ...serif, color: MAROON }}>Visit us</h2>
+              <h2 className="text-2xl tracking-[0.06em]" style={{ ...serif, color: MAROON }} {...editCopy(content, "contact_visit_heading", "Visit us")} />
               <div className="mt-5 space-y-4 text-[15px] leading-relaxed text-[#5b3e37]">
                 {content.address && <p data-edit="content.address" className="whitespace-pre-line text-lg font-medium text-[#3a221f]">{content.address}</p>}
                 {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-[#5B1F2A]">{content.phone}</a>}
@@ -249,7 +249,7 @@ export default function SaffronDesign({ site, page = "home", basePath = "" }: Pr
                 </ul>
               )}
               {content.map_url && (
-                <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex px-7 py-3 text-[11px] font-semibold uppercase tracking-[0.2em] text-white transition hover:brightness-110" style={{ background: MAROON }}>Get directions</a>
+                <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex px-7 py-3 text-[11px] font-semibold uppercase tracking-[0.2em] text-white transition hover:brightness-110" style={{ background: MAROON }} {...editCopy(content, "contact_directions", "Get directions")} />
               )}
             </div>
             {contactOn && (
@@ -275,14 +275,14 @@ export default function SaffronDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "about") {
     return shell(
       <>
-        {banner("Our story", "Rooted in spice")}
+        {banner("Our story", "about_kicker", "Rooted in spice", "about_title")}
         <section className="px-6 py-16 sm:px-8 sm:py-24" style={{ background: CREAM }}>
           <div className="mx-auto max-w-3xl text-center">
             {content.about ? <p data-edit="content.about" className="text-[18px] leading-[1.95] text-[#5b3e37]">{content.about}</p> : <p className="text-[#7a5c52]">Our story is coming soon.</p>}
             {content.cuisine_type && (
               <>
                 <GoldDivider className="mt-14" />
-                <h3 style={{ ...serif, color: MAROON }} className="mt-12 text-3xl tracking-[0.04em]">Our kitchen</h3>
+                <h3 style={{ ...serif, color: MAROON }} className="mt-12 text-3xl tracking-[0.04em]" {...editCopy(content, "about_kitchen_heading", "Our kitchen")} />
                 <p data-edit="content.cuisine_type" className="mt-5 text-[17px] leading-[1.85] text-[#5b3e37]">{content.cuisine_type}</p>
               </>
             )}
@@ -296,7 +296,7 @@ export default function SaffronDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "gallery") {
     return shell(
       <>
-        {banner("A look around", "Gallery")}
+        {banner("A look around", "gallery_kicker", "Gallery", "gallery_title")}
         <div style={{ background: CREAM }} className="pb-24 pt-2">
           {gallery.length > 0 ? (
             <section className="grid grid-cols-2 gap-2 p-2 sm:grid-cols-3">
@@ -338,9 +338,7 @@ export default function SaffronDesign({ site, page = "home", basePath = "" }: Pr
             <h1 data-edit="tenant.business_name" style={serif} className="mt-5 max-w-3xl text-5xl tracking-[0.06em] text-[#F6ECD9] [text-shadow:0_2px_30px_rgba(0,0,0,0.6)] sm:text-7xl">{name}</h1>
           )}
           <GoldDivider className="mt-7" />
-          <p className="mt-6 max-w-xl text-base leading-relaxed text-[#F6ECD9]/85 [text-shadow:0_1px_16px_rgba(0,0,0,0.7)] sm:text-lg">
-            A warm table of spice, smoke and slow-cooked tradition — served with quiet luxury.
-          </p>
+          <p className="mt-6 max-w-xl text-base leading-relaxed text-[#F6ECD9]/85 [text-shadow:0_1px_16px_rgba(0,0,0,0.7)] sm:text-lg" {...editCopy(content, "hero_sub", "A warm table of spice, smoke and slow-cooked tradition — served with quiet luxury.")} />
 
           {bookingOn ? (
             <div className="mt-9 w-full max-w-3xl text-left">
@@ -356,10 +354,10 @@ export default function SaffronDesign({ site, page = "home", basePath = "" }: Pr
       {content.about && (
         <section style={{ background: CREAM }} className="px-6 py-20 sm:px-8 sm:py-28">
           <div className="mx-auto max-w-3xl text-center">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: MARIGOLD }}>Our story</p>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: MARIGOLD }} {...editCopy(content, "home_story_eyebrow", "Our story")} />
             <GoldDivider className="mt-5" />
             <p data-edit="content.about" className="mt-8 text-2xl leading-[1.55] text-[#3a221f] sm:text-[2rem] sm:leading-[1.5]" style={serif}>{content.about}</p>
-            <a href={href("about")} className="mt-9 inline-flex border px-8 py-3 text-[11px] font-semibold uppercase tracking-[0.2em] transition hover:bg-[#5B1F2A] hover:text-[#F6ECD9]" style={{ borderColor: MAROON, color: MAROON }}>Read more</a>
+            <a href={href("about")} className="mt-9 inline-flex border px-8 py-3 text-[11px] font-semibold uppercase tracking-[0.2em] transition hover:bg-[#5B1F2A] hover:text-[#F6ECD9]" style={{ borderColor: MAROON, color: MAROON }} {...editCopy(content, "home_story_cta", "Read more")} />
           </div>
         </section>
       )}
@@ -368,8 +366,8 @@ export default function SaffronDesign({ site, page = "home", basePath = "" }: Pr
       <section style={{ background: MAROON, backgroundImage: LATTICE }} className="px-6 py-20 text-[#F6ECD9] sm:px-8 sm:py-28">
         <div className="mx-auto max-w-6xl">
           <div className="text-center">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: GOLD }}>From source to table</p>
-            <h2 style={serif} className="mt-3 text-3xl tracking-[0.04em] sm:text-4xl">The spice story</h2>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: GOLD }} {...editCopy(content, "spice_eyebrow", "From source to table")} />
+            <h2 style={serif} className="mt-3 text-3xl tracking-[0.04em] sm:text-4xl" {...editCopy(content, "spice_heading", "The spice story")} />
             <GoldDivider className="mt-6" />
           </div>
           <div className="mt-14 grid gap-px overflow-hidden border sm:grid-cols-3" style={{ borderColor: `${GOLD}40`, background: `${GOLD}40` }}>
@@ -393,8 +391,8 @@ export default function SaffronDesign({ site, page = "home", basePath = "" }: Pr
         <section style={{ background: CREAM }} className="px-6 py-20 sm:px-8 sm:py-28">
           <div className="mx-auto max-w-3xl">
             <div className="text-center">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: MARIGOLD }}>From the kitchen</p>
-              <h2 style={{ ...serif, color: MAROON }} className="mt-3 text-3xl tracking-[0.04em] sm:text-4xl">A taste of the menu</h2>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: MARIGOLD }} {...editCopy(content, "taster_eyebrow", "From the kitchen")} />
+              <h2 style={{ ...serif, color: MAROON }} className="mt-3 text-3xl tracking-[0.04em] sm:text-4xl" {...editCopy(content, "taster_heading", "A taste of the menu")} />
               <GoldDivider className="mt-6" />
             </div>
             <ul className="mt-12 divide-y border-y" style={{ borderColor: `${GOLD}40` }}>
@@ -410,7 +408,7 @@ export default function SaffronDesign({ site, page = "home", basePath = "" }: Pr
             </ul>
             {groups.length > 0 && (
               <div className="mt-10 text-center">
-                <a href={href("menu")} className="inline-flex px-9 py-3.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-white transition hover:brightness-110" style={{ background: MAROON }}>View the full menu</a>
+                <a href={href("menu")} className="inline-flex px-9 py-3.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-white transition hover:brightness-110" style={{ background: MAROON }} {...editCopy(content, "taster_cta", "View the full menu")} />
               </div>
             )}
           </div>
@@ -422,8 +420,8 @@ export default function SaffronDesign({ site, page = "home", basePath = "" }: Pr
         <section style={{ background: CHARCOAL, backgroundImage: LATTICE }} className="px-6 py-20 sm:px-8 sm:py-28">
           <div className="mx-auto max-w-6xl">
             <div className="text-center text-[#F6ECD9]">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: GOLD }}>The room</p>
-              <h2 style={serif} className="mt-3 text-3xl tracking-[0.04em] sm:text-4xl">A look around</h2>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: GOLD }} {...editCopy(content, "room_eyebrow", "The room")} />
+              <h2 style={serif} className="mt-3 text-3xl tracking-[0.04em] sm:text-4xl" {...editCopy(content, "room_heading", "A look around")} />
               <GoldDivider className="mt-6" />
             </div>
             <div className="mt-12 grid gap-3 sm:grid-cols-3">
@@ -445,8 +443,8 @@ export default function SaffronDesign({ site, page = "home", basePath = "" }: Pr
           <div className="relative border px-8 py-14 text-center sm:px-12" style={{ borderColor: `${GOLD}66` }}>
             <div className="pointer-events-none absolute inset-2 border" style={{ borderColor: `${GOLD}2e` }} aria-hidden />
             <div className="relative">
-              <h2 style={serif} className="text-4xl tracking-[0.03em] text-[#F6ECD9] sm:text-5xl">Reserve your table</h2>
-              <p className="mx-auto mt-5 max-w-xl text-[15px] leading-[1.85] text-[#F6ECD9]/75">Gather your favourite people for an evening of warmth and spice. We would be honoured to host you.</p>
+              <h2 style={serif} className="text-4xl tracking-[0.03em] text-[#F6ECD9] sm:text-5xl" {...editCopy(content, "reserve_heading", "Reserve your table")} />
+              <p className="mx-auto mt-5 max-w-xl text-[15px] leading-[1.85] text-[#F6ECD9]/75" {...editCopy(content, "reserve_sub", "Gather your favourite people for an evening of warmth and spice. We would be honoured to host you.")} />
               <a href={book} className="mt-8 inline-flex px-10 py-4 text-xs font-semibold uppercase tracking-[0.22em] transition hover:brightness-110" style={{ background: GOLD, color: CHARCOAL }}>{bookingOn ? "Book a table" : "Get in touch"}</a>
             </div>
           </div>

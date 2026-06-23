@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { PulpHeader } from "./PulpHeader";
 import { PulpBooking } from "./PulpBooking";
@@ -86,7 +86,7 @@ export default function PulpDesign({ site, page = "home", basePath = "" }: Prese
           {content.tagline && <p data-edit="content.tagline" className="mt-4 max-w-xs text-sm leading-relaxed text-white/70">{content.tagline}</p>}
           {content.socials && content.socials.length > 0 && (
             <>
-              <h4 className="mt-8 text-xs font-extrabold uppercase tracking-[0.2em]" style={{ color: PINK }}>Follow the squeeze</h4>
+              <h4 className="mt-8 text-xs font-extrabold uppercase tracking-[0.2em]" style={{ color: PINK }} {...editCopy(content, "footer_follow", "Follow the squeeze")} />
               <div className="mt-4 flex gap-4 text-white">
                 {content.socials.map((s) => (
                   <a key={s.url} href={s.url} target="_blank" rel="noreferrer" aria-label={s.label} className="transition hover:opacity-60"><SocialIcon kind={`${s.label} ${s.url}`} /></a>
@@ -97,7 +97,7 @@ export default function PulpDesign({ site, page = "home", basePath = "" }: Prese
         </div>
 
         <div>
-          <h4 className="text-xs font-extrabold uppercase tracking-[0.2em]" style={{ color: ORANGE }}>Explore</h4>
+          <h4 className="text-xs font-extrabold uppercase tracking-[0.2em]" style={{ color: ORANGE }} {...editCopy(content, "footer_explore", "Explore")} />
           <ul className="mt-5 space-y-3 text-sm text-white/70">
             {([
               bookingOn && { label: "Order ahead", href: href("reservations") },
@@ -112,7 +112,7 @@ export default function PulpDesign({ site, page = "home", basePath = "" }: Prese
         </div>
 
         <div>
-          <h4 className="text-xs font-extrabold uppercase tracking-[0.2em]" style={{ color: ORANGE }}>Open hours</h4>
+          <h4 className="text-xs font-extrabold uppercase tracking-[0.2em]" style={{ color: ORANGE }} {...editCopy(content, "footer_hours", "Open hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm text-white/70">
               {content.hours.map((h, i) => (
@@ -130,8 +130,8 @@ export default function PulpDesign({ site, page = "home", basePath = "" }: Prese
         {/* CTA panel: a real button on a sunny gradient */}
         <div className="relative overflow-hidden rounded-[2rem] px-7 py-9" style={{ background: SUNNY, color: "#fff" }}>
           <FruitBlob color={YELLOW} className="-right-6 -top-8 h-28 w-28 opacity-40" />
-          <h4 style={display} className="relative text-2xl font-bold leading-tight">Thirsty yet?</h4>
-          <p className="relative mt-2 text-sm leading-relaxed text-white/90">Order your juices and smoothies ahead and skip the line, or book a cleanse to feel brand new.</p>
+          <h4 style={display} className="relative text-2xl font-bold leading-tight" {...editCopy(content, "footer_cta_heading", "Thirsty yet?")} />
+          <p className="relative mt-2 text-sm leading-relaxed text-white/90" {...editCopy(content, "footer_cta_blurb", "Order your juices and smoothies ahead and skip the line, or book a cleanse to feel brand new.")} />
           <a href={book} className="relative mt-6 inline-flex rounded-full bg-white px-7 py-3 text-xs font-extrabold uppercase tracking-[0.16em] transition hover:opacity-90" style={{ color: INK }}>{bookingOn ? "Order ahead" : "Get in touch"}</a>
         </div>
       </div>
@@ -148,13 +148,13 @@ export default function PulpDesign({ site, page = "home", basePath = "" }: Prese
   );
 
   // Sunny page banner that clears the fixed header on sub-pages, with fruit blobs.
-  const banner = (kicker: string, title: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string) => (
     <section className="relative overflow-hidden text-white" style={{ background: SUNNY }}>
       <FruitBlob color={YELLOW} className="-left-10 top-6 h-40 w-40 opacity-30" />
       <FruitBlob color="#ffffff" className="-bottom-16 right-10 h-56 w-56 opacity-15" />
       <div className="relative mx-auto max-w-6xl px-6 pb-12 pt-28 sm:px-8 sm:pb-16 sm:pt-36">
-        <p className="text-xs font-extrabold uppercase tracking-[0.24em] text-white/80">{kicker}</p>
-        <h1 style={display} className="mt-3 text-5xl font-bold leading-[0.95] sm:text-6xl">{title}</h1>
+        <p className="text-xs font-extrabold uppercase tracking-[0.24em] text-white/80" {...editCopy(content, kickerKey, kicker)} />
+        <h1 style={display} className="mt-3 text-5xl font-bold leading-[0.95] sm:text-6xl" {...editCopy(content, titleKey, title)} />
       </div>
     </section>
   );
@@ -163,7 +163,7 @@ export default function PulpDesign({ site, page = "home", basePath = "" }: Prese
   if (page === "menu") {
     return shell(
       <>
-        {banner("Cold-pressed daily", "The menu")}
+        {banner("Cold-pressed daily", "menu_kicker", "The menu", "menu_title")}
         <section className="px-6 py-16 sm:px-8 sm:py-20" style={{ background: CREAM }}>
           <div className="mx-auto max-w-5xl">
           {groups.length > 0 ? (
@@ -232,7 +232,7 @@ export default function PulpDesign({ site, page = "home", basePath = "" }: Prese
   if (page === "reservations") {
     return shell(
       <>
-        {banner("Order ahead", "Skip the line")}
+        {banner("Order ahead", "book_kicker", "Skip the line", "book_title")}
         <section className="px-6 py-16 sm:px-8 sm:py-20" style={{ background: CREAM }}>
           <div className="mx-auto max-w-xl">
             <p className="mb-8 text-center text-[17px] leading-[1.8] text-neutral-700">Pick your cups, a pickup day and a time — we will have everything cold-pressed and waiting. Planning a multi-day cleanse? Tell us in the notes and we will sort it.</p>
@@ -247,7 +247,7 @@ export default function PulpDesign({ site, page = "home", basePath = "" }: Prese
   if (page === "contact") {
     return shell(
       <>
-        {banner("Say hello", "Find the bar")}
+        {banner("Say hello", "contact_kicker", "Find the bar", "contact_title")}
         <section className="px-6 py-16 sm:px-8 sm:py-20" style={{ background: CREAM }}>
           <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-2 lg:gap-20">
             <div>
@@ -264,7 +264,7 @@ export default function PulpDesign({ site, page = "home", basePath = "" }: Prese
                 </ul>
               )}
               {content.map_url && (
-                <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex rounded-full px-7 py-3 text-xs font-extrabold uppercase tracking-[0.16em] text-white transition hover:brightness-105" style={{ background: SUNNY }}>Get directions</a>
+                <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex rounded-full px-7 py-3 text-xs font-extrabold uppercase tracking-[0.16em] text-white transition hover:brightness-105" style={{ background: SUNNY }} {...editCopy(content, "contact_directions", "Get directions")} />
               )}
             </div>
             {contactOn && (
@@ -290,13 +290,13 @@ export default function PulpDesign({ site, page = "home", basePath = "" }: Prese
   if (page === "about") {
     return shell(
       <>
-        {banner("Our story", "Squeezed fresh, every day")}
+        {banner("Our story", "about_kicker", "Squeezed fresh, every day", "about_title")}
         <section className="px-6 py-16 sm:px-8 sm:py-20" style={{ background: CREAM }}>
           <div className="mx-auto max-w-3xl">
             {content.about ? <p data-edit="content.about" className="text-[18px] leading-[1.9] text-neutral-700">{content.about}</p> : <p className="text-neutral-500">Our story is coming soon.</p>}
             {content.cuisine_type && (
               <>
-                <h3 style={display} className="mt-12 text-3xl font-bold text-[color:#3A1F2B]">What we press</h3>
+                <h3 style={display} className="mt-12 text-3xl font-bold text-[color:#3A1F2B]" {...editCopy(content, "about_press_heading", "What we press")} />
                 <p data-edit="content.cuisine_type" className="mt-4 text-[17px] leading-[1.8] text-neutral-700">{content.cuisine_type}</p>
               </>
             )}
@@ -310,7 +310,7 @@ export default function PulpDesign({ site, page = "home", basePath = "" }: Prese
   if (page === "gallery") {
     return shell(
       <>
-        {banner("A look around", "Gallery")}
+        {banner("A look around", "gallery_kicker", "Gallery", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="grid grid-cols-2 gap-1.5 p-1.5 sm:grid-cols-3" style={{ background: CREAM }}>
             {gallery.map((g) => (
@@ -349,11 +349,11 @@ export default function PulpDesign({ site, page = "home", basePath = "" }: Prese
         <div className="pointer-events-none absolute inset-0" style={{ background: "linear-gradient(to bottom, rgba(58,31,43,0.25), rgba(58,31,43,0.05) 40%, rgba(58,31,43,0.5))" }} />
         <div className="relative z-10 mt-auto px-6 pb-10 pt-32 sm:px-8 sm:pb-14">
           <div className="mx-auto max-w-5xl">
-            <span className="inline-flex rounded-full bg-white/90 px-4 py-1.5 text-[11px] font-extrabold uppercase tracking-[0.18em]" style={{ color: INK }}>Cold-pressed juice & smoothie bar</span>
+            <span className="inline-flex rounded-full bg-white/90 px-4 py-1.5 text-[11px] font-extrabold uppercase tracking-[0.18em]" style={{ color: INK }} {...editCopy(content, "hero_badge", "Cold-pressed juice & smoothie bar")} />
             {content.tagline && (
               <p data-edit="content.tagline" style={display} className="mt-4 max-w-3xl text-5xl font-bold leading-[0.92] text-white [text-shadow:0_2px_24px_rgba(58,31,43,0.5)] sm:text-7xl">{content.tagline}</p>
             )}
-            <p className="mt-4 max-w-xl text-base text-white/90 [text-shadow:0_1px_12px_rgba(58,31,43,0.55)] sm:text-lg">Juices, smoothies and bowls, pressed fresh and bursting with sunshine.</p>
+            <p className="mt-4 max-w-xl text-base text-white/90 [text-shadow:0_1px_12px_rgba(58,31,43,0.55)] sm:text-lg" {...editCopy(content, "hero_sub", "Juices, smoothies and bowls, pressed fresh and bursting with sunshine.")} />
             {bookingOn ? (
               <div className="mt-7 max-w-3xl">
                 <PulpBooking tenantId={tenant.id} name={name} inline />
@@ -369,13 +369,13 @@ export default function PulpDesign({ site, page = "home", basePath = "" }: Prese
       <section style={{ background: CREAM }} className="relative overflow-hidden">
         <FruitBlob color={`${ORANGE}22`} className="-right-20 -top-20 h-72 w-72" />
         <div className="relative mx-auto max-w-6xl px-6 py-20 sm:px-8 sm:py-24">
-          <p className="text-xs font-extrabold uppercase tracking-[0.28em]" style={{ color: PINK }}>What is in your cup</p>
+          <p className="text-xs font-extrabold uppercase tracking-[0.28em]" style={{ color: PINK }} {...editCopy(content, "cup_eyebrow", "What is in your cup")} />
           <div className="mt-4 grid gap-8 lg:grid-cols-[1.1fr_1fr] lg:items-end lg:gap-16">
             <h2 style={display} className="text-5xl font-bold leading-[0.95] text-[color:#3A1F2B] sm:text-6xl">Real fruit,<br />nothing to hide</h2>
             {content.about ? (
               <p data-edit="content.about" className="text-[17px] leading-[1.85] text-neutral-700">{content.about}</p>
             ) : (
-              <p className="text-[17px] leading-[1.85] text-neutral-700">Every cup is pressed to order from whole fruit and veg — no concentrates, no added sugar, just bright, honest flavour.</p>
+              <p className="text-[17px] leading-[1.85] text-neutral-700" {...editCopy(content, "cup_blurb", "Every cup is pressed to order from whole fruit and veg — no concentrates, no added sugar, just bright, honest flavour.")} />
             )}
           </div>
           {/* ingredient chips */}
@@ -391,7 +391,7 @@ export default function PulpDesign({ site, page = "home", basePath = "" }: Prese
             ))}
           </div>
           {content.about && (
-            <a href={href("about")} className="mt-8 inline-flex rounded-full border-2 px-7 py-3 text-xs font-extrabold uppercase tracking-[0.16em] text-[color:#3A1F2B] transition hover:bg-[color:#3A1F2B] hover:text-white" style={{ borderColor: INK }}>Our story</a>
+            <a href={href("about")} className="mt-8 inline-flex rounded-full border-2 px-7 py-3 text-xs font-extrabold uppercase tracking-[0.16em] text-[color:#3A1F2B] transition hover:bg-[color:#3A1F2B] hover:text-white" style={{ borderColor: INK }} {...editCopy(content, "cup_story_cta", "Our story")} />
           )}
         </div>
       </section>
@@ -402,10 +402,10 @@ export default function PulpDesign({ site, page = "home", basePath = "" }: Prese
           <div className="mx-auto max-w-6xl px-6 py-20 sm:px-8 sm:py-24">
             <div className="flex flex-wrap items-end justify-between gap-4">
               <div>
-                <p className="text-xs font-extrabold uppercase tracking-[0.28em] text-white/80">Today&apos;s lineup</p>
-                <h2 style={display} className="mt-3 text-4xl font-bold sm:text-5xl">Bottled sunshine</h2>
+                <p className="text-xs font-extrabold uppercase tracking-[0.28em] text-white/80" {...editCopy(content, "lineup_eyebrow", "Today's lineup")} />
+                <h2 style={display} className="mt-3 text-4xl font-bold sm:text-5xl" {...editCopy(content, "lineup_heading", "Bottled sunshine")} />
               </div>
-              {groups.length > 0 && <a href={href("menu")} className="text-xs font-extrabold uppercase tracking-[0.16em] text-white/90 hover:opacity-70">See the full menu</a>}
+              {groups.length > 0 && <a href={href("menu")} className="text-xs font-extrabold uppercase tracking-[0.16em] text-white/90 hover:opacity-70" {...editCopy(content, "lineup_link", "See the full menu")} />}
             </div>
             <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {featured.map((item, i) => {
@@ -435,7 +435,7 @@ export default function PulpDesign({ site, page = "home", basePath = "" }: Prese
             </div>
             {groups.length > 0 && (
               <div className="mt-12 text-center">
-                <a href={href("menu")} className="inline-flex rounded-full bg-white px-9 py-4 text-sm font-extrabold uppercase tracking-[0.16em] transition hover:opacity-90" style={{ color: INK }}>View the whole menu</a>
+                <a href={href("menu")} className="inline-flex rounded-full bg-white px-9 py-4 text-sm font-extrabold uppercase tracking-[0.16em] transition hover:opacity-90" style={{ color: INK }} {...editCopy(content, "lineup_all_cta", "View the whole menu")} />
               </div>
             )}
           </div>
@@ -448,8 +448,8 @@ export default function PulpDesign({ site, page = "home", basePath = "" }: Prese
           <div className="relative overflow-hidden rounded-[2.5rem] border-4 bg-white px-8 py-12 text-center" style={{ borderColor: YELLOW }}>
             <FruitBlob color={`${PINK}1f`} className="-left-10 -top-10 h-40 w-40" />
             <FruitBlob color={`${ORANGE}1f`} className="-bottom-12 -right-8 h-48 w-48" />
-            <h2 style={display} className="relative text-5xl font-bold leading-[0.95] text-[color:#3A1F2B] sm:text-6xl">Press reset</h2>
-            <p className="relative mt-3 text-sm font-bold uppercase tracking-[0.18em] text-neutral-500">3-day cleanses · grab-and-go · catering</p>
+            <h2 style={display} className="relative text-5xl font-bold leading-[0.95] text-[color:#3A1F2B] sm:text-6xl" {...editCopy(content, "cta_heading", "Press reset")} />
+            <p className="relative mt-3 text-sm font-bold uppercase tracking-[0.18em] text-neutral-500" {...editCopy(content, "cta_sub", "3-day cleanses · grab-and-go · catering")} />
             <a href={book} className="relative mt-7 inline-flex rounded-full px-9 py-4 text-sm font-extrabold uppercase tracking-[0.16em] text-white transition hover:brightness-105" style={{ background: SUNNY }}>{bookingOn ? "Order ahead / Book a cleanse" : "Get in touch"}</a>
           </div>
         </div>
@@ -459,7 +459,7 @@ export default function PulpDesign({ site, page = "home", basePath = "" }: Prese
       <section style={{ background: INK }} className="text-white">
         <div className="mx-auto grid max-w-6xl gap-10 px-6 py-16 sm:px-8 md:grid-cols-3">
           <div>
-            <h3 className="text-xs font-extrabold uppercase tracking-[0.2em]" style={{ color: YELLOW }}>Open hours</h3>
+            <h3 className="text-xs font-extrabold uppercase tracking-[0.2em]" style={{ color: YELLOW }} {...editCopy(content, "info_hours_heading", "Open hours")} />
             {content.hours && content.hours.length > 0 ? (
               <ul className="mt-5 space-y-2 text-sm text-white/80">
                 {content.hours.map((h, i) => (
@@ -469,19 +469,19 @@ export default function PulpDesign({ site, page = "home", basePath = "" }: Prese
             ) : <p className="mt-5 text-sm text-white/70">Open daily.</p>}
           </div>
           <div>
-            <h3 className="text-xs font-extrabold uppercase tracking-[0.2em]" style={{ color: YELLOW }}>Find us</h3>
+            <h3 className="text-xs font-extrabold uppercase tracking-[0.2em]" style={{ color: YELLOW }} {...editCopy(content, "info_findus_heading", "Find us")} />
             {content.address && <p data-edit="content.address" className="mt-5 whitespace-pre-line text-sm leading-relaxed text-white/80">{content.address}</p>}
             <div className="mt-3 space-y-1.5 text-sm text-white/80">
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block hover:text-white">{content.phone}</a>}
               {content.email && <a data-edit="content.email" href={`mailto:${content.email}`} className="block hover:text-white">{content.email}</a>}
             </div>
             {content.map_url && (
-              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-4 inline-flex rounded-full border border-white/50 px-6 py-2.5 text-xs font-extrabold uppercase tracking-[0.16em] text-white transition hover:bg-white hover:text-[color:#3A1F2B]">Get directions</a>
+              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-4 inline-flex rounded-full border border-white/50 px-6 py-2.5 text-xs font-extrabold uppercase tracking-[0.16em] text-white transition hover:bg-white hover:text-[color:#3A1F2B]" {...editCopy(content, "info_directions", "Get directions")} />
             )}
           </div>
           <div>
-            <h3 className="text-xs font-extrabold uppercase tracking-[0.2em]" style={{ color: YELLOW }}>Order</h3>
-            <p className="mt-5 text-sm text-white/80">Get your cups cold-pressed and ready in minutes.</p>
+            <h3 className="text-xs font-extrabold uppercase tracking-[0.2em]" style={{ color: YELLOW }} {...editCopy(content, "info_order_heading", "Order")} />
+            <p className="mt-5 text-sm text-white/80" {...editCopy(content, "info_order_sub", "Get your cups cold-pressed and ready in minutes.")} />
             <a href={book} className="mt-5 inline-flex rounded-full px-7 py-3 text-xs font-extrabold uppercase tracking-[0.16em] text-white transition hover:brightness-105" style={{ background: SUNNY }}>{bookingOn ? "Order ahead" : "Contact us"}</a>
           </div>
         </div>

@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { FernHeader } from "./FernHeader";
 import { FernBooking } from "./FernBooking";
@@ -95,7 +95,7 @@ export default function FernDesign({ site, page = "home", basePath = "" }: Prese
           </div>
 
           <div>
-            <h4 className="text-[10px] font-medium uppercase tracking-[0.3em]" style={{ color: FIG }}>Explore</h4>
+            <h4 className="text-[10px] font-medium uppercase tracking-[0.3em]" style={{ color: FIG }} {...editCopy(content, "footer_explore", "Explore")} />
             <ul className="mt-5 space-y-3 text-sm text-[color:#26241F]/70">
               {([
                 groups.length > 0 && { label: "Menu", href: href("menu") },
@@ -110,7 +110,7 @@ export default function FernDesign({ site, page = "home", basePath = "" }: Prese
           </div>
 
           <div>
-            <h4 className="text-[10px] font-medium uppercase tracking-[0.3em]" style={{ color: FIG }}>Hours</h4>
+            <h4 className="text-[10px] font-medium uppercase tracking-[0.3em]" style={{ color: FIG }} {...editCopy(content, "footer_hours", "Hours")} />
             {content.hours && content.hours.length > 0 ? (
               <ul className="mt-5 space-y-2 text-sm text-[color:#26241F]/70">
                 {content.hours.map((h, i) => (
@@ -121,7 +121,7 @@ export default function FernDesign({ site, page = "home", basePath = "" }: Prese
           </div>
 
           <div>
-            <h4 className="text-[10px] font-medium uppercase tracking-[0.3em]" style={{ color: FIG }}>Find us</h4>
+            <h4 className="text-[10px] font-medium uppercase tracking-[0.3em]" style={{ color: FIG }} {...editCopy(content, "footer_findus", "Find us")} />
             {content.address && <p data-edit="content.address" className="mt-5 whitespace-pre-line text-sm leading-[1.85] text-[color:#26241F]/70">{content.address}</p>}
             <div className="mt-3 space-y-1.5 text-sm text-[color:#26241F]/70">
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block hover:text-[color:#26241F]">{content.phone}</a>}
@@ -145,14 +145,14 @@ export default function FernDesign({ site, page = "home", basePath = "" }: Prese
 
   // Quiet, generously-margined sub-page banner that clears the fixed header. A
   // small leaf + fig kicker over a large, calm Fraunces headline, on oat.
-  const banner = (kicker: string, title: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string) => (
     <section className="border-b" style={{ background: OAT, borderColor: `${INK}26` }}>
       <div className="mx-auto max-w-6xl px-6 pb-14 pt-36 sm:px-8 sm:pb-20 sm:pt-44">
         <div className="flex items-center gap-3">
           <Leaf size={15} color={FIG} />
-          <p className="text-[11px] font-medium uppercase tracking-[0.36em]" style={{ color: FIG }}>{kicker}</p>
+          <p className="text-[11px] font-medium uppercase tracking-[0.36em]" style={{ color: FIG }} {...editCopy(content, kickerKey, kicker)} />
         </div>
-        <h1 style={display} className="mt-5 max-w-3xl text-5xl font-normal leading-[1.04] sm:text-7xl">{title}</h1>
+        <h1 style={display} className="mt-5 max-w-3xl text-5xl font-normal leading-[1.04] sm:text-7xl" {...editCopy(content, titleKey, title)} />
       </div>
     </section>
   );
@@ -161,7 +161,7 @@ export default function FernDesign({ site, page = "home", basePath = "" }: Prese
   if (page === "menu") {
     return shell(
       <>
-        {banner("The menu", "A seasonal, plant-based table")}
+        {banner("The menu", "menu_kicker", "A seasonal, plant-based table", "menu_title")}
         <section className="px-6 py-20 sm:px-8 sm:py-28">
           <div className="mx-auto max-w-3xl">
             {groups.length > 0 ? (
@@ -224,7 +224,7 @@ export default function FernDesign({ site, page = "home", basePath = "" }: Prese
   if (page === "reservations") {
     return shell(
       <>
-        {banner("Reservations", "Reserve a table")}
+        {banner("Reservations", "reservations_kicker", "Reserve a table", "reservations_title")}
         <section className="px-6 py-20 sm:px-8 sm:py-28">
           <div className="mx-auto max-w-xl">
             <p className="mb-10 text-[17px] leading-[1.9] text-[color:#26241F]/75">
@@ -241,7 +241,7 @@ export default function FernDesign({ site, page = "home", basePath = "" }: Prese
   if (page === "contact") {
     return shell(
       <>
-        {banner("Contact", "Find us")}
+        {banner("Contact", "contact_kicker", "Find us", "contact_title")}
         <section className="px-6 py-20 sm:px-8 sm:py-28">
           <div className="mx-auto grid max-w-6xl gap-14 lg:grid-cols-2 lg:gap-24">
             <div>
@@ -252,7 +252,7 @@ export default function FernDesign({ site, page = "home", basePath = "" }: Prese
               </div>
               {content.hours && content.hours.length > 0 && (
                 <div className="mt-10 border-t pt-8" style={{ borderColor: `${INK}26` }}>
-                  <p className="text-[10px] font-medium uppercase tracking-[0.3em]" style={{ color: FIG }}>Opening hours</p>
+                  <p className="text-[10px] font-medium uppercase tracking-[0.3em]" style={{ color: FIG }} {...editCopy(content, "contact_hours_label", "Opening hours")} />
                   <ul className="mt-4 max-w-xs space-y-2.5 text-sm text-[color:#26241F]/75">
                     {content.hours.map((h, i) => (
                       <li key={i} className="flex justify-between gap-6"><span data-edit={`hours:${i}:day`}>{h.day}</span><span data-edit={`hours:${i}:open`} className="text-[color:#26241F]/45">{h.open}</span></li>
@@ -261,7 +261,7 @@ export default function FernDesign({ site, page = "home", basePath = "" }: Prese
                 </div>
               )}
               {content.map_url && (
-                <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-9 inline-flex border px-7 py-3 text-[10px] font-medium uppercase tracking-[0.24em] transition hover:border-[color:#2C4A3A] hover:text-[color:#2C4A3A]" style={{ borderColor: `${INK}40` }}>Get directions</a>
+                <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-9 inline-flex border px-7 py-3 text-[10px] font-medium uppercase tracking-[0.24em] transition hover:border-[color:#2C4A3A] hover:text-[color:#2C4A3A]" style={{ borderColor: `${INK}40` }} {...editCopy(content, "contact_directions", "Get directions")} />
               )}
             </div>
             {contactOn && (
@@ -287,13 +287,13 @@ export default function FernDesign({ site, page = "home", basePath = "" }: Prese
   if (page === "about") {
     return shell(
       <>
-        {banner("About", "Rooted in plants")}
+        {banner("About", "about_kicker", "Rooted in plants", "about_title")}
         <section className="px-6 py-20 sm:px-8 sm:py-28">
           <div className="mx-auto max-w-3xl">
             {content.about ? <p data-edit="content.about" className="text-[19px] leading-[1.95] text-[color:#26241F]/80">{content.about}</p> : <p className="text-[color:#26241F]/50">Our story is coming soon.</p>}
             {content.cuisine_type && (
               <div className="mt-16 border-t pt-12" style={{ borderColor: `${INK}26` }}>
-                <p className="text-[10px] font-medium uppercase tracking-[0.3em]" style={{ color: FIG }}>In the kitchen</p>
+                <p className="text-[10px] font-medium uppercase tracking-[0.3em]" style={{ color: FIG }} {...editCopy(content, "about_kitchen_label", "In the kitchen")} />
                 <p data-edit="content.cuisine_type" className="mt-5 text-[17px] leading-[1.85] text-[color:#26241F]/75">{content.cuisine_type}</p>
               </div>
             )}
@@ -307,7 +307,7 @@ export default function FernDesign({ site, page = "home", basePath = "" }: Prese
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Gallery", "A look around")}
+        {banner("Gallery", "gallery_kicker", "A look around", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-6xl px-6 py-16 sm:px-8 sm:py-20">
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
@@ -346,7 +346,7 @@ export default function FernDesign({ site, page = "home", basePath = "" }: Prese
                 {content.cuisine_type ? (
                   <p data-edit="content.cuisine_type" className="text-[11px] font-medium uppercase tracking-[0.36em]" style={{ color: FIG }}>{content.cuisine_type}</p>
                 ) : (
-                  <p className="text-[11px] font-medium uppercase tracking-[0.36em]" style={{ color: FIG }}>Plant-based kitchen</p>
+                  <p className="text-[11px] font-medium uppercase tracking-[0.36em]" style={{ color: FIG }} {...editCopy(content, "hero_eyebrow", "Plant-based kitchen")} />
                 )}
               </div>
               <h1 data-edit="content.tagline" style={display} className="mt-6 max-w-xl text-5xl font-normal leading-[1.02] sm:text-7xl">
@@ -356,7 +356,7 @@ export default function FernDesign({ site, page = "home", basePath = "" }: Prese
                 A modern plant-based table — whole foods, natural materials, quietly premium. We cook what the season gives us.
               </p>
               {!bookingOn && (
-                <a href={book} className="mt-9 inline-flex px-9 py-4 text-[11px] font-medium uppercase tracking-[0.24em] text-[#F7F2E9] transition hover:opacity-90" style={{ background: GREEN }}>Get in touch</a>
+                <a href={book} className="mt-9 inline-flex px-9 py-4 text-[11px] font-medium uppercase tracking-[0.24em] text-[#F7F2E9] transition hover:opacity-90" style={{ background: GREEN }} {...editCopy(content, "hero_cta", "Get in touch")} />
               )}
             </div>
             <div className="relative">
@@ -385,7 +385,7 @@ export default function FernDesign({ site, page = "home", basePath = "" }: Prese
         <div className="mx-auto max-w-6xl px-6 py-24 sm:px-8 sm:py-28" style={{ borderColor: `${INK}26` }}>
           <div className="flex items-center gap-3">
             <Leaf size={16} />
-            <p className="text-[11px] font-medium uppercase tracking-[0.36em]" style={{ color: GREEN }}>Rooted in plants</p>
+            <p className="text-[11px] font-medium uppercase tracking-[0.36em]" style={{ color: GREEN }} {...editCopy(content, "ethos_label", "Rooted in plants")} />
           </div>
           <div className="mt-10 grid gap-px sm:grid-cols-3" style={{ background: `${INK}26` }}>
             {ethos.map((e) => (
@@ -404,11 +404,11 @@ export default function FernDesign({ site, page = "home", basePath = "" }: Prese
           <div className="mx-auto grid max-w-6xl gap-8 px-6 py-24 sm:px-8 sm:py-28 lg:grid-cols-[auto_1fr] lg:gap-16">
             <div className="flex items-center gap-3 lg:flex-col lg:items-start lg:gap-4 lg:pt-3">
               <Leaf size={18} color={FIG} />
-              <p className="text-[11px] font-medium uppercase tracking-[0.34em]" style={{ color: FIG }}>About</p>
+              <p className="text-[11px] font-medium uppercase tracking-[0.34em]" style={{ color: FIG }} {...editCopy(content, "home_about_label", "About")} />
             </div>
             <div>
               <p data-edit="content.about" style={display} className="max-w-3xl text-2xl font-normal leading-[1.45] text-[color:#26241F] sm:text-[2rem] sm:leading-[1.4]">{content.about}</p>
-              <a href={href("about")} className="mt-8 inline-flex text-[11px] font-medium uppercase tracking-[0.22em] transition hover:text-[color:#2C4A3A]" style={{ color: INK }}>Our story →</a>
+              <a href={href("about")} className="mt-8 inline-flex text-[11px] font-medium uppercase tracking-[0.22em] transition hover:text-[color:#2C4A3A]" style={{ color: INK }} {...editCopy(content, "home_about_link", "Our story →")} />
             </div>
           </div>
         </section>
@@ -433,9 +433,9 @@ export default function FernDesign({ site, page = "home", basePath = "" }: Prese
               <div className="lg:pt-4">
                 <div className="flex items-center gap-3">
                   <Leaf size={15} color={FIG} />
-                  <p className="text-[11px] font-medium uppercase tracking-[0.36em]" style={{ color: FIG }}>On the table now</p>
+                  <p className="text-[11px] font-medium uppercase tracking-[0.36em]" style={{ color: FIG }} {...editCopy(content, "season_kicker", "On the table now")} />
                 </div>
-                <h2 style={display} className="mt-5 max-w-md text-4xl font-normal leading-[1.08] sm:text-5xl">What is good this season</h2>
+                <h2 style={display} className="mt-5 max-w-md text-4xl font-normal leading-[1.08] sm:text-5xl" {...editCopy(content, "season_heading", "What is good this season")} />
                 <p className="mt-6 max-w-md text-[16px] leading-[1.85] text-[color:#26241F]/70">
                   A short, shifting list led by the harvest. Here is a little of what we are cooking right now.
                 </p>
@@ -453,7 +453,7 @@ export default function FernDesign({ site, page = "home", basePath = "" }: Prese
                   </ul>
                 )}
                 {groups.length > 0 && (
-                  <a href={href("menu")} className="mt-9 inline-flex text-[11px] font-medium uppercase tracking-[0.22em] transition hover:text-[color:#2C4A3A]" style={{ color: INK }}>See the full menu →</a>
+                  <a href={href("menu")} className="mt-9 inline-flex text-[11px] font-medium uppercase tracking-[0.22em] transition hover:text-[color:#2C4A3A]" style={{ color: INK }} {...editCopy(content, "season_menu_link", "See the full menu →")} />
                 )}
               </div>
             </div>
@@ -465,8 +465,8 @@ export default function FernDesign({ site, page = "home", basePath = "" }: Prese
       <section style={{ background: GREEN }} className="text-[#F7F2E9]">
         <div className="mx-auto max-w-4xl px-6 py-24 text-center sm:px-8 sm:py-28">
           <Leaf size={18} color={OAT} />
-          <p className="mt-6 text-[11px] font-medium uppercase tracking-[0.36em] text-[#F7F2E9]/70">An evening with us</p>
-          <h2 style={display} className="mt-4 text-4xl font-normal leading-[1.1] sm:text-6xl">Pull up a chair</h2>
+          <p className="mt-6 text-[11px] font-medium uppercase tracking-[0.36em] text-[#F7F2E9]/70" {...editCopy(content, "closing_eyebrow", "An evening with us")} />
+          <h2 style={display} className="mt-4 text-4xl font-normal leading-[1.1] sm:text-6xl" {...editCopy(content, "closing_heading", "Pull up a chair")} />
           <p className="mx-auto mt-6 max-w-lg text-[16px] leading-[1.85] text-[#F7F2E9]/85">
             Whether a quiet dinner for two or a long table with friends, we will look after you — and the planet too.
           </p>

@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { LacquerHeader } from "./LacquerHeader";
 import { LacquerBooking } from "./LacquerBooking";
@@ -61,7 +61,7 @@ export default function LacquerDesign({ site, page = "home", basePath = "" }: Pr
     <footer style={{ background: INK, backgroundImage: TRELLIS }} className="text-white/75">
       <div className="mx-auto grid max-w-6xl gap-12 px-7 py-20 sm:grid-cols-2 lg:grid-cols-3">
         <div>
-          <h4 className="text-sm font-semibold uppercase tracking-[0.22em]" style={{ color: GOLD }}>Opening hours</h4>
+          <h4 className="text-sm font-semibold uppercase tracking-[0.22em]" style={{ color: GOLD }} {...editCopy(content, "footer_hours", "Opening hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm">
               {content.hours.map((h, i) => (
@@ -74,7 +74,7 @@ export default function LacquerDesign({ site, page = "home", basePath = "" }: Pr
           ) : <p className="mt-5 text-sm text-white/55">Open daily.</p>}
         </div>
         <div>
-          <h4 className="text-sm font-semibold uppercase tracking-[0.22em]" style={{ color: GOLD }}>Links</h4>
+          <h4 className="text-sm font-semibold uppercase tracking-[0.22em]" style={{ color: GOLD }} {...editCopy(content, "footer_links", "Links")} />
           <ul className="mt-5 space-y-2.5 text-sm">
             {([
               groups.length > 0 && { label: "Menus", href: href("menu") },
@@ -95,20 +95,20 @@ export default function LacquerDesign({ site, page = "home", basePath = "" }: Pr
           )}
         </div>
         <div>
-          <h4 className="text-sm font-semibold uppercase tracking-[0.22em]" style={{ color: GOLD }}>Find us</h4>
+          <h4 className="text-sm font-semibold uppercase tracking-[0.22em]" style={{ color: GOLD }} {...editCopy(content, "footer_findus", "Find us")} />
           {content.address && <p data-edit="content.address" className="mt-5 whitespace-pre-line text-sm leading-relaxed">{content.address}</p>}
           <div className="mt-4 space-y-1.5 text-sm">
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
             {content.email && <a data-edit="content.email" href={`mailto:${content.email}`} className="block transition hover:text-white">{content.email}</a>}
           </div>
           {content.map_url && (
-            <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-5 inline-flex border px-6 py-2.5 text-[11px] font-semibold uppercase tracking-[0.2em] transition hover:bg-white hover:text-black" style={{ borderColor: `${GOLD}66`, color: CREAM }}>Get directions</a>
+            <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-5 inline-flex border px-6 py-2.5 text-[11px] font-semibold uppercase tracking-[0.2em] transition hover:bg-white hover:text-black" style={{ borderColor: `${GOLD}66`, color: CREAM }} {...editCopy(content, "footer_directions", "Get directions")} />
           )}
         </div>
       </div>
       <div className="border-t px-7 pb-12 pt-12 text-center" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
         <p data-edit="tenant.business_name" style={{ ...serif }} className="text-2xl lowercase tracking-[0.04em] text-white">{name}</p>
-        <p className="mx-auto mt-4 max-w-xl text-sm text-white/55">By using our website you agree to the terms of our Privacy Policy.</p>
+        <p className="mx-auto mt-4 max-w-xl text-sm text-white/55" {...editCopy(content, "footer_privacy", "By using our website you agree to the terms of our Privacy Policy.")} />
         <p className="mt-3 text-xs text-white/35">© {name}. All rights reserved.</p>
       </div>
     </footer>
@@ -125,11 +125,11 @@ export default function LacquerDesign({ site, page = "home", basePath = "" }: Pr
   );
 
   // Dark page banner that also clears the fixed header on sub-pages.
-  const banner = (kicker: string, title: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string) => (
     <section style={{ background: INK, backgroundImage: TRELLIS }} className="text-white">
       <div className="mx-auto max-w-6xl px-7 pb-14 pt-32 text-center sm:pt-40">
-        <p className="text-xs font-semibold uppercase tracking-[0.34em]" style={{ color: GOLD }}>{kicker}</p>
-        <h1 style={serif} className="mt-4 text-4xl font-semibold uppercase tracking-[0.04em] sm:text-5xl">{title}</h1>
+        <p className="text-xs font-semibold uppercase tracking-[0.34em]" style={{ color: GOLD }} {...editCopy(content, kickerKey, kicker)} />
+        <h1 style={serif} className="mt-4 text-4xl font-semibold uppercase tracking-[0.04em] sm:text-5xl" {...editCopy(content, titleKey, title)} />
       </div>
     </section>
   );
@@ -138,7 +138,7 @@ export default function LacquerDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "menu") {
     return shell(
       <>
-        {banner("Our kitchen", "Menus")}
+        {banner("Our kitchen", "menu_kicker", "Menus", "menu_title")}
         <section className="mx-auto max-w-4xl px-7 pb-24" style={{ background: INK }}>
           {groups.length > 0 ? (
             <>
@@ -187,10 +187,10 @@ export default function LacquerDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "reservations") {
     return shell(
       <>
-        {banner("Book a table", "Reservations")}
+        {banner("Book a table", "reservations_kicker", "Reservations", "reservations_title")}
         <section className="px-7 pb-24" style={{ background: INK }}>
           <div className="mx-auto max-w-xl">
-            <p className="mb-8 text-center text-[16px] leading-[1.9] text-white/70">To reserve a table, use the form below and we will confirm by phone or email. For parties of 8 or more, please call us.</p>
+            <p className="mb-8 text-center text-[16px] leading-[1.9] text-white/70" {...editCopy(content, "reservations_intro", "To reserve a table, use the form below and we will confirm by phone or email. For parties of 8 or more, please call us.")} />
             <LacquerBooking tenantId={tenant.id} name={name} />
           </div>
         </section>
@@ -202,11 +202,11 @@ export default function LacquerDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "contact") {
     return shell(
       <>
-        {banner("Get in touch", "Contact")}
+        {banner("Get in touch", "contact_kicker", "Contact", "contact_title")}
         <section className="px-7 pb-24" style={{ background: INK }}>
           <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-2 lg:gap-20">
             <div>
-              <h2 className="text-2xl uppercase tracking-[0.06em]" style={{ ...serif, color: GOLD }}>Find us</h2>
+              <h2 className="text-2xl uppercase tracking-[0.06em]" style={{ ...serif, color: GOLD }} {...editCopy(content, "contact_findus_heading", "Find us")} />
               <div className="mt-5 space-y-4 text-[15px] leading-relaxed text-white/75">
                 {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
                 {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -223,7 +223,7 @@ export default function LacquerDesign({ site, page = "home", basePath = "" }: Pr
                 </ul>
               )}
               {content.map_url && (
-                <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex border px-7 py-3 text-[11px] font-semibold uppercase tracking-[0.2em] transition hover:bg-white hover:text-black" style={{ borderColor: `${GOLD}66`, color: CREAM }}>Get directions</a>
+                <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex border px-7 py-3 text-[11px] font-semibold uppercase tracking-[0.2em] transition hover:bg-white hover:text-black" style={{ borderColor: `${GOLD}66`, color: CREAM }} {...editCopy(content, "contact_directions", "Get directions")} />
               )}
             </div>
             {contactOn && (
@@ -249,12 +249,12 @@ export default function LacquerDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "about") {
     return shell(
       <>
-        {banner("Our story", "About")}
+        {banner("Our story", "about_kicker", "About", "about_title")}
         <section className="mx-auto max-w-3xl px-7 pb-24 text-center" style={{ background: INK }}>
           {content.about ? <p data-edit="content.about" className="text-[17px] leading-[2] text-white/75">{content.about}</p> : <p className="text-white/55">Our story is coming soon.</p>}
           {content.cuisine_type && (
             <>
-              <h3 className="mt-14 text-2xl uppercase tracking-[0.06em]" style={{ ...serif, color: GOLD }}>What we cook</h3>
+              <h3 className="mt-14 text-2xl uppercase tracking-[0.06em]" style={{ ...serif, color: GOLD }} {...editCopy(content, "about_cook_heading", "What we cook")} />
               <p data-edit="content.cuisine_type" className="mt-4 text-[16px] leading-[1.9] text-white/70">{content.cuisine_type}</p>
             </>
           )}
@@ -267,7 +267,7 @@ export default function LacquerDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "gallery") {
     return shell(
       <>
-        {banner("A look inside", "What's on")}
+        {banner("A look inside", "gallery_kicker", "What's on", "gallery_title")}
         <div style={{ background: INK }} className="pb-24">
           {gallery.length > 0 ? (
             <section className="grid grid-cols-2 gap-1.5 px-1.5 sm:grid-cols-3">
@@ -305,9 +305,9 @@ export default function LacquerDesign({ site, page = "home", basePath = "" }: Pr
               <p data-edit="content.about" className="mt-7 max-w-md text-[15px] leading-[1.9] text-white/85 [text-shadow:0_1px_16px_rgba(0,0,0,0.7)]">{content.about}</p>
             )}
             <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-              <a href={book} className="px-9 py-3.5 text-center text-xs font-semibold uppercase tracking-[0.22em] transition hover:brightness-110" style={{ background: GOLD, color: INK }}>Book a table</a>
+              <a href={book} className="px-9 py-3.5 text-center text-xs font-semibold uppercase tracking-[0.22em] transition hover:brightness-110" style={{ background: GOLD, color: INK }} {...editCopy(content, "hero_book_cta", "Book a table")} />
               {groups.length > 0 && (
-                <a href={href("menu")} className="border px-9 py-3.5 text-center text-xs font-semibold uppercase tracking-[0.22em] text-white transition hover:bg-white hover:text-black" style={{ borderColor: "rgba(255,255,255,0.6)" }}>See our menus</a>
+                <a href={href("menu")} className="border px-9 py-3.5 text-center text-xs font-semibold uppercase tracking-[0.22em] text-white transition hover:bg-white hover:text-black" style={{ borderColor: "rgba(255,255,255,0.6)" }} {...editCopy(content, "hero_menu_cta", "See our menus")} />
               )}
             </div>
           </div>
@@ -316,7 +316,7 @@ export default function LacquerDesign({ site, page = "home", basePath = "" }: Pr
 
       {/* "take your seats" centred statement on black */}
       <section style={{ background: INK }} className="px-7 py-20 text-center">
-        <h2 style={serif} className="text-2xl font-semibold uppercase tracking-[0.18em] text-white sm:text-3xl">Take your seats</h2>
+        <h2 style={serif} className="text-2xl font-semibold uppercase tracking-[0.18em] text-white sm:text-3xl" {...editCopy(content, "home_seats_heading", "Take your seats")} />
         {content.cuisine_type && <p data-edit="content.cuisine_type" className="mx-auto mt-5 max-w-2xl text-[16px] leading-[1.9] text-white/70">{content.cuisine_type}</p>}
       </section>
 
@@ -325,8 +325,8 @@ export default function LacquerDesign({ site, page = "home", basePath = "" }: Pr
         <section style={{ background: PANEL, borderColor: "rgba(255,255,255,0.06)" }} className="border-y">
           <div className="mx-auto max-w-5xl px-7 py-20">
             <div className="text-center">
-              <p className="text-xs font-semibold uppercase tracking-[0.34em]" style={{ color: GOLD }}>Our kitchen</p>
-              <h2 style={serif} className="mt-3 text-3xl font-semibold uppercase tracking-[0.04em] text-white sm:text-4xl">Menus</h2>
+              <p className="text-xs font-semibold uppercase tracking-[0.34em]" style={{ color: GOLD }} {...editCopy(content, "home_menus_eyebrow", "Our kitchen")} />
+              <h2 style={serif} className="mt-3 text-3xl font-semibold uppercase tracking-[0.04em] text-white sm:text-4xl" {...editCopy(content, "home_menus_heading", "Menus")} />
             </div>
             <div className="mt-12 grid gap-8 sm:grid-cols-3">
               {featured.map((item) => (
@@ -338,7 +338,7 @@ export default function LacquerDesign({ site, page = "home", basePath = "" }: Pr
               ))}
             </div>
             <div className="mt-12 text-center">
-              <a href={href("menu")} className="inline-flex border px-9 py-3.5 text-xs font-semibold uppercase tracking-[0.22em] text-white transition hover:bg-white hover:text-black" style={{ borderColor: `${GOLD}88` }}>See our menus</a>
+              <a href={href("menu")} className="inline-flex border px-9 py-3.5 text-xs font-semibold uppercase tracking-[0.22em] text-white transition hover:bg-white hover:text-black" style={{ borderColor: `${GOLD}88` }} {...editCopy(content, "home_menus_cta", "See our menus")} />
             </div>
           </div>
         </section>
@@ -346,16 +346,16 @@ export default function LacquerDesign({ site, page = "home", basePath = "" }: Pr
 
       {/* reservations call-out, centred */}
       <section style={{ background: INK }} className="px-7 py-20 text-center">
-        <h2 style={serif} className="text-2xl font-semibold uppercase tracking-[0.06em] text-white sm:text-3xl">Reservations</h2>
-        <p className="mx-auto mt-4 max-w-xl text-[16px] leading-[1.9] text-white/70">To make a reservation, use our online booking or get in touch. We cannot wait to welcome you.</p>
-        <a href={book} className="mt-7 inline-flex px-10 py-3.5 text-xs font-semibold uppercase tracking-[0.22em] transition hover:brightness-110" style={{ background: GOLD, color: INK }}>Book a table</a>
+        <h2 style={serif} className="text-2xl font-semibold uppercase tracking-[0.06em] text-white sm:text-3xl" {...editCopy(content, "home_reservations_heading", "Reservations")} />
+        <p className="mx-auto mt-4 max-w-xl text-[16px] leading-[1.9] text-white/70" {...editCopy(content, "home_reservations_sub", "To make a reservation, use our online booking or get in touch. We cannot wait to welcome you.")} />
+        <a href={book} className="mt-7 inline-flex px-10 py-3.5 text-xs font-semibold uppercase tracking-[0.22em] transition hover:brightness-110" style={{ background: GOLD, color: INK }} {...editCopy(content, "home_reservations_cta", "Book a table")} />
       </section>
 
       {/* what's on — gallery photo cards linking to the What's on page */}
       {gallery.length > 0 && (
         <section style={{ background: PANEL }} className="px-7 py-20">
           <div className="mx-auto max-w-6xl">
-            <h2 style={serif} className="text-center text-2xl font-semibold uppercase tracking-[0.18em] text-white sm:text-3xl">What&apos;s on</h2>
+            <h2 style={serif} className="text-center text-2xl font-semibold uppercase tracking-[0.18em] text-white sm:text-3xl" {...editCopy(content, "home_whatson_heading", "What's on")} />
             <div className="mt-12 grid gap-6 sm:grid-cols-3">
               {gallery.slice(0, 3).map((g) => (
                 <a key={g.id} href={href("gallery")} className="group block">
@@ -372,13 +372,13 @@ export default function LacquerDesign({ site, page = "home", basePath = "" }: Pr
 
       {/* contact band */}
       <section style={{ background: INK }} className="px-7 py-20 text-center">
-        <h2 style={serif} className="text-2xl font-semibold uppercase tracking-[0.18em] text-white sm:text-3xl">Contact</h2>
+        <h2 style={serif} className="text-2xl font-semibold uppercase tracking-[0.18em] text-white sm:text-3xl" {...editCopy(content, "home_contact_heading", "Contact")} />
         <div className="mx-auto mt-6 max-w-md space-y-2 text-[15px] leading-relaxed text-white/75">
           {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
           {content.email && <a data-edit="content.email" href={`mailto:${content.email}`} className="block underline transition hover:text-white">{content.email}</a>}
           {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
         </div>
-        <a href={href("contact")} className="mt-7 inline-flex border px-9 py-3 text-[11px] font-semibold uppercase tracking-[0.2em] text-white transition hover:bg-white hover:text-black" style={{ borderColor: `${GOLD}88` }}>Get in touch</a>
+        <a href={href("contact")} className="mt-7 inline-flex border px-9 py-3 text-[11px] font-semibold uppercase tracking-[0.2em] text-white transition hover:bg-white hover:text-black" style={{ borderColor: `${GOLD}88` }} {...editCopy(content, "home_contact_cta", "Get in touch")} />
       </section>
     </>,
     false,

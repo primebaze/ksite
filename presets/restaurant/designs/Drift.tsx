@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { DriftHeader } from "./DriftHeader";
 import { DriftBooking } from "./DriftBooking";
@@ -72,7 +72,7 @@ export default function DriftDesign({ site, page = "home", basePath = "" }: Pres
         </div>
 
         <div>
-          <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-white/50">Opening hours</h4>
+          <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-white/50" {...editCopy(content, "footer_hours_heading", "Opening hours")} />
           {content.hours && content.hours.length > 0 && (
             <ul className="mt-4 space-y-2 text-sm text-white/70">
               {content.hours.map((h, i) => (
@@ -86,7 +86,7 @@ export default function DriftDesign({ site, page = "home", basePath = "" }: Pres
         </div>
 
         <div>
-          <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-white/50">Explore</h4>
+          <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-white/50" {...editCopy(content, "footer_explore_heading", "Explore")} />
           <ul className="mt-4 space-y-2.5 text-sm text-white/70">
             {([
               groups.length > 0 && { label: "Menu", href: href("menu") },
@@ -100,7 +100,7 @@ export default function DriftDesign({ site, page = "home", basePath = "" }: Pres
         </div>
 
         <div>
-          <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-white/50">Follow</h4>
+          <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-white/50" {...editCopy(content, "footer_follow_heading", "Follow")} />
           {content.socials && content.socials.length > 0 ? (
             <div className="mt-4 flex gap-4 text-white">
               {content.socials.map((s) => (
@@ -135,11 +135,11 @@ export default function DriftDesign({ site, page = "home", basePath = "" }: Pres
   );
 
   // Light page header — also clears the fixed header on sub-pages.
-  const banner = (kicker: string, title: string, blurb?: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string, blurb?: string) => (
     <section style={{ background: SOFT }} className="border-b border-neutral-200">
       <div className="mx-auto max-w-6xl px-6 pb-12 pt-32 sm:px-8 sm:pb-16 sm:pt-36">
-        <p className="text-xs font-semibold uppercase tracking-[0.3em]" style={{ color: CORAL }}>{kicker}</p>
-        <h1 className="mt-3 text-4xl font-semibold leading-tight sm:text-5xl">{title}</h1>
+        <p className="text-xs font-semibold uppercase tracking-[0.3em]" style={{ color: CORAL }} {...editCopy(content, kickerKey, kicker)} />
+        <h1 className="mt-3 text-4xl font-semibold leading-tight sm:text-5xl" {...editCopy(content, titleKey, title)} />
         {blurb && <p className="mt-4 max-w-xl text-[17px] leading-[1.7] text-neutral-600">{blurb}</p>}
       </div>
     </section>
@@ -149,7 +149,7 @@ export default function DriftDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "menu") {
     return shell(
       <>
-        {banner("The menu", "Today's plates", "A short, focused menu of seasonal plates, prepared fresh each day and built to share across the table.")}
+        {banner("The menu", "menu_kicker", "Today's plates", "menu_title", "A short, focused menu of seasonal plates, prepared fresh each day and built to share across the table.")}
         <section className="mx-auto max-w-6xl px-6 py-20 sm:px-8">
           {groups.length > 0 ? (
             <div className="space-y-16">
@@ -216,9 +216,8 @@ export default function DriftDesign({ site, page = "home", basePath = "" }: Pres
                     href={href("reservations")}
                     style={{ background: CORAL }}
                     className="inline-flex rounded-full px-9 py-4 text-sm font-semibold uppercase tracking-[0.14em] text-white transition hover:opacity-90"
-                  >
-                    Book a table
-                  </a>
+                    {...editCopy(content, "menu_book_cta", "Book a table")}
+                  />
                 </div>
               )}
             </div>
@@ -234,7 +233,7 @@ export default function DriftDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "reservations") {
     return shell(
       <>
-        {banner("Reservations", "Book a table", "Reserve in a few seconds and we'll confirm by phone or email. For parties of 8 or more, please call us.")}
+        {banner("Reservations", "reservations_kicker", "Book a table", "reservations_title", "Reserve in a few seconds and we'll confirm by phone or email. For parties of 8 or more, please call us.")}
         <section className="mx-auto max-w-5xl px-6 py-20 sm:px-8">
           <DriftBooking tenantId={tenant.id} name={name} />
           {(content.phone || content.email) && (
@@ -254,7 +253,7 @@ export default function DriftDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "contact") {
     return shell(
       <>
-        {banner("Visit us", "Find us")}
+        {banner("Visit us", "visit_kicker", "Find us", "visit_title")}
         <section className="mx-auto grid max-w-6xl gap-12 px-6 py-20 sm:px-8 lg:grid-cols-2 lg:gap-20">
           {/* left: address + prominent Get directions */}
           <div>
@@ -270,9 +269,8 @@ export default function DriftDesign({ site, page = "home", basePath = "" }: Pres
                 rel="noreferrer"
                 className="mt-7 inline-flex rounded-full px-8 py-4 text-sm font-semibold uppercase tracking-[0.12em] text-white shadow-lg transition hover:opacity-90"
                 style={{ background: CORAL }}
-              >
-                Get directions
-              </a>
+                {...editCopy(content, "directions_cta", "Get directions")}
+              />
             )}
             {content.hours && content.hours.length > 0 && (
               <ul className="mt-10 max-w-xs space-y-2 border-t border-neutral-200 pt-7 text-sm text-neutral-700">
@@ -308,7 +306,7 @@ export default function DriftDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "about") {
     return shell(
       <>
-        {banner("Our story", "A bright room, honest food")}
+        {banner("Our story", "about_kicker", "A bright room, honest food", "about_title")}
         <section className="mx-auto max-w-3xl px-6 py-20 sm:px-8">
           {content.about ? (
             <p data-edit="content.about" className="text-[18px] leading-[1.9] text-neutral-700">{content.about}</p>
@@ -317,7 +315,7 @@ export default function DriftDesign({ site, page = "home", basePath = "" }: Pres
           )}
           {content.cuisine_type && (
             <>
-              <h2 className="mt-12 text-2xl font-semibold">What we cook</h2>
+              <h2 className="mt-12 text-2xl font-semibold" {...editCopy(content, "about_cook_heading", "What we cook")} />
               <p data-edit="content.cuisine_type" className="mt-4 text-[17px] leading-[1.8] text-neutral-700">{content.cuisine_type}</p>
             </>
           )}
@@ -334,7 +332,7 @@ export default function DriftDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Gallery", "A look inside")}
+        {banner("Gallery", "gallery_kicker", "A look inside", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="grid grid-cols-2 gap-1 sm:grid-cols-3">
             {gallery.map((g) => (
@@ -377,16 +375,14 @@ export default function DriftDesign({ site, page = "home", basePath = "" }: Pres
               href={book}
               style={{ background: CORAL }}
               className="inline-flex rounded-full px-9 py-4 text-sm font-semibold uppercase tracking-[0.14em] text-white shadow-xl transition hover:opacity-90"
-            >
-              Book a table
-            </a>
+              {...editCopy(content, "hero_book_cta", "Book a table")}
+            />
             {groups.length > 0 && (
               <a
                 href={href("menu")}
                 className="inline-flex rounded-full border border-white/70 px-9 py-4 text-sm font-semibold uppercase tracking-[0.14em] text-white backdrop-blur-sm transition hover:bg-white hover:text-neutral-900"
-              >
-                See the menu
-              </a>
+                {...editCopy(content, "hero_menu_cta", "See the menu")}
+              />
             )}
           </div>
         </div>
@@ -395,9 +391,9 @@ export default function DriftDesign({ site, page = "home", basePath = "" }: Pres
       {/* INTRO teaser → links to about */}
       {content.about && (
         <section className="mx-auto max-w-3xl px-6 py-24 text-center sm:px-8">
-          <p className="text-xs font-semibold uppercase tracking-[0.3em]" style={{ color: CORAL }}>Welcome</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.3em]" style={{ color: CORAL }} {...editCopy(content, "intro_eyebrow", "Welcome")} />
           <p data-edit="content.about" className="mt-6 text-[19px] leading-[1.9] text-neutral-700">{content.about}</p>
-          <a href={href("about")} className="mt-7 inline-flex text-sm font-semibold uppercase tracking-[0.14em]" style={{ color: CORAL }}>Our story →</a>
+          <a href={href("about")} className="mt-7 inline-flex text-sm font-semibold uppercase tracking-[0.14em]" style={{ color: CORAL }} {...editCopy(content, "intro_story_link", "Our story →")} />
         </section>
       )}
 
@@ -407,10 +403,10 @@ export default function DriftDesign({ site, page = "home", basePath = "" }: Pres
           <div className="mx-auto max-w-6xl px-6 py-24 sm:px-8">
             <div className="flex flex-wrap items-end justify-between gap-4">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.3em]" style={{ color: CORAL }}>The menu</p>
-                <h2 className="mt-3 text-3xl font-semibold sm:text-4xl">A few favourites</h2>
+                <p className="text-xs font-semibold uppercase tracking-[0.3em]" style={{ color: CORAL }} {...editCopy(content, "highlights_eyebrow", "The menu")} />
+                <h2 className="mt-3 text-3xl font-semibold sm:text-4xl" {...editCopy(content, "highlights_heading", "A few favourites")} />
               </div>
-              <a href={href("menu")} className="text-sm font-semibold uppercase tracking-[0.14em]" style={{ color: CORAL }}>View full menu →</a>
+              <a href={href("menu")} className="text-sm font-semibold uppercase tracking-[0.14em]" style={{ color: CORAL }} {...editCopy(content, "highlights_menu_link", "View full menu →")} />
             </div>
             <div className="mt-12 grid gap-5 sm:grid-cols-2">
               {featured.map((item) => (
@@ -433,7 +429,7 @@ export default function DriftDesign({ site, page = "home", basePath = "" }: Pres
       <section className="mx-auto max-w-6xl px-6 py-24 sm:px-8">
         <div className="grid gap-12 md:grid-cols-3">
           <div>
-            <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-neutral-400">Opening hours</h3>
+            <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-neutral-400" {...editCopy(content, "info_hours_heading", "Opening hours")} />
             {content.hours && content.hours.length > 0 ? (
               <ul className="mt-4 space-y-2 text-sm text-neutral-700">
                 {content.hours.map((h, i) => (
@@ -448,16 +444,16 @@ export default function DriftDesign({ site, page = "home", basePath = "" }: Pres
             )}
           </div>
           <div>
-            <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-neutral-400">Find us</h3>
+            <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-neutral-400" {...editCopy(content, "info_find_heading", "Find us")} />
             {content.address && <p data-edit="content.address" className="mt-4 whitespace-pre-line text-sm leading-relaxed text-neutral-700">{content.address}</p>}
             <div className="mt-3 space-y-1 text-sm text-neutral-700">
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block hover:text-neutral-950">{content.phone}</a>}
               {content.email && <a data-edit="content.email" href={`mailto:${content.email}`} className="block hover:text-neutral-950">{content.email}</a>}
             </div>
-            <a href={href("contact")} className="mt-4 inline-flex text-sm font-semibold uppercase tracking-[0.14em]" style={{ color: CORAL }}>Visit us →</a>
+            <a href={href("contact")} className="mt-4 inline-flex text-sm font-semibold uppercase tracking-[0.14em]" style={{ color: CORAL }} {...editCopy(content, "info_visit_link", "Visit us →")} />
           </div>
           <div className="flex flex-col items-start">
-            <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-neutral-400">Reserve</h3>
+            <h3 className="text-xs font-semibold uppercase tracking-[0.2em] text-neutral-400" {...editCopy(content, "info_reserve_heading", "Reserve")} />
             <p className="mt-4 text-sm text-neutral-700">{bookingOn ? "Book your table online in seconds." : "Get in touch to plan your visit."}</p>
             <a
               href={book}
