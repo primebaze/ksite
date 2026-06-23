@@ -147,12 +147,12 @@ export default function IndigoDesign({ site, page = "home", basePath = "" }: Pre
                 <div key={section.section ?? si}>
                   {section.section && (
                     <h2 className="mb-6 inline-block text-2xl font-extrabold tracking-tight" style={{ color: INK }}>
-                      <span className="rounded-lg px-3 py-1" style={{ background: accents[si % accents.length] }}>{section.section}</span>
+                      <span data-edit={`section:${section.categories[0]?.items[0]?.id ?? ""}`} className="rounded-lg px-3 py-1" style={{ background: accents[si % accents.length] }}>{section.section}</span>
                     </h2>
                   )}
                   {section.categories.map((catg) => (
                     <div key={catg.category ?? "_"} className="mt-8">
-                      {catg.category && <h3 className="mb-3 text-xs font-bold uppercase tracking-[0.2em] text-neutral-500">{catg.category}</h3>}
+                      {catg.category && <h3 data-edit={`category:${catg.items[0]?.id ?? ""}`} className="mb-3 text-xs font-bold uppercase tracking-[0.2em] text-neutral-500">{catg.category}</h3>}
                       <ul className="divide-y divide-black/10">
                         {catg.items.map((item) => (
                           <li key={item.id} className="flex items-baseline justify-between gap-6 py-5">
@@ -393,8 +393,8 @@ export default function IndigoDesign({ site, page = "home", basePath = "" }: Pre
                       <div className="aspect-[4/5] w-full" style={{ background: `linear-gradient(135deg, ${BLUE}, ${MINT})` }} />
                     )}
                   </div>
-                  <p className="mt-4 text-lg font-bold" style={{ color: INK }}>{m.name}</p>
-                  {m.role && <p className="text-sm text-neutral-500">{m.role}</p>}
+                  <p data-edit={`team:${m.id}:name`} className="mt-4 text-lg font-bold" style={{ color: INK }}>{m.name}</p>
+                  {m.role && <p data-edit={`team:${m.id}:role`} className="text-sm text-neutral-500">{m.role}</p>}
                 </div>
               ))}
             </div>

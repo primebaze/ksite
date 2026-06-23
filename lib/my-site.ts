@@ -299,6 +299,50 @@ export async function deleteMyTeamMember(memberId: string) {
   await bust(ref);
 }
 
+// Update ONLY the named fields of one team member (inline editing; mustn't wipe
+// the member's other columns the way a partial upsert would).
+export async function patchMyTeamMember(id: string, fields: Partial<Pick<TeamMember, "name" | "role">>) {
+  const supabase = await db();
+  const ref = await myRef();
+  if (!ref || !id) return;
+  const patch: Record<string, string | null> = {};
+  if (fields.name !== undefined) patch.name = fields.name;
+  if (fields.role !== undefined) patch.role = fields.role;
+  if (Object.keys(patch).length === 0) return;
+  await supabase.from("team").update(patch).eq("id", id).eq("tenant_id", ref.id);
+  await bust(ref);
+}
+
+// Rename a catalog SECTION inline. A section label is shared by every item in
+// it, so we look up the reference item's current section and rename them all.
+export async function renameMyCatalogSection(refItemId: string, newName: string) {
+  const supabase = await db();
+  const ref = await myRef();
+  if (!ref || !refItemId || !newName) return;
+  const { data: item } = await supabase.from("catalog_items").select("section").eq("id", refItemId).eq("tenant_id", ref.id).maybeSingle();
+  if (!item) return;
+  const old = (item as { section: string | null }).section;
+  const base = supabase.from("catalog_items").update({ section: newName }).eq("tenant_id", ref.id);
+  await (old === null ? base.is("section", null) : base.eq("section", old));
+  await bust(ref);
+}
+
+// Rename a catalog CATEGORY inline (scoped within its section, since the same
+// category label can recur under different sections).
+export async function renameMyCatalogCategory(refItemId: string, newName: string) {
+  const supabase = await db();
+  const ref = await myRef();
+  if (!ref || !refItemId || !newName) return;
+  const { data: item } = await supabase.from("catalog_items").select("section,category").eq("id", refItemId).eq("tenant_id", ref.id).maybeSingle();
+  if (!item) return;
+  const { section, category } = item as { section: string | null; category: string | null };
+  let q = supabase.from("catalog_items").update({ category: newName }).eq("tenant_id", ref.id);
+  q = section === null ? q.is("section", null) : q.eq("section", section);
+  q = category === null ? q.is("category", null) : q.eq("category", category);
+  await q;
+  await bust(ref);
+}
+
 // --- Form submissions (booking + contact enquiries) ------------------------
 export interface FormSubmission {
   id: string;

@@ -5,6 +5,9 @@ import {
   deleteMyCatalogItem,
   getMyTenantFull,
   patchMyCatalogItem,
+  patchMyTeamMember,
+  renameMyCatalogCategory,
+  renameMyCatalogSection,
   updateMyContent,
   updateMyTenant,
   updateMyTheme,
@@ -77,6 +80,17 @@ export async function saveInline(changes: Record<string, string>): Promise<{ ok:
         hours[i] = { ...hours[i], [field]: val };
         content.hours = hours;
         contentDirty = true;
+      }
+    } else if (key.startsWith("section:")) {
+      // "section:<refItemId>" — rename the section label across all its items.
+      await renameMyCatalogSection(key.slice("section:".length), val);
+    } else if (key.startsWith("category:")) {
+      // "category:<refItemId>" — rename the category label across its items.
+      await renameMyCatalogCategory(key.slice("category:".length), val);
+    } else if (key.startsWith("team:")) {
+      const [, id, field] = key.split(":");
+      if (id && (field === "name" || field === "role")) {
+        await patchMyTeamMember(id, { [field]: val });
       }
     } else if (key.startsWith("item:")) {
       const [, id, field] = key.split(":");
