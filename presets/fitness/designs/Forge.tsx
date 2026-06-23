@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { ForgeHeader } from "./ForgeHeader";
 import { FitnessBooking, type BookingSkin } from "./FitnessBooking";
@@ -98,7 +98,7 @@ export default function Forge({ site, page = "home", basePath = "" }: PresetProp
           )}
         </div>
         <div>
-          <h4 style={{ color: TEXT }} className="text-xs font-bold uppercase tracking-[0.2em]">Train</h4>
+          <h4 style={{ color: TEXT }} className="text-xs font-bold uppercase tracking-[0.2em]" {...editCopy(content, "footer_train", "Train")} />
           <ul className="mt-5 space-y-3 text-sm" style={{ color: MUTE }}>
             {([
               groups.length > 0 && { label: "Classes", href: href("services") },
@@ -111,7 +111,7 @@ export default function Forge({ site, page = "home", basePath = "" }: PresetProp
           </ul>
         </div>
         <div>
-          <h4 style={{ color: TEXT }} className="text-xs font-bold uppercase tracking-[0.2em]">Contact</h4>
+          <h4 style={{ color: TEXT }} className="text-xs font-bold uppercase tracking-[0.2em]" {...editCopy(content, "footer_contact", "Contact")} />
           <div className="mt-5 space-y-3 text-sm" style={{ color: MUTE }}>
             {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -119,7 +119,7 @@ export default function Forge({ site, page = "home", basePath = "" }: PresetProp
           </div>
         </div>
         <div>
-          <h4 style={{ color: TEXT }} className="text-xs font-bold uppercase tracking-[0.2em]">Hours</h4>
+          <h4 style={{ color: TEXT }} className="text-xs font-bold uppercase tracking-[0.2em]" {...editCopy(content, "footer_hours", "Hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm" style={{ color: MUTE }}>
               {content.hours.map((h, i) => (
@@ -131,7 +131,7 @@ export default function Forge({ site, page = "home", basePath = "" }: PresetProp
       </div>
       <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 border-t px-8 py-7 text-xs sm:flex-row" style={{ borderColor: LINE, color: "#ffffff66" }}>
         <p>© {new Date().getFullYear()} {name}. All rights reserved.</p>
-        <a href={href("contact")} className="font-semibold uppercase tracking-[0.16em] transition hover:text-white">Start training</a>
+        <a href={href("contact")} className="font-semibold uppercase tracking-[0.16em] transition hover:text-white" {...editCopy(content, "footer_train_cta", "Start training")} />
       </div>
     </footer>
   );
@@ -144,11 +144,11 @@ export default function Forge({ site, page = "home", basePath = "" }: PresetProp
     </div>
   );
 
-  const banner = (kicker: string, title: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string) => (
     <section style={{ background: PANEL, borderBottom: `1px solid ${LIME}26` }}>
       <div className="mx-auto max-w-7xl px-8 pb-14 pt-32 sm:pt-40">
-        <Kicker>{kicker}</Kicker>
-        <h1 style={{ ...display, color: TEXT }} className="mt-4 text-5xl font-black uppercase leading-[0.95] tracking-[-0.01em] sm:text-7xl">{title}</h1>
+        <Kicker><span {...editCopy(content, kickerKey, kicker)} /></Kicker>
+        <h1 style={{ ...display, color: TEXT }} className="mt-4 text-5xl font-black uppercase leading-[0.95] tracking-[-0.01em] sm:text-7xl" {...editCopy(content, titleKey, title)} />
       </div>
     </section>
   );
@@ -157,7 +157,7 @@ export default function Forge({ site, page = "home", basePath = "" }: PresetProp
   if (page === "services") {
     return shell(
       <>
-        {banner("Timetable", "Classes & Membership")}
+        {banner("Timetable", "svc_kicker", "Classes & Membership", "svc_title")}
         <section className="mx-auto max-w-6xl px-6 py-20 sm:px-8">
           {groups.length > 0 ? (
             <div className="space-y-16">
@@ -196,7 +196,7 @@ export default function Forge({ site, page = "home", basePath = "" }: PresetProp
   if (page === "about") {
     return shell(
       <>
-        {banner("Who we are", "Built To Push Limits")}
+        {banner("Who we are", "about_kicker", "Built To Push Limits", "about_title")}
         <section className="mx-auto max-w-3xl px-6 py-20 sm:px-8">
           {content.about ? <p data-edit="content.about" className="text-[17px] leading-[1.9]" style={{ color: MUTE }}>{content.about}</p> : <p style={{ color: MUTE }}>Our story is coming soon.</p>}
           <div className="mt-12">
@@ -211,7 +211,7 @@ export default function Forge({ site, page = "home", basePath = "" }: PresetProp
   if (page === "gallery") {
     return shell(
       <>
-        {banner("The floor", "Inside The Box")}
+        {banner("The floor", "gallery_kicker", "Inside The Box", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-7xl px-2 py-12 sm:px-4">
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
@@ -230,10 +230,10 @@ export default function Forge({ site, page = "home", basePath = "" }: PresetProp
   if (page === "contact") {
     return shell(
       <>
-        {banner("Get started", "Come Train With Us")}
+        {banner("Get started", "contact_kicker", "Come Train With Us", "contact_title")}
         <section className="mx-auto grid max-w-6xl gap-12 px-6 py-20 sm:px-8 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={display} className="text-2xl font-bold" >Find us</h2>
+            <h2 style={display} className="text-2xl font-bold" {...editCopy(content, "contact_find_heading", "Find us")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: MUTE }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -247,7 +247,7 @@ export default function Forge({ site, page = "home", basePath = "" }: PresetProp
               </ul>
             )}
             {content.map_url && (
-              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex px-7 py-3 text-[11px] font-bold uppercase tracking-[0.2em] transition hover:opacity-90" style={{ border: `1px solid ${LIME}`, color: LIME }}>Get directions</a>
+              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex px-7 py-3 text-[11px] font-bold uppercase tracking-[0.2em] transition hover:opacity-90" style={{ border: `1px solid ${LIME}`, color: LIME }} {...editCopy(content, "directions_cta", "Get directions")} />
             )}
           </div>
           <div className="space-y-5">
@@ -299,7 +299,7 @@ export default function Forge({ site, page = "home", basePath = "" }: PresetProp
           <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:gap-4">
             <a href={join} className="px-9 py-4 text-center text-[12px] font-black uppercase tracking-[0.2em] transition hover:opacity-90" style={{ background: LIME, color: INK }}>{ctaLabel}</a>
             {groups.length > 0 && (
-              <a href={href("services")} className="px-9 py-4 text-center text-[12px] font-black uppercase tracking-[0.2em] text-white backdrop-blur-sm transition hover:bg-white/10" style={{ border: "1px solid rgba(255,255,255,0.5)" }}>See classes</a>
+              <a href={href("services")} className="px-9 py-4 text-center text-[12px] font-black uppercase tracking-[0.2em] text-white backdrop-blur-sm transition hover:bg-white/10" style={{ border: "1px solid rgba(255,255,255,0.5)" }} {...editCopy(content, "hero_classes_cta", "See classes")} />
             )}
           </div>
         </div>
@@ -321,10 +321,10 @@ export default function Forge({ site, page = "home", basePath = "" }: PresetProp
       {(content.about || gallery[0]) && (
         <section className="mx-auto grid max-w-7xl items-center gap-12 px-8 py-24 lg:grid-cols-2 lg:gap-16">
           <div>
-            <Kicker>Who we are</Kicker>
-            <h2 style={{ ...display, color: TEXT }} className="mt-4 text-4xl font-black uppercase leading-[0.95] tracking-[-0.01em] sm:text-5xl">Built To Push Limits</h2>
+            <Kicker><span {...editCopy(content, "home_about_kicker", "Who we are")} /></Kicker>
+            <h2 style={{ ...display, color: TEXT }} className="mt-4 text-4xl font-black uppercase leading-[0.95] tracking-[-0.01em] sm:text-5xl" {...editCopy(content, "home_about_heading", "Built To Push Limits")} />
             {content.about && <p data-edit="content.about" className="mt-6 text-[16px] leading-[1.9]" style={{ color: MUTE }}>{content.about}</p>}
-            <a href={href("about")} className="mt-7 inline-flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.2em]" style={{ color: LIME }}>More about us →</a>
+            <a href={href("about")} className="mt-7 inline-flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.2em]" style={{ color: LIME }} {...editCopy(content, "home_about_link", "More about us →")} />
           </div>
           <div className="relative">
             {gallery[0] ? (
@@ -344,10 +344,10 @@ export default function Forge({ site, page = "home", basePath = "" }: PresetProp
           <div className="mx-auto max-w-7xl px-8 py-24">
             <div className="flex flex-wrap items-end justify-between gap-4">
               <div>
-                <Kicker>Timetable</Kicker>
-                <h2 style={{ ...display, color: TEXT }} className="mt-4 text-4xl font-black uppercase tracking-[-0.01em] sm:text-5xl">Classes & Membership</h2>
+                <Kicker><span {...editCopy(content, "home_classes_kicker", "Timetable")} /></Kicker>
+                <h2 style={{ ...display, color: TEXT }} className="mt-4 text-4xl font-black uppercase tracking-[-0.01em] sm:text-5xl" {...editCopy(content, "home_classes_heading", "Classes & Membership")} />
               </div>
-              <a href={href("services")} className="text-[12px] font-bold uppercase tracking-[0.18em] transition hover:text-white" style={{ color: LIME }}>View all →</a>
+              <a href={href("services")} className="text-[12px] font-bold uppercase tracking-[0.18em] transition hover:text-white" style={{ color: LIME }} {...editCopy(content, "home_classes_link", "View all →")} />
             </div>
             <div className="mt-12 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
               {featured.map((item) => (
@@ -368,8 +368,8 @@ export default function Forge({ site, page = "home", basePath = "" }: PresetProp
       {gallery.length > 0 && (
         <section className="py-24">
           <div className="mx-auto max-w-7xl px-8">
-            <Kicker>The floor</Kicker>
-            <h2 style={{ ...display, color: TEXT }} className="mt-4 max-w-2xl text-3xl font-black uppercase leading-[0.95] tracking-[-0.01em] sm:text-4xl">Where the work happens</h2>
+            <Kicker><span {...editCopy(content, "home_gallery_kicker", "The floor")} /></Kicker>
+            <h2 style={{ ...display, color: TEXT }} className="mt-4 max-w-2xl text-3xl font-black uppercase leading-[0.95] tracking-[-0.01em] sm:text-4xl" {...editCopy(content, "home_gallery_heading", "Where the work happens")} />
           </div>
           <div className="mx-auto mt-12 grid max-w-7xl grid-cols-2 gap-2 px-2 sm:grid-cols-4 sm:px-4">
             {gallery.slice(0, 4).map((g) => (
@@ -378,7 +378,7 @@ export default function Forge({ site, page = "home", basePath = "" }: PresetProp
             ))}
           </div>
           <div className="mx-auto mt-10 max-w-7xl px-8">
-            <a href={href("gallery")} className="inline-flex px-9 py-3.5 text-[11px] font-bold uppercase tracking-[0.2em] transition hover:opacity-90" style={{ border: `1px solid ${LIME}`, color: LIME }}>View gallery</a>
+            <a href={href("gallery")} className="inline-flex px-9 py-3.5 text-[11px] font-bold uppercase tracking-[0.2em] transition hover:opacity-90" style={{ border: `1px solid ${LIME}`, color: LIME }} {...editCopy(content, "home_gallery_cta", "View gallery")} />
           </div>
         </section>
       )}
@@ -386,8 +386,8 @@ export default function Forge({ site, page = "home", basePath = "" }: PresetProp
       {/* closing CTA */}
       <section style={{ background: LIME }}>
         <div className="mx-auto max-w-4xl px-8 py-20 text-center">
-          <h2 className="text-4xl font-black uppercase leading-[0.95] tracking-[-0.01em] sm:text-6xl" style={{ ...display, color: INK }}>No more someday.</h2>
-          <p className="mx-auto mt-5 max-w-md text-[15px] font-medium leading-relaxed" style={{ color: "#11140f" }}>First session is the hardest. Book it now and we&apos;ll handle the rest.</p>
+          <h2 className="text-4xl font-black uppercase leading-[0.95] tracking-[-0.01em] sm:text-6xl" style={{ ...display, color: INK }} {...editCopy(content, "cta_heading", "No more someday.")} />
+          <p className="mx-auto mt-5 max-w-md text-[15px] font-medium leading-relaxed" style={{ color: "#11140f" }} {...editCopy(content, "cta_sub", "First session is the hardest. Book it now and we'll handle the rest.")} />
           <a href={join} className="mt-8 inline-flex px-12 py-4 text-[12px] font-black uppercase tracking-[0.22em] text-white transition hover:opacity-90" style={{ background: INK }}>{ctaLabel}</a>
         </div>
       </section>

@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { HavenHeader } from "./HavenHeader";
 import { FitnessBooking, type BookingSkin } from "./FitnessBooking";
@@ -85,7 +85,7 @@ export default function Haven({ site, page = "home", basePath = "" }: PresetProp
         <div>
           <a href={href("home")} className="block">
             <span data-edit="tenant.business_name" style={serif} className="text-2xl tracking-[0.02em]">{name}</span>
-            <span className="mt-1 block text-[8px] uppercase tracking-[0.4em]" style={{ color: SAGE }}>Wellness &amp; Recovery</span>
+            <span className="mt-1 block text-[8px] uppercase tracking-[0.4em]" style={{ color: SAGE }} {...editCopy(content, "footer_brand_tag", "Wellness & Recovery")} />
           </a>
           {content.tagline && <p data-edit="content.tagline" className="mt-5 max-w-xs text-sm leading-relaxed" style={{ color: MUTE }}>{content.tagline}</p>}
           {content.socials && content.socials.length > 0 && (
@@ -97,7 +97,7 @@ export default function Haven({ site, page = "home", basePath = "" }: PresetProp
           )}
         </div>
         <div>
-          <h4 style={{ ...serif, color: INK }} className="text-lg">Visit</h4>
+          <h4 style={{ ...serif, color: INK }} className="text-lg" {...editCopy(content, "footer_visit", "Visit")} />
           <ul className="mt-5 space-y-3 text-sm" style={{ color: MUTE }}>
             {([
               groups.length > 0 && { label: "Services", href: href("services") },
@@ -110,7 +110,7 @@ export default function Haven({ site, page = "home", basePath = "" }: PresetProp
           </ul>
         </div>
         <div>
-          <h4 style={{ ...serif, color: INK }} className="text-lg">Contact</h4>
+          <h4 style={{ ...serif, color: INK }} className="text-lg" {...editCopy(content, "footer_contact", "Contact")} />
           <div className="mt-5 space-y-3 text-sm" style={{ color: MUTE }}>
             {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:opacity-70">{content.phone}</a>}
@@ -118,7 +118,7 @@ export default function Haven({ site, page = "home", basePath = "" }: PresetProp
           </div>
         </div>
         <div>
-          <h4 style={{ ...serif, color: INK }} className="text-lg">Hours</h4>
+          <h4 style={{ ...serif, color: INK }} className="text-lg" {...editCopy(content, "footer_hours", "Hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm" style={{ color: MUTE }}>
               {content.hours.map((h, i) => (
@@ -130,7 +130,7 @@ export default function Haven({ site, page = "home", basePath = "" }: PresetProp
       </div>
       <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 border-t px-8 py-7 text-xs sm:flex-row" style={{ borderColor: LINE, color: MUTE }}>
         <p>© {new Date().getFullYear()} {name}. All rights reserved.</p>
-        <a href={href("contact")} className="uppercase tracking-[0.16em] transition hover:opacity-70">Book your visit</a>
+        <a href={href("contact")} className="uppercase tracking-[0.16em] transition hover:opacity-70" {...editCopy(content, "footer_book_cta", "Book your visit")} />
       </div>
     </footer>
   );
@@ -143,11 +143,11 @@ export default function Haven({ site, page = "home", basePath = "" }: PresetProp
     </div>
   );
 
-  const banner = (kicker: string, title: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string) => (
     <section style={{ background: PANEL, borderBottom: `1px solid ${LINE}` }}>
       <div className="mx-auto max-w-6xl px-8 pb-16 pt-32 text-center sm:pt-40">
-        <Kicker center>{kicker}</Kicker>
-        <h1 style={{ ...serif, color: INK }} className="mt-4 text-4xl font-medium leading-tight sm:text-5xl">{title}</h1>
+        <Kicker center><span {...editCopy(content, kickerKey, kicker)} /></Kicker>
+        <h1 style={{ ...serif, color: INK }} className="mt-4 text-4xl font-medium leading-tight sm:text-5xl" {...editCopy(content, titleKey, title)} />
       </div>
     </section>
   );
@@ -156,7 +156,7 @@ export default function Haven({ site, page = "home", basePath = "" }: PresetProp
   if (page === "services") {
     return shell(
       <>
-        {banner("What we offer", "Treatments & Memberships")}
+        {banner("What we offer", "svc_kicker", "Treatments & Memberships", "svc_title")}
         <section className="mx-auto max-w-3xl px-6 py-20 sm:px-8">
           {groups.length > 0 ? (
             <div className="space-y-14">
@@ -199,7 +199,7 @@ export default function Haven({ site, page = "home", basePath = "" }: PresetProp
   if (page === "about") {
     return shell(
       <>
-        {banner("Our philosophy", "A Space To Restore")}
+        {banner("Our philosophy", "about_kicker", "A Space To Restore", "about_title")}
         <section className="mx-auto max-w-3xl px-6 py-20 sm:px-8">
           {content.about ? <p data-edit="content.about" className="text-[17px] leading-[1.9]" style={{ color: MUTE }}>{content.about}</p> : <p style={{ color: MUTE }}>Our story is coming soon.</p>}
           <div className="mt-12">
@@ -214,7 +214,7 @@ export default function Haven({ site, page = "home", basePath = "" }: PresetProp
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Our space", "A Look Inside")}
+        {banner("Our space", "gallery_kicker", "A Look Inside", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-6xl px-2 py-12 sm:px-4">
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
@@ -233,10 +233,10 @@ export default function Haven({ site, page = "home", basePath = "" }: PresetProp
   if (page === "contact") {
     return shell(
       <>
-        {banner("Plan your visit", "Get In Touch")}
+        {banner("Plan your visit", "contact_kicker", "Get In Touch", "contact_title")}
         <section className="mx-auto grid max-w-6xl gap-12 px-6 py-20 sm:px-8 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={{ ...serif, color: INK }} className="text-2xl">Find us</h2>
+            <h2 style={{ ...serif, color: INK }} className="text-2xl" {...editCopy(content, "contact_find_heading", "Find us")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: MUTE }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:opacity-70">{content.phone}</a>}
@@ -250,7 +250,7 @@ export default function Haven({ site, page = "home", basePath = "" }: PresetProp
               </ul>
             )}
             {content.map_url && (
-              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex rounded-full px-7 py-3 text-[11px] font-semibold uppercase tracking-[0.2em] transition hover:opacity-90" style={{ border: `1px solid ${SAGE}`, color: SAGE }}>Get directions</a>
+              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex rounded-full px-7 py-3 text-[11px] font-semibold uppercase tracking-[0.2em] transition hover:opacity-90" style={{ border: `1px solid ${SAGE}`, color: SAGE }} {...editCopy(content, "directions_cta", "Get directions")} />
             )}
           </div>
           <div className="space-y-5">
@@ -297,7 +297,7 @@ export default function Haven({ site, page = "home", basePath = "" }: PresetProp
           <div className="mt-9 flex flex-col items-center gap-3 sm:flex-row sm:justify-center sm:gap-4">
             <a href={join} className="rounded-full px-9 py-3.5 text-center text-[11px] font-semibold uppercase tracking-[0.2em] text-white transition hover:opacity-90" style={{ background: SAGE }}>{ctaLabel}</a>
             {groups.length > 0 && (
-              <a href={href("services")} className="rounded-full px-9 py-3.5 text-center text-[11px] font-semibold uppercase tracking-[0.2em] text-white backdrop-blur-sm transition hover:bg-white/10" style={{ border: "1px solid rgba(255,255,255,0.6)" }}>Our services</a>
+              <a href={href("services")} className="rounded-full px-9 py-3.5 text-center text-[11px] font-semibold uppercase tracking-[0.2em] text-white backdrop-blur-sm transition hover:bg-white/10" style={{ border: "1px solid rgba(255,255,255,0.6)" }} {...editCopy(content, "hero_services_cta", "Our services")} />
             )}
           </div>
         </div>
@@ -315,10 +315,10 @@ export default function Haven({ site, page = "home", basePath = "" }: PresetProp
             )}
           </div>
           <div>
-            <Kicker>Our philosophy</Kicker>
-            <h2 style={{ ...serif, color: INK }} className="mt-4 text-4xl font-medium leading-tight sm:text-5xl">A Space To Restore</h2>
+            <Kicker><span {...editCopy(content, "home_about_kicker", "Our philosophy")} /></Kicker>
+            <h2 style={{ ...serif, color: INK }} className="mt-4 text-4xl font-medium leading-tight sm:text-5xl" {...editCopy(content, "home_about_heading", "A Space To Restore")} />
             {content.about && <p data-edit="content.about" className="mt-6 text-[16px] leading-[1.9]" style={{ color: MUTE }}>{content.about}</p>}
-            <a href={href("about")} className="mt-7 inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em]" style={{ color: SAGE }}>Read more →</a>
+            <a href={href("about")} className="mt-7 inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em]" style={{ color: SAGE }} {...editCopy(content, "home_about_link", "Read more →")} />
           </div>
         </section>
       )}
@@ -328,8 +328,8 @@ export default function Haven({ site, page = "home", basePath = "" }: PresetProp
         <section style={{ background: PANEL, borderTop: `1px solid ${LINE}`, borderBottom: `1px solid ${LINE}` }}>
           <div className="mx-auto max-w-3xl px-8 py-24">
             <div className="text-center">
-              <Kicker center>What we offer</Kicker>
-              <h2 style={{ ...serif, color: INK }} className="mt-4 text-4xl font-medium sm:text-5xl">Treatments & Memberships</h2>
+              <Kicker center><span {...editCopy(content, "home_services_kicker", "What we offer")} /></Kicker>
+              <h2 style={{ ...serif, color: INK }} className="mt-4 text-4xl font-medium sm:text-5xl" {...editCopy(content, "home_services_heading", "Treatments & Memberships")} />
             </div>
             <ul className="mx-auto mt-12 divide-y" style={{ borderColor: LINE }}>
               {featured.map((item) => (
@@ -343,7 +343,7 @@ export default function Haven({ site, page = "home", basePath = "" }: PresetProp
               ))}
             </ul>
             <div className="mt-12 text-center">
-              <a href={href("services")} className="inline-flex rounded-full px-9 py-3.5 text-[11px] font-semibold uppercase tracking-[0.22em] transition hover:opacity-90" style={{ border: `1px solid ${SAGE}`, color: SAGE }}>View all services</a>
+              <a href={href("services")} className="inline-flex rounded-full px-9 py-3.5 text-[11px] font-semibold uppercase tracking-[0.22em] transition hover:opacity-90" style={{ border: `1px solid ${SAGE}`, color: SAGE }} {...editCopy(content, "home_services_cta", "View all services")} />
             </div>
           </div>
         </section>
@@ -353,8 +353,8 @@ export default function Haven({ site, page = "home", basePath = "" }: PresetProp
       {gallery.length > 0 && (
         <section className="py-24">
           <div className="mx-auto max-w-6xl px-8 text-center">
-            <Kicker center>Our space</Kicker>
-            <h2 style={{ ...serif, color: INK }} className="mx-auto mt-4 max-w-2xl text-3xl font-medium leading-snug sm:text-4xl">Quiet rooms designed for you to slow down.</h2>
+            <Kicker center><span {...editCopy(content, "home_gallery_kicker", "Our space")} /></Kicker>
+            <h2 style={{ ...serif, color: INK }} className="mx-auto mt-4 max-w-2xl text-3xl font-medium leading-snug sm:text-4xl" {...editCopy(content, "home_gallery_heading", "Quiet rooms designed for you to slow down.")} />
           </div>
           <div className="mx-auto mt-12 grid max-w-6xl grid-cols-2 gap-2 px-2 sm:grid-cols-4 sm:px-4">
             {gallery.slice(0, 4).map((g) => (
@@ -363,7 +363,7 @@ export default function Haven({ site, page = "home", basePath = "" }: PresetProp
             ))}
           </div>
           <div className="mt-10 text-center">
-            <a href={href("gallery")} className="inline-flex rounded-full px-9 py-3.5 text-[11px] font-semibold uppercase tracking-[0.22em] transition hover:opacity-90" style={{ border: `1px solid ${SAGE}`, color: SAGE }}>View gallery</a>
+            <a href={href("gallery")} className="inline-flex rounded-full px-9 py-3.5 text-[11px] font-semibold uppercase tracking-[0.22em] transition hover:opacity-90" style={{ border: `1px solid ${SAGE}`, color: SAGE }} {...editCopy(content, "home_gallery_cta", "View gallery")} />
           </div>
         </section>
       )}
@@ -371,8 +371,8 @@ export default function Haven({ site, page = "home", basePath = "" }: PresetProp
       {/* closing CTA band */}
       <section style={{ background: SAGE }}>
         <div className="mx-auto max-w-2xl px-8 py-20 text-center text-white">
-          <h2 style={serif} className="text-4xl font-medium sm:text-5xl">Give yourself an hour.</h2>
-          <p className="mx-auto mt-5 max-w-md text-[15px] leading-relaxed text-white/85">Step away from the noise. Book a visit and let us take care of the rest.</p>
+          <h2 style={serif} className="text-4xl font-medium sm:text-5xl" {...editCopy(content, "cta_heading", "Give yourself an hour.")} />
+          <p className="mx-auto mt-5 max-w-md text-[15px] leading-relaxed text-white/85" {...editCopy(content, "cta_sub", "Step away from the noise. Book a visit and let us take care of the rest.")} />
           <a href={join} className="mt-8 inline-flex rounded-full bg-white px-10 py-4 text-[11px] font-semibold uppercase tracking-[0.22em] transition hover:opacity-90" style={{ color: SAGE }}>{ctaLabel}</a>
         </div>
       </section>

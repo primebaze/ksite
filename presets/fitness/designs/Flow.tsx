@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { FlowHeader } from "./FlowHeader";
 import { FitnessBooking, type BookingSkin } from "./FitnessBooking";
@@ -82,7 +82,7 @@ export default function Flow({ site, page = "home", basePath = "" }: PresetProps
         <div>
           <a href={href("home")} className="block">
             <span data-edit="tenant.business_name" style={serif} className="text-2xl tracking-[0.02em]">{name}</span>
-            <span className="mt-1 block text-[8px] uppercase tracking-[0.4em] text-white/60">Studio</span>
+            <span className="mt-1 block text-[8px] uppercase tracking-[0.4em] text-white/60" {...editCopy(content, "footer_brand_tag", "Studio")} />
           </a>
           {content.tagline && <p data-edit="content.tagline" className="mt-5 max-w-xs text-sm leading-relaxed text-white/75">{content.tagline}</p>}
           {content.socials && content.socials.length > 0 && (
@@ -94,7 +94,7 @@ export default function Flow({ site, page = "home", basePath = "" }: PresetProps
           )}
         </div>
         <div>
-          <h4 style={serif} className="text-lg">Explore</h4>
+          <h4 style={serif} className="text-lg" {...editCopy(content, "footer_explore", "Explore")} />
           <ul className="mt-5 space-y-3 text-sm text-white/75">
             {([
               groups.length > 0 && { label: "Classes", href: href("services") },
@@ -107,7 +107,7 @@ export default function Flow({ site, page = "home", basePath = "" }: PresetProps
           </ul>
         </div>
         <div>
-          <h4 style={serif} className="text-lg">Visit</h4>
+          <h4 style={serif} className="text-lg" {...editCopy(content, "footer_visit", "Visit")} />
           <div className="mt-5 space-y-3 text-sm text-white/75">
             {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -115,7 +115,7 @@ export default function Flow({ site, page = "home", basePath = "" }: PresetProps
           </div>
         </div>
         <div>
-          <h4 style={serif} className="text-lg">Hours</h4>
+          <h4 style={serif} className="text-lg" {...editCopy(content, "footer_hours", "Hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm text-white/75">
               {content.hours.map((h, i) => (
@@ -127,7 +127,7 @@ export default function Flow({ site, page = "home", basePath = "" }: PresetProps
       </div>
       <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 border-t border-white/15 px-8 py-7 text-xs text-white/55 sm:flex-row">
         <p>© {new Date().getFullYear()} {name}. All rights reserved.</p>
-        <a href={href("contact")} className="uppercase tracking-[0.16em] transition hover:text-white">Book your first class</a>
+        <a href={href("contact")} className="uppercase tracking-[0.16em] transition hover:text-white" {...editCopy(content, "footer_book_cta", "Book your first class")} />
       </div>
     </footer>
   );
@@ -140,11 +140,11 @@ export default function Flow({ site, page = "home", basePath = "" }: PresetProps
     </div>
   );
 
-  const banner = (kicker: string, title: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string) => (
     <section style={{ background: SAND }}>
       <div className="mx-auto max-w-6xl px-8 pb-16 pt-32 text-center sm:pt-40">
-        <Kicker center>{kicker}</Kicker>
-        <h1 style={{ ...serif, color: SAGE }} className="mt-4 text-4xl font-medium leading-[1.05] sm:text-6xl">{title}</h1>
+        <Kicker center><span {...editCopy(content, kickerKey, kicker)} /></Kicker>
+        <h1 style={{ ...serif, color: SAGE }} className="mt-4 text-4xl font-medium leading-[1.05] sm:text-6xl" {...editCopy(content, titleKey, title)} />
       </div>
     </section>
   );
@@ -153,7 +153,7 @@ export default function Flow({ site, page = "home", basePath = "" }: PresetProps
   if (page === "services") {
     return shell(
       <>
-        {banner("Our schedule", "Classes & Membership")}
+        {banner("Our schedule", "svc_kicker", "Classes & Membership", "svc_title")}
         <section className="mx-auto max-w-3xl px-6 py-20 sm:px-8">
           {groups.length > 0 ? (
             <div className="space-y-14">
@@ -195,7 +195,7 @@ export default function Flow({ site, page = "home", basePath = "" }: PresetProps
   if (page === "about") {
     return shell(
       <>
-        {banner("Our practice", "A Space To Breathe")}
+        {banner("Our practice", "about_kicker", "A Space To Breathe", "about_title")}
         <section className="mx-auto max-w-3xl px-6 py-20 sm:px-8">
           {content.about ? <p data-edit="content.about" className="text-[18px] leading-[1.95]" style={{ color: INK }}>{content.about}</p> : <p style={{ color: MUTE }}>Our story is coming soon.</p>}
           <div className="mt-12">
@@ -210,7 +210,7 @@ export default function Flow({ site, page = "home", basePath = "" }: PresetProps
   if (page === "gallery") {
     return shell(
       <>
-        {banner("The studio", "Inside Our Space")}
+        {banner("The studio", "gallery_kicker", "Inside Our Space", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
             <div className="columns-2 gap-4 sm:columns-3 [&>img]:mb-4">
@@ -229,10 +229,10 @@ export default function Flow({ site, page = "home", basePath = "" }: PresetProps
   if (page === "contact") {
     return shell(
       <>
-        {banner("Visit us", "Come To The Studio")}
+        {banner("Visit us", "contact_kicker", "Come To The Studio", "contact_title")}
         <section className="mx-auto grid max-w-6xl gap-12 px-6 py-20 sm:px-8 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={{ ...serif, color: SAGE }} className="text-2xl">Find us</h2>
+            <h2 style={{ ...serif, color: SAGE }} className="text-2xl" {...editCopy(content, "contact_find_heading", "Find us")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: INK }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:opacity-70">{content.phone}</a>}
@@ -246,7 +246,7 @@ export default function Flow({ site, page = "home", basePath = "" }: PresetProps
               </ul>
             )}
             {content.map_url && (
-              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex rounded-full px-7 py-3 text-[11px] font-medium uppercase tracking-[0.18em] transition hover:bg-white" style={{ border: `1px solid ${SAGE}`, color: SAGE }}>Get directions</a>
+              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex rounded-full px-7 py-3 text-[11px] font-medium uppercase tracking-[0.18em] transition hover:bg-white" style={{ border: `1px solid ${SAGE}`, color: SAGE }} {...editCopy(content, "directions_cta", "Get directions")} />
             )}
           </div>
           <div className="space-y-5">
@@ -293,7 +293,7 @@ export default function Flow({ site, page = "home", basePath = "" }: PresetProps
           <div className="mt-2 flex flex-col items-center gap-3 sm:flex-row sm:gap-4">
             <a href={book} className="rounded-full px-9 py-4 text-center text-[12px] font-medium uppercase tracking-[0.18em] text-white shadow-xl transition hover:opacity-90" style={{ background: SAGE }}>{ctaLabel}</a>
             {groups.length > 0 && (
-              <a href={href("services")} className="rounded-full border border-white/70 px-9 py-4 text-center text-[12px] font-medium uppercase tracking-[0.18em] text-white backdrop-blur-sm transition hover:bg-white/10">View schedule</a>
+              <a href={href("services")} className="rounded-full border border-white/70 px-9 py-4 text-center text-[12px] font-medium uppercase tracking-[0.18em] text-white backdrop-blur-sm transition hover:bg-white/10" {...editCopy(content, "hero_schedule_cta", "View schedule")} />
             )}
           </div>
         </div>
@@ -311,10 +311,10 @@ export default function Flow({ site, page = "home", basePath = "" }: PresetProps
             )}
           </div>
           <div>
-            <Kicker>Our practice</Kicker>
-            <h2 style={{ ...serif, color: SAGE }} className="mt-4 text-4xl font-medium leading-[1.1] sm:text-5xl">A Space To Breathe</h2>
+            <Kicker><span {...editCopy(content, "home_about_kicker", "Our practice")} /></Kicker>
+            <h2 style={{ ...serif, color: SAGE }} className="mt-4 text-4xl font-medium leading-[1.1] sm:text-5xl" {...editCopy(content, "home_about_heading", "A Space To Breathe")} />
             {content.about && <p data-edit="content.about" className="mt-6 text-[16px] leading-[1.95]" style={{ color: INK }}>{content.about}</p>}
-            <a href={href("about")} className="mt-7 inline-flex items-center gap-2 text-[12px] uppercase tracking-[0.2em]" style={{ color: CLAY }}>Read more →</a>
+            <a href={href("about")} className="mt-7 inline-flex items-center gap-2 text-[12px] uppercase tracking-[0.2em]" style={{ color: CLAY }} {...editCopy(content, "home_about_link", "Read more →")} />
           </div>
         </section>
       )}
@@ -324,8 +324,8 @@ export default function Flow({ site, page = "home", basePath = "" }: PresetProps
         <section style={{ background: SAND }}>
           <div className="mx-auto max-w-3xl px-8 py-24">
             <div className="text-center">
-              <Kicker center>Our schedule</Kicker>
-              <h2 style={{ ...serif, color: SAGE }} className="mt-4 text-4xl font-medium sm:text-5xl">Classes & Membership</h2>
+              <Kicker center><span {...editCopy(content, "home_schedule_kicker", "Our schedule")} /></Kicker>
+              <h2 style={{ ...serif, color: SAGE }} className="mt-4 text-4xl font-medium sm:text-5xl" {...editCopy(content, "home_schedule_heading", "Classes & Membership")} />
             </div>
             <ul className="mt-12 divide-y" style={{ borderColor: `${SAGE}22` }}>
               {featured.map((item) => (
@@ -343,7 +343,7 @@ export default function Flow({ site, page = "home", basePath = "" }: PresetProps
               ))}
             </ul>
             <div className="mt-12 text-center">
-              <a href={href("services")} className="inline-flex rounded-full px-9 py-3.5 text-[12px] font-medium uppercase tracking-[0.18em] transition hover:bg-white" style={{ border: `1px solid ${SAGE}`, color: SAGE }}>View full schedule</a>
+              <a href={href("services")} className="inline-flex rounded-full px-9 py-3.5 text-[12px] font-medium uppercase tracking-[0.18em] transition hover:bg-white" style={{ border: `1px solid ${SAGE}`, color: SAGE }} {...editCopy(content, "home_schedule_cta", "View full schedule")} />
             </div>
           </div>
         </section>
@@ -353,8 +353,8 @@ export default function Flow({ site, page = "home", basePath = "" }: PresetProps
       {gallery.length > 0 && (
         <section className="py-24">
           <div className="mx-auto max-w-6xl px-8 text-center">
-            <Kicker center>The studio</Kicker>
-            <h2 style={{ ...serif, color: SAGE }} className="mx-auto mt-4 max-w-2xl text-3xl font-medium leading-snug sm:text-4xl">A calm, considered space to come home to.</h2>
+            <Kicker center><span {...editCopy(content, "home_gallery_kicker", "The studio")} /></Kicker>
+            <h2 style={{ ...serif, color: SAGE }} className="mx-auto mt-4 max-w-2xl text-3xl font-medium leading-snug sm:text-4xl" {...editCopy(content, "home_gallery_heading", "A calm, considered space to come home to.")} />
           </div>
           <div className="mx-auto mt-12 grid max-w-6xl grid-cols-2 gap-3 px-4 sm:grid-cols-4 sm:px-6">
             {gallery.slice(0, 4).map((g) => (
@@ -363,7 +363,7 @@ export default function Flow({ site, page = "home", basePath = "" }: PresetProps
             ))}
           </div>
           <div className="mt-10 text-center">
-            <a href={href("gallery")} className="inline-flex rounded-full px-9 py-3.5 text-[12px] font-medium uppercase tracking-[0.18em] transition hover:bg-white" style={{ border: `1px solid ${SAGE}`, color: SAGE }}>View gallery</a>
+            <a href={href("gallery")} className="inline-flex rounded-full px-9 py-3.5 text-[12px] font-medium uppercase tracking-[0.18em] transition hover:bg-white" style={{ border: `1px solid ${SAGE}`, color: SAGE }} {...editCopy(content, "home_gallery_cta", "View gallery")} />
           </div>
         </section>
       )}
@@ -371,8 +371,8 @@ export default function Flow({ site, page = "home", basePath = "" }: PresetProps
       {/* closing CTA */}
       <section style={{ background: SAGE }}>
         <div className="mx-auto max-w-2xl px-8 py-24 text-center text-white">
-          <h2 style={serif} className="text-3xl font-medium leading-[1.15] sm:text-5xl">Begin where you are.</h2>
-          <p className="mx-auto mt-5 max-w-md text-[15px] leading-relaxed text-white/75">Every level is welcome. Reserve your first class and arrive a few minutes early to settle in.</p>
+          <h2 style={serif} className="text-3xl font-medium leading-[1.15] sm:text-5xl" {...editCopy(content, "cta_heading", "Begin where you are.")} />
+          <p className="mx-auto mt-5 max-w-md text-[15px] leading-relaxed text-white/75" {...editCopy(content, "cta_sub", "Every level is welcome. Reserve your first class and arrive a few minutes early to settle in.")} />
           <a href={book} className="mt-9 inline-flex rounded-full bg-white px-10 py-4 text-[12px] font-medium uppercase tracking-[0.18em] transition hover:opacity-90" style={{ color: SAGE }}>{ctaLabel}</a>
         </div>
       </section>

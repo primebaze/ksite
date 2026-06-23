@@ -4,7 +4,7 @@ import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
 import { useEffect, useState } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { EventsMobileNav } from "./EventsMobileNav";
 
@@ -98,7 +98,7 @@ export default function Verena({ site, page = "home", basePath = "" }: PresetPro
       <div className="mx-auto max-w-6xl px-8 py-16 text-center">
         <a href={href("home")} className="inline-block">
           <span data-edit="tenant.business_name" style={serif} className="text-3xl">{name}</span>
-          <span className="mt-1 block text-[8px] uppercase tracking-[0.42em]" style={{ color: GOLD }}>Weddings &amp; Events</span>
+          <span className="mt-1 block text-[8px] uppercase tracking-[0.42em]" style={{ color: GOLD }} {...editCopy(content, "footer_eyebrow", "Weddings & Events")} />
         </a>
         <div className="mt-6 flex justify-center"><Flourish /></div>
         <div className="mt-6 flex flex-wrap justify-center gap-x-8 gap-y-2 text-[11px] font-medium uppercase tracking-[0.18em] text-white/70">
@@ -131,12 +131,12 @@ export default function Verena({ site, page = "home", basePath = "" }: PresetPro
     </div>
   );
 
-  const banner = (kicker: string, title: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string) => (
     <section style={{ background: BLUSH, borderBottom: `1px solid ${LINE}` }}>
       <div className="mx-auto max-w-4xl px-8 pb-16 pt-32 text-center sm:pt-40">
         <Flourish />
-        <p className="mt-5 text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: GOLD }}>{kicker}</p>
-        <h1 style={{ ...serif, color: INK }} className="mt-3 text-4xl font-medium leading-[1.08] sm:text-6xl">{title}</h1>
+        <p className="mt-5 text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: GOLD }} {...editCopy(content, kickerKey, kicker)} />
+        <h1 style={{ ...serif, color: INK }} className="mt-3 text-4xl font-medium leading-[1.08] sm:text-6xl" {...editCopy(content, titleKey, title)} />
       </div>
     </section>
   );
@@ -145,7 +145,7 @@ export default function Verena({ site, page = "home", basePath = "" }: PresetPro
   if (page === "services") {
     return shell(
       <>
-        {banner("How We Help", "Our Services")}
+        {banner("How We Help", "svc_kicker", "Our Services", "svc_title")}
         <section className="mx-auto max-w-3xl px-6 py-16 sm:px-8 sm:py-20">
           {groups.length > 0 ? (
             <>
@@ -184,7 +184,7 @@ export default function Verena({ site, page = "home", basePath = "" }: PresetPro
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Moments", "Gallery")}
+        {banner("Moments", "gallery_kicker", "Gallery", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-6xl px-3 py-12 sm:px-6">
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
@@ -203,7 +203,7 @@ export default function Verena({ site, page = "home", basePath = "" }: PresetPro
   if (page === "about") {
     return shell(
       <>
-        {banner("Hello", "About Us")}
+        {banner("Hello", "about_kicker", "About Us", "about_title")}
         <section className="mx-auto grid max-w-6xl items-center gap-12 px-6 py-16 sm:px-8 sm:py-20 lg:grid-cols-2 lg:gap-16">
           {gallery[0] ? (
             // eslint-disable-next-line @next/next/no-img-element
@@ -222,10 +222,10 @@ export default function Verena({ site, page = "home", basePath = "" }: PresetPro
   if (page === "contact") {
     return shell(
       <>
-        {banner("Say Hello", "Let's Begin")}
+        {banner("Say Hello", "contact_kicker", "Let's Begin", "contact_title")}
         <section className="mx-auto grid max-w-6xl gap-12 px-6 py-16 sm:px-8 sm:py-20 lg:grid-cols-2 lg:gap-20">
           <div>
-            <h2 style={{ ...serif, color: INK }} className="text-2xl">Find us</h2>
+            <h2 style={{ ...serif, color: INK }} className="text-2xl" {...editCopy(content, "contact_findus", "Find us")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: SUB }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-neutral-900">{content.phone}</a>}
@@ -275,7 +275,7 @@ export default function Verena({ site, page = "home", basePath = "" }: PresetPro
         <div className="pointer-events-none absolute inset-0" style={{ background: "linear-gradient(to bottom, rgba(40,32,28,0.4) 0%, rgba(40,32,28,0.15) 40%, rgba(40,32,28,0.5) 100%)" }} />
         <div className="relative z-10 mx-auto max-w-3xl px-6">
           <div className="flex justify-center"><span className="flex items-center gap-2"><span className="h-px w-12 bg-white/70" /><span className="h-1.5 w-1.5 rotate-45 border border-white/70" /><span className="h-px w-12 bg-white/70" /></span></div>
-          <p className="mt-6 text-[11px] font-semibold uppercase tracking-[0.4em] text-white/85">Weddings &amp; Events</p>
+          <p className="mt-6 text-[11px] font-semibold uppercase tracking-[0.4em] text-white/85" {...editCopy(content, "hero_eyebrow", "Weddings & Events")} />
           <h1 style={{ ...serif, color: "#fff" }} className="mt-4 text-5xl font-medium leading-[1.05] [text-shadow:0_2px_24px_rgba(0,0,0,0.4)] sm:text-7xl">
             <span data-edit="tenant.business_name">{name}</span>
           </h1>
@@ -300,8 +300,8 @@ export default function Verena({ site, page = "home", basePath = "" }: PresetPro
       {gallery.length > 0 && (
         <section style={{ background: BLUSH }} className="py-24">
           <div className="mx-auto max-w-5xl px-8 text-center">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: GOLD }}>Moments</p>
-            <h2 style={{ ...serif, color: INK }} className="mt-3 text-3xl font-medium sm:text-4xl">A glimpse of the days we&apos;ve shaped</h2>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: GOLD }} {...editCopy(content, "home_gallery_eyebrow", "Moments")} />
+            <h2 style={{ ...serif, color: INK }} className="mt-3 text-3xl font-medium sm:text-4xl" {...editCopy(content, "home_gallery_heading", "A glimpse of the days we've shaped")} />
           </div>
           <div className="mx-auto mt-12 grid max-w-5xl grid-cols-2 gap-3 px-3 sm:grid-cols-4 sm:px-6">
             {gallery.slice(0, 4).map((g) => (
@@ -319,8 +319,8 @@ export default function Verena({ site, page = "home", basePath = "" }: PresetPro
       {featured.length > 0 && (
         <section className="mx-auto max-w-3xl px-8 py-24">
           <div className="text-center">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: GOLD }}>How We Help</p>
-            <h2 style={{ ...serif, color: INK }} className="mt-3 text-3xl font-medium sm:text-4xl">Our services</h2>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: GOLD }} {...editCopy(content, "home_services_eyebrow", "How We Help")} />
+            <h2 style={{ ...serif, color: INK }} className="mt-3 text-3xl font-medium sm:text-4xl" {...editCopy(content, "home_services_heading", "Our services")} />
           </div>
           <ul className="mx-auto mt-12 max-w-xl divide-y" style={{ borderColor: LINE }}>
             {featured.map((item) => (
@@ -343,7 +343,7 @@ export default function Verena({ site, page = "home", basePath = "" }: PresetPro
       <section style={{ background: BLUSH, borderTop: `1px solid ${LINE}` }}>
         <div className="mx-auto max-w-2xl px-8 py-24 text-center">
           <Flourish />
-          <h2 style={{ ...serif, color: INK }} className="mt-6 text-3xl font-medium sm:text-4xl">Let&apos;s plan something unforgettable</h2>
+          <h2 style={{ ...serif, color: INK }} className="mt-6 text-3xl font-medium sm:text-4xl" {...editCopy(content, "cta_heading", "Let's plan something unforgettable")} />
           <p className="mx-auto mt-5 max-w-md text-[15px] leading-relaxed" style={{ color: SUB }}>From first idea to final farewell, we&apos;ll craft a celebration that feels entirely yours.</p>
           <a href={enquire} className="mt-8 inline-flex px-10 py-4 text-[11px] font-semibold uppercase tracking-[0.22em] text-white transition hover:opacity-90" style={{ background: GOLD }}>Enquire</a>
         </div>

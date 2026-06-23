@@ -4,7 +4,7 @@ import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
 import { useEffect, useState } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { EventsMobileNav } from "./EventsMobileNav";
 
@@ -163,13 +163,13 @@ export default function ConfettiDesign({ site, page = "home", basePath = "" }: P
           )}
         </div>
         <div>
-          <h4 style={display} className="text-lg font-semibold">Explore</h4>
+          <h4 style={display} className="text-lg font-semibold" {...editCopy(content, "footer_explore", "Explore")} />
           <ul className="mt-5 space-y-3 text-sm text-white/65">
             {nav.map((l) => <li key={l.label}><a href={l.href} className="uppercase tracking-[0.12em] transition hover:text-white">{l.label}</a></li>)}
           </ul>
         </div>
         <div>
-          <h4 style={display} className="text-lg font-semibold">Get in touch</h4>
+          <h4 style={display} className="text-lg font-semibold" {...editCopy(content, "footer_contact", "Get in touch")} />
           <div className="mt-5 space-y-3 text-sm text-white/65">
             {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -179,7 +179,7 @@ export default function ConfettiDesign({ site, page = "home", basePath = "" }: P
       </div>
       <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 border-t border-white/10 px-8 py-7 text-xs text-white/45 sm:flex-row">
         <p>© {new Date().getFullYear()} {name}. Let&apos;s get the party started.</p>
-        <a href={enquire} className="uppercase tracking-[0.14em] transition hover:text-white">Check availability</a>
+        <a href={enquire} className="uppercase tracking-[0.14em] transition hover:text-white" {...editCopy(content, "footer_cta", "Check availability")} />
       </div>
     </footer>
   );
@@ -192,12 +192,12 @@ export default function ConfettiDesign({ site, page = "home", basePath = "" }: P
     </div>
   );
 
-  const banner = (kicker: string, title: string, accent: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string, accent: string) => (
     <section className="relative overflow-hidden" style={{ borderBottom: `1px solid ${LINE}` }}>
       <Confetti className="pointer-events-none absolute inset-0 h-full w-full opacity-70" dense />
       <div className="relative mx-auto max-w-6xl px-8 pb-14 pt-32 sm:pt-40">
-        <p className="text-[12px] font-bold uppercase tracking-[0.24em]" style={{ color: accent }}>{kicker}</p>
-        <h1 style={{ ...display, color: INK }} className="mt-3 text-4xl font-semibold leading-[1.02] tracking-tight sm:text-6xl">{title}</h1>
+        <p className="text-[12px] font-bold uppercase tracking-[0.24em]" style={{ color: accent }} {...editCopy(content, kickerKey, kicker)} />
+        <h1 style={{ ...display, color: INK }} className="mt-3 text-4xl font-semibold leading-[1.02] tracking-tight sm:text-6xl" {...editCopy(content, titleKey, title)} />
       </div>
     </section>
   );
@@ -213,7 +213,7 @@ export default function ConfettiDesign({ site, page = "home", basePath = "" }: P
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Real celebrations", "Gallery", PINK)}
+        {banner("Real celebrations", "gallery_kicker", "Gallery", "gallery_title", PINK)}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-6xl px-3 py-12 sm:px-6">
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
@@ -232,7 +232,7 @@ export default function ConfettiDesign({ site, page = "home", basePath = "" }: P
   if (page === "services") {
     return shell(
       <>
-        {banner("What we hire", "The hire list", BLUE)}
+        {banner("What we hire", "hire_kicker", "The hire list", "hire_title", BLUE)}
         <section className="mx-auto max-w-3xl px-6 py-16 sm:px-8 sm:py-20">
           {groups.length > 0 ? (
             <>
@@ -258,7 +258,7 @@ export default function ConfettiDesign({ site, page = "home", basePath = "" }: P
                 </div>
               ))}
               <div className="mt-12">
-                <a href={enquire} className="inline-flex rounded-full px-9 py-3.5 text-[12px] font-bold uppercase tracking-[0.14em] text-white transition hover:opacity-90" style={{ background: PINK }}>Check availability</a>
+                <a href={enquire} className="inline-flex rounded-full px-9 py-3.5 text-[12px] font-bold uppercase tracking-[0.14em] text-white transition hover:opacity-90" style={{ background: PINK }} {...editCopy(content, "hire_enquire_cta", "Check availability")} />
               </div>
             </>
           ) : <p style={{ color: SUB }}>Our hire list is on its way.</p>}
@@ -271,7 +271,7 @@ export default function ConfettiDesign({ site, page = "home", basePath = "" }: P
   if (page === "about") {
     return shell(
       <>
-        {banner("Hello there", "About us", MINT)}
+        {banner("Hello there", "about_kicker", "About us", "about_title", MINT)}
         <section className="mx-auto grid max-w-6xl items-start gap-12 px-6 py-16 sm:px-8 sm:py-20 lg:grid-cols-[1.1fr_1fr] lg:gap-16">
           <div>
             {content.about ? <p data-edit="content.about" className="text-[17px] leading-[1.9]" style={{ color: SUB }}>{content.about}</p> : <p style={{ color: SUB }}>Our story is coming soon.</p>}
@@ -280,7 +280,7 @@ export default function ConfettiDesign({ site, page = "home", basePath = "" }: P
               {pill("Fully insured", MINT)}
               {pill("Clean & checked", PINK)}
             </div>
-            <a href={enquire} className="mt-9 inline-flex rounded-full px-9 py-3.5 text-[12px] font-bold uppercase tracking-[0.14em] text-white transition hover:opacity-90" style={{ background: PINK }}>Plan your party</a>
+            <a href={enquire} className="mt-9 inline-flex rounded-full px-9 py-3.5 text-[12px] font-bold uppercase tracking-[0.14em] text-white transition hover:opacity-90" style={{ background: PINK }} {...editCopy(content, "about_plan_cta", "Plan your party")} />
           </div>
           {gallery[0] ? (
             // eslint-disable-next-line @next/next/no-img-element
@@ -295,10 +295,10 @@ export default function ConfettiDesign({ site, page = "home", basePath = "" }: P
   if (page === "contact") {
     return shell(
       <>
-        {banner("Let's talk", "Check availability", YELLOW)}
+        {banner("Let's talk", "contact_kicker", "Check availability", "contact_title", YELLOW)}
         <section className="mx-auto grid max-w-6xl gap-12 px-6 py-16 sm:px-8 sm:py-20 lg:grid-cols-2 lg:gap-20">
           <div>
-            <h2 style={{ ...display, color: INK }} className="text-2xl font-semibold tracking-tight">Say hello</h2>
+            <h2 style={{ ...display, color: INK }} className="text-2xl font-semibold tracking-tight" {...editCopy(content, "contact_heading", "Say hello")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: SUB }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:opacity-70">{content.phone}</a>}
@@ -374,8 +374,8 @@ export default function ConfettiDesign({ site, page = "home", basePath = "" }: P
             <p data-edit="tenant.business_name" className="mt-5 text-sm font-bold uppercase tracking-[0.2em]" style={{ color: BLUE }}>{name}</p>
             {content.tagline && <p data-edit="content.tagline" className="mt-3 max-w-md text-[16px] leading-relaxed" style={{ color: SUB }}>{content.tagline}</p>}
             <div className="mt-8 flex flex-wrap gap-3">
-              {groups.length > 0 && <a href={href("services")} className="rounded-full px-8 py-4 text-[12px] font-bold uppercase tracking-[0.12em] text-white transition hover:opacity-90" style={{ background: PINK }}>See what we hire</a>}
-              <a href={enquire} className="rounded-full border-2 px-8 py-4 text-[12px] font-bold uppercase tracking-[0.12em] transition hover:bg-[#2A1E3A] hover:text-white" style={{ borderColor: INK, color: INK }}>Check availability</a>
+              {groups.length > 0 && <a href={href("services")} className="rounded-full px-8 py-4 text-[12px] font-bold uppercase tracking-[0.12em] text-white transition hover:opacity-90" style={{ background: PINK }} {...editCopy(content, "hero_hire_cta", "See what we hire")} />}
+              <a href={enquire} className="rounded-full border-2 px-8 py-4 text-[12px] font-bold uppercase tracking-[0.12em] transition hover:bg-[#2A1E3A] hover:text-white" style={{ borderColor: INK, color: INK }} {...editCopy(content, "hero_enquire_cta", "Check availability")} />
             </div>
           </div>
           <div className="relative">
@@ -412,8 +412,8 @@ export default function ConfettiDesign({ site, page = "home", basePath = "" }: P
       <section className="relative" style={{ background: "#fff", borderTop: `1px solid ${LINE}` }}>
         <div className="mx-auto max-w-6xl px-6 py-16 sm:px-8 sm:py-20">
           <div className="text-center">
-            <p className="text-[12px] font-bold uppercase tracking-[0.24em]" style={{ color: BLUE }}>What we hire</p>
-            <h2 style={{ ...display, color: INK }} className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">Everything for the day</h2>
+            <p className="text-[12px] font-bold uppercase tracking-[0.24em]" style={{ color: BLUE }} {...editCopy(content, "hire_eyebrow", "What we hire")} />
+            <h2 style={{ ...display, color: INK }} className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl" {...editCopy(content, "hire_heading", "Everything for the day")} />
           </div>
           <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-3">
             {hireKinds.map((k) => (
@@ -433,8 +433,8 @@ export default function ConfettiDesign({ site, page = "home", basePath = "" }: P
         <Confetti className="pointer-events-none absolute inset-0 h-full w-full opacity-50" />
         <div className="relative mx-auto max-w-5xl px-6 py-20 sm:px-8">
           <div className="text-center">
-            <p className="text-[12px] font-bold uppercase tracking-[0.24em]" style={{ color: PINK }}>How it works</p>
-            <h2 style={{ ...display, color: INK }} className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">As easy as 1, 2, 3</h2>
+            <p className="text-[12px] font-bold uppercase tracking-[0.24em]" style={{ color: PINK }} {...editCopy(content, "how_eyebrow", "How it works")} />
+            <h2 style={{ ...display, color: INK }} className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl" {...editCopy(content, "how_heading", "As easy as 1, 2, 3")} />
           </div>
           <div className="mt-12 grid gap-6 sm:grid-cols-3">
             {steps.map((s) => (
@@ -476,10 +476,10 @@ export default function ConfettiDesign({ site, page = "home", basePath = "" }: P
           <div className="mx-auto max-w-3xl px-6 py-20 sm:px-8">
             <div className="flex flex-wrap items-end justify-between gap-4">
               <div>
-                <p className="text-[12px] font-bold uppercase tracking-[0.24em]" style={{ color: BLUE }}>Popular hires</p>
-                <h2 style={{ ...display, color: INK }} className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">From the hire list</h2>
+                <p className="text-[12px] font-bold uppercase tracking-[0.24em]" style={{ color: BLUE }} {...editCopy(content, "home_hire_eyebrow", "Popular hires")} />
+                <h2 style={{ ...display, color: INK }} className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl" {...editCopy(content, "home_hire_heading", "From the hire list")} />
               </div>
-              <a href={href("services")} className="text-[12px] font-bold uppercase tracking-[0.14em]" style={{ color: PINK }}>See all &rarr;</a>
+              <a href={href("services")} className="text-[12px] font-bold uppercase tracking-[0.14em]" style={{ color: PINK }} {...editCopy(content, "home_hire_link", "See all →")} />
             </div>
             <ul className="mt-10 divide-y" style={{ borderColor: LINE }}>
               {featured.map((item) => (
@@ -493,7 +493,7 @@ export default function ConfettiDesign({ site, page = "home", basePath = "" }: P
               ))}
             </ul>
             <div className="mt-10">
-              <a href={href("services")} className="inline-flex rounded-full px-9 py-3.5 text-[12px] font-bold uppercase tracking-[0.14em] text-white transition hover:opacity-90" style={{ background: PINK }}>View the full hire list</a>
+              <a href={href("services")} className="inline-flex rounded-full px-9 py-3.5 text-[12px] font-bold uppercase tracking-[0.14em] text-white transition hover:opacity-90" style={{ background: PINK }} {...editCopy(content, "home_hire_button", "View the full hire list")} />
             </div>
           </div>
         </section>
@@ -505,10 +505,10 @@ export default function ConfettiDesign({ site, page = "home", basePath = "" }: P
           <div className="mx-auto max-w-6xl px-6 py-20 sm:px-8">
             <div className="flex flex-wrap items-end justify-between gap-4">
               <div>
-                <p className="text-[12px] font-bold uppercase tracking-[0.24em]" style={{ color: MINT }}>Happy customers</p>
-                <h2 style={{ ...display, color: INK }} className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl">Real celebrations</h2>
+                <p className="text-[12px] font-bold uppercase tracking-[0.24em]" style={{ color: MINT }} {...editCopy(content, "home_gallery_eyebrow", "Happy customers")} />
+                <h2 style={{ ...display, color: INK }} className="mt-3 text-3xl font-semibold tracking-tight sm:text-4xl" {...editCopy(content, "home_gallery_heading", "Real celebrations")} />
               </div>
-              <a href={href("gallery")} className="text-[12px] font-bold uppercase tracking-[0.14em]" style={{ color: PINK }}>Full gallery &rarr;</a>
+              <a href={href("gallery")} className="text-[12px] font-bold uppercase tracking-[0.14em]" style={{ color: PINK }} {...editCopy(content, "home_gallery_link", "Full gallery →")} />
             </div>
             <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
               {gallery.slice(0, 8).map((g, i) => (
@@ -526,9 +526,9 @@ export default function ConfettiDesign({ site, page = "home", basePath = "" }: P
           <div className="relative overflow-hidden rounded-[2.5rem] px-8 py-16 text-center" style={{ background: `linear-gradient(135deg,${PINK},${BLUE})` }}>
             <Confetti className="pointer-events-none absolute inset-0 h-full w-full opacity-40" dense />
             <div className="relative">
-              <h2 style={display} className="text-3xl font-semibold tracking-tight text-white sm:text-5xl">Ready to celebrate?</h2>
-              <p className="mx-auto mt-4 max-w-md text-[15px] leading-relaxed text-white/90">Tell us your date and what you have in mind — we&apos;ll check availability and make it easy.</p>
-              <a href={enquire} className="mt-8 inline-flex rounded-full bg-white px-10 py-4 text-[12px] font-bold uppercase tracking-[0.14em] transition hover:opacity-90" style={{ color: INK }}>Check availability</a>
+              <h2 style={display} className="text-3xl font-semibold tracking-tight text-white sm:text-5xl" {...editCopy(content, "cta_heading", "Ready to celebrate?")} />
+              <p className="mx-auto mt-4 max-w-md text-[15px] leading-relaxed text-white/90" {...editCopy(content, "cta_sub", "Tell us your date and what you have in mind — we'll check availability and make it easy.")} />
+              <a href={enquire} className="mt-8 inline-flex rounded-full bg-white px-10 py-4 text-[12px] font-bold uppercase tracking-[0.14em] transition hover:opacity-90" style={{ color: INK }} {...editCopy(content, "cta_button", "Check availability")} />
             </div>
           </div>
         </div>

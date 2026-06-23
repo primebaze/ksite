@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { PetHeader, type PetHeaderTheme, type PetLink } from "../PetChrome";
 
@@ -104,13 +104,13 @@ export default function Fetch({ site, page = "home", basePath = "" }: PresetProp
           )}
         </div>
         <div>
-          <h4 className="text-[11px] font-bold uppercase tracking-[0.2em]" style={{ color: BUTTER }}>Shop</h4>
+          <h4 className="text-[11px] font-bold uppercase tracking-[0.2em]" style={{ color: BUTTER }} {...editCopy(content, "footer_shop", "Shop")} />
           <ul className="mt-4 space-y-2.5 text-sm text-white/75">
             {nav.map((l) => <li key={l.href}><a href={l.href} className="transition hover:text-white">{l.label}</a></li>)}
           </ul>
         </div>
         <div>
-          <h4 className="text-[11px] font-bold uppercase tracking-[0.2em]" style={{ color: BUTTER }}>Visit</h4>
+          <h4 className="text-[11px] font-bold uppercase tracking-[0.2em]" style={{ color: BUTTER }} {...editCopy(content, "footer_visit", "Visit")} />
           <div className="mt-4 space-y-2.5 text-sm text-white/75">
             {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -118,7 +118,7 @@ export default function Fetch({ site, page = "home", basePath = "" }: PresetProp
           </div>
         </div>
         <div>
-          <h4 className="text-[11px] font-bold uppercase tracking-[0.2em]" style={{ color: BUTTER }}>Opening Hours</h4>
+          <h4 className="text-[11px] font-bold uppercase tracking-[0.2em]" style={{ color: BUTTER }} {...editCopy(content, "footer_hours", "Opening Hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-4 space-y-2 text-sm text-white/75">
               {content.hours.map((h, i) => (
@@ -143,12 +143,12 @@ export default function Fetch({ site, page = "home", basePath = "" }: PresetProp
     </div>
   );
 
-  const banner = (kicker: string, title: string, sub?: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string, sub?: string, subKey?: string) => (
     <section style={{ background: CARD, borderBottom: `1px solid ${HAIR}` }}>
       <div className="mx-auto max-w-4xl px-8 pb-16 pt-32 text-center sm:pt-36">
-        <div className="flex justify-center"><Kicker center>{kicker}</Kicker></div>
-        <h1 style={{ ...display, color: INK }} className="mt-5 text-4xl font-bold tracking-tight sm:text-6xl">{title}</h1>
-        {sub && <p className="mx-auto mt-4 max-w-xl text-[15px] leading-relaxed" style={{ color: BODY }}>{sub}</p>}
+        <div className="flex justify-center"><Kicker center><span {...editCopy(content, kickerKey, kicker)} /></Kicker></div>
+        <h1 style={{ ...display, color: INK }} className="mt-5 text-4xl font-bold tracking-tight sm:text-6xl" {...editCopy(content, titleKey, title)} />
+        {sub && <p className="mx-auto mt-4 max-w-xl text-[15px] leading-relaxed" style={{ color: BODY }} {...editCopy(content, subKey ?? `${titleKey}_sub`, sub)} />}
       </div>
     </section>
   );
@@ -157,7 +157,7 @@ export default function Fetch({ site, page = "home", basePath = "" }: PresetProp
   if (page === "services") {
     return shell(
       <>
-        {banner("The Shop", "Everything they need", "Food, treats, toys and essentials — hand-picked for happy, healthy pets.")}
+        {banner("The Shop", "svc_kicker", "Everything they need", "svc_title", "Food, treats, toys and essentials — hand-picked for happy, healthy pets.", "svc_sub")}
         <section className="mx-auto max-w-3xl px-6 py-20 sm:px-8">
           {groups.length > 0 ? (
             <div className="space-y-14">
@@ -196,7 +196,7 @@ export default function Fetch({ site, page = "home", basePath = "" }: PresetProp
   if (page === "about") {
     return shell(
       <>
-        {banner("Our Story", "Pet people, through and through")}
+        {banner("Our Story", "about_kicker", "Pet people, through and through", "about_title")}
         <section className="mx-auto max-w-3xl px-6 py-20 sm:px-8">
           {content.about ? <p data-edit="content.about" className="text-[17px] leading-[1.9]" style={{ color: BODY }}>{content.about}</p> : <p style={{ color: BODY }}>Our story is coming soon.</p>}
           <div className="mt-12 grid gap-4 sm:grid-cols-3">
@@ -220,7 +220,7 @@ export default function Fetch({ site, page = "home", basePath = "" }: PresetProp
   if (page === "gallery") {
     return shell(
       <>
-        {banner("In Store", "A look inside")}
+        {banner("In Store", "gallery_kicker", "A look inside", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-6xl px-3 py-12 sm:px-6">
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
@@ -239,10 +239,10 @@ export default function Fetch({ site, page = "home", basePath = "" }: PresetProp
   if (page === "contact") {
     return shell(
       <>
-        {banner("Get in Touch", "Visit or message us", "Pop in to browse, or send us a message to reserve a product or ask anything.")}
+        {banner("Get in Touch", "contact_kicker", "Visit or message us", "contact_title", "Pop in to browse, or send us a message to reserve a product or ask anything.", "contact_sub")}
         <section className="mx-auto grid max-w-6xl gap-12 px-6 py-20 sm:px-8 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={{ ...display, color: INK }} className="text-2xl font-bold tracking-tight">Find the shop</h2>
+            <h2 style={{ ...display, color: INK }} className="text-2xl font-bold tracking-tight" {...editCopy(content, "contact_findshop", "Find the shop")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: BODY }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block font-semibold transition hover:opacity-70" style={{ color: GREEN }}>{content.phone}</a>}
@@ -287,7 +287,7 @@ export default function Fetch({ site, page = "home", basePath = "" }: PresetProp
       <section className="relative overflow-hidden" style={{ background: CARD }}>
         <div className="mx-auto grid max-w-6xl items-center gap-10 px-6 pb-16 pt-32 sm:px-8 sm:pt-36 lg:grid-cols-2 lg:gap-14 lg:pb-24">
           <div>
-            <Kicker>The local pet shop</Kicker>
+            <Kicker><span {...editCopy(content, "hero_kicker", "The local pet shop")} /></Kicker>
             <h1 style={{ ...display, color: INK }} className="mt-5 text-5xl font-bold leading-[0.98] tracking-tight sm:text-7xl">
               <span data-edit="tenant.business_name">{name}</span>
             </h1>
@@ -339,8 +339,8 @@ export default function Fetch({ site, page = "home", basePath = "" }: PresetProp
         <section className="mx-auto max-w-6xl px-6 py-20 sm:px-8">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
-              <Kicker>Shop the range</Kicker>
-              <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-bold tracking-tight sm:text-4xl">Popular picks</h2>
+              <Kicker><span {...editCopy(content, "home_teaser_kicker", "Shop the range")} /></Kicker>
+              <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-bold tracking-tight sm:text-4xl" {...editCopy(content, "home_teaser_heading", "Popular picks")} />
             </div>
             <a href={shopHref} className="shrink-0 text-sm font-bold" style={{ color: GREEN }}>View all →</a>
           </div>
@@ -372,8 +372,8 @@ export default function Fetch({ site, page = "home", basePath = "" }: PresetProp
               )}
             </div>
             <div>
-              <Kicker>About us</Kicker>
-              <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-bold tracking-tight sm:text-4xl">Run by pet people, for pet people</h2>
+              <Kicker><span {...editCopy(content, "home_about_kicker", "About us")} /></Kicker>
+              <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-bold tracking-tight sm:text-4xl" {...editCopy(content, "home_about_heading", "Run by pet people, for pet people")} />
               <p data-edit="content.about" className="mt-5 text-[16px] leading-[1.9]" style={{ color: BODY }}>{content.about}</p>
               <a href={href("about")} className="mt-6 inline-flex items-center gap-2 text-sm font-bold" style={{ color: GREEN }}>Our story →</a>
             </div>
@@ -385,8 +385,8 @@ export default function Fetch({ site, page = "home", basePath = "" }: PresetProp
       {groups.length > 0 && (
         <section className="mx-auto max-w-3xl px-6 py-20 sm:px-8">
           <div className="text-center">
-            <div className="flex justify-center"><Kicker center>Price list</Kicker></div>
-            <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-bold tracking-tight sm:text-4xl">Browse the shelves</h2>
+            <div className="flex justify-center"><Kicker center><span {...editCopy(content, "home_pricelist_kicker", "Price list")} /></Kicker></div>
+            <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-bold tracking-tight sm:text-4xl" {...editCopy(content, "home_pricelist_heading", "Browse the shelves")} />
           </div>
           <ul className="mt-12 divide-y" style={{ borderColor: HAIR }}>
             {featuredItems.slice(0, 8).map(({ item }) => (
@@ -410,8 +410,8 @@ export default function Fetch({ site, page = "home", basePath = "" }: PresetProp
         <section style={{ background: TINT }}>
           <div className="mx-auto max-w-6xl px-6 py-20 sm:px-8">
             <div className="text-center">
-              <div className="flex justify-center"><Kicker center>In store</Kicker></div>
-              <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-bold tracking-tight sm:text-4xl">Come and browse</h2>
+              <div className="flex justify-center"><Kicker center><span {...editCopy(content, "home_gallery_kicker", "In store")} /></Kicker></div>
+              <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-bold tracking-tight sm:text-4xl" {...editCopy(content, "home_gallery_heading", "Come and browse")} />
             </div>
             <div className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-4">
               {gallery.slice(0, 4).map((g) => (
@@ -430,7 +430,7 @@ export default function Fetch({ site, page = "home", basePath = "" }: PresetProp
       <section className="mx-auto max-w-4xl px-6 py-20 sm:px-8">
         <div className="grid items-center gap-8 rounded-[2rem] px-8 py-12 sm:grid-cols-[1.4fr_1fr]" style={{ background: INK }}>
           <div>
-            <h2 style={{ ...display, color: "#fff" }} className="text-3xl font-bold tracking-tight sm:text-4xl">Treat them to the good stuff</h2>
+            <h2 style={{ ...display, color: "#fff" }} className="text-3xl font-bold tracking-tight sm:text-4xl" {...editCopy(content, "cta_heading", "Treat them to the good stuff")} />
             <p className="mt-3 max-w-md text-[15px] leading-relaxed text-white/70">Reserve online for collection, or pop in and let us help you find the perfect pick.</p>
           </div>
           <div className="flex flex-wrap gap-3 sm:justify-end">

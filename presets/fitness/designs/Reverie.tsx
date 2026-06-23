@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { ReverieHeader } from "./ReverieHeader";
 import { FitnessBooking, type BookingSkin } from "./FitnessBooking";
@@ -129,7 +129,7 @@ export default function ReverieDesign({ site, page = "home", basePath = "" }: Pr
           )}
         </div>
         <div>
-          <h4 style={{ color: ROSE }} className="text-[11px] uppercase tracking-[0.24em]">Studio</h4>
+          <h4 style={{ color: ROSE }} className="text-[11px] uppercase tracking-[0.24em]" {...editCopy(content, "footer_studio", "Studio")} />
           <ul className="mt-5 space-y-3 text-sm" style={{ color: CREAMMUTE }}>
             {([
               groups.length > 0 && { label: "Classes", href: href("services") },
@@ -142,7 +142,7 @@ export default function ReverieDesign({ site, page = "home", basePath = "" }: Pr
           </ul>
         </div>
         <div>
-          <h4 style={{ color: ROSE }} className="text-[11px] uppercase tracking-[0.24em]">Visit</h4>
+          <h4 style={{ color: ROSE }} className="text-[11px] uppercase tracking-[0.24em]" {...editCopy(content, "footer_visit", "Visit")} />
           <div className="mt-5 space-y-3 text-sm" style={{ color: CREAMMUTE }}>
             {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -150,7 +150,7 @@ export default function ReverieDesign({ site, page = "home", basePath = "" }: Pr
           </div>
         </div>
         <div>
-          <h4 style={{ color: ROSE }} className="text-[11px] uppercase tracking-[0.24em]">Studio hours</h4>
+          <h4 style={{ color: ROSE }} className="text-[11px] uppercase tracking-[0.24em]" {...editCopy(content, "footer_hours", "Studio hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm" style={{ color: CREAMMUTE }}>
               {content.hours.map((h, i) => (
@@ -175,12 +175,12 @@ export default function ReverieDesign({ site, page = "home", basePath = "" }: Pr
     </div>
   );
 
-  const banner = (kicker: string, title: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string) => (
     <section style={{ background: PLUM, color: CREAM }} className="relative overflow-hidden">
       <div className="pointer-events-none absolute -right-24 top-10 h-72 w-72 rounded-full opacity-20 blur-3xl" style={{ background: ROSE }} />
       <div className="relative mx-auto max-w-7xl px-8 pb-16 pt-36 sm:pt-44">
-        <Kicker onPlum>{kicker}</Kicker>
-        <h1 style={display} className="mt-5 max-w-3xl text-5xl leading-[1.02] tracking-[-0.01em] sm:text-7xl">{title}</h1>
+        <Kicker onPlum><span {...editCopy(content, kickerKey, kicker)} /></Kicker>
+        <h1 style={display} className="mt-5 max-w-3xl text-5xl leading-[1.02] tracking-[-0.01em] sm:text-7xl" {...editCopy(content, titleKey, title)} />
         <Barre className="mt-8 max-w-xs" />
       </div>
     </section>
@@ -190,7 +190,7 @@ export default function ReverieDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "services") {
     return shell(
       <>
-        {banner("Our classes", "Studio & timetable")}
+        {banner("Our classes", "classes_kicker", "Studio & timetable", "classes_title")}
         <section className="mx-auto max-w-3xl px-6 py-20 sm:px-8">
           {groups.length > 0 ? (
             <div className="space-y-16">
@@ -233,7 +233,7 @@ export default function ReverieDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "about") {
     return shell(
       <>
-        {banner("Our studio", "Where movement becomes art")}
+        {banner("Our studio", "about_kicker", "Where movement becomes art", "about_title")}
         <section className="mx-auto max-w-3xl px-6 py-20 sm:px-8">
           {content.about ? <p data-edit="content.about" className="text-[17px] leading-[1.95]" style={{ color: MUTE }}>{content.about}</p> : <p style={{ color: MUTE }}>Our story is coming soon.</p>}
           <Barre className="mt-12 max-w-sm" />
@@ -249,7 +249,7 @@ export default function ReverieDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "gallery") {
     return shell(
       <>
-        {banner("In the studio", "Moments in motion")}
+        {banner("In the studio", "gallery_kicker", "Moments in motion", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-7xl px-3 py-14 sm:px-6">
             <div className="columns-2 gap-3 sm:columns-3 [&>*]:mb-3">
@@ -268,10 +268,10 @@ export default function ReverieDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "contact") {
     return shell(
       <>
-        {banner("Join us", "Book your first class")}
+        {banner("Join us", "contact_kicker", "Book your first class", "contact_title")}
         <section className="mx-auto grid max-w-6xl gap-12 px-6 py-20 sm:px-8 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={{ ...display, color: PLUM }} className="text-2xl tracking-[-0.01em]">Visit the studio</h2>
+            <h2 style={{ ...display, color: PLUM }} className="text-2xl tracking-[-0.01em]" {...editCopy(content, "contact_visit_heading", "Visit the studio")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: MUTE }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-[#4A2E45]">{content.phone}</a>}
@@ -328,9 +328,7 @@ export default function ReverieDesign({ site, page = "home", basePath = "" }: Pr
         <Ribbon className="pointer-events-none absolute left-0 top-[52%] h-48 w-full" color={ROSE} opacity={0.3} />
         <div className="relative z-10 mx-auto flex w-full max-w-7xl flex-1 flex-col justify-center px-6 py-32 sm:px-8">
           <Kicker onPlum>{content.tagline || "Ballet · Contemporary · All styles"}</Kicker>
-          <h1 style={display} className="mt-6 max-w-4xl text-6xl leading-[0.98] tracking-[-0.02em] text-white [text-shadow:0_2px_30px_rgba(0,0,0,0.4)] sm:text-8xl">
-            Move with grace
-          </h1>
+          <h1 style={display} className="mt-6 max-w-4xl text-6xl leading-[0.98] tracking-[-0.02em] text-white [text-shadow:0_2px_30px_rgba(0,0,0,0.4)] sm:text-8xl" {...editCopy(content, "hero_headline", "Move with grace")} />
           <p className="mt-5 max-w-xl text-lg leading-relaxed [text-shadow:0_2px_16px_rgba(0,0,0,0.4)]" style={{ color: ROSE }}>
             <span data-edit="tenant.business_name">{name}</span> — where movement becomes art.
           </p>
@@ -339,7 +337,7 @@ export default function ReverieDesign({ site, page = "home", basePath = "" }: Pr
           <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:gap-4">
             <a href={join} className="rounded-full px-9 py-4 text-center text-[12px] uppercase tracking-[0.22em] transition hover:opacity-90" style={{ background: GOLD, color: INK }}>{ctaLabel}</a>
             {groups.length > 0 && (
-              <a href={href("services")} className="rounded-full px-9 py-4 text-center text-[12px] uppercase tracking-[0.22em] text-white backdrop-blur-sm transition hover:bg-white/10" style={{ border: `1px solid ${CREAM}66` }}>Explore classes</a>
+              <a href={href("services")} className="rounded-full px-9 py-4 text-center text-[12px] uppercase tracking-[0.22em] text-white backdrop-blur-sm transition hover:bg-white/10" style={{ border: `1px solid ${CREAM}66` }} {...editCopy(content, "hero_classes_cta", "Explore classes")} />
             )}
           </div>
         </div>
@@ -350,8 +348,8 @@ export default function ReverieDesign({ site, page = "home", basePath = "" }: Pr
         <div className="mx-auto max-w-7xl px-8 py-16">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
-              <Kicker>For every age &amp; stage</Kicker>
-              <h2 style={{ ...display, color: PLUM }} className="mt-4 max-w-2xl text-3xl leading-[1.05] tracking-[-0.01em] sm:text-4xl">From little movers to pointe — a home for every dancer.</h2>
+              <Kicker><span {...editCopy(content, "disciplines_kicker", "For every age & stage")} /></Kicker>
+              <h2 style={{ ...display, color: PLUM }} className="mt-4 max-w-2xl text-3xl leading-[1.05] tracking-[-0.01em] sm:text-4xl" {...editCopy(content, "disciplines_heading", "From little movers to pointe — a home for every dancer.")} />
             </div>
           </div>
           <ul className="mt-10 grid grid-cols-2 gap-x-8 gap-y-0 sm:grid-cols-3">
@@ -380,10 +378,10 @@ export default function ReverieDesign({ site, page = "home", basePath = "" }: Pr
               <span className="pointer-events-none absolute -bottom-3 -right-3 h-24 w-24 rounded-br-[2rem] border-b border-r" style={{ borderColor: GOLD }} />
             </div>
             <div className="order-1 lg:order-2">
-              <Kicker onPlum>Our studio</Kicker>
-              <h2 style={{ ...display, color: CREAM }} className="mt-4 text-4xl leading-[1.04] tracking-[-0.01em] sm:text-5xl">Technique, expression &amp; joy</h2>
+              <Kicker onPlum><span {...editCopy(content, "home_about_kicker", "Our studio")} /></Kicker>
+              <h2 style={{ ...display, color: CREAM }} className="mt-4 text-4xl leading-[1.04] tracking-[-0.01em] sm:text-5xl" {...editCopy(content, "home_about_heading", "Technique, expression & joy")} />
               {content.about && <p data-edit="content.about" className="mt-6 text-[16px] leading-[1.95]" style={{ color: CREAMMUTE }}>{content.about}</p>}
-              <a href={href("about")} className="mt-7 inline-flex items-center gap-2 text-[12px] uppercase tracking-[0.22em]" style={{ color: GOLD }}>Our story →</a>
+              <a href={href("about")} className="mt-7 inline-flex items-center gap-2 text-[12px] uppercase tracking-[0.22em]" style={{ color: GOLD }} {...editCopy(content, "home_about_link", "Our story →")} />
             </div>
           </div>
         </section>
@@ -395,10 +393,10 @@ export default function ReverieDesign({ site, page = "home", basePath = "" }: Pr
           <div className="mx-auto max-w-4xl px-8 py-24">
             <div className="flex flex-wrap items-end justify-between gap-4">
               <div>
-                <Kicker>Our classes</Kicker>
-                <h2 style={{ ...display, color: PLUM }} className="mt-4 text-4xl tracking-[-0.01em] sm:text-5xl">Find your class</h2>
+                <Kicker><span {...editCopy(content, "home_classes_kicker", "Our classes")} /></Kicker>
+                <h2 style={{ ...display, color: PLUM }} className="mt-4 text-4xl tracking-[-0.01em] sm:text-5xl" {...editCopy(content, "home_classes_heading", "Find your class")} />
               </div>
-              <a href={href("services")} className="text-[12px] uppercase tracking-[0.2em] transition hover:opacity-70" style={{ color: GOLD }}>View timetable →</a>
+              <a href={href("services")} className="text-[12px] uppercase tracking-[0.2em] transition hover:opacity-70" style={{ color: GOLD }} {...editCopy(content, "home_classes_link", "View timetable →")} />
             </div>
             <ul className="mt-12 divide-y" style={{ borderColor: LINE }}>
               {featured.map((item) => (
@@ -418,9 +416,9 @@ export default function ReverieDesign({ site, page = "home", basePath = "" }: Pr
       {/* recital / performance band */}
       <section style={{ background: ROSE }}>
         <div className="mx-auto max-w-5xl px-8 py-20 text-center">
-          <Kicker center>On stage</Kicker>
-          <h2 style={{ ...display, color: INK }} className="mx-auto mt-4 max-w-2xl text-3xl leading-[1.06] tracking-[-0.01em] sm:text-5xl">From the barre to the spotlight — our annual recital.</h2>
-          <p className="mx-auto mt-5 max-w-xl text-[15px] leading-relaxed" style={{ color: PLUM }}>Every dancer takes the stage. Costumes, choreography and a season of progress, performed for family and friends.</p>
+          <Kicker center><span {...editCopy(content, "recital_kicker", "On stage")} /></Kicker>
+          <h2 style={{ ...display, color: INK }} className="mx-auto mt-4 max-w-2xl text-3xl leading-[1.06] tracking-[-0.01em] sm:text-5xl" {...editCopy(content, "recital_heading", "From the barre to the spotlight — our annual recital.")} />
+          <p className="mx-auto mt-5 max-w-xl text-[15px] leading-relaxed" style={{ color: PLUM }} {...editCopy(content, "recital_sub", "Every dancer takes the stage. Costumes, choreography and a season of progress, performed for family and friends.")} />
           <Barre className="mx-auto mt-9 max-w-xs" color={PLUM} />
         </div>
       </section>
@@ -429,8 +427,8 @@ export default function ReverieDesign({ site, page = "home", basePath = "" }: Pr
       {gallery.length > 0 && (
         <section style={{ background: CREAM }} className="py-24">
           <div className="mx-auto max-w-7xl px-8">
-            <Kicker>In the studio</Kicker>
-            <h2 style={{ ...display, color: PLUM }} className="mt-4 max-w-2xl text-3xl leading-[1.05] tracking-[-0.01em] sm:text-4xl">Light, line and quiet effort</h2>
+            <Kicker><span {...editCopy(content, "home_gallery_kicker", "In the studio")} /></Kicker>
+            <h2 style={{ ...display, color: PLUM }} className="mt-4 max-w-2xl text-3xl leading-[1.05] tracking-[-0.01em] sm:text-4xl" {...editCopy(content, "home_gallery_heading", "Light, line and quiet effort")} />
           </div>
           <div className="mx-auto mt-12 grid max-w-7xl grid-cols-2 gap-3 px-3 sm:grid-cols-4 sm:px-6">
             {gallery.slice(0, 4).map((g) => (
@@ -439,7 +437,7 @@ export default function ReverieDesign({ site, page = "home", basePath = "" }: Pr
             ))}
           </div>
           <div className="mx-auto mt-10 max-w-7xl px-8">
-            <a href={href("gallery")} className="inline-flex rounded-full px-9 py-3.5 text-[11px] uppercase tracking-[0.2em] transition hover:opacity-90" style={{ border: `1px solid ${PLUM}`, color: PLUM }}>View gallery</a>
+            <a href={href("gallery")} className="inline-flex rounded-full px-9 py-3.5 text-[11px] uppercase tracking-[0.2em] transition hover:opacity-90" style={{ border: `1px solid ${PLUM}`, color: PLUM }} {...editCopy(content, "home_gallery_cta", "View gallery")} />
           </div>
         </section>
       )}
@@ -448,9 +446,9 @@ export default function ReverieDesign({ site, page = "home", basePath = "" }: Pr
       <section style={{ background: PLUM, color: CREAM }} className="relative overflow-hidden">
         <Ribbon className="pointer-events-none absolute left-0 top-0 h-20 w-full" color={GOLD} opacity={0.45} />
         <div className="mx-auto max-w-4xl px-8 py-24 text-center">
-          <Kicker onPlum center>Begin</Kicker>
-          <h2 className="mt-4 text-4xl leading-[1.04] tracking-[-0.01em] sm:text-6xl" style={{ ...display, color: CREAM }}>Your first class is on us.</h2>
-          <p className="mx-auto mt-5 max-w-md text-[15px] leading-relaxed" style={{ color: CREAMMUTE }}>No experience needed — just curiosity. Book a trial and find your place at the barre.</p>
+          <Kicker onPlum center><span {...editCopy(content, "cta_kicker", "Begin")} /></Kicker>
+          <h2 className="mt-4 text-4xl leading-[1.04] tracking-[-0.01em] sm:text-6xl" style={{ ...display, color: CREAM }} {...editCopy(content, "cta_heading", "Your first class is on us.")} />
+          <p className="mx-auto mt-5 max-w-md text-[15px] leading-relaxed" style={{ color: CREAMMUTE }} {...editCopy(content, "cta_sub", "No experience needed — just curiosity. Book a trial and find your place at the barre.")} />
           <a href={join} className="mt-9 inline-flex rounded-full px-12 py-4 text-[12px] uppercase tracking-[0.24em] transition hover:opacity-90" style={{ background: GOLD, color: INK }}>{ctaLabel}</a>
         </div>
       </section>

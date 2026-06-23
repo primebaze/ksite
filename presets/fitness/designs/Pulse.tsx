@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { PulseHeader } from "./PulseHeader";
 import { FitnessBooking, type BookingSkin } from "./FitnessBooking";
@@ -94,7 +94,7 @@ export default function Pulse({ site, page = "home", basePath = "" }: PresetProp
           )}
         </div>
         <div>
-          <h4 className="text-xs font-extrabold uppercase tracking-[0.2em]" style={{ color: TEXT }}>Studio</h4>
+          <h4 className="text-xs font-extrabold uppercase tracking-[0.2em]" style={{ color: TEXT }} {...editCopy(content, "footer_studio", "Studio")} />
           <ul className="mt-5 space-y-3 text-sm" style={{ color: MUTE }}>
             {([
               groups.length > 0 && { label: "Classes", href: href("services") },
@@ -107,7 +107,7 @@ export default function Pulse({ site, page = "home", basePath = "" }: PresetProp
           </ul>
         </div>
         <div>
-          <h4 className="text-xs font-extrabold uppercase tracking-[0.2em]" style={{ color: TEXT }}>Contact</h4>
+          <h4 className="text-xs font-extrabold uppercase tracking-[0.2em]" style={{ color: TEXT }} {...editCopy(content, "footer_contact", "Contact")} />
           <div className="mt-5 space-y-3 text-sm" style={{ color: MUTE }}>
             {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -115,7 +115,7 @@ export default function Pulse({ site, page = "home", basePath = "" }: PresetProp
           </div>
         </div>
         <div>
-          <h4 className="text-xs font-extrabold uppercase tracking-[0.2em]" style={{ color: TEXT }}>Hours</h4>
+          <h4 className="text-xs font-extrabold uppercase tracking-[0.2em]" style={{ color: TEXT }} {...editCopy(content, "footer_hours", "Hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm" style={{ color: MUTE }}>
               {content.hours.map((h, i) => (
@@ -140,11 +140,11 @@ export default function Pulse({ site, page = "home", basePath = "" }: PresetProp
     </div>
   );
 
-  const banner = (kicker: string, title: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string) => (
     <section style={{ background: PANEL, borderBottom: `1px solid ${PINK}33` }}>
       <div className="mx-auto max-w-7xl px-8 pb-14 pt-32 text-center sm:pt-40">
-        <GradKicker center>{kicker}</GradKicker>
-        <h1 className="mt-4 text-5xl font-extrabold tracking-[-0.02em] sm:text-7xl" style={{ color: TEXT }}>{title}</h1>
+        <GradKicker center><span {...editCopy(content, kickerKey, kicker)} /></GradKicker>
+        <h1 className="mt-4 text-5xl font-extrabold tracking-[-0.02em] sm:text-7xl" style={{ color: TEXT }} {...editCopy(content, titleKey, title)} />
       </div>
     </section>
   );
@@ -153,7 +153,7 @@ export default function Pulse({ site, page = "home", basePath = "" }: PresetProp
   if (page === "services") {
     return shell(
       <>
-        {banner("The timetable", "Classes & Packs")}
+        {banner("The timetable", "classes_kicker", "Classes & Packs", "classes_title")}
         <section className="mx-auto max-w-6xl px-6 py-20 sm:px-8">
           {groups.length > 0 ? (
             <div className="space-y-14">
@@ -187,7 +187,7 @@ export default function Pulse({ site, page = "home", basePath = "" }: PresetProp
   if (page === "about") {
     return shell(
       <>
-        {banner("Our vibe", "Turn It Up")}
+        {banner("Our vibe", "about_kicker", "Turn It Up", "about_title")}
         <section className="mx-auto max-w-3xl px-6 py-20 sm:px-8">
           {content.about ? <p data-edit="content.about" className="text-[17px] leading-[1.9]" style={{ color: MUTE }}>{content.about}</p> : <p style={{ color: MUTE }}>Our story is coming soon.</p>}
           <div className="mt-12">
@@ -202,7 +202,7 @@ export default function Pulse({ site, page = "home", basePath = "" }: PresetProp
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Inside", "The Room")}
+        {banner("Inside", "gallery_kicker", "The Room", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-7xl px-3 py-12 sm:px-5">
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
@@ -221,10 +221,10 @@ export default function Pulse({ site, page = "home", basePath = "" }: PresetProp
   if (page === "contact") {
     return shell(
       <>
-        {banner("Let's go", "Book Your First Ride")}
+        {banner("Let's go", "contact_kicker", "Book Your First Ride", "contact_title")}
         <section className="mx-auto grid max-w-6xl gap-12 px-6 py-20 sm:px-8 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 className="text-2xl font-bold" style={{ color: TEXT }}>Find us</h2>
+            <h2 className="text-2xl font-bold" style={{ color: TEXT }} {...editCopy(content, "contact_find_heading", "Find us")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: MUTE }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -277,7 +277,7 @@ export default function Pulse({ site, page = "home", basePath = "" }: PresetProp
         )}
         <div className="pointer-events-none absolute inset-0" style={{ background: "linear-gradient(115deg, rgba(26,11,46,0.85) 0%, rgba(26,11,46,0.35) 50%, rgba(255,61,129,0.25) 100%)" }} />
         <div className="relative z-10 m-auto flex max-w-3xl flex-col items-center gap-6 px-6 text-center">
-          <span className="inline-flex rounded-full px-4 py-1.5 text-[10px] font-extrabold uppercase tracking-[0.24em] text-white" style={{ background: GRAD }}>Now booking</span>
+          <span className="inline-flex rounded-full px-4 py-1.5 text-[10px] font-extrabold uppercase tracking-[0.24em] text-white" style={{ background: GRAD }} {...editCopy(content, "hero_eyebrow", "Now booking")} />
           <h1 className="text-6xl font-extrabold leading-[0.92] tracking-[-0.02em] text-white [text-shadow:0_2px_30px_rgba(0,0,0,0.5)] sm:text-8xl">
             <span data-edit="tenant.business_name">{name}</span>
           </h1>
@@ -285,7 +285,7 @@ export default function Pulse({ site, page = "home", basePath = "" }: PresetProp
           <div className="mt-2 flex flex-col items-center gap-3 sm:flex-row sm:gap-4">
             <a href={book} className="rounded-full px-9 py-4 text-center text-[12px] font-bold uppercase tracking-[0.16em] text-white shadow-2xl transition hover:opacity-90" style={{ background: GRAD }}>{ctaLabel}</a>
             {groups.length > 0 && (
-              <a href={href("services")} className="rounded-full border border-white/70 px-9 py-4 text-center text-[12px] font-bold uppercase tracking-[0.16em] text-white backdrop-blur-sm transition hover:bg-white/10">See classes</a>
+              <a href={href("services")} className="rounded-full border border-white/70 px-9 py-4 text-center text-[12px] font-bold uppercase tracking-[0.16em] text-white backdrop-blur-sm transition hover:bg-white/10" {...editCopy(content, "hero_classes_cta", "See classes")} />
             )}
           </div>
         </div>
@@ -304,10 +304,10 @@ export default function Pulse({ site, page = "home", basePath = "" }: PresetProp
             <span className="pointer-events-none absolute -right-3 -top-3 h-24 w-24 rounded-tr-[2rem]" style={{ background: GRAD, opacity: 0.3 }} />
           </div>
           <div>
-            <GradKicker>Our vibe</GradKicker>
-            <h2 className="mt-4 text-4xl font-extrabold leading-[0.98] tracking-[-0.01em] sm:text-5xl" style={{ color: TEXT }}>Sweat, beats &amp; good energy</h2>
+            <GradKicker><span {...editCopy(content, "home_about_kicker", "Our vibe")} /></GradKicker>
+            <h2 className="mt-4 text-4xl font-extrabold leading-[0.98] tracking-[-0.01em] sm:text-5xl" style={{ color: TEXT }} {...editCopy(content, "home_about_heading", "Sweat, beats & good energy")} />
             {content.about && <p data-edit="content.about" className="mt-6 text-[16px] leading-[1.9]" style={{ color: MUTE }}>{content.about}</p>}
-            <a href={href("about")} className="mt-7 inline-flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.18em]" style={{ color: PINK }}>More about us →</a>
+            <a href={href("about")} className="mt-7 inline-flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.18em]" style={{ color: PINK }} {...editCopy(content, "home_about_link", "More about us →")} />
           </div>
         </section>
       )}
@@ -318,10 +318,10 @@ export default function Pulse({ site, page = "home", basePath = "" }: PresetProp
           <div className="mx-auto max-w-7xl px-8 py-24">
             <div className="flex flex-wrap items-end justify-between gap-4">
               <div>
-                <GradKicker>The timetable</GradKicker>
-                <h2 className="mt-4 text-4xl font-extrabold tracking-[-0.01em] sm:text-5xl" style={{ color: TEXT }}>Classes &amp; Packs</h2>
+                <GradKicker><span {...editCopy(content, "home_classes_kicker", "The timetable")} /></GradKicker>
+                <h2 className="mt-4 text-4xl font-extrabold tracking-[-0.01em] sm:text-5xl" style={{ color: TEXT }} {...editCopy(content, "home_classes_heading", "Classes & Packs")} />
               </div>
-              <a href={href("services")} className="text-[12px] font-bold uppercase tracking-[0.16em]" style={{ color: PINK }}>View all →</a>
+              <a href={href("services")} className="text-[12px] font-bold uppercase tracking-[0.16em]" style={{ color: PINK }} {...editCopy(content, "home_classes_link", "View all →")} />
             </div>
             <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {featured.map((item) => (
@@ -342,8 +342,8 @@ export default function Pulse({ site, page = "home", basePath = "" }: PresetProp
       {gallery.length > 0 && (
         <section className="py-24">
           <div className="mx-auto max-w-7xl px-8 text-center">
-            <GradKicker center>Inside</GradKicker>
-            <h2 className="mx-auto mt-4 max-w-2xl text-3xl font-extrabold leading-[1] tracking-[-0.01em] sm:text-4xl" style={{ color: TEXT }}>This is where the magic happens</h2>
+            <GradKicker center><span {...editCopy(content, "home_gallery_kicker", "Inside")} /></GradKicker>
+            <h2 className="mx-auto mt-4 max-w-2xl text-3xl font-extrabold leading-[1] tracking-[-0.01em] sm:text-4xl" style={{ color: TEXT }} {...editCopy(content, "home_gallery_heading", "This is where the magic happens")} />
           </div>
           <div className="mx-auto mt-12 grid max-w-7xl grid-cols-2 gap-3 px-3 sm:grid-cols-4 sm:px-5">
             {gallery.slice(0, 4).map((g) => (
@@ -352,7 +352,7 @@ export default function Pulse({ site, page = "home", basePath = "" }: PresetProp
             ))}
           </div>
           <div className="mt-10 text-center">
-            <a href={href("gallery")} className="inline-flex rounded-full px-9 py-3.5 text-[11px] font-bold uppercase tracking-[0.18em] transition hover:opacity-90" style={{ border: `1px solid ${PINK}`, color: PINK }}>View gallery</a>
+            <a href={href("gallery")} className="inline-flex rounded-full px-9 py-3.5 text-[11px] font-bold uppercase tracking-[0.18em] transition hover:opacity-90" style={{ border: `1px solid ${PINK}`, color: PINK }} {...editCopy(content, "home_gallery_cta", "View gallery")} />
           </div>
         </section>
       )}
@@ -360,8 +360,8 @@ export default function Pulse({ site, page = "home", basePath = "" }: PresetProp
       {/* closing CTA */}
       <section style={{ background: GRAD }}>
         <div className="mx-auto max-w-3xl px-8 py-20 text-center text-white">
-          <h2 className="text-4xl font-extrabold leading-[0.98] tracking-[-0.01em] sm:text-6xl">Your first class is on the clock.</h2>
-          <p className="mx-auto mt-5 max-w-md text-[15px] font-medium leading-relaxed text-white/90">Clip in, turn it up and leave it all in the room. Book now and bring a friend.</p>
+          <h2 className="text-4xl font-extrabold leading-[0.98] tracking-[-0.01em] sm:text-6xl" {...editCopy(content, "cta_heading", "Your first class is on the clock.")} />
+          <p className="mx-auto mt-5 max-w-md text-[15px] font-medium leading-relaxed text-white/90" {...editCopy(content, "cta_sub", "Clip in, turn it up and leave it all in the room. Book now and bring a friend.")} />
           <a href={book} className="mt-8 inline-flex rounded-full px-12 py-4 text-[12px] font-bold uppercase tracking-[0.18em] transition hover:opacity-90" style={{ background: PLUM, color: "#ffffff" }}>{ctaLabel}</a>
         </div>
       </section>

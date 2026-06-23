@@ -4,7 +4,7 @@ import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
 import { useEffect, useState } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { EventsMobileNav } from "./EventsMobileNav";
 
@@ -97,13 +97,13 @@ export default function Aperture({ site, page = "home", basePath = "" }: PresetP
           )}
         </div>
         <div>
-          <h4 style={serif} className="text-lg">Explore</h4>
+          <h4 style={serif} className="text-lg" {...editCopy(content, "footer_explore", "Explore")} />
           <ul className="mt-5 space-y-3 text-sm text-white/60">
             {nav.map((l) => <li key={l.label}><a href={l.href} className="uppercase tracking-[0.14em] transition hover:text-white">{l.label}</a></li>)}
           </ul>
         </div>
         <div>
-          <h4 style={serif} className="text-lg">Studio</h4>
+          <h4 style={serif} className="text-lg" {...editCopy(content, "footer_studio", "Studio")} />
           <div className="mt-5 space-y-3 text-sm text-white/60">
             {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -113,7 +113,7 @@ export default function Aperture({ site, page = "home", basePath = "" }: PresetP
       </div>
       <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 border-t border-white/10 px-8 py-7 text-xs text-white/45 sm:flex-row">
         <p>© {new Date().getFullYear()} {name}. All rights reserved.</p>
-        <a href={enquire} className="uppercase tracking-[0.16em] transition hover:text-white">Start a project</a>
+        <a href={enquire} className="uppercase tracking-[0.16em] transition hover:text-white" {...editCopy(content, "footer_start_cta", "Start a project")} />
       </div>
     </footer>
   );
@@ -126,11 +126,11 @@ export default function Aperture({ site, page = "home", basePath = "" }: PresetP
     </div>
   );
 
-  const banner = (kicker: string, title: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string) => (
     <section style={{ borderBottom: `1px solid ${LINE}` }}>
       <div className="mx-auto max-w-6xl px-8 pb-14 pt-32 sm:pt-40">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: ACCENT }}>{kicker}</p>
-        <h1 style={{ ...serif, color: INK }} className="mt-3 text-4xl font-medium leading-[1.05] sm:text-6xl">{title}</h1>
+        <p className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: ACCENT }} {...editCopy(content, kickerKey, kicker)} />
+        <h1 style={{ ...serif, color: INK }} className="mt-3 text-4xl font-medium leading-[1.05] sm:text-6xl" {...editCopy(content, titleKey, title)} />
       </div>
     </section>
   );
@@ -139,7 +139,7 @@ export default function Aperture({ site, page = "home", basePath = "" }: PresetP
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Selected Work", "Portfolio")}
+        {banner("Selected Work", "gallery_kicker", "Portfolio", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-6xl px-3 py-12 sm:px-6">
             <div className="columns-1 gap-3 sm:columns-2 lg:columns-3 [&>*]:mb-3">
@@ -158,7 +158,7 @@ export default function Aperture({ site, page = "home", basePath = "" }: PresetP
   if (page === "services") {
     return shell(
       <>
-        {banner("Investment", "Services & Packages")}
+        {banner("Investment", "services_kicker", "Services & Packages", "services_title")}
         <section className="mx-auto max-w-3xl px-6 py-16 sm:px-8 sm:py-20">
           {groups.length > 0 ? (
             <>
@@ -184,7 +184,7 @@ export default function Aperture({ site, page = "home", basePath = "" }: PresetP
                 </div>
               ))}
               <div className="mt-12">
-                <a href={enquire} className="inline-flex px-9 py-3.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-white transition hover:opacity-90" style={{ background: INK }}>Enquire about a package</a>
+                <a href={enquire} className="inline-flex px-9 py-3.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-white transition hover:opacity-90" style={{ background: INK }} {...editCopy(content, "services_enquire_cta", "Enquire about a package")} />
               </div>
             </>
           ) : <p style={{ color: SUB }}>Packages coming soon.</p>}
@@ -197,7 +197,7 @@ export default function Aperture({ site, page = "home", basePath = "" }: PresetP
   if (page === "about") {
     return shell(
       <>
-        {banner("The Studio", "About")}
+        {banner("The Studio", "about_kicker", "About", "about_title")}
         <section className="mx-auto grid max-w-6xl items-start gap-12 px-6 py-16 sm:px-8 sm:py-20 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
           {gallery[0] ? (
             // eslint-disable-next-line @next/next/no-img-element
@@ -205,7 +205,7 @@ export default function Aperture({ site, page = "home", basePath = "" }: PresetP
           ) : <div className="aspect-[4/5] w-full" style={{ background: "#ece8e1" }} />}
           <div>
             {content.about ? <p data-edit="content.about" className="text-[17px] leading-[1.9]" style={{ color: SUB }}>{content.about}</p> : <p style={{ color: SUB }}>Our story is coming soon.</p>}
-            <a href={enquire} className="mt-9 inline-flex px-9 py-3.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-white transition hover:opacity-90" style={{ background: INK }}>Work with us</a>
+            <a href={enquire} className="mt-9 inline-flex px-9 py-3.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-white transition hover:opacity-90" style={{ background: INK }} {...editCopy(content, "about_work_cta", "Work with us")} />
           </div>
         </section>
       </>,
@@ -216,10 +216,10 @@ export default function Aperture({ site, page = "home", basePath = "" }: PresetP
   if (page === "contact") {
     return shell(
       <>
-        {banner("Let's Talk", "Get in Touch")}
+        {banner("Let's Talk", "contact_kicker", "Get in Touch", "contact_title")}
         <section className="mx-auto grid max-w-6xl gap-12 px-6 py-16 sm:px-8 sm:py-20 lg:grid-cols-2 lg:gap-20">
           <div>
-            <h2 style={{ ...serif, color: INK }} className="text-2xl">The studio</h2>
+            <h2 style={{ ...serif, color: INK }} className="text-2xl" {...editCopy(content, "contact_studio_heading", "The studio")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: SUB }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-neutral-900">{content.phone}</a>}
@@ -268,14 +268,14 @@ export default function Aperture({ site, page = "home", basePath = "" }: PresetP
         )}
         <div className="pointer-events-none absolute inset-0" style={{ background: "linear-gradient(to top, rgba(12,10,8,0.7) 0%, rgba(12,10,8,0.1) 45%, rgba(12,10,8,0.35) 100%)" }} />
         <div className="relative z-10 mx-auto mt-auto w-full max-w-6xl px-6 pb-16 sm:px-8 sm:pb-20">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.4em] text-white/85">Photography &amp; Film</p>
+          <p className="text-[11px] font-semibold uppercase tracking-[0.4em] text-white/85" {...editCopy(content, "hero_eyebrow", "Photography & Film")} />
           <h1 style={{ ...serif, color: "#fff" }} className="mt-4 max-w-4xl text-5xl font-medium leading-[1.02] [text-shadow:0_2px_24px_rgba(0,0,0,0.45)] sm:text-7xl">
             <span data-edit="tenant.business_name">{name}</span>
           </h1>
           {content.tagline && <p data-edit="content.tagline" className="mt-5 max-w-xl text-[15px] leading-relaxed text-white/85 [text-shadow:0_1px_14px_rgba(0,0,0,0.4)] sm:text-base">{content.tagline}</p>}
           <div className="mt-8 flex flex-wrap gap-4">
-            {gallery.length > 0 && <a href={href("gallery")} className="px-9 py-4 text-[11px] font-semibold uppercase tracking-[0.22em] text-neutral-900 transition hover:opacity-90" style={{ background: "#fff" }}>View portfolio</a>}
-            <a href={enquire} className="border border-white/50 px-9 py-4 text-[11px] font-semibold uppercase tracking-[0.22em] text-white backdrop-blur-sm transition hover:bg-white hover:text-neutral-900">Enquire</a>
+            {gallery.length > 0 && <a href={href("gallery")} className="px-9 py-4 text-[11px] font-semibold uppercase tracking-[0.22em] text-neutral-900 transition hover:opacity-90" style={{ background: "#fff" }} {...editCopy(content, "hero_portfolio_cta", "View portfolio")} />}
+            <a href={enquire} className="border border-white/50 px-9 py-4 text-[11px] font-semibold uppercase tracking-[0.22em] text-white backdrop-blur-sm transition hover:bg-white hover:text-neutral-900" {...editCopy(content, "hero_enquire_cta", "Enquire")} />
           </div>
         </div>
       </section>
@@ -283,9 +283,9 @@ export default function Aperture({ site, page = "home", basePath = "" }: PresetP
       {/* intro statement */}
       {content.about && (
         <section className="mx-auto max-w-4xl px-8 py-24 text-center">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: ACCENT }}>About</p>
+          <p className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: ACCENT }} {...editCopy(content, "home_about_eyebrow", "About")} />
           <p data-edit="content.about" style={{ ...serif, color: INK }} className="mt-6 text-2xl font-medium leading-[1.45] sm:text-[2rem]">{content.about}</p>
-          <a href={href("about")} className="mt-8 inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em]" style={{ color: ACCENT }}>Read more &rarr;</a>
+          <a href={href("about")} className="mt-8 inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em]" style={{ color: ACCENT }} {...editCopy(content, "home_about_link", "Read more →")} />
         </section>
       )}
 
@@ -295,10 +295,10 @@ export default function Aperture({ site, page = "home", basePath = "" }: PresetP
           <div className="mx-auto max-w-6xl px-8">
             <div className="flex flex-wrap items-end justify-between gap-4">
               <div>
-                <p className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: ACCENT }}>Selected Work</p>
-                <h2 style={{ ...serif, color: INK }} className="mt-3 text-3xl font-medium sm:text-4xl">Recent stories</h2>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: ACCENT }} {...editCopy(content, "home_portfolio_eyebrow", "Selected Work")} />
+                <h2 style={{ ...serif, color: INK }} className="mt-3 text-3xl font-medium sm:text-4xl" {...editCopy(content, "home_portfolio_heading", "Recent stories")} />
               </div>
-              <a href={href("gallery")} className="text-[11px] font-semibold uppercase tracking-[0.2em]" style={{ color: INK }}>Full portfolio &rarr;</a>
+              <a href={href("gallery")} className="text-[11px] font-semibold uppercase tracking-[0.2em]" style={{ color: INK }} {...editCopy(content, "home_portfolio_link", "Full portfolio →")} />
             </div>
           </div>
           <div className="mx-auto mt-12 grid max-w-6xl grid-cols-2 gap-3 px-3 sm:grid-cols-3 sm:px-6">
@@ -315,8 +315,8 @@ export default function Aperture({ site, page = "home", basePath = "" }: PresetP
         <section style={{ background: "#efece6", borderTop: `1px solid ${LINE}` }}>
           <div className="mx-auto max-w-3xl px-8 py-24">
             <div className="text-center">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: ACCENT }}>Investment</p>
-              <h2 style={{ ...serif, color: INK }} className="mt-3 text-3xl font-medium sm:text-4xl">Packages</h2>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: ACCENT }} {...editCopy(content, "home_packages_eyebrow", "Investment")} />
+              <h2 style={{ ...serif, color: INK }} className="mt-3 text-3xl font-medium sm:text-4xl" {...editCopy(content, "home_packages_heading", "Packages")} />
             </div>
             <ul className="mx-auto mt-12 max-w-xl divide-y" style={{ borderColor: LINE }}>
               {featured.map((item) => (
@@ -330,7 +330,7 @@ export default function Aperture({ site, page = "home", basePath = "" }: PresetP
               ))}
             </ul>
             <div className="mt-12 text-center">
-              <a href={href("services")} className="inline-flex px-9 py-3.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-white transition hover:opacity-90" style={{ background: INK }}>View all packages</a>
+              <a href={href("services")} className="inline-flex px-9 py-3.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-white transition hover:opacity-90" style={{ background: INK }} {...editCopy(content, "home_packages_link", "View all packages")} />
             </div>
           </div>
         </section>
@@ -338,9 +338,9 @@ export default function Aperture({ site, page = "home", basePath = "" }: PresetP
 
       {/* closing CTA */}
       <section className="mx-auto max-w-2xl px-8 py-24 text-center">
-        <h2 style={{ ...serif, color: INK }} className="text-3xl font-medium sm:text-4xl">Let&apos;s create something beautiful</h2>
-        <p className="mx-auto mt-5 max-w-md text-[15px] leading-relaxed" style={{ color: SUB }}>Tell us about your day, your brand or your story — we&apos;d love to hear it.</p>
-        <a href={enquire} className="mt-8 inline-flex px-10 py-4 text-[11px] font-semibold uppercase tracking-[0.22em] text-white transition hover:opacity-90" style={{ background: INK }}>Start a project</a>
+        <h2 style={{ ...serif, color: INK }} className="text-3xl font-medium sm:text-4xl" {...editCopy(content, "cta_heading", "Let's create something beautiful")} />
+        <p className="mx-auto mt-5 max-w-md text-[15px] leading-relaxed" style={{ color: SUB }} {...editCopy(content, "cta_sub", "Tell us about your day, your brand or your story — we'd love to hear it.")} />
+        <a href={enquire} className="mt-8 inline-flex px-10 py-4 text-[11px] font-semibold uppercase tracking-[0.22em] text-white transition hover:opacity-90" style={{ background: INK }} {...editCopy(content, "cta_button", "Start a project")} />
       </section>
     </>,
     true,

@@ -4,7 +4,7 @@ import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
 import { useEffect, useState } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { EventsMobileNav } from "./EventsMobileNav";
 
@@ -96,13 +96,13 @@ export default function Pulse({ site, page = "home", basePath = "" }: PresetProp
           )}
         </div>
         <div>
-          <h4 className="text-xs font-bold uppercase tracking-[0.24em]" style={{ color: CYAN }}>Menu</h4>
+          <h4 className="text-xs font-bold uppercase tracking-[0.24em]" style={{ color: CYAN }} {...editCopy(content, "footer_menu", "Menu")} />
           <ul className="mt-5 space-y-3 text-sm" style={{ color: SUB }}>
             {nav.map((l) => <li key={l.label}><a href={l.href} className="font-semibold uppercase tracking-[0.12em] transition hover:text-white">{l.label}</a></li>)}
           </ul>
         </div>
         <div>
-          <h4 className="text-xs font-bold uppercase tracking-[0.24em]" style={{ color: CYAN }}>Bookings</h4>
+          <h4 className="text-xs font-bold uppercase tracking-[0.24em]" style={{ color: CYAN }} {...editCopy(content, "footer_bookings", "Bookings")} />
           <div className="mt-5 space-y-3 text-sm" style={{ color: SUB }}>
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
             {content.email && <a data-edit="content.email" href={`mailto:${content.email}`} className="block transition hover:text-white">{content.email}</a>}
@@ -125,11 +125,11 @@ export default function Pulse({ site, page = "home", basePath = "" }: PresetProp
     </div>
   );
 
-  const banner = (kicker: string, title: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string) => (
     <section style={{ background: PANEL, borderBottom: "1px solid #ffffff14" }}>
       <div className="mx-auto max-w-6xl px-8 pb-16 pt-32 sm:pt-40">
-        <p className="text-[11px] font-bold uppercase tracking-[0.34em]" style={{ color: NEON }}>{kicker}</p>
-        <h1 style={{ ...display, color: TEXT }} className="mt-3 text-5xl font-extrabold uppercase leading-[0.95] tracking-[-0.01em] sm:text-7xl">{title}</h1>
+        <p className="text-[11px] font-bold uppercase tracking-[0.34em]" style={{ color: NEON }} {...editCopy(content, kickerKey, kicker)} />
+        <h1 style={{ ...display, color: TEXT }} className="mt-3 text-5xl font-extrabold uppercase leading-[0.95] tracking-[-0.01em] sm:text-7xl" {...editCopy(content, titleKey, title)} />
         <span className="mt-6 block h-1 w-24" style={{ background: GRAD }} />
       </div>
     </section>
@@ -139,7 +139,7 @@ export default function Pulse({ site, page = "home", basePath = "" }: PresetProp
   if (page === "services") {
     return shell(
       <>
-        {banner("What You Get", "Packages")}
+        {banner("What You Get", "svc_kicker", "Packages", "svc_title")}
         <section className="mx-auto max-w-3xl px-6 py-16 sm:px-8 sm:py-20">
           {groups.length > 0 ? (
             <>
@@ -178,7 +178,7 @@ export default function Pulse({ site, page = "home", basePath = "" }: PresetProp
   if (page === "gallery") {
     return shell(
       <>
-        {banner("On The Floor", "Gallery")}
+        {banner("On The Floor", "gallery_kicker", "Gallery", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-6xl px-3 py-12 sm:px-6">
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
@@ -197,7 +197,7 @@ export default function Pulse({ site, page = "home", basePath = "" }: PresetProp
   if (page === "about") {
     return shell(
       <>
-        {banner("The Crew", "About")}
+        {banner("The Crew", "about_kicker", "About", "about_title")}
         <section className="mx-auto grid max-w-6xl items-center gap-12 px-6 py-16 sm:px-8 sm:py-20 lg:grid-cols-2 lg:gap-16">
           {gallery[0] ? (
             // eslint-disable-next-line @next/next/no-img-element
@@ -216,10 +216,10 @@ export default function Pulse({ site, page = "home", basePath = "" }: PresetProp
   if (page === "contact") {
     return shell(
       <>
-        {banner("Lock It In", "Get in Touch")}
+        {banner("Lock It In", "contact_kicker", "Get in Touch", "contact_title")}
         <section className="mx-auto grid max-w-6xl gap-12 px-6 py-16 sm:px-8 sm:py-20 lg:grid-cols-2 lg:gap-20">
           <div>
-            <h2 style={{ ...display, color: TEXT }} className="text-2xl font-extrabold uppercase">Bookings &amp; enquiries</h2>
+            <h2 style={{ ...display, color: TEXT }} className="text-2xl font-extrabold uppercase" {...editCopy(content, "contact_heading", "Bookings & enquiries")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: SUB }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -270,7 +270,7 @@ export default function Pulse({ site, page = "home", basePath = "" }: PresetProp
         <div className="pointer-events-none absolute -left-24 top-1/3 h-72 w-72 rounded-full opacity-40 blur-3xl" style={{ background: NEON }} />
         <div className="pointer-events-none absolute -right-24 bottom-1/4 h-72 w-72 rounded-full opacity-30 blur-3xl" style={{ background: CYAN }} />
         <div className="relative z-10 mx-auto w-full max-w-6xl px-6 sm:px-8">
-          <p className="text-[11px] font-bold uppercase tracking-[0.42em]" style={{ color: CYAN }}>DJ &amp; Party Hire</p>
+          <p className="text-[11px] font-bold uppercase tracking-[0.42em]" style={{ color: CYAN }} {...editCopy(content, "hero_eyebrow", "DJ & Party Hire")} />
           <h1 style={{ ...display, color: "#fff" }} className="mt-4 max-w-4xl text-6xl font-extrabold uppercase leading-[0.92] tracking-[-0.02em] [text-shadow:0_2px_30px_rgba(0,0,0,0.5)] sm:text-8xl">
             <span data-edit="tenant.business_name">{name}</span>
           </h1>
@@ -295,8 +295,8 @@ export default function Pulse({ site, page = "home", basePath = "" }: PresetProp
         <section style={{ background: PANEL, borderTop: "1px solid #ffffff14" }}>
           <div className="mx-auto max-w-3xl px-8 py-24">
             <div className="text-center">
-              <p className="text-[11px] font-bold uppercase tracking-[0.34em]" style={{ color: NEON }}>What You Get</p>
-              <h2 style={{ ...display, color: TEXT }} className="mt-3 text-4xl font-extrabold uppercase sm:text-5xl">Packages</h2>
+              <p className="text-[11px] font-bold uppercase tracking-[0.34em]" style={{ color: NEON }} {...editCopy(content, "home_packages_eyebrow", "What You Get")} />
+              <h2 style={{ ...display, color: TEXT }} className="mt-3 text-4xl font-extrabold uppercase sm:text-5xl" {...editCopy(content, "home_packages_heading", "Packages")} />
             </div>
             <ul className="mx-auto mt-12 max-w-xl divide-y" style={{ borderColor: "#ffffff1f" }}>
               {featured.map((item) => (
@@ -320,8 +320,8 @@ export default function Pulse({ site, page = "home", basePath = "" }: PresetProp
       {gallery.length > 0 && (
         <section className="py-24">
           <div className="mx-auto max-w-6xl px-8 text-center">
-            <p className="text-[11px] font-bold uppercase tracking-[0.34em]" style={{ color: CYAN }}>On The Floor</p>
-            <h2 style={{ ...display, color: TEXT }} className="mt-3 text-4xl font-extrabold uppercase sm:text-5xl">Nights we&apos;ve lit up</h2>
+            <p className="text-[11px] font-bold uppercase tracking-[0.34em]" style={{ color: CYAN }} {...editCopy(content, "home_gallery_eyebrow", "On The Floor")} />
+            <h2 style={{ ...display, color: TEXT }} className="mt-3 text-4xl font-extrabold uppercase sm:text-5xl" {...editCopy(content, "home_gallery_heading", "Nights we've lit up")} />
           </div>
           <div className="mx-auto mt-12 grid max-w-6xl grid-cols-2 gap-3 px-3 sm:grid-cols-4 sm:px-6">
             {gallery.slice(0, 4).map((g) => (
@@ -339,7 +339,7 @@ export default function Pulse({ site, page = "home", basePath = "" }: PresetProp
       <section className="relative overflow-hidden" style={{ background: PANEL, borderTop: "1px solid #ffffff14" }}>
         <div className="pointer-events-none absolute inset-x-0 top-0 h-1" style={{ background: GRAD }} />
         <div className="mx-auto max-w-2xl px-8 py-24 text-center">
-          <h2 style={{ ...display, color: TEXT }} className="text-4xl font-extrabold uppercase leading-[0.95] sm:text-5xl">Let&apos;s throw a party they&apos;ll never forget</h2>
+          <h2 style={{ ...display, color: TEXT }} className="text-4xl font-extrabold uppercase leading-[0.95] sm:text-5xl" {...editCopy(content, "cta_heading", "Let's throw a party they'll never forget")} />
           <p className="mx-auto mt-5 max-w-md text-[15px] leading-relaxed" style={{ color: SUB }}>Weddings, birthdays, festivals, corporate blowouts — tell us the vibe and we&apos;ll bring the energy.</p>
           <a href={book} className="mt-8 inline-flex px-10 py-4 text-[11px] font-bold uppercase tracking-[0.2em] text-black transition hover:opacity-90" style={{ background: GRAD }}>Book the night</a>
         </div>

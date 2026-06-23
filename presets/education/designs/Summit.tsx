@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { EduMobileNav } from "./EduMobileNav";
 
@@ -88,7 +88,7 @@ export default function SummitDesign({ site, page = "home", basePath = "" }: Pre
         </div>
         {(content.address || content.phone || content.email) && (
           <div>
-            <h4 className="text-xs font-bold uppercase tracking-[0.18em] text-white/40">Contact</h4>
+            <h4 className="text-xs font-bold uppercase tracking-[0.18em] text-white/40" {...editCopy(content, "footer_contact", "Contact")} />
             <div className="mt-4 space-y-2 text-sm text-white/75">
               {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -98,7 +98,7 @@ export default function SummitDesign({ site, page = "home", basePath = "" }: Pre
         )}
         {content.hours && content.hours.length > 0 && (
           <div>
-            <h4 className="text-xs font-bold uppercase tracking-[0.18em] text-white/40">Hours</h4>
+            <h4 className="text-xs font-bold uppercase tracking-[0.18em] text-white/40" {...editCopy(content, "footer_hours", "Hours")} />
             <ul className="mt-4 space-y-2 text-sm text-white/75">
               {content.hours.map((h, i) => (
                 <li key={i} className="flex justify-between gap-5"><span data-edit={`hours:${i}:day`}>{h.day}</span><span data-edit={`hours:${i}:open`} className="text-white/45">{h.open}</span></li>
@@ -107,7 +107,7 @@ export default function SummitDesign({ site, page = "home", basePath = "" }: Pre
           </div>
         )}
         <div>
-          <h4 className="text-xs font-bold uppercase tracking-[0.18em] text-white/40">Explore</h4>
+          <h4 className="text-xs font-bold uppercase tracking-[0.18em] text-white/40" {...editCopy(content, "footer_explore", "Explore")} />
           <ul className="mt-4 space-y-2 text-sm text-white/75">
             {nav.map((l) => (
               <li key={l.href}><a href={l.href} className="transition hover:text-white">{l.label}</a></li>
@@ -129,12 +129,12 @@ export default function SummitDesign({ site, page = "home", basePath = "" }: Pre
     </div>
   );
 
-  const banner = (kicker: string, title: string, sub?: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string, sub?: string, subKey?: string) => (
     <section style={{ background: NAVY }} className="text-white">
       <div className="mx-auto max-w-5xl px-6 py-16 sm:py-20">
-        <Eyebrow light>{kicker}</Eyebrow>
-        <h1 className="mt-3 text-4xl font-bold tracking-tight sm:text-5xl">{title}</h1>
-        {sub && <p className="mt-4 max-w-2xl text-[16px] leading-relaxed text-white/65">{sub}</p>}
+        <Eyebrow light><span {...editCopy(content, kickerKey, kicker)} /></Eyebrow>
+        <h1 className="mt-3 text-4xl font-bold tracking-tight sm:text-5xl" {...editCopy(content, titleKey, title)} />
+        {sub && <p className="mt-4 max-w-2xl text-[16px] leading-relaxed text-white/65" {...editCopy(content, subKey ?? titleKey, sub)} />}
       </div>
     </section>
   );
@@ -192,7 +192,7 @@ export default function SummitDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "services") {
     return shell(
       <>
-        {banner("Courses & tuition", "Programmes built around results", "One-to-one and small-group tuition mapped to the exams that matter, taught by specialists.")}
+        {banner("Courses & tuition", "courses_kicker", "Programmes built around results", "courses_title", "One-to-one and small-group tuition mapped to the exams that matter, taught by specialists.", "courses_sub")}
         <section className="mx-auto max-w-3xl px-6 py-16 sm:py-20">
           {groups.length > 0 ? courseList() : <p style={{ color: MUTE }}>Our courses are coming soon.</p>}
           <div className="mt-12">
@@ -207,7 +207,7 @@ export default function SummitDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "about") {
     return shell(
       <>
-        {banner("About us", "Specialist teaching that builds confidence")}
+        {banner("About us", "about_kicker", "Specialist teaching that builds confidence", "about_title")}
         <section className="mx-auto max-w-3xl px-6 py-16 sm:py-20">
           {content.about ? (
             <p data-edit="content.about" className="text-[18px] leading-[1.85]" style={{ color: MUTE }}>{content.about}</p>
@@ -225,7 +225,7 @@ export default function SummitDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Results & moments", "Progress you can see")}
+        {banner("Results & moments", "results_kicker", "Progress you can see", "results_title")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-6xl px-6 py-16">
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
@@ -244,10 +244,10 @@ export default function SummitDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "contact") {
     return shell(
       <>
-        {banner("Get in touch", "Book a free assessment", "Tell us about the student and the goals. We will recommend the right tutor and plan.")}
+        {banner("Get in touch", "contact_kicker", "Book a free assessment", "contact_title", "Tell us about the student and the goals. We will recommend the right tutor and plan.", "contact_sub")}
         <section className="mx-auto grid max-w-5xl gap-12 px-6 py-16 sm:py-20 lg:grid-cols-[1fr_1.1fr]">
           <div>
-            <h2 className="text-xl font-bold tracking-tight" style={{ color: INK }}>Contact</h2>
+            <h2 className="text-xl font-bold tracking-tight" style={{ color: INK }} {...editCopy(content, "contact_heading", "Contact")} />
             <div className="mt-5 space-y-3 text-[15px] leading-relaxed" style={{ color: MUTE }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block font-semibold transition hover:opacity-70" style={{ color: INDIGO }}>{content.phone}</a>}
@@ -292,7 +292,7 @@ export default function SummitDesign({ site, page = "home", basePath = "" }: Pre
         <div aria-hidden className="pointer-events-none absolute -right-32 -top-32 h-96 w-96 rounded-full opacity-30" style={{ background: `radial-gradient(circle, ${INDIGO}, transparent 70%)` }} />
         <div className="mx-auto grid max-w-6xl items-center gap-12 px-6 py-20 lg:grid-cols-2 lg:gap-16 lg:py-28">
           <div>
-            <Eyebrow light>Tuition that gets results</Eyebrow>
+            <Eyebrow light><span {...editCopy(content, "hero_eyebrow", "Tuition that gets results")} /></Eyebrow>
             <h1 className="mt-4 text-5xl font-bold leading-[1.02] tracking-tight sm:text-6xl">
               <span data-edit="tenant.business_name">{name}</span>
             </h1>
@@ -300,7 +300,7 @@ export default function SummitDesign({ site, page = "home", basePath = "" }: Pre
             <div className="mt-8 flex flex-wrap gap-3">
               <a href={cta} className="rounded-md px-7 py-3.5 text-sm font-bold text-white shadow-lg transition hover:opacity-90" style={{ background: INDIGO }}>{ctaLabel}</a>
               {groups.length > 0 && (
-                <a href={href("services")} className="rounded-md border border-white/25 px-7 py-3.5 text-sm font-bold text-white backdrop-blur transition hover:bg-white/10">View courses</a>
+                <a href={href("services")} className="rounded-md border border-white/25 px-7 py-3.5 text-sm font-bold text-white backdrop-blur transition hover:bg-white/10" {...editCopy(content, "hero_courses_cta", "View courses")} />
               )}
             </div>
           </div>
@@ -333,8 +333,8 @@ export default function SummitDesign({ site, page = "home", basePath = "" }: Pre
       {/* approach cards */}
       <section className="mx-auto max-w-6xl px-6 py-20">
         <div className="max-w-2xl">
-          <Eyebrow>Our approach</Eyebrow>
-          <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl" style={{ color: INK }}>A clear path to better grades</h2>
+          <Eyebrow><span {...editCopy(content, "approach_eyebrow", "Our approach")} /></Eyebrow>
+          <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl" style={{ color: INK }} {...editCopy(content, "approach_heading", "A clear path to better grades")} />
         </div>
         <div className="mt-12 grid gap-5 sm:grid-cols-3">
           {[
@@ -355,9 +355,9 @@ export default function SummitDesign({ site, page = "home", basePath = "" }: Pre
       {content.about && (
         <section style={{ background: LIGHT, borderTop: `1px solid ${LINE}`, borderBottom: `1px solid ${LINE}` }}>
           <div className="mx-auto max-w-4xl px-6 py-20">
-            <Eyebrow>Why families choose us</Eyebrow>
+            <Eyebrow><span {...editCopy(content, "about_eyebrow", "Why families choose us")} /></Eyebrow>
             <p data-edit="content.about" className="mt-5 text-2xl font-medium leading-[1.5] tracking-tight sm:text-[1.75rem]" style={{ color: INK }}>{content.about}</p>
-            <a href={href("about")} className="mt-7 inline-flex text-sm font-bold transition hover:opacity-70" style={{ color: INDIGO }}>More about us →</a>
+            <a href={href("about")} className="mt-7 inline-flex text-sm font-bold transition hover:opacity-70" style={{ color: INDIGO }} {...editCopy(content, "home_about_link", "More about us →")} />
           </div>
         </section>
       )}
@@ -366,11 +366,11 @@ export default function SummitDesign({ site, page = "home", basePath = "" }: Pre
       {featuredCount > 0 && (
         <section style={{ background: NAVY }} className="text-white">
           <div className="mx-auto max-w-3xl px-6 py-20">
-            <Eyebrow light>Courses</Eyebrow>
-            <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">Popular programmes</h2>
+            <Eyebrow light><span {...editCopy(content, "home_courses_eyebrow", "Courses")} /></Eyebrow>
+            <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl" {...editCopy(content, "home_courses_heading", "Popular programmes")} />
             <div className="mt-10">{courseList(6, true)}</div>
             <div className="mt-12">
-              <a href={href("services")} className="inline-flex rounded-md px-7 py-3.5 text-sm font-bold text-white transition hover:opacity-90" style={{ background: INDIGO }}>View all courses</a>
+              <a href={href("services")} className="inline-flex rounded-md px-7 py-3.5 text-sm font-bold text-white transition hover:opacity-90" style={{ background: INDIGO }} {...editCopy(content, "home_courses_link", "View all courses")} />
             </div>
           </div>
         </section>
@@ -378,8 +378,8 @@ export default function SummitDesign({ site, page = "home", basePath = "" }: Pre
 
       {/* closing CTA */}
       <section className="mx-auto max-w-5xl px-6 py-24 text-center">
-        <h2 className="text-3xl font-bold tracking-tight sm:text-4xl" style={{ color: INK }}>Ready to see real progress?</h2>
-        <p className="mx-auto mt-4 max-w-md text-[16px] leading-relaxed" style={{ color: MUTE }}>Book a free, no-obligation assessment and we will map out the right plan.</p>
+        <h2 className="text-3xl font-bold tracking-tight sm:text-4xl" style={{ color: INK }} {...editCopy(content, "cta_heading", "Ready to see real progress?")} />
+        <p className="mx-auto mt-4 max-w-md text-[16px] leading-relaxed" style={{ color: MUTE }} {...editCopy(content, "cta_sub", "Book a free, no-obligation assessment and we will map out the right plan.")} />
         <a href={cta} className="mt-8 inline-flex rounded-md px-9 py-4 text-sm font-bold text-white transition hover:opacity-90" style={{ background: INDIGO }}>{ctaLabel}</a>
       </section>
     </>,

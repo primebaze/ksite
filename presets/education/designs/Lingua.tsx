@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { EduMobileNav } from "./EduMobileNav";
 
@@ -125,7 +125,7 @@ export default function LinguaDesign({ site, page = "home", basePath = "" }: Pre
         </div>
         {(content.address || content.phone || content.email) && (
           <div>
-            <h4 className="text-sm font-semibold uppercase tracking-[0.16em] text-white/60">Visit &amp; contact</h4>
+            <h4 className="text-sm font-semibold uppercase tracking-[0.16em] text-white/60" {...editCopy(content, "footer_contact", "Visit & contact")} />
             <div className="mt-4 space-y-2 text-sm text-white/85">
               {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -135,7 +135,7 @@ export default function LinguaDesign({ site, page = "home", basePath = "" }: Pre
         )}
         {content.hours && content.hours.length > 0 && (
           <div>
-            <h4 className="text-sm font-semibold uppercase tracking-[0.16em] text-white/60">Class hours</h4>
+            <h4 className="text-sm font-semibold uppercase tracking-[0.16em] text-white/60" {...editCopy(content, "footer_hours", "Class hours")} />
             <ul className="mt-4 space-y-2 text-sm text-white/85">
               {content.hours.map((h, i) => (
                 <li key={i} className="flex justify-between gap-5"><span data-edit={`hours:${i}:day`}>{h.day}</span><span data-edit={`hours:${i}:open`} className="text-white/55">{h.open}</span></li>
@@ -144,7 +144,7 @@ export default function LinguaDesign({ site, page = "home", basePath = "" }: Pre
           </div>
         )}
         <div>
-          <h4 className="text-sm font-semibold uppercase tracking-[0.16em] text-white/60">Explore</h4>
+          <h4 className="text-sm font-semibold uppercase tracking-[0.16em] text-white/60" {...editCopy(content, "footer_explore", "Explore")} />
           <ul className="mt-4 space-y-2 text-sm text-white/85">
             {nav.map((l) => (
               <li key={l.href}><a href={l.href} className="transition hover:text-white">{l.label}</a></li>
@@ -166,12 +166,12 @@ export default function LinguaDesign({ site, page = "home", basePath = "" }: Pre
     </div>
   );
 
-  const pageHeader = (kicker: string, title: string, sub?: string) => (
+  const pageHeader = (kicker: string, kickerKey: string, title: string, titleKey: string, sub?: string, subKey?: string) => (
     <section className="relative overflow-hidden" style={{ background: TEAL_SOFT }}>
       <div className="mx-auto max-w-4xl px-6 pb-12 pt-16 text-center sm:pt-20">
-        <Kicker>{kicker}</Kicker>
-        <h1 style={{ ...display, color: INK }} className="mt-5 text-4xl font-semibold sm:text-5xl">{title}</h1>
-        {sub && <p className="mx-auto mt-4 max-w-xl text-[16px] leading-relaxed" style={{ color: MUTE }}>{sub}</p>}
+        <Kicker><span {...editCopy(content, kickerKey, kicker)} /></Kicker>
+        <h1 style={{ ...display, color: INK }} className="mt-5 text-4xl font-semibold sm:text-5xl" {...editCopy(content, titleKey, title)} />
+        {sub && <p className="mx-auto mt-4 max-w-xl text-[16px] leading-relaxed" style={{ color: MUTE }} {...editCopy(content, subKey ?? titleKey, sub)} />}
       </div>
     </section>
   );
@@ -226,7 +226,7 @@ export default function LinguaDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "services") {
     return shell(
       <>
-        {pageHeader("What we offer", "Courses for every learner", "Beginner to advanced, conversation, exam prep and business language — group or 1-to-1.")}
+        {pageHeader("What we offer", "courses_kicker", "Courses for every learner", "courses_title", "Beginner to advanced, conversation, exam prep and business language — group or 1-to-1.", "courses_sub")}
         <section className="mx-auto max-w-3xl px-6 py-16">
           {groups.length > 0 ? courseList() : <p className="text-center" style={{ color: MUTE }}>Our course list is coming soon.</p>}
           <div className="mt-12 text-center">
@@ -241,7 +241,7 @@ export default function LinguaDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "about") {
     return shell(
       <>
-        {pageHeader("About us", "A warm, global classroom")}
+        {pageHeader("About us", "about_kicker", "A warm, global classroom", "about_title")}
         <section className="mx-auto max-w-3xl px-6 py-16">
           {content.about ? (
             <p data-edit="content.about" className="text-[17px] leading-[1.9]" style={{ color: MUTE }}>{content.about}</p>
@@ -261,7 +261,7 @@ export default function LinguaDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "gallery") {
     return shell(
       <>
-        {pageHeader("Gallery", "Life at the school")}
+        {pageHeader("Gallery", "gallery_kicker", "Life at the school", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-6xl px-6 py-16">
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
@@ -280,10 +280,10 @@ export default function LinguaDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "contact") {
     return shell(
       <>
-        {pageHeader("Get in touch", "Start speaking with us", "Tell us which language you'd like to learn and your level — we'll book a free assessment to match you to the right class.")}
+        {pageHeader("Get in touch", "contact_kicker", "Start speaking with us", "contact_title", "Tell us which language you'd like to learn and your level — we'll book a free assessment to match you to the right class.", "contact_sub")}
         <section className="mx-auto grid max-w-5xl gap-12 px-6 py-16 lg:grid-cols-[1fr_1.1fr]">
           <div className="rounded-3xl p-8" style={{ background: TEAL_SOFT }}>
-            <h2 style={{ ...display, color: INK }} className="text-2xl font-semibold">Find us</h2>
+            <h2 style={{ ...display, color: INK }} className="text-2xl font-semibold" {...editCopy(content, "contact_find_heading", "Find us")} />
             <div className="mt-5 space-y-3 text-[15px] leading-relaxed" style={{ color: MUTE }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block font-semibold transition hover:opacity-70" style={{ color: TEAL_DEEP }}>{content.phone}</a>}
@@ -343,8 +343,8 @@ export default function LinguaDesign({ site, page = "home", basePath = "" }: Pre
         <span aria-hidden className="pointer-events-none absolute -bottom-28 -left-20 h-72 w-72 rounded-full" style={{ background: "#ffffff10" }} />
         <div className="mx-auto grid max-w-6xl items-center gap-10 px-6 py-16 lg:grid-cols-2 lg:gap-14 lg:py-24">
           <div className="text-white">
-            <Kicker color={INK} bg={SUN}>Native teachers · all levels</Kicker>
-            <h1 style={{ ...display }} className="mt-5 text-5xl font-semibold leading-[1.04] sm:text-6xl">Speak with confidence</h1>
+            <Kicker color={INK} bg={SUN}><span {...editCopy(content, "hero_kicker", "Native teachers · all levels")} /></Kicker>
+            <h1 style={{ ...display }} className="mt-5 text-5xl font-semibold leading-[1.04] sm:text-6xl" {...editCopy(content, "hero_headline", "Speak with confidence")} />
             <p className="mt-4 text-lg font-medium text-white/90">
               <span data-edit="tenant.business_name">{name}</span>
             </p>
@@ -352,7 +352,7 @@ export default function LinguaDesign({ site, page = "home", basePath = "" }: Pre
             <div className="mt-8 flex flex-wrap gap-3">
               <a href={cta} className="rounded-full px-7 py-3.5 text-sm font-semibold text-white shadow-lg transition hover:opacity-90" style={{ background: CORAL }}>{ctaLabel}</a>
               {groups.length > 0 && (
-                <a href={href("services")} className="rounded-full bg-white px-7 py-3.5 text-sm font-semibold transition hover:opacity-90" style={{ color: TEAL_DEEP }}>See courses</a>
+                <a href={href("services")} className="rounded-full bg-white px-7 py-3.5 text-sm font-semibold transition hover:opacity-90" style={{ color: TEAL_DEEP }} {...editCopy(content, "hero_courses_cta", "See courses")} />
               )}
             </div>
             <div className="mt-8 flex flex-wrap gap-2.5">
@@ -406,9 +406,9 @@ export default function LinguaDesign({ site, page = "home", basePath = "" }: Pre
       {/* about teaser */}
       {content.about && (
         <section className="mx-auto max-w-4xl px-6 py-20 text-center">
-          <Kicker>Our approach</Kicker>
+          <Kicker><span {...editCopy(content, "home_about_kicker", "Our approach")} /></Kicker>
           <p data-edit="content.about" style={{ ...display, color: INK }} className="mx-auto mt-6 max-w-2xl text-2xl font-medium leading-[1.5] sm:text-[1.7rem]">{content.about}</p>
-          <a href={href("about")} className="mt-7 inline-flex text-sm font-semibold transition hover:opacity-70" style={{ color: TEAL_DEEP }}>More about us →</a>
+          <a href={href("about")} className="mt-7 inline-flex text-sm font-semibold transition hover:opacity-70" style={{ color: TEAL_DEEP }} {...editCopy(content, "home_about_link", "More about us →")} />
         </section>
       )}
 
@@ -417,15 +417,15 @@ export default function LinguaDesign({ site, page = "home", basePath = "" }: Pre
         <section style={{ background: TEAL_SOFT }}>
           <div className="mx-auto max-w-3xl px-6 py-20">
             <div className="text-center">
-              <Kicker color={CORAL} bg="#ffffff">What we offer</Kicker>
-              <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-semibold sm:text-4xl">Courses for every learner</h2>
-              <p className="mx-auto mt-3 max-w-md text-[15px] leading-relaxed" style={{ color: MUTE }}>Conversation, exam prep, business language, kids &amp; teens and 1-to-1.</p>
+              <Kicker color={CORAL} bg="#ffffff"><span {...editCopy(content, "home_courses_kicker", "What we offer")} /></Kicker>
+              <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-semibold sm:text-4xl" {...editCopy(content, "home_courses_heading", "Courses for every learner")} />
+              <p className="mx-auto mt-3 max-w-md text-[15px] leading-relaxed" style={{ color: MUTE }} {...editCopy(content, "home_courses_sub", "Conversation, exam prep, business language, kids & teens and 1-to-1.")} />
             </div>
             <div className="mt-10 rounded-3xl p-7 sm:p-9" style={{ background: "#ffffff" }}>
               {courseList(6)}
             </div>
             <div className="mt-10 text-center">
-              <a href={href("services")} className="inline-flex rounded-full px-8 py-3.5 text-sm font-semibold text-white transition hover:opacity-90" style={{ background: TEAL }}>View all courses</a>
+              <a href={href("services")} className="inline-flex rounded-full px-8 py-3.5 text-sm font-semibold text-white transition hover:opacity-90" style={{ background: TEAL }} {...editCopy(content, "home_courses_link", "View all courses")} />
             </div>
           </div>
         </section>
@@ -434,9 +434,9 @@ export default function LinguaDesign({ site, page = "home", basePath = "" }: Pre
       {/* levels A1–C2 progression band */}
       <section className="mx-auto max-w-6xl px-6 py-20">
         <div className="text-center">
-          <Kicker>Your progression</Kicker>
-          <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-semibold sm:text-4xl">From A1 to C2</h2>
-          <p className="mx-auto mt-3 max-w-lg text-[15px] leading-relaxed" style={{ color: MUTE }}>Follow the Common European Framework — we'll place you at the right step and move you up as you grow.</p>
+          <Kicker><span {...editCopy(content, "levels_kicker", "Your progression")} /></Kicker>
+          <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-semibold sm:text-4xl" {...editCopy(content, "levels_heading", "From A1 to C2")} />
+          <p className="mx-auto mt-3 max-w-lg text-[15px] leading-relaxed" style={{ color: MUTE }} {...editCopy(content, "levels_sub", "Follow the Common European Framework — we'll place you at the right step and move you up as you grow.")} />
         </div>
         <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
           {levels.map((lv, i) => (
@@ -452,8 +452,8 @@ export default function LinguaDesign({ site, page = "home", basePath = "" }: Pre
       <section style={{ background: INK }}>
         <div className="mx-auto max-w-6xl px-6 py-20">
           <div className="text-center text-white">
-            <Kicker color={INK} bg={SUN}>How it works</Kicker>
-            <h2 style={{ ...display }} className="mt-4 text-3xl font-semibold sm:text-4xl">Assess → Learn → Speak</h2>
+            <Kicker color={INK} bg={SUN}><span {...editCopy(content, "how_kicker", "How it works")} /></Kicker>
+            <h2 style={{ ...display }} className="mt-4 text-3xl font-semibold sm:text-4xl" {...editCopy(content, "how_heading", "Assess → Learn → Speak")} />
           </div>
           <div className="mt-12 grid gap-6 sm:grid-cols-3">
             {steps.map((s) => (
@@ -471,8 +471,8 @@ export default function LinguaDesign({ site, page = "home", basePath = "" }: Pre
       {gallery.length > 0 && (
         <section className="mx-auto max-w-6xl px-6 py-20">
           <div className="text-center">
-            <Kicker color={CORAL} bg={TEAL_SOFT}>Our school</Kicker>
-            <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-semibold sm:text-4xl">Friendly faces, real conversation</h2>
+            <Kicker color={CORAL} bg={TEAL_SOFT}><span {...editCopy(content, "home_gallery_kicker", "Our school")} /></Kicker>
+            <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-semibold sm:text-4xl" {...editCopy(content, "home_gallery_heading", "Friendly faces, real conversation")} />
           </div>
           <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
             {gallery.slice(0, 4).map((g) => (
@@ -482,7 +482,7 @@ export default function LinguaDesign({ site, page = "home", basePath = "" }: Pre
           </div>
           {gallery.length > 4 && (
             <div className="mt-8 text-center">
-              <a href={href("gallery")} className="inline-flex text-sm font-semibold transition hover:opacity-70" style={{ color: TEAL_DEEP }}>See the gallery →</a>
+              <a href={href("gallery")} className="inline-flex text-sm font-semibold transition hover:opacity-70" style={{ color: TEAL_DEEP }} {...editCopy(content, "home_gallery_link", "See the gallery →")} />
             </div>
           )}
         </section>
@@ -498,8 +498,8 @@ export default function LinguaDesign({ site, page = "home", basePath = "" }: Pre
               <Hello text="こんにちは" bg="#ffffff" color={TEAL_DEEP} rotate={3} />
               <Hello text="مرحبا" bg={CORAL} color="#fff" rotate={-2} />
             </div>
-            <h2 style={{ ...display, color: "#fff" }} className="text-3xl font-semibold sm:text-4xl">Ready to start speaking?</h2>
-            <p className="mx-auto mt-4 max-w-md text-[16px] leading-relaxed text-white/85">Book a free, friendly assessment and we'll match you to the perfect class.</p>
+            <h2 style={{ ...display, color: "#fff" }} className="text-3xl font-semibold sm:text-4xl" {...editCopy(content, "cta_heading", "Ready to start speaking?")} />
+            <p className="mx-auto mt-4 max-w-md text-[16px] leading-relaxed text-white/85" {...editCopy(content, "cta_sub", "Book a free, friendly assessment and we'll match you to the perfect class.")} />
             <a href={cta} className="mt-8 inline-flex rounded-full px-9 py-4 text-sm font-semibold text-white transition hover:opacity-90" style={{ background: CORAL }}>{ctaLabel}</a>
           </div>
         </div>

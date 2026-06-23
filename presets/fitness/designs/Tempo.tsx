@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { TempoHeader } from "./TempoHeader";
 import { FitnessBooking, type BookingSkin } from "./FitnessBooking";
@@ -98,7 +98,7 @@ export default function Tempo({ site, page = "home", basePath = "" }: PresetProp
           )}
         </div>
         <div>
-          <h4 style={{ color: TEXT }} className="text-xs font-bold uppercase tracking-[0.2em]">Ride</h4>
+          <h4 style={{ color: TEXT }} className="text-xs font-bold uppercase tracking-[0.2em]" {...editCopy(content, "footer_ride", "Ride")} />
           <ul className="mt-5 space-y-3 text-sm" style={{ color: MUTE }}>
             {([
               groups.length > 0 && { label: "Rides", href: href("services") },
@@ -111,7 +111,7 @@ export default function Tempo({ site, page = "home", basePath = "" }: PresetProp
           </ul>
         </div>
         <div>
-          <h4 style={{ color: TEXT }} className="text-xs font-bold uppercase tracking-[0.2em]">Contact</h4>
+          <h4 style={{ color: TEXT }} className="text-xs font-bold uppercase tracking-[0.2em]" {...editCopy(content, "footer_contact", "Contact")} />
           <div className="mt-5 space-y-3 text-sm" style={{ color: MUTE }}>
             {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -119,7 +119,7 @@ export default function Tempo({ site, page = "home", basePath = "" }: PresetProp
           </div>
         </div>
         <div>
-          <h4 style={{ color: TEXT }} className="text-xs font-bold uppercase tracking-[0.2em]">Studio Hours</h4>
+          <h4 style={{ color: TEXT }} className="text-xs font-bold uppercase tracking-[0.2em]" {...editCopy(content, "footer_hours", "Studio Hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm" style={{ color: MUTE }}>
               {content.hours.map((h, i) => (
@@ -144,11 +144,11 @@ export default function Tempo({ site, page = "home", basePath = "" }: PresetProp
     </div>
   );
 
-  const banner = (kicker: string, title: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string) => (
     <section style={{ background: PANEL, borderBottom: `1px solid ${NEON}40` }}>
       <div className="mx-auto max-w-7xl px-8 pb-14 pt-32 sm:pt-40">
-        <Kicker>{kicker}</Kicker>
-        <h1 style={{ ...display, color: TEXT }} className="mt-4 text-5xl font-extrabold uppercase leading-[0.95] tracking-[-0.01em] sm:text-7xl">{title}</h1>
+        <Kicker><span {...editCopy(content, kickerKey, kicker)} /></Kicker>
+        <h1 style={{ ...display, color: TEXT }} className="mt-4 text-5xl font-extrabold uppercase leading-[0.95] tracking-[-0.01em] sm:text-7xl" {...editCopy(content, titleKey, title)} />
       </div>
     </section>
   );
@@ -157,7 +157,7 @@ export default function Tempo({ site, page = "home", basePath = "" }: PresetProp
   if (page === "services") {
     return shell(
       <>
-        {banner("The timetable", "Rides & Packages")}
+        {banner("The timetable", "rides_kicker", "Rides & Packages", "rides_title")}
         <section className="mx-auto max-w-3xl px-6 py-20 sm:px-8">
           {groups.length > 0 ? (
             <div className="space-y-16">
@@ -200,7 +200,7 @@ export default function Tempo({ site, page = "home", basePath = "" }: PresetProp
   if (page === "about") {
     return shell(
       <>
-        {banner("Our vibe", "Lights Down. Volume Up.")}
+        {banner("Our vibe", "about_kicker", "Lights Down. Volume Up.", "about_title")}
         <section className="mx-auto max-w-3xl px-6 py-20 sm:px-8">
           {content.about ? <p data-edit="content.about" className="text-[17px] leading-[1.9]" style={{ color: MUTE }}>{content.about}</p> : <p style={{ color: MUTE }}>Our story is coming soon.</p>}
           <div className="mt-12">
@@ -215,7 +215,7 @@ export default function Tempo({ site, page = "home", basePath = "" }: PresetProp
   if (page === "gallery") {
     return shell(
       <>
-        {banner("In the room", "Inside The Studio")}
+        {banner("In the room", "gallery_kicker", "Inside The Studio", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-7xl px-2 py-12 sm:px-4">
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
@@ -234,10 +234,10 @@ export default function Tempo({ site, page = "home", basePath = "" }: PresetProp
   if (page === "contact") {
     return shell(
       <>
-        {banner("Get on a bike", "Reserve Your Spot")}
+        {banner("Get on a bike", "contact_kicker", "Reserve Your Spot", "contact_title")}
         <section className="mx-auto grid max-w-6xl gap-12 px-6 py-20 sm:px-8 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={{ ...display, color: TEXT }} className="text-2xl font-bold uppercase tracking-[0.02em]">Find the studio</h2>
+            <h2 style={{ ...display, color: TEXT }} className="text-2xl font-bold uppercase tracking-[0.02em]" {...editCopy(content, "contact_find_heading", "Find the studio")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: MUTE }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -304,7 +304,7 @@ export default function Tempo({ site, page = "home", basePath = "" }: PresetProp
           <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:gap-4">
             <a href={join} className="rounded-full px-9 py-4 text-center text-[12px] font-bold uppercase tracking-[0.2em] text-white transition hover:opacity-90" style={{ background: NEON }}>{ctaLabel}</a>
             {groups.length > 0 && (
-              <a href={href("services")} className="rounded-full px-9 py-4 text-center text-[12px] font-bold uppercase tracking-[0.2em] text-white backdrop-blur-sm transition hover:bg-white/10" style={{ border: "1px solid rgba(255,255,255,0.5)" }}>See the rides</a>
+              <a href={href("services")} className="rounded-full px-9 py-4 text-center text-[12px] font-bold uppercase tracking-[0.2em] text-white backdrop-blur-sm transition hover:bg-white/10" style={{ border: "1px solid rgba(255,255,255,0.5)" }} {...editCopy(content, "hero_rides_cta", "See the rides")} />
             )}
           </div>
         </div>
@@ -326,10 +326,10 @@ export default function Tempo({ site, page = "home", basePath = "" }: PresetProp
       {(content.about || gallery[0]) && (
         <section className="mx-auto grid max-w-7xl items-center gap-12 px-8 py-24 lg:grid-cols-2 lg:gap-16">
           <div>
-            <Kicker>Our vibe</Kicker>
-            <h2 style={{ ...display, color: TEXT }} className="mt-4 text-4xl font-extrabold uppercase leading-[0.95] tracking-[-0.01em] sm:text-5xl">Lights Down. Volume Up.</h2>
+            <Kicker><span {...editCopy(content, "home_about_kicker", "Our vibe")} /></Kicker>
+            <h2 style={{ ...display, color: TEXT }} className="mt-4 text-4xl font-extrabold uppercase leading-[0.95] tracking-[-0.01em] sm:text-5xl" {...editCopy(content, "home_about_heading", "Lights Down. Volume Up.")} />
             {content.about && <p data-edit="content.about" className="mt-6 text-[16px] leading-[1.9]" style={{ color: MUTE }}>{content.about}</p>}
-            <a href={href("about")} className="mt-7 inline-flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.2em]" style={{ color: NEON }}>More about us →</a>
+            <a href={href("about")} className="mt-7 inline-flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.2em]" style={{ color: NEON }} {...editCopy(content, "home_about_link", "More about us →")} />
           </div>
           <div className="relative">
             {gallery[0] ? (
@@ -349,10 +349,10 @@ export default function Tempo({ site, page = "home", basePath = "" }: PresetProp
           <div className="mx-auto max-w-4xl px-8 py-24">
             <div className="flex flex-wrap items-end justify-between gap-4">
               <div>
-                <Kicker>The timetable</Kicker>
-                <h2 style={{ ...display, color: TEXT }} className="mt-4 text-4xl font-extrabold uppercase tracking-[-0.01em] sm:text-5xl">Rides & Packages</h2>
+                <Kicker><span {...editCopy(content, "home_rides_kicker", "The timetable")} /></Kicker>
+                <h2 style={{ ...display, color: TEXT }} className="mt-4 text-4xl font-extrabold uppercase tracking-[-0.01em] sm:text-5xl" {...editCopy(content, "home_rides_heading", "Rides & Packages")} />
               </div>
-              <a href={href("services")} className="text-[12px] font-bold uppercase tracking-[0.18em] transition hover:text-white" style={{ color: NEON }}>View all →</a>
+              <a href={href("services")} className="text-[12px] font-bold uppercase tracking-[0.18em] transition hover:text-white" style={{ color: NEON }} {...editCopy(content, "home_rides_link", "View all →")} />
             </div>
             <ul className="mt-12 divide-y" style={{ borderColor: LINE }}>
               {featured.map((item) => (
@@ -373,8 +373,8 @@ export default function Tempo({ site, page = "home", basePath = "" }: PresetProp
       {gallery.length > 0 && (
         <section className="py-24">
           <div className="mx-auto max-w-7xl px-8">
-            <Kicker>In the room</Kicker>
-            <h2 style={{ ...display, color: TEXT }} className="mt-4 max-w-2xl text-3xl font-extrabold uppercase leading-[0.95] tracking-[-0.01em] sm:text-4xl">Neon, sweat and your best 45 minutes</h2>
+            <Kicker><span {...editCopy(content, "home_gallery_kicker", "In the room")} /></Kicker>
+            <h2 style={{ ...display, color: TEXT }} className="mt-4 max-w-2xl text-3xl font-extrabold uppercase leading-[0.95] tracking-[-0.01em] sm:text-4xl" {...editCopy(content, "home_gallery_heading", "Neon, sweat and your best 45 minutes")} />
           </div>
           <div className="mx-auto mt-12 grid max-w-7xl grid-cols-2 gap-2 px-2 sm:grid-cols-4 sm:px-4">
             {gallery.slice(0, 4).map((g) => (
@@ -383,7 +383,7 @@ export default function Tempo({ site, page = "home", basePath = "" }: PresetProp
             ))}
           </div>
           <div className="mx-auto mt-10 max-w-7xl px-8">
-            <a href={href("gallery")} className="inline-flex rounded-full px-9 py-3.5 text-[11px] font-bold uppercase tracking-[0.2em] transition hover:opacity-90" style={{ border: `1px solid ${NEON}`, color: NEON }}>View gallery</a>
+            <a href={href("gallery")} className="inline-flex rounded-full px-9 py-3.5 text-[11px] font-bold uppercase tracking-[0.2em] transition hover:opacity-90" style={{ border: `1px solid ${NEON}`, color: NEON }} {...editCopy(content, "home_gallery_cta", "View gallery")} />
           </div>
         </section>
       )}
@@ -391,8 +391,8 @@ export default function Tempo({ site, page = "home", basePath = "" }: PresetProp
       {/* closing CTA */}
       <section style={{ background: `linear-gradient(120deg, ${NEON}, #7a1bb0)` }}>
         <div className="mx-auto max-w-4xl px-8 py-20 text-center text-white">
-          <h2 className="text-4xl font-extrabold uppercase leading-[0.95] tracking-[-0.01em] sm:text-6xl" style={display}>First ride is on us.</h2>
-          <p className="mx-auto mt-5 max-w-md text-[15px] font-medium leading-relaxed text-white/85">Shoes provided, bikes ready. Reserve your spot and find your tempo.</p>
+          <h2 className="text-4xl font-extrabold uppercase leading-[0.95] tracking-[-0.01em] sm:text-6xl" style={display} {...editCopy(content, "cta_heading", "First ride is on us.")} />
+          <p className="mx-auto mt-5 max-w-md text-[15px] font-medium leading-relaxed text-white/85" {...editCopy(content, "cta_sub", "Shoes provided, bikes ready. Reserve your spot and find your tempo.")} />
           <a href={join} className="mt-8 inline-flex rounded-full px-12 py-4 text-[12px] font-bold uppercase tracking-[0.22em] transition hover:opacity-90" style={{ background: "#fff", color: NEON }}>{ctaLabel}</a>
         </div>
       </section>

@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { PetHeader, type PetHeaderTheme, type PetLink } from "../PetChrome";
 
@@ -135,13 +135,13 @@ export default function StrollDesign({ site, page = "home", basePath = "" }: Pre
           )}
         </div>
         <div>
-          <h4 className="text-[11px] font-bold uppercase tracking-[0.2em]" style={{ color: SUN }}>Explore</h4>
+          <h4 className="text-[11px] font-bold uppercase tracking-[0.2em]" style={{ color: SUN }} {...editCopy(content, "footer_explore", "Explore")} />
           <ul className="mt-4 space-y-2.5 text-sm text-white/75">
             {nav.map((l) => <li key={l.href}><a href={l.href} className="transition hover:text-white">{l.label}</a></li>)}
           </ul>
         </div>
         <div>
-          <h4 className="text-[11px] font-bold uppercase tracking-[0.2em]" style={{ color: SUN }}>Say hello</h4>
+          <h4 className="text-[11px] font-bold uppercase tracking-[0.2em]" style={{ color: SUN }} {...editCopy(content, "footer_sayhello", "Say hello")} />
           <div className="mt-4 space-y-2.5 text-sm text-white/75">
             {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -149,7 +149,7 @@ export default function StrollDesign({ site, page = "home", basePath = "" }: Pre
           </div>
         </div>
         <div>
-          <h4 className="text-[11px] font-bold uppercase tracking-[0.2em]" style={{ color: SUN }}>Walking hours</h4>
+          <h4 className="text-[11px] font-bold uppercase tracking-[0.2em]" style={{ color: SUN }} {...editCopy(content, "footer_hours", "Walking hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-4 space-y-2 text-sm text-white/75">
               {content.hours.map((h, i) => (
@@ -174,12 +174,12 @@ export default function StrollDesign({ site, page = "home", basePath = "" }: Pre
     </div>
   );
 
-  const banner = (kicker: string, title: string, color = GREEN, sub?: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string, color = GREEN, sub?: string, subKey?: string) => (
     <section className="relative overflow-hidden" style={{ background: CARD, borderBottom: `1px solid ${HAIR}` }}>
       <div className="relative z-10 mx-auto max-w-4xl px-8 pb-20 pt-32 text-center sm:pt-36">
-        <div className="flex justify-center"><Tag color={color}>{kicker}</Tag></div>
-        <h1 style={{ ...display, color: INK }} className="mt-5 text-4xl font-extrabold tracking-tight sm:text-6xl">{title}</h1>
-        {sub && <p className="mx-auto mt-4 max-w-xl text-[15px] leading-relaxed" style={{ color: BODY }}>{sub}</p>}
+        <div className="flex justify-center"><Tag color={color}><span {...editCopy(content, kickerKey, kicker)} /></Tag></div>
+        <h1 style={{ ...display, color: INK }} className="mt-5 text-4xl font-extrabold tracking-tight sm:text-6xl" {...editCopy(content, titleKey, title)} />
+        {sub && <p className="mx-auto mt-4 max-w-xl text-[15px] leading-relaxed" style={{ color: BODY }} {...editCopy(content, subKey ?? `${titleKey}_sub`, sub)} />}
       </div>
       <HillTrail className="absolute inset-x-0 bottom-0 h-24 w-full" />
     </section>
@@ -189,7 +189,7 @@ export default function StrollDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "services") {
     return shell(
       <>
-        {banner("What we offer", "Walks, daycare & visits", SKY, "Every dog is different — pick the routine that keeps your best friend happy and tired.")}
+        {banner("What we offer", "svc_kicker", "Walks, daycare & visits", "svc_title", SKY, "Every dog is different — pick the routine that keeps your best friend happy and tired.", "svc_sub")}
         <section className="mx-auto max-w-3xl px-6 py-20 sm:px-8">
           {groups.length > 0 ? (
             <div className="space-y-14">
@@ -228,7 +228,7 @@ export default function StrollDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "about") {
     return shell(
       <>
-        {banner("Our pack", "Reliable hands, wagging tails", SUN)}
+        {banner("Our pack", "about_kicker", "Reliable hands, wagging tails", "about_title", SUN)}
         <section className="mx-auto max-w-3xl px-6 py-20 sm:px-8">
           {content.about ? <p data-edit="content.about" className="text-[17px] leading-[1.9]" style={{ color: BODY }}>{content.about}</p> : <p style={{ color: BODY }}>Our story is coming soon.</p>}
           <div className="mt-12 grid gap-4 sm:grid-cols-3">
@@ -251,7 +251,7 @@ export default function StrollDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Out on the trail", "Happy dogs, every day", GREEN)}
+        {banner("Out on the trail", "gallery_kicker", "Happy dogs, every day", "gallery_title", GREEN)}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-6xl px-3 py-12 sm:px-6">
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
@@ -270,10 +270,10 @@ export default function StrollDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "contact") {
     return shell(
       <>
-        {banner("Let's meet", "Book a walk", SKY, "Tell us about your dog and we'll arrange a free meet-and-greet before the adventures begin.")}
+        {banner("Let's meet", "contact_kicker", "Book a walk", "contact_title", SKY, "Tell us about your dog and we'll arrange a free meet-and-greet before the adventures begin.", "contact_sub")}
         <section className="mx-auto grid max-w-6xl gap-12 px-6 py-20 sm:px-8 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={{ ...display, color: INK }} className="text-2xl font-extrabold tracking-tight">Find us</h2>
+            <h2 style={{ ...display, color: INK }} className="text-2xl font-extrabold tracking-tight" {...editCopy(content, "contact_findus", "Find us")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: BODY }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block font-semibold transition hover:opacity-70" style={{ color: GREEN }}>{content.phone}</a>}
@@ -316,7 +316,7 @@ export default function StrollDesign({ site, page = "home", basePath = "" }: Pre
         <div className="pointer-events-none absolute -right-16 top-24 h-44 w-44 rounded-full opacity-40" style={{ background: SUN }} />
         <div className="relative z-10 mx-auto grid max-w-6xl items-center gap-10 px-6 pb-28 pt-32 sm:px-8 sm:pt-36 lg:grid-cols-2 lg:gap-14 lg:pb-36">
           <div>
-            <div className="flex flex-wrap gap-2"><Tag color={GREEN}>Group walks</Tag><Tag color={SKY}>Daycare</Tag><Tag color={SUN}>Pet sitting</Tag></div>
+            <div className="flex flex-wrap gap-2"><Tag color={GREEN}><span {...editCopy(content, "hero_tag_walks", "Group walks")} /></Tag><Tag color={SKY}><span {...editCopy(content, "hero_tag_daycare", "Daycare")} /></Tag><Tag color={SUN}><span {...editCopy(content, "hero_tag_sitting", "Pet sitting")} /></Tag></div>
             <h1 style={{ ...display, color: INK }} className="mt-6 text-5xl font-extrabold leading-[0.98] tracking-tight sm:text-7xl">
               Happy dogs,<br /><span style={{ color: GREEN }}>every day</span>
             </h1>
@@ -367,8 +367,8 @@ export default function StrollDesign({ site, page = "home", basePath = "" }: Pre
       {featured.length > 0 && (
         <section className="mx-auto max-w-3xl px-6 py-20 sm:px-8">
           <div className="text-center">
-            <div className="flex justify-center"><Tag color={SKY}>What we offer</Tag></div>
-            <h2 style={{ ...display, color: INK }} className="mt-5 text-3xl font-extrabold tracking-tight sm:text-4xl">Walks, daycare & visits</h2>
+            <div className="flex justify-center"><Tag color={SKY}><span {...editCopy(content, "home_offer_tag", "What we offer")} /></Tag></div>
+            <h2 style={{ ...display, color: INK }} className="mt-5 text-3xl font-extrabold tracking-tight sm:text-4xl" {...editCopy(content, "home_offer_heading", "Walks, daycare & visits")} />
           </div>
           <ul className="mt-12 divide-y" style={{ borderColor: HAIR }}>
             {featured.map((item) => (
@@ -391,8 +391,8 @@ export default function StrollDesign({ site, page = "home", basePath = "" }: Pre
       <section style={{ background: CARD, borderTop: `1px solid ${HAIR}`, borderBottom: `1px solid ${HAIR}` }}>
         <div className="mx-auto max-w-6xl px-6 py-20 sm:px-8">
           <div className="text-center">
-            <div className="flex justify-center"><Tag color={SUN}>Your dog's day</Tag></div>
-            <h2 style={{ ...display, color: INK }} className="mt-5 text-3xl font-extrabold tracking-tight sm:text-4xl">How a stroll works</h2>
+            <div className="flex justify-center"><Tag color={SUN}><span {...editCopy(content, "home_how_tag", "Your dog's day")} /></Tag></div>
+            <h2 style={{ ...display, color: INK }} className="mt-5 text-3xl font-extrabold tracking-tight sm:text-4xl" {...editCopy(content, "home_how_heading", "How a stroll works")} />
           </div>
           <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {[
@@ -424,8 +424,8 @@ export default function StrollDesign({ site, page = "home", basePath = "" }: Pre
               )}
             </div>
             <div>
-              <Tag color={GREEN}>About us</Tag>
-              <h2 style={{ ...display, color: INK }} className="mt-5 text-3xl font-extrabold tracking-tight sm:text-4xl">Local, reliable & dog-mad</h2>
+              <Tag color={GREEN}><span {...editCopy(content, "home_about_tag", "About us")} /></Tag>
+              <h2 style={{ ...display, color: INK }} className="mt-5 text-3xl font-extrabold tracking-tight sm:text-4xl" {...editCopy(content, "home_about_heading", "Local, reliable & dog-mad")} />
               <p data-edit="content.about" className="mt-5 text-[16px] leading-[1.9]" style={{ color: BODY }}>{content.about}</p>
               <a href={href("about")} className="mt-6 inline-flex items-center gap-2 text-sm font-bold" style={{ color: GREEN }}>Meet the pack →</a>
             </div>
@@ -438,8 +438,8 @@ export default function StrollDesign({ site, page = "home", basePath = "" }: Pre
         <section style={{ background: CARD, borderTop: `1px solid ${HAIR}` }}>
           <div className="mx-auto max-w-6xl px-6 py-20 sm:px-8">
             <div className="text-center">
-              <div className="flex justify-center"><Tag color={SKY}>On the trail</Tag></div>
-              <h2 style={{ ...display, color: INK }} className="mt-5 text-3xl font-extrabold tracking-tight sm:text-4xl">Happy dogs, every day</h2>
+              <div className="flex justify-center"><Tag color={SKY}><span {...editCopy(content, "home_gallery_tag", "On the trail")} /></Tag></div>
+              <h2 style={{ ...display, color: INK }} className="mt-5 text-3xl font-extrabold tracking-tight sm:text-4xl" {...editCopy(content, "home_gallery_heading", "Happy dogs, every day")} />
             </div>
             <div className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-4">
               {gallery.slice(0, 4).map((g, i) => (
@@ -459,7 +459,7 @@ export default function StrollDesign({ site, page = "home", basePath = "" }: Pre
         <HillTrail className="absolute inset-x-0 top-0 h-24 w-full rotate-180" hill="#2f7a44" sky={`${SKY}cc`} paw={SUN} />
         <div className="relative z-10 mx-auto max-w-3xl px-6 py-24 text-center sm:px-8">
           <PawTrail className="mx-auto h-7 w-40" color="#ffffffcc" />
-          <h2 style={{ ...display, color: "#fff" }} className="mt-4 text-3xl font-extrabold tracking-tight sm:text-4xl">Let's go for a walk</h2>
+          <h2 style={{ ...display, color: "#fff" }} className="mt-4 text-3xl font-extrabold tracking-tight sm:text-4xl" {...editCopy(content, "cta_heading", "Let's go for a walk")} />
           <p className="mx-auto mt-4 max-w-md text-[15px] leading-relaxed text-white/85">Book a free meet-and-greet and we'll plan the perfect routine for your dog.</p>
           <a href={book} className="mt-8 inline-flex px-9 py-4 text-sm font-bold transition hover:opacity-90" style={{ background: "#fff", color: GREEN, borderRadius: "9999px" }}>{cta.label}</a>
         </div>

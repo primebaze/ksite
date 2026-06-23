@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { DojoHeader } from "./DojoHeader";
 import { FitnessBooking, type BookingSkin } from "./FitnessBooking";
@@ -144,7 +144,7 @@ export default function DojoDesign({ site, page = "home", basePath = "" }: Prese
           )}
         </div>
         <div>
-          <h4 style={{ color: GOLD }} className="text-[11px] font-bold uppercase tracking-[0.24em]">Train</h4>
+          <h4 style={{ color: GOLD }} className="text-[11px] font-bold uppercase tracking-[0.24em]" {...editCopy(content, "footer_train", "Train")} />
           <ul className="mt-5 space-y-3 text-sm" style={{ color: MUTE }}>
             {([
               groups.length > 0 && { label: "Classes", href: href("services") },
@@ -157,7 +157,7 @@ export default function DojoDesign({ site, page = "home", basePath = "" }: Prese
           </ul>
         </div>
         <div>
-          <h4 style={{ color: GOLD }} className="text-[11px] font-bold uppercase tracking-[0.24em]">Contact</h4>
+          <h4 style={{ color: GOLD }} className="text-[11px] font-bold uppercase tracking-[0.24em]" {...editCopy(content, "footer_contact", "Contact")} />
           <div className="mt-5 space-y-3 text-sm" style={{ color: MUTE }}>
             {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -165,7 +165,7 @@ export default function DojoDesign({ site, page = "home", basePath = "" }: Prese
           </div>
         </div>
         <div>
-          <h4 style={{ color: GOLD }} className="text-[11px] font-bold uppercase tracking-[0.24em]">Mat Hours</h4>
+          <h4 style={{ color: GOLD }} className="text-[11px] font-bold uppercase tracking-[0.24em]" {...editCopy(content, "footer_hours", "Mat Hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm" style={{ color: MUTE }}>
               {content.hours.map((h, i) => (
@@ -177,7 +177,7 @@ export default function DojoDesign({ site, page = "home", basePath = "" }: Prese
       </div>
       <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 border-t px-8 py-7 text-xs sm:flex-row" style={{ borderColor: "#ffffff14", color: `${RICE}66` }}>
         <p>© {new Date().getFullYear()} {name}. All rights reserved.</p>
-        <a href={href("contact")} className="font-semibold uppercase tracking-[0.18em] transition hover:text-white">Book your free trial</a>
+        <a href={href("contact")} className="font-semibold uppercase tracking-[0.18em] transition hover:text-white" {...editCopy(content, "footer_trial_cta", "Book your free trial")} />
       </div>
     </footer>
   );
@@ -191,12 +191,12 @@ export default function DojoDesign({ site, page = "home", basePath = "" }: Prese
   );
 
   // Page banner — rice-paper field with a faint enso, crimson kicker, belt foot.
-  const banner = (kicker: string, title: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string) => (
     <section className="relative overflow-hidden" style={{ background: RICE }}>
       <Enso size={420} stroke={INK} className="pointer-events-none absolute -right-20 -top-16 opacity-[0.05]" />
       <div className="relative mx-auto max-w-7xl px-8 pb-16 pt-36 sm:pt-44">
-        <Kicker>{kicker}</Kicker>
-        <h1 style={{ ...serif, color: INK }} className="mt-5 text-5xl font-semibold leading-[1.02] tracking-[-0.01em] sm:text-7xl">{title}</h1>
+        <Kicker><span {...editCopy(content, kickerKey, kicker)} /></Kicker>
+        <h1 style={{ ...serif, color: INK }} className="mt-5 text-5xl font-semibold leading-[1.02] tracking-[-0.01em] sm:text-7xl" {...editCopy(content, titleKey, title)} />
       </div>
       <BeltStripe height={4} />
     </section>
@@ -206,7 +206,7 @@ export default function DojoDesign({ site, page = "home", basePath = "" }: Prese
   if (page === "services") {
     return shell(
       <>
-        {banner("What we teach", "Classes & Memberships")}
+        {banner("What we teach", "svc_kicker", "Classes & Memberships", "svc_title")}
         <section className="mx-auto max-w-3xl px-6 py-20 sm:px-8">
           {groups.length > 0 ? (
             <div className="space-y-16">
@@ -249,7 +249,7 @@ export default function DojoDesign({ site, page = "home", basePath = "" }: Prese
   if (page === "about") {
     return shell(
       <>
-        {banner("Our way", "Train With Purpose")}
+        {banner("Our way", "about_kicker", "Train With Purpose", "about_title")}
         <section className="mx-auto max-w-3xl px-6 py-20 sm:px-8">
           {content.about ? <p data-edit="content.about" className="text-[17px] leading-[1.9]" style={{ color: MUTE }}>{content.about}</p> : <p style={{ color: MUTE }}>Our story is coming soon.</p>}
           <div className="mt-12">
@@ -264,7 +264,7 @@ export default function DojoDesign({ site, page = "home", basePath = "" }: Prese
   if (page === "gallery") {
     return shell(
       <>
-        {banner("On the mat", "Inside The Dojo")}
+        {banner("On the mat", "gallery_kicker", "Inside The Dojo", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-7xl px-2 py-12 sm:px-4">
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
@@ -283,10 +283,10 @@ export default function DojoDesign({ site, page = "home", basePath = "" }: Prese
   if (page === "contact") {
     return shell(
       <>
-        {banner("Begin", "Step Onto The Mat")}
+        {banner("Begin", "contact_kicker", "Step Onto The Mat", "contact_title")}
         <section className="mx-auto grid max-w-6xl gap-12 px-6 py-20 sm:px-8 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={{ ...serif, color: RICE }} className="text-2xl font-semibold tracking-[0.01em]">Find the academy</h2>
+            <h2 style={{ ...serif, color: RICE }} className="text-2xl font-semibold tracking-[0.01em]" {...editCopy(content, "contact_find_heading", "Find the academy")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: MUTE }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -300,7 +300,7 @@ export default function DojoDesign({ site, page = "home", basePath = "" }: Prese
               </ul>
             )}
             {content.map_url && (
-              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex px-7 py-3 text-[11px] font-bold uppercase tracking-[0.22em] transition hover:opacity-90" style={{ border: `1px solid ${GOLD}`, color: GOLD }}>Get directions</a>
+              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex px-7 py-3 text-[11px] font-bold uppercase tracking-[0.22em] transition hover:opacity-90" style={{ border: `1px solid ${GOLD}`, color: GOLD }} {...editCopy(content, "directions_cta", "Get directions")} />
             )}
           </div>
           <div className="space-y-5">
@@ -346,7 +346,7 @@ export default function DojoDesign({ site, page = "home", basePath = "" }: Prese
         <Enso size={520} stroke={CRIMSON} className="pointer-events-none absolute -right-24 top-1/2 hidden -translate-y-1/2 opacity-[0.22] lg:block" />
         <div className="relative z-10 mx-auto flex w-full max-w-7xl flex-1 flex-col justify-center px-6 py-32 sm:px-8">
           <Kicker color={GOLD}>{content.tagline || "Karate · Jiu-Jitsu · Kickboxing · MMA"}</Kicker>
-          <p className="mt-6 text-[13px] font-bold uppercase tracking-[0.42em]" style={{ color: `${RICE}cc` }}>Discipline · Respect · Confidence</p>
+          <p className="mt-6 text-[13px] font-bold uppercase tracking-[0.42em]" style={{ color: `${RICE}cc` }} {...editCopy(content, "hero_values", "Discipline · Respect · Confidence")} />
           <h1 style={serif} className="mt-4 max-w-3xl text-6xl font-semibold leading-[0.98] tracking-[-0.015em] [text-shadow:0_2px_30px_rgba(0,0,0,0.5)] sm:text-8xl" >
             <span data-edit="tenant.business_name" style={{ color: RICE }}>{name}</span>
           </h1>
@@ -354,7 +354,7 @@ export default function DojoDesign({ site, page = "home", basePath = "" }: Prese
           <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:gap-4">
             <a href={join} className="px-9 py-4 text-center text-[11px] font-bold uppercase tracking-[0.24em] transition hover:opacity-90" style={{ background: CRIMSON, color: RICE }}>{ctaLabel}</a>
             {groups.length > 0 && (
-              <a href={href("services")} className="px-9 py-4 text-center text-[11px] font-bold uppercase tracking-[0.24em] backdrop-blur-sm transition hover:bg-white/10" style={{ border: `1px solid ${GOLD}99`, color: RICE }}>See the classes</a>
+              <a href={href("services")} className="px-9 py-4 text-center text-[11px] font-bold uppercase tracking-[0.24em] backdrop-blur-sm transition hover:bg-white/10" style={{ border: `1px solid ${GOLD}99`, color: RICE }} {...editCopy(content, "hero_classes_cta", "See the classes")} />
             )}
           </div>
         </div>
@@ -392,10 +392,10 @@ export default function DojoDesign({ site, page = "home", basePath = "" }: Prese
       {(content.about || gallery[0]) && (
         <section className="mx-auto grid max-w-7xl items-center gap-12 px-8 py-24 lg:grid-cols-2 lg:gap-16">
           <div>
-            <Kicker>Our way</Kicker>
-            <h2 style={{ ...serif, color: RICE }} className="mt-4 text-4xl font-semibold leading-[1.02] tracking-[-0.01em] sm:text-5xl">Train with purpose.</h2>
+            <Kicker><span {...editCopy(content, "home_about_kicker", "Our way")} /></Kicker>
+            <h2 style={{ ...serif, color: RICE }} className="mt-4 text-4xl font-semibold leading-[1.02] tracking-[-0.01em] sm:text-5xl" {...editCopy(content, "home_about_heading", "Train with purpose.")} />
             {content.about && <p data-edit="content.about" className="mt-6 text-[16px] leading-[1.9]" style={{ color: MUTE }}>{content.about}</p>}
-            <a href={href("about")} className="mt-7 inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.24em]" style={{ color: GOLD }}>More about us →</a>
+            <a href={href("about")} className="mt-7 inline-flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.24em]" style={{ color: GOLD }} {...editCopy(content, "home_about_link", "More about us →")} />
           </div>
           <div className="relative">
             {gallery[0] ? (
@@ -417,10 +417,10 @@ export default function DojoDesign({ site, page = "home", basePath = "" }: Prese
           <div className="mx-auto max-w-4xl px-8 py-24">
             <div className="flex flex-wrap items-end justify-between gap-4">
               <div>
-                <Kicker>What we teach</Kicker>
-                <h2 style={{ ...serif, color: RICE }} className="mt-4 text-4xl font-semibold tracking-[-0.01em] sm:text-5xl">Classes & Memberships</h2>
+                <Kicker><span {...editCopy(content, "home_classes_kicker", "What we teach")} /></Kicker>
+                <h2 style={{ ...serif, color: RICE }} className="mt-4 text-4xl font-semibold tracking-[-0.01em] sm:text-5xl" {...editCopy(content, "home_classes_heading", "Classes & Memberships")} />
               </div>
-              <a href={href("services")} className="text-[11px] font-bold uppercase tracking-[0.2em] transition hover:text-white" style={{ color: GOLD }}>View all →</a>
+              <a href={href("services")} className="text-[11px] font-bold uppercase tracking-[0.2em] transition hover:text-white" style={{ color: GOLD }} {...editCopy(content, "home_classes_link", "View all →")} />
             </div>
             <ul className="mt-12 divide-y" style={{ borderColor: "#ffffff14" }}>
               {featured.map((item) => (
@@ -441,8 +441,8 @@ export default function DojoDesign({ site, page = "home", basePath = "" }: Prese
       {gallery.length > 0 && (
         <section className="py-24">
           <div className="mx-auto max-w-7xl px-8">
-            <Kicker>On the mat</Kicker>
-            <h2 style={{ ...serif, color: RICE }} className="mt-4 max-w-2xl text-3xl font-semibold leading-[1.02] tracking-[-0.01em] sm:text-4xl">Technique, focus and a family that trains together</h2>
+            <Kicker><span {...editCopy(content, "home_gallery_kicker", "On the mat")} /></Kicker>
+            <h2 style={{ ...serif, color: RICE }} className="mt-4 max-w-2xl text-3xl font-semibold leading-[1.02] tracking-[-0.01em] sm:text-4xl" {...editCopy(content, "home_gallery_heading", "Technique, focus and a family that trains together")} />
           </div>
           <div className="mx-auto mt-12 grid max-w-7xl grid-cols-2 gap-2 px-2 sm:grid-cols-4 sm:px-4">
             {gallery.slice(0, 4).map((g) => (
@@ -451,7 +451,7 @@ export default function DojoDesign({ site, page = "home", basePath = "" }: Prese
             ))}
           </div>
           <div className="mx-auto mt-10 max-w-7xl px-8">
-            <a href={href("gallery")} className="inline-flex px-9 py-3.5 text-[11px] font-bold uppercase tracking-[0.22em] transition hover:opacity-90" style={{ border: `1px solid ${GOLD}`, color: GOLD }}>View gallery</a>
+            <a href={href("gallery")} className="inline-flex px-9 py-3.5 text-[11px] font-bold uppercase tracking-[0.22em] transition hover:opacity-90" style={{ border: `1px solid ${GOLD}`, color: GOLD }} {...editCopy(content, "home_gallery_cta", "View gallery")} />
           </div>
         </section>
       )}
@@ -461,9 +461,9 @@ export default function DojoDesign({ site, page = "home", basePath = "" }: Prese
         <Enso size={460} stroke={CRIMSON} className="pointer-events-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 opacity-[0.07]" />
         <BeltStripe height={4} />
         <div className="relative mx-auto max-w-4xl px-8 py-24 text-center">
-          <p className="text-[11px] font-bold uppercase tracking-[0.4em]" style={{ color: CRIMSON }}>All ages · No experience needed</p>
-          <h2 className="mt-5 text-4xl font-semibold leading-[1.04] tracking-[-0.01em] sm:text-6xl" style={{ ...serif, color: INK }}>Your first class is free.</h2>
-          <p className="mx-auto mt-5 max-w-md text-[15px] leading-relaxed" style={{ color: INK_MUTE }}>Step onto the mat, meet the instructors and find out what training with purpose feels like — for kids, teens and adults alike.</p>
+          <p className="text-[11px] font-bold uppercase tracking-[0.4em]" style={{ color: CRIMSON }} {...editCopy(content, "cta_eyebrow", "All ages · No experience needed")} />
+          <h2 className="mt-5 text-4xl font-semibold leading-[1.04] tracking-[-0.01em] sm:text-6xl" style={{ ...serif, color: INK }} {...editCopy(content, "cta_heading", "Your first class is free.")} />
+          <p className="mx-auto mt-5 max-w-md text-[15px] leading-relaxed" style={{ color: INK_MUTE }} {...editCopy(content, "cta_sub", "Step onto the mat, meet the instructors and find out what training with purpose feels like — for kids, teens and adults alike.")} />
           <a href={join} className="mt-8 inline-flex px-12 py-4 text-[11px] font-bold uppercase tracking-[0.24em] transition hover:opacity-90" style={{ background: CRIMSON, color: RICE }}>{ctaLabel}</a>
         </div>
         <BeltStripe height={4} />

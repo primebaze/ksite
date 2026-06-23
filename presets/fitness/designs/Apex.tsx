@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { ApexHeader } from "./ApexHeader";
 import { FitnessBooking, type BookingSkin } from "./FitnessBooking";
@@ -86,7 +86,7 @@ export default function Apex({ site, page = "home", basePath = "" }: PresetProps
         <div>
           <a href={href("home")} className="block">
             <span data-edit="tenant.business_name" style={serif} className="text-2xl tracking-[0.02em]">{name}</span>
-            <span className="mt-1 block text-[8px] uppercase tracking-[0.4em] text-white/55">Performance Coaching</span>
+            <span className="mt-1 block text-[8px] uppercase tracking-[0.4em] text-white/55" {...editCopy(content, "footer_eyebrow", "Performance Coaching")} />
           </a>
           {content.tagline && <p data-edit="content.tagline" className="mt-5 max-w-xs text-sm leading-relaxed" style={{ color: MUTE }}>{content.tagline}</p>}
           {content.socials && content.socials.length > 0 && (
@@ -98,7 +98,7 @@ export default function Apex({ site, page = "home", basePath = "" }: PresetProps
           )}
         </div>
         <div>
-          <h4 style={{ ...serif, color: BONE }} className="text-lg">Train</h4>
+          <h4 style={{ ...serif, color: BONE }} className="text-lg" {...editCopy(content, "footer_train", "Train")} />
           <ul className="mt-5 space-y-3 text-sm" style={{ color: MUTE }}>
             {([
               groups.length > 0 && { label: "Programmes", href: href("services") },
@@ -111,7 +111,7 @@ export default function Apex({ site, page = "home", basePath = "" }: PresetProps
           </ul>
         </div>
         <div>
-          <h4 style={{ ...serif, color: BONE }} className="text-lg">Contact</h4>
+          <h4 style={{ ...serif, color: BONE }} className="text-lg" {...editCopy(content, "footer_contact", "Contact")} />
           <div className="mt-5 space-y-3 text-sm" style={{ color: MUTE }}>
             {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -119,7 +119,7 @@ export default function Apex({ site, page = "home", basePath = "" }: PresetProps
           </div>
         </div>
         <div>
-          <h4 style={{ ...serif, color: BONE }} className="text-lg">Availability</h4>
+          <h4 style={{ ...serif, color: BONE }} className="text-lg" {...editCopy(content, "footer_availability", "Availability")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm" style={{ color: MUTE }}>
               {content.hours.map((h, i) => (
@@ -144,11 +144,11 @@ export default function Apex({ site, page = "home", basePath = "" }: PresetProps
     </div>
   );
 
-  const banner = (kicker: string, title: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string) => (
     <section style={{ background: PANEL, borderBottom: `1px solid ${COPPER}26` }}>
       <div className="mx-auto max-w-7xl px-8 pb-16 pt-32 text-center sm:pt-40">
-        <div className="flex justify-center"><Kicker center>{kicker}</Kicker></div>
-        <h1 style={{ ...serif, color: BONE }} className="mt-4 text-4xl font-medium leading-[1.05] sm:text-6xl">{title}</h1>
+        <div className="flex justify-center"><Kicker center><span {...editCopy(content, kickerKey, kicker)} /></Kicker></div>
+        <h1 style={{ ...serif, color: BONE }} className="mt-4 text-4xl font-medium leading-[1.05] sm:text-6xl" {...editCopy(content, titleKey, title)} />
       </div>
     </section>
   );
@@ -157,7 +157,7 @@ export default function Apex({ site, page = "home", basePath = "" }: PresetProps
   if (page === "services") {
     return shell(
       <>
-        {banner("How we train", "Programmes")}
+        {banner("How we train", "svc_kicker", "Programmes", "svc_title")}
         <section className="mx-auto max-w-4xl px-6 py-20 sm:px-8">
           {groups.length > 0 ? (
             <div className="space-y-14">
@@ -199,7 +199,7 @@ export default function Apex({ site, page = "home", basePath = "" }: PresetProps
   if (page === "about") {
     return shell(
       <>
-        {banner("The approach", "Coaching, Not Guesswork")}
+        {banner("The approach", "about_kicker", "Coaching, Not Guesswork", "about_title")}
         <section className="mx-auto max-w-3xl px-6 py-20 sm:px-8">
           {content.about ? <p data-edit="content.about" className="text-[18px] leading-[1.95]" style={{ color: MUTE }}>{content.about}</p> : <p style={{ color: MUTE }}>Our story is coming soon.</p>}
           <div className="mt-12">
@@ -214,7 +214,7 @@ export default function Apex({ site, page = "home", basePath = "" }: PresetProps
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Proof", "Results")}
+        {banner("Proof", "gallery_kicker", "Results", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-7xl px-2 py-12 sm:px-4">
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
@@ -233,13 +233,13 @@ export default function Apex({ site, page = "home", basePath = "" }: PresetProps
   if (page === "contact") {
     return shell(
       <>
-        {banner("Start here", "Apply To Train")}
+        {banner("Start here", "contact_kicker", "Apply To Train", "contact_title")}
         <section className="mx-auto grid max-w-6xl gap-12 px-6 py-20 sm:px-8 lg:grid-cols-2 lg:gap-16">
           <div>
             <p className="text-[16px] leading-[1.9]" style={{ color: MUTE }}>
               Coaching is by application so every client gets real attention. Tell us your goals below and we&apos;ll be in touch to arrange a consultation.
             </p>
-            <h2 style={{ ...serif, color: BONE }} className="mt-10 text-2xl">Find us</h2>
+            <h2 style={{ ...serif, color: BONE }} className="mt-10 text-2xl" {...editCopy(content, "contact_findus", "Find us")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: MUTE }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -312,8 +312,8 @@ export default function Apex({ site, page = "home", basePath = "" }: PresetProps
       <section style={{ background: PANEL, borderBottom: `1px solid ${LINE}` }}>
         <div className="mx-auto max-w-7xl px-8 py-24">
           <div className="text-center">
-            <div className="flex justify-center"><Kicker center>The method</Kicker></div>
-            <h2 style={{ ...serif, color: BONE }} className="mt-4 text-3xl font-medium sm:text-4xl">A system that delivers</h2>
+            <div className="flex justify-center"><Kicker center><span {...editCopy(content, "home_method_kicker", "The method")} /></Kicker></div>
+            <h2 style={{ ...serif, color: BONE }} className="mt-4 text-3xl font-medium sm:text-4xl" {...editCopy(content, "home_method_heading", "A system that delivers")} />
           </div>
           <div className="mt-14 grid gap-10 md:grid-cols-3">
             {pillars.map((p) => (
@@ -331,8 +331,8 @@ export default function Apex({ site, page = "home", basePath = "" }: PresetProps
       {(content.about || gallery[0]) && (
         <section className="mx-auto grid max-w-7xl items-center gap-12 px-8 py-24 lg:grid-cols-2 lg:gap-16">
           <div>
-            <Kicker>The approach</Kicker>
-            <h2 style={{ ...serif, color: BONE }} className="mt-4 text-4xl font-medium leading-[1.1] sm:text-5xl">Coaching, not guesswork</h2>
+            <Kicker><span {...editCopy(content, "home_about_kicker", "The approach")} /></Kicker>
+            <h2 style={{ ...serif, color: BONE }} className="mt-4 text-4xl font-medium leading-[1.1] sm:text-5xl" {...editCopy(content, "home_about_heading", "Coaching, not guesswork")} />
             {content.about && <p data-edit="content.about" className="mt-6 text-[16px] leading-[1.95]" style={{ color: MUTE }}>{content.about}</p>}
             <a href={href("about")} className="mt-7 inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em]" style={{ color: COPPER }}>Read more →</a>
           </div>
@@ -353,8 +353,8 @@ export default function Apex({ site, page = "home", basePath = "" }: PresetProps
         <section style={{ background: PANEL, borderTop: `1px solid ${LINE}` }}>
           <div className="mx-auto max-w-5xl px-8 py-24">
             <div className="text-center">
-              <div className="flex justify-center"><Kicker center>How we train</Kicker></div>
-              <h2 style={{ ...serif, color: BONE }} className="mt-4 text-4xl font-medium sm:text-5xl">Programmes</h2>
+              <div className="flex justify-center"><Kicker center><span {...editCopy(content, "home_programmes_kicker", "How we train")} /></Kicker></div>
+              <h2 style={{ ...serif, color: BONE }} className="mt-4 text-4xl font-medium sm:text-5xl" {...editCopy(content, "home_programmes_heading", "Programmes")} />
             </div>
             <ul className="mt-14 divide-y" style={{ borderColor: LINE }}>
               {featured.map((item) => (
@@ -382,8 +382,8 @@ export default function Apex({ site, page = "home", basePath = "" }: PresetProps
       {gallery.length > 0 && (
         <section className="py-24">
           <div className="mx-auto max-w-7xl px-8 text-center">
-            <div className="flex justify-center"><Kicker center>Proof</Kicker></div>
-            <h2 style={{ ...serif, color: BONE }} className="mx-auto mt-4 max-w-2xl text-3xl font-medium leading-snug sm:text-4xl">Real clients. Real results.</h2>
+            <div className="flex justify-center"><Kicker center><span {...editCopy(content, "home_results_kicker", "Proof")} /></Kicker></div>
+            <h2 style={{ ...serif, color: BONE }} className="mx-auto mt-4 max-w-2xl text-3xl font-medium leading-snug sm:text-4xl" {...editCopy(content, "home_results_heading", "Real clients. Real results.")} />
           </div>
           <div className="mx-auto mt-12 grid max-w-7xl grid-cols-2 gap-2 px-2 sm:grid-cols-4 sm:px-4">
             {gallery.slice(0, 4).map((g) => (
@@ -400,7 +400,7 @@ export default function Apex({ site, page = "home", basePath = "" }: PresetProps
       {/* closing CTA */}
       <section style={{ background: PANEL, borderTop: `1px solid ${COPPER}26` }}>
         <div className="mx-auto max-w-2xl px-8 py-24 text-center">
-          <h2 style={{ ...serif, color: BONE }} className="text-3xl font-medium leading-[1.15] sm:text-5xl">Train with intent.</h2>
+          <h2 style={{ ...serif, color: BONE }} className="text-3xl font-medium leading-[1.15] sm:text-5xl" {...editCopy(content, "cta_heading", "Train with intent.")} />
           <p className="mx-auto mt-5 max-w-md text-[15px] leading-relaxed" style={{ color: MUTE }}>Spaces are limited and coaching is by application. If you&apos;re ready to commit, we&apos;re ready to coach.</p>
           <a href={apply} className="mt-9 inline-flex px-12 py-4 text-[11px] font-semibold uppercase tracking-[0.22em] transition hover:opacity-90" style={{ background: COPPER, color: "#15110d" }}>{ctaLabel}</a>
         </div>

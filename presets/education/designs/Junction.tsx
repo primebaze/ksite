@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { EduMobileNav } from "./EduMobileNav";
 
@@ -115,7 +115,7 @@ export default function JunctionDesign({ site, page = "home", basePath = "" }: P
         </div>
         {(content.address || content.phone || content.email) && (
           <div>
-            <h4 className="text-xs font-bold uppercase tracking-[0.18em]" style={{ color: BRASS }}>Get in touch</h4>
+            <h4 className="text-xs font-bold uppercase tracking-[0.18em]" style={{ color: BRASS }} {...editCopy(content, "footer_contact", "Get in touch")} />
             <div className="mt-4 space-y-2 text-sm text-white/70">
               {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -125,7 +125,7 @@ export default function JunctionDesign({ site, page = "home", basePath = "" }: P
         )}
         {content.hours && content.hours.length > 0 && (
           <div>
-            <h4 className="text-xs font-bold uppercase tracking-[0.18em]" style={{ color: BRASS }}>Office hours</h4>
+            <h4 className="text-xs font-bold uppercase tracking-[0.18em]" style={{ color: BRASS }} {...editCopy(content, "footer_hours", "Office hours")} />
             <ul className="mt-4 space-y-2 text-sm text-white/70">
               {content.hours.map((h, i) => (
                 <li key={i} className="flex justify-between gap-5"><span data-edit={`hours:${i}:day`}>{h.day}</span><span data-edit={`hours:${i}:open`} className="text-white/45">{h.open}</span></li>
@@ -134,7 +134,7 @@ export default function JunctionDesign({ site, page = "home", basePath = "" }: P
           </div>
         )}
         <div>
-          <h4 className="text-xs font-bold uppercase tracking-[0.18em]" style={{ color: BRASS }}>Explore</h4>
+          <h4 className="text-xs font-bold uppercase tracking-[0.18em]" style={{ color: BRASS }} {...editCopy(content, "footer_explore", "Explore")} />
           <ul className="mt-4 space-y-2 text-sm text-white/70">
             {nav.map((l) => (
               <li key={l.href}><a href={l.href} className="transition hover:text-white">{l.label}</a></li>
@@ -157,16 +157,16 @@ export default function JunctionDesign({ site, page = "home", basePath = "" }: P
   );
 
   // Solid navy banner for interior pages (header sits solid above it).
-  const banner = (kicker: string, title: string, sub?: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string, sub?: string, subKey?: string) => (
     <section className="relative overflow-hidden" style={{ background: NAVY }}>
       <RouteMark className="pointer-events-none absolute -right-8 -top-6 h-56 w-56 opacity-[0.12]" stroke="#ffffff" dim="#ffffff" />
       <div className="mx-auto max-w-5xl px-6 py-16 sm:py-20">
         <p className="inline-flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.22em]" style={{ color: BRASS }}>
           <span className="h-px w-7" style={{ background: BRASS }} />
-          {kicker}
+          <span {...editCopy(content, kickerKey, kicker)} />
         </p>
-        <h1 className="mt-4 text-4xl font-bold tracking-tight text-white sm:text-5xl">{title}</h1>
-        {sub && <p className="mt-4 max-w-2xl text-[16px] leading-relaxed text-white/65">{sub}</p>}
+        <h1 className="mt-4 text-4xl font-bold tracking-tight text-white sm:text-5xl" {...editCopy(content, titleKey, title)} />
+        {sub && <p className="mt-4 max-w-2xl text-[16px] leading-relaxed text-white/65" {...editCopy(content, subKey ?? titleKey, sub)} />}
       </div>
     </section>
   );
@@ -226,7 +226,7 @@ export default function JunctionDesign({ site, page = "home", basePath = "" }: P
   if (page === "services") {
     return shell(
       <>
-        {banner("Our courses", "Courses & prices", "Structured weekly lessons, intensive one-week courses, theory test prep and Pass Plus — fixed prices, no surprises.")}
+        {banner("Our courses", "courses_kicker", "Courses & prices", "courses_title", "Structured weekly lessons, intensive one-week courses, theory test prep and Pass Plus — fixed prices, no surprises.", "courses_sub")}
         <section className="mx-auto max-w-3xl px-6 py-16 sm:py-20">
           {groups.length > 0 ? courseList() : <p style={{ color: SLATE }}>Our courses are coming soon.</p>}
           <div className="mt-12">
@@ -241,7 +241,7 @@ export default function JunctionDesign({ site, page = "home", basePath = "" }: P
   if (page === "about") {
     return shell(
       <>
-        {banner("About us", "An established name in learning to drive")}
+        {banner("About us", "about_kicker", "An established name in learning to drive", "about_title")}
         <section className="mx-auto max-w-3xl px-6 py-16 sm:py-20">
           {content.about ? (
             <p data-edit="content.about" className="text-[18px] leading-[1.85]" style={{ color: SLATE }}>{content.about}</p>
@@ -259,7 +259,7 @@ export default function JunctionDesign({ site, page = "home", basePath = "" }: P
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Gallery", "Our fleet & our pass-outs")}
+        {banner("Gallery", "gallery_kicker", "Our fleet & our pass-outs", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-6xl px-6 py-16 sm:py-20">
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
@@ -278,10 +278,10 @@ export default function JunctionDesign({ site, page = "home", basePath = "" }: P
   if (page === "contact") {
     return shell(
       <>
-        {banner("Contact", "Book a course", "Tell us where you are and how soon you would like to start — we will get you booked onto the right course.")}
+        {banner("Contact", "contact_kicker", "Book a course", "contact_title", "Tell us where you are and how soon you would like to start — we will get you booked onto the right course.", "contact_sub")}
         <section className="mx-auto grid max-w-5xl gap-12 px-6 py-16 sm:py-20 lg:grid-cols-[1fr_1.1fr]">
           <div className="rounded-xl border p-8" style={{ background: "#ffffff", borderColor: LINE }}>
-            <h2 className="text-xl font-bold tracking-tight" style={{ color: NAVY }}>Office &amp; bookings</h2>
+            <h2 className="text-xl font-bold tracking-tight" style={{ color: NAVY }} {...editCopy(content, "contact_office_heading", "Office & bookings")} />
             <div className="mt-5 space-y-3 text-[15px] leading-relaxed" style={{ color: SLATE }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block font-bold transition hover:opacity-70" style={{ color: NAVY }}>{content.phone}</a>}
@@ -289,7 +289,7 @@ export default function JunctionDesign({ site, page = "home", basePath = "" }: P
             </div>
             {content.service_areas && content.service_areas.length > 0 && (
               <div className="mt-6 border-t pt-5" style={{ borderColor: LINE }}>
-                <p className="text-xs font-bold uppercase tracking-[0.18em]" style={{ color: BRASS }}>Areas covered</p>
+                <p className="text-xs font-bold uppercase tracking-[0.18em]" style={{ color: BRASS }} {...editCopy(content, "contact_areas_label", "Areas covered")} />
                 <p className="mt-2 text-sm" style={{ color: SLATE }}>{content.service_areas.join(" · ")}</p>
               </div>
             )}
@@ -338,7 +338,7 @@ export default function JunctionDesign({ site, page = "home", basePath = "" }: P
           <div>
             <p className="inline-flex items-center gap-3 text-[12px] font-bold uppercase tracking-[0.22em]" style={{ color: BRASS }}>
               <span className="h-px w-8" style={{ background: BRASS }} />
-              Trusted driving courses
+              <span {...editCopy(content, "hero_kicker", "Trusted driving courses")} />
             </p>
             <h1 className="mt-5 text-5xl font-bold leading-[1.04] tracking-tight text-white sm:text-6xl">
               Learn to drive,<br /><span style={{ color: BRASS }}>properly.</span>
@@ -389,11 +389,11 @@ export default function JunctionDesign({ site, page = "home", basePath = "" }: P
         <section className="mx-auto max-w-5xl px-6 py-20">
           <div className="flex flex-wrap items-end justify-between gap-6">
             <div className="max-w-xl">
-              <p className="text-[12px] font-bold uppercase tracking-[0.2em]" style={{ color: BRASS }}>Our courses</p>
-              <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl" style={{ color: NAVY }}>Weekly, intensive & specialist</h2>
-              <p className="mt-3 text-[15px] leading-relaxed" style={{ color: SLATE }}>Weekly lessons, intensive one-week courses, theory test prep, automatic, motorway lessons and Pass Plus — a structured route for every learner.</p>
+              <p className="text-[12px] font-bold uppercase tracking-[0.2em]" style={{ color: BRASS }} {...editCopy(content, "home_courses_eyebrow", "Our courses")} />
+              <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl" style={{ color: NAVY }} {...editCopy(content, "home_courses_heading", "Weekly, intensive & specialist")} />
+              <p className="mt-3 text-[15px] leading-relaxed" style={{ color: SLATE }} {...editCopy(content, "home_courses_sub", "Weekly lessons, intensive one-week courses, theory test prep, automatic, motorway lessons and Pass Plus — a structured route for every learner.")} />
             </div>
-            <a href={href("services")} className="text-sm font-bold transition hover:opacity-70" style={{ color: NAVY }}>All courses &amp; prices →</a>
+            <a href={href("services")} className="text-sm font-bold transition hover:opacity-70" style={{ color: NAVY }} {...editCopy(content, "home_courses_link", "All courses & prices →")} />
           </div>
           <div className="mt-10 rounded-xl border bg-white p-7 sm:p-9" style={{ borderColor: LINE }}>
             {courseList(6)}
@@ -424,8 +424,8 @@ export default function JunctionDesign({ site, page = "home", basePath = "" }: P
       <section style={{ background: STONE_DK }}>
         <div className="mx-auto max-w-6xl px-6 py-20">
           <div className="max-w-xl">
-            <p className="text-[12px] font-bold uppercase tracking-[0.2em]" style={{ color: BRASS }}>Theory & practical</p>
-            <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl" style={{ color: NAVY }}>One structured pathway to your licence</h2>
+            <p className="text-[12px] font-bold uppercase tracking-[0.2em]" style={{ color: BRASS }} {...editCopy(content, "pathway_eyebrow", "Theory & practical")} />
+            <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl" style={{ color: NAVY }} {...editCopy(content, "pathway_heading", "One structured pathway to your licence")} />
           </div>
           <div className="mt-12 grid gap-px overflow-hidden rounded-xl border sm:grid-cols-3" style={{ borderColor: LINE, background: LINE }}>
             {pathway.map((p) => (
@@ -442,9 +442,9 @@ export default function JunctionDesign({ site, page = "home", basePath = "" }: P
       {/* about teaser */}
       {content.about && (
         <section className="mx-auto max-w-4xl px-6 py-20">
-          <p className="text-[12px] font-bold uppercase tracking-[0.2em]" style={{ color: BRASS }}>About us</p>
+          <p className="text-[12px] font-bold uppercase tracking-[0.2em]" style={{ color: BRASS }} {...editCopy(content, "home_about_eyebrow", "About us")} />
           <p data-edit="content.about" className="mt-5 text-2xl font-semibold leading-[1.5] tracking-tight sm:text-[1.7rem]" style={{ color: NAVY }}>{content.about}</p>
-          <a href={href("about")} className="mt-7 inline-flex text-sm font-bold transition hover:opacity-70" style={{ color: NAVY }}>More about us →</a>
+          <a href={href("about")} className="mt-7 inline-flex text-sm font-bold transition hover:opacity-70" style={{ color: NAVY }} {...editCopy(content, "home_about_link", "More about us →")} />
         </section>
       )}
 
@@ -453,8 +453,8 @@ export default function JunctionDesign({ site, page = "home", basePath = "" }: P
       <section style={{ background: STONE_DK }}>
         <div className="mx-auto max-w-6xl px-6 py-20">
           <div className="max-w-xl">
-            <p className="text-[12px] font-bold uppercase tracking-[0.2em]" style={{ color: BRASS }}>Learner reviews</p>
-            <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl" style={{ color: NAVY }}>Trusted by the people we taught</h2>
+            <p className="text-[12px] font-bold uppercase tracking-[0.2em]" style={{ color: BRASS }} {...editCopy(content, "reviews_eyebrow", "Learner reviews")} />
+            <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl" style={{ color: NAVY }} {...editCopy(content, "reviews_heading", "Trusted by the people we taught")} />
           </div>
           <div className="mt-12 grid gap-5 lg:grid-cols-3">
             {reviews.map((r, i) => (
@@ -474,11 +474,11 @@ export default function JunctionDesign({ site, page = "home", basePath = "" }: P
         <section className="mx-auto max-w-6xl px-6 py-20">
           <div className="flex flex-wrap items-end justify-between gap-6">
             <div className="max-w-xl">
-              <p className="text-[12px] font-bold uppercase tracking-[0.2em]" style={{ color: BRASS }}>Gallery</p>
-              <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl" style={{ color: NAVY }}>Our fleet & our pass-outs</h2>
+              <p className="text-[12px] font-bold uppercase tracking-[0.2em]" style={{ color: BRASS }} {...editCopy(content, "home_gallery_eyebrow", "Gallery")} />
+              <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl" style={{ color: NAVY }} {...editCopy(content, "home_gallery_heading", "Our fleet & our pass-outs")} />
             </div>
             {gallery.length > 4 && (
-              <a href={href("gallery")} className="text-sm font-bold transition hover:opacity-70" style={{ color: NAVY }}>See the gallery →</a>
+              <a href={href("gallery")} className="text-sm font-bold transition hover:opacity-70" style={{ color: NAVY }} {...editCopy(content, "home_gallery_link", "See the gallery →")} />
             )}
           </div>
           <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
@@ -494,8 +494,8 @@ export default function JunctionDesign({ site, page = "home", basePath = "" }: P
       <section className="mx-auto max-w-6xl px-6 pb-24">
         <div className="relative overflow-hidden rounded-2xl px-8 py-16 text-center" style={{ background: NAVY }}>
           <RouteMark className="pointer-events-none absolute -left-10 -top-8 h-52 w-52 opacity-[0.12]" stroke="#ffffff" dim="#ffffff" />
-          <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl">Ready to start the right way?</h2>
-          <p className="mx-auto mt-4 max-w-md text-[16px] leading-relaxed text-white/65">Book a course today and learn with an established, professional driving school.</p>
+          <h2 className="text-3xl font-bold tracking-tight text-white sm:text-4xl" {...editCopy(content, "cta_heading", "Ready to start the right way?")} />
+          <p className="mx-auto mt-4 max-w-md text-[16px] leading-relaxed text-white/65" {...editCopy(content, "cta_sub", "Book a course today and learn with an established, professional driving school.")} />
           <a href={cta} className="mt-8 inline-flex rounded-md px-9 py-4 text-sm font-bold transition hover:opacity-90" style={{ background: BRASS, color: NAVY_DK }}>{ctaLabel}</a>
         </div>
       </section>

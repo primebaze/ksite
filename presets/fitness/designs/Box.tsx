@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { BoxHeader } from "./BoxHeader";
 import { FitnessBooking, type BookingSkin } from "./FitnessBooking";
@@ -97,7 +97,7 @@ export default function Box({ site, page = "home", basePath = "" }: PresetProps)
           )}
         </div>
         <div>
-          <h4 style={{ color: TEXT }} className="text-xs font-bold uppercase tracking-[0.2em]">Train</h4>
+          <h4 style={{ color: TEXT }} className="text-xs font-bold uppercase tracking-[0.2em]" {...editCopy(content, "footer_train", "Train")} />
           <ul className="mt-5 space-y-3 text-sm" style={{ color: MUTE }}>
             {([
               groups.length > 0 && { label: "WODs", href: href("services") },
@@ -110,7 +110,7 @@ export default function Box({ site, page = "home", basePath = "" }: PresetProps)
           </ul>
         </div>
         <div>
-          <h4 style={{ color: TEXT }} className="text-xs font-bold uppercase tracking-[0.2em]">Contact</h4>
+          <h4 style={{ color: TEXT }} className="text-xs font-bold uppercase tracking-[0.2em]" {...editCopy(content, "footer_contact", "Contact")} />
           <div className="mt-5 space-y-3 text-sm" style={{ color: MUTE }}>
             {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -118,7 +118,7 @@ export default function Box({ site, page = "home", basePath = "" }: PresetProps)
           </div>
         </div>
         <div>
-          <h4 style={{ color: TEXT }} className="text-xs font-bold uppercase tracking-[0.2em]">Box Hours</h4>
+          <h4 style={{ color: TEXT }} className="text-xs font-bold uppercase tracking-[0.2em]" {...editCopy(content, "footer_hours", "Box Hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm" style={{ color: MUTE }}>
               {content.hours.map((h, i) => (
@@ -143,11 +143,11 @@ export default function Box({ site, page = "home", basePath = "" }: PresetProps)
     </div>
   );
 
-  const banner = (kicker: string, title: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string) => (
     <section style={{ background: PANEL, borderBottom: `2px solid ${ORANGE}` }}>
       <div className="mx-auto max-w-7xl px-8 pb-14 pt-32 sm:pt-40">
-        <Kicker>{kicker}</Kicker>
-        <h1 style={{ ...display, color: TEXT }} className="mt-4 text-5xl font-extrabold uppercase leading-[0.95] tracking-[-0.01em] sm:text-7xl">{title}</h1>
+        <Kicker><span {...editCopy(content, kickerKey, kicker)} /></Kicker>
+        <h1 style={{ ...display, color: TEXT }} className="mt-4 text-5xl font-extrabold uppercase leading-[0.95] tracking-[-0.01em] sm:text-7xl" {...editCopy(content, titleKey, title)} />
       </div>
     </section>
   );
@@ -156,7 +156,7 @@ export default function Box({ site, page = "home", basePath = "" }: PresetProps)
   if (page === "services") {
     return shell(
       <>
-        {banner("The whiteboard", "WODs & Memberships")}
+        {banner("The whiteboard", "svc_kicker", "WODs & Memberships", "svc_title")}
         <section className="mx-auto max-w-3xl px-6 py-20 sm:px-8">
           {groups.length > 0 ? (
             <div className="space-y-16">
@@ -199,7 +199,7 @@ export default function Box({ site, page = "home", basePath = "" }: PresetProps)
   if (page === "about") {
     return shell(
       <>
-        {banner("Who we are", "Show Up. Work Hard.")}
+        {banner("Who we are", "about_kicker", "Show Up. Work Hard.", "about_title")}
         <section className="mx-auto max-w-3xl px-6 py-20 sm:px-8">
           {content.about ? <p data-edit="content.about" className="text-[17px] leading-[1.9]" style={{ color: MUTE }}>{content.about}</p> : <p style={{ color: MUTE }}>Our story is coming soon.</p>}
           <div className="mt-12">
@@ -214,7 +214,7 @@ export default function Box({ site, page = "home", basePath = "" }: PresetProps)
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Inside the box", "On The Floor")}
+        {banner("Inside the box", "gallery_kicker", "On The Floor", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-7xl px-2 py-12 sm:px-4">
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
@@ -233,10 +233,10 @@ export default function Box({ site, page = "home", basePath = "" }: PresetProps)
   if (page === "contact") {
     return shell(
       <>
-        {banner("Get started", "Drop In For A Session")}
+        {banner("Get started", "contact_kicker", "Drop In For A Session", "contact_title")}
         <section className="mx-auto grid max-w-6xl gap-12 px-6 py-20 sm:px-8 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={{ ...display, color: TEXT }} className="text-2xl font-bold uppercase tracking-[0.02em]">Find the box</h2>
+            <h2 style={{ ...display, color: TEXT }} className="text-2xl font-bold uppercase tracking-[0.02em]" {...editCopy(content, "contact_findbox", "Find the box")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: MUTE }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -324,8 +324,8 @@ export default function Box({ site, page = "home", basePath = "" }: PresetProps)
       {(content.about || gallery[0]) && (
         <section className="mx-auto grid max-w-7xl items-center gap-12 px-8 py-24 lg:grid-cols-2 lg:gap-16">
           <div>
-            <Kicker>Who we are</Kicker>
-            <h2 style={{ ...display, color: TEXT }} className="mt-4 text-4xl font-extrabold uppercase leading-[0.95] tracking-[-0.01em] sm:text-5xl">Show Up. Work Hard.</h2>
+            <Kicker><span {...editCopy(content, "home_about_kicker", "Who we are")} /></Kicker>
+            <h2 style={{ ...display, color: TEXT }} className="mt-4 text-4xl font-extrabold uppercase leading-[0.95] tracking-[-0.01em] sm:text-5xl" {...editCopy(content, "home_about_heading", "Show Up. Work Hard.")} />
             {content.about && <p data-edit="content.about" className="mt-6 text-[16px] leading-[1.9]" style={{ color: MUTE }}>{content.about}</p>}
             <a href={href("about")} className="mt-7 inline-flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.2em]" style={{ color: ORANGE }}>More about us →</a>
           </div>
@@ -347,8 +347,8 @@ export default function Box({ site, page = "home", basePath = "" }: PresetProps)
           <div className="mx-auto max-w-4xl px-8 py-24">
             <div className="flex flex-wrap items-end justify-between gap-4">
               <div>
-                <Kicker>The whiteboard</Kicker>
-                <h2 style={{ ...display, color: TEXT }} className="mt-4 text-4xl font-extrabold uppercase tracking-[-0.01em] sm:text-5xl">WODs & Memberships</h2>
+                <Kicker><span {...editCopy(content, "home_wod_kicker", "The whiteboard")} /></Kicker>
+                <h2 style={{ ...display, color: TEXT }} className="mt-4 text-4xl font-extrabold uppercase tracking-[-0.01em] sm:text-5xl" {...editCopy(content, "home_wod_heading", "WODs & Memberships")} />
               </div>
               <a href={href("services")} className="text-[12px] font-bold uppercase tracking-[0.18em] transition hover:text-white" style={{ color: ORANGE }}>View all →</a>
             </div>
@@ -371,8 +371,8 @@ export default function Box({ site, page = "home", basePath = "" }: PresetProps)
       {gallery.length > 0 && (
         <section className="py-24">
           <div className="mx-auto max-w-7xl px-8">
-            <Kicker>Inside the box</Kicker>
-            <h2 style={{ ...display, color: TEXT }} className="mt-4 max-w-2xl text-3xl font-extrabold uppercase leading-[0.95] tracking-[-0.01em] sm:text-4xl">Chalk, iron and a crew that shows up</h2>
+            <Kicker><span {...editCopy(content, "home_gallery_kicker", "Inside the box")} /></Kicker>
+            <h2 style={{ ...display, color: TEXT }} className="mt-4 max-w-2xl text-3xl font-extrabold uppercase leading-[0.95] tracking-[-0.01em] sm:text-4xl" {...editCopy(content, "home_gallery_heading", "Chalk, iron and a crew that shows up")} />
           </div>
           <div className="mx-auto mt-12 grid max-w-7xl grid-cols-2 gap-2 px-2 sm:grid-cols-4 sm:px-4">
             {gallery.slice(0, 4).map((g) => (
@@ -389,7 +389,7 @@ export default function Box({ site, page = "home", basePath = "" }: PresetProps)
       {/* closing CTA */}
       <section style={{ background: ORANGE }}>
         <div className="mx-auto max-w-4xl px-8 py-20 text-center">
-          <h2 className="text-4xl font-extrabold uppercase leading-[0.95] tracking-[-0.01em] sm:text-6xl" style={{ ...display, color: INK }}>Your first WOD is free.</h2>
+          <h2 className="text-4xl font-extrabold uppercase leading-[0.95] tracking-[-0.01em] sm:text-6xl" style={{ ...display, color: INK }} {...editCopy(content, "cta_heading", "Your first WOD is free.")} />
           <p className="mx-auto mt-5 max-w-md text-[15px] font-medium leading-relaxed" style={{ color: "#2a1409" }}>No experience needed — every movement scales. Book a drop-in and meet the crew.</p>
           <a href={join} className="mt-8 inline-flex px-12 py-4 text-[12px] font-extrabold uppercase tracking-[0.22em] text-white transition hover:opacity-90" style={{ background: INK }}>{ctaLabel}</a>
         </div>

@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { EduMobileNav } from "./EduMobileNav";
 
@@ -145,7 +145,7 @@ export default function MilestoneDesign({ site, page = "home", basePath = "" }: 
         </div>
         {(content.address || content.phone || content.email) && (
           <div>
-            <h4 className="text-xs font-semibold uppercase tracking-[0.16em] text-white/45">Get in touch</h4>
+            <h4 className="text-xs font-semibold uppercase tracking-[0.16em] text-white/45" {...editCopy(content, "footer_contact", "Get in touch")} />
             <div className="mt-4 space-y-2 text-sm text-white/80">
               {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -155,7 +155,7 @@ export default function MilestoneDesign({ site, page = "home", basePath = "" }: 
         )}
         {content.hours && content.hours.length > 0 && (
           <div>
-            <h4 className="text-xs font-semibold uppercase tracking-[0.16em] text-white/45">Hours</h4>
+            <h4 className="text-xs font-semibold uppercase tracking-[0.16em] text-white/45" {...editCopy(content, "footer_hours", "Hours")} />
             <ul className="mt-4 space-y-2 text-sm text-white/80">
               {content.hours.map((h, i) => (
                 <li key={i} className="flex justify-between gap-5"><span data-edit={`hours:${i}:day`}>{h.day}</span><span data-edit={`hours:${i}:open`} className="text-white/50">{h.open}</span></li>
@@ -164,7 +164,7 @@ export default function MilestoneDesign({ site, page = "home", basePath = "" }: 
           </div>
         )}
         <div>
-          <h4 className="text-xs font-semibold uppercase tracking-[0.16em] text-white/45">Explore</h4>
+          <h4 className="text-xs font-semibold uppercase tracking-[0.16em] text-white/45" {...editCopy(content, "footer_explore", "Explore")} />
           <ul className="mt-4 space-y-2 text-sm text-white/80">
             {nav.map((l) => (
               <li key={l.href}><a href={l.href} className="transition hover:text-white">{l.label}</a></li>
@@ -186,12 +186,12 @@ export default function MilestoneDesign({ site, page = "home", basePath = "" }: 
     </div>
   );
 
-  const banner = (kicker: string, title: string, sub?: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string, sub?: string, subKey?: string) => (
     <section style={{ background: PEACH_SOFT, borderBottom: `1px solid ${NAVY}10` }}>
       <div className="mx-auto max-w-5xl px-6 py-14 sm:py-16">
-        <Pill>{kicker}</Pill>
-        <h1 style={{ ...display, color: NAVY }} className="mt-4 text-4xl font-semibold sm:text-5xl">{title}</h1>
-        {sub && <p className="mt-3 max-w-2xl text-[16px] leading-relaxed" style={{ color: MUTE }}>{sub}</p>}
+        <Pill><span {...editCopy(content, kickerKey, kicker)} /></Pill>
+        <h1 style={{ ...display, color: NAVY }} className="mt-4 text-4xl font-semibold sm:text-5xl" {...editCopy(content, titleKey, title)} />
+        {sub && <p className="mt-3 max-w-2xl text-[16px] leading-relaxed" style={{ color: MUTE }} {...editCopy(content, subKey ?? titleKey, sub)} />}
       </div>
     </section>
   );
@@ -248,8 +248,8 @@ export default function MilestoneDesign({ site, page = "home", basePath = "" }: 
     <section style={{ background: CARD }}>
       <div className="mx-auto max-w-6xl px-6 py-20">
         <div className="max-w-2xl">
-          <Pill>Kind words</Pill>
-          <h2 style={{ ...display, color: NAVY }} className="mt-4 text-3xl font-semibold sm:text-4xl">From learners who were nervous too</h2>
+          <Pill><span {...editCopy(content, "reviews_kicker", "Kind words")} /></Pill>
+          <h2 style={{ ...display, color: NAVY }} className="mt-4 text-3xl font-semibold sm:text-4xl" {...editCopy(content, "reviews_heading", "From learners who were nervous too")} />
         </div>
         <div className="mt-12 grid gap-5 sm:grid-cols-3">
           {reviews.map((r, i) => (
@@ -274,7 +274,7 @@ export default function MilestoneDesign({ site, page = "home", basePath = "" }: 
   if (page === "services") {
     return shell(
       <>
-        {banner("Lessons & packages", "Lessons that go at your pace", "Manual and automatic lessons, gentle starter blocks, refreshers and intensive courses — clear prices, no pressure.")}
+        {banner("Lessons & packages", "lessons_kicker", "Lessons that go at your pace", "lessons_title", "Manual and automatic lessons, gentle starter blocks, refreshers and intensive courses — clear prices, no pressure.", "lessons_sub")}
         <section className="mx-auto max-w-3xl px-6 py-16">
           {groups.length > 0 ? lessonList() : <p style={{ color: MUTE }}>Our lesson packages are coming soon.</p>}
           <div className="mt-12">
@@ -289,7 +289,7 @@ export default function MilestoneDesign({ site, page = "home", basePath = "" }: 
   if (page === "about") {
     return shell(
       <>
-        {banner("About", "Friendly instructors, all ages welcome")}
+        {banner("About", "about_kicker", "Friendly instructors, all ages welcome", "about_title")}
         <section className="mx-auto max-w-3xl px-6 py-16">
           {content.about ? (
             <p data-edit="content.about" className="text-[18px] leading-[1.85]" style={{ color: MUTE }}>{content.about}</p>
@@ -307,7 +307,7 @@ export default function MilestoneDesign({ site, page = "home", basePath = "" }: 
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Gallery", "Happy new drivers")}
+        {banner("Gallery", "gallery_kicker", "Happy new drivers", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-6xl px-6 py-16">
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
@@ -326,10 +326,10 @@ export default function MilestoneDesign({ site, page = "home", basePath = "" }: 
   if (page === "contact") {
     return shell(
       <>
-        {banner("Contact", "Book your first lesson", "Tell us where you are and what worries you — we will take it gently and get you booked in when you are ready.")}
+        {banner("Contact", "contact_kicker", "Book your first lesson", "contact_title", "Tell us where you are and what worries you — we will take it gently and get you booked in when you are ready.", "contact_sub")}
         <section className="mx-auto grid max-w-5xl gap-12 px-6 py-16 lg:grid-cols-[1fr_1.1fr]">
           <div className="rounded-[2rem] p-8" style={{ background: PEACH_SOFT }}>
-            <h2 style={{ ...display, color: NAVY }} className="text-xl font-semibold">Get in touch</h2>
+            <h2 style={{ ...display, color: NAVY }} className="text-xl font-semibold" {...editCopy(content, "contact_heading", "Get in touch")} />
             <div className="mt-5 space-y-3 text-[15px] leading-relaxed" style={{ color: MUTE }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block font-semibold transition hover:opacity-70" style={{ color: CORAL_DK }}>{content.phone}</a>}
@@ -337,7 +337,7 @@ export default function MilestoneDesign({ site, page = "home", basePath = "" }: 
             </div>
             {content.service_areas && content.service_areas.length > 0 && (
               <div className="mt-6 border-t pt-5" style={{ borderColor: `${NAVY}12` }}>
-                <p className="text-xs font-semibold uppercase tracking-[0.16em]" style={{ color: CORAL_DK }}>Areas covered</p>
+                <p className="text-xs font-semibold uppercase tracking-[0.16em]" style={{ color: CORAL_DK }} {...editCopy(content, "contact_areas_label", "Areas covered")} />
                 <p className="mt-2 text-sm" style={{ color: MUTE }}>{content.service_areas.join(" · ")}</p>
               </div>
             )}
@@ -377,11 +377,9 @@ export default function MilestoneDesign({ site, page = "home", basePath = "" }: 
           <div className="relative">
             <div className="inline-flex items-center gap-3">
               <LPlate size={44} />
-              <Pill>Nervous? You're in safe hands</Pill>
+              <Pill><span {...editCopy(content, "hero_kicker", "Nervous? You're in safe hands")} /></Pill>
             </div>
-            <h1 style={{ ...display, color: NAVY }} className="mt-6 text-5xl font-semibold leading-[1.05] sm:text-6xl">
-              Learn to drive, at your own pace.
-            </h1>
+            <h1 style={{ ...display, color: NAVY }} className="mt-6 text-5xl font-semibold leading-[1.05] sm:text-6xl" {...editCopy(content, "hero_headline", "Learn to drive, at your own pace.")} />
             <p className="mt-3 text-lg font-semibold" style={{ color: CORAL_DK }}>
               <span data-edit="tenant.business_name">{name}</span>
             </p>
@@ -422,8 +420,8 @@ export default function MilestoneDesign({ site, page = "home", basePath = "" }: 
       {/* "we make it easy" reassurance band */}
       <section className="mx-auto max-w-6xl px-6 py-20">
         <div className="max-w-2xl">
-          <Pill>We make it easy</Pill>
-          <h2 style={{ ...display, color: NAVY }} className="mt-4 text-3xl font-semibold sm:text-4xl">Everything you need to feel calm behind the wheel</h2>
+          <Pill><span {...editCopy(content, "easy_kicker", "We make it easy")} /></Pill>
+          <h2 style={{ ...display, color: NAVY }} className="mt-4 text-3xl font-semibold sm:text-4xl" {...editCopy(content, "easy_heading", "Everything you need to feel calm behind the wheel")} />
         </div>
         <div className="mt-12 grid gap-5 sm:grid-cols-3">
           {[
@@ -444,9 +442,9 @@ export default function MilestoneDesign({ site, page = "home", basePath = "" }: 
       {content.about && (
         <section style={{ background: NAVY }} className="text-white">
           <div className="mx-auto max-w-4xl px-6 py-20">
-            <Pill>About us</Pill>
+            <Pill><span {...editCopy(content, "home_about_kicker", "About us")} /></Pill>
             <p data-edit="content.about" style={{ ...display }} className="mt-6 text-2xl font-medium leading-[1.5] sm:text-[1.7rem]">{content.about}</p>
-            <a href={href("about")} className="mt-7 inline-flex text-sm font-semibold transition hover:opacity-80" style={{ color: PEACH }}>More about us →</a>
+            <a href={href("about")} className="mt-7 inline-flex text-sm font-semibold transition hover:opacity-80" style={{ color: PEACH }} {...editCopy(content, "home_about_link", "More about us →")} />
           </div>
         </section>
       )}
@@ -455,14 +453,14 @@ export default function MilestoneDesign({ site, page = "home", basePath = "" }: 
       {featuredCount > 0 && (
         <section className="mx-auto max-w-3xl px-6 py-20">
           <div>
-            <Pill>Lessons &amp; packages</Pill>
-            <h2 style={{ ...display, color: NAVY }} className="mt-4 text-3xl font-semibold sm:text-4xl">Gentle lessons, clear prices</h2>
+            <Pill><span {...editCopy(content, "home_lessons_kicker", "Lessons & packages")} /></Pill>
+            <h2 style={{ ...display, color: NAVY }} className="mt-4 text-3xl font-semibold sm:text-4xl" {...editCopy(content, "home_lessons_heading", "Gentle lessons, clear prices")} />
           </div>
           <div className="mt-10 rounded-[2rem] p-7 sm:p-9" style={{ background: CARD, border: `1px solid ${NAVY}0d` }}>
             {lessonList(6)}
           </div>
           <div className="mt-10">
-            <a href={href("services")} className="inline-flex rounded-full px-7 py-3.5 text-sm font-semibold text-white transition hover:opacity-90" style={{ background: CORAL }}>See all lessons &amp; prices</a>
+            <a href={href("services")} className="inline-flex rounded-full px-7 py-3.5 text-sm font-semibold text-white transition hover:opacity-90" style={{ background: CORAL }} {...editCopy(content, "home_lessons_link", "See all lessons & prices")} />
           </div>
         </section>
       )}
@@ -471,9 +469,9 @@ export default function MilestoneDesign({ site, page = "home", basePath = "" }: 
       <section style={{ background: PEACH_SOFT }}>
         <div className="mx-auto max-w-6xl px-6 py-20">
           <div className="max-w-2xl">
-            <Pill>Your journey</Pill>
-            <h2 style={{ ...display, color: NAVY }} className="mt-4 text-3xl font-semibold sm:text-4xl">Your journey to passing</h2>
-            <p className="mt-3 text-[16px] leading-relaxed" style={{ color: MUTE }}>One gentle milestone at a time — we are with you the whole way.</p>
+            <Pill><span {...editCopy(content, "journey_kicker", "Your journey")} /></Pill>
+            <h2 style={{ ...display, color: NAVY }} className="mt-4 text-3xl font-semibold sm:text-4xl" {...editCopy(content, "journey_heading", "Your journey to passing")} />
+            <p className="mt-3 text-[16px] leading-relaxed" style={{ color: MUTE }} {...editCopy(content, "journey_sub", "One gentle milestone at a time — we are with you the whole way.")} />
           </div>
           <ol className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
             {[
@@ -499,8 +497,8 @@ export default function MilestoneDesign({ site, page = "home", basePath = "" }: 
       {gallery.length > 0 && (
         <section className="mx-auto max-w-6xl px-6 py-20">
           <div className="max-w-2xl">
-            <Pill>Recent passes</Pill>
-            <h2 style={{ ...display, color: NAVY }} className="mt-4 text-3xl font-semibold sm:text-4xl">Another happy new driver</h2>
+            <Pill><span {...editCopy(content, "home_gallery_kicker", "Recent passes")} /></Pill>
+            <h2 style={{ ...display, color: NAVY }} className="mt-4 text-3xl font-semibold sm:text-4xl" {...editCopy(content, "home_gallery_heading", "Another happy new driver")} />
           </div>
           <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
             {gallery.slice(0, 4).map((g) => (
@@ -510,7 +508,7 @@ export default function MilestoneDesign({ site, page = "home", basePath = "" }: 
           </div>
           {gallery.length > 4 && (
             <div className="mt-8">
-              <a href={href("gallery")} className="inline-flex text-sm font-semibold transition hover:opacity-70" style={{ color: CORAL_DK }}>See the gallery →</a>
+              <a href={href("gallery")} className="inline-flex text-sm font-semibold transition hover:opacity-70" style={{ color: CORAL_DK }} {...editCopy(content, "home_gallery_link", "See the gallery →")} />
             </div>
           )}
         </section>
@@ -520,8 +518,8 @@ export default function MilestoneDesign({ site, page = "home", basePath = "" }: 
       <section className="mx-auto max-w-5xl px-6 py-24">
         <div className="relative overflow-hidden rounded-[2.5rem] px-8 py-16 text-center" style={{ background: CORAL }}>
           <span aria-hidden className="pointer-events-none absolute -left-12 -top-12 h-44 w-44 rounded-full" style={{ background: "#ffffff", opacity: 0.12 }} />
-          <h2 style={{ ...display }} className="text-3xl font-semibold text-white sm:text-4xl">Ready when you are</h2>
-          <p className="mx-auto mt-4 max-w-md text-[16px] leading-relaxed text-white/90">Take the first small step. Book your first lesson and we will make it as gentle and reassuring as possible.</p>
+          <h2 style={{ ...display }} className="text-3xl font-semibold text-white sm:text-4xl" {...editCopy(content, "cta_heading", "Ready when you are")} />
+          <p className="mx-auto mt-4 max-w-md text-[16px] leading-relaxed text-white/90" {...editCopy(content, "cta_sub", "Take the first small step. Book your first lesson and we will make it as gentle and reassuring as possible.")} />
           <a href={cta} className="mt-8 inline-flex rounded-full px-9 py-4 text-sm font-semibold transition hover:opacity-90" style={{ background: "#fff", color: CORAL_DK }}>{ctaLabel}</a>
         </div>
       </section>
