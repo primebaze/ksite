@@ -42,7 +42,8 @@ export function CellarBooking({
       token: String(data.get("cf-turnstile-response") ?? ""),
       fields: {
         name: data.get("cust_name") ?? "",
-        contact: data.get("contact") ?? "",
+        email: data.get("email") ?? "",
+        phone: data.get("phone") ?? "",
         date: data.get("date") ?? "",
         time: data.get("time") ?? "",
         party: data.get("party") ?? "",
@@ -126,14 +127,18 @@ export function CellarBooking({
             </select>
           </label>
         </div>
+        <label className="mt-4 block">
+          <span className={labelCls}>Your name</span>
+          <input name="cust_name" required className={fieldCls} style={fieldStyle} placeholder="Name" />
+        </label>
         <div className="mt-4 grid gap-x-7 gap-y-4 sm:grid-cols-2">
           <label className="block">
-            <span className={labelCls}>Your name</span>
-            <input name="cust_name" required className={fieldCls} style={fieldStyle} placeholder="Name" />
+            <span className={labelCls}>Email</span>
+            <input name="email" type="email" required autoComplete="email" className={fieldCls} style={fieldStyle} placeholder="you@example.com" />
           </label>
           <label className="block">
-            <span className={labelCls}>Phone or email</span>
-            <input name="contact" required className={fieldCls} style={fieldStyle} placeholder="So we can confirm" />
+            <span className={labelCls}>Phone</span>
+            <input name="phone" type="tel" autoComplete="tel" className={fieldCls} style={fieldStyle} placeholder="Optional" />
           </label>
         </div>
         {/* honeypot */}
@@ -186,10 +191,16 @@ export function CellarBooking({
           <input name="cust_name" required className={fieldCls} style={fieldStyle} />
         </label>
       </div>
-      <label className="mt-6 block">
-        <span className={labelCls}>Phone or email</span>
-        <input name="contact" required className={fieldCls} style={fieldStyle} />
-      </label>
+      <div className="mt-6 grid gap-x-8 gap-y-6 sm:grid-cols-2">
+        <label className="block">
+          <span className={labelCls}>Email</span>
+          <input name="email" type="email" required autoComplete="email" className={fieldCls} style={fieldStyle} />
+        </label>
+        <label className="block">
+          <span className={labelCls}>Phone</span>
+          <input name="phone" type="tel" autoComplete="tel" className={fieldCls} style={fieldStyle} />
+        </label>
+      </div>
       <label className="mt-6 block">
         <span className={labelCls}>A note for us</span>
         <textarea name="notes" rows={3} className={fieldCls} style={fieldStyle} placeholder="Occasion, allergies, a bottle you'd love to open" />

@@ -41,7 +41,8 @@ export function TavernBooking({
       token: String(data.get("cf-turnstile-response") ?? ""),
       fields: {
         name: data.get("cust_name") ?? "",
-        contact: data.get("contact") ?? "",
+        email: data.get("email") ?? "",
+        phone: data.get("phone") ?? "",
         date: data.get("date") ?? "",
         time: data.get("time") ?? "",
         party: data.get("party") ?? "",
@@ -130,8 +131,12 @@ export function TavernBooking({
         </div>
         <div className="mt-3 grid items-end gap-3 sm:grid-cols-[1fr_auto]">
           <label className="block">
-            <span className="mb-1.5 block text-[10px] font-semibold uppercase tracking-[0.2em] text-[#EFE7D3]/70">Phone or email</span>
-            <input name="contact" required className={fieldCls} style={fieldStyle} placeholder="So we can confirm" />
+            <span className="mb-1.5 block text-[10px] font-semibold uppercase tracking-[0.2em] text-[#EFE7D3]/70">Email</span>
+            <input name="email" type="email" required autoComplete="email" className={fieldCls} style={fieldStyle} placeholder="So we can confirm" />
+          </label>
+          <label className="block">
+            <span className="mb-1.5 block text-[10px] font-semibold uppercase tracking-[0.2em] text-[#EFE7D3]/70">Phone</span>
+            <input name="phone" type="tel" autoComplete="tel" className={fieldCls} style={fieldStyle} placeholder="Optional" />
           </label>
           {/* honeypot */}
           <input type="text" name="company" tabIndex={-1} autoComplete="off" className="absolute left-[-9999px] h-0 w-0 opacity-0" aria-hidden />
@@ -184,8 +189,12 @@ export function TavernBooking({
         </label>
       </div>
       <label className="mt-4 block">
-        <span className={labelCls}>Phone or email</span>
-        <input name="contact" required className={fieldCls} style={fieldStyle} />
+        <span className={labelCls}>Email</span>
+        <input name="email" type="email" required autoComplete="email" className={fieldCls} style={fieldStyle} />
+      </label>
+      <label className="mt-4 block">
+        <span className={labelCls}>Phone</span>
+        <input name="phone" type="tel" autoComplete="tel" className={fieldCls} style={fieldStyle} />
       </label>
       <label className="mt-4 block">
         <span className={labelCls}>Anything else?</span>

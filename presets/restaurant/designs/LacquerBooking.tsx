@@ -30,7 +30,8 @@ export function LacquerBooking({ tenantId, name }: { tenantId: string; name: str
       token: String(data.get("cf-turnstile-response") ?? ""),
       fields: {
         name: data.get("cust_name") ?? "",
-        contact: data.get("contact") ?? "",
+        email: data.get("email") ?? "",
+        phone: data.get("phone") ?? "",
         date: data.get("date") ?? "",
         time: data.get("time") ?? "",
         party: data.get("party") ?? "",
@@ -97,8 +98,12 @@ export function LacquerBooking({ tenantId, name }: { tenantId: string; name: str
             <input name="cust_name" required className={fieldCls} style={fieldStyle} />
           </label>
           <label className="block">
-            <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-white/55">Phone or email</span>
-            <input name="contact" required className={fieldCls} style={fieldStyle} />
+            <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-white/55">Email</span>
+            <input name="email" type="email" required autoComplete="email" className={fieldCls} style={fieldStyle} />
+          </label>
+          <label className="block">
+            <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-white/55">Phone</span>
+            <input name="phone" type="tel" autoComplete="tel" className={fieldCls} style={fieldStyle} />
           </label>
           <label className="block">
             <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-white/55">Anything else?</span>

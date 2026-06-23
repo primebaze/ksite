@@ -42,7 +42,8 @@ export function SobremesaBooking({
       token: String(data.get("cf-turnstile-response") ?? ""),
       fields: {
         name: data.get("cust_name") ?? "",
-        contact: data.get("contact") ?? "",
+        email: data.get("email") ?? "",
+        phone: data.get("phone") ?? "",
         date: data.get("date") ?? "",
         time: data.get("time") ?? "",
         party: data.get("party") ?? "",
@@ -127,8 +128,12 @@ export function SobremesaBooking({
         </div>
         <div className="mt-4 grid items-end gap-4 sm:grid-cols-[1fr_auto]">
           <label className="block">
-            <span className={labelCls}>Teléfono o correo</span>
-            <input name="contact" required className={fieldCls} style={fieldStyle} placeholder="Para confirmar" />
+            <span className={labelCls}>Correo</span>
+            <input name="email" type="email" required autoComplete="email" className={fieldCls} style={fieldStyle} placeholder="Para confirmar" />
+          </label>
+          <label className="block">
+            <span className={labelCls}>Teléfono</span>
+            <input name="phone" type="tel" autoComplete="tel" className={fieldCls} style={fieldStyle} placeholder="Opcional" />
           </label>
           {/* honeypot */}
           <input type="text" name="company" tabIndex={-1} autoComplete="off" className="absolute left-[-9999px] h-0 w-0 opacity-0" aria-hidden />
@@ -181,8 +186,12 @@ export function SobremesaBooking({
         </label>
       </div>
       <label className="mt-5 block">
-        <span className={labelCls}>Teléfono o correo</span>
-        <input name="contact" required className={fieldCls} style={fieldStyle} />
+        <span className={labelCls}>Correo</span>
+        <input name="email" type="email" required autoComplete="email" className={fieldCls} style={fieldStyle} />
+      </label>
+      <label className="mt-5 block">
+        <span className={labelCls}>Teléfono</span>
+        <input name="phone" type="tel" autoComplete="tel" className={fieldCls} style={fieldStyle} />
       </label>
       <label className="mt-5 block">
         <span className={labelCls}>¿Algo más?</span>

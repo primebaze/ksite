@@ -27,7 +27,8 @@ export function BotanicaBooking({ tenantId, name }: { tenantId: string; name: st
       token: String(data.get("cf-turnstile-response") ?? ""),
       fields: {
         name: data.get("cust_name") ?? "",
-        contact: data.get("contact") ?? "",
+        email: data.get("email") ?? "",
+        phone: data.get("phone") ?? "",
         date: data.get("date") ?? "",
         time: data.get("time") ?? "",
         party: data.get("party") ?? "",
@@ -106,10 +107,16 @@ export function BotanicaBooking({ tenantId, name }: { tenantId: string; name: st
               <input name="cust_name" required className={fieldCls} style={fieldStyle} />
             </label>
           </div>
-          <label className="block">
-            <span className={labelCls} style={{ color: GREEN }}>Phone or email</span>
-            <input name="contact" required className={fieldCls} style={fieldStyle} />
-          </label>
+          <div className="grid gap-7 sm:grid-cols-2">
+            <label className="block">
+              <span className={labelCls} style={{ color: GREEN }}>Email</span>
+              <input name="email" type="email" required autoComplete="email" className={fieldCls} style={fieldStyle} />
+            </label>
+            <label className="block">
+              <span className={labelCls} style={{ color: GREEN }}>Phone</span>
+              <input name="phone" type="tel" autoComplete="tel" className={fieldCls} style={fieldStyle} />
+            </label>
+          </div>
           <label className="block">
             <span className={labelCls} style={{ color: GREEN }}>Anything we should know?</span>
             <textarea name="notes" rows={2} className={fieldCls} style={fieldStyle} />

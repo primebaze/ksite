@@ -29,7 +29,8 @@ export function CinderBooking({ tenantId, name }: { tenantId: string; name: stri
       token: String(data.get("cf-turnstile-response") ?? ""),
       fields: {
         name: data.get("cust_name") ?? "",
-        contact: data.get("contact") ?? "",
+        email: data.get("email") ?? "",
+        phone: data.get("phone") ?? "",
         date: data.get("date") ?? "",
         time: data.get("time") ?? "",
         party: data.get("party") ?? "",
@@ -105,10 +106,16 @@ export function CinderBooking({ tenantId, name }: { tenantId: string; name: stri
             <span className="text-[11px] uppercase tracking-[0.2em] text-white/45">Your name</span>
             <input name="cust_name" required className={fieldCls} style={fieldStyle} />
           </label>
-          <label className="block">
-            <span className="text-[11px] uppercase tracking-[0.2em] text-white/45">Phone or email</span>
-            <input name="contact" required className={fieldCls} style={fieldStyle} />
-          </label>
+          <div className="grid grid-cols-2 gap-5">
+            <label className="block">
+              <span className="text-[11px] uppercase tracking-[0.2em] text-white/45">Email</span>
+              <input name="email" type="email" required autoComplete="email" className={fieldCls} style={fieldStyle} />
+            </label>
+            <label className="block">
+              <span className="text-[11px] uppercase tracking-[0.2em] text-white/45">Phone</span>
+              <input name="phone" type="tel" autoComplete="tel" className={fieldCls} style={fieldStyle} />
+            </label>
+          </div>
           <label className="block">
             <span className="text-[11px] uppercase tracking-[0.2em] text-white/45">Anything else?</span>
             <input name="notes" className={fieldCls} style={fieldStyle} />

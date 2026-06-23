@@ -34,7 +34,8 @@ export function LaurelBooking({ tenantId, name }: { tenantId: string; name: stri
       token: String(data.get("cf-turnstile-response") ?? ""),
       fields: {
         name: data.get("cust_name") ?? "",
-        contact: data.get("contact") ?? "",
+        email: data.get("email") ?? "",
+        phone: data.get("phone") ?? "",
         date: data.get("date") ?? "",
         time: data.get("time") ?? "",
         party: data.get("party") ?? "",
@@ -107,8 +108,13 @@ export function LaurelBooking({ tenantId, name }: { tenantId: string; name: stri
           </label>
 
           <label className="mt-6 block">
-            <span className="text-[10px] uppercase tracking-[0.22em]" style={{ color: GOLD }}>Phone or email</span>
-            <input name="contact" required className={fieldCls} style={{ borderColor: `${GREEN}33`, color: GREEN }} />
+            <span className="text-[10px] uppercase tracking-[0.22em]" style={{ color: GOLD }}>Email</span>
+            <input name="email" type="email" required autoComplete="email" className={fieldCls} style={{ borderColor: `${GREEN}33`, color: GREEN }} />
+          </label>
+
+          <label className="mt-6 block">
+            <span className="text-[10px] uppercase tracking-[0.22em]" style={{ color: GOLD }}>Phone</span>
+            <input name="phone" type="tel" autoComplete="tel" className={fieldCls} style={{ borderColor: `${GREEN}33`, color: GREEN }} />
           </label>
 
           <label className="mt-6 block">

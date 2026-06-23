@@ -40,7 +40,8 @@ export function FornoBooking({
       token: String(data.get("cf-turnstile-response") ?? ""),
       fields: {
         name: data.get("cust_name") ?? "",
-        contact: data.get("contact") ?? "",
+        email: data.get("email") ?? "",
+        phone: data.get("phone") ?? "",
         date: data.get("date") ?? "",
         time: data.get("time") ?? "",
         party: data.get("party") ?? "",
@@ -124,10 +125,16 @@ export function FornoBooking({
           </label>
         </div>
         <div className="mt-3 grid items-end gap-3 sm:grid-cols-[1fr_auto]">
-          <label className="block">
-            <span className={labelCls}>Phone or email</span>
-            <input name="contact" required className={fieldCls} style={fieldStyle} placeholder="So we can confirm" />
-          </label>
+          <div className="grid gap-3 sm:grid-cols-2">
+            <label className="block">
+              <span className={labelCls}>Email</span>
+              <input name="email" type="email" required autoComplete="email" className={fieldCls} style={fieldStyle} placeholder="So we can confirm" />
+            </label>
+            <label className="block">
+              <span className={labelCls}>Phone</span>
+              <input name="phone" type="tel" autoComplete="tel" className={fieldCls} style={fieldStyle} placeholder="Optional" />
+            </label>
+          </div>
           {/* honeypot */}
           <input type="text" name="company" tabIndex={-1} autoComplete="off" className="absolute left-[-9999px] h-0 w-0 opacity-0" aria-hidden />
           {TURNSTILE_SITE_KEY && <Turnstile siteKey={TURNSTILE_SITE_KEY} />}
@@ -178,10 +185,16 @@ export function FornoBooking({
           <input name="cust_name" required className={fieldCls} style={fieldStyle} />
         </label>
       </div>
-      <label className="mt-4 block">
-        <span className={labelCls}>Phone or email</span>
-        <input name="contact" required className={fieldCls} style={fieldStyle} />
-      </label>
+      <div className="mt-4 grid gap-4 sm:grid-cols-2">
+        <label className="block">
+          <span className={labelCls}>Email</span>
+          <input name="email" type="email" required autoComplete="email" className={fieldCls} style={fieldStyle} />
+        </label>
+        <label className="block">
+          <span className={labelCls}>Phone</span>
+          <input name="phone" type="tel" autoComplete="tel" className={fieldCls} style={fieldStyle} />
+        </label>
+      </div>
       <label className="mt-4 block">
         <span className={labelCls}>Anything else?</span>
         <textarea name="notes" rows={3} className={fieldCls} style={fieldStyle} placeholder="Allergies, a birthday, a big group to seat" />

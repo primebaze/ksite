@@ -29,7 +29,8 @@ export function TideBooking({ tenantId, name }: { tenantId: string; name: string
       token: String(data.get("cf-turnstile-response") ?? ""),
       fields: {
         name: data.get("cust_name") ?? "",
-        contact: data.get("contact") ?? "",
+        email: data.get("email") ?? "",
+        phone: data.get("phone") ?? "",
         date: data.get("date") ?? "",
         time: data.get("time") ?? "",
         party: data.get("party") ?? "",
@@ -99,8 +100,12 @@ export function TideBooking({ tenantId, name }: { tenantId: string; name: string
             <input name="cust_name" required className={`${fieldCls} mt-1.5`} />
           </label>
           <label className="block">
-            <span className="text-xs font-semibold uppercase tracking-wider text-neutral-500">Phone or email</span>
-            <input name="contact" required className={`${fieldCls} mt-1.5`} />
+            <span className="text-xs font-semibold uppercase tracking-wider text-neutral-500">Email</span>
+            <input name="email" type="email" required autoComplete="email" className={`${fieldCls} mt-1.5`} />
+          </label>
+          <label className="block">
+            <span className="text-xs font-semibold uppercase tracking-wider text-neutral-500">Phone</span>
+            <input name="phone" type="tel" autoComplete="tel" className={`${fieldCls} mt-1.5`} />
           </label>
           <label className="block">
             <span className="text-xs font-semibold uppercase tracking-wider text-neutral-500">Anything else?</span>

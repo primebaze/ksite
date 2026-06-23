@@ -41,7 +41,8 @@ export function LarderBooking({
       token: String(data.get("cf-turnstile-response") ?? ""),
       fields: {
         name: data.get("cust_name") ?? "",
-        contact: data.get("contact") ?? "",
+        email: data.get("email") ?? "",
+        phone: data.get("phone") ?? "",
         date: data.get("date") ?? "",
         time: data.get("time") ?? "",
         party: data.get("party") ?? "",
@@ -135,10 +136,14 @@ export function LarderBooking({
             {status === "sending" ? "Sending" : "Reserve"}
           </button>
         </div>
-        <div className="px-4 pb-4 sm:px-6">
+        <div className="grid gap-x-6 gap-y-4 px-4 pb-4 sm:grid-cols-2 sm:px-6">
           <label className="block">
-            <span className={labelCls}>Phone or email</span>
-            <input name="contact" required className={fieldCls} style={fieldStyle} placeholder="So we can confirm" />
+            <span className={labelCls}>Email</span>
+            <input name="email" type="email" required autoComplete="email" className={fieldCls} style={fieldStyle} placeholder="So we can confirm" />
+          </label>
+          <label className="block">
+            <span className={labelCls}>Phone</span>
+            <input name="phone" type="tel" autoComplete="tel" className={fieldCls} style={fieldStyle} />
           </label>
         </div>
         {status === "error" && <p className="px-4 pb-3 text-sm text-red-700 sm:px-6">{error}</p>}
@@ -175,10 +180,16 @@ export function LarderBooking({
           <input name="cust_name" required className={fieldCls} style={fieldStyle} />
         </label>
       </div>
-      <label className="mt-7 block">
-        <span className={labelCls}>Phone or email</span>
-        <input name="contact" required className={fieldCls} style={fieldStyle} />
-      </label>
+      <div className="mt-7 grid gap-x-10 gap-y-7 sm:grid-cols-2">
+        <label className="block">
+          <span className={labelCls}>Email</span>
+          <input name="email" type="email" required autoComplete="email" className={fieldCls} style={fieldStyle} />
+        </label>
+        <label className="block">
+          <span className={labelCls}>Phone</span>
+          <input name="phone" type="tel" autoComplete="tel" className={fieldCls} style={fieldStyle} />
+        </label>
+      </div>
       <label className="mt-7 block">
         <span className={labelCls}>Anything we should know?</span>
         <textarea name="notes" rows={3} className={fieldCls} style={fieldStyle} placeholder="Dietary needs, a celebration, access" />

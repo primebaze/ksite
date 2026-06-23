@@ -37,7 +37,8 @@ export function CurbsideBooking({
       token: String(data.get("cf-turnstile-response") ?? ""),
       fields: {
         name: data.get("cust_name") ?? "",
-        contact: data.get("contact") ?? "",
+        email: data.get("email") ?? "",
+        phone: data.get("phone") ?? "",
         date: data.get("date") ?? "",
         time: data.get("time") ?? "",
         party: data.get("party") ?? "",
@@ -121,10 +122,14 @@ export function CurbsideBooking({
             <input name="cust_name" required className={fieldCls} style={fieldStyle} placeholder="Name" />
           </label>
         </div>
-        <div className="mt-3 grid items-end gap-3 sm:grid-cols-[1fr_auto]">
+        <div className="mt-3 grid items-end gap-3 sm:grid-cols-[1fr_1fr_auto]">
           <label className="block">
-            <span className={labelCls}>Phone or email</span>
-            <input name="contact" required className={fieldCls} style={fieldStyle} placeholder="So we can roll back to you" />
+            <span className={labelCls}>Email</span>
+            <input name="email" type="email" required autoComplete="email" className={fieldCls} style={fieldStyle} placeholder="you@example.com" />
+          </label>
+          <label className="block">
+            <span className={labelCls}>Phone</span>
+            <input name="phone" type="tel" autoComplete="tel" className={fieldCls} style={fieldStyle} placeholder="Optional" />
           </label>
           {/* honeypot */}
           <input type="text" name="company" tabIndex={-1} autoComplete="off" className="absolute left-[-9999px] h-0 w-0 opacity-0" aria-hidden />
@@ -176,10 +181,16 @@ export function CurbsideBooking({
           <input name="cust_name" required className={fieldCls} style={fieldStyle} />
         </label>
       </div>
-      <label className="mt-4 block">
-        <span className={labelCls}>Phone or email</span>
-        <input name="contact" required className={fieldCls} style={fieldStyle} />
-      </label>
+      <div className="mt-4 grid gap-4 sm:grid-cols-2">
+        <label className="block">
+          <span className={labelCls}>Email</span>
+          <input name="email" type="email" required autoComplete="email" className={fieldCls} style={fieldStyle} />
+        </label>
+        <label className="block">
+          <span className={labelCls}>Phone</span>
+          <input name="phone" type="tel" autoComplete="tel" className={fieldCls} style={fieldStyle} />
+        </label>
+      </div>
       <label className="mt-4 block">
         <span className={labelCls}>Tell us about the event</span>
         <textarea name="notes" rows={3} className={fieldCls} style={fieldStyle} placeholder="Location, vibe, dietary needs, power on site, anything goes" />
