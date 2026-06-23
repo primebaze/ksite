@@ -203,10 +203,13 @@ export function InlineEditor({
     input.value = "";
     if (!file) return;
     const field = fieldRef.current;
-    // Dim the photo(s) being replaced so it's obvious where the new image lands.
-    const targets = Array.from(ref.current?.querySelectorAll<HTMLImageElement>(`[data-edit-image="${field}"]`) ?? []);
-    const prev = targets.map((t) => ({ opacity: t.style.opacity, filter: t.style.filter, transition: t.style.transition }));
-    targets.forEach((t) => {
+    // Targets carrying this field. Only <img> elements can be swapped in place;
+    // a placeholder (e.g. an empty gradient <div>) needs a reload to render the
+    // new photo. Dim the live images so it's obvious where the new one lands.
+    const matches = Array.from(ref.current?.querySelectorAll<HTMLElement>(`[data-edit-image="${field}"]`) ?? []);
+    const imgs = matches.filter((t): t is HTMLImageElement => t instanceof HTMLImageElement);
+    const prev = imgs.map((t) => ({ opacity: t.style.opacity, filter: t.style.filter, transition: t.style.transition }));
+    imgs.forEach((t) => {
       t.style.transition = "opacity .2s, filter .2s";
       t.style.opacity = "0.4";
       t.style.filter = "blur(2px)";
@@ -220,16 +223,21 @@ export function InlineEditor({
       const res = await fetch("/api/upload", { method: "POST", body: fd });
       const data = (await res.json()) as { ok?: boolean; url?: string; error?: string };
       if (data.ok && data.url) {
-        if (targets.length) targets.forEach((img) => (img.src = data.url!));
-        else window.location.reload();
-        flash("saved");
+        // Live-swap when every target is an <img>; otherwise (placeholder slot,
+        // or nothing to swap) reload so the new photo appears.
+        if (imgs.length && imgs.length === matches.length) {
+          imgs.forEach((img) => (img.src = data.url!));
+          flash("saved");
+        } else {
+          window.location.reload();
+        }
       } else {
         flash("error");
       }
     } catch {
       flash("error");
     } finally {
-      targets.forEach((t, i) => {
+      imgs.forEach((t, i) => {
         t.style.opacity = prev[i].opacity;
         t.style.filter = prev[i].filter;
         t.style.transition = prev[i].transition;

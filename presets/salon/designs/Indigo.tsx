@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editImg, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { IndigoHeader } from "./IndigoHeader";
 import { IndigoBooking } from "./IndigoBooking";
@@ -273,6 +273,9 @@ export default function IndigoDesign({ site, page = "home", basePath = "" }: Pre
 
   // ---- HOME ----
   const featured = groups.flatMap((s) => s.categories.flatMap((c) => c.items)).slice(0, 6);
+  // Big "Services" card photo: its own uploadable slot, falling back to the
+  // first gallery shot, then a gradient placeholder that's still uploadable.
+  const servicesPhoto = editImg(content, "home_services", gallery[0]?.image_url);
 
   return shell(
     <>
@@ -284,7 +287,7 @@ export default function IndigoDesign({ site, page = "home", basePath = "" }: Pre
               // eslint-disable-next-line @next/next/no-img-element
               <img data-edit-image="hero" src={hero} alt="" className="aspect-[4/3] w-full object-cover lg:aspect-[5/6]" />
             ) : (
-              <div className="aspect-[4/3] w-full lg:aspect-[5/6]" style={{ background: `linear-gradient(135deg, ${MINT}, ${BLUE})` }} />
+              <div data-edit-image="hero" className="aspect-[4/3] w-full lg:aspect-[5/6]" style={{ background: `linear-gradient(135deg, ${MINT}, ${BLUE})` }} />
             )}
           </div>
           <div>
@@ -311,11 +314,11 @@ export default function IndigoDesign({ site, page = "home", basePath = "" }: Pre
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {groups.length > 0 && (
               <a href={href("services")} className="group relative overflow-hidden rounded-3xl bg-neutral-100 lg:col-span-2">
-                {gallery[0] ? (
+                {servicesPhoto.src ? (
                   // eslint-disable-next-line @next/next/no-img-element
-                  <img loading="lazy" decoding="async" src={gallery[0].image_url} alt="" className="aspect-[16/10] w-full object-cover transition duration-500 group-hover:scale-[1.02]" />
+                  <img loading="lazy" decoding="async" {...servicesPhoto} alt="" className="aspect-[16/10] w-full object-cover transition duration-500 group-hover:scale-[1.02]" />
                 ) : (
-                  <div className="aspect-[16/10] w-full" style={{ background: `linear-gradient(135deg, ${PINK}, ${MINT})` }} />
+                  <div data-edit-image="img:home_services" className="aspect-[16/10] w-full" style={{ background: `linear-gradient(135deg, ${PINK}, ${MINT})` }} />
                 )}
                 <span className="absolute left-4 top-4"><Chip color={MINT}>Services</Chip></span>
               </a>
