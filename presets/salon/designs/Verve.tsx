@@ -137,10 +137,10 @@ export default function VerveDesign({ site, page = "home", basePath = "" }: Pres
             <div className="space-y-16">
               {groups.map((section) => (
                 <div key={section.section}>
-                  {section.section && <h2 className="mb-8 text-center text-2xl font-semibold uppercase tracking-[0.18em]">{section.section}</h2>}
+                  {section.section && <h2 data-edit={`section:${section.categories[0]?.items[0]?.id ?? ""}`} className="mb-8 text-center text-2xl font-semibold uppercase tracking-[0.18em]">{section.section}</h2>}
                   {section.categories.map((catg) => (
                     <div key={catg.category ?? "_"} className="mt-8">
-                      {catg.category && <p style={{ ...script, color: GOLD }} className="text-2xl">{catg.category}</p>}
+                      {catg.category && <p data-edit={`category:${catg.items[0]?.id ?? ""}`} style={{ ...script, color: GOLD }} className="text-2xl">{catg.category}</p>}
                       <ul className="mt-4 divide-y divide-neutral-200">
                         {catg.items.map((item) => (
                           <li key={item.id} className="flex items-baseline justify-between gap-6 py-4">
@@ -244,8 +244,8 @@ export default function VerveDesign({ site, page = "home", basePath = "" }: Pres
                         <img loading="lazy" decoding="async" src={m.photo_url} alt={m.name} className="h-full w-full object-cover" />
                       )}
                     </div>
-                    <p style={serif} className="mt-5 text-lg">{m.name}</p>
-                    {m.role && <p className="text-sm text-neutral-500">{m.role}</p>}
+                    <p data-edit={`team:${m.id}:name`} style={serif} className="mt-5 text-lg">{m.name}</p>
+                    {m.role && <p data-edit={`team:${m.id}:role`} className="text-sm text-neutral-500">{m.role}</p>}
                     {m.credentials && <p className="text-xs text-neutral-400">{m.credentials}</p>}
                   </div>
                 ))}

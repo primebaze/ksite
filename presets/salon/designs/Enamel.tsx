@@ -192,14 +192,14 @@ export default function EnamelDesign({ site, page = "home", basePath = "" }: Pre
             <div className="space-y-14">
               {groups.map((section) => (
                 <div key={section.section}>
-                  {section.section && <h2 style={serif} className="text-2xl font-medium tracking-tight" >{section.section}</h2>}
+                  {section.section && <h2 data-edit={`section:${section.categories[0]?.items[0]?.id ?? ""}`} style={serif} className="text-2xl font-medium tracking-tight" >{section.section}</h2>}
                   <div className="mt-6 space-y-10">
                     {section.categories.map((catg) => (
                       <div key={catg.category ?? "_"}>
                         {catg.category && (
                           <div className="flex items-center gap-2.5 text-sm font-semibold uppercase tracking-[0.14em]" style={{ color: SKY }}>
                             <ToothIcon className="h-4 w-4" />
-                            <h3>{catg.category}</h3>
+                            <h3 data-edit={`category:${catg.items[0]?.id ?? ""}`}>{catg.category}</h3>
                           </div>
                         )}
                         <ul className="mt-3 divide-y divide-[#e6edf2] border-t border-[#e6edf2]">
@@ -269,8 +269,8 @@ export default function EnamelDesign({ site, page = "home", basePath = "" }: Pre
                       )}
                     </div>
                     <div className="px-5 py-6">
-                      <p className="text-lg font-medium text-[#15293a]">{m.name}</p>
-                      {m.role && <p className="text-sm font-semibold" style={{ color: SKY }}>{m.role}</p>}
+                      <p data-edit={`team:${m.id}:name`} className="text-lg font-medium text-[#15293a]">{m.name}</p>
+                      {m.role && <p data-edit={`team:${m.id}:role`} className="text-sm font-semibold" style={{ color: SKY }}>{m.role}</p>}
                       {m.credentials && <p className="mt-1 text-xs text-[#7b8e9b]">{m.credentials}</p>}
                     </div>
                   </div>
@@ -552,8 +552,8 @@ export default function EnamelDesign({ site, page = "home", basePath = "" }: Pre
                     )}
                   </div>
                   <div className="px-5 py-6">
-                    <p className="text-lg font-medium text-[#15293a]">{m.name}</p>
-                    {m.role && <p className="text-sm font-semibold" style={{ color: SKY }}>{m.role}</p>}
+                    <p data-edit={`team:${m.id}:name`} className="text-lg font-medium text-[#15293a]">{m.name}</p>
+                    {m.role && <p data-edit={`team:${m.id}:role`} className="text-sm font-semibold" style={{ color: SKY }}>{m.role}</p>}
                     {m.credentials && <p className="mt-1 text-xs text-[#7b8e9b]">{m.credentials}</p>}
                   </div>
                 </div>

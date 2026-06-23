@@ -196,12 +196,12 @@ export default function ClarityDesign({ site, page = "home", basePath = "" }: Pr
             <div className="space-y-16">
               {groups.map((section) => (
                 <div key={section.section}>
-                  {section.section && <h2 className="text-3xl font-semibold" style={{ ...serif, color: NAVY }}>{section.section}</h2>}
+                  {section.section && <h2 data-edit={`section:${section.categories[0]?.items[0]?.id ?? ""}`} className="text-3xl font-semibold" style={{ ...serif, color: NAVY }}>{section.section}</h2>}
                   <div className="mt-8 space-y-12">
                     {section.categories.map((catg) => (
                       <div key={catg.category ?? "_"}>
                         {catg.category && (
-                          <h3 className="text-sm font-bold uppercase tracking-[0.18em]" style={{ color: TEAL }}>{catg.category}</h3>
+                          <h3 data-edit={`category:${catg.items[0]?.id ?? ""}`} className="text-sm font-bold uppercase tracking-[0.18em]" style={{ color: TEAL }}>{catg.category}</h3>
                         )}
                         {/* clean divider rows: name+desc left, price right. No cards, no dotted leaders. */}
                         <ul className="mt-4 divide-y-2" style={{ borderColor: SKY_SOFT, ["--tw-divide-opacity" as string]: "1" }}>
@@ -269,8 +269,8 @@ export default function ClarityDesign({ site, page = "home", basePath = "" }: Pr
                         <img loading="lazy" decoding="async" src={m.photo_url} alt={m.name} className="h-full w-full object-cover" />
                       )}
                     </div>
-                    <p className="mt-5 text-xl font-semibold" style={{ color: NAVY }}>{m.name}</p>
-                    {m.role && <p className="text-base" style={{ color: TEAL }}>{m.role}</p>}
+                    <p data-edit={`team:${m.id}:name`} className="mt-5 text-xl font-semibold" style={{ color: NAVY }}>{m.name}</p>
+                    {m.role && <p data-edit={`team:${m.id}:role`} className="text-base" style={{ color: TEAL }}>{m.role}</p>}
                     {m.credentials && <p className="mt-1 text-sm" style={{ color: "#7a8696" }}>{m.credentials}</p>}
                   </div>
                 ))}

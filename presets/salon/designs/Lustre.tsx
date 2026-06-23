@@ -133,12 +133,12 @@ export default function LustreDesign({ site, page = "home", basePath = "" }: Pre
               {groups.map((section) => (
                 <div key={section.section}>
                   {section.section && (
-                    <h3 style={serif} className="mb-6 text-center text-2xl tracking-[0.06em]" >{section.section}</h3>
+                    <h3 data-edit={`section:${section.categories[0]?.items[0]?.id ?? ""}`} style={serif} className="mb-6 text-center text-2xl tracking-[0.06em]" >{section.section}</h3>
                   )}
                   {section.categories.map((catg) => (
                     <div key={catg.category ?? "_"} className="mt-6">
                       {catg.category && (
-                        <h4 className="mb-3 text-[11px] font-semibold uppercase tracking-[0.22em] text-neutral-400">{catg.category}</h4>
+                        <h4 data-edit={`category:${catg.items[0]?.id ?? ""}`} className="mb-3 text-[11px] font-semibold uppercase tracking-[0.22em] text-neutral-400">{catg.category}</h4>
                       )}
                       <ul className="divide-y divide-neutral-200">
                         {catg.items.map((item) => (
@@ -250,8 +250,8 @@ export default function LustreDesign({ site, page = "home", basePath = "" }: Pre
                 <img loading="lazy" decoding="async" src={lead.photo_url} alt={lead.name} className="h-40 w-40 rounded-full object-cover" />
               )}
               <div>
-                <p style={serif} className="text-2xl tracking-[0.04em] text-neutral-800">{lead.name}</p>
-                {lead.role && <p className="mt-1 text-sm uppercase tracking-[0.18em] text-neutral-500">{lead.role}</p>}
+                <p data-edit={`team:${lead.id}:name`} style={serif} className="text-2xl tracking-[0.04em] text-neutral-800">{lead.name}</p>
+                {lead.role && <p data-edit={`team:${lead.id}:role`} className="mt-1 text-sm uppercase tracking-[0.18em] text-neutral-500">{lead.role}</p>}
                 {lead.credentials && <p className="mt-1 text-xs text-neutral-400">{lead.credentials}</p>}
               </div>
             </div>

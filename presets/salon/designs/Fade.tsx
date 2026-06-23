@@ -128,10 +128,10 @@ export default function FadeDesign({ site, page = "home", basePath = "" }: Prese
             <div className="space-y-16">
               {groups.map((section) => (
                 <div key={section.section}>
-                  {section.section && <h3 style={serif} className="text-2xl italic">{section.section}</h3>}
+                  {section.section && <h3 data-edit={`section:${section.categories[0]?.items[0]?.id ?? ""}`} style={serif} className="text-2xl italic">{section.section}</h3>}
                   {section.categories.map((catg) => (
                     <div key={catg.category ?? "_"} className="mt-6">
-                      {catg.category && <h4 className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-neutral-400">{catg.category}</h4>}
+                      {catg.category && <h4 data-edit={`category:${catg.items[0]?.id ?? ""}`} className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-neutral-400">{catg.category}</h4>}
                       <ul className="divide-y divide-neutral-200">
                         {catg.items.map((item) => (
                           <li key={item.id} className="flex items-baseline justify-between gap-6 py-4">
@@ -232,8 +232,8 @@ export default function FadeDesign({ site, page = "home", basePath = "" }: Prese
                       <img loading="lazy" decoding="async" src={m.photo_url} alt={m.name} className="h-full w-full object-cover" />
                     )}
                   </div>
-                  <p className="mt-5 text-lg font-medium">{m.name}</p>
-                  {m.role && <p className="text-sm text-neutral-500">{m.role}</p>}
+                  <p data-edit={`team:${m.id}:name`} className="mt-5 text-lg font-medium">{m.name}</p>
+                  {m.role && <p data-edit={`team:${m.id}:role`} className="text-sm text-neutral-500">{m.role}</p>}
                   {m.credentials && <p className="text-xs text-neutral-400">{m.credentials}</p>}
                 </div>
               ))}

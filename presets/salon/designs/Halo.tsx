@@ -173,8 +173,8 @@ export default function HaloDesign({ site, page = "home", basePath = "" }: Prese
                         <img loading="lazy" decoding="async" src={m.photo_url} alt={m.name} className="h-full w-full object-cover" />
                       )}
                     </div>
-                    <p style={serif} className="mt-5 text-lg">{m.name}</p>
-                    {m.role && <p className="text-sm text-neutral-500">{m.role}</p>}
+                    <p data-edit={`team:${m.id}:name`} style={serif} className="mt-5 text-lg">{m.name}</p>
+                    {m.role && <p data-edit={`team:${m.id}:role`} className="text-sm text-neutral-500">{m.role}</p>}
                     {m.credentials && <p className="text-xs text-neutral-400">{m.credentials}</p>}
                   </div>
                 ))}

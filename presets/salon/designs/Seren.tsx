@@ -167,12 +167,12 @@ export default function SerenDesign({ site, page = "home", basePath = "" }: Pres
             <div className="space-y-16">
               {groups.map((section) => (
                 <div key={section.section}>
-                  {section.section && <h2 style={serif} className="text-2xl">{section.section}</h2>}
+                  {section.section && <h2 data-edit={`section:${section.categories[0]?.items[0]?.id ?? ""}`} style={serif} className="text-2xl">{section.section}</h2>}
                   <div className="mt-8 grid gap-x-12 gap-y-10 sm:grid-cols-2">
                     {section.categories.map((catg) => (
                       <div key={catg.category ?? "_"}>
                         {catg.category && (
-                          <h3 className="border-b pb-2 text-sm font-semibold uppercase tracking-[0.16em]" style={{ color: INK, borderColor: ROSE_SOFT }}>{catg.category}</h3>
+                          <h3 data-edit={`category:${catg.items[0]?.id ?? ""}`} className="border-b pb-2 text-sm font-semibold uppercase tracking-[0.16em]" style={{ color: INK, borderColor: ROSE_SOFT }}>{catg.category}</h3>
                         )}
                         <ul className="mt-4 space-y-4">
                           {catg.items.map((item) => (
@@ -239,8 +239,8 @@ export default function SerenDesign({ site, page = "home", basePath = "" }: Pres
                         <img loading="lazy" decoding="async" src={m.photo_url} alt={m.name} className="h-full w-full object-cover" />
                       )}
                     </div>
-                    <p className="mt-5 text-lg font-medium">{m.name}</p>
-                    {m.role && <p className="text-sm text-neutral-500">{m.role}</p>}
+                    <p data-edit={`team:${m.id}:name`} className="mt-5 text-lg font-medium">{m.name}</p>
+                    {m.role && <p data-edit={`team:${m.id}:role`} className="text-sm text-neutral-500">{m.role}</p>}
                     {m.credentials && <p className="text-xs text-neutral-400">{m.credentials}</p>}
                   </div>
                 ))}

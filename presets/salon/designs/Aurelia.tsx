@@ -138,8 +138,8 @@ function TeamCarousel({ team }: { team: { id: string; name: string; role: string
               )}
               <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/20 to-transparent" />
               <div className="absolute inset-x-0 bottom-0 p-6">
-                <p style={serif} className="text-xl text-white">{m.name}</p>
-                {m.role && <p className="mt-1 text-xs uppercase tracking-[0.18em]" style={{ color: "#e8d9bf" }}>{m.role}</p>}
+                <p data-edit={`team:${m.id}:name`} style={serif} className="text-xl text-white">{m.name}</p>
+                {m.role && <p data-edit={`team:${m.id}:role`} className="mt-1 text-xs uppercase tracking-[0.18em]" style={{ color: "#e8d9bf" }}>{m.role}</p>}
                 {m.credentials && <p className="mt-1 text-sm text-white/70">{m.credentials}</p>}
               </div>
             </div>
@@ -335,10 +335,10 @@ export default function AureliaDesign({ site, page = "home", basePath = "" }: Pr
             <div className="space-y-16">
               {groups.map((section) => (
                 <div key={section.section}>
-                  {section.section && <h2 style={serif} className="mb-7 border-b border-neutral-200 pb-4 text-2xl">{section.section}</h2>}
+                  {section.section && <h2 data-edit={`section:${section.categories[0]?.items[0]?.id ?? ""}`} style={serif} className="mb-7 border-b border-neutral-200 pb-4 text-2xl">{section.section}</h2>}
                   {section.categories.map((catg) => (
                     <div key={catg.category ?? "_"} className="mt-8">
-                      {catg.category && <h3 className="mb-4 text-[11px] font-semibold uppercase tracking-[0.22em] text-neutral-400">{catg.category}</h3>}
+                      {catg.category && <h3 data-edit={`category:${catg.items[0]?.id ?? ""}`} className="mb-4 text-[11px] font-semibold uppercase tracking-[0.22em] text-neutral-400">{catg.category}</h3>}
                       <ul className="divide-y divide-neutral-200">
                         {catg.items.map((item) => (
                           <li key={item.id} className="flex items-baseline justify-between gap-6 py-5">

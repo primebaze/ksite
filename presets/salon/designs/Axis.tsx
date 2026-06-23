@@ -178,14 +178,14 @@ export default function AxisDesign({ site, page = "home", basePath = "" }: Prese
             <div className="space-y-16">
               {groups.map((section) => (
                 <div key={section.section}>
-                  {section.section && <h2 style={{ ...serif, color: CHARCOAL }} className="text-2xl">{section.section}</h2>}
+                  {section.section && <h2 data-edit={`section:${section.categories[0]?.items[0]?.id ?? ""}`} style={{ ...serif, color: CHARCOAL }} className="text-2xl">{section.section}</h2>}
                   <div className="mt-8 space-y-12">
                     {section.categories.map((catg) => (
                       <div key={catg.category ?? "_"}>
                         {catg.category && (
                           <div className="flex items-center gap-3">
                             <span aria-hidden className="h-4 w-[3px]" style={{ background: AMBER }} />
-                            <h3 className="text-[11px] font-semibold uppercase tracking-[0.2em]" style={{ color: CLAY }}>{catg.category}</h3>
+                            <h3 data-edit={`category:${catg.items[0]?.id ?? ""}`} className="text-[11px] font-semibold uppercase tracking-[0.2em]" style={{ color: CLAY }}>{catg.category}</h3>
                           </div>
                         )}
                         <ul className="mt-4 divide-y" style={{ borderColor: "rgba(37,40,43,0.1)" }}>
@@ -253,8 +253,8 @@ export default function AxisDesign({ site, page = "home", basePath = "" }: Prese
                         <img loading="lazy" decoding="async" src={m.photo_url} alt={m.name} className="h-full w-full object-cover" />
                       )}
                     </div>
-                    <p className="mt-5 text-lg font-medium" style={{ color: CHARCOAL }}>{m.name}</p>
-                    {m.role && <p className="text-sm" style={{ color: CLAY }}>{m.role}</p>}
+                    <p data-edit={`team:${m.id}:name`} className="mt-5 text-lg font-medium" style={{ color: CHARCOAL }}>{m.name}</p>
+                    {m.role && <p data-edit={`team:${m.id}:role`} className="text-sm" style={{ color: CLAY }}>{m.role}</p>}
                     {m.credentials && <p className="text-xs" style={{ color: "#8b8e8c" }}>{m.credentials}</p>}
                   </div>
                 ))}

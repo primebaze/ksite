@@ -146,10 +146,10 @@ export default function LineaDesign({ site, page = "home", basePath = "" }: Pres
             <div className="space-y-16">
               {groups.map((section) => (
                 <div key={section.section}>
-                  {section.section && <h3 style={{ ...serif, color: TAUPE }} className="mb-6 border-b border-neutral-200 pb-3 text-2xl">{section.section}</h3>}
+                  {section.section && <h3 data-edit={`section:${section.categories[0]?.items[0]?.id ?? ""}`} style={{ ...serif, color: TAUPE }} className="mb-6 border-b border-neutral-200 pb-3 text-2xl">{section.section}</h3>}
                   {section.categories.map((catg) => (
                     <div key={catg.category ?? "_"} className="mt-7">
-                      {catg.category && <h4 className="mb-3 text-[11px] font-semibold uppercase tracking-[0.22em] text-neutral-400">{catg.category}</h4>}
+                      {catg.category && <h4 data-edit={`category:${catg.items[0]?.id ?? ""}`} className="mb-3 text-[11px] font-semibold uppercase tracking-[0.22em] text-neutral-400">{catg.category}</h4>}
                       <ul className="divide-y divide-neutral-200">
                         {catg.items.map((item) => (
                           <li key={item.id} className="flex items-baseline justify-between gap-6 py-4">
@@ -255,8 +255,8 @@ export default function LineaDesign({ site, page = "home", basePath = "" }: Pres
                         <img loading="lazy" decoding="async" src={m.photo_url} alt={m.name} className="h-full w-full object-cover" />
                       )}
                     </div>
-                    <p style={{ ...serif, color: TAUPE }} className="mt-5 text-lg">{m.name}</p>
-                    {m.role && <p className="text-sm text-neutral-500">{m.role}</p>}
+                    <p data-edit={`team:${m.id}:name`} style={{ ...serif, color: TAUPE }} className="mt-5 text-lg">{m.name}</p>
+                    {m.role && <p data-edit={`team:${m.id}:role`} className="text-sm text-neutral-500">{m.role}</p>}
                     {m.credentials && <p className="mt-0.5 text-xs text-neutral-400">{m.credentials}</p>}
                   </div>
                 ))}

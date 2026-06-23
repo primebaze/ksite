@@ -178,14 +178,14 @@ export default function StillwaterDesign({ site, page = "home", basePath = "" }:
                 <div key={section.section}>
                   {section.section && (
                     <div className="flex items-center gap-4">
-                      <h2 style={{ ...serif, color: TEAL }} className="text-2xl">{section.section}</h2>
+                      <h2 data-edit={`section:${section.categories[0]?.items[0]?.id ?? ""}`} style={{ ...serif, color: TEAL }} className="text-2xl">{section.section}</h2>
                       <span className="h-px flex-1" style={{ background: "rgba(35,42,44,0.12)" }} />
                     </div>
                   )}
                   {section.categories.map((catg) => (
                     <div key={catg.category ?? "_"} className="mt-8">
                       {catg.category && (
-                        <h3 className="mb-2 text-[11px] font-semibold uppercase tracking-[0.24em]" style={{ color: SAGE }}>{catg.category}</h3>
+                        <h3 data-edit={`category:${catg.items[0]?.id ?? ""}`} className="mb-2 text-[11px] font-semibold uppercase tracking-[0.24em]" style={{ color: SAGE }}>{catg.category}</h3>
                       )}
                       <ul className="divide-y" style={{ borderColor: "rgba(35,42,44,0.1)" }}>
                         {catg.items.map((item) => (
@@ -251,8 +251,8 @@ export default function StillwaterDesign({ site, page = "home", basePath = "" }:
                         <img loading="lazy" decoding="async" src={m.photo_url} alt={m.name} className="h-full w-full object-cover" />
                       )}
                     </div>
-                    <p className="mt-5 text-lg font-medium" style={{ color: INK }}>{m.name}</p>
-                    {m.role && <p className="text-sm" style={{ color: "rgba(35,42,44,0.55)" }}>{m.role}</p>}
+                    <p data-edit={`team:${m.id}:name`} className="mt-5 text-lg font-medium" style={{ color: INK }}>{m.name}</p>
+                    {m.role && <p data-edit={`team:${m.id}:role`} className="text-sm" style={{ color: "rgba(35,42,44,0.55)" }}>{m.role}</p>}
                     {m.credentials && <p className="text-xs" style={{ color: "rgba(35,42,44,0.4)" }}>{m.credentials}</p>}
                   </div>
                 ))}
@@ -538,8 +538,8 @@ export default function StillwaterDesign({ site, page = "home", basePath = "" }:
                     <img loading="lazy" decoding="async" src={m.photo_url} alt={m.name} className="h-full w-full object-cover" />
                   )}
                 </div>
-                <p className="mt-5 text-lg font-medium" style={{ color: INK }}>{m.name}</p>
-                {m.role && <p className="text-sm" style={{ color: "rgba(35,42,44,0.55)" }}>{m.role}</p>}
+                <p data-edit={`team:${m.id}:name`} className="mt-5 text-lg font-medium" style={{ color: INK }}>{m.name}</p>
+                {m.role && <p data-edit={`team:${m.id}:role`} className="text-sm" style={{ color: "rgba(35,42,44,0.55)" }}>{m.role}</p>}
                 {m.credentials && <p className="text-xs" style={{ color: "rgba(35,42,44,0.4)" }}>{m.credentials}</p>}
               </div>
             ))}

@@ -63,7 +63,7 @@ export function ServiceCards({
             )}
             <div className="flex flex-1 flex-col p-5">
               {label && (
-                <span className="mb-1.5 text-[10px] font-semibold uppercase tracking-[0.2em]" style={{ color: tone.muted }}>
+                <span data-edit={it.category ? `category:${it.id}` : `section:${it.id}`} className="mb-1.5 text-[10px] font-semibold uppercase tracking-[0.2em]" style={{ color: tone.muted }}>
                   {label}
                 </span>
               )}

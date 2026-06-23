@@ -162,10 +162,10 @@ export default function LuminaDesign({ site, page = "home", basePath = "" }: Pre
             <div className="space-y-16">
               {groups.map((section) => (
                 <div key={section.section}>
-                  {section.section && <h2 style={serif} className="text-2xl font-medium" >{section.section}</h2>}
+                  {section.section && <h2 data-edit={`section:${section.categories[0]?.items[0]?.id ?? ""}`} style={serif} className="text-2xl font-medium" >{section.section}</h2>}
                   {section.categories.map((catg) => (
                     <div key={catg.category ?? "_"} className="mt-6">
-                      {catg.category && <h3 className="mb-3 text-[11px] font-semibold uppercase tracking-[0.22em] text-neutral-400">{catg.category}</h3>}
+                      {catg.category && <h3 data-edit={`category:${catg.items[0]?.id ?? ""}`} className="mb-3 text-[11px] font-semibold uppercase tracking-[0.22em] text-neutral-400">{catg.category}</h3>}
                       <ul className="divide-y" style={{ borderColor: ROSE }}>
                         {catg.items.map((item) => (
                           <li key={item.id} className="flex items-baseline justify-between gap-6 border-b py-5" style={{ borderColor: ROSE }}>

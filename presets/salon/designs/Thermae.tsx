@@ -203,7 +203,7 @@ export default function ThermaeDesign({ site, page = "home", basePath = "" }: Pr
               <div className="space-y-12">
                 {groups.map((section) => (
                   <div key={section.section}>
-                    {section.section && <h2 style={{ ...serif, color: SLATE }} className="text-2xl">{section.section}</h2>}
+                    {section.section && <h2 data-edit={`section:${section.categories[0]?.items[0]?.id ?? ""}`} style={{ ...serif, color: SLATE }} className="text-2xl">{section.section}</h2>}
                     <div className="mt-6 space-y-10">
                       {section.categories.map((catg) => (
                         <div
@@ -214,7 +214,7 @@ export default function ThermaeDesign({ site, page = "home", basePath = "" }: Pr
                           {catg.category && (
                             <div className="flex items-center gap-3">
                               <Drop size={18} color={EUCALYPTUS} />
-                              <h3 style={{ ...serif, color: SLATE }} className="text-xl">{catg.category}</h3>
+                              <h3 data-edit={`category:${catg.items[0]?.id ?? ""}`} style={{ ...serif, color: SLATE }} className="text-xl">{catg.category}</h3>
                             </div>
                           )}
                           <ul className="mt-5 divide-y" style={{ borderColor: "rgba(110,139,122,0.14)" }}>
@@ -286,8 +286,8 @@ export default function ThermaeDesign({ site, page = "home", basePath = "" }: Pr
                         <img loading="lazy" decoding="async" src={m.photo_url} alt={m.name} className="h-full w-full object-cover" />
                       )}
                     </div>
-                    <p className="mt-6 text-lg font-medium" style={{ color: SLATE }}>{m.name}</p>
-                    {m.role && <p className="text-sm" style={{ color: EUCALYPTUS }}>{m.role}</p>}
+                    <p data-edit={`team:${m.id}:name`} className="mt-6 text-lg font-medium" style={{ color: SLATE }}>{m.name}</p>
+                    {m.role && <p data-edit={`team:${m.id}:role`} className="text-sm" style={{ color: EUCALYPTUS }}>{m.role}</p>}
                     {m.credentials && <p className="mt-0.5 text-xs text-[#2E3A3A]/45">{m.credentials}</p>}
                   </div>
                 ))}

@@ -181,14 +181,14 @@ export default function LumenDesign({ site, page = "home", basePath = "" }: Pres
                   {section.section && (
                     <div className="flex items-center gap-3">
                       <EyeMark size={20} color={BLUE} />
-                      <h2 style={serif} className="text-2xl">{section.section}</h2>
+                      <h2 data-edit={`section:${section.categories[0]?.items[0]?.id ?? ""}`} style={serif} className="text-2xl">{section.section}</h2>
                     </div>
                   )}
                   <div className="mt-8 space-y-12">
                     {section.categories.map((catg) => (
                       <div key={catg.category ?? "_"}>
                         {catg.category && (
-                          <h3 className="text-[11px] font-semibold uppercase tracking-[0.2em]" style={{ color: AMBER }}>{catg.category}</h3>
+                          <h3 data-edit={`category:${catg.items[0]?.id ?? ""}`} className="text-[11px] font-semibold uppercase tracking-[0.2em]" style={{ color: AMBER }}>{catg.category}</h3>
                         )}
                         <ul className="mt-4 divide-y" style={{ borderColor: GREY }}>
                           {catg.items.map((item) => (
@@ -258,8 +258,8 @@ export default function LumenDesign({ site, page = "home", basePath = "" }: Pres
                         <img loading="lazy" decoding="async" src={m.photo_url} alt={m.name} className="h-full w-full object-cover" />
                       )}
                     </div>
-                    <p className="mt-4 text-lg font-medium" style={serif}>{m.name}</p>
-                    {m.role && <p className="text-sm text-[#181A1B]/55">{m.role}</p>}
+                    <p data-edit={`team:${m.id}:name`} className="mt-4 text-lg font-medium" style={serif}>{m.name}</p>
+                    {m.role && <p data-edit={`team:${m.id}:role`} className="text-sm text-[#181A1B]/55">{m.role}</p>}
                     {m.credentials && <p className="mt-0.5 text-xs uppercase tracking-[0.12em]" style={{ color: BLUE }}>{m.credentials}</p>}
                   </div>
                 ))}

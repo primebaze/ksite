@@ -175,10 +175,10 @@ export default function RadianceDesign({ site, page = "home", basePath = "" }: P
             <div className="space-y-16">
               {groups.map((section) => (
                 <div key={section.section}>
-                  {section.section && <h2 className="border-b pb-4 text-3xl" style={{ ...serif, borderColor: "#e4ddcd", color: GREEN }}>{section.section}</h2>}
+                  {section.section && <h2 data-edit={`section:${section.categories[0]?.items[0]?.id ?? ""}`} className="border-b pb-4 text-3xl" style={{ ...serif, borderColor: "#e4ddcd", color: GREEN }}>{section.section}</h2>}
                   {section.categories.map((catg) => (
                     <div key={catg.category ?? "_"} className="mt-8">
-                      {catg.category && <h3 className="mb-4 text-[11px] font-semibold uppercase tracking-[0.2em] text-neutral-400">{catg.category}</h3>}
+                      {catg.category && <h3 data-edit={`category:${catg.items[0]?.id ?? ""}`} className="mb-4 text-[11px] font-semibold uppercase tracking-[0.2em] text-neutral-400">{catg.category}</h3>}
                       <ul className="divide-y divide-[#ece6d8]">
                         {catg.items.map((item) => (
                           <li key={item.id} className="flex items-baseline justify-between gap-6 py-5">
@@ -281,8 +281,8 @@ export default function RadianceDesign({ site, page = "home", basePath = "" }: P
                         <img loading="lazy" decoding="async" src={m.photo_url} alt={m.name} className="h-full w-full object-cover" />
                       )}
                     </div>
-                    <p className="mt-5 text-lg" style={{ ...serif, color: GREEN }}>{m.name}</p>
-                    {m.role && <p className="text-sm text-neutral-500">{m.role}</p>}
+                    <p data-edit={`team:${m.id}:name`} className="mt-5 text-lg" style={{ ...serif, color: GREEN }}>{m.name}</p>
+                    {m.role && <p data-edit={`team:${m.id}:role`} className="text-sm text-neutral-500">{m.role}</p>}
                     {m.credentials && <p className="text-xs text-neutral-400">{m.credentials}</p>}
                   </div>
                 ))}

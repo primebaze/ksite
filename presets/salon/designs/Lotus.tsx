@@ -185,14 +185,14 @@ export default function LotusDesign({ site, page = "home", basePath = "" }: Pres
               {groups.map((section) => (
                 <div key={section.section}>
                   {section.section && (
-                    <h2 style={serif} className="mb-2 text-2xl" >{section.section}</h2>
+                    <h2 data-edit={`section:${section.categories[0]?.items[0]?.id ?? ""}`} style={serif} className="mb-2 text-2xl" >{section.section}</h2>
                   )}
                   {section.categories.map((catg) => (
                     <div key={catg.category ?? "_"} className="mt-10 first:mt-6">
                       {catg.category && (
                         <div className="mb-4 flex items-center gap-3">
                           <span className="h-px w-6" style={{ background: CLAY }} />
-                          <h3 className="text-[12px] font-semibold uppercase tracking-[0.22em]" style={{ color: JADE }}>{catg.category}</h3>
+                          <h3 data-edit={`category:${catg.items[0]?.id ?? ""}`} className="text-[12px] font-semibold uppercase tracking-[0.22em]" style={{ color: JADE }}>{catg.category}</h3>
                         </div>
                       )}
                       <ul className="divide-y" style={{ borderColor: "rgba(94,124,107,0.25)" }}>
@@ -261,8 +261,8 @@ export default function LotusDesign({ site, page = "home", basePath = "" }: Pres
                         <img loading="lazy" decoding="async" src={m.photo_url} alt={m.name} className="h-full w-full object-cover" />
                       )}
                     </div>
-                    <p style={serif} className="mt-5 text-lg" >{m.name}</p>
-                    {m.role && <p className="text-sm" style={{ color: CLAY }}>{m.role}</p>}
+                    <p data-edit={`team:${m.id}:name`} style={serif} className="mt-5 text-lg" >{m.name}</p>
+                    {m.role && <p data-edit={`team:${m.id}:role`} className="text-sm" style={{ color: CLAY }}>{m.role}</p>}
                     {m.credentials && <p className="mt-0.5 text-xs text-[#23211C]/45">{m.credentials}</p>}
                   </div>
                 ))}

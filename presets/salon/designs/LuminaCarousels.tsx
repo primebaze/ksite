@@ -84,8 +84,8 @@ export function LuminaTeamSlider({ team }: { team: TeamMember[] }) {
                 <img loading="lazy" decoding="async" src={m.photo_url} alt={m.name} className="h-full w-full object-cover" />
               )}
             </div>
-            <p className="mt-5 text-sm font-semibold uppercase tracking-[0.18em]" style={{ color: INK }}>{m.name}</p>
-            {m.role && <p className="mt-1 text-sm text-neutral-500">{m.role}</p>}
+            <p data-edit={`team:${m.id}:name`} className="mt-5 text-sm font-semibold uppercase tracking-[0.18em]" style={{ color: INK }}>{m.name}</p>
+            {m.role && <p data-edit={`team:${m.id}:role`} className="mt-1 text-sm text-neutral-500">{m.role}</p>}
             {m.credentials && <p className="mt-0.5 text-xs text-neutral-400">{m.credentials}</p>}
           </div>
         ))}

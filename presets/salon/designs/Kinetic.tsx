@@ -177,14 +177,14 @@ export default function KineticDesign({ site, page = "home", basePath = "" }: Pr
             <div className="space-y-16">
               {groups.map((section) => (
                 <div key={section.section}>
-                  {section.section && <h2 className="text-2xl font-bold" style={{ ...display, color: NAVY }}>{section.section}</h2>}
+                  {section.section && <h2 data-edit={`section:${section.categories[0]?.items[0]?.id ?? ""}`} className="text-2xl font-bold" style={{ ...display, color: NAVY }}>{section.section}</h2>}
                   <div className="mt-8 space-y-12">
                     {section.categories.map((catg) => (
                       <div key={catg.category ?? "_"}>
                         {catg.category && (
                           <div className="mb-5 flex items-center gap-3">
                             <span className="h-2 w-2 -skew-x-12" style={{ background: LIME }} aria-hidden />
-                            <h3 className="text-xs font-bold uppercase tracking-[0.22em]" style={{ color: SLATE }}>{catg.category}</h3>
+                            <h3 data-edit={`category:${catg.items[0]?.id ?? ""}`} className="text-xs font-bold uppercase tracking-[0.22em]" style={{ color: SLATE }}>{catg.category}</h3>
                           </div>
                         )}
                         <ul className="divide-y" style={{ borderColor: "#E2E7EC" }}>
@@ -259,8 +259,8 @@ export default function KineticDesign({ site, page = "home", basePath = "" }: Pr
                       <span className="absolute bottom-0 left-0 h-1.5 w-1/3" style={{ background: LIME }} aria-hidden />
                     </div>
                     <div className="p-5">
-                      <p className="text-lg font-bold" style={{ color: NAVY }}>{m.name}</p>
-                      {m.role && <p className="text-sm" style={{ color: SLATE }}>{m.role}</p>}
+                      <p data-edit={`team:${m.id}:name`} className="text-lg font-bold" style={{ color: NAVY }}>{m.name}</p>
+                      {m.role && <p data-edit={`team:${m.id}:role`} className="text-sm" style={{ color: SLATE }}>{m.role}</p>}
                       {m.credentials && <p className="mt-1 text-xs text-neutral-400">{m.credentials}</p>}
                     </div>
                   </div>
