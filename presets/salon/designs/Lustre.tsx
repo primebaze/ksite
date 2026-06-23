@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { editImg, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, editImg, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { LustreHeader } from "./LustreHeader";
 import { LustreBooking } from "./LustreBooking";
@@ -92,11 +92,11 @@ export default function LustreDesign({ site, page = "home", basePath = "" }: Pre
 
         {/* trust badge band (mirrors the reference's CQC strip) */}
         <div className="mt-12 flex flex-col items-center justify-center gap-3 border-t border-neutral-200 pt-8 text-xs uppercase tracking-[0.18em] text-neutral-400 sm:flex-row sm:gap-6">
-          <span>Fully insured</span>
+          <span {...editCopy(content, "footer_badge_1", "Fully insured")} />
           <span className="hidden sm:inline">•</span>
-          <span>Medically led</span>
+          <span {...editCopy(content, "footer_badge_2", "Medically led")} />
           <span className="hidden sm:inline">•</span>
-          <span>Registered practitioner</span>
+          <span {...editCopy(content, "footer_badge_3", "Registered practitioner")} />
         </div>
 
         <p className="mt-8 text-xs text-neutral-400">© {new Date().getFullYear()} {name}. All rights reserved.</p>
@@ -113,11 +113,11 @@ export default function LustreDesign({ site, page = "home", basePath = "" }: Pre
   );
 
   // Lavender page banner — also clears the fixed header on sub-pages.
-  const banner = (kicker: string, title: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string) => (
     <section style={{ background: LAVENDER }} className="text-white">
       <div className="mx-auto max-w-5xl px-6 pb-14 pt-32 text-center sm:pt-36">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.32em] text-white/85">{kicker}</p>
-        <h1 style={serif} className="mt-3 text-3xl font-normal tracking-[0.08em] sm:text-5xl">{title}</h1>
+        <p className="text-[11px] font-semibold uppercase tracking-[0.32em] text-white/85" {...editCopy(content, kickerKey, kicker)} />
+        <h1 style={serif} className="mt-3 text-3xl font-normal tracking-[0.08em] sm:text-5xl" {...editCopy(content, titleKey, title)} />
       </div>
     </section>
   );
@@ -126,7 +126,7 @@ export default function LustreDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "services") {
     return shell(
       <>
-        {banner("The clinic", "Treatments & prices")}
+        {banner("The clinic", "svc_kicker", "Treatments & prices", "svc_title")}
         <section className="mx-auto max-w-3xl px-6 py-16 sm:py-20">
           {groups.length > 0 ? (
             <div className="space-y-14">
@@ -157,7 +157,7 @@ export default function LustreDesign({ site, page = "home", basePath = "" }: Pre
               ))}
               {bookingOn && (
                 <div className="pt-4 text-center">
-                  <a href={book} className="inline-flex px-10 py-3.5 text-xs font-semibold uppercase tracking-[0.22em] text-white transition hover:opacity-90" style={{ background: INK }}>Book a consultation</a>
+                  <a href={book} className="inline-flex px-10 py-3.5 text-xs font-semibold uppercase tracking-[0.22em] text-white transition hover:opacity-90" style={{ background: INK }} {...editCopy(content, "svc_book_cta", "Book a consultation")} />
                 </div>
               )}
             </div>
@@ -173,9 +173,9 @@ export default function LustreDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "reservations") {
     return shell(
       <>
-        {banner("Appointments", "Book now")}
+        {banner("Appointments", "book_kicker", "Book now", "book_title")}
         <section className="mx-auto max-w-xl px-6 py-16 sm:py-20">
-          <p className="mb-8 text-center text-[15px] leading-[1.8] text-neutral-600">Get in touch today to schedule your next session. Tell me a little about what you are looking for and I will confirm your slot.</p>
+          <p className="mb-8 text-center text-[15px] leading-[1.8] text-neutral-600" {...editCopy(content, "book_blurb", "Get in touch today to schedule your next session. Tell me a little about what you are looking for and I will confirm your slot.")} />
           <LustreBooking tenantId={tenant.id} name={name} />
         </section>
       </>,
@@ -186,10 +186,10 @@ export default function LustreDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "contact") {
     return shell(
       <>
-        {banner("Visit", "Get in touch")}
+        {banner("Visit", "contact_kicker", "Get in touch", "contact_title")}
         <section className="mx-auto grid max-w-6xl gap-12 px-6 py-16 sm:py-20 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={serif} className="text-2xl tracking-[0.06em] text-neutral-800">Opening hours</h2>
+            <h2 style={serif} className="text-2xl tracking-[0.06em] text-neutral-800" {...editCopy(content, "contact_hours_heading", "Opening hours")} />
             {content.hours && content.hours.length > 0 ? (
               <ul className="mt-6 max-w-sm divide-y divide-neutral-200 text-sm text-neutral-700">
                 {content.hours.map((h, i) => (
@@ -200,14 +200,14 @@ export default function LustreDesign({ site, page = "home", basePath = "" }: Pre
               <p className="mt-6 text-sm text-neutral-500">Open by appointment.</p>
             )}
 
-            <h3 className="mt-10 text-[11px] font-semibold uppercase tracking-[0.22em] text-neutral-400">Where to find us</h3>
+            <h3 className="mt-10 text-[11px] font-semibold uppercase tracking-[0.22em] text-neutral-400" {...editCopy(content, "contact_find_heading", "Where to find us")} />
             {content.address && <p data-edit="content.address" className="mt-3 whitespace-pre-line text-sm leading-relaxed text-neutral-700">{content.address}</p>}
             <div className="mt-4 space-y-1.5 text-sm text-neutral-700">
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block hover:text-neutral-950">{content.phone}</a>}
               {content.email && <a data-edit="content.email" href={`mailto:${content.email}`} className="block hover:text-neutral-950">{content.email}</a>}
             </div>
             {content.map_url && (
-              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-6 inline-flex border px-7 py-3 text-[11px] font-semibold uppercase tracking-[0.2em] transition hover:bg-[#3a3744] hover:text-white" style={{ borderColor: INK, color: INK }}>Get directions</a>
+              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-6 inline-flex border px-7 py-3 text-[11px] font-semibold uppercase tracking-[0.2em] transition hover:bg-[#3a3744] hover:text-white" style={{ borderColor: INK, color: INK }} {...editCopy(content, "contact_directions_cta", "Get directions")} />
             )}
           </div>
 
@@ -235,7 +235,7 @@ export default function LustreDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "about") {
     return shell(
       <>
-        {banner("Hello", "My story")}
+        {banner("Hello", "about_kicker", "My story", "about_title")}
         <section className="mx-auto max-w-3xl px-6 py-16 sm:py-20">
           {content.about ? (
             <p data-edit="content.about" className="whitespace-pre-line text-[17px] leading-[1.9] text-neutral-700">{content.about}</p>
@@ -265,7 +265,7 @@ export default function LustreDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Gallery", "A look inside")}
+        {banner("Gallery", "gallery_kicker", "A look inside", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="grid grid-cols-2 gap-1 sm:grid-cols-3">
             {gallery.map((g) => (
@@ -298,7 +298,7 @@ export default function LustreDesign({ site, page = "home", basePath = "" }: Pre
           {content.tagline && (
             <p data-edit="content.tagline" className="max-w-xl text-sm uppercase tracking-[0.28em] text-white/90 [text-shadow:0_1px_12px_rgba(0,0,0,0.3)] sm:text-base">{content.tagline}</p>
           )}
-          <a href={book} className="mt-2 rounded-full border border-white px-9 py-3 text-xs font-semibold uppercase tracking-[0.22em] text-white transition hover:bg-white hover:text-neutral-800">Book now</a>
+          <a href={book} className="mt-2 rounded-full border border-white px-9 py-3 text-xs font-semibold uppercase tracking-[0.22em] text-white transition hover:bg-white hover:text-neutral-800" {...editCopy(content, "hero_book_cta", "Book now")} />
         </div>
       </section>
 
@@ -307,9 +307,9 @@ export default function LustreDesign({ site, page = "home", basePath = "" }: Pre
         <section className="mx-auto max-w-5xl px-6 py-20 sm:py-24">
           <div className="grid items-center gap-12 lg:grid-cols-[1fr_1.1fr]">
             <div>
-              <h2 style={serif} className="text-3xl tracking-[0.08em] text-neutral-800 sm:text-4xl">My story</h2>
+              <h2 style={serif} className="text-3xl tracking-[0.08em] text-neutral-800 sm:text-4xl" {...editCopy(content, "story_heading", "My story")} />
               <p data-edit="content.about" className="mt-6 line-clamp-[12] whitespace-pre-line text-[16px] leading-[1.9] text-neutral-600">{content.about}</p>
-              <a href={href("about")} className="mt-7 inline-flex text-xs font-semibold uppercase tracking-[0.2em]" style={{ color: INK }}>Read more →</a>
+              <a href={href("about")} className="mt-7 inline-flex text-xs font-semibold uppercase tracking-[0.2em]" style={{ color: INK }} {...editCopy(content, "story_cta", "Read more →")} />
             </div>
             {(content.images?.story_portrait || lead?.photo_url || hero) && (
               // eslint-disable-next-line @next/next/no-img-element
@@ -325,13 +325,9 @@ export default function LustreDesign({ site, page = "home", basePath = "" }: Pre
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img loading="lazy" decoding="async" {...editImg(content, "why_choose", gallery[0]?.image_url || hero)} alt="" className="aspect-[4/3] w-full bg-white/20 object-cover" />
           <div>
-            <h2 style={serif} className="text-3xl tracking-[0.08em] sm:text-4xl">Why choose us</h2>
-            <p className="mt-6 text-[15px] leading-[1.9] text-white/90">
-              Aesthetics is as much about confidence as appearance. Every treatment starts with a calm, unhurried consultation, so the plan is genuinely right for you. Nothing is rushed and nothing is oversold.
-            </p>
-            <p className="mt-4 text-[15px] leading-[1.9] text-white/90">
-              Treatments are carried out by a qualified, medically trained practitioner, so you are in safe and experienced hands from the very first visit through to your aftercare.
-            </p>
+            <h2 style={serif} className="text-3xl tracking-[0.08em] sm:text-4xl" {...editCopy(content, "whyus_heading", "Why choose us")} />
+            <p className="mt-6 text-[15px] leading-[1.9] text-white/90" {...editCopy(content, "whyus_body_1", "Aesthetics is as much about confidence as appearance. Every treatment starts with a calm, unhurried consultation, so the plan is genuinely right for you. Nothing is rushed and nothing is oversold.")} />
+            <p className="mt-4 text-[15px] leading-[1.9] text-white/90" {...editCopy(content, "whyus_body_2", "Treatments are carried out by a qualified, medically trained practitioner, so you are in safe and experienced hands from the very first visit through to your aftercare.")} />
           </div>
         </div>
       </section>
@@ -356,8 +352,8 @@ export default function LustreDesign({ site, page = "home", basePath = "" }: Pre
       {groups.length > 0 && (
         <section style={{ background: MIST }}>
           <div className="mx-auto max-w-4xl px-6 py-20 text-center sm:py-24">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-neutral-400">The clinic</p>
-            <h2 style={serif} className="mt-3 text-3xl tracking-[0.08em] text-neutral-800 sm:text-4xl">Treatments</h2>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.3em] text-neutral-400" {...editCopy(content, "tease_kicker", "The clinic")} />
+            <h2 style={serif} className="mt-3 text-3xl tracking-[0.08em] text-neutral-800 sm:text-4xl" {...editCopy(content, "tease_heading", "Treatments")} />
             <ul className="mx-auto mt-10 max-w-xl divide-y divide-neutral-200 text-left">
               {groups.flatMap((s) => s.categories.flatMap((c) => c.items)).slice(0, 6).map((item) => (
                 <li key={item.id} className="flex items-baseline justify-between gap-6 py-3.5">
@@ -366,7 +362,7 @@ export default function LustreDesign({ site, page = "home", basePath = "" }: Pre
                 </li>
               ))}
             </ul>
-            <a href={href("services")} className="mt-10 inline-flex px-9 py-3.5 text-xs font-semibold uppercase tracking-[0.22em] text-white transition hover:opacity-90" style={{ background: INK }}>View all treatments</a>
+            <a href={href("services")} className="mt-10 inline-flex px-9 py-3.5 text-xs font-semibold uppercase tracking-[0.22em] text-white transition hover:opacity-90" style={{ background: INK }} {...editCopy(content, "tease_all_cta", "View all treatments")} />
           </div>
         </section>
       )}
@@ -375,9 +371,9 @@ export default function LustreDesign({ site, page = "home", basePath = "" }: Pre
       <section style={{ background: LAVENDER }} className="text-white">
         <div className="mx-auto max-w-6xl px-6 py-20 sm:py-24">
           <div className="text-center">
-            <h2 style={serif} className="text-3xl tracking-[0.1em] sm:text-4xl">Client testimonials</h2>
-            <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-white/85">What my clients say about our work matters more than anything. Here is what a few of them had to say.</p>
-            <p className="mt-6 text-sm font-semibold tracking-[0.04em]">4.9 ★★★★★ on Google Reviews</p>
+            <h2 style={serif} className="text-3xl tracking-[0.1em] sm:text-4xl" {...editCopy(content, "testimonials_heading", "Client testimonials")} />
+            <p className="mx-auto mt-4 max-w-xl text-sm leading-relaxed text-white/85" {...editCopy(content, "testimonials_blurb", "What my clients say about our work matters more than anything. Here is what a few of them had to say.")} />
+            <p className="mt-6 text-sm font-semibold tracking-[0.04em]" {...editCopy(content, "testimonials_rating", "4.9 ★★★★★ on Google Reviews")} />
           </div>
           <div className="mt-12">
             <LustreReviews reviews={reviews} />
@@ -388,7 +384,7 @@ export default function LustreDesign({ site, page = "home", basePath = "" }: Pre
       {/* FAQ accordion — mauve band */}
       <section style={{ background: MAUVE }}>
         <div className="mx-auto max-w-3xl px-6 py-20 sm:py-24">
-          <h2 style={serif} className="text-center text-3xl tracking-[0.18em] text-white underline decoration-white/40 underline-offset-8 sm:text-4xl">FAQ</h2>
+          <h2 style={serif} className="text-center text-3xl tracking-[0.18em] text-white underline decoration-white/40 underline-offset-8 sm:text-4xl" {...editCopy(content, "faq_heading", "FAQ")} />
           <div className="mt-12">
             <LustreFaq items={SAMPLE_FAQ} />
           </div>
@@ -401,8 +397,8 @@ export default function LustreDesign({ site, page = "home", basePath = "" }: Pre
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img loading="lazy" decoding="async" {...editImg(content, "storefront", (gallery[1] ?? gallery[0])?.image_url || hero)} alt="" className="aspect-[3/4] w-full object-cover" style={{ background: MIST }} />
           <div className="flex flex-col justify-center px-0 pt-10 lg:px-12 lg:pt-0">
-            <h2 style={serif} className="text-2xl tracking-[0.1em] text-neutral-800 underline decoration-neutral-300 underline-offset-8 sm:text-3xl">Opening hours</h2>
-            <p className="mt-4 text-xs uppercase tracking-[0.2em] text-neutral-400">Come visit</p>
+            <h2 style={serif} className="text-2xl tracking-[0.1em] text-neutral-800 underline decoration-neutral-300 underline-offset-8 sm:text-3xl" {...editCopy(content, "home_hours_heading", "Opening hours")} />
+            <p className="mt-4 text-xs uppercase tracking-[0.2em] text-neutral-400" {...editCopy(content, "home_hours_kicker", "Come visit")} />
             {content.hours && content.hours.length > 0 ? (
               <ul className="mt-6 max-w-sm space-y-2.5 text-sm text-neutral-700">
                 {content.hours.map((h, i) => (
@@ -414,12 +410,12 @@ export default function LustreDesign({ site, page = "home", basePath = "" }: Pre
             )}
             {content.address && (
               <>
-                <h3 className="mt-10 text-xs uppercase tracking-[0.2em] text-neutral-400">Location</h3>
+                <h3 className="mt-10 text-xs uppercase tracking-[0.2em] text-neutral-400" {...editCopy(content, "home_location_heading", "Location")} />
                 <p data-edit="content.address" className="mt-3 whitespace-pre-line text-sm leading-relaxed text-neutral-700">{content.address}</p>
               </>
             )}
             {content.map_url && (
-              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-6 inline-flex w-fit border px-7 py-3 text-[11px] font-semibold uppercase tracking-[0.2em] transition hover:bg-[#3a3744] hover:text-white" style={{ borderColor: INK, color: INK }}>Get directions</a>
+              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-6 inline-flex w-fit border px-7 py-3 text-[11px] font-semibold uppercase tracking-[0.2em] transition hover:bg-[#3a3744] hover:text-white" style={{ borderColor: INK, color: INK }} {...editCopy(content, "home_directions_cta", "Get directions")} />
             )}
           </div>
         </div>
@@ -428,9 +424,9 @@ export default function LustreDesign({ site, page = "home", basePath = "" }: Pre
       {/* closing CTA band */}
       <section style={{ background: INK }} className="text-white">
         <div className="mx-auto max-w-3xl px-6 py-16 text-center sm:py-20">
-          <h2 style={serif} className="text-3xl tracking-[0.08em] sm:text-4xl">Ready to begin?</h2>
-          <p className="mx-auto mt-4 max-w-md text-sm leading-relaxed text-white/80">Book a consultation today and let us put together a treatment plan that is right for you.</p>
-          <a href={book} className="mt-8 inline-flex rounded-full bg-white px-10 py-3.5 text-xs font-semibold uppercase tracking-[0.22em] transition hover:opacity-90" style={{ color: INK }}>Book now</a>
+          <h2 style={serif} className="text-3xl tracking-[0.08em] sm:text-4xl" {...editCopy(content, "cta_heading", "Ready to begin?")} />
+          <p className="mx-auto mt-4 max-w-md text-sm leading-relaxed text-white/80" {...editCopy(content, "cta_blurb", "Book a consultation today and let us put together a treatment plan that is right for you.")} />
+          <a href={book} className="mt-8 inline-flex rounded-full bg-white px-10 py-3.5 text-xs font-semibold uppercase tracking-[0.22em] transition hover:opacity-90" style={{ color: INK }} {...editCopy(content, "cta_btn", "Book now")} />
         </div>
       </section>
     </>,

@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { EnamelHeader } from "./EnamelHeader";
 import { EnamelBooking } from "./EnamelBooking";
@@ -133,7 +133,7 @@ export default function EnamelDesign({ site, page = "home", basePath = "" }: Pre
           )}
         </div>
         <div>
-          <h4 className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: MINT }}>Explore</h4>
+          <h4 className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: MINT }} {...editCopy(content, "footer_explore", "Explore")} />
           <ul className="mt-4 space-y-2.5 text-sm">
             {nav.map((l) => (
               <li key={l.href}><a href={l.href} className="text-white/70 transition hover:text-white">{l.label}</a></li>
@@ -141,7 +141,7 @@ export default function EnamelDesign({ site, page = "home", basePath = "" }: Pre
           </ul>
         </div>
         <div>
-          <h4 className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: MINT }}>Visit us</h4>
+          <h4 className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: MINT }} {...editCopy(content, "footer_visit", "Visit us")} />
           {content.address && <p data-edit="content.address" className="mt-4 whitespace-pre-line text-sm leading-relaxed text-white/70">{content.address}</p>}
           <div className="mt-3 space-y-1.5 text-sm">
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block text-white/70 transition hover:text-white">{content.phone}</a>}
@@ -171,13 +171,13 @@ export default function EnamelDesign({ site, page = "home", basePath = "" }: Pre
   );
 
   // Bright page banner — clears the fixed header on sub-pages.
-  const banner = (kicker: string, title: string, blurb?: string) => (
+  const banner = (keyBase: string, kicker: string, title: string, blurb?: string) => (
     <section style={{ background: GREY }}>
       <div className="mx-auto max-w-5xl px-6 pb-16 pt-32 text-center sm:pt-40">
-        <p className="text-xs font-semibold uppercase tracking-[0.28em]" style={{ color: SKY }}>{kicker}</p>
-        <h1 style={serif} className="mt-3 text-4xl font-medium tracking-tight sm:text-5xl" >{title}</h1>
+        <p className="text-xs font-semibold uppercase tracking-[0.28em]" style={{ color: SKY }} {...editCopy(content, `${keyBase}_kicker`, kicker)} />
+        <h1 style={serif} className="mt-3 text-4xl font-medium tracking-tight sm:text-5xl" {...editCopy(content, `${keyBase}_title`, title)} />
         <div className="mt-5 flex justify-center"><SmileArc /></div>
-        {blurb && <p className="mx-auto mt-5 max-w-2xl text-[15px] leading-relaxed text-[#5b6f7d]">{blurb}</p>}
+        {blurb && <p className="mx-auto mt-5 max-w-2xl text-[15px] leading-relaxed text-[#5b6f7d]" {...editCopy(content, `${keyBase}_blurb`, blurb)} />}
       </div>
     </section>
   );
@@ -186,7 +186,7 @@ export default function EnamelDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "services") {
     return shell(
       <>
-        {banner("Treatments", "Confident, healthy smiles", "From routine check-ups to cosmetic and implant care — every treatment starts with a gentle assessment and clear, honest pricing.")}
+        {banner("svc_banner", "Treatments", "Confident, healthy smiles", "From routine check-ups to cosmetic and implant care — every treatment starts with a gentle assessment and clear, honest pricing.")}
         <section className="mx-auto max-w-4xl px-6 py-20">
           {groups.length > 0 ? (
             <div className="space-y-14">
@@ -222,9 +222,9 @@ export default function EnamelDesign({ site, page = "home", basePath = "" }: Pre
           ) : <p className="text-[#5b6f7d]">Our treatment menu is coming soon.</p>}
 
           <div className="mt-16 overflow-hidden rounded-3xl border border-[#dbe9e1] px-8 py-12 text-center" style={{ background: MINT }}>
-            <h3 style={{ ...serif, color: NAVY }} className="text-2xl font-medium">Not sure what you need?</h3>
-            <p className="mx-auto mt-3 max-w-lg text-[15px] leading-relaxed" style={{ color: "#33505f" }}>Book a check-up and we will assess your smile, talk through your options, and set out a plan with no pressure.</p>
-            <a href={book} className="mt-6 inline-flex rounded-full px-9 py-3.5 text-sm font-semibold uppercase tracking-[0.12em] text-white transition hover:opacity-90" style={{ background: SKY }}>Book a check-up</a>
+            <h3 style={{ ...serif, color: NAVY }} className="text-2xl font-medium" {...editCopy(content, "svc_cta_heading", "Not sure what you need?")} />
+            <p className="mx-auto mt-3 max-w-lg text-[15px] leading-relaxed" style={{ color: "#33505f" }} {...editCopy(content, "svc_cta_blurb", "Book a check-up and we will assess your smile, talk through your options, and set out a plan with no pressure.")} />
+            <a href={book} className="mt-6 inline-flex rounded-full px-9 py-3.5 text-sm font-semibold uppercase tracking-[0.12em] text-white transition hover:opacity-90" style={{ background: SKY }} {...editCopy(content, "svc_cta_button", "Book a check-up")} />
           </div>
         </section>
       </>,
@@ -235,7 +235,7 @@ export default function EnamelDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "about") {
     return shell(
       <>
-        {banner("About", "Modern dentistry, gentle care")}
+        {banner("about_banner", "About", "Modern dentistry, gentle care")}
         <section className="mx-auto max-w-3xl px-6 py-20">
           {content.about ? (
             <p data-edit="content.about" className="text-[17px] leading-[1.9] text-[#33505f]">{content.about}</p>
@@ -255,8 +255,8 @@ export default function EnamelDesign({ site, page = "home", basePath = "" }: Pre
           <section className="border-y border-[#e6edf2]" style={{ background: GREY }}>
             <div className="mx-auto max-w-6xl px-6 py-20">
               <div className="text-center">
-                <p className="text-xs font-semibold uppercase tracking-[0.28em]" style={{ color: SKY }}>Our team</p>
-                <h2 style={serif} className="mt-3 text-3xl font-medium tracking-tight sm:text-4xl" >Meet your clinicians</h2>
+                <p className="text-xs font-semibold uppercase tracking-[0.28em]" style={{ color: SKY }} {...editCopy(content, "about_team_eyebrow", "Our team")} />
+                <h2 style={serif} className="mt-3 text-3xl font-medium tracking-tight sm:text-4xl" {...editCopy(content, "about_team_heading", "Meet your clinicians")} />
                 <div className="mt-4 flex justify-center"><SmileArc /></div>
               </div>
               <div className="mt-14 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
@@ -282,8 +282,8 @@ export default function EnamelDesign({ site, page = "home", basePath = "" }: Pre
 
         <section className="mx-auto max-w-3xl px-6 py-20">
           <div className="text-center">
-            <p className="text-xs font-semibold uppercase tracking-[0.28em]" style={{ color: SKY }}>Good to know</p>
-            <h2 style={serif} className="mt-3 text-3xl font-medium tracking-tight sm:text-4xl" >Common questions</h2>
+            <p className="text-xs font-semibold uppercase tracking-[0.28em]" style={{ color: SKY }} {...editCopy(content, "about_faq_eyebrow", "Good to know")} />
+            <h2 style={serif} className="mt-3 text-3xl font-medium tracking-tight sm:text-4xl" {...editCopy(content, "about_faq_heading", "Common questions")} />
           </div>
           <div className="mt-10 space-y-4">
             {FAQ.map((f) => (
@@ -305,7 +305,7 @@ export default function EnamelDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Gallery", "Inside the practice", "A look at our calm, modern surroundings and the bright smiles we help create.")}
+        {banner("gallery_banner", "Gallery", "Inside the practice", "A look at our calm, modern surroundings and the bright smiles we help create.")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-6xl px-6 py-16">
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
@@ -324,12 +324,12 @@ export default function EnamelDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "reservations") {
     return shell(
       <>
-        {banner("Appointments", "Book your visit", "Request a check-up or treatment. Tell us a little about you and our reception team will confirm a time that works.")}
+        {banner("book_banner", "Appointments", "Book your visit", "Request a check-up or treatment. Tell us a little about you and our reception team will confirm a time that works.")}
         <section className="mx-auto grid max-w-6xl gap-10 px-6 py-20 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
           <div>
-            <h2 style={serif} className="text-3xl font-medium tracking-tight" >A calm, reassuring visit</h2>
+            <h2 style={serif} className="text-3xl font-medium tracking-tight" {...editCopy(content, "book_visit_heading", "A calm, reassuring visit")} />
             <div className="mt-4"><SmileArc /></div>
-            <p className="mt-5 text-[15px] leading-relaxed text-[#5b6f7d]">Whether it is your first visit in years or a routine check-up, you are in safe hands. We will listen, explain everything clearly, and never rush you.</p>
+            <p className="mt-5 text-[15px] leading-relaxed text-[#5b6f7d]" {...editCopy(content, "book_visit_blurb", "Whether it is your first visit in years or a routine check-up, you are in safe hands. We will listen, explain everything clearly, and never rush you.")} />
             <ul className="mt-7 space-y-3 text-sm text-[#33505f]">
               {["GDC-registered dentists & hygienists", "Nervous-patient friendly, judgement-free", "Honest, up-front pricing — finance available", "Same-week emergency appointments"].map((t) => (
                 <li key={t} className="flex items-start gap-3">
@@ -352,10 +352,10 @@ export default function EnamelDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "contact") {
     return shell(
       <>
-        {banner("Contact", "Get in touch", "Visit us, call, or send a message and our friendly team will get back to you.")}
+        {banner("contact_banner", "Contact", "Get in touch", "Visit us, call, or send a message and our friendly team will get back to you.")}
         <section className="mx-auto grid max-w-6xl gap-12 px-6 py-20 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={serif} className="text-2xl font-medium tracking-tight" >Practice details</h2>
+            <h2 style={serif} className="text-2xl font-medium tracking-tight" {...editCopy(content, "contact_details_heading", "Practice details")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed text-[#33505f]">
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-[#2e7cb8]">{content.phone}</a>}
@@ -370,9 +370,9 @@ export default function EnamelDesign({ site, page = "home", basePath = "" }: Pre
             )}
             <div className="mt-7 flex flex-wrap gap-3">
               {content.map_url && (
-                <a href={content.map_url} target="_blank" rel="noreferrer" className="inline-flex rounded-full px-7 py-3 text-xs font-semibold uppercase tracking-[0.12em] text-white transition hover:opacity-90" style={{ background: SKY }}>Get directions</a>
+                <a href={content.map_url} target="_blank" rel="noreferrer" className="inline-flex rounded-full px-7 py-3 text-xs font-semibold uppercase tracking-[0.12em] text-white transition hover:opacity-90" style={{ background: SKY }} {...editCopy(content, "contact_directions_cta", "Get directions")} />
               )}
-              <a href={book} className="inline-flex rounded-full border px-7 py-3 text-xs font-semibold uppercase tracking-[0.12em] transition hover:bg-[#15293a] hover:text-white" style={{ borderColor: NAVY, color: NAVY }}>Book a check-up</a>
+              <a href={book} className="inline-flex rounded-full border px-7 py-3 text-xs font-semibold uppercase tracking-[0.12em] transition hover:bg-[#15293a] hover:text-white" style={{ borderColor: NAVY, color: NAVY }} {...editCopy(content, "contact_book_cta", "Book a check-up")} />
             </div>
             {content.socials && content.socials.length > 0 && (
               <div className="mt-8 flex gap-3" style={{ color: NAVY }}>
@@ -427,12 +427,12 @@ export default function EnamelDesign({ site, page = "home", basePath = "" }: Pre
               <p data-edit="content.tagline" className="mt-6 text-sm font-semibold uppercase tracking-[0.2em]" style={{ color: SKY }}>{content.tagline}</p>
             ) : null}
             <h1 data-edit="tenant.business_name" style={serif} className="mt-3 text-5xl font-medium leading-[1.04] tracking-tight text-[#15293a] sm:text-6xl">{name}</h1>
-            <p className="mt-3 max-w-md text-lg leading-relaxed text-[#5b6f7d]">Confident, healthy smiles in a calm, modern practice. Gentle dentistry for the whole family — including nervous patients.</p>
+            <p className="mt-3 max-w-md text-lg leading-relaxed text-[#5b6f7d]" {...editCopy(content, "hero_blurb", "Confident, healthy smiles in a calm, modern practice. Gentle dentistry for the whole family — including nervous patients.")} />
             <div className="mt-7"><SmileArc className="h-5 w-auto" /></div>
             <div className="mt-7 flex flex-wrap gap-3">
-              <a href={book} className="inline-flex items-center rounded-full px-8 py-4 text-xs font-semibold uppercase tracking-[0.14em] text-white shadow-[0_16px_40px_-16px_rgba(46,124,184,0.7)] transition hover:opacity-90" style={{ background: SKY }}>Book a check-up</a>
+              <a href={book} className="inline-flex items-center rounded-full px-8 py-4 text-xs font-semibold uppercase tracking-[0.14em] text-white shadow-[0_16px_40px_-16px_rgba(46,124,184,0.7)] transition hover:opacity-90" style={{ background: SKY }} {...editCopy(content, "hero_book_cta", "Book a check-up")} />
               {groups.length > 0 && (
-                <a href={href("services")} className="inline-flex items-center rounded-full border px-8 py-4 text-xs font-semibold uppercase tracking-[0.14em] transition hover:bg-[#15293a] hover:text-white" style={{ borderColor: NAVY, color: NAVY }}>View treatments</a>
+                <a href={href("services")} className="inline-flex items-center rounded-full border px-8 py-4 text-xs font-semibold uppercase tracking-[0.14em] transition hover:bg-[#15293a] hover:text-white" style={{ borderColor: NAVY, color: NAVY }} {...editCopy(content, "hero_treatments_cta", "View treatments")} />
               )}
             </div>
             {content.phone && (
@@ -476,7 +476,7 @@ export default function EnamelDesign({ site, page = "home", basePath = "" }: Pre
       {/* INTRO */}
       {content.about && (
         <section className="mx-auto max-w-3xl px-6 py-20 text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.28em]" style={{ color: SKY }}>Welcome</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.28em]" style={{ color: SKY }} {...editCopy(content, "home_welcome_eyebrow", "Welcome")} />
           <p data-edit="content.about" className="mt-6 text-[19px] leading-[1.9] text-[#33505f]">{content.about}</p>
         </section>
       )}
@@ -485,10 +485,10 @@ export default function EnamelDesign({ site, page = "home", basePath = "" }: Pre
       <section className="border-y border-[#e6edf2]" style={{ background: WHITE }}>
         <div className="mx-auto max-w-6xl px-6 py-20">
           <div className="text-center">
-            <p className="text-xs font-semibold uppercase tracking-[0.28em]" style={{ color: SKY }}>Nervous? You are in good hands</p>
-            <h2 style={serif} className="mt-3 text-3xl font-medium tracking-tight sm:text-4xl" >Your visit, step by step</h2>
+            <p className="text-xs font-semibold uppercase tracking-[0.28em]" style={{ color: SKY }} {...editCopy(content, "visit_eyebrow", "Nervous? You are in good hands")} />
+            <h2 style={serif} className="mt-3 text-3xl font-medium tracking-tight sm:text-4xl" {...editCopy(content, "visit_heading", "Your visit, step by step")} />
             <div className="mt-4 flex justify-center"><SmileArc /></div>
-            <p className="mx-auto mt-5 max-w-xl text-[15px] leading-relaxed text-[#5b6f7d]">We know a trip to the dentist can feel daunting. Here is exactly what to expect — no surprises, no rush.</p>
+            <p className="mx-auto mt-5 max-w-xl text-[15px] leading-relaxed text-[#5b6f7d]" {...editCopy(content, "visit_blurb", "We know a trip to the dentist can feel daunting. Here is exactly what to expect — no surprises, no rush.")} />
           </div>
           <div className="relative mt-14 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
             {VISIT.map((s, idx) => (
@@ -506,8 +506,8 @@ export default function EnamelDesign({ site, page = "home", basePath = "" }: Pre
       {teaseCategories.length > 0 && (
         <section className="mx-auto max-w-6xl px-6 py-20">
           <div className="text-center">
-            <p className="text-xs font-semibold uppercase tracking-[0.28em]" style={{ color: SKY }}>Treatments</p>
-            <h2 style={serif} className="mt-3 text-3xl font-medium tracking-tight sm:text-4xl" >Care for every smile</h2>
+            <p className="text-xs font-semibold uppercase tracking-[0.28em]" style={{ color: SKY }} {...editCopy(content, "home_treatments_eyebrow", "Treatments")} />
+            <h2 style={serif} className="mt-3 text-3xl font-medium tracking-tight sm:text-4xl" {...editCopy(content, "home_treatments_heading", "Care for every smile")} />
             <div className="mt-4 flex justify-center"><SmileArc /></div>
           </div>
           <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -528,7 +528,7 @@ export default function EnamelDesign({ site, page = "home", basePath = "" }: Pre
             ))}
           </div>
           <div className="mt-12 text-center">
-            <a href={href("services")} className="inline-flex rounded-full px-9 py-3.5 text-sm font-semibold uppercase tracking-[0.12em] text-white transition hover:opacity-90" style={{ background: SKY }}>View all treatments</a>
+            <a href={href("services")} className="inline-flex rounded-full px-9 py-3.5 text-sm font-semibold uppercase tracking-[0.12em] text-white transition hover:opacity-90" style={{ background: SKY }} {...editCopy(content, "home_treatments_cta", "View all treatments")} />
           </div>
         </section>
       )}
@@ -538,8 +538,8 @@ export default function EnamelDesign({ site, page = "home", basePath = "" }: Pre
         <section className="border-y border-[#e6edf2]" style={{ background: GREY }}>
           <div className="mx-auto max-w-6xl px-6 py-20">
             <div className="text-center">
-              <p className="text-xs font-semibold uppercase tracking-[0.28em]" style={{ color: SKY }}>Our team</p>
-              <h2 style={serif} className="mt-3 text-3xl font-medium tracking-tight sm:text-4xl" >The people behind your smile</h2>
+              <p className="text-xs font-semibold uppercase tracking-[0.28em]" style={{ color: SKY }} {...editCopy(content, "home_team_eyebrow", "Our team")} />
+              <h2 style={serif} className="mt-3 text-3xl font-medium tracking-tight sm:text-4xl" {...editCopy(content, "home_team_heading", "The people behind your smile")} />
               <div className="mt-4 flex justify-center"><SmileArc /></div>
             </div>
             <div className="mt-14 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
@@ -567,8 +567,8 @@ export default function EnamelDesign({ site, page = "home", basePath = "" }: Pre
       <section style={{ background: NAVY }}>
         <div className="mx-auto max-w-6xl px-6 py-20 text-white">
           <div className="text-center">
-            <p className="text-xs font-semibold uppercase tracking-[0.28em]" style={{ color: MINT }}>Patient stories</p>
-            <h2 style={serif} className="mt-3 text-3xl font-medium tracking-tight text-white sm:text-4xl" >Smiles worth talking about</h2>
+            <p className="text-xs font-semibold uppercase tracking-[0.28em]" style={{ color: MINT }} {...editCopy(content, "reviews_eyebrow", "Patient stories")} />
+            <h2 style={serif} className="mt-3 text-3xl font-medium tracking-tight text-white sm:text-4xl" {...editCopy(content, "reviews_heading", "Smiles worth talking about")} />
           </div>
           <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {REVIEWS.map((r) => (
@@ -586,11 +586,11 @@ export default function EnamelDesign({ site, page = "home", basePath = "" }: Pre
       <section style={{ background: MINT }}>
         <div className="mx-auto grid max-w-6xl items-center gap-10 px-6 py-16 lg:grid-cols-[1.2fr_1fr] lg:py-20">
           <div>
-            <h2 style={{ ...serif, color: NAVY }} className="text-3xl font-medium tracking-tight sm:text-4xl">Ready for a brighter, healthier smile?</h2>
-            <p className="mt-4 max-w-md text-[15px] leading-relaxed" style={{ color: "#33505f" }}>Book a check-up today. We will get to know you, assess your smile and set out a clear plan — gently, and at your pace.</p>
+            <h2 style={{ ...serif, color: NAVY }} className="text-3xl font-medium tracking-tight sm:text-4xl" {...editCopy(content, "cta_heading", "Ready for a brighter, healthier smile?")} />
+            <p className="mt-4 max-w-md text-[15px] leading-relaxed" style={{ color: "#33505f" }} {...editCopy(content, "cta_blurb", "Book a check-up today. We will get to know you, assess your smile and set out a clear plan — gently, and at your pace.")} />
             <div className="mt-7 flex flex-wrap gap-3">
-              <a href={book} className="inline-flex rounded-full px-8 py-4 text-xs font-semibold uppercase tracking-[0.14em] text-white transition hover:opacity-90" style={{ background: SKY }}>Book a check-up</a>
-              <a href={href("contact")} className="inline-flex rounded-full border px-8 py-4 text-xs font-semibold uppercase tracking-[0.14em] transition hover:bg-[#15293a] hover:text-white" style={{ borderColor: NAVY, color: NAVY }}>Contact us</a>
+              <a href={book} className="inline-flex rounded-full px-8 py-4 text-xs font-semibold uppercase tracking-[0.14em] text-white transition hover:opacity-90" style={{ background: SKY }} {...editCopy(content, "cta_book_button", "Book a check-up")} />
+              <a href={href("contact")} className="inline-flex rounded-full border px-8 py-4 text-xs font-semibold uppercase tracking-[0.14em] transition hover:bg-[#15293a] hover:text-white" style={{ borderColor: NAVY, color: NAVY }} {...editCopy(content, "cta_contact_button", "Contact us")} />
             </div>
           </div>
           <div className="rounded-3xl bg-white/70 p-7 backdrop-blur-sm">
@@ -610,14 +610,14 @@ export default function EnamelDesign({ site, page = "home", basePath = "" }: Pre
       <section className="border-t border-[#e6edf2]" style={{ background: WHITE }}>
         <div className="mx-auto grid max-w-6xl gap-10 px-6 py-16 md:grid-cols-3">
           <div>
-            <h3 className="text-xs font-semibold uppercase tracking-[0.16em]" style={{ color: SKY }}>Visit us</h3>
+            <h3 className="text-xs font-semibold uppercase tracking-[0.16em]" style={{ color: SKY }} {...editCopy(content, "details_visit_heading", "Visit us")} />
             {content.address && <p data-edit="content.address" className="mt-4 whitespace-pre-line text-sm leading-relaxed text-[#33505f]">{content.address}</p>}
             {content.map_url && (
-              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-4 inline-flex text-sm font-semibold" style={{ color: SKY }}>Get directions →</a>
+              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-4 inline-flex text-sm font-semibold" style={{ color: SKY }} {...editCopy(content, "details_directions_link", "Get directions →")} />
             )}
           </div>
           <div>
-            <h3 className="text-xs font-semibold uppercase tracking-[0.16em]" style={{ color: SKY }}>Opening times</h3>
+            <h3 className="text-xs font-semibold uppercase tracking-[0.16em]" style={{ color: SKY }} {...editCopy(content, "details_hours_heading", "Opening times")} />
             {content.hours && content.hours.length > 0 ? (
               <ul className="mt-4 space-y-2 text-sm text-[#33505f]">
                 {content.hours.map((h, i) => (
@@ -627,12 +627,12 @@ export default function EnamelDesign({ site, page = "home", basePath = "" }: Pre
             ) : <p className="mt-4 text-sm text-[#5b6f7d]">Open by appointment.</p>}
           </div>
           <div>
-            <h3 className="text-xs font-semibold uppercase tracking-[0.16em]" style={{ color: SKY }}>Contact</h3>
+            <h3 className="text-xs font-semibold uppercase tracking-[0.16em]" style={{ color: SKY }} {...editCopy(content, "details_contact_heading", "Contact")} />
             <div className="mt-4 space-y-1.5 text-sm text-[#33505f]">
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-[#2e7cb8]">{content.phone}</a>}
               {content.email && <a data-edit="content.email" href={`mailto:${content.email}`} className="block transition hover:text-[#2e7cb8]">{content.email}</a>}
             </div>
-            <a href={book} className="mt-5 inline-flex rounded-full px-7 py-3 text-xs font-semibold uppercase tracking-[0.12em] text-white transition hover:opacity-90" style={{ background: SKY }}>Book a check-up</a>
+            <a href={book} className="mt-5 inline-flex rounded-full px-7 py-3 text-xs font-semibold uppercase tracking-[0.12em] text-white transition hover:opacity-90" style={{ background: SKY }} {...editCopy(content, "details_book_cta", "Book a check-up")} />
           </div>
         </div>
       </section>

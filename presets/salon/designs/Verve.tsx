@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { VerveHeader } from "./VerveHeader";
 import { VerveBooking } from "./VerveBooking";
@@ -85,7 +85,7 @@ export default function VerveDesign({ site, page = "home", basePath = "" }: Pres
 
         {/* info / hours */}
         <div>
-          <h4 className="text-sm font-semibold uppercase tracking-[0.22em]" style={{ color: GOLD }}>Info</h4>
+          <h4 className="text-sm font-semibold uppercase tracking-[0.22em]" style={{ color: GOLD }} {...editCopy(content, "footer_info_heading", "Info")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm text-white/70">
               {content.hours.map((h, i) => (
@@ -97,12 +97,12 @@ export default function VerveDesign({ site, page = "home", basePath = "" }: Pres
 
         {/* contact */}
         <div>
-          <h4 className="text-sm font-semibold uppercase tracking-[0.22em]" style={{ color: GOLD }}>Contact us</h4>
+          <h4 className="text-sm font-semibold uppercase tracking-[0.22em]" style={{ color: GOLD }} {...editCopy(content, "footer_contact_heading", "Contact us")} />
           <div className="mt-5 space-y-2 text-sm text-white/75">
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block hover:text-white">{content.phone}</a>}
             {content.email && <a data-edit="content.email" href={`mailto:${content.email}`} className="block hover:text-white">{content.email}</a>}
           </div>
-          <a href={book} className="mt-6 inline-flex px-7 py-3 text-xs font-semibold uppercase tracking-[0.22em] transition hover:opacity-90" style={{ background: GOLD, color: INK }}>Book appointment</a>
+          <a href={book} className="mt-6 inline-flex px-7 py-3 text-xs font-semibold uppercase tracking-[0.22em] transition hover:opacity-90" style={{ background: GOLD, color: INK }} {...editCopy(content, "footer_book_cta", "Book appointment")} />
         </div>
       </div>
       <p className="px-8 pb-8 text-center text-xs text-white/40">© {name}. All rights reserved.</p>
@@ -118,11 +118,11 @@ export default function VerveDesign({ site, page = "home", basePath = "" }: Pres
   );
 
   // Ink page banner — also clears the fixed header on sub-pages.
-  const banner = (kicker: string, title: string) => (
+  const banner = (kickerKey: string, kicker: string, titleKey: string, title: string) => (
     <section style={{ background: INK }} className="text-white">
       <div className="mx-auto max-w-6xl px-8 pb-16 pt-36 text-center sm:pt-40">
-        <p style={{ ...script, color: GOLD }} className="text-3xl sm:text-4xl">{kicker}</p>
-        <h1 className="mt-2 text-4xl font-semibold uppercase tracking-[0.12em] sm:text-6xl">{title}</h1>
+        <p style={{ ...script, color: GOLD }} className="text-3xl sm:text-4xl" {...editCopy(content, kickerKey, kicker)} />
+        <h1 className="mt-2 text-4xl font-semibold uppercase tracking-[0.12em] sm:text-6xl" {...editCopy(content, titleKey, title)} />
       </div>
     </section>
   );
@@ -131,7 +131,7 @@ export default function VerveDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "services") {
     return shell(
       <>
-        {banner("Lovely", "Prices")}
+        {banner("svc_kicker", "Lovely", "svc_title", "Prices")}
         <section className="mx-auto max-w-4xl px-8 py-20">
           {groups.length > 0 ? (
             <div className="space-y-16">
@@ -157,7 +157,7 @@ export default function VerveDesign({ site, page = "home", basePath = "" }: Pres
                 </div>
               ))}
               <div className="text-center">
-                <a href={book} className="inline-flex px-10 py-4 text-xs font-semibold uppercase tracking-[0.24em] transition hover:opacity-90" style={{ background: INK, color: "#fff" }}>Book appointment</a>
+                <a href={book} className="inline-flex px-10 py-4 text-xs font-semibold uppercase tracking-[0.24em] transition hover:opacity-90" style={{ background: INK, color: "#fff" }} {...editCopy(content, "svc_book_cta", "Book appointment")} />
               </div>
             </div>
           ) : <p className="text-center text-neutral-500">Our price list is coming soon.</p>}
@@ -170,9 +170,9 @@ export default function VerveDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "reservations") {
     return shell(
       <>
-        {banner("Your visit", "Appointments")}
+        {banner("res_kicker", "Your visit", "res_title", "Appointments")}
         <section className="mx-auto max-w-xl px-8 py-20">
-          <p className="mb-8 text-center text-[17px] leading-[1.8] text-neutral-700">Tell us what you are after and when suits you. We will confirm your appointment by phone or email. For bridal or group bookings, please call us.</p>
+          <p className="mb-8 text-center text-[17px] leading-[1.8] text-neutral-700" {...editCopy(content, "res_intro", "Tell us what you are after and when suits you. We will confirm your appointment by phone or email. For bridal or group bookings, please call us.")} />
           <VerveBooking tenantId={tenant.id} name={name} />
         </section>
       </>,
@@ -183,7 +183,7 @@ export default function VerveDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "contact") {
     return shell(
       <>
-        {banner("Say hello", "Contact")}
+        {banner("contact_kicker", "Say hello", "contact_title", "Contact")}
         <section className="mx-auto grid max-w-6xl gap-12 px-8 py-20 lg:grid-cols-2 lg:gap-20">
           <div>
             <div className="space-y-5 text-[15px] leading-relaxed text-neutral-700">
@@ -199,7 +199,7 @@ export default function VerveDesign({ site, page = "home", basePath = "" }: Pres
               </ul>
             )}
             {content.map_url && (
-              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex px-7 py-3 text-xs font-semibold uppercase tracking-[0.2em] transition hover:opacity-90" style={{ background: INK, color: "#fff" }}>Get directions</a>
+              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex px-7 py-3 text-xs font-semibold uppercase tracking-[0.2em] transition hover:opacity-90" style={{ background: INK, color: "#fff" }} {...editCopy(content, "contact_directions_cta", "Get directions")} />
             )}
           </div>
           {contactOn && (
@@ -224,7 +224,7 @@ export default function VerveDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "about") {
     return shell(
       <>
-        {banner("Our story", "About")}
+        {banner("about_kicker", "Our story", "about_title", "About")}
         <section className="mx-auto max-w-3xl px-8 py-20">
           {content.about ? <p data-edit="content.about" className="text-[17px] leading-[1.9] text-neutral-700">{content.about}</p> : <p className="text-neutral-500">Our story is coming soon.</p>}
         </section>
@@ -233,8 +233,8 @@ export default function VerveDesign({ site, page = "home", basePath = "" }: Pres
         {team.length > 0 && (
           <section style={{ background: CREAM }} className="border-y border-black/5">
             <div className="mx-auto max-w-6xl px-8 py-20">
-              <p style={{ ...script, color: GOLD }} className="text-center text-2xl">Match with your</p>
-              <h2 className="mt-1 text-center text-3xl font-semibold uppercase tracking-[0.16em]">Perfect professional</h2>
+              <p style={{ ...script, color: GOLD }} className="text-center text-2xl" {...editCopy(content, "about_team_kicker", "Match with your")} />
+              <h2 className="mt-1 text-center text-3xl font-semibold uppercase tracking-[0.16em]" {...editCopy(content, "about_team_heading", "Perfect professional")} />
               <div className="mt-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
                 {team.map((m) => (
                   <div key={m.id} className="text-center">
@@ -261,7 +261,7 @@ export default function VerveDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "gallery") {
     return shell(
       <>
-        {banner("A look inside", "Gallery")}
+        {banner("gallery_kicker", "A look inside", "gallery_title", "Gallery")}
         {gallery.length > 0 ? (
           <section className="grid grid-cols-2 gap-1 sm:grid-cols-3">
             {gallery.map((g) => (
@@ -293,7 +293,7 @@ export default function VerveDesign({ site, page = "home", basePath = "" }: Pres
           <h1 className="text-[15vw] font-semibold uppercase leading-[0.85] tracking-[0.04em] text-white [text-shadow:0_4px_40px_rgba(0,0,0,0.45)] sm:text-[12vw]">
             {name.split(" ")[0]}<span style={{ color: GOLD }}>.</span>
           </h1>
-          <a href={book} className="mt-8 inline-flex px-10 py-4 text-xs font-semibold uppercase tracking-[0.24em] shadow-2xl transition hover:opacity-90" style={{ background: GOLD, color: INK }}>Book appointment</a>
+          <a href={book} className="mt-8 inline-flex px-10 py-4 text-xs font-semibold uppercase tracking-[0.24em] shadow-2xl transition hover:opacity-90" style={{ background: GOLD, color: INK }} {...editCopy(content, "hero_book_cta", "Book appointment")} />
         </div>
       </section>
 
@@ -312,12 +312,12 @@ export default function VerveDesign({ site, page = "home", basePath = "" }: Pres
             )}
           </div>
           <div>
-            <p style={{ ...script, color: GOLD }} className="text-3xl">Match with your</p>
-            <h2 className="mt-1 text-3xl font-semibold uppercase tracking-[0.12em] sm:text-4xl">Perfect professional</h2>
+            <p style={{ ...script, color: GOLD }} className="text-3xl" {...editCopy(content, "intro_kicker", "Match with your")} />
+            <h2 className="mt-1 text-3xl font-semibold uppercase tracking-[0.12em] sm:text-4xl" {...editCopy(content, "intro_heading", "Perfect professional")} />
             <p data-edit="content.about" className="mt-6 text-[17px] leading-[1.9] text-neutral-600">
               {content.about || "New to our salon, or just haven't found the right professional for your goals yet? Meet a team perfectly matched to your style and personality."}
             </p>
-            <a href={groups.length ? href("services") : href("reservations")} className="mt-8 inline-flex px-9 py-3.5 text-xs font-semibold uppercase tracking-[0.22em] text-white transition hover:opacity-90" style={{ background: INK }}>Find your match</a>
+            <a href={groups.length ? href("services") : href("reservations")} className="mt-8 inline-flex px-9 py-3.5 text-xs font-semibold uppercase tracking-[0.22em] text-white transition hover:opacity-90" style={{ background: INK }} {...editCopy(content, "intro_cta", "Find your match")} />
           </div>
         </div>
       </section>
@@ -346,11 +346,11 @@ export default function VerveDesign({ site, page = "home", basePath = "" }: Pres
       {/* testimonials band (dark, script watermark) */}
       <section style={{ background: INK }} className="relative overflow-hidden text-white">
         <div className="relative mx-auto max-w-3xl px-8 py-24 text-center">
-          <span style={{ ...script, color: "rgba(201,169,106,0.18)" }} className="pointer-events-none absolute inset-x-0 top-10 text-center text-7xl">They said</span>
+          <span style={{ ...script, color: "rgba(201,169,106,0.18)" }} className="pointer-events-none absolute inset-x-0 top-10 text-center text-7xl" {...editCopy(content, "testimonials_watermark", "They said")} />
           <p className="relative text-5xl leading-none" style={{ color: GOLD }}>&ldquo;</p>
-          <h2 className="relative mt-2 text-3xl font-semibold uppercase tracking-[0.18em]">Testimonials</h2>
-          <p className="relative mt-8 text-[17px] leading-[1.9] text-white/85">This salon has the highest standard. We are always warmly welcomed and walk out with top-notch service every single time. Thank you for your brilliant work.</p>
-          <p className="relative mt-5 text-xs uppercase tracking-[0.3em] text-white/55">A happy client</p>
+          <h2 className="relative mt-2 text-3xl font-semibold uppercase tracking-[0.18em]" {...editCopy(content, "testimonials_heading", "Testimonials")} />
+          <p className="relative mt-8 text-[17px] leading-[1.9] text-white/85" {...editCopy(content, "testimonials_quote", "This salon has the highest standard. We are always warmly welcomed and walk out with top-notch service every single time. Thank you for your brilliant work.")} />
+          <p className="relative mt-5 text-xs uppercase tracking-[0.3em] text-white/55" {...editCopy(content, "testimonials_author", "A happy client")} />
         </div>
       </section>
     </>,

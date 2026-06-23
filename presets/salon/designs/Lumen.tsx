@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { LumenHeader } from "./LumenHeader";
 import { LumenBooking } from "./LumenBooking";
@@ -121,7 +121,7 @@ export default function LumenDesign({ site, page = "home", basePath = "" }: Pres
           )}
         </div>
         <div>
-          <h4 className="text-[11px] font-semibold uppercase tracking-[0.2em]" style={{ color: AMBER }}>Explore</h4>
+          <h4 className="text-[11px] font-semibold uppercase tracking-[0.2em]" style={{ color: AMBER }} {...editCopy(content, "footer_explore", "Explore")} />
           <ul className="mt-4 space-y-2.5 text-sm">
             {nav.map((l) => (
               <li key={l.href}><a href={l.href} className="text-[#FBFBF9]/70 transition hover:text-white">{l.label}</a></li>
@@ -129,7 +129,7 @@ export default function LumenDesign({ site, page = "home", basePath = "" }: Pres
           </ul>
         </div>
         <div>
-          <h4 className="text-[11px] font-semibold uppercase tracking-[0.2em]" style={{ color: AMBER }}>Visit the practice</h4>
+          <h4 className="text-[11px] font-semibold uppercase tracking-[0.2em]" style={{ color: AMBER }} {...editCopy(content, "footer_visit", "Visit the practice")} />
           {content.address && <p data-edit="content.address" className="mt-4 whitespace-pre-line text-sm leading-relaxed text-[#FBFBF9]/70">{content.address}</p>}
           <div className="mt-3 space-y-1.5 text-sm">
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block text-[#FBFBF9]/70 transition hover:text-white">{content.phone}</a>}
@@ -155,15 +155,15 @@ export default function LumenDesign({ site, page = "home", basePath = "" }: Pres
 
   // Sub-page banner — optical-white with a thin amber focus ring, clears the
   // fixed header.
-  const banner = (kicker: string, title: string, blurb?: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string, blurb?: string, blurbKey?: string) => (
     <section style={{ background: WHITE }} className="border-b" >
       <div className="mx-auto max-w-5xl px-6 pb-16 pt-36 sm:pt-44" style={{ borderColor: GREY }}>
         <div className="flex items-center gap-3">
           <span className="h-px w-10" style={{ background: AMBER }} />
-          <p className="text-[11px] font-semibold uppercase tracking-[0.28em]" style={{ color: AMBER }}>{kicker}</p>
+          <p className="text-[11px] font-semibold uppercase tracking-[0.28em]" style={{ color: AMBER }} {...editCopy(content, kickerKey, kicker)} />
         </div>
-        <h1 style={serif} className="mt-4 text-4xl font-medium leading-[1.05] sm:text-6xl" >{title}</h1>
-        {blurb && <p className="mt-5 max-w-2xl text-[15px] leading-relaxed text-[#181A1B]/60">{blurb}</p>}
+        <h1 style={serif} className="mt-4 text-4xl font-medium leading-[1.05] sm:text-6xl" {...editCopy(content, titleKey, title)} />
+        {blurb && <p className="mt-5 max-w-2xl text-[15px] leading-relaxed text-[#181A1B]/60" {...editCopy(content, blurbKey ?? `${titleKey}_blurb`, blurb)} />}
       </div>
     </section>
   );
@@ -172,7 +172,7 @@ export default function LumenDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "services") {
     return shell(
       <>
-        {banner("Services", "Eye care & eyewear", "Clinical eye examinations, contact-lens care, and a considered approach to frames and lenses. Every appointment is unhurried and personal.")}
+        {banner("Services", "svc_kicker", "Eye care & eyewear", "svc_title", "Clinical eye examinations, contact-lens care, and a considered approach to frames and lenses. Every appointment is unhurried and personal.", "svc_blurb")}
         <section className="mx-auto max-w-5xl px-6 py-20">
           {groups.length > 0 ? (
             <div className="space-y-16">
@@ -211,10 +211,10 @@ export default function LumenDesign({ site, page = "home", basePath = "" }: Pres
 
           <div className="mt-16 flex flex-col items-start gap-5 border p-8 sm:flex-row sm:items-center sm:justify-between sm:p-10" style={{ borderColor: INK }}>
             <div>
-              <h3 style={serif} className="text-2xl">Due for an eye test?</h3>
-              <p className="mt-2 max-w-md text-[15px] leading-relaxed text-[#181A1B]/60">Book a full examination with OCT scanning and let us look after your vision.</p>
+              <h3 style={serif} className="text-2xl" {...editCopy(content, "svc_cta_heading", "Due for an eye test?")} />
+              <p className="mt-2 max-w-md text-[15px] leading-relaxed text-[#181A1B]/60" {...editCopy(content, "svc_cta_blurb", "Book a full examination with OCT scanning and let us look after your vision.")} />
             </div>
-            <a href={book} className="inline-flex shrink-0 px-8 py-3.5 text-xs font-semibold uppercase tracking-[0.18em] text-white transition hover:opacity-90" style={{ background: INK }}>Book a visit</a>
+            <a href={book} className="inline-flex shrink-0 px-8 py-3.5 text-xs font-semibold uppercase tracking-[0.18em] text-white transition hover:opacity-90" style={{ background: INK }} {...editCopy(content, "svc_cta_btn", "Book a visit")} />
           </div>
         </section>
       </>,
@@ -225,7 +225,7 @@ export default function LumenDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "about") {
     return shell(
       <>
-        {banner("About", "Independent by design")}
+        {banner("About", "about_kicker", "Independent by design", "about_title")}
         <section className="mx-auto max-w-3xl px-6 py-20">
           {content.about ? (
             <p data-edit="content.about" className="text-[17px] leading-[1.9] text-[#181A1B]/80">{content.about}</p>
@@ -246,9 +246,9 @@ export default function LumenDesign({ site, page = "home", basePath = "" }: Pres
             <div className="mx-auto max-w-6xl px-6 py-20">
               <div className="flex items-center gap-3">
                 <span className="h-px w-10" style={{ background: AMBER }} />
-                <p className="text-[11px] font-semibold uppercase tracking-[0.28em]" style={{ color: AMBER }}>The team</p>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.28em]" style={{ color: AMBER }} {...editCopy(content, "about_team_kicker", "The team")} />
               </div>
-              <h2 style={serif} className="mt-4 text-3xl sm:text-4xl">Your optometrists & dispensing opticians</h2>
+              <h2 style={serif} className="mt-4 text-3xl sm:text-4xl" {...editCopy(content, "about_team_heading", "Your optometrists & dispensing opticians")} />
               <div className="mt-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
                 {team.map((m) => (
                   <div key={m.id}>
@@ -271,9 +271,9 @@ export default function LumenDesign({ site, page = "home", basePath = "" }: Pres
         <section className="mx-auto max-w-3xl px-6 py-20">
           <div className="flex items-center gap-3">
             <span className="h-px w-10" style={{ background: AMBER }} />
-            <p className="text-[11px] font-semibold uppercase tracking-[0.28em]" style={{ color: AMBER }}>Good to know</p>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.28em]" style={{ color: AMBER }} {...editCopy(content, "about_faq_kicker", "Good to know")} />
           </div>
-          <h2 style={serif} className="mt-4 text-3xl sm:text-4xl">Common questions</h2>
+          <h2 style={serif} className="mt-4 text-3xl sm:text-4xl" {...editCopy(content, "about_faq_heading", "Common questions")} />
           <dl className="mt-10 divide-y border-y" style={{ borderColor: GREY }}>
             {FAQ.map((f) => (
               <div key={f.q} className="py-6" style={{ borderColor: GREY }}>
@@ -291,7 +291,7 @@ export default function LumenDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Gallery", "Inside the practice", "A look at our consulting rooms and the frame collections we curate.")}
+        {banner("Gallery", "gallery_kicker", "Inside the practice", "gallery_title", "A look at our consulting rooms and the frame collections we curate.", "gallery_blurb")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-6xl px-6 py-16">
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
@@ -310,11 +310,11 @@ export default function LumenDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "reservations") {
     return shell(
       <>
-        {banner("Book", "Reserve your appointment", "Book a full eye examination, contact-lens fitting or a frames-styling consultation. Tell us a little about you and we will confirm your slot.")}
+        {banner("Book", "book_kicker", "Reserve your appointment", "book_title", "Book a full eye examination, contact-lens fitting or a frames-styling consultation. Tell us a little about you and we will confirm your slot.", "book_blurb")}
         <section className="mx-auto grid max-w-6xl gap-10 px-6 py-20 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
           <div>
-            <h2 style={serif} className="text-3xl">Precise, unhurried eye care</h2>
-            <p className="mt-4 text-[15px] leading-relaxed text-[#181A1B]/60">Every visit is built around you. We take the time to assess your vision and eye health properly, explain what we find, and guide you to the right lenses and frames — never the other way around.</p>
+            <h2 style={serif} className="text-3xl" {...editCopy(content, "book_heading", "Precise, unhurried eye care")} />
+            <p className="mt-4 text-[15px] leading-relaxed text-[#181A1B]/60" {...editCopy(content, "book_blurb_body", "Every visit is built around you. We take the time to assess your vision and eye health properly, explain what we find, and guide you to the right lenses and frames — never the other way around.")} />
             <ul className="mt-8 space-y-4 text-sm text-[#181A1B]/75">
               {["Full eye examination with OCT 3D scanning", "GOC-registered optometrists", "Independent, hand-curated frame houses", "Lenses measured and fitted to the millimetre"].map((t) => (
                 <li key={t} className="flex items-start gap-3">
@@ -337,10 +337,10 @@ export default function LumenDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "contact") {
     return shell(
       <>
-        {banner("Contact", "Visit us", "Find the practice, call, or send a message and we will get back to you.")}
+        {banner("Contact", "contact_kicker", "Visit us", "contact_title", "Find the practice, call, or send a message and we will get back to you.", "contact_blurb")}
         <section className="mx-auto grid max-w-6xl gap-12 px-6 py-20 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={serif} className="text-2xl">Practice details</h2>
+            <h2 style={serif} className="text-2xl" {...editCopy(content, "contact_details_heading", "Practice details")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed text-[#181A1B]/75">
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:opacity-60">{content.phone}</a>}
@@ -355,9 +355,9 @@ export default function LumenDesign({ site, page = "home", basePath = "" }: Pres
             )}
             <div className="mt-7 flex flex-wrap gap-3">
               {content.map_url && (
-                <a href={content.map_url} target="_blank" rel="noreferrer" className="inline-flex px-7 py-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-white transition hover:opacity-90" style={{ background: INK }}>Get directions</a>
+                <a href={content.map_url} target="_blank" rel="noreferrer" className="inline-flex px-7 py-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-white transition hover:opacity-90" style={{ background: INK }} {...editCopy(content, "contact_directions_cta", "Get directions")} />
               )}
-              <a href={book} className="inline-flex border px-7 py-3 text-[11px] font-semibold uppercase tracking-[0.18em] transition hover:bg-[#181A1B] hover:text-white" style={{ borderColor: INK, color: INK }}>Book a visit</a>
+              <a href={book} className="inline-flex border px-7 py-3 text-[11px] font-semibold uppercase tracking-[0.18em] transition hover:bg-[#181A1B] hover:text-white" style={{ borderColor: INK, color: INK }} {...editCopy(content, "contact_book_cta", "Book a visit")} />
             </div>
             {content.socials && content.socials.length > 0 && (
               <div className="mt-8 flex gap-4" style={{ color: INK }}>
@@ -408,7 +408,7 @@ export default function LumenDesign({ site, page = "home", basePath = "" }: Pres
               {content.tagline ? (
                 <p data-edit="content.tagline" className="text-[11px] font-semibold uppercase tracking-[0.28em]" style={{ color: AMBER }}>{content.tagline}</p>
               ) : (
-                <p className="text-[11px] font-semibold uppercase tracking-[0.28em]" style={{ color: AMBER }}>Independent optician</p>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.28em]" style={{ color: AMBER }} {...editCopy(content, "hero_eyebrow", "Independent optician")} />
               )}
             </div>
             <h1 style={serif} className="mt-6 text-5xl font-medium leading-[0.98] tracking-[-0.01em] sm:text-7xl">
@@ -418,9 +418,9 @@ export default function LumenDesign({ site, page = "home", basePath = "" }: Pres
               <span data-edit="tenant.business_name" className="font-medium" style={{ color: INK }}>{name}</span> — precision eye care and considered eyewear from an independent practice. Sharp vision, expert dispensing, frames worth wearing.
             </p>
             <div className="mt-9 flex flex-wrap gap-3">
-              <a href={book} className="inline-flex px-8 py-4 text-[11px] font-semibold uppercase tracking-[0.2em] text-white transition hover:opacity-90" style={{ background: INK }}>Book an eye test</a>
+              <a href={book} className="inline-flex px-8 py-4 text-[11px] font-semibold uppercase tracking-[0.2em] text-white transition hover:opacity-90" style={{ background: INK }} {...editCopy(content, "hero_book_cta", "Book an eye test")} />
               {groups.length > 0 && (
-                <a href={href("services")} className="inline-flex border px-8 py-4 text-[11px] font-semibold uppercase tracking-[0.2em] transition hover:bg-[#181A1B] hover:text-white" style={{ borderColor: INK, color: INK }}>Our services</a>
+                <a href={href("services")} className="inline-flex border px-8 py-4 text-[11px] font-semibold uppercase tracking-[0.2em] transition hover:bg-[#181A1B] hover:text-white" style={{ borderColor: INK, color: INK }} {...editCopy(content, "hero_services_cta", "Our services")} />
               )}
             </div>
           </div>
@@ -455,7 +455,7 @@ export default function LumenDesign({ site, page = "home", basePath = "" }: Pres
         <section className="mx-auto max-w-4xl px-6 py-24" style={{ background: WHITE }}>
           <div className="flex items-center gap-3">
             <span className="h-px w-10" style={{ background: AMBER }} />
-            <p className="text-[11px] font-semibold uppercase tracking-[0.28em]" style={{ color: AMBER }}>The practice</p>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.28em]" style={{ color: AMBER }} {...editCopy(content, "home_intro_kicker", "The practice")} />
           </div>
           <p data-edit="content.about" style={serif} className="mt-6 text-2xl leading-[1.45] text-[#181A1B] sm:text-3xl sm:leading-[1.4]">{content.about}</p>
         </section>
@@ -466,8 +466,8 @@ export default function LumenDesign({ site, page = "home", basePath = "" }: Pres
         <div className="mx-auto grid max-w-6xl gap-px px-6 py-0 md:grid-cols-2" style={{ borderColor: GREY }}>
           <div className="flex flex-col justify-center px-2 py-16 md:pr-12">
             <EyeMark size={28} color={BLUE} />
-            <h2 style={serif} className="mt-5 text-3xl sm:text-4xl">Eye care</h2>
-            <p className="mt-4 max-w-sm text-[15px] leading-relaxed text-[#181A1B]/65">Thorough, unhurried examinations with OCT 3D scanning to look beyond the surface — protecting your sight and your eye health for the long term.</p>
+            <h2 style={serif} className="mt-5 text-3xl sm:text-4xl" {...editCopy(content, "split_eyecare_heading", "Eye care")} />
+            <p className="mt-4 max-w-sm text-[15px] leading-relaxed text-[#181A1B]/65" {...editCopy(content, "split_eyecare_blurb", "Thorough, unhurried examinations with OCT 3D scanning to look beyond the surface — protecting your sight and your eye health for the long term.")} />
             <ul className="mt-6 space-y-2.5 text-sm text-[#181A1B]/70">
               {["Comprehensive eye examinations", "OCT retinal scanning", "Contact-lens fitting & aftercare", "Children's eye care"].map((t) => (
                 <li key={t} className="flex items-center gap-2.5"><span className="h-1.5 w-1.5 rounded-full" style={{ background: AMBER }} />{t}</li>
@@ -488,8 +488,8 @@ export default function LumenDesign({ site, page = "home", basePath = "" }: Pres
             <span className="grid h-7 w-7 place-items-center rounded-full border-2" style={{ borderColor: AMBER }} aria-hidden>
               <span className="h-2.5 w-2.5 rounded-full" style={{ background: BLUE }} />
             </span>
-            <h2 style={serif} className="mt-5 text-3xl sm:text-4xl">Eyewear</h2>
-            <p className="mt-4 max-w-sm text-[15px] leading-relaxed text-[#181A1B]/65">A hand-curated edit of independent frame houses, dispensed with care. We find the shape, colour and lens that suit your face, your prescription and how you live.</p>
+            <h2 style={serif} className="mt-5 text-3xl sm:text-4xl" {...editCopy(content, "split_eyewear_heading", "Eyewear")} />
+            <p className="mt-4 max-w-sm text-[15px] leading-relaxed text-[#181A1B]/65" {...editCopy(content, "split_eyewear_blurb", "A hand-curated edit of independent frame houses, dispensed with care. We find the shape, colour and lens that suit your face, your prescription and how you live.")} />
             <ul className="mt-6 space-y-2.5 text-sm text-[#181A1B]/70">
               {["Curated independent frames", "Personal styling & dispensing", "Precision lens technology", "Repairs & adjustments"].map((t) => (
                 <li key={t} className="flex items-center gap-2.5"><span className="h-1.5 w-1.5 rounded-full" style={{ background: AMBER }} />{t}</li>
@@ -506,11 +506,11 @@ export default function LumenDesign({ site, page = "home", basePath = "" }: Pres
             <div>
               <div className="flex items-center gap-3">
                 <span className="h-px w-10" style={{ background: AMBER }} />
-                <p className="text-[11px] font-semibold uppercase tracking-[0.28em]" style={{ color: AMBER }}>Services</p>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.28em]" style={{ color: AMBER }} {...editCopy(content, "tease_kicker", "Services")} />
               </div>
-              <h2 style={serif} className="mt-4 text-3xl sm:text-4xl">What we offer</h2>
+              <h2 style={serif} className="mt-4 text-3xl sm:text-4xl" {...editCopy(content, "tease_heading", "What we offer")} />
             </div>
-            <a href={href("services")} className="text-sm font-medium underline-offset-4 hover:underline" style={{ color: BLUE }}>View all services →</a>
+            <a href={href("services")} className="text-sm font-medium underline-offset-4 hover:underline" style={{ color: BLUE }} {...editCopy(content, "tease_all_cta", "View all services →")} />
           </div>
           <div className="mt-12 grid gap-x-12 gap-y-12 sm:grid-cols-2">
             {teaseCategories.map((c) => (
@@ -535,9 +535,9 @@ export default function LumenDesign({ site, page = "home", basePath = "" }: Pres
         <div className="mx-auto max-w-6xl px-6 py-24">
           <div className="flex items-center gap-3">
             <span className="h-px w-10" style={{ background: AMBER }} />
-            <p className="text-[11px] font-semibold uppercase tracking-[0.28em]" style={{ color: AMBER }}>In their words</p>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.28em]" style={{ color: AMBER }} {...editCopy(content, "reviews_kicker", "In their words")} />
           </div>
-          <h2 style={serif} className="mt-4 text-3xl text-white sm:text-4xl">What our patients say</h2>
+          <h2 style={serif} className="mt-4 text-3xl text-white sm:text-4xl" {...editCopy(content, "reviews_heading", "What our patients say")} />
           <div className="mt-12 grid gap-px sm:grid-cols-2">
             {REVIEWS.map((r) => (
               <figure key={r.quote} className="flex h-full flex-col px-2 py-6">
@@ -558,10 +558,10 @@ export default function LumenDesign({ site, page = "home", basePath = "" }: Pres
           <div className="flex flex-col justify-center pb-12 lg:pb-0">
             <div className="flex items-center gap-3">
               <span className="h-px w-10" style={{ background: AMBER }} />
-              <p className="text-[11px] font-semibold uppercase tracking-[0.28em]" style={{ color: AMBER }}>Book a visit</p>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.28em]" style={{ color: AMBER }} {...editCopy(content, "home_book_kicker", "Book a visit")} />
             </div>
-            <h2 style={serif} className="mt-4 text-3xl sm:text-4xl">Ready when you are</h2>
-            <p className="mt-4 max-w-md text-[15px] leading-relaxed text-[#181A1B]/65">Reserve a full eye examination, a contact-lens fitting, or a relaxed frames-styling appointment. We will confirm every booking personally.</p>
+            <h2 style={serif} className="mt-4 text-3xl sm:text-4xl" {...editCopy(content, "home_book_heading", "Ready when you are")} />
+            <p className="mt-4 max-w-md text-[15px] leading-relaxed text-[#181A1B]/65" {...editCopy(content, "home_book_blurb", "Reserve a full eye examination, a contact-lens fitting, or a relaxed frames-styling appointment. We will confirm every booking personally.")} />
             {content.phone && (
               <p className="mt-6 text-sm text-[#181A1B]/60">Or call us on <a href={`tel:${content.phone}`} className="font-semibold" style={{ color: BLUE }}>{content.phone}</a></p>
             )}
@@ -570,10 +570,10 @@ export default function LumenDesign({ site, page = "home", basePath = "" }: Pres
             <LumenBooking tenantId={tenant.id} name={name} />
           ) : (
             <div className="flex flex-col justify-center border p-9" style={{ borderColor: INK, background: WHITE }}>
-              <h3 style={serif} className="text-2xl">Get in touch</h3>
+              <h3 style={serif} className="text-2xl" {...editCopy(content, "home_book_getintouch", "Get in touch")} />
               {content.phone && <a href={`tel:${content.phone}`} className="mt-4 block text-[#181A1B]/75">{content.phone}</a>}
               {content.email && <a href={`mailto:${content.email}`} className="mt-1 block text-[#181A1B]/75">{content.email}</a>}
-              <a href={href("contact")} className="mt-6 inline-flex w-fit px-8 py-3.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-white transition hover:opacity-90" style={{ background: INK }}>Contact us</a>
+              <a href={href("contact")} className="mt-6 inline-flex w-fit px-8 py-3.5 text-[11px] font-semibold uppercase tracking-[0.18em] text-white transition hover:opacity-90" style={{ background: INK }} {...editCopy(content, "home_book_contact_btn", "Contact us")} />
             </div>
           )}
         </div>
@@ -583,14 +583,14 @@ export default function LumenDesign({ site, page = "home", basePath = "" }: Pres
       <section className="border-t" style={{ background: WHITE, borderColor: GREY }}>
         <div className="mx-auto grid max-w-6xl gap-10 px-6 py-16 md:grid-cols-3">
           <div>
-            <h3 className="text-[11px] font-semibold uppercase tracking-[0.2em]" style={{ color: AMBER }}>Visit us</h3>
+            <h3 className="text-[11px] font-semibold uppercase tracking-[0.2em]" style={{ color: AMBER }} {...editCopy(content, "details_visit_heading", "Visit us")} />
             {content.address && <p data-edit="content.address" className="mt-4 whitespace-pre-line text-sm leading-relaxed text-[#181A1B]/75">{content.address}</p>}
             {content.map_url && (
-              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-4 inline-flex text-sm font-semibold" style={{ color: BLUE }}>Get directions →</a>
+              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-4 inline-flex text-sm font-semibold" style={{ color: BLUE }} {...editCopy(content, "details_directions_cta", "Get directions →")} />
             )}
           </div>
           <div>
-            <h3 className="text-[11px] font-semibold uppercase tracking-[0.2em]" style={{ color: AMBER }}>Opening hours</h3>
+            <h3 className="text-[11px] font-semibold uppercase tracking-[0.2em]" style={{ color: AMBER }} {...editCopy(content, "details_hours_heading", "Opening hours")} />
             {content.hours && content.hours.length > 0 ? (
               <ul className="mt-4 space-y-2 text-sm text-[#181A1B]/75">
                 {content.hours.map((h, i) => (
@@ -600,12 +600,12 @@ export default function LumenDesign({ site, page = "home", basePath = "" }: Pres
             ) : <p className="mt-4 text-sm text-[#181A1B]/50">Open by appointment.</p>}
           </div>
           <div>
-            <h3 className="text-[11px] font-semibold uppercase tracking-[0.2em]" style={{ color: AMBER }}>Contact</h3>
+            <h3 className="text-[11px] font-semibold uppercase tracking-[0.2em]" style={{ color: AMBER }} {...editCopy(content, "details_contact_heading", "Contact")} />
             <div className="mt-4 space-y-1.5 text-sm text-[#181A1B]/75">
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:opacity-60">{content.phone}</a>}
               {content.email && <a data-edit="content.email" href={`mailto:${content.email}`} className="block transition hover:opacity-60">{content.email}</a>}
             </div>
-            <a href={book} className="mt-5 inline-flex px-7 py-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-white transition hover:opacity-90" style={{ background: INK }}>Book a visit</a>
+            <a href={book} className="mt-5 inline-flex px-7 py-3 text-[11px] font-semibold uppercase tracking-[0.18em] text-white transition hover:opacity-90" style={{ background: INK }} {...editCopy(content, "details_book_cta", "Book a visit")} />
           </div>
         </div>
       </section>

@@ -3,7 +3,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import { useState, type ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { AureliaHeader } from "./AureliaHeader";
 import { AureliaBooking } from "./AureliaBooking";
@@ -275,7 +275,7 @@ export default function AureliaDesign({ site, page = "home", basePath = "" }: Pr
           )}
         </div>
         <div>
-          <h4 className="text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: TAUPE }}>Explore</h4>
+          <h4 className="text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: TAUPE }} {...editCopy(content, "footer_explore", "Explore")} />
           <ul className="mt-5 space-y-2.5 text-sm text-white/70">
             {([
               content.about && { label: "About us", href: href("about") },
@@ -289,7 +289,7 @@ export default function AureliaDesign({ site, page = "home", basePath = "" }: Pr
           </ul>
         </div>
         <div>
-          <h4 className="text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: TAUPE }}>Opening hours</h4>
+          <h4 className="text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: TAUPE }} {...editCopy(content, "footer_hours", "Opening hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm text-white/70">
               {content.hours.map((h, i) => (
@@ -299,8 +299,8 @@ export default function AureliaDesign({ site, page = "home", basePath = "" }: Pr
           ) : <p className="mt-5 text-sm text-white/55">By appointment.</p>}
         </div>
         <div className="flex flex-col items-start justify-center rounded-2xl border border-white/15 px-7 py-8">
-          <h4 style={serif} className="text-2xl">Ready to begin?</h4>
-          <p className="mt-2 text-sm text-white/65">Book a personalised consultation with our team.</p>
+          <h4 style={serif} className="text-2xl" {...editCopy(content, "footer_cta_heading", "Ready to begin?")} />
+          <p className="mt-2 text-sm text-white/65" {...editCopy(content, "footer_cta_blurb", "Book a personalised consultation with our team.")} />
           <a href={book} className="mt-5 inline-flex px-8 py-3.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-neutral-900 transition hover:opacity-90" style={{ background: BONE }}>{bookingOn ? "Book an appointment" : "Contact us"}</a>
         </div>
       </div>
@@ -316,11 +316,11 @@ export default function AureliaDesign({ site, page = "home", basePath = "" }: Pr
     </div>
   );
 
-  const banner = (kicker: string, title: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string) => (
     <section style={{ background: INK }} className="text-white">
       <div className="mx-auto max-w-6xl px-8 pb-14 pt-32 sm:pt-40">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.3em]" style={{ color: TAUPE }}>{kicker}</p>
-        <h1 style={serif} className="mt-3 text-4xl font-medium sm:text-5xl">{title}</h1>
+        <p className="text-[11px] font-semibold uppercase tracking-[0.3em]" style={{ color: TAUPE }} {...editCopy(content, kickerKey, kicker)} />
+        <h1 style={serif} className="mt-3 text-4xl font-medium sm:text-5xl" {...editCopy(content, titleKey, title)} />
       </div>
     </section>
   );
@@ -329,7 +329,7 @@ export default function AureliaDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "services") {
     return shell(
       <>
-        {banner("Treatments", "Expert-led aesthetic services")}
+        {banner("Treatments", "svc_kicker", "Expert-led aesthetic services", "svc_title")}
         <section className="mx-auto max-w-5xl px-8 py-20">
           {groups.length > 0 ? (
             <div className="space-y-16">
@@ -355,7 +355,7 @@ export default function AureliaDesign({ site, page = "home", basePath = "" }: Pr
                 </div>
               ))}
               <div className="pt-4 text-center">
-                <a href={book} className="inline-flex px-10 py-4 text-[11px] font-semibold uppercase tracking-[0.2em] text-white transition hover:opacity-90" style={{ background: INK }}>Book an appointment</a>
+                <a href={book} className="inline-flex px-10 py-4 text-[11px] font-semibold uppercase tracking-[0.2em] text-white transition hover:opacity-90" style={{ background: INK }} {...editCopy(content, "svc_book_cta", "Book an appointment")} />
               </div>
             </div>
           ) : <p className="text-neutral-500">Our treatment menu is coming soon.</p>}
@@ -368,15 +368,13 @@ export default function AureliaDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "reservations") {
     return shell(
       <>
-        {banner("Book now", "Schedule your consultation")}
+        {banner("Book now", "book_kicker", "Schedule your consultation", "book_title")}
         <section className="mx-auto max-w-xl px-8 py-20">
-          <p className="mb-8 text-center text-[16px] leading-[1.8] text-neutral-700">
-            Tell us a little about what you are looking for and we will be in touch to arrange your personalised consultation.
-          </p>
+          <p className="mb-8 text-center text-[16px] leading-[1.8] text-neutral-700" {...editCopy(content, "book_intro", "Tell us a little about what you are looking for and we will be in touch to arrange your personalised consultation.")} />
           {externalBook && (
             <p className="mb-8 text-center text-sm text-neutral-500">
               Prefer to book online?{" "}
-              <a href={externalBook} target="_blank" rel="noreferrer" className="font-semibold underline" style={{ color: TAUPE }}>Use our booking system</a>.
+              <a href={externalBook} target="_blank" rel="noreferrer" className="font-semibold underline" style={{ color: TAUPE }} {...editCopy(content, "book_online_cta", "Use our booking system")} />.
             </p>
           )}
           <AureliaBooking tenantId={tenant.id} services={serviceNames} />
@@ -389,11 +387,11 @@ export default function AureliaDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "about") {
     return shell(
       <>
-        {banner("About us", "Personalised care by certified experts")}
+        {banner("About us", "about_kicker", "Personalised care by certified experts", "about_title")}
         <section className="mx-auto max-w-3xl px-8 py-20">
           {content.about ? <p data-edit="content.about" className="text-[17px] leading-[1.9] text-neutral-700">{content.about}</p> : <p className="text-neutral-500">Our story is coming soon.</p>}
           <div className="mt-14 border-t border-neutral-200 pt-12">
-            <h3 style={serif} className="text-2xl">Why choose us</h3>
+            <h3 style={serif} className="text-2xl" {...editCopy(content, "about_why_heading", "Why choose us")} />
             <div className="mt-6">
               <Accordion items={WHY_US.map((w) => ({ title: w.title, body: w.body }))} />
             </div>
@@ -407,7 +405,7 @@ export default function AureliaDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Gallery", "A look inside")}
+        {banner("Gallery", "gallery_kicker", "A look inside", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="grid grid-cols-2 gap-1 sm:grid-cols-3">
             {gallery.map((g) => (
@@ -424,7 +422,7 @@ export default function AureliaDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "contact") {
     return shell(
       <>
-        {banner("Contact", "Get in touch")}
+        {banner("Contact", "contact_kicker", "Get in touch", "contact_title")}
         <section className="mx-auto grid max-w-6xl gap-12 px-8 py-20 lg:grid-cols-2 lg:gap-20">
           <div>
             <div className="space-y-5 text-[15px] leading-relaxed text-neutral-700">
@@ -440,7 +438,7 @@ export default function AureliaDesign({ site, page = "home", basePath = "" }: Pr
               </ul>
             )}
             {content.map_url && (
-              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex border px-7 py-3 text-[11px] font-semibold uppercase tracking-[0.2em] transition hover:bg-neutral-900 hover:text-white" style={{ borderColor: INK, color: INK }}>Get directions</a>
+              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex border px-7 py-3 text-[11px] font-semibold uppercase tracking-[0.2em] transition hover:bg-neutral-900 hover:text-white" style={{ borderColor: INK, color: INK }} {...editCopy(content, "contact_directions", "Get directions")} />
             )}
           </div>
           {contactOn && (
@@ -482,16 +480,12 @@ export default function AureliaDesign({ site, page = "home", basePath = "" }: Pr
         <div className="relative z-10 mt-auto px-6 pb-16 sm:px-12 sm:pb-20">
           <div className="max-w-2xl">
             {content.tagline && <p data-edit="content.tagline" className="text-[11px] font-semibold uppercase tracking-[0.3em] text-white/80">{content.tagline}</p>}
-            <h1 style={serif} className="mt-4 text-4xl font-medium leading-[1.05] text-white [text-shadow:0_2px_24px_rgba(0,0,0,0.5)] sm:text-5xl lg:text-6xl">
-              Your trusted aesthetic experts
-            </h1>
-            <p className="mt-5 max-w-xl text-[15px] leading-relaxed text-white/85">
-              Expert anti-wrinkle, filler, skinbooster and skin-rejuvenation treatments, tailored to you in a calm, certified clinical setting.
-            </p>
-            <a href={book} className="mt-8 inline-flex px-10 py-4 text-[11px] font-semibold uppercase tracking-[0.22em] text-neutral-900 shadow-2xl transition hover:opacity-90" style={{ background: BONE }}>Book an appointment</a>
+            <h1 style={serif} className="mt-4 text-4xl font-medium leading-[1.05] text-white [text-shadow:0_2px_24px_rgba(0,0,0,0.5)] sm:text-5xl lg:text-6xl" {...editCopy(content, "hero_headline", "Your trusted aesthetic experts")} />
+            <p className="mt-5 max-w-xl text-[15px] leading-relaxed text-white/85" {...editCopy(content, "hero_subtitle", "Expert anti-wrinkle, filler, skinbooster and skin-rejuvenation treatments, tailored to you in a calm, certified clinical setting.")} />
+            <a href={book} className="mt-8 inline-flex px-10 py-4 text-[11px] font-semibold uppercase tracking-[0.22em] text-neutral-900 shadow-2xl transition hover:opacity-90" style={{ background: BONE }} {...editCopy(content, "hero_book_cta", "Book an appointment")} />
             <div className="mt-8 flex flex-wrap items-center gap-3 text-white/90">
               <Stars light />
-              <span className="text-sm text-white/80">Rated excellent by our patients</span>
+              <span className="text-sm text-white/80" {...editCopy(content, "hero_rating_text", "Rated excellent by our patients")} />
             </div>
           </div>
         </div>
@@ -501,10 +495,10 @@ export default function AureliaDesign({ site, page = "home", basePath = "" }: Pr
       {content.about && (
         <section className="mx-auto grid max-w-6xl items-center gap-12 px-8 py-24 lg:grid-cols-2 lg:gap-16">
           <div>
-            <p className="text-[11px] font-semibold uppercase tracking-[0.3em]" style={{ color: TAUPE }}>About us</p>
-            <h2 style={serif} className="mt-4 text-3xl leading-tight sm:text-4xl">Personalised care by certified aesthetic experts</h2>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.3em]" style={{ color: TAUPE }} {...editCopy(content, "home_about_kicker", "About us")} />
+            <h2 style={serif} className="mt-4 text-3xl leading-tight sm:text-4xl" {...editCopy(content, "home_about_heading", "Personalised care by certified aesthetic experts")} />
             <p data-edit="content.about" className="mt-6 text-[16px] leading-[1.9] text-neutral-600">{content.about}</p>
-            <a href={href("about")} className="mt-7 inline-flex border px-8 py-3.5 text-[11px] font-semibold uppercase tracking-[0.2em] transition hover:bg-neutral-900 hover:text-white" style={{ borderColor: INK, color: INK }}>Learn more</a>
+            <a href={href("about")} className="mt-7 inline-flex border px-8 py-3.5 text-[11px] font-semibold uppercase tracking-[0.2em] transition hover:bg-neutral-900 hover:text-white" style={{ borderColor: INK, color: INK }} {...editCopy(content, "home_about_cta", "Learn more")} />
           </div>
           <div className="relative aspect-[4/3] overflow-hidden">
             {gallery[0]?.image_url ? (
@@ -524,10 +518,10 @@ export default function AureliaDesign({ site, page = "home", basePath = "" }: Pr
       {treatmentCards.length > 0 && (
         <section style={{ background: INK }} className="text-white">
           <div className="mx-auto max-w-6xl px-8 py-24">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.3em]" style={{ color: TAUPE }}>Treatments</p>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.3em]" style={{ color: TAUPE }} {...editCopy(content, "treatments_kicker", "Treatments")} />
             <div className="mt-3 flex flex-wrap items-end justify-between gap-4">
-              <h2 style={serif} className="max-w-xl text-3xl leading-tight sm:text-4xl">Expert-led aesthetic services tailored to you</h2>
-              <a href={href("services")} className="text-[11px] font-semibold uppercase tracking-[0.18em]" style={{ color: "#e8d9bf" }}>View all treatments →</a>
+              <h2 style={serif} className="max-w-xl text-3xl leading-tight sm:text-4xl" {...editCopy(content, "treatments_heading", "Expert-led aesthetic services tailored to you")} />
+              <a href={href("services")} className="text-[11px] font-semibold uppercase tracking-[0.18em]" style={{ color: "#e8d9bf" }} {...editCopy(content, "treatments_view_all", "View all treatments →")} />
             </div>
             <div className="mt-12">
               <PhotoCarousel items={treatmentCards} bookHref={book} showPrice />
@@ -547,8 +541,8 @@ export default function AureliaDesign({ site, page = "home", basePath = "" }: Pr
           )}
         </div>
         <div className="order-1 lg:order-2">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.3em]" style={{ color: TAUPE }}>Why choose us</p>
-          <h2 style={serif} className="mt-4 text-3xl leading-tight sm:text-4xl">Care you can trust</h2>
+          <p className="text-[11px] font-semibold uppercase tracking-[0.3em]" style={{ color: TAUPE }} {...editCopy(content, "why_kicker", "Why choose us")} />
+          <h2 style={serif} className="mt-4 text-3xl leading-tight sm:text-4xl" {...editCopy(content, "why_heading", "Care you can trust")} />
           <div className="mt-8">
             <Accordion items={WHY_US.map((w) => ({ title: w.title, body: w.body }))} />
           </div>
@@ -559,8 +553,8 @@ export default function AureliaDesign({ site, page = "home", basePath = "" }: Pr
       {concernCards.length > 0 && (
         <section style={{ background: BONE }}>
           <div className="mx-auto max-w-6xl px-8 py-24">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.3em]" style={{ color: TAUPE }}>What we treat</p>
-            <h2 style={serif} className="mt-3 max-w-xl text-3xl leading-tight sm:text-4xl">Concerns we treat with expertise and care</h2>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.3em]" style={{ color: TAUPE }} {...editCopy(content, "concerns_kicker", "What we treat")} />
+            <h2 style={serif} className="mt-3 max-w-xl text-3xl leading-tight sm:text-4xl" {...editCopy(content, "concerns_heading", "Concerns we treat with expertise and care")} />
             <div className="mt-12">
               <PhotoCarousel items={concernCards} bookHref={book} />
             </div>
@@ -570,8 +564,8 @@ export default function AureliaDesign({ site, page = "home", basePath = "" }: Pr
 
       {/* how it works — step accordion */}
       <section className="mx-auto max-w-3xl px-8 py-24">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.3em]" style={{ color: TAUPE }}>The journey</p>
-        <h2 style={serif} className="mt-3 text-3xl leading-tight sm:text-4xl">How does it work?</h2>
+        <p className="text-[11px] font-semibold uppercase tracking-[0.3em]" style={{ color: TAUPE }} {...editCopy(content, "journey_kicker", "The journey")} />
+        <h2 style={serif} className="mt-3 text-3xl leading-tight sm:text-4xl" {...editCopy(content, "journey_heading", "How does it work?")} />
         <div className="mt-9">
           <Accordion
             items={[
@@ -589,10 +583,10 @@ export default function AureliaDesign({ site, page = "home", basePath = "" }: Pr
           <div className="mx-auto max-w-6xl px-8 py-24">
             <div className="flex flex-wrap items-end justify-between gap-4">
               <div>
-                <p className="text-[11px] font-semibold uppercase tracking-[0.3em]" style={{ color: TAUPE }}>Our team</p>
-                <h2 style={serif} className="mt-3 max-w-xl text-3xl leading-tight sm:text-4xl">Our dedicated aesthetic team</h2>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.3em]" style={{ color: TAUPE }} {...editCopy(content, "team_kicker", "Our team")} />
+                <h2 style={serif} className="mt-3 max-w-xl text-3xl leading-tight sm:text-4xl" {...editCopy(content, "team_heading", "Our dedicated aesthetic team")} />
               </div>
-              {content.about && <p className="max-w-sm text-sm leading-relaxed text-white/65">Experienced, certified practitioners who combine clinical expertise with genuine, personalised care.</p>}
+              {content.about && <p className="max-w-sm text-sm leading-relaxed text-white/65" {...editCopy(content, "team_blurb", "Experienced, certified practitioners who combine clinical expertise with genuine, personalised care.")} />}
             </div>
             <div className="mt-12">
               <TeamCarousel team={team} />
@@ -604,8 +598,8 @@ export default function AureliaDesign({ site, page = "home", basePath = "" }: Pr
       {/* testimonials carousel */}
       <section style={{ background: BONE }}>
         <div className="mx-auto max-w-6xl px-8 py-24">
-          <p className="text-center text-[11px] font-semibold uppercase tracking-[0.3em]" style={{ color: TAUPE }}>Testimonials</p>
-          <h2 style={serif} className="mt-3 text-center text-3xl leading-tight sm:text-4xl">Hear from our patients</h2>
+          <p className="text-center text-[11px] font-semibold uppercase tracking-[0.3em]" style={{ color: TAUPE }} {...editCopy(content, "testimonials_kicker", "Testimonials")} />
+          <h2 style={serif} className="mt-3 text-center text-3xl leading-tight sm:text-4xl" {...editCopy(content, "testimonials_heading", "Hear from our patients")} />
           <div className="mt-14">
             <TestimonialCarousel items={TESTIMONIALS} />
           </div>
@@ -625,8 +619,8 @@ export default function AureliaDesign({ site, page = "home", basePath = "" }: Pr
         )}
         <div className="absolute inset-0 bg-black/55" />
         <div className="relative z-10 mx-auto max-w-3xl px-8 py-28 text-center text-white">
-          <h2 style={serif} className="text-3xl leading-tight sm:text-4xl lg:text-5xl">Schedule your personalised aesthetic consultation today</h2>
-          <a href={book} className="mt-9 inline-flex px-10 py-4 text-[11px] font-semibold uppercase tracking-[0.22em] text-neutral-900 transition hover:opacity-90" style={{ background: BONE }}>Book an appointment</a>
+          <h2 style={serif} className="text-3xl leading-tight sm:text-4xl lg:text-5xl" {...editCopy(content, "cta_heading", "Schedule your personalised aesthetic consultation today")} />
+          <a href={book} className="mt-9 inline-flex px-10 py-4 text-[11px] font-semibold uppercase tracking-[0.22em] text-neutral-900 transition hover:opacity-90" style={{ background: BONE }} {...editCopy(content, "cta_book", "Book an appointment")} />
         </div>
       </section>
     </>,

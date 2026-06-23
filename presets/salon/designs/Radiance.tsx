@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { RadianceHeader } from "./RadianceHeader";
 import { RadianceBooking } from "./RadianceBooking";
@@ -69,7 +69,7 @@ export default function RadianceDesign({ site, page = "home", basePath = "" }: P
     <footer style={{ background: CREAM }} className="text-neutral-800">
       <div className="mx-auto grid max-w-6xl gap-12 px-8 py-20 sm:grid-cols-2 lg:grid-cols-[1.4fr_1fr_1.2fr_1fr]">
         <div>
-          <h4 style={serif} className="text-2xl" >Join our mailing list</h4>
+          <h4 style={serif} className="text-2xl" {...editCopy(content, "footer_mailing_heading", "Join our mailing list")} />
           <p className="mt-4 max-w-sm text-sm leading-relaxed text-neutral-600">Stay in the know. Sign up for expert skincare advice, clinic news and exclusive offers.</p>
           {contactOn && (
             <div className="mt-6">
@@ -93,7 +93,7 @@ export default function RadianceDesign({ site, page = "home", basePath = "" }: P
           )}
         </div>
         <div>
-          <h4 className="text-sm font-semibold uppercase tracking-[0.18em]" style={{ color: GREEN }}>Navigation</h4>
+          <h4 className="text-sm font-semibold uppercase tracking-[0.18em]" style={{ color: GREEN }} {...editCopy(content, "footer_nav_heading", "Navigation")} />
           <ul className="mt-5 space-y-2.5 text-sm text-neutral-700">
             {([
               groups.length > 0 && { label: "Treatments", href: href("services") },
@@ -107,14 +107,14 @@ export default function RadianceDesign({ site, page = "home", basePath = "" }: P
           </ul>
         </div>
         <div>
-          <h4 className="text-sm font-semibold uppercase tracking-[0.18em]" style={{ color: GREEN }}>Contact</h4>
+          <h4 className="text-sm font-semibold uppercase tracking-[0.18em]" style={{ color: GREEN }} {...editCopy(content, "footer_contact_heading", "Contact")} />
           <div className="mt-5 space-y-2.5 text-sm text-neutral-700">
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block hover:text-neutral-950">TEL: {content.phone}</a>}
             {content.email && <a data-edit="content.email" href={`mailto:${content.email}`} className="block hover:text-neutral-950">EMAIL: {content.email}</a>}
           </div>
         </div>
         <div>
-          <h4 className="text-sm font-semibold uppercase tracking-[0.18em]" style={{ color: GREEN }}>Location</h4>
+          <h4 className="text-sm font-semibold uppercase tracking-[0.18em]" style={{ color: GREEN }} {...editCopy(content, "footer_location_heading", "Location")} />
           {content.address && <p data-edit="content.address" className="mt-5 whitespace-pre-line text-sm leading-relaxed text-neutral-700">{content.address}</p>}
           {content.hours && content.hours.length > 0 && (
             <ul className="mt-5 space-y-1.5 text-sm text-neutral-700">
@@ -155,12 +155,12 @@ export default function RadianceDesign({ site, page = "home", basePath = "" }: P
   );
 
   // Forest-green page banner — also clears the fixed header on sub-pages.
-  const banner = (kicker: string, title: string, blurb?: string) => (
+  const banner = (kickerKey: string, kicker: string, titleKey: string, title: string, blurbKey?: string, blurb?: string) => (
     <section style={{ background: GREEN }} className="text-white">
       <div className="mx-auto max-w-5xl px-8 pb-16 pt-32 text-center sm:pt-40">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: GOLD }}>{kicker}</p>
-        <h1 style={serif} className="mx-auto mt-4 max-w-3xl text-4xl font-medium sm:text-5xl">{title}</h1>
-        {blurb && <p className="mx-auto mt-5 max-w-2xl text-[15px] leading-relaxed text-white/75">{blurb}</p>}
+        <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: GOLD }} {...editCopy(content, kickerKey, kicker)} />
+        <h1 style={serif} className="mx-auto mt-4 max-w-3xl text-4xl font-medium sm:text-5xl" {...editCopy(content, titleKey, title)} />
+        {blurb && blurbKey && <p className="mx-auto mt-5 max-w-2xl text-[15px] leading-relaxed text-white/75" {...editCopy(content, blurbKey, blurb)} />}
       </div>
     </section>
   );
@@ -169,7 +169,7 @@ export default function RadianceDesign({ site, page = "home", basePath = "" }: P
   if (page === "services") {
     return shell(
       <>
-        {banner("The treatments", "Treatments & prices", "Unrivalled aesthetics, advised and delivered by our doctor-led team. Browse our treatment menu and request a consultation when you are ready.")}
+        {banner("svc_kicker", "The treatments", "svc_title", "Treatments & prices", "svc_blurb", "Unrivalled aesthetics, advised and delivered by our doctor-led team. Browse our treatment menu and request a consultation when you are ready.")}
         <section className="mx-auto max-w-4xl px-8 py-20">
           {groups.length > 0 ? (
             <div className="space-y-16">
@@ -195,7 +195,7 @@ export default function RadianceDesign({ site, page = "home", basePath = "" }: P
                 </div>
               ))}
               <div className="pt-4 text-center">
-                <a href={book} className="inline-flex px-10 py-4 text-xs font-semibold uppercase tracking-[0.22em] text-white transition hover:opacity-90" style={{ background: GREEN }}>Book a consultation</a>
+                <a href={book} className="inline-flex px-10 py-4 text-xs font-semibold uppercase tracking-[0.22em] text-white transition hover:opacity-90" style={{ background: GREEN }} {...editCopy(content, "svc_book_cta", "Book a consultation")} />
               </div>
             </div>
           ) : <p className="text-neutral-500">Our treatment menu is coming soon.</p>}
@@ -208,7 +208,7 @@ export default function RadianceDesign({ site, page = "home", basePath = "" }: P
   if (page === "reservations") {
     return shell(
       <>
-        {banner("Book", "Book your appointment", "Before your treatments begin, a crucial step awaits, your consultation. Tell us what you are looking for and our team will be in touch to confirm a time that works for you.")}
+        {banner("book_kicker", "Book", "book_title", "Book your appointment", "book_blurb", "Before your treatments begin, a crucial step awaits, your consultation. Tell us what you are looking for and our team will be in touch to confirm a time that works for you.")}
         <section className="mx-auto max-w-xl px-8 py-20">
           <RadianceBooking tenantId={tenant.id} name={name} treatments={allItems.slice(0, 24).map((i) => i.name)} />
         </section>
@@ -220,10 +220,10 @@ export default function RadianceDesign({ site, page = "home", basePath = "" }: P
   if (page === "contact") {
     return shell(
       <>
-        {banner("Contact", "Get in touch", "Questions about a treatment, pricing or your suitability? Our team is here to help.")}
+        {banner("contact_kicker", "Contact", "contact_title", "Get in touch", "contact_blurb", "Questions about a treatment, pricing or your suitability? Our team is here to help.")}
         <section className="mx-auto grid max-w-6xl gap-14 px-8 py-20 lg:grid-cols-2 lg:gap-20">
           <div>
-            <h2 className="text-2xl" style={{ ...serif, color: GREEN }}>Visit the clinic</h2>
+            <h2 className="text-2xl" style={{ ...serif, color: GREEN }} {...editCopy(content, "contact_visit_heading", "Visit the clinic")} />
             <div className="mt-6 space-y-5 text-[15px] leading-relaxed text-neutral-700">
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block hover:text-neutral-950">{content.phone}</a>}
@@ -237,7 +237,7 @@ export default function RadianceDesign({ site, page = "home", basePath = "" }: P
               </ul>
             )}
             {content.map_url && (
-              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex border px-7 py-3 text-xs font-semibold uppercase tracking-[0.2em] transition hover:bg-[#2f4a3c] hover:text-white" style={{ borderColor: GREEN, color: GREEN }}>Get directions</a>
+              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex border px-7 py-3 text-xs font-semibold uppercase tracking-[0.2em] transition hover:bg-[#2f4a3c] hover:text-white" style={{ borderColor: GREEN, color: GREEN }} {...editCopy(content, "directions_cta", "Get directions")} />
             )}
           </div>
           {contactOn && (
@@ -262,7 +262,7 @@ export default function RadianceDesign({ site, page = "home", basePath = "" }: P
   if (page === "about") {
     return shell(
       <>
-        {banner("About", "The home of aesthetics and wellness")}
+        {banner("about_kicker", "About", "about_title", "The home of aesthetics and wellness")}
         <section className="mx-auto max-w-3xl px-8 py-20">
           {content.about ? <p data-edit="content.about" className="text-[17px] leading-[1.9] text-neutral-700">{content.about}</p> : <p className="text-neutral-500">Our story is coming soon.</p>}
           <div className="mt-12 flex flex-wrap justify-center gap-8">
@@ -271,7 +271,7 @@ export default function RadianceDesign({ site, page = "home", basePath = "" }: P
           </div>
           {team.length > 0 && (
             <div className="mt-16">
-              <h2 className="text-center text-3xl" style={{ ...serif, color: GREEN }}>Meet the team</h2>
+              <h2 className="text-center text-3xl" style={{ ...serif, color: GREEN }} {...editCopy(content, "about_team_heading", "Meet the team")} />
               <div className="mt-10 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
                 {team.map((m) => (
                   <div key={m.id} className="text-center">
@@ -298,7 +298,7 @@ export default function RadianceDesign({ site, page = "home", basePath = "" }: P
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Gallery", "Inside the clinic")}
+        {banner("gallery_kicker", "Gallery", "gallery_title", "Inside the clinic")}
         {gallery.length > 0 ? (
           <section className="grid grid-cols-2 gap-1 sm:grid-cols-3">
             {gallery.map((g) => (
@@ -369,13 +369,9 @@ export default function RadianceDesign({ site, page = "home", basePath = "" }: P
         </div>
 
         <div className="relative z-10 mt-auto max-w-2xl px-6 pb-20 sm:px-12 sm:pb-28">
-          <h1 style={serif} className="text-4xl font-medium leading-[1.1] text-white [text-shadow:0_2px_24px_rgba(0,0,0,0.45)] sm:text-6xl">
-            The finest aesthetics and wellness clinic
-          </h1>
-          <p className="mt-5 max-w-md text-[15px] leading-relaxed text-white/85 [text-shadow:0_1px_12px_rgba(0,0,0,0.5)]">
-            Unrivalled care for anti-wrinkle injections, dermal fillers and advanced laser treatments, delivered by a doctor-led team.
-          </p>
-          <a href={book} {...(bookExternal ? { target: "_blank", rel: "noreferrer" } : {})} className="mt-8 inline-flex bg-white px-10 py-4 text-xs font-semibold uppercase tracking-[0.22em] shadow-2xl transition hover:opacity-90" style={{ color: GREEN }}>Book a consultation</a>
+          <h1 style={serif} className="text-4xl font-medium leading-[1.1] text-white [text-shadow:0_2px_24px_rgba(0,0,0,0.45)] sm:text-6xl" {...editCopy(content, "hero_headline", "The finest aesthetics and wellness clinic")} />
+          <p className="mt-5 max-w-md text-[15px] leading-relaxed text-white/85 [text-shadow:0_1px_12px_rgba(0,0,0,0.5)]" {...editCopy(content, "hero_sub", "Unrivalled care for anti-wrinkle injections, dermal fillers and advanced laser treatments, delivered by a doctor-led team.")} />
+          <a href={book} {...(bookExternal ? { target: "_blank", rel: "noreferrer" } : {})} className="mt-8 inline-flex bg-white px-10 py-4 text-xs font-semibold uppercase tracking-[0.22em] shadow-2xl transition hover:opacity-90" style={{ color: GREEN }} {...editCopy(content, "hero_book_cta", "Book a consultation")} />
         </div>
       </section>
 
@@ -414,8 +410,8 @@ export default function RadianceDesign({ site, page = "home", basePath = "" }: P
             ) : <div className="h-full w-full bg-neutral-200" />}
           </div>
           <div className="px-8 py-16 sm:px-14">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.3em]" style={{ color: GOLD }}>Our clinic</p>
-            <h2 className="mt-4 text-3xl sm:text-4xl" style={{ ...serif, color: GREEN }}>The home of aesthetics and wellness</h2>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.3em]" style={{ color: GOLD }} {...editCopy(content, "clinic_eyebrow", "Our clinic")} />
+            <h2 className="mt-4 text-3xl sm:text-4xl" style={{ ...serif, color: GREEN }} {...editCopy(content, "clinic_heading", "The home of aesthetics and wellness")} />
             {content.about ? (
               <p data-edit="content.about" className="mt-6 text-[16px] leading-[1.9] text-neutral-600">{content.about}</p>
             ) : (
@@ -452,8 +448,8 @@ export default function RadianceDesign({ site, page = "home", basePath = "" }: P
           <div className="mx-auto max-w-5xl px-8 py-20">
             <div className="flex flex-wrap items-end justify-between gap-4">
               <div>
-                <p className="text-[11px] font-semibold uppercase tracking-[0.3em]" style={{ color: GOLD }}>The treatments</p>
-                <h2 className="mt-3 text-3xl sm:text-4xl" style={{ ...serif, color: GREEN }}>Must-have treatments</h2>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.3em]" style={{ color: GOLD }} {...editCopy(content, "highlights_eyebrow", "The treatments")} />
+                <h2 className="mt-3 text-3xl sm:text-4xl" style={{ ...serif, color: GREEN }} {...editCopy(content, "highlights_heading", "Must-have treatments")} />
               </div>
               <a href={href("services")} className="text-sm font-semibold uppercase tracking-[0.15em]" style={{ color: GREEN }}>View all &#8594;</a>
             </div>
@@ -475,10 +471,10 @@ export default function RadianceDesign({ site, page = "home", basePath = "" }: P
       {/* booking band */}
       <section style={{ background: SAND }} className="text-center">
         <div className="mx-auto max-w-2xl px-8 py-20">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.3em]" style={{ color: GOLD }}>Your visit</p>
-          <h2 className="mt-4 text-3xl sm:text-4xl" style={{ ...serif, color: GREEN }}>Book your appointment</h2>
-          <p className="mt-5 text-[15px] leading-relaxed text-neutral-600">Before your treatments begin, a crucial step awaits, your consultation. Our expert team will discuss your goals and recommend the right plan for you.</p>
-          <a href={book} {...(bookExternal ? { target: "_blank", rel: "noreferrer" } : {})} className="mt-8 inline-flex px-10 py-4 text-xs font-semibold uppercase tracking-[0.22em] text-white transition hover:opacity-90" style={{ background: GREEN }}>Book now</a>
+          <p className="text-[11px] font-semibold uppercase tracking-[0.3em]" style={{ color: GOLD }} {...editCopy(content, "bookband_eyebrow", "Your visit")} />
+          <h2 className="mt-4 text-3xl sm:text-4xl" style={{ ...serif, color: GREEN }} {...editCopy(content, "bookband_heading", "Book your appointment")} />
+          <p className="mt-5 text-[15px] leading-relaxed text-neutral-600" {...editCopy(content, "bookband_blurb", "Before your treatments begin, a crucial step awaits, your consultation. Our expert team will discuss your goals and recommend the right plan for you.")} />
+          <a href={book} {...(bookExternal ? { target: "_blank", rel: "noreferrer" } : {})} className="mt-8 inline-flex px-10 py-4 text-xs font-semibold uppercase tracking-[0.22em] text-white transition hover:opacity-90" style={{ background: GREEN }} {...editCopy(content, "bookband_cta", "Book now")} />
         </div>
       </section>
 
@@ -493,9 +489,9 @@ export default function RadianceDesign({ site, page = "home", basePath = "" }: P
       {sliderTiles.length > 0 && (
         <section className="bg-white">
           <div className="mx-auto max-w-6xl px-8 pt-20">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.3em]" style={{ color: GOLD }}>Join our community</p>
-            <h2 className="mt-3 text-3xl sm:text-4xl" style={{ ...serif, color: GREEN }}>Follow the journey</h2>
-            <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-neutral-600">A glimpse of our work, our space and the treatments our clients love most.</p>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.3em]" style={{ color: GOLD }} {...editCopy(content, "community_eyebrow", "Join our community")} />
+            <h2 className="mt-3 text-3xl sm:text-4xl" style={{ ...serif, color: GREEN }} {...editCopy(content, "community_heading", "Follow the journey")} />
+            <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-neutral-600" {...editCopy(content, "community_blurb", "A glimpse of our work, our space and the treatments our clients love most.")} />
           </div>
           <div className="mt-10">
             <RadianceCommunitySlider tiles={sliderTiles} />
@@ -506,7 +502,7 @@ export default function RadianceDesign({ site, page = "home", basePath = "" }: P
       {/* FAQ accordion */}
       <section className="bg-white">
         <div className="mx-auto max-w-3xl px-8 py-20">
-          <h2 className="text-center text-3xl sm:text-4xl" style={{ ...serif, color: GREEN }}>Questions, answered</h2>
+          <h2 className="text-center text-3xl sm:text-4xl" style={{ ...serif, color: GREEN }} {...editCopy(content, "faq_heading", "Questions, answered")} />
           <div className="mt-10">
             <RadianceFaq items={faqs} />
           </div>

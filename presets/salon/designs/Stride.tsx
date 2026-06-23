@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { StrideHeader } from "./StrideHeader";
 import { StrideBooking } from "./StrideBooking";
@@ -132,7 +132,7 @@ export default function StrideDesign({ site, page = "home", basePath = "" }: Pre
           )}
         </div>
         <div>
-          <h4 className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: LIME }}>Explore</h4>
+          <h4 className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: LIME }} {...editCopy(content, "footer_explore_heading", "Explore")} />
           <ul className="mt-4 space-y-2.5 text-sm">
             {nav.map((l) => (
               <li key={l.href}><a href={l.href} className="text-white/70 transition hover:text-white">{l.label}</a></li>
@@ -140,7 +140,7 @@ export default function StrideDesign({ site, page = "home", basePath = "" }: Pre
           </ul>
         </div>
         <div>
-          <h4 className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: LIME }}>Visit us</h4>
+          <h4 className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: LIME }} {...editCopy(content, "footer_visit_heading", "Visit us")} />
           {content.address && <p data-edit="content.address" className="mt-4 whitespace-pre-line text-sm leading-relaxed text-white/70">{content.address}</p>}
           <div className="mt-3 space-y-1.5 text-sm">
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block text-white/70 transition hover:text-white">{content.phone}</a>}
@@ -163,13 +163,13 @@ export default function StrideDesign({ site, page = "home", basePath = "" }: Pre
   );
 
   // Aqua page banner — clears the fixed header on sub-pages.
-  const banner = (kicker: string, title: string, blurb?: string) => (
+  const banner = (kickerKey: string, kicker: string, titleKey: string, title: string, blurbKey?: string, blurb?: string) => (
     <section style={{ background: AQUA }}>
       <div className="mx-auto max-w-5xl px-6 pb-14 pt-32 text-center sm:pt-40">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: TEAL }}>{kicker}</p>
-        <h1 style={{ ...serif, color: INK }} className="mt-3 text-4xl font-medium sm:text-5xl">{title}</h1>
+        <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: TEAL }} {...editCopy(content, kickerKey, kicker)} />
+        <h1 style={{ ...serif, color: INK }} className="mt-3 text-4xl font-medium sm:text-5xl" {...editCopy(content, titleKey, title)} />
         <div className="mx-auto mt-5 max-w-[160px]"><GaitLine className="h-3 w-full" /></div>
-        {blurb && <p className="mx-auto mt-5 max-w-2xl text-[15px] leading-relaxed text-neutral-600">{blurb}</p>}
+        {blurb && blurbKey && <p className="mx-auto mt-5 max-w-2xl text-[15px] leading-relaxed text-neutral-600" {...editCopy(content, blurbKey, blurb)} />}
       </div>
     </section>
   );
@@ -194,7 +194,7 @@ export default function StrideDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "services") {
     return shell(
       <>
-        {banner("Treatments", "Expert foot care, head to toe", "From routine care to gait analysis and minor procedures — every plan begins with a thorough assessment.")}
+        {banner("svc_kicker", "Treatments", "svc_title", "Expert foot care, head to toe", "svc_blurb", "From routine care to gait analysis and minor procedures — every plan begins with a thorough assessment.")}
         <section className="mx-auto max-w-5xl px-6 py-20" style={{ background: WHITE }}>
           {groups.length > 0 ? (
             <div className="space-y-14">
@@ -217,9 +217,9 @@ export default function StrideDesign({ site, page = "home", basePath = "" }: Pre
           ) : <p className="text-neutral-500">Our treatment menu is coming soon.</p>}
 
           <div className="mt-16 overflow-hidden rounded-2xl px-8 py-12 text-center" style={{ background: TEAL }}>
-            <h3 style={serif} className="text-2xl text-white">Not sure what you need?</h3>
-            <p className="mx-auto mt-3 max-w-lg text-[15px] leading-relaxed text-white/80">Book an assessment and our podiatrists will pinpoint the cause and build a plan to keep you moving.</p>
-            <a href={book} className="mt-6 inline-flex rounded-full px-9 py-3.5 text-sm font-semibold uppercase tracking-[0.14em] transition hover:opacity-90" style={{ background: LIME, color: INK }}>Book an assessment</a>
+            <h3 style={serif} className="text-2xl text-white" {...editCopy(content, "svc_cta_heading", "Not sure what you need?")} />
+            <p className="mx-auto mt-3 max-w-lg text-[15px] leading-relaxed text-white/80" {...editCopy(content, "svc_cta_blurb", "Book an assessment and our podiatrists will pinpoint the cause and build a plan to keep you moving.")} />
+            <a href={book} className="mt-6 inline-flex rounded-full px-9 py-3.5 text-sm font-semibold uppercase tracking-[0.14em] transition hover:opacity-90" style={{ background: LIME, color: INK }} {...editCopy(content, "svc_cta_button", "Book an assessment")} />
           </div>
         </section>
       </>,
@@ -230,7 +230,7 @@ export default function StrideDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "about") {
     return shell(
       <>
-        {banner("About", "Foot health you can feel")}
+        {banner("about_kicker", "About", "about_title", "Foot health you can feel")}
         <section className="mx-auto max-w-3xl px-6 py-20" style={{ background: WHITE }}>
           {content.about ? (
             <p data-edit="content.about" className="text-[17px] leading-[1.9] text-neutral-700">{content.about}</p>
@@ -250,8 +250,8 @@ export default function StrideDesign({ site, page = "home", basePath = "" }: Pre
           <section className="border-t" style={{ background: AQUA, borderColor: "rgba(31,94,84,0.12)" }}>
             <div className="mx-auto max-w-6xl px-6 py-20">
               <div className="text-center">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: TEAL }}>Our team</p>
-                <h2 style={{ ...serif, color: INK }} className="mt-3 text-3xl sm:text-4xl">Meet your podiatrists</h2>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: TEAL }} {...editCopy(content, "about_team_eyebrow", "Our team")} />
+                <h2 style={{ ...serif, color: INK }} className="mt-3 text-3xl sm:text-4xl" {...editCopy(content, "about_team_heading", "Meet your podiatrists")} />
               </div>
               <div className="mt-14 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
                 {team.map((m) => (
@@ -274,8 +274,8 @@ export default function StrideDesign({ site, page = "home", basePath = "" }: Pre
 
         <section className="mx-auto max-w-3xl px-6 py-20" style={{ background: WHITE }}>
           <div className="text-center">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: TEAL }}>Good to know</p>
-            <h2 style={{ ...serif, color: INK }} className="mt-3 text-3xl sm:text-4xl">Frequently asked questions</h2>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: TEAL }} {...editCopy(content, "about_faq_eyebrow", "Good to know")} />
+            <h2 style={{ ...serif, color: INK }} className="mt-3 text-3xl sm:text-4xl" {...editCopy(content, "about_faq_heading", "Frequently asked questions")} />
           </div>
           <div className="mt-10 divide-y border-y" style={{ borderColor: AQUA }}>
             {FAQ.map((it) => (
@@ -297,7 +297,7 @@ export default function StrideDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Gallery", "Inside the clinic", "A look at our space, our team and the care that keeps our patients moving.")}
+        {banner("gallery_kicker", "Gallery", "gallery_title", "Inside the clinic", "gallery_blurb", "A look at our space, our team and the care that keeps our patients moving.")}
         <div style={{ background: WHITE }}>
           {gallery.length > 0 ? (
             <section className="mx-auto max-w-6xl px-6 py-16">
@@ -318,11 +318,11 @@ export default function StrideDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "reservations") {
     return shell(
       <>
-        {banner("Booking", "Book your assessment", "Tell us what is troubling your feet and a time that suits. We will confirm by phone or email.")}
+        {banner("book_kicker", "Booking", "book_title", "Book your assessment", "book_blurb", "Tell us what is troubling your feet and a time that suits. We will confirm by phone or email.")}
         <section className="mx-auto grid max-w-6xl gap-10 px-6 py-20 lg:grid-cols-[1fr_1.1fr] lg:gap-16" style={{ background: WHITE }}>
           <div>
-            <h2 style={{ ...serif, color: INK }} className="text-3xl">A clear, confident plan</h2>
-            <p className="mt-4 text-[15px] leading-relaxed text-neutral-600">Every visit starts with a thorough assessment of your feet, gait and footwear. We find the real cause, explain your options and build a plan to get you comfortable and active again.</p>
+            <h2 style={{ ...serif, color: INK }} className="text-3xl" {...editCopy(content, "book_heading", "A clear, confident plan")} />
+            <p className="mt-4 text-[15px] leading-relaxed text-neutral-600" {...editCopy(content, "book_body", "Every visit starts with a thorough assessment of your feet, gait and footwear. We find the real cause, explain your options and build a plan to get you comfortable and active again.")} />
             <ul className="mt-7 space-y-3 text-sm text-neutral-700">
               {["Registered, experienced podiatrists", "Gait and pressure analysis", "Honest, tailored treatment plans", "Aftercare to keep you moving"].map((t) => (
                 <li key={t} className="flex items-start gap-3">
@@ -345,10 +345,10 @@ export default function StrideDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "contact") {
     return shell(
       <>
-        {banner("Contact", "Get in touch", "Visit us, call, or send a message and our team will get back to you.")}
+        {banner("contact_kicker", "Contact", "contact_title", "Get in touch", "contact_blurb", "Visit us, call, or send a message and our team will get back to you.")}
         <section className="mx-auto grid max-w-6xl gap-12 px-6 py-20 lg:grid-cols-2 lg:gap-16" style={{ background: WHITE }}>
           <div>
-            <h2 style={{ ...serif, color: INK }} className="text-2xl">Clinic details</h2>
+            <h2 style={{ ...serif, color: INK }} className="text-2xl" {...editCopy(content, "contact_details_heading", "Clinic details")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed text-neutral-700">
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-neutral-950">{content.phone}</a>}
@@ -363,9 +363,9 @@ export default function StrideDesign({ site, page = "home", basePath = "" }: Pre
             )}
             <div className="mt-7 flex flex-wrap gap-3">
               {content.map_url && (
-                <a href={content.map_url} target="_blank" rel="noreferrer" className="inline-flex rounded-full px-7 py-3 text-xs font-semibold uppercase tracking-[0.14em] transition hover:opacity-90" style={{ background: TEAL, color: "#fff" }}>Get directions</a>
+                <a href={content.map_url} target="_blank" rel="noreferrer" className="inline-flex rounded-full px-7 py-3 text-xs font-semibold uppercase tracking-[0.14em] transition hover:opacity-90" style={{ background: TEAL, color: "#fff" }} {...editCopy(content, "contact_directions_cta", "Get directions")} />
               )}
-              <a href={book} className="inline-flex rounded-full border px-7 py-3 text-xs font-semibold uppercase tracking-[0.14em] transition hover:bg-[#16252A] hover:text-white" style={{ borderColor: INK, color: INK }}>Book appointment</a>
+              <a href={book} className="inline-flex rounded-full border px-7 py-3 text-xs font-semibold uppercase tracking-[0.14em] transition hover:bg-[#16252A] hover:text-white" style={{ borderColor: INK, color: INK }} {...editCopy(content, "contact_book_cta", "Book appointment")} />
             </div>
             {content.socials && content.socials.length > 0 && (
               <div className="mt-8 flex gap-4" style={{ color: TEAL }}>
@@ -419,12 +419,12 @@ export default function StrideDesign({ site, page = "home", basePath = "" }: Pre
           <div className="text-white">
             {content.tagline && <p data-edit="content.tagline" className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: LIME }}>{content.tagline}</p>}
             <h1 data-edit="tenant.business_name" style={serif} className="mt-4 text-5xl font-medium leading-[1.02] sm:text-6xl">{name}</h1>
-            <p className="mt-3 text-2xl font-medium sm:text-3xl" style={{ ...serif, color: LIME }}>Keep moving, pain-free.</p>
-            <p className="mt-5 max-w-md text-base leading-relaxed text-white/80">Expert podiatry and gait care for comfortable, confident feet — from heel pain and orthotics to sports injuries and routine care.</p>
+            <p className="mt-3 text-2xl font-medium sm:text-3xl" style={{ ...serif, color: LIME }} {...editCopy(content, "hero_subhead", "Keep moving, pain-free.")} />
+            <p className="mt-5 max-w-md text-base leading-relaxed text-white/80" {...editCopy(content, "hero_sub", "Expert podiatry and gait care for comfortable, confident feet — from heel pain and orthotics to sports injuries and routine care.")} />
             <div className="mt-8 flex flex-wrap gap-3">
-              <a href={book} className="inline-flex rounded-full px-9 py-4 text-xs font-semibold uppercase tracking-[0.18em] shadow-xl transition hover:opacity-90" style={{ background: LIME, color: INK }}>Book an assessment</a>
+              <a href={book} className="inline-flex rounded-full px-9 py-4 text-xs font-semibold uppercase tracking-[0.18em] shadow-xl transition hover:opacity-90" style={{ background: LIME, color: INK }} {...editCopy(content, "hero_book_cta", "Book an assessment")} />
               {groups.length > 0 && (
-                <a href={href("services")} className="inline-flex rounded-full border border-white/45 px-9 py-4 text-xs font-semibold uppercase tracking-[0.18em] text-white transition hover:bg-white/10">View treatments</a>
+                <a href={href("services")} className="inline-flex rounded-full border border-white/45 px-9 py-4 text-xs font-semibold uppercase tracking-[0.18em] text-white transition hover:bg-white/10" {...editCopy(content, "hero_services_cta", "View treatments")} />
               )}
             </div>
           </div>
@@ -440,7 +440,7 @@ export default function StrideDesign({ site, page = "home", basePath = "" }: Pre
             </div>
             <div className="absolute -bottom-5 -left-5 hidden rounded-2xl px-5 py-4 shadow-lg sm:block" style={{ background: CORAL, color: "#fff" }}>
               <p className="text-2xl font-semibold" style={serif}>4.9★</p>
-              <p className="text-[11px] uppercase tracking-[0.14em] text-white/90">Patient rated</p>
+              <p className="text-[11px] uppercase tracking-[0.14em] text-white/90" {...editCopy(content, "hero_badge_label", "Patient rated")} />
             </div>
           </div>
         </div>
@@ -470,7 +470,7 @@ export default function StrideDesign({ site, page = "home", basePath = "" }: Pre
       {content.about && (
         <section className="px-6 py-20 text-center" style={{ background: AQUA }}>
           <div className="mx-auto max-w-3xl">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: TEAL }}>Welcome</p>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: TEAL }} {...editCopy(content, "intro_eyebrow", "Welcome")} />
             <p data-edit="content.about" className="mt-6 text-[19px] leading-[1.9] text-neutral-700">{content.about}</p>
           </div>
         </section>
@@ -480,9 +480,9 @@ export default function StrideDesign({ site, page = "home", basePath = "" }: Pre
       <section style={{ background: WHITE }}>
         <div className="mx-auto max-w-6xl px-6 py-20">
           <div className="max-w-xl">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: TEAL }}>What we treat</p>
-            <h2 style={{ ...serif, color: INK }} className="mt-3 text-3xl sm:text-4xl">Foot and gait care, sorted properly</h2>
-            <p className="mt-3 text-[15px] leading-relaxed text-neutral-600">Whatever is slowing you down, we assess the cause and treat it — so you can get back to moving freely.</p>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: TEAL }} {...editCopy(content, "treat_eyebrow", "What we treat")} />
+            <h2 style={{ ...serif, color: INK }} className="mt-3 text-3xl sm:text-4xl" {...editCopy(content, "treat_heading", "Foot and gait care, sorted properly")} />
+            <p className="mt-3 text-[15px] leading-relaxed text-neutral-600" {...editCopy(content, "treat_blurb", "Whatever is slowing you down, we assess the cause and treat it — so you can get back to moving freely.")} />
           </div>
           <div className="mt-12 grid gap-px overflow-hidden rounded-2xl border sm:grid-cols-2 lg:grid-cols-3" style={{ borderColor: AQUA, background: AQUA }}>
             {CONDITIONS.map((c) => (
@@ -503,8 +503,8 @@ export default function StrideDesign({ site, page = "home", basePath = "" }: Pre
         <div className="pointer-events-none absolute right-0 top-0 h-full w-1/3 opacity-20" aria-hidden style={{ background: `radial-gradient(circle at 70% 30%, ${TEAL}, transparent 70%)` }} />
         <div className="relative mx-auto max-w-6xl px-6 py-20">
           <div className="text-center">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: LIME }}>Your visit</p>
-            <h2 style={serif} className="mt-3 text-3xl text-white sm:text-4xl">Assessment, treatment, keep moving</h2>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: LIME }} {...editCopy(content, "visit_eyebrow", "Your visit")} />
+            <h2 style={serif} className="mt-3 text-3xl text-white sm:text-4xl" {...editCopy(content, "visit_heading", "Assessment, treatment, keep moving")} />
           </div>
           <div className="mt-14 grid gap-8 md:grid-cols-3">
             {STEPS.map((s, i) => (
@@ -519,7 +519,7 @@ export default function StrideDesign({ site, page = "home", basePath = "" }: Pre
             ))}
           </div>
           <div className="mt-12 text-center">
-            <a href={book} className="inline-flex rounded-full px-9 py-3.5 text-sm font-semibold uppercase tracking-[0.14em] transition hover:opacity-90" style={{ background: LIME, color: INK }}>Start with an assessment</a>
+            <a href={book} className="inline-flex rounded-full px-9 py-3.5 text-sm font-semibold uppercase tracking-[0.14em] transition hover:opacity-90" style={{ background: LIME, color: INK }} {...editCopy(content, "visit_cta", "Start with an assessment")} />
           </div>
         </div>
       </section>
@@ -530,8 +530,8 @@ export default function StrideDesign({ site, page = "home", basePath = "" }: Pre
           <div className="mx-auto max-w-6xl px-6 py-20">
             <div className="flex flex-wrap items-end justify-between gap-4">
               <div>
-                <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: TEAL }}>Treatments</p>
-                <h2 style={{ ...serif, color: INK }} className="mt-3 text-3xl sm:text-4xl">What we can do for you</h2>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: TEAL }} {...editCopy(content, "teaser_eyebrow", "Treatments")} />
+                <h2 style={{ ...serif, color: INK }} className="mt-3 text-3xl sm:text-4xl" {...editCopy(content, "teaser_heading", "What we can do for you")} />
               </div>
               <a href={href("services")} className="text-sm font-semibold underline-offset-4 hover:underline" style={{ color: TEAL }}>View all treatments →</a>
             </div>
@@ -551,8 +551,8 @@ export default function StrideDesign({ site, page = "home", basePath = "" }: Pre
       <section style={{ background: AQUA }}>
         <div className="mx-auto max-w-6xl px-6 py-20">
           <div className="text-center">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: TEAL }}>Reviews</p>
-            <h2 style={{ ...serif, color: INK }} className="mt-3 text-3xl sm:text-4xl">Back on their feet</h2>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: TEAL }} {...editCopy(content, "reviews_eyebrow", "Reviews")} />
+            <h2 style={{ ...serif, color: INK }} className="mt-3 text-3xl sm:text-4xl" {...editCopy(content, "reviews_heading", "Back on their feet")} />
           </div>
           <div className="mt-12 grid gap-6 md:grid-cols-2">
             {REVIEWS.map((r) => (
@@ -586,10 +586,10 @@ export default function StrideDesign({ site, page = "home", basePath = "" }: Pre
           </div>
         ) : (
           <div className="flex flex-col justify-center px-8 py-14" style={{ background: TEAL }}>
-            <h3 style={serif} className="text-2xl text-white">Get in touch</h3>
+            <h3 style={serif} className="text-2xl text-white" {...editCopy(content, "bookband_fallback_heading", "Get in touch")} />
             {content.phone && <a href={`tel:${content.phone}`} className="mt-4 block text-white">{content.phone}</a>}
             {content.email && <a href={`mailto:${content.email}`} className="mt-1 block text-white">{content.email}</a>}
-            <a href={href("contact")} className="mt-6 inline-flex w-fit rounded-full px-8 py-3.5 text-xs font-semibold uppercase tracking-[0.14em] transition hover:opacity-90" style={{ background: LIME, color: INK }}>Contact us</a>
+            <a href={href("contact")} className="mt-6 inline-flex w-fit rounded-full px-8 py-3.5 text-xs font-semibold uppercase tracking-[0.14em] transition hover:opacity-90" style={{ background: LIME, color: INK }} {...editCopy(content, "bookband_fallback_cta", "Contact us")} />
           </div>
         )}
       </section>
@@ -598,14 +598,14 @@ export default function StrideDesign({ site, page = "home", basePath = "" }: Pre
       <section style={{ background: WHITE }}>
         <div className="mx-auto grid max-w-6xl gap-10 px-6 py-16 md:grid-cols-3">
           <div>
-            <h3 className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: TEAL }}>Visit us</h3>
+            <h3 className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: TEAL }} {...editCopy(content, "details_visit_heading", "Visit us")} />
             {content.address && <p data-edit="content.address" className="mt-4 whitespace-pre-line text-sm leading-relaxed text-neutral-700">{content.address}</p>}
             {content.map_url && (
               <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-4 inline-flex text-sm font-semibold" style={{ color: TEAL }}>Get directions →</a>
             )}
           </div>
           <div>
-            <h3 className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: TEAL }}>Opening times</h3>
+            <h3 className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: TEAL }} {...editCopy(content, "details_hours_heading", "Opening times")} />
             {content.hours && content.hours.length > 0 ? (
               <ul className="mt-4 space-y-2 text-sm text-neutral-700">
                 {content.hours.map((h, i) => (
@@ -615,12 +615,12 @@ export default function StrideDesign({ site, page = "home", basePath = "" }: Pre
             ) : <p className="mt-4 text-sm text-neutral-500">Open by appointment.</p>}
           </div>
           <div>
-            <h3 className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: TEAL }}>Contact</h3>
+            <h3 className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: TEAL }} {...editCopy(content, "details_contact_heading", "Contact")} />
             <div className="mt-4 space-y-1.5 text-sm text-neutral-700">
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-neutral-950">{content.phone}</a>}
               {content.email && <a data-edit="content.email" href={`mailto:${content.email}`} className="block transition hover:text-neutral-950">{content.email}</a>}
             </div>
-            <a href={book} className="mt-5 inline-flex rounded-full px-7 py-3 text-xs font-semibold uppercase tracking-[0.14em] transition hover:opacity-90" style={{ background: TEAL, color: "#fff" }}>Book appointment</a>
+            <a href={book} className="mt-5 inline-flex rounded-full px-7 py-3 text-xs font-semibold uppercase tracking-[0.14em] transition hover:opacity-90" style={{ background: TEAL, color: "#fff" }} {...editCopy(content, "details_book_cta", "Book appointment")} />
           </div>
         </div>
       </section>

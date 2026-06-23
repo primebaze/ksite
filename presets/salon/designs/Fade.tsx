@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { FadeHeader } from "./FadeHeader";
 import { FadeBooking } from "./FadeBooking";
@@ -59,7 +59,7 @@ export default function FadeDesign({ site, page = "home", basePath = "" }: Prese
     <footer style={{ background: CREAM }} className="text-neutral-800">
       <div className="mx-auto grid max-w-6xl gap-12 px-8 py-20 text-center md:grid-cols-3 md:text-left">
         <div>
-          <h4 style={serif} className="text-2xl" >Location</h4>
+          <h4 style={serif} className="text-2xl" {...editCopy(content, "footer_location", "Location")} />
           {content.address ? (
             <p data-edit="content.address" className="mt-5 whitespace-pre-line text-[15px] leading-relaxed text-neutral-700">{content.address}</p>
           ) : <p className="mt-5 text-[15px] text-neutral-500">Address coming soon.</p>}
@@ -68,7 +68,7 @@ export default function FadeDesign({ site, page = "home", basePath = "" }: Prese
           )}
         </div>
         <div>
-          <h4 style={serif} className="text-2xl">Opening Hours</h4>
+          <h4 style={serif} className="text-2xl" {...editCopy(content, "footer_hours", "Opening Hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-3 text-[15px] text-neutral-700">
               {content.hours.map((h, i) => (
@@ -81,11 +81,11 @@ export default function FadeDesign({ site, page = "home", basePath = "" }: Prese
           ) : <p className="mt-5 text-[15px] text-neutral-500">Open by appointment.</p>}
         </div>
         <div>
-          <h4 style={serif} className="text-2xl">Contact</h4>
+          <h4 style={serif} className="text-2xl" {...editCopy(content, "footer_contact", "Contact")} />
           <div className="mt-5 space-y-2 text-[15px] text-neutral-700">
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block hover:text-neutral-950">{content.phone}</a>}
             {content.email && <a data-edit="content.email" href={`mailto:${content.email}`} className="block hover:text-neutral-950">{content.email}</a>}
-            <a href={book} className="block font-medium" style={{ color: CORAL }}>Book, reschedule or cancel here</a>
+            <a href={book} className="block font-medium" style={{ color: CORAL }} {...editCopy(content, "footer_book_link", "Book, reschedule or cancel here")} />
           </div>
           {content.socials && content.socials.length > 0 && (
             <div className="mt-6 flex justify-center gap-4 text-neutral-800 md:justify-start">
@@ -109,11 +109,11 @@ export default function FadeDesign({ site, page = "home", basePath = "" }: Prese
   );
 
   // Cream page banner that also clears the fixed header on sub-pages.
-  const banner = (kicker: string, title: string) => (
+  const banner = (keyBase: string, kicker: string, title: string) => (
     <section style={{ background: CREAM }}>
       <div className="mx-auto max-w-6xl px-8 pb-14 pt-32 sm:pt-36">
-        <p className="text-xs font-semibold uppercase tracking-[0.3em]" style={{ color: CORAL }}>{kicker}</p>
-        <h1 style={serif} className="mt-3 text-4xl italic sm:text-5xl">{title}</h1>
+        <p className="text-xs font-semibold uppercase tracking-[0.3em]" style={{ color: CORAL }} {...editCopy(content, `${keyBase}_kicker`, kicker)} />
+        <h1 style={serif} className="mt-3 text-4xl italic sm:text-5xl" {...editCopy(content, `${keyBase}_title`, title)} />
       </div>
     </section>
   );
@@ -122,7 +122,7 @@ export default function FadeDesign({ site, page = "home", basePath = "" }: Prese
   if (page === "services") {
     return shell(
       <>
-        {banner("Our menu", "Services and prices")}
+        {banner("svc_banner", "Our menu", "Services and prices")}
         <section className="mx-auto max-w-3xl px-8 py-20">
           {groups.length > 0 ? (
             <div className="space-y-16">
@@ -148,7 +148,7 @@ export default function FadeDesign({ site, page = "home", basePath = "" }: Prese
                 </div>
               ))}
               <div className="pt-2 text-center">
-                <a href={book} className="inline-flex px-9 py-4 text-sm font-semibold uppercase tracking-[0.18em] text-white transition hover:opacity-90" style={{ background: CORAL }}>Book Appointment</a>
+                <a href={book} className="inline-flex px-9 py-4 text-sm font-semibold uppercase tracking-[0.18em] text-white transition hover:opacity-90" style={{ background: CORAL }} {...editCopy(content, "svc_book_cta", "Book Appointment")} />
               </div>
             </div>
           ) : <p className="text-neutral-500">Our services are coming soon.</p>}
@@ -161,9 +161,9 @@ export default function FadeDesign({ site, page = "home", basePath = "" }: Prese
   if (page === "reservations") {
     return shell(
       <>
-        {banner("Appointments", "Book your visit")}
+        {banner("book_banner", "Appointments", "Book your visit")}
         <section className="mx-auto max-w-xl px-8 py-20">
-          <p className="mb-8 text-center text-[17px] leading-[1.8] text-neutral-700">Tell us what you are after and when suits, and we will confirm your appointment. To reschedule or cancel, just give us a call.</p>
+          <p className="mb-8 text-center text-[17px] leading-[1.8] text-neutral-700" {...editCopy(content, "book_blurb", "Tell us what you are after and when suits, and we will confirm your appointment. To reschedule or cancel, just give us a call.")} />
           <FadeBooking tenantId={tenant.id} name={name} />
         </section>
       </>,
@@ -174,10 +174,10 @@ export default function FadeDesign({ site, page = "home", basePath = "" }: Prese
   if (page === "contact") {
     return shell(
       <>
-        {banner("Say hello", "Find us")}
+        {banner("contact_banner", "Say hello", "Find us")}
         <section className="mx-auto grid max-w-6xl gap-12 px-8 py-20 lg:grid-cols-2 lg:gap-20">
           <div>
-            <h3 style={serif} className="text-2xl italic">Visit the salon</h3>
+            <h3 style={serif} className="text-2xl italic" {...editCopy(content, "contact_visit_heading", "Visit the salon")} />
             <div className="mt-5 space-y-5 text-[15px] leading-relaxed text-neutral-700">
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block hover:text-neutral-950">{content.phone}</a>}
@@ -191,7 +191,7 @@ export default function FadeDesign({ site, page = "home", basePath = "" }: Prese
               </ul>
             )}
             {content.map_url && (
-              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex px-7 py-3 text-xs font-semibold uppercase tracking-[0.2em] text-white transition hover:opacity-90" style={{ background: INK }}>Get directions</a>
+              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex px-7 py-3 text-xs font-semibold uppercase tracking-[0.2em] text-white transition hover:opacity-90" style={{ background: INK }} {...editCopy(content, "contact_directions_cta", "Get directions")} />
             )}
           </div>
           {contactOn && (
@@ -216,13 +216,13 @@ export default function FadeDesign({ site, page = "home", basePath = "" }: Prese
   if (page === "about") {
     return shell(
       <>
-        {banner("Our story", "We care about your hair, beauty and wellbeing")}
+        {banner("about_banner", "Our story", "We care about your hair, beauty and wellbeing")}
         <section className="mx-auto max-w-3xl px-8 py-20">
           {content.about ? <p data-edit="content.about" className="text-[17px] leading-[1.9] text-neutral-700">{content.about}</p> : <p className="text-neutral-500">Our story is coming soon.</p>}
         </section>
         {team.length > 0 && (
           <section className="mx-auto max-w-6xl px-8 pb-24">
-            <h2 style={serif} className="text-center text-3xl italic">Meet the team</h2>
+            <h2 style={serif} className="text-center text-3xl italic" {...editCopy(content, "about_team_heading", "Meet the team")} />
             <div className="mt-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
               {team.map((m) => (
                 <div key={m.id} className="text-center">
@@ -248,7 +248,7 @@ export default function FadeDesign({ site, page = "home", basePath = "" }: Prese
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Our work", "Tag your new look")}
+        {banner("gallery_banner", "Our work", "Tag your new look")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-6xl px-2 py-12 sm:px-4">
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
@@ -279,7 +279,7 @@ export default function FadeDesign({ site, page = "home", basePath = "" }: Prese
         <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/45 via-black/10 to-black/25" />
         <div className="relative z-10 mt-auto flex flex-col items-start gap-6 px-6 pb-20 sm:px-12 sm:pb-24">
           {content.tagline && <p data-edit="content.tagline" style={serif} className="max-w-2xl text-3xl italic leading-snug text-white [text-shadow:0_2px_20px_rgba(0,0,0,0.55)] sm:text-5xl">{content.tagline}</p>}
-          <a href={book} style={{ background: CORAL }} className="px-9 py-4 text-center text-sm font-semibold uppercase tracking-[0.18em] text-white shadow-2xl transition hover:opacity-90">Book Appointment</a>
+          <a href={book} style={{ background: CORAL }} className="px-9 py-4 text-center text-sm font-semibold uppercase tracking-[0.18em] text-white shadow-2xl transition hover:opacity-90" {...editCopy(content, "hero_book_cta", "Book Appointment")} />
         </div>
       </section>
 
@@ -288,7 +288,7 @@ export default function FadeDesign({ site, page = "home", basePath = "" }: Prese
         <div className="mx-auto max-w-6xl px-6 py-20 sm:py-24">
           <div className="grid items-center gap-10 md:grid-cols-2">
             <div className="bg-white p-9 shadow-sm sm:p-12">
-              <h2 style={serif} className="text-3xl italic sm:text-4xl">Discover your service.</h2>
+              <h2 style={serif} className="text-3xl italic sm:text-4xl" {...editCopy(content, "home_discover_heading", "Discover your service.")} />
               {content.about ? (
                 <p data-edit="content.about" className="mt-5 text-[15px] leading-relaxed text-neutral-600">{content.about}</p>
               ) : (
@@ -314,8 +314,8 @@ export default function FadeDesign({ site, page = "home", basePath = "" }: Prese
         <section className="mx-auto max-w-6xl px-6 py-20 sm:py-24">
           <div className="grid items-center gap-12 md:grid-cols-2">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.3em]" style={{ color: CORAL }}>What we do</p>
-              <h2 style={serif} className="mt-3 text-3xl italic sm:text-4xl">Hair, colour and beauty</h2>
+              <p className="text-xs font-semibold uppercase tracking-[0.3em]" style={{ color: CORAL }} {...editCopy(content, "home_services_eyebrow", "What we do")} />
+              <h2 style={serif} className="mt-3 text-3xl italic sm:text-4xl" {...editCopy(content, "home_services_heading", "Hair, colour and beauty")} />
               <ul className="mt-8 space-y-4">
                 {teaser.map((item) => (
                   <li key={item.id} className="flex items-baseline justify-between gap-3 border-b border-neutral-200 pb-3">
@@ -324,7 +324,7 @@ export default function FadeDesign({ site, page = "home", basePath = "" }: Prese
                   </li>
                 ))}
               </ul>
-              <a href={href("services")} className="mt-8 inline-block text-sm font-semibold uppercase tracking-[0.15em]" style={{ color: CORAL }}>View full price list</a>
+              <a href={href("services")} className="mt-8 inline-block text-sm font-semibold uppercase tracking-[0.15em]" style={{ color: CORAL }} {...editCopy(content, "home_services_link", "View full price list")} />
             </div>
             {galleryStrip[1] ? (
               // eslint-disable-next-line @next/next/no-img-element
@@ -340,9 +340,9 @@ export default function FadeDesign({ site, page = "home", basePath = "" }: Prese
       <section style={{ background: PEACH }} className="text-white">
         <div className="mx-auto grid max-w-6xl items-center gap-10 px-6 py-20 md:grid-cols-2">
           <div>
-            <h2 style={serif} className="text-3xl italic sm:text-4xl">Our products</h2>
-            <p className="mt-5 max-w-md text-[15px] leading-relaxed text-white/90">We use professional, kind to hair products and only recommend what we would use ourselves, so the look we create with you lasts long after you leave the chair.</p>
-            <a href={book} className="mt-7 inline-flex bg-white px-8 py-3.5 text-sm font-semibold uppercase tracking-[0.16em] transition hover:opacity-90" style={{ color: INK }}>Book Appointment</a>
+            <h2 style={serif} className="text-3xl italic sm:text-4xl" {...editCopy(content, "products_heading", "Our products")} />
+            <p className="mt-5 max-w-md text-[15px] leading-relaxed text-white/90" {...editCopy(content, "products_blurb", "We use professional, kind to hair products and only recommend what we would use ourselves, so the look we create with you lasts long after you leave the chair.")} />
+            <a href={book} className="mt-7 inline-flex bg-white px-8 py-3.5 text-sm font-semibold uppercase tracking-[0.16em] transition hover:opacity-90" style={{ color: INK }} {...editCopy(content, "products_book_cta", "Book Appointment")} />
           </div>
           {galleryStrip[2] ? (
             // eslint-disable-next-line @next/next/no-img-element
@@ -356,7 +356,7 @@ export default function FadeDesign({ site, page = "home", basePath = "" }: Prese
       {/* Instagram-style "Tag your new look" grid */}
       {galleryStrip.length > 0 && (
         <section className="mx-auto max-w-6xl px-2 py-20 sm:px-4">
-          <h2 style={serif} className="mb-10 text-center text-3xl italic">Tag your new look</h2>
+          <h2 style={serif} className="mb-10 text-center text-3xl italic" {...editCopy(content, "gallery_grid_heading", "Tag your new look")} />
           <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
             {galleryStrip.map((g) => (
               // eslint-disable-next-line @next/next/no-img-element
@@ -365,7 +365,7 @@ export default function FadeDesign({ site, page = "home", basePath = "" }: Prese
           </div>
           {gallery.length > galleryStrip.length && (
             <div className="mt-10 text-center">
-              <a href={href("gallery")} className="text-sm font-semibold uppercase tracking-[0.15em]" style={{ color: CORAL }}>See the full gallery</a>
+              <a href={href("gallery")} className="text-sm font-semibold uppercase tracking-[0.15em]" style={{ color: CORAL }} {...editCopy(content, "gallery_full_link", "See the full gallery")} />
             </div>
           )}
         </section>
@@ -374,10 +374,10 @@ export default function FadeDesign({ site, page = "home", basePath = "" }: Prese
       {/* "Leave a Review" cream CTA */}
       <section style={{ background: CREAM }}>
         <div className="mx-auto max-w-3xl px-6 py-24 text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.3em]" style={{ color: CORAL }}>Loved your visit?</p>
-          <h2 style={serif} className="mt-4 text-4xl italic">Leave a review</h2>
-          <p className="mx-auto mt-4 max-w-md text-[15px] leading-relaxed text-neutral-600">Your kind words help our little salon grow. We would love to hear how we did.</p>
-          <a href={href("contact")} className="mt-8 inline-flex px-9 py-4 text-sm font-semibold uppercase tracking-[0.18em] text-white transition hover:opacity-90" style={{ background: CORAL }}>Get in touch</a>
+          <p className="text-xs font-semibold uppercase tracking-[0.3em]" style={{ color: CORAL }} {...editCopy(content, "review_eyebrow", "Loved your visit?")} />
+          <h2 style={serif} className="mt-4 text-4xl italic" {...editCopy(content, "review_heading", "Leave a review")} />
+          <p className="mx-auto mt-4 max-w-md text-[15px] leading-relaxed text-neutral-600" {...editCopy(content, "review_blurb", "Your kind words help our little salon grow. We would love to hear how we did.")} />
+          <a href={href("contact")} className="mt-8 inline-flex px-9 py-4 text-sm font-semibold uppercase tracking-[0.18em] text-white transition hover:opacity-90" style={{ background: CORAL }} {...editCopy(content, "review_cta", "Get in touch")} />
         </div>
       </section>
     </>,

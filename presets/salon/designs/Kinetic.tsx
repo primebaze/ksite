@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { KineticHeader } from "./KineticHeader";
 import { KineticBooking } from "./KineticBooking";
@@ -125,7 +125,7 @@ export default function KineticDesign({ site, page = "home", basePath = "" }: Pr
           )}
         </div>
         <div>
-          <h4 className="text-[11px] font-bold uppercase tracking-[0.22em]" style={{ color: LIME }}>Explore</h4>
+          <h4 className="text-[11px] font-bold uppercase tracking-[0.22em]" style={{ color: LIME }} {...editCopy(content, "footer_explore", "Explore")} />
           <ul className="mt-4 space-y-2.5 text-sm">
             {nav.map((l) => (
               <li key={l.href}><a href={l.href} className="text-white/60 transition hover:text-white">{l.label}</a></li>
@@ -133,7 +133,7 @@ export default function KineticDesign({ site, page = "home", basePath = "" }: Pr
           </ul>
         </div>
         <div>
-          <h4 className="text-[11px] font-bold uppercase tracking-[0.22em]" style={{ color: LIME }}>Find us</h4>
+          <h4 className="text-[11px] font-bold uppercase tracking-[0.22em]" style={{ color: LIME }} {...editCopy(content, "footer_findus", "Find us")} />
           {content.address && <p data-edit="content.address" className="mt-4 whitespace-pre-line text-sm leading-relaxed text-white/60">{content.address}</p>}
           <div className="mt-3 space-y-1.5 text-sm">
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block text-white/60 transition hover:text-white">{content.phone}</a>}
@@ -156,13 +156,13 @@ export default function KineticDesign({ site, page = "home", basePath = "" }: Pr
   );
 
   // navy page banner — clears the fixed header on sub-pages.
-  const banner = (kicker: string, title: string, blurb?: string) => (
+  const banner = (keyBase: string, kicker: string, title: string, blurb?: string) => (
     <section className="relative overflow-hidden" style={{ background: NAVY }}>
       <Pulse className="absolute inset-x-0 bottom-0 h-20 w-full opacity-10" />
       <div className="relative mx-auto max-w-5xl px-6 pb-16 pt-32 text-center sm:pt-40">
-        <p className="text-[11px] font-bold uppercase tracking-[0.34em]" style={{ color: LIME }}>{kicker}</p>
-        <h1 style={display} className="mt-4 text-4xl font-bold leading-[1.02] text-white sm:text-6xl">{title}</h1>
-        {blurb && <p className="mx-auto mt-5 max-w-2xl text-[15px] leading-relaxed text-white/60">{blurb}</p>}
+        <p className="text-[11px] font-bold uppercase tracking-[0.34em]" style={{ color: LIME }} {...editCopy(content, `${keyBase}_kicker`, kicker)} />
+        <h1 style={display} className="mt-4 text-4xl font-bold leading-[1.02] text-white sm:text-6xl" {...editCopy(content, `${keyBase}_title`, title)} />
+        {blurb && <p className="mx-auto mt-5 max-w-2xl text-[15px] leading-relaxed text-white/60" {...editCopy(content, `${keyBase}_blurb`, blurb)} />}
       </div>
     </section>
   );
@@ -171,7 +171,7 @@ export default function KineticDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "services") {
     return shell(
       <>
-        {banner("Services", "How we get you moving", "From acute injury to peak performance — pick the discipline that fits, or book an assessment and we will map it out for you.")}
+        {banner("svc_banner", "Services", "How we get you moving", "From acute injury to peak performance — pick the discipline that fits, or book an assessment and we will map it out for you.")}
         <section className="mx-auto max-w-5xl px-6 py-20">
           {groups.length > 0 ? (
             <div className="space-y-16">
@@ -207,9 +207,9 @@ export default function KineticDesign({ site, page = "home", basePath = "" }: Pr
           ) : <p style={{ color: SLATE }}>Our services are coming soon.</p>}
 
           <div className="mt-16 overflow-hidden rounded-2xl px-8 py-12 text-center" style={{ background: NAVY }}>
-            <h3 style={display} className="text-2xl font-bold text-white">Not sure what you need?</h3>
-            <p className="mx-auto mt-3 max-w-lg text-[15px] leading-relaxed text-white/60">Book an assessment and our team will pinpoint the problem and build your plan around it.</p>
-            <a href={book} className="mt-6 inline-flex rounded-full px-9 py-3.5 text-sm font-bold uppercase tracking-[0.14em] transition hover:brightness-95" style={{ background: LIME, color: NAVY }}>Book an assessment</a>
+            <h3 style={display} className="text-2xl font-bold text-white" {...editCopy(content, "svc_cta_heading", "Not sure what you need?")} />
+            <p className="mx-auto mt-3 max-w-lg text-[15px] leading-relaxed text-white/60" {...editCopy(content, "svc_cta_blurb", "Book an assessment and our team will pinpoint the problem and build your plan around it.")} />
+            <a href={book} className="mt-6 inline-flex rounded-full px-9 py-3.5 text-sm font-bold uppercase tracking-[0.14em] transition hover:brightness-95" style={{ background: LIME, color: NAVY }} {...editCopy(content, "svc_cta_button", "Book an assessment")} />
           </div>
         </section>
       </>,
@@ -220,7 +220,7 @@ export default function KineticDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "about") {
     return shell(
       <>
-        {banner("About", "Built around getting you back")}
+        {banner("about_banner", "About", "Built around getting you back")}
         <section className="mx-auto max-w-3xl px-6 py-20">
           {content.about ? (
             <p data-edit="content.about" className="text-[17px] leading-[1.9]" style={{ color: SLATE }}>{content.about}</p>
@@ -243,8 +243,8 @@ export default function KineticDesign({ site, page = "home", basePath = "" }: Pr
           <section style={{ background: WHITE }}>
             <div className="mx-auto max-w-6xl px-6 py-20">
               <div className="text-center">
-                <p className="text-[11px] font-bold uppercase tracking-[0.34em]" style={{ color: ORANGE }}>The team</p>
-                <h2 className="mt-3 text-3xl font-bold sm:text-4xl" style={{ ...display, color: NAVY }}>Meet your physios</h2>
+                <p className="text-[11px] font-bold uppercase tracking-[0.34em]" style={{ color: ORANGE }} {...editCopy(content, "about_team_eyebrow", "The team")} />
+                <h2 className="mt-3 text-3xl font-bold sm:text-4xl" style={{ ...display, color: NAVY }} {...editCopy(content, "about_team_heading", "Meet your physios")} />
               </div>
               <div className="mt-14 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
                 {team.map((m) => (
@@ -273,8 +273,8 @@ export default function KineticDesign({ site, page = "home", basePath = "" }: Pr
         {/* FAQ */}
         <section className="mx-auto max-w-3xl px-6 py-20">
           <div className="text-center">
-            <p className="text-[11px] font-bold uppercase tracking-[0.34em]" style={{ color: ORANGE }}>Good to know</p>
-            <h2 className="mt-3 text-3xl font-bold sm:text-4xl" style={{ ...display, color: NAVY }}>Common questions</h2>
+            <p className="text-[11px] font-bold uppercase tracking-[0.34em]" style={{ color: ORANGE }} {...editCopy(content, "about_faq_eyebrow", "Good to know")} />
+            <h2 className="mt-3 text-3xl font-bold sm:text-4xl" style={{ ...display, color: NAVY }} {...editCopy(content, "about_faq_heading", "Common questions")} />
           </div>
           <div className="mt-10 space-y-4">
             {FAQ.map((f) => (
@@ -293,7 +293,7 @@ export default function KineticDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Gallery", "Inside the clinic", "Our space, our team and the work that gets people back to what they love.")}
+        {banner("gallery_banner", "Gallery", "Inside the clinic", "Our space, our team and the work that gets people back to what they love.")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-6xl px-6 py-16">
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
@@ -312,11 +312,11 @@ export default function KineticDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "reservations") {
     return shell(
       <>
-        {banner("Book", "Book your assessment", "Get a movement assessment and a clear plan to get you back. Tell us a little about you and we will confirm your slot.")}
+        {banner("book_banner", "Book", "Book your assessment", "Get a movement assessment and a clear plan to get you back. Tell us a little about you and we will confirm your slot.")}
         <section className="mx-auto grid max-w-6xl gap-10 px-6 py-20 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
           <div>
-            <h2 className="text-3xl font-bold" style={{ ...display, color: NAVY }}>What happens first</h2>
-            <p className="mt-4 text-[15px] leading-relaxed" style={{ color: SLATE }}>Your first visit is a full movement assessment. We find the root cause, explain it in plain terms, and map a realistic return-to-sport plan — with a date to work towards.</p>
+            <h2 className="text-3xl font-bold" style={{ ...display, color: NAVY }} {...editCopy(content, "book_first_heading", "What happens first")} />
+            <p className="mt-4 text-[15px] leading-relaxed" style={{ color: SLATE }} {...editCopy(content, "book_first_blurb", "Your first visit is a full movement assessment. We find the root cause, explain it in plain terms, and map a realistic return-to-sport plan — with a date to work towards.")} />
             <ul className="mt-7 space-y-3 text-sm" style={{ color: NAVY }}>
               {["Hands-on movement assessment", "Clear diagnosis, no jargon", "A return-to-sport timeline", "Direct access — no referral needed"].map((t) => (
                 <li key={t} className="flex items-start gap-3">
@@ -339,10 +339,10 @@ export default function KineticDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "contact") {
     return shell(
       <>
-        {banner("Contact", "Get in touch", "Drop by, call, or send a message and we will get straight back to you.")}
+        {banner("contact_banner", "Contact", "Get in touch", "Drop by, call, or send a message and we will get straight back to you.")}
         <section className="mx-auto grid max-w-6xl gap-12 px-6 py-20 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 className="text-2xl font-bold" style={{ ...display, color: NAVY }}>Clinic details</h2>
+            <h2 className="text-2xl font-bold" style={{ ...display, color: NAVY }} {...editCopy(content, "contact_details_heading", "Clinic details")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: SLATE }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-neutral-950">{content.phone}</a>}
@@ -357,9 +357,9 @@ export default function KineticDesign({ site, page = "home", basePath = "" }: Pr
             )}
             <div className="mt-7 flex flex-wrap gap-3">
               {content.map_url && (
-                <a href={content.map_url} target="_blank" rel="noreferrer" className="inline-flex rounded-full px-7 py-3 text-xs font-bold uppercase tracking-[0.14em] transition hover:brightness-95" style={{ background: LIME, color: NAVY }}>Get directions</a>
+                <a href={content.map_url} target="_blank" rel="noreferrer" className="inline-flex rounded-full px-7 py-3 text-xs font-bold uppercase tracking-[0.14em] transition hover:brightness-95" style={{ background: LIME, color: NAVY }} {...editCopy(content, "contact_directions_cta", "Get directions")} />
               )}
-              <a href={book} className="inline-flex rounded-full border px-7 py-3 text-xs font-bold uppercase tracking-[0.14em] transition hover:text-white" style={{ borderColor: NAVY, color: NAVY }}>Book a session</a>
+              <a href={book} className="inline-flex rounded-full border px-7 py-3 text-xs font-bold uppercase tracking-[0.14em] transition hover:text-white" style={{ borderColor: NAVY, color: NAVY }} {...editCopy(content, "contact_book_cta", "Book a session")} />
             </div>
             {content.socials && content.socials.length > 0 && (
               <div className="mt-8 flex gap-3" style={{ color: NAVY }}>
@@ -416,13 +416,11 @@ export default function KineticDesign({ site, page = "home", basePath = "" }: Pr
             <h1 style={display} className="mt-5 text-5xl font-bold leading-[0.98] text-white sm:text-7xl">
               Move better.<br /><span style={{ color: LIME }}>Recover faster.</span>
             </h1>
-            <p className="mt-6 max-w-md text-base leading-relaxed text-white/70">
-              Sports physiotherapy, injury rehab and performance coaching — built to get you back to what you love, stronger than before.
-            </p>
+            <p className="mt-6 max-w-md text-base leading-relaxed text-white/70" {...editCopy(content, "hero_blurb", "Sports physiotherapy, injury rehab and performance coaching — built to get you back to what you love, stronger than before.")} />
             <div className="mt-9 flex flex-wrap items-center gap-3">
-              <a href={book} className="inline-flex rounded-full px-9 py-4 text-xs font-bold uppercase tracking-[0.16em] transition hover:brightness-95" style={{ background: LIME, color: NAVY }}>Book a session</a>
+              <a href={book} className="inline-flex rounded-full px-9 py-4 text-xs font-bold uppercase tracking-[0.16em] transition hover:brightness-95" style={{ background: LIME, color: NAVY }} {...editCopy(content, "hero_book_cta", "Book a session")} />
               {groups.length > 0 && (
-                <a href={href("services")} className="inline-flex rounded-full border border-white/30 px-9 py-4 text-xs font-bold uppercase tracking-[0.16em] text-white backdrop-blur-sm transition hover:bg-white/10">Our services</a>
+                <a href={href("services")} className="inline-flex rounded-full border border-white/30 px-9 py-4 text-xs font-bold uppercase tracking-[0.16em] text-white backdrop-blur-sm transition hover:bg-white/10" {...editCopy(content, "hero_services_cta", "Our services")} />
               )}
             </div>
             {/* wordmark for inline editing */}
@@ -446,7 +444,7 @@ export default function KineticDesign({ site, page = "home", basePath = "" }: Pr
       {/* intro */}
       {content.about && (
         <section className="mx-auto max-w-3xl px-6 py-20 text-center">
-          <p className="text-[11px] font-bold uppercase tracking-[0.34em]" style={{ color: ORANGE }}>Why us</p>
+          <p className="text-[11px] font-bold uppercase tracking-[0.34em]" style={{ color: ORANGE }} {...editCopy(content, "home_whyus_eyebrow", "Why us")} />
           <p data-edit="content.about" className="mt-6 text-[19px] leading-[1.8]" style={{ color: SLATE }}>{content.about}</p>
         </section>
       )}
@@ -455,9 +453,9 @@ export default function KineticDesign({ site, page = "home", basePath = "" }: Pr
       <section style={{ background: WHITE }}>
         <div className="mx-auto max-w-6xl px-6 py-20">
           <div className="max-w-xl">
-            <p className="text-[11px] font-bold uppercase tracking-[0.34em]" style={{ color: ORANGE }}>The pathway</p>
-            <h2 className="mt-3 text-3xl font-bold sm:text-4xl" style={{ ...display, color: NAVY }}>How we get you back</h2>
-            <p className="mt-3 text-[15px] leading-relaxed" style={{ color: SLATE }}>Every plan follows the same proven progression — from settling the injury to returning stronger than before.</p>
+            <p className="text-[11px] font-bold uppercase tracking-[0.34em]" style={{ color: ORANGE }} {...editCopy(content, "pathway_eyebrow", "The pathway")} />
+            <h2 className="mt-3 text-3xl font-bold sm:text-4xl" style={{ ...display, color: NAVY }} {...editCopy(content, "pathway_heading", "How we get you back")} />
+            <p className="mt-3 text-[15px] leading-relaxed" style={{ color: SLATE }} {...editCopy(content, "pathway_blurb", "Every plan follows the same proven progression — from settling the injury to returning stronger than before.")} />
           </div>
           <div className="mt-12 grid gap-px overflow-hidden rounded-2xl sm:grid-cols-2 lg:grid-cols-4" style={{ background: "#DDE3E9" }}>
             {PATHWAY.map((step, i) => (
@@ -479,10 +477,10 @@ export default function KineticDesign({ site, page = "home", basePath = "" }: Pr
         <section className="mx-auto max-w-6xl px-6 py-20">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
-              <p className="text-[11px] font-bold uppercase tracking-[0.34em]" style={{ color: ORANGE }}>Services</p>
-              <h2 className="mt-3 text-3xl font-bold sm:text-4xl" style={{ ...display, color: NAVY }}>What we do</h2>
+              <p className="text-[11px] font-bold uppercase tracking-[0.34em]" style={{ color: ORANGE }} {...editCopy(content, "home_services_eyebrow", "Services")} />
+              <h2 className="mt-3 text-3xl font-bold sm:text-4xl" style={{ ...display, color: NAVY }} {...editCopy(content, "home_services_heading", "What we do")} />
             </div>
-            <a href={href("services")} className="text-sm font-bold underline-offset-4 hover:underline" style={{ color: NAVY }}>View all services →</a>
+            <a href={href("services")} className="text-sm font-bold underline-offset-4 hover:underline" style={{ color: NAVY }} {...editCopy(content, "home_services_link", "View all services →")} />
           </div>
           <div className="mt-10 grid gap-x-12 gap-y-10 lg:grid-cols-2">
             {teaseGroups.map((c) => (
@@ -510,10 +508,10 @@ export default function KineticDesign({ site, page = "home", basePath = "" }: Pr
         <div className="mx-auto max-w-6xl px-6 py-20">
           <div className="lg:flex lg:items-center lg:justify-between lg:gap-12">
             <div className="max-w-md">
-              <p className="text-[11px] font-bold uppercase tracking-[0.34em]" style={{ color: LIME }}>What we treat</p>
-              <h2 style={display} className="mt-3 text-3xl font-bold text-white sm:text-4xl">From niggles to full ruptures</h2>
-              <p className="mt-4 text-[15px] leading-relaxed text-white/60">If it stops you training, competing or moving freely, we can help. A few of the things people come to us for:</p>
-              <a href={book} className="mt-7 inline-flex rounded-full px-8 py-3.5 text-xs font-bold uppercase tracking-[0.14em] transition hover:brightness-95" style={{ background: LIME, color: NAVY }}>Book an assessment</a>
+              <p className="text-[11px] font-bold uppercase tracking-[0.34em]" style={{ color: LIME }} {...editCopy(content, "treat_eyebrow", "What we treat")} />
+              <h2 style={display} className="mt-3 text-3xl font-bold text-white sm:text-4xl" {...editCopy(content, "treat_heading", "From niggles to full ruptures")} />
+              <p className="mt-4 text-[15px] leading-relaxed text-white/60" {...editCopy(content, "treat_blurb", "If it stops you training, competing or moving freely, we can help. A few of the things people come to us for:")} />
+              <a href={book} className="mt-7 inline-flex rounded-full px-8 py-3.5 text-xs font-bold uppercase tracking-[0.14em] transition hover:brightness-95" style={{ background: LIME, color: NAVY }} {...editCopy(content, "treat_cta", "Book an assessment")} />
             </div>
             <div className="mt-10 flex flex-wrap gap-2.5 lg:mt-0 lg:max-w-md">
               {TREATS.map((t) => (
@@ -528,8 +526,8 @@ export default function KineticDesign({ site, page = "home", basePath = "" }: Pr
       <section style={{ background: WHITE }}>
         <div className="mx-auto max-w-6xl px-6 py-20">
           <div className="text-center">
-            <p className="text-[11px] font-bold uppercase tracking-[0.34em]" style={{ color: ORANGE }}>Results</p>
-            <h2 className="mt-3 text-3xl font-bold sm:text-4xl" style={{ ...display, color: NAVY }}>Back to what they love</h2>
+            <p className="text-[11px] font-bold uppercase tracking-[0.34em]" style={{ color: ORANGE }} {...editCopy(content, "reviews_eyebrow", "Results")} />
+            <h2 className="mt-3 text-3xl font-bold sm:text-4xl" style={{ ...display, color: NAVY }} {...editCopy(content, "reviews_heading", "Back to what they love")} />
           </div>
           <div className="mt-12 grid gap-6 lg:grid-cols-3">
             {REVIEWS.map((r) => (
@@ -565,10 +563,10 @@ export default function KineticDesign({ site, page = "home", basePath = "" }: Pr
           </div>
         ) : (
           <div className="flex flex-col justify-center px-8 py-14" style={{ background: NAVY_2 }}>
-            <h3 style={display} className="text-2xl font-bold text-white">Get in touch</h3>
+            <h3 style={display} className="text-2xl font-bold text-white" {...editCopy(content, "bookband_heading", "Get in touch")} />
             {content.phone && <a href={`tel:${content.phone}`} className="mt-4 block text-white/75">{content.phone}</a>}
             {content.email && <a href={`mailto:${content.email}`} className="mt-1 block text-white/75">{content.email}</a>}
-            <a href={href("contact")} className="mt-6 inline-flex w-fit rounded-full px-8 py-3.5 text-xs font-bold uppercase tracking-[0.14em] transition hover:brightness-95" style={{ background: LIME, color: NAVY }}>Contact us</a>
+            <a href={href("contact")} className="mt-6 inline-flex w-fit rounded-full px-8 py-3.5 text-xs font-bold uppercase tracking-[0.14em] transition hover:brightness-95" style={{ background: LIME, color: NAVY }} {...editCopy(content, "bookband_cta", "Contact us")} />
           </div>
         )}
       </section>
@@ -577,14 +575,14 @@ export default function KineticDesign({ site, page = "home", basePath = "" }: Pr
       <section className="border-t" style={{ background: WHITE, borderColor: "#E2E7EC" }}>
         <div className="mx-auto grid max-w-6xl gap-10 px-6 py-16 md:grid-cols-3">
           <div>
-            <h3 className="text-[11px] font-bold uppercase tracking-[0.2em]" style={{ color: ORANGE }}>Find us</h3>
+            <h3 className="text-[11px] font-bold uppercase tracking-[0.2em]" style={{ color: ORANGE }} {...editCopy(content, "details_findus_heading", "Find us")} />
             {content.address && <p data-edit="content.address" className="mt-4 whitespace-pre-line text-sm leading-relaxed" style={{ color: SLATE }}>{content.address}</p>}
             {content.map_url && (
-              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-4 inline-flex text-sm font-bold" style={{ color: NAVY }}>Get directions →</a>
+              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-4 inline-flex text-sm font-bold" style={{ color: NAVY }} {...editCopy(content, "details_directions_link", "Get directions →")} />
             )}
           </div>
           <div>
-            <h3 className="text-[11px] font-bold uppercase tracking-[0.2em]" style={{ color: ORANGE }}>Opening hours</h3>
+            <h3 className="text-[11px] font-bold uppercase tracking-[0.2em]" style={{ color: ORANGE }} {...editCopy(content, "details_hours_heading", "Opening hours")} />
             {content.hours && content.hours.length > 0 ? (
               <ul className="mt-4 space-y-2 text-sm" style={{ color: NAVY }}>
                 {content.hours.map((h, i) => (
@@ -594,12 +592,12 @@ export default function KineticDesign({ site, page = "home", basePath = "" }: Pr
             ) : <p className="mt-4 text-sm" style={{ color: SLATE }}>Open by appointment.</p>}
           </div>
           <div>
-            <h3 className="text-[11px] font-bold uppercase tracking-[0.2em]" style={{ color: ORANGE }}>Contact</h3>
+            <h3 className="text-[11px] font-bold uppercase tracking-[0.2em]" style={{ color: ORANGE }} {...editCopy(content, "details_contact_heading", "Contact")} />
             <div className="mt-4 space-y-1.5 text-sm" style={{ color: SLATE }}>
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-neutral-950">{content.phone}</a>}
               {content.email && <a data-edit="content.email" href={`mailto:${content.email}`} className="block transition hover:text-neutral-950">{content.email}</a>}
             </div>
-            <a href={book} className="mt-5 inline-flex rounded-full px-7 py-3 text-xs font-bold uppercase tracking-[0.14em] transition hover:brightness-95" style={{ background: LIME, color: NAVY }}>Book a session</a>
+            <a href={book} className="mt-5 inline-flex rounded-full px-7 py-3 text-xs font-bold uppercase tracking-[0.14em] transition hover:brightness-95" style={{ background: LIME, color: NAVY }} {...editCopy(content, "details_book_cta", "Book a session")} />
           </div>
         </div>
       </section>

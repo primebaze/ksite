@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { SerenHeader } from "./SerenHeader";
 import { SerenBooking } from "./SerenBooking";
@@ -116,7 +116,7 @@ export default function SerenDesign({ site, page = "home", basePath = "" }: Pres
           )}
         </div>
         <div>
-          <h4 className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: ROSE }}>Explore</h4>
+          <h4 className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: ROSE }} {...editCopy(content, "footer_explore_heading", "Explore")} />
           <ul className="mt-4 space-y-2.5 text-sm">
             {nav.map((l) => (
               <li key={l.href}><a href={l.href} className="text-white/75 transition hover:text-white">{l.label}</a></li>
@@ -124,7 +124,7 @@ export default function SerenDesign({ site, page = "home", basePath = "" }: Pres
           </ul>
         </div>
         <div>
-          <h4 className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: ROSE }}>Visit us</h4>
+          <h4 className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: ROSE }} {...editCopy(content, "footer_visit_heading", "Visit us")} />
           {content.address && <p data-edit="content.address" className="mt-4 whitespace-pre-line text-sm leading-relaxed text-white/75">{content.address}</p>}
           <div className="mt-3 space-y-1.5 text-sm">
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block text-white/75 transition hover:text-white">{content.phone}</a>}
@@ -147,12 +147,12 @@ export default function SerenDesign({ site, page = "home", basePath = "" }: Pres
   );
 
   // Rose page banner — clears the fixed header on sub-pages.
-  const banner = (kicker: string, title: string, blurb?: string) => (
+  const banner = (kickerKey: string, kicker: string, titleKey: string, title: string, blurbKey?: string, blurb?: string) => (
     <section style={{ background: ROSE_SOFT }}>
       <div className="mx-auto max-w-5xl px-6 pb-14 pt-32 text-center sm:pt-40">
-        <p className="text-xs font-semibold uppercase tracking-[0.32em]" style={{ color: ROSE }}>{kicker}</p>
-        <h1 style={serif} className="mt-3 text-4xl font-medium sm:text-5xl" >{title}</h1>
-        {blurb && <p className="mx-auto mt-5 max-w-2xl text-[15px] leading-relaxed text-neutral-600">{blurb}</p>}
+        <p className="text-xs font-semibold uppercase tracking-[0.32em]" style={{ color: ROSE }} {...editCopy(content, kickerKey, kicker)} />
+        <h1 style={serif} className="mt-3 text-4xl font-medium sm:text-5xl" {...editCopy(content, titleKey, title)} />
+        {blurb && blurbKey && <p className="mx-auto mt-5 max-w-2xl text-[15px] leading-relaxed text-neutral-600" {...editCopy(content, blurbKey, blurb)} />}
       </div>
     </section>
   );
@@ -161,7 +161,7 @@ export default function SerenDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "services") {
     return shell(
       <>
-        {banner("Treatments", "What we can do for you", "Browse our full menu of skin and aesthetic treatments. Every plan begins with a personal consultation.")}
+        {banner("svc_kicker", "Treatments", "svc_title", "What we can do for you", "svc_blurb", "Browse our full menu of skin and aesthetic treatments. Every plan begins with a personal consultation.")}
         <section className="mx-auto max-w-6xl px-6 py-20">
           {groups.length > 0 ? (
             <div className="space-y-16">
@@ -194,9 +194,9 @@ export default function SerenDesign({ site, page = "home", basePath = "" }: Pres
           ) : <p className="text-neutral-500">Our treatment menu is coming soon.</p>}
 
           <div className="mt-16 rounded-2xl px-8 py-12 text-center" style={{ background: MIST }}>
-            <h3 style={serif} className="text-2xl">Not sure where to start?</h3>
-            <p className="mx-auto mt-3 max-w-lg text-[15px] leading-relaxed text-neutral-600">Book a no obligation consultation and our clinicians will build a plan around your goals.</p>
-            <a href={book} className="mt-6 inline-flex px-9 py-3.5 text-sm font-semibold uppercase tracking-[0.16em] text-white transition hover:opacity-90" style={{ background: ROSE }}>Book a consultation</a>
+            <h3 style={serif} className="text-2xl" {...editCopy(content, "svc_cta_heading", "Not sure where to start?")} />
+            <p className="mx-auto mt-3 max-w-lg text-[15px] leading-relaxed text-neutral-600" {...editCopy(content, "svc_cta_blurb", "Book a no obligation consultation and our clinicians will build a plan around your goals.")} />
+            <a href={book} className="mt-6 inline-flex px-9 py-3.5 text-sm font-semibold uppercase tracking-[0.16em] text-white transition hover:opacity-90" style={{ background: ROSE }} {...editCopy(content, "svc_cta_button", "Book a consultation")} />
           </div>
         </section>
       </>,
@@ -207,7 +207,7 @@ export default function SerenDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "about") {
     return shell(
       <>
-        {banner("About", "Care you can trust")}
+        {banner("about_kicker", "About", "about_title", "Care you can trust")}
         <section className="mx-auto max-w-3xl px-6 py-20">
           {content.about ? (
             <p data-edit="content.about" className="text-[17px] leading-[1.9] text-neutral-700">{content.about}</p>
@@ -227,8 +227,8 @@ export default function SerenDesign({ site, page = "home", basePath = "" }: Pres
           <section className="border-t" style={{ background: CREAM, borderColor: ROSE_SOFT }}>
             <div className="mx-auto max-w-6xl px-6 py-20">
               <div className="text-center">
-                <p className="text-xs font-semibold uppercase tracking-[0.32em]" style={{ color: ROSE }}>Our team</p>
-                <h2 style={serif} className="mt-3 text-3xl sm:text-4xl">Meet your clinicians</h2>
+                <p className="text-xs font-semibold uppercase tracking-[0.32em]" style={{ color: ROSE }} {...editCopy(content, "about_team_eyebrow", "Our team")} />
+                <h2 style={serif} className="mt-3 text-3xl sm:text-4xl" {...editCopy(content, "about_team_heading", "Meet your clinicians")} />
               </div>
               <div className="mt-14 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
                 {team.map((m) => (
@@ -251,8 +251,8 @@ export default function SerenDesign({ site, page = "home", basePath = "" }: Pres
 
         <section className="mx-auto max-w-3xl px-6 py-20">
           <div className="text-center">
-            <p className="text-xs font-semibold uppercase tracking-[0.32em]" style={{ color: ROSE }}>Good to know</p>
-            <h2 style={serif} className="mt-3 text-3xl sm:text-4xl">Frequently asked questions</h2>
+            <p className="text-xs font-semibold uppercase tracking-[0.32em]" style={{ color: ROSE }} {...editCopy(content, "about_faq_eyebrow", "Good to know")} />
+            <h2 style={serif} className="mt-3 text-3xl sm:text-4xl" {...editCopy(content, "about_faq_heading", "Frequently asked questions")} />
           </div>
           <div className="mt-10"><SerenFaqAccordion items={FAQ} /></div>
         </section>
@@ -264,7 +264,7 @@ export default function SerenDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Gallery", "Inside the clinic", "A look at our space and the results our clients love.")}
+        {banner("gallery_kicker", "Gallery", "gallery_title", "Inside the clinic", "gallery_blurb", "A look at our space and the results our clients love.")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-6xl px-6 py-16">
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
@@ -283,11 +283,11 @@ export default function SerenDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "reservations") {
     return shell(
       <>
-        {banner("Consultation", "Book your visit", "Get your free, no obligation consultation. Tell us a little about you and we will be in touch.")}
+        {banner("consult_kicker", "Consultation", "consult_title", "Book your visit", "consult_blurb", "Get your free, no obligation consultation. Tell us a little about you and we will be in touch.")}
         <section className="mx-auto grid max-w-6xl gap-10 px-6 py-20 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
           <div>
-            <h2 style={serif} className="text-3xl">A gentle, personal approach</h2>
-            <p className="mt-4 text-[15px] leading-relaxed text-neutral-600">Every journey starts with a conversation. We will listen to your goals, assess your skin, and recommend only what is right for you, with clear pricing and no pressure.</p>
+            <h2 style={serif} className="text-3xl" {...editCopy(content, "consult_heading", "A gentle, personal approach")} />
+            <p className="mt-4 text-[15px] leading-relaxed text-neutral-600" {...editCopy(content, "consult_body", "Every journey starts with a conversation. We will listen to your goals, assess your skin, and recommend only what is right for you, with clear pricing and no pressure.")} />
             <ul className="mt-7 space-y-3 text-sm text-neutral-700">
               {["Free, no obligation consultation", "Qualified, registered clinicians", "Honest, tailored treatment plans", "Comfortable, private clinic setting"].map((t) => (
                 <li key={t} className="flex items-start gap-3">
@@ -310,10 +310,10 @@ export default function SerenDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "contact") {
     return shell(
       <>
-        {banner("Contact", "Get in touch", "Visit us, call, or send a message and we will get back to you.")}
+        {banner("contact_kicker", "Contact", "contact_title", "Get in touch", "contact_blurb", "Visit us, call, or send a message and we will get back to you.")}
         <section className="mx-auto grid max-w-6xl gap-12 px-6 py-20 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={serif} className="text-2xl">Clinic details</h2>
+            <h2 style={serif} className="text-2xl" {...editCopy(content, "contact_details_heading", "Clinic details")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed text-neutral-700">
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-neutral-950">{content.phone}</a>}
@@ -328,9 +328,9 @@ export default function SerenDesign({ site, page = "home", basePath = "" }: Pres
             )}
             <div className="mt-7 flex flex-wrap gap-3">
               {content.map_url && (
-                <a href={content.map_url} target="_blank" rel="noreferrer" className="inline-flex px-7 py-3 text-xs font-semibold uppercase tracking-[0.16em] text-white transition hover:opacity-90" style={{ background: ROSE }}>Get directions</a>
+                <a href={content.map_url} target="_blank" rel="noreferrer" className="inline-flex px-7 py-3 text-xs font-semibold uppercase tracking-[0.16em] text-white transition hover:opacity-90" style={{ background: ROSE }} {...editCopy(content, "contact_directions_cta", "Get directions")} />
               )}
-              <a href={book} className="inline-flex border px-7 py-3 text-xs font-semibold uppercase tracking-[0.16em] transition hover:bg-neutral-900 hover:text-white" style={{ borderColor: INK, color: INK }}>Book appointment</a>
+              <a href={book} className="inline-flex border px-7 py-3 text-xs font-semibold uppercase tracking-[0.16em] transition hover:bg-neutral-900 hover:text-white" style={{ borderColor: INK, color: INK }} {...editCopy(content, "contact_book_cta", "Book appointment")} />
             </div>
             {content.socials && content.socials.length > 0 && (
               <div className="mt-8 flex gap-4" style={{ color: INK }}>
@@ -378,11 +378,11 @@ export default function SerenDesign({ site, page = "home", basePath = "" }: Pres
           <div className="max-w-xl text-white">
             {content.tagline && <p data-edit="content.tagline" className="text-xs font-semibold uppercase tracking-[0.32em] text-white/85">{content.tagline}</p>}
             <h1 data-edit="tenant.business_name" style={serif} className="mt-4 text-5xl font-medium leading-[1.05] [text-shadow:0_2px_24px_rgba(0,0,0,0.4)] sm:text-7xl">{name}</h1>
-            <p className="mt-5 max-w-md text-base leading-relaxed text-white/85">Refined skin and aesthetic treatments, delivered with care in a calm, private clinic.</p>
+            <p className="mt-5 max-w-md text-base leading-relaxed text-white/85" {...editCopy(content, "hero_sub", "Refined skin and aesthetic treatments, delivered with care in a calm, private clinic.")} />
             <div className="mt-8 flex flex-wrap gap-3">
-              <a href={book} className="inline-flex px-9 py-4 text-xs font-semibold uppercase tracking-[0.18em] text-white shadow-xl transition hover:opacity-90" style={{ background: ROSE }}>Book now</a>
+              <a href={book} className="inline-flex px-9 py-4 text-xs font-semibold uppercase tracking-[0.18em] text-white shadow-xl transition hover:opacity-90" style={{ background: ROSE }} {...editCopy(content, "hero_book_cta", "Book now")} />
               {groups.length > 0 && (
-                <a href={href("services")} className="inline-flex border border-white/70 px-9 py-4 text-xs font-semibold uppercase tracking-[0.18em] text-white backdrop-blur-sm transition hover:bg-white hover:text-neutral-900">View treatments</a>
+                <a href={href("services")} className="inline-flex border border-white/70 px-9 py-4 text-xs font-semibold uppercase tracking-[0.18em] text-white backdrop-blur-sm transition hover:bg-white hover:text-neutral-900" {...editCopy(content, "hero_services_cta", "View treatments")} />
               )}
             </div>
           </div>
@@ -409,7 +409,7 @@ export default function SerenDesign({ site, page = "home", basePath = "" }: Pres
       {/* intro */}
       {content.about && (
         <section className="mx-auto max-w-3xl px-6 py-20 text-center">
-          <p className="text-xs font-semibold uppercase tracking-[0.32em]" style={{ color: ROSE }}>Welcome</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.32em]" style={{ color: ROSE }} {...editCopy(content, "intro_eyebrow", "Welcome")} />
           <p data-edit="content.about" className="mt-6 text-[19px] leading-[1.9] text-neutral-700">{content.about}</p>
         </section>
       )}
@@ -418,8 +418,8 @@ export default function SerenDesign({ site, page = "home", basePath = "" }: Pres
       <section style={{ background: MIST }}>
         <div className="mx-auto max-w-6xl px-6 py-20">
           <div className="text-center">
-            <p className="text-xs font-semibold uppercase tracking-[0.32em]" style={{ color: ROSE }}>Reviews</p>
-            <h2 style={serif} className="mt-3 text-3xl sm:text-4xl">What our clients say</h2>
+            <p className="text-xs font-semibold uppercase tracking-[0.32em]" style={{ color: ROSE }} {...editCopy(content, "reviews_eyebrow", "Reviews")} />
+            <h2 style={serif} className="mt-3 text-3xl sm:text-4xl" {...editCopy(content, "reviews_heading", "What our clients say")} />
           </div>
           <div className="mt-12"><SerenReviews reviews={REVIEWS} /></div>
         </div>
@@ -429,8 +429,8 @@ export default function SerenDesign({ site, page = "home", basePath = "" }: Pres
       {teaseCategories.length > 0 && (
         <section className="mx-auto max-w-6xl px-6 py-20">
           <div className="text-center">
-            <p className="text-xs font-semibold uppercase tracking-[0.32em]" style={{ color: ROSE }}>Treatments</p>
-            <h2 style={serif} className="mt-3 text-3xl sm:text-4xl">What we can do for you</h2>
+            <p className="text-xs font-semibold uppercase tracking-[0.32em]" style={{ color: ROSE }} {...editCopy(content, "teaser_eyebrow", "Treatments")} />
+            <h2 style={serif} className="mt-3 text-3xl sm:text-4xl" {...editCopy(content, "teaser_heading", "What we can do for you")} />
           </div>
           <div className="mt-12 grid gap-x-10 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
             {teaseCategories.map((c) => (
@@ -448,7 +448,7 @@ export default function SerenDesign({ site, page = "home", basePath = "" }: Pres
             ))}
           </div>
           <div className="mt-12 text-center">
-            <a href={href("services")} className="inline-flex px-9 py-3.5 text-sm font-semibold uppercase tracking-[0.16em] text-white transition hover:opacity-90" style={{ background: ROSE }}>View all treatments</a>
+            <a href={href("services")} className="inline-flex px-9 py-3.5 text-sm font-semibold uppercase tracking-[0.16em] text-white transition hover:opacity-90" style={{ background: ROSE }} {...editCopy(content, "teaser_view_all", "View all treatments")} />
           </div>
         </section>
       )}
@@ -456,16 +456,16 @@ export default function SerenDesign({ site, page = "home", basePath = "" }: Pres
       {/* free consultation CTA + video hero */}
       <section className="grid items-stretch lg:grid-cols-2">
         <div className="flex flex-col justify-center px-6 py-16 sm:px-12 lg:py-24" style={{ background: ROSE_SOFT }}>
-          <p className="text-xs font-semibold uppercase tracking-[0.32em]" style={{ color: ROSE }}>Get started</p>
-          <h2 style={serif} className="mt-4 text-3xl sm:text-4xl">Your free, no obligation consultation</h2>
-          <p className="mt-4 max-w-md text-[15px] leading-relaxed text-neutral-600">Book a relaxed chat with our clinicians. We will assess your skin and recommend a plan that is right for you, with no pressure.</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.32em]" style={{ color: ROSE }} {...editCopy(content, "getstarted_eyebrow", "Get started")} />
+          <h2 style={serif} className="mt-4 text-3xl sm:text-4xl" {...editCopy(content, "getstarted_heading", "Your free, no obligation consultation")} />
+          <p className="mt-4 max-w-md text-[15px] leading-relaxed text-neutral-600" {...editCopy(content, "getstarted_blurb", "Book a relaxed chat with our clinicians. We will assess your skin and recommend a plan that is right for you, with no pressure.")} />
           <ul className="mt-6 space-y-2 text-sm text-neutral-700">
             {["Skin and aesthetics consultations", "Personalised treatment plans", "Clear, honest pricing"].map((t) => (
               <li key={t} className="flex items-start gap-2.5"><span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full" style={{ background: ROSE }} />{t}</li>
             ))}
           </ul>
           <div className="mt-8">
-            <a href={book} className="inline-flex px-9 py-4 text-xs font-semibold uppercase tracking-[0.18em] text-white transition hover:opacity-90" style={{ background: INK }}>Book a consultation</a>
+            <a href={book} className="inline-flex px-9 py-4 text-xs font-semibold uppercase tracking-[0.18em] text-white transition hover:opacity-90" style={{ background: INK }} {...editCopy(content, "getstarted_cta", "Book a consultation")} />
           </div>
         </div>
         <div className="relative min-h-[320px] overflow-hidden bg-neutral-900 lg:min-h-0">
@@ -491,7 +491,7 @@ export default function SerenDesign({ site, page = "home", basePath = "" }: Pres
               <span className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-white/25 backdrop-blur" aria-hidden>
                 <svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z" /></svg>
               </span>
-              <p style={serif} className="mt-5 px-6 text-2xl [text-shadow:0_2px_18px_rgba(0,0,0,0.5)]">Transform your skin with expert care</p>
+              <p style={serif} className="mt-5 px-6 text-2xl [text-shadow:0_2px_18px_rgba(0,0,0,0.5)]" {...editCopy(content, "video_caption", "Transform your skin with expert care")} />
             </div>
           </div>
         </div>
@@ -511,10 +511,10 @@ export default function SerenDesign({ site, page = "home", basePath = "" }: Pres
           <SerenBooking tenantId={tenant.id} name={name} />
         ) : (
           <div className="flex flex-col justify-center px-8 py-14" style={{ background: ROSE }}>
-            <h3 style={serif} className="text-2xl text-white">Get in touch</h3>
+            <h3 style={serif} className="text-2xl text-white" {...editCopy(content, "contactband_heading", "Get in touch")} />
             {content.phone && <a href={`tel:${content.phone}`} className="mt-4 block text-white">{content.phone}</a>}
             {content.email && <a href={`mailto:${content.email}`} className="mt-1 block text-white">{content.email}</a>}
-            <a href={href("contact")} className="mt-6 inline-flex w-fit px-8 py-3.5 text-xs font-semibold uppercase tracking-[0.16em] text-white transition hover:opacity-90" style={{ background: INK }}>Contact us</a>
+            <a href={href("contact")} className="mt-6 inline-flex w-fit px-8 py-3.5 text-xs font-semibold uppercase tracking-[0.16em] text-white transition hover:opacity-90" style={{ background: INK }} {...editCopy(content, "contactband_cta", "Contact us")} />
           </div>
         )}
       </section>
@@ -523,14 +523,14 @@ export default function SerenDesign({ site, page = "home", basePath = "" }: Pres
       <section className="border-t" style={{ background: CREAM, borderColor: ROSE_SOFT }}>
         <div className="mx-auto grid max-w-6xl gap-10 px-6 py-16 md:grid-cols-3">
           <div>
-            <h3 className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: ROSE }}>Visit us</h3>
+            <h3 className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: ROSE }} {...editCopy(content, "details_visit_heading", "Visit us")} />
             {content.address && <p data-edit="content.address" className="mt-4 whitespace-pre-line text-sm leading-relaxed text-neutral-700">{content.address}</p>}
             {content.map_url && (
               <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-4 inline-flex text-sm font-semibold" style={{ color: ROSE }}>Get directions →</a>
             )}
           </div>
           <div>
-            <h3 className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: ROSE }}>Opening times</h3>
+            <h3 className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: ROSE }} {...editCopy(content, "details_hours_heading", "Opening times")} />
             {content.hours && content.hours.length > 0 ? (
               <ul className="mt-4 space-y-2 text-sm text-neutral-700">
                 {content.hours.map((h, i) => (
@@ -540,12 +540,12 @@ export default function SerenDesign({ site, page = "home", basePath = "" }: Pres
             ) : <p className="mt-4 text-sm text-neutral-500">Open by appointment.</p>}
           </div>
           <div>
-            <h3 className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: ROSE }}>Contact</h3>
+            <h3 className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: ROSE }} {...editCopy(content, "details_contact_heading", "Contact")} />
             <div className="mt-4 space-y-1.5 text-sm text-neutral-700">
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-neutral-950">{content.phone}</a>}
               {content.email && <a data-edit="content.email" href={`mailto:${content.email}`} className="block transition hover:text-neutral-950">{content.email}</a>}
             </div>
-            <a href={book} className="mt-5 inline-flex px-7 py-3 text-xs font-semibold uppercase tracking-[0.16em] text-white transition hover:opacity-90" style={{ background: INK }}>Book appointment</a>
+            <a href={book} className="mt-5 inline-flex px-7 py-3 text-xs font-semibold uppercase tracking-[0.16em] text-white transition hover:opacity-90" style={{ background: INK }} {...editCopy(content, "details_book_cta", "Book appointment")} />
           </div>
         </div>
       </section>

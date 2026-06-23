@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { ServiceCards } from "../../service-cards";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { HaloHeader } from "./HaloHeader";
@@ -52,7 +52,7 @@ export default function HaloDesign({ site, page = "home", basePath = "" }: Prese
     <footer className="border-t border-neutral-200 bg-white text-neutral-800">
       <div className="mx-auto max-w-3xl px-6 py-20 text-center">
         {/* booking queries */}
-        <h4 className="text-[11px] font-semibold uppercase tracking-[0.28em] text-neutral-500">Booking queries</h4>
+        <h4 className="text-[11px] font-semibold uppercase tracking-[0.28em] text-neutral-500" {...editCopy(content, "footer_booking_heading", "Booking queries")} />
         <div className="mt-5 space-y-1.5 text-sm text-neutral-700">
           {content.phone && (
             <a data-edit="content.phone" href={`tel:${content.phone}`} className="block underline-offset-4 hover:underline">{content.phone}</a>
@@ -60,13 +60,13 @@ export default function HaloDesign({ site, page = "home", basePath = "" }: Prese
           {content.email && (
             <a data-edit="content.email" href={`mailto:${content.email}`} className="block underline-offset-4 hover:underline">{content.email}</a>
           )}
-          <a href={book} target={bookExternal ? "_blank" : undefined} rel={bookExternal ? "noreferrer" : undefined} className="block underline underline-offset-4">Book online</a>
+          <a href={book} target={bookExternal ? "_blank" : undefined} rel={bookExternal ? "noreferrer" : undefined} className="block underline underline-offset-4" {...editCopy(content, "footer_book_online", "Book online")} />
         </div>
 
         {/* location */}
         {(content.address || (content.hours && content.hours.length > 0)) && (
           <>
-            <h4 className="mt-14 text-[11px] font-semibold uppercase tracking-[0.28em] text-neutral-500">Location</h4>
+            <h4 className="mt-14 text-[11px] font-semibold uppercase tracking-[0.28em] text-neutral-500" {...editCopy(content, "footer_location_heading", "Location")} />
             {content.address && (
               <p data-edit="content.address" className="mx-auto mt-5 max-w-md whitespace-pre-line text-sm leading-relaxed text-neutral-700">{content.address}</p>
             )}
@@ -81,12 +81,12 @@ export default function HaloDesign({ site, page = "home", basePath = "" }: Prese
               </ul>
             )}
             {content.map_url && (
-              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-6 inline-block text-xs font-semibold uppercase tracking-[0.22em] underline underline-offset-4">Get directions</a>
+              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-6 inline-block text-xs font-semibold uppercase tracking-[0.22em] underline underline-offset-4" {...editCopy(content, "footer_directions", "Get directions")} />
             )}
           </>
         )}
 
-        <p className="mt-14 text-[11px] uppercase tracking-[0.28em] text-neutral-500">By appointment only</p>
+        <p className="mt-14 text-[11px] uppercase tracking-[0.28em] text-neutral-500" {...editCopy(content, "footer_appointment_note", "By appointment only")} />
 
         {/* social + page links */}
         {content.socials && content.socials.length > 0 && (
@@ -97,8 +97,8 @@ export default function HaloDesign({ site, page = "home", basePath = "" }: Prese
           </div>
         )}
         <div className="mt-8 flex justify-center gap-10 text-[11px] font-medium uppercase tracking-[0.22em] text-neutral-700">
-          {content.about && <a href={href("about")} className="underline-offset-4 hover:underline">About</a>}
-          {contactOn && <a href={href("contact")} className="underline-offset-4 hover:underline">Contact</a>}
+          {content.about && <a href={href("about")} className="underline-offset-4 hover:underline" {...editCopy(content, "footer_about_link", "About")} />}
+          {contactOn && <a href={href("contact")} className="underline-offset-4 hover:underline" {...editCopy(content, "footer_contact_link", "Contact")} />}
         </div>
         <p className="mt-12 text-xs text-neutral-400">© {name}. All rights reserved.</p>
       </div>
@@ -114,11 +114,11 @@ export default function HaloDesign({ site, page = "home", basePath = "" }: Prese
   );
 
   // Plain page banner — clears the fixed header on sub-pages.
-  const banner = (kicker: string, title: string) => (
+  const banner = (keyBase: string, kicker: string, title: string) => (
     <section className="border-b border-neutral-200 bg-white">
       <div className="mx-auto max-w-5xl px-6 pb-12 pt-32 text-center sm:pt-36">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.32em] text-neutral-400">{kicker}</p>
-        <h1 style={serif} className="mt-4 text-4xl font-medium tracking-wide sm:text-5xl">{title}</h1>
+        <p className="text-[11px] font-semibold uppercase tracking-[0.32em] text-neutral-400" {...editCopy(content, `${keyBase}_kicker`, kicker)} />
+        <h1 style={serif} className="mt-4 text-4xl font-medium tracking-wide sm:text-5xl" {...editCopy(content, `${keyBase}_title`, title)} />
       </div>
     </section>
   );
@@ -127,7 +127,7 @@ export default function HaloDesign({ site, page = "home", basePath = "" }: Prese
   if (page === "services") {
     return shell(
       <>
-        {banner("The list", "Services & prices")}
+        {banner("svc_banner", "The list", "Services & prices")}
         <section className="mx-auto max-w-3xl px-6 py-20">
           {groups.length > 0 ? (
             <>
@@ -139,7 +139,7 @@ export default function HaloDesign({ site, page = "home", basePath = "" }: Prese
                 radius="0.6rem"
               />
               <div className="mt-16 text-center">
-                <a href={book} target={bookExternal ? "_blank" : undefined} rel={bookExternal ? "noreferrer" : undefined} className="inline-block border border-neutral-900 px-12 py-4 text-xs font-semibold uppercase tracking-[0.25em] text-neutral-900 transition hover:bg-neutral-900 hover:text-white">Book now</a>
+                <a href={book} target={bookExternal ? "_blank" : undefined} rel={bookExternal ? "noreferrer" : undefined} className="inline-block border border-neutral-900 px-12 py-4 text-xs font-semibold uppercase tracking-[0.25em] text-neutral-900 transition hover:bg-neutral-900 hover:text-white" {...editCopy(content, "svc_book_cta", "Book now")} />
               </div>
             </>
           ) : (
@@ -154,7 +154,7 @@ export default function HaloDesign({ site, page = "home", basePath = "" }: Prese
   if (page === "about") {
     return shell(
       <>
-        {banner("About", "Our salon")}
+        {banner("about_banner", "About", "Our salon")}
         <section className="mx-auto max-w-2xl px-6 py-20 text-center">
           {content.about ? (
             <p data-edit="content.about" className="text-[18px] leading-[1.95] text-neutral-700">{content.about}</p>
@@ -163,7 +163,7 @@ export default function HaloDesign({ site, page = "home", basePath = "" }: Prese
           )}
           {team.length > 0 && (
             <div className="mt-20">
-              <h3 style={serif} className="text-3xl font-medium tracking-wide">The team</h3>
+              <h3 style={serif} className="text-3xl font-medium tracking-wide" {...editCopy(content, "about_team_heading", "The team")} />
               <div className="mt-12 grid gap-12 sm:grid-cols-2 lg:grid-cols-3">
                 {team.map((m) => (
                   <div key={m.id} className="text-center">
@@ -190,7 +190,7 @@ export default function HaloDesign({ site, page = "home", basePath = "" }: Prese
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Gallery", "A look inside")}
+        {banner("gallery_banner", "Gallery", "A look inside")}
         {gallery.length > 0 ? (
           <section className="grid grid-cols-2 gap-1 sm:grid-cols-3">
             {gallery.map((g) => (
@@ -209,16 +209,14 @@ export default function HaloDesign({ site, page = "home", basePath = "" }: Prese
   if (page === "reservations") {
     return shell(
       <>
-        {banner("Appointments", "Book in")}
+        {banner("book_banner", "Appointments", "Book in")}
         <section className="mx-auto max-w-xl px-6 py-20">
           {content.booking_url && (
-            <p className="mb-10 text-center text-[15px] leading-relaxed text-neutral-600">
-              Prefer to book online? Use our booking platform below, or send a request and we will confirm a time.
-            </p>
+            <p className="mb-10 text-center text-[15px] leading-relaxed text-neutral-600" {...editCopy(content, "book_blurb", "Prefer to book online? Use our booking platform below, or send a request and we will confirm a time.")} />
           )}
           {content.booking_url && (
             <div className="mb-10 text-center">
-              <a href={content.booking_url} target="_blank" rel="noreferrer" className="inline-block border border-neutral-900 px-12 py-4 text-xs font-semibold uppercase tracking-[0.25em] text-neutral-900 transition hover:bg-neutral-900 hover:text-white">Book online</a>
+              <a href={content.booking_url} target="_blank" rel="noreferrer" className="inline-block border border-neutral-900 px-12 py-4 text-xs font-semibold uppercase tracking-[0.25em] text-neutral-900 transition hover:bg-neutral-900 hover:text-white" {...editCopy(content, "book_online_cta", "Book online")} />
             </div>
           )}
           <HaloBooking tenantId={tenant.id} name={name} />
@@ -231,7 +229,7 @@ export default function HaloDesign({ site, page = "home", basePath = "" }: Prese
   if (page === "contact") {
     return shell(
       <>
-        {banner("Visit", "Find us")}
+        {banner("contact_banner", "Visit", "Find us")}
         <section className="mx-auto grid max-w-5xl gap-14 px-6 py-20 lg:grid-cols-2 lg:gap-20">
           <div>
             <div className="space-y-5 text-[15px] leading-relaxed text-neutral-700">
@@ -250,7 +248,7 @@ export default function HaloDesign({ site, page = "home", basePath = "" }: Prese
               </ul>
             )}
             {content.map_url && (
-              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-block border border-neutral-900 px-7 py-3 text-xs font-semibold uppercase tracking-[0.22em] text-neutral-900 transition hover:bg-neutral-900 hover:text-white">Get directions</a>
+              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-block border border-neutral-900 px-7 py-3 text-xs font-semibold uppercase tracking-[0.22em] text-neutral-900 transition hover:bg-neutral-900 hover:text-white" {...editCopy(content, "contact_directions_cta", "Get directions")} />
             )}
           </div>
           {contactOn && (
@@ -288,14 +286,14 @@ export default function HaloDesign({ site, page = "home", basePath = "" }: Prese
           {content.tagline && (
             <p data-edit="content.tagline" style={serif} className="max-w-2xl text-2xl leading-snug text-white [text-shadow:0_2px_20px_rgba(0,0,0,0.45)] sm:text-3xl">{content.tagline}</p>
           )}
-          <a href={book} target={bookExternal ? "_blank" : undefined} rel={bookExternal ? "noreferrer" : undefined} className="border border-white/80 px-12 py-4 text-xs font-semibold uppercase tracking-[0.25em] text-white backdrop-blur-sm transition hover:bg-white hover:text-neutral-900">Book now</a>
+          <a href={book} target={bookExternal ? "_blank" : undefined} rel={bookExternal ? "noreferrer" : undefined} className="border border-white/80 px-12 py-4 text-xs font-semibold uppercase tracking-[0.25em] text-white backdrop-blur-sm transition hover:bg-white hover:text-neutral-900" {...editCopy(content, "hero_book_cta", "Book now")} />
         </div>
       </section>
 
       {/* intro — centred body copy, like Salt's opening paragraphs */}
       {content.about && (
         <section className="mx-auto max-w-2xl px-6 py-24 text-center">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.32em] text-neutral-400">Welcome</p>
+          <p className="text-[11px] font-semibold uppercase tracking-[0.32em] text-neutral-400" {...editCopy(content, "home_welcome_eyebrow", "Welcome")} />
           <p data-edit="content.about" className="mt-7 text-[18px] leading-[1.95] text-neutral-700">{content.about}</p>
         </section>
       )}
@@ -304,15 +302,15 @@ export default function HaloDesign({ site, page = "home", basePath = "" }: Prese
       {featuredGroups.length > 0 && (
         <section className="border-t border-neutral-200 bg-[#f7f6f4]">
           <div className="mx-auto max-w-3xl px-6 py-24 text-center">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.32em] text-neutral-400">What we do</p>
-            <h2 style={serif} className="mt-4 text-4xl font-medium tracking-wide sm:text-5xl">Services</h2>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.32em] text-neutral-400" {...editCopy(content, "home_services_eyebrow", "What we do")} />
+            <h2 style={serif} className="mt-4 text-4xl font-medium tracking-wide sm:text-5xl" {...editCopy(content, "home_services_heading", "Services")} />
             <ul className="mx-auto mt-10 max-w-md space-y-3 text-[15px] text-neutral-700">
               {featuredGroups.map((s) => (
                 <li key={s.section} style={serif} className="text-lg">{s.section || "Treatments"}</li>
               ))}
             </ul>
             <div className="mt-10">
-              <a href={href("services")} className="inline-block text-xs font-semibold uppercase tracking-[0.25em] text-neutral-900 underline underline-offset-4">View services and prices</a>
+              <a href={href("services")} className="inline-block text-xs font-semibold uppercase tracking-[0.25em] text-neutral-900 underline underline-offset-4" {...editCopy(content, "home_services_link", "View services and prices")} />
             </div>
           </div>
         </section>
@@ -321,10 +319,10 @@ export default function HaloDesign({ site, page = "home", basePath = "" }: Prese
       {/* book band */}
       <section className="border-t border-neutral-200 bg-white">
         <div className="mx-auto max-w-2xl px-6 py-24 text-center">
-          <h2 style={serif} className="text-3xl font-medium tracking-wide sm:text-4xl">Ready when you are</h2>
-          <p className="mt-4 text-[15px] text-neutral-600">Book your next appointment online in a moment.</p>
+          <h2 style={serif} className="text-3xl font-medium tracking-wide sm:text-4xl" {...editCopy(content, "home_book_heading", "Ready when you are")} />
+          <p className="mt-4 text-[15px] text-neutral-600" {...editCopy(content, "home_book_blurb", "Book your next appointment online in a moment.")} />
           <div className="mt-9">
-            <a href={book} target={bookExternal ? "_blank" : undefined} rel={bookExternal ? "noreferrer" : undefined} className="inline-block border border-neutral-900 px-12 py-4 text-xs font-semibold uppercase tracking-[0.25em] text-neutral-900 transition hover:bg-neutral-900 hover:text-white">Book now</a>
+            <a href={book} target={bookExternal ? "_blank" : undefined} rel={bookExternal ? "noreferrer" : undefined} className="inline-block border border-neutral-900 px-12 py-4 text-xs font-semibold uppercase tracking-[0.25em] text-neutral-900 transition hover:bg-neutral-900 hover:text-white" {...editCopy(content, "home_book_cta", "Book now")} />
           </div>
         </div>
       </section>

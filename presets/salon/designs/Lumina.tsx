@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { LuminaHeader } from "./LuminaHeader";
 import { LuminaBooking } from "./LuminaBooking";
@@ -99,7 +99,7 @@ export default function LuminaDesign({ site, page = "home", basePath = "" }: Pre
           )}
         </div>
         <div>
-          <h4 className="text-xs font-semibold uppercase tracking-[0.22em]" style={{ color: PLUM }}>Explore</h4>
+          <h4 className="text-xs font-semibold uppercase tracking-[0.22em]" style={{ color: PLUM }} {...editCopy(content, "footer_explore", "Explore")} />
           <ul className="mt-5 space-y-2.5 text-sm text-neutral-700">
             {([
               groups.length > 0 && { label: "Treatments", href: href("services") },
@@ -113,7 +113,7 @@ export default function LuminaDesign({ site, page = "home", basePath = "" }: Pre
           </ul>
         </div>
         <div>
-          <h4 className="text-xs font-semibold uppercase tracking-[0.22em]" style={{ color: PLUM }}>Opening hours</h4>
+          <h4 className="text-xs font-semibold uppercase tracking-[0.22em]" style={{ color: PLUM }} {...editCopy(content, "footer_hours", "Opening hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm text-neutral-700">
               {content.hours.map((h, i) => (
@@ -142,12 +142,12 @@ export default function LuminaDesign({ site, page = "home", basePath = "" }: Pre
   );
 
   // Page banner — also clears the fixed header on sub-pages.
-  const banner = (kicker: string, title: string, blurb?: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string, blurb?: string, blurbKey?: string) => (
     <section style={{ background: IVORY, borderColor: ROSE }} className="border-b">
       <div className="mx-auto max-w-6xl px-8 pb-14 pt-32 text-center sm:pt-36">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: PLUM }}>{kicker}</p>
-        <h1 style={serif} className="mt-3 text-4xl font-medium sm:text-5xl" >{title}</h1>
-        {blurb && <p className="mx-auto mt-5 max-w-xl text-[15px] leading-relaxed text-neutral-600">{blurb}</p>}
+        <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: PLUM }} {...editCopy(content, kickerKey, kicker)} />
+        <h1 style={serif} className="mt-3 text-4xl font-medium sm:text-5xl" {...editCopy(content, titleKey, title)} />
+        {blurb && <p className="mx-auto mt-5 max-w-xl text-[15px] leading-relaxed text-neutral-600" {...editCopy(content, blurbKey ?? `${titleKey}_blurb`, blurb)} />}
       </div>
     </section>
   );
@@ -156,7 +156,7 @@ export default function LuminaDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "services") {
     return shell(
       <>
-        {banner("Our treatments", "Treatments & prices", "Personalised, results-driven treatments across face, body and injectables, each preceded by a thorough consultation.")}
+        {banner("Our treatments", "svc_kicker", "Treatments & prices", "svc_title", "Personalised, results-driven treatments across face, body and injectables, each preceded by a thorough consultation.", "svc_blurb")}
         <section className="mx-auto max-w-4xl px-8 py-20">
           {groups.length > 0 ? (
             <div className="space-y-16">
@@ -182,7 +182,7 @@ export default function LuminaDesign({ site, page = "home", basePath = "" }: Pre
                 </div>
               ))}
               <div className="pt-4 text-center">
-                <a href={book} className="inline-flex px-9 py-4 text-[12px] font-semibold uppercase tracking-[0.22em] text-white transition hover:opacity-90" style={{ background: PLUM }}>Book a free consultation</a>
+                <a href={book} className="inline-flex px-9 py-4 text-[12px] font-semibold uppercase tracking-[0.22em] text-white transition hover:opacity-90" style={{ background: PLUM }} {...editCopy(content, "svc_book_cta", "Book a free consultation")} />
               </div>
             </div>
           ) : <p className="text-neutral-500">Our treatment menu is coming soon.</p>}
@@ -195,7 +195,7 @@ export default function LuminaDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "reservations") {
     return shell(
       <>
-        {banner("Consultation", "Book a free consultation", "Every treatment begins with a relaxed, no-pressure consultation so we can tailor a plan to you.")}
+        {banner("Consultation", "book_kicker", "Book a free consultation", "book_title", "Every treatment begins with a relaxed, no-pressure consultation so we can tailor a plan to you.", "book_blurb")}
         <section className="mx-auto max-w-xl px-8 py-20">
           <LuminaBooking tenantId={tenant.id} name={name} />
         </section>
@@ -207,10 +207,10 @@ export default function LuminaDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "contact") {
     return shell(
       <>
-        {banner("Visit us", "Find the clinic")}
+        {banner("Visit us", "contact_kicker", "Find the clinic", "contact_title")}
         <section className="mx-auto grid max-w-6xl gap-12 px-8 py-20 lg:grid-cols-2 lg:gap-20">
           <div>
-            <h2 style={serif} className="text-2xl font-medium" >Getting here</h2>
+            <h2 style={serif} className="text-2xl font-medium" {...editCopy(content, "contact_heading", "Getting here")} />
             <div className="mt-5 space-y-4 text-[15px] leading-relaxed text-neutral-700">
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block hover:text-neutral-950">{content.phone}</a>}
@@ -224,7 +224,7 @@ export default function LuminaDesign({ site, page = "home", basePath = "" }: Pre
               </ul>
             )}
             {content.map_url && (
-              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex border px-7 py-3 text-[12px] font-semibold uppercase tracking-[0.22em] transition hover:bg-neutral-900 hover:text-white" style={{ borderColor: INK, color: INK }}>Get directions</a>
+              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex border px-7 py-3 text-[12px] font-semibold uppercase tracking-[0.22em] transition hover:bg-neutral-900 hover:text-white" style={{ borderColor: INK, color: INK }} {...editCopy(content, "contact_directions_cta", "Get directions")} />
             )}
           </div>
           {contactOn && (
@@ -249,7 +249,7 @@ export default function LuminaDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "about") {
     return shell(
       <>
-        {banner("About the clinic", "Beauty with depth")}
+        {banner("About the clinic", "about_kicker", "Beauty with depth", "about_title")}
         <section className="mx-auto max-w-3xl px-8 py-20">
           {content.about ? <p data-edit="content.about" className="text-[17px] leading-[1.9] text-neutral-700">{content.about}</p> : <p className="text-neutral-500">Our story is coming soon.</p>}
           <div className="mt-12 grid gap-8 sm:grid-cols-3">
@@ -274,7 +274,7 @@ export default function LuminaDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Results", "Before & after", "A selection of real results from treatments at the clinic.")}
+        {banner("Results", "gallery_kicker", "Before & after", "gallery_title", "A selection of real results from treatments at the clinic.", "gallery_blurb")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-6xl px-8 py-16">
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
@@ -296,17 +296,17 @@ export default function LuminaDesign({ site, page = "home", basePath = "" }: Pre
       <section style={{ background: IVORY }} className="relative overflow-hidden">
         <div className="mx-auto grid max-w-6xl items-center gap-10 px-8 pb-16 pt-32 sm:pt-40 lg:grid-cols-2 lg:gap-16 lg:pb-24">
           <div>
-            <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: PLUM }}>Aesthetics &amp; skin clinic</p>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: PLUM }} {...editCopy(content, "hero_eyebrow", "Aesthetics & skin clinic")} />
             {content.tagline ? (
               <h1 data-edit="content.tagline" style={serif} className="mt-5 text-4xl font-medium leading-[1.1] text-neutral-900 sm:text-5xl lg:text-6xl">{content.tagline}</h1>
             ) : (
-              <h1 style={serif} className="mt-5 text-4xl font-medium leading-[1.1] text-neutral-900 sm:text-5xl lg:text-6xl">Multi-award winning cosmetic &amp; aesthetic clinic</h1>
+              <h1 style={serif} className="mt-5 text-4xl font-medium leading-[1.1] text-neutral-900 sm:text-5xl lg:text-6xl" {...editCopy(content, "hero_headline", "Multi-award winning cosmetic & aesthetic clinic")} />
             )}
             {content.about && <p data-edit="content.about" className="mt-6 max-w-md text-[16px] leading-relaxed text-neutral-600">{content.about}</p>}
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <a href={book} className="inline-flex items-center justify-center px-8 py-4 text-[12px] font-semibold uppercase tracking-[0.22em] text-white transition hover:opacity-90" style={{ background: PLUM }}>Book a free consultation</a>
+              <a href={book} className="inline-flex items-center justify-center px-8 py-4 text-[12px] font-semibold uppercase tracking-[0.22em] text-white transition hover:opacity-90" style={{ background: PLUM }} {...editCopy(content, "hero_book_cta", "Book a free consultation")} />
               {groups.length > 0 && (
-                <a href={href("services")} className="inline-flex items-center justify-center border px-8 py-4 text-[12px] font-semibold uppercase tracking-[0.22em] transition hover:bg-neutral-900 hover:text-white" style={{ borderColor: INK, color: INK }}>Our treatments</a>
+                <a href={href("services")} className="inline-flex items-center justify-center border px-8 py-4 text-[12px] font-semibold uppercase tracking-[0.22em] transition hover:bg-neutral-900 hover:text-white" style={{ borderColor: INK, color: INK }} {...editCopy(content, "hero_services_cta", "Our treatments")} />
               )}
             </div>
           </div>
@@ -326,7 +326,7 @@ export default function LuminaDesign({ site, page = "home", basePath = "" }: Pre
       {/* press / as-seen-in logo strip */}
       <section className="border-y" style={{ borderColor: ROSE, background: "#ffffff" }}>
         <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-center gap-x-10 gap-y-3 px-8 py-7">
-          <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-neutral-400">As seen in</span>
+          <span className="text-[10px] font-semibold uppercase tracking-[0.3em] text-neutral-400" {...editCopy(content, "press_label", "As seen in")} />
           {PRESS.map((p) => (
             <span key={p} style={serif} className="text-lg text-neutral-400">{p}</span>
           ))}
@@ -337,12 +337,12 @@ export default function LuminaDesign({ site, page = "home", basePath = "" }: Pre
       <section className="mx-auto max-w-6xl px-8 py-24">
         <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
           <div>
-            <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: PLUM }}>Welcome</p>
-            <h2 style={serif} className="mt-4 text-3xl font-medium leading-snug sm:text-4xl">A clinic where science meets a softer touch</h2>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: PLUM }} {...editCopy(content, "intro_kicker", "Welcome")} />
+            <h2 style={serif} className="mt-4 text-3xl font-medium leading-snug sm:text-4xl" {...editCopy(content, "intro_heading", "A clinic where science meets a softer touch")} />
             <p className="mt-6 text-[16px] leading-[1.9] text-neutral-600">
               {content.cuisine_type ?? "Our team of doctors, nurses and aestheticians offer advanced, evidence-led treatments using the latest technology. Every plan starts with an honest consultation, so the results always look like the very best version of you."}
             </p>
-            <a href={content.about ? href("about") : book} className="mt-7 inline-flex text-[12px] font-semibold uppercase tracking-[0.2em]" style={{ color: PLUM }}>Read our story &#8594;</a>
+            <a href={content.about ? href("about") : book} className="mt-7 inline-flex text-[12px] font-semibold uppercase tracking-[0.2em]" style={{ color: PLUM }} {...editCopy(content, "intro_story_cta", "Read our story →")} />
           </div>
           <div className="relative aspect-[5/4] w-full overflow-hidden bg-neutral-200">
             {gallery[0]?.image_url ? (
@@ -359,8 +359,8 @@ export default function LuminaDesign({ site, page = "home", basePath = "" }: Pre
 
         <div className="mt-20">
           <div className="mb-10 text-center">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: PLUM }}>What our clients say</p>
-            <h3 style={serif} className="mt-3 text-2xl font-medium sm:text-3xl">Rated excellent by those who matter most</h3>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: PLUM }} {...editCopy(content, "reviews_kicker", "What our clients say")} />
+            <h3 style={serif} className="mt-3 text-2xl font-medium sm:text-3xl" {...editCopy(content, "reviews_heading", "Rated excellent by those who matter most")} />
           </div>
           <LuminaReviews reviews={REVIEWS} />
         </div>
@@ -397,8 +397,8 @@ export default function LuminaDesign({ site, page = "home", basePath = "" }: Pre
       {/* why us — feature / stats grid */}
       <section className="mx-auto max-w-6xl px-8 py-24">
         <div className="text-center">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: PLUM }}>Why choose us</p>
-          <h2 style={serif} className="mt-3 text-3xl font-medium sm:text-4xl">Expertise you can trust</h2>
+          <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: PLUM }} {...editCopy(content, "whyus_kicker", "Why choose us")} />
+          <h2 style={serif} className="mt-3 text-3xl font-medium sm:text-4xl" {...editCopy(content, "whyus_heading", "Expertise you can trust")} />
         </div>
         <div className="mt-14 grid gap-x-12 gap-y-12 sm:grid-cols-2">
           {[
@@ -421,22 +421,20 @@ export default function LuminaDesign({ site, page = "home", basePath = "" }: Pre
       {/* free-consultation CTA band */}
       <section style={{ background: INK }} className="text-center text-white">
         <div className="mx-auto max-w-2xl px-8 py-20">
-          <h2 style={serif} className="text-3xl font-medium sm:text-4xl">Ready to begin?</h2>
-          <p className="mx-auto mt-4 max-w-md text-[15px] leading-relaxed text-white/70">Book a complimentary consultation and we will design a plan that is right for you.</p>
-          <a href={book} className="mt-8 inline-flex px-10 py-4 text-[12px] font-semibold uppercase tracking-[0.22em] transition hover:opacity-90" style={{ background: "#ffffff", color: INK }}>Book a free consultation</a>
+          <h2 style={serif} className="text-3xl font-medium sm:text-4xl" {...editCopy(content, "cta_heading", "Ready to begin?")} />
+          <p className="mx-auto mt-4 max-w-md text-[15px] leading-relaxed text-white/70" {...editCopy(content, "cta_blurb", "Book a complimentary consultation and we will design a plan that is right for you.")} />
+          <a href={book} className="mt-8 inline-flex px-10 py-4 text-[12px] font-semibold uppercase tracking-[0.22em] transition hover:opacity-90" style={{ background: "#ffffff", color: INK }} {...editCopy(content, "cta_btn", "Book a free consultation")} />
         </div>
       </section>
 
       {/* press / trust quote with star rating */}
       <section className="mx-auto max-w-4xl px-8 py-24 text-center">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: PLUM }}>Most trusted</p>
+        <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: PLUM }} {...editCopy(content, "trust_kicker", "Most trusted")} />
         <div className="mt-5 flex justify-center gap-1.5 text-lg" style={{ color: PLUM }} aria-hidden>
           {"★★★★★".split("").map((s, i) => <span key={i}>{s}</span>)}
         </div>
-        <blockquote style={serif} className="mt-6 text-2xl leading-relaxed text-neutral-800 sm:text-3xl">
-          &ldquo;A clinic regularly named among the most trusted for results, safety and care, with a loyal following that keeps returning.&rdquo;
-        </blockquote>
-        <p className="mt-6 text-[12px] font-semibold uppercase tracking-[0.22em] text-neutral-400">The national press</p>
+        <blockquote style={serif} className="mt-6 text-2xl leading-relaxed text-neutral-800 sm:text-3xl" {...editCopy(content, "trust_quote", "“A clinic regularly named among the most trusted for results, safety and care, with a loyal following that keeps returning.”")} />
+        <p className="mt-6 text-[12px] font-semibold uppercase tracking-[0.22em] text-neutral-400" {...editCopy(content, "trust_attribution", "The national press")} />
       </section>
 
       {/* our experts — team slider */}
@@ -444,8 +442,8 @@ export default function LuminaDesign({ site, page = "home", basePath = "" }: Pre
         <section style={{ background: IVORY }} className="border-y py-24" >
           <div className="mx-auto max-w-6xl px-8">
             <div className="mb-12 text-center">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: PLUM }}>Our experts</p>
-              <h2 style={serif} className="mt-3 text-3xl font-medium sm:text-4xl">Hand picked top specialists</h2>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: PLUM }} {...editCopy(content, "experts_kicker", "Our experts")} />
+              <h2 style={serif} className="mt-3 text-3xl font-medium sm:text-4xl" {...editCopy(content, "experts_heading", "Hand picked top specialists")} />
             </div>
             <LuminaTeamSlider team={team} />
           </div>
@@ -455,11 +453,11 @@ export default function LuminaDesign({ site, page = "home", basePath = "" }: Pre
       {/* rose newsletter / CTA band */}
       <section style={{ background: ROSE_SOFT }} className="text-center">
         <div className="mx-auto max-w-2xl px-8 py-20">
-          <h2 style={serif} className="text-2xl font-medium sm:text-3xl">Begin your journey with us</h2>
-          <p className="mx-auto mt-4 max-w-md text-[15px] leading-relaxed text-neutral-600">Speak to our team about the right treatment for you. Every consultation is complimentary and completely no-pressure.</p>
+          <h2 style={serif} className="text-2xl font-medium sm:text-3xl" {...editCopy(content, "news_heading", "Begin your journey with us")} />
+          <p className="mx-auto mt-4 max-w-md text-[15px] leading-relaxed text-neutral-600" {...editCopy(content, "news_blurb", "Speak to our team about the right treatment for you. Every consultation is complimentary and completely no-pressure.")} />
           <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-            <a href={book} className="inline-flex items-center justify-center px-8 py-4 text-[12px] font-semibold uppercase tracking-[0.22em] text-white transition hover:opacity-90" style={{ background: PLUM }}>Book a consultation</a>
-            <a href={href("contact")} className="inline-flex items-center justify-center border px-8 py-4 text-[12px] font-semibold uppercase tracking-[0.22em] transition hover:bg-neutral-900 hover:text-white" style={{ borderColor: INK, color: INK }}>Get in touch</a>
+            <a href={book} className="inline-flex items-center justify-center px-8 py-4 text-[12px] font-semibold uppercase tracking-[0.22em] text-white transition hover:opacity-90" style={{ background: PLUM }} {...editCopy(content, "news_book_cta", "Book a consultation")} />
+            <a href={href("contact")} className="inline-flex items-center justify-center border px-8 py-4 text-[12px] font-semibold uppercase tracking-[0.22em] transition hover:bg-neutral-900 hover:text-white" style={{ borderColor: INK, color: INK }} {...editCopy(content, "news_contact_cta", "Get in touch")} />
           </div>
         </div>
       </section>

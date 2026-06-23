@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { ClarityHeader } from "./ClarityHeader";
 import { ClarityBooking } from "./ClarityBooking";
@@ -144,7 +144,7 @@ export default function ClarityDesign({ site, page = "home", basePath = "" }: Pr
           )}
         </div>
         <div>
-          <h4 className="text-sm font-bold uppercase tracking-[0.16em]" style={{ color: AMBER }}>Explore</h4>
+          <h4 className="text-sm font-bold uppercase tracking-[0.16em]" style={{ color: AMBER }} {...editCopy(content, "footer_explore", "Explore")} />
           <ul className="mt-4 space-y-3 text-[15px]">
             {nav.map((l) => (
               <li key={l.href}><a href={l.href} className="text-white/80 transition hover:text-white">{l.label}</a></li>
@@ -152,7 +152,7 @@ export default function ClarityDesign({ site, page = "home", basePath = "" }: Pr
           </ul>
         </div>
         <div>
-          <h4 className="text-sm font-bold uppercase tracking-[0.16em]" style={{ color: AMBER }}>Visit us</h4>
+          <h4 className="text-sm font-bold uppercase tracking-[0.16em]" style={{ color: AMBER }} {...editCopy(content, "footer_visit", "Visit us")} />
           {content.address && <p data-edit="content.address" className="mt-4 whitespace-pre-line text-[15px] leading-relaxed text-white/80">{content.address}</p>}
           <div className="mt-3 space-y-1.5 text-[15px]">
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block font-semibold text-white/85 transition hover:text-white">{content.phone}</a>}
@@ -175,13 +175,13 @@ export default function ClarityDesign({ site, page = "home", basePath = "" }: Pr
   );
 
   // Sky page banner — clears the fixed header on sub-pages.
-  const banner = (kicker: string, title: string, blurb?: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string, blurb?: string, blurbKey?: string) => (
     <section className="relative overflow-hidden" style={{ background: SKY_SOFT }}>
       <Ripples className="pointer-events-none absolute -right-16 -top-16 h-72 w-72 opacity-60" color={SKY} />
       <div className="relative mx-auto max-w-5xl px-6 pb-16 pt-36 text-center sm:pt-44">
-        <p className="text-sm font-bold uppercase tracking-[0.24em]" style={{ color: TEAL }}>{kicker}</p>
-        <h1 className="mt-3 text-4xl font-semibold leading-tight sm:text-6xl" style={{ ...serif, color: NAVY }}>{title}</h1>
-        {blurb && <p className="mx-auto mt-5 max-w-2xl text-lg leading-relaxed" style={{ color: "#4a5a6a" }}>{blurb}</p>}
+        <p className="text-sm font-bold uppercase tracking-[0.24em]" style={{ color: TEAL }} {...editCopy(content, kickerKey, kicker)} />
+        <h1 className="mt-3 text-4xl font-semibold leading-tight sm:text-6xl" style={{ ...serif, color: NAVY }} {...editCopy(content, titleKey, title)} />
+        {blurb && <p className="mx-auto mt-5 max-w-2xl text-lg leading-relaxed" style={{ color: "#4a5a6a" }} {...(blurbKey ? editCopy(content, blurbKey, blurb) : { children: blurb })} />}
       </div>
     </section>
   );
@@ -190,7 +190,7 @@ export default function ClarityDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "services") {
     return shell(
       <>
-        {banner("Our services", "How we help you hear", "Gentle, thorough hearing care for every age — from a simple wax removal to a full hearing assessment and aftercare.")}
+        {banner("Our services", "svc_kicker", "How we help you hear", "svc_title", "Gentle, thorough hearing care for every age — from a simple wax removal to a full hearing assessment and aftercare.", "svc_blurb")}
         <section className="mx-auto max-w-4xl px-6 py-20">
           {groups.length > 0 ? (
             <div className="space-y-16">
@@ -224,9 +224,9 @@ export default function ClarityDesign({ site, page = "home", basePath = "" }: Pr
           ) : <p className="text-lg" style={{ color: "#56657a" }}>Our services are coming soon.</p>}
 
           <div className="mt-16 rounded-3xl px-8 py-12 text-center" style={{ background: CREAM, border: `2px solid #e3d3b6` }}>
-            <h3 className="text-2xl font-semibold" style={{ ...serif, color: NAVY }}>Not sure what you need?</h3>
-            <p className="mx-auto mt-3 max-w-lg text-lg leading-relaxed" style={{ color: "#4a5a6a" }}>Start with a free hearing test. We&apos;ll listen, assess and explain everything clearly.</p>
-            <a href={book} className="mt-7 inline-flex rounded-full px-9 py-4 text-base font-bold tracking-wide text-white transition hover:opacity-90" style={{ background: NAVY }}>Book a free hearing test</a>
+            <h3 className="text-2xl font-semibold" style={{ ...serif, color: NAVY }} {...editCopy(content, "svc_help_heading", "Not sure what you need?")} />
+            <p className="mx-auto mt-3 max-w-lg text-lg leading-relaxed" style={{ color: "#4a5a6a" }} {...editCopy(content, "svc_help_blurb", "Start with a free hearing test. We'll listen, assess and explain everything clearly.")} />
+            <a href={book} className="mt-7 inline-flex rounded-full px-9 py-4 text-base font-bold tracking-wide text-white transition hover:opacity-90" style={{ background: NAVY }} {...editCopy(content, "svc_help_cta", "Book a free hearing test")} />
           </div>
         </section>
       </>,
@@ -237,7 +237,7 @@ export default function ClarityDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "about") {
     return shell(
       <>
-        {banner("About us", "Trusted hearing care, close to home")}
+        {banner("About us", "about_kicker", "Trusted hearing care, close to home", "about_title")}
         <section className="mx-auto max-w-3xl px-6 py-20">
           {content.about ? (
             <p data-edit="content.about" className="text-xl leading-[1.9]" style={{ color: "#3a4756" }}>{content.about}</p>
@@ -257,8 +257,8 @@ export default function ClarityDesign({ site, page = "home", basePath = "" }: Pr
           <section className="border-y-2" style={{ background: SKY_SOFT, borderColor: "#cfe0e7" }}>
             <div className="mx-auto max-w-6xl px-6 py-20">
               <div className="text-center">
-                <p className="text-sm font-bold uppercase tracking-[0.24em]" style={{ color: TEAL }}>Our team</p>
-                <h2 className="mt-3 text-3xl font-semibold sm:text-4xl" style={{ ...serif, color: NAVY }}>Meet your audiologists</h2>
+                <p className="text-sm font-bold uppercase tracking-[0.24em]" style={{ color: TEAL }} {...editCopy(content, "team_kicker", "Our team")} />
+                <h2 className="mt-3 text-3xl font-semibold sm:text-4xl" style={{ ...serif, color: NAVY }} {...editCopy(content, "team_heading", "Meet your audiologists")} />
               </div>
               <div className="mt-14 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
                 {team.map((m) => (
@@ -281,8 +281,8 @@ export default function ClarityDesign({ site, page = "home", basePath = "" }: Pr
 
         <section className="mx-auto max-w-3xl px-6 py-20">
           <div className="text-center">
-            <p className="text-sm font-bold uppercase tracking-[0.24em]" style={{ color: TEAL }}>Good to know</p>
-            <h2 className="mt-3 text-3xl font-semibold sm:text-4xl" style={{ ...serif, color: NAVY }}>Your questions, answered</h2>
+            <p className="text-sm font-bold uppercase tracking-[0.24em]" style={{ color: TEAL }} {...editCopy(content, "faq_kicker", "Good to know")} />
+            <h2 className="mt-3 text-3xl font-semibold sm:text-4xl" style={{ ...serif, color: NAVY }} {...editCopy(content, "faq_heading", "Your questions, answered")} />
           </div>
           <div className="mt-10 space-y-4">
             {FAQ.map((f) => (
@@ -304,7 +304,7 @@ export default function ClarityDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Gallery", "Inside our clinic", "A warm, calm space designed to put you at ease.")}
+        {banner("Gallery", "gallery_kicker", "Inside our clinic", "gallery_title", "A warm, calm space designed to put you at ease.", "gallery_blurb")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-6xl px-6 py-16">
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
@@ -323,11 +323,11 @@ export default function ClarityDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "reservations") {
     return shell(
       <>
-        {banner("Appointments", "Book your visit", "Request a free hearing test or any of our services. Tell us a little about you and we&apos;ll be in touch to confirm.")}
+        {banner("Appointments", "book_kicker", "Book your visit", "book_title", "Request a free hearing test or any of our services. Tell us a little about you and we'll be in touch to confirm.", "book_blurb")}
         <section className="mx-auto grid max-w-6xl gap-10 px-6 py-20 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
           <div>
-            <h2 className="text-3xl font-semibold" style={{ ...serif, color: NAVY }}>Warm, unhurried care</h2>
-            <p className="mt-4 text-lg leading-relaxed" style={{ color: "#4a5a6a" }}>There&apos;s no rush and no jargon. We&apos;ll listen to you, carry out a thorough assessment, and explain exactly what we find — so you always know where you stand.</p>
+            <h2 className="text-3xl font-semibold" style={{ ...serif, color: NAVY }} {...editCopy(content, "book_intro_heading", "Warm, unhurried care")} />
+            <p className="mt-4 text-lg leading-relaxed" style={{ color: "#4a5a6a" }} {...editCopy(content, "book_intro_blurb", "There's no rush and no jargon. We'll listen to you, carry out a thorough assessment, and explain exactly what we find — so you always know where you stand.")} />
             <ul className="mt-8 space-y-4 text-lg" style={{ color: "#3a4756" }}>
               {TRUST.map((t) => (
                 <li key={t} className="flex items-start gap-3">
@@ -350,10 +350,10 @@ export default function ClarityDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "contact") {
     return shell(
       <>
-        {banner("Contact", "Get in touch", "Visit us, call, or send a message — we&apos;ll always get back to you.")}
+        {banner("Contact", "contact_kicker", "Get in touch", "contact_title", "Visit us, call, or send a message — we'll always get back to you.", "contact_blurb")}
         <section className="mx-auto grid max-w-6xl gap-12 px-6 py-20 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 className="text-2xl font-semibold" style={{ ...serif, color: NAVY }}>Clinic details</h2>
+            <h2 className="text-2xl font-semibold" style={{ ...serif, color: NAVY }} {...editCopy(content, "contact_details_heading", "Clinic details")} />
             <div className="mt-6 space-y-4 text-lg leading-relaxed" style={{ color: "#3a4756" }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block font-semibold transition hover:opacity-70" style={{ color: NAVY }}>{content.phone}</a>}
@@ -368,9 +368,9 @@ export default function ClarityDesign({ site, page = "home", basePath = "" }: Pr
             )}
             <div className="mt-8 flex flex-wrap gap-3">
               {content.map_url && (
-                <a href={content.map_url} target="_blank" rel="noreferrer" className="inline-flex rounded-full px-7 py-3.5 text-base font-bold tracking-wide text-white transition hover:opacity-90" style={{ background: TEAL }}>Get directions</a>
+                <a href={content.map_url} target="_blank" rel="noreferrer" className="inline-flex rounded-full px-7 py-3.5 text-base font-bold tracking-wide text-white transition hover:opacity-90" style={{ background: TEAL }} {...editCopy(content, "contact_directions", "Get directions")} />
               )}
-              <a href={book} className="inline-flex rounded-full border-2 px-7 py-3.5 text-base font-bold tracking-wide transition hover:bg-[#243B53] hover:text-white" style={{ borderColor: NAVY, color: NAVY }}>Book an appointment</a>
+              <a href={book} className="inline-flex rounded-full border-2 px-7 py-3.5 text-base font-bold tracking-wide transition hover:bg-[#243B53] hover:text-white" style={{ borderColor: NAVY, color: NAVY }} {...editCopy(content, "contact_book", "Book an appointment")} />
             </div>
             {content.socials && content.socials.length > 0 && (
               <div className="mt-8 flex gap-4" style={{ color: NAVY }}>
@@ -422,9 +422,9 @@ export default function ClarityDesign({ site, page = "home", basePath = "" }: Pr
               Warm, expert hearing care for all ages at {name}. From free hearing tests to gentle wax removal and the latest hearing aids — we make it easy to reconnect with the people and sounds you love.
             </p>
             <div className="mt-9 flex flex-wrap gap-4">
-              <a href={book} className="inline-flex rounded-full px-9 py-4 text-base font-bold tracking-wide text-white shadow-lg transition hover:opacity-90" style={{ background: NAVY }}>Book a free hearing test</a>
+              <a href={book} className="inline-flex rounded-full px-9 py-4 text-base font-bold tracking-wide text-white shadow-lg transition hover:opacity-90" style={{ background: NAVY }} {...editCopy(content, "hero_book_cta", "Book a free hearing test")} />
               {groups.length > 0 && (
-                <a href={href("services")} className="inline-flex rounded-full border-2 px-9 py-4 text-base font-bold tracking-wide transition hover:bg-white" style={{ borderColor: NAVY, color: NAVY }}>Our services</a>
+                <a href={href("services")} className="inline-flex rounded-full border-2 px-9 py-4 text-base font-bold tracking-wide transition hover:bg-white" style={{ borderColor: NAVY, color: NAVY }} {...editCopy(content, "hero_services_cta", "Our services")} />
               )}
             </div>
             <ul className="mt-9 flex flex-wrap gap-x-7 gap-y-2 text-base font-semibold" style={{ color: "#3a4756" }}>
@@ -461,8 +461,8 @@ export default function ClarityDesign({ site, page = "home", basePath = "" }: Pr
       {/* HOW WE HELP — services band */}
       <section className="mx-auto max-w-6xl px-6 py-20 sm:py-24">
         <div className="text-center">
-          <p className="text-sm font-bold uppercase tracking-[0.24em]" style={{ color: TEAL }}>How we help</p>
-          <h2 className="mt-3 text-3xl font-semibold sm:text-5xl" style={{ ...serif, color: NAVY }}>Complete hearing care, under one roof</h2>
+          <p className="text-sm font-bold uppercase tracking-[0.24em]" style={{ color: TEAL }} {...editCopy(content, "help_kicker", "How we help")} />
+          <h2 className="mt-3 text-3xl font-semibold sm:text-5xl" style={{ ...serif, color: NAVY }} {...editCopy(content, "help_heading", "Complete hearing care, under one roof")} />
         </div>
         <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {HELP.map((h) => (
@@ -481,7 +481,7 @@ export default function ClarityDesign({ site, page = "home", basePath = "" }: Pr
       {content.about && (
         <section style={{ background: SKY_SOFT }}>
           <div className="mx-auto max-w-3xl px-6 py-20 text-center">
-            <p className="text-sm font-bold uppercase tracking-[0.24em]" style={{ color: TEAL }}>Welcome</p>
+            <p className="text-sm font-bold uppercase tracking-[0.24em]" style={{ color: TEAL }} {...editCopy(content, "intro_kicker", "Welcome")} />
             <p data-edit="content.about" className="mt-6 text-2xl leading-[1.7]" style={{ ...serif, color: NAVY }}>{content.about}</p>
           </div>
         </section>
@@ -490,8 +490,8 @@ export default function ClarityDesign({ site, page = "home", basePath = "" }: Pr
       {/* YOUR HEARING JOURNEY — test → fit → follow-up */}
       <section className="mx-auto max-w-6xl px-6 py-20 sm:py-24">
         <div className="text-center">
-          <p className="text-sm font-bold uppercase tracking-[0.24em]" style={{ color: TEAL }}>Your hearing journey</p>
-          <h2 className="mt-3 text-3xl font-semibold sm:text-5xl" style={{ ...serif, color: NAVY }}>Three calm, simple steps</h2>
+          <p className="text-sm font-bold uppercase tracking-[0.24em]" style={{ color: TEAL }} {...editCopy(content, "journey_kicker", "Your hearing journey")} />
+          <h2 className="mt-3 text-3xl font-semibold sm:text-5xl" style={{ ...serif, color: NAVY }} {...editCopy(content, "journey_heading", "Three calm, simple steps")} />
         </div>
         <div className="relative mt-14 grid gap-8 lg:grid-cols-3">
           {JOURNEY.map((j) => (
@@ -510,10 +510,10 @@ export default function ClarityDesign({ site, page = "home", basePath = "" }: Pr
           <div className="mx-auto max-w-6xl px-6 py-20 sm:py-24">
             <div className="flex flex-wrap items-end justify-between gap-6">
               <div>
-                <p className="text-sm font-bold uppercase tracking-[0.24em]" style={{ color: AMBER }}>What we offer</p>
-                <h2 style={serif} className="mt-3 text-3xl font-semibold text-white sm:text-4xl">Our services</h2>
+                <p className="text-sm font-bold uppercase tracking-[0.24em]" style={{ color: AMBER }} {...editCopy(content, "offer_kicker", "What we offer")} />
+                <h2 style={serif} className="mt-3 text-3xl font-semibold text-white sm:text-4xl" {...editCopy(content, "offer_heading", "Our services")} />
               </div>
-              <a href={href("services")} className="inline-flex rounded-full px-7 py-3.5 text-base font-bold tracking-wide text-[#243B53] transition hover:opacity-90" style={{ background: AMBER }}>View all services</a>
+              <a href={href("services")} className="inline-flex rounded-full px-7 py-3.5 text-base font-bold tracking-wide text-[#243B53] transition hover:opacity-90" style={{ background: AMBER }} {...editCopy(content, "offer_cta", "View all services")} />
             </div>
             <div className="mt-12 grid gap-x-10 gap-y-8 sm:grid-cols-2 lg:grid-cols-3">
               {teaseCategories.map((c) => (
@@ -534,8 +534,8 @@ export default function ClarityDesign({ site, page = "home", basePath = "" }: Pr
       {/* reviews — static design cards */}
       <section className="mx-auto max-w-6xl px-6 py-20 sm:py-24">
         <div className="text-center">
-          <p className="text-sm font-bold uppercase tracking-[0.24em]" style={{ color: TEAL }}>Kind words</p>
-          <h2 className="mt-3 text-3xl font-semibold sm:text-5xl" style={{ ...serif, color: NAVY }}>People we&apos;ve helped hear again</h2>
+          <p className="text-sm font-bold uppercase tracking-[0.24em]" style={{ color: TEAL }} {...editCopy(content, "reviews_kicker", "Kind words")} />
+          <h2 className="mt-3 text-3xl font-semibold sm:text-5xl" style={{ ...serif, color: NAVY }} {...editCopy(content, "reviews_heading", "People we've helped hear again")} />
         </div>
         <div className="mt-14 grid gap-6 md:grid-cols-2">
           {REVIEWS.map((r) => (
@@ -554,9 +554,9 @@ export default function ClarityDesign({ site, page = "home", basePath = "" }: Pr
       <section style={{ background: SKY_SOFT }}>
         <div className="mx-auto grid max-w-6xl gap-10 px-6 py-20 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
           <div className="flex flex-col justify-center">
-            <p className="text-sm font-bold uppercase tracking-[0.24em]" style={{ color: TEAL }}>Ready when you are</p>
-            <h2 className="mt-3 text-3xl font-semibold sm:text-5xl" style={{ ...serif, color: NAVY }}>Take the first step today</h2>
-            <p className="mt-5 max-w-md text-lg leading-relaxed" style={{ color: "#4a5a6a" }}>Booking takes a minute. We&apos;ll confirm a time that suits you — at the clinic or in the comfort of your own home.</p>
+            <p className="text-sm font-bold uppercase tracking-[0.24em]" style={{ color: TEAL }} {...editCopy(content, "cta_kicker", "Ready when you are")} />
+            <h2 className="mt-3 text-3xl font-semibold sm:text-5xl" style={{ ...serif, color: NAVY }} {...editCopy(content, "cta_heading", "Take the first step today")} />
+            <p className="mt-5 max-w-md text-lg leading-relaxed" style={{ color: "#4a5a6a" }} {...editCopy(content, "cta_blurb", "Booking takes a minute. We'll confirm a time that suits you — at the clinic or in the comfort of your own home.")} />
             {content.phone && (
               <p className="mt-6 text-lg" style={{ color: "#3a4756" }}>Or call us on <a href={`tel:${content.phone}`} className="font-bold" style={{ color: TEAL }}>{content.phone}</a></p>
             )}
@@ -565,10 +565,10 @@ export default function ClarityDesign({ site, page = "home", basePath = "" }: Pr
             <ClarityBooking tenantId={tenant.id} name={name} />
           ) : (
             <div className="flex flex-col justify-center rounded-3xl px-8 py-12" style={{ background: NAVY }}>
-              <h3 style={serif} className="text-2xl font-semibold text-white">Get in touch</h3>
+              <h3 style={serif} className="text-2xl font-semibold text-white" {...editCopy(content, "booking_band_heading", "Get in touch")} />
               {content.phone && <a href={`tel:${content.phone}`} className="mt-4 block text-lg text-white">{content.phone}</a>}
               {content.email && <a href={`mailto:${content.email}`} className="mt-1 block text-lg text-white/85">{content.email}</a>}
-              <a href={href("contact")} className="mt-6 inline-flex w-fit rounded-full px-8 py-3.5 text-base font-bold tracking-wide text-[#243B53] transition hover:opacity-90" style={{ background: AMBER }}>Contact us</a>
+              <a href={href("contact")} className="mt-6 inline-flex w-fit rounded-full px-8 py-3.5 text-base font-bold tracking-wide text-[#243B53] transition hover:opacity-90" style={{ background: AMBER }} {...editCopy(content, "booking_band_cta", "Contact us")} />
             </div>
           )}
         </div>
@@ -578,14 +578,14 @@ export default function ClarityDesign({ site, page = "home", basePath = "" }: Pr
       <section className="border-t-2" style={{ background: CREAM, borderColor: "#e3d3b6" }}>
         <div className="mx-auto grid max-w-6xl gap-10 px-6 py-16 md:grid-cols-3">
           <div>
-            <h3 className="text-sm font-bold uppercase tracking-[0.16em]" style={{ color: TEAL }}>Visit us</h3>
+            <h3 className="text-sm font-bold uppercase tracking-[0.16em]" style={{ color: TEAL }} {...editCopy(content, "details_visit_heading", "Visit us")} />
             {content.address && <p data-edit="content.address" className="mt-4 whitespace-pre-line text-base leading-relaxed" style={{ color: "#3a4756" }}>{content.address}</p>}
             {content.map_url && (
-              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-4 inline-flex text-base font-bold" style={{ color: TEAL }}>Get directions →</a>
+              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-4 inline-flex text-base font-bold" style={{ color: TEAL }} {...editCopy(content, "details_directions", "Get directions →")} />
             )}
           </div>
           <div>
-            <h3 className="text-sm font-bold uppercase tracking-[0.16em]" style={{ color: TEAL }}>Opening times</h3>
+            <h3 className="text-sm font-bold uppercase tracking-[0.16em]" style={{ color: TEAL }} {...editCopy(content, "details_hours_heading", "Opening times")} />
             {content.hours && content.hours.length > 0 ? (
               <ul className="mt-4 space-y-2 text-base" style={{ color: "#3a4756" }}>
                 {content.hours.map((h, i) => (
@@ -595,12 +595,12 @@ export default function ClarityDesign({ site, page = "home", basePath = "" }: Pr
             ) : <p className="mt-4 text-base" style={{ color: "#56657a" }}>Open by appointment.</p>}
           </div>
           <div>
-            <h3 className="text-sm font-bold uppercase tracking-[0.16em]" style={{ color: TEAL }}>Contact</h3>
+            <h3 className="text-sm font-bold uppercase tracking-[0.16em]" style={{ color: TEAL }} {...editCopy(content, "details_contact_heading", "Contact")} />
             <div className="mt-4 space-y-1.5 text-base" style={{ color: "#3a4756" }}>
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block font-semibold transition hover:opacity-70">{content.phone}</a>}
               {content.email && <a data-edit="content.email" href={`mailto:${content.email}`} className="block transition hover:opacity-70">{content.email}</a>}
             </div>
-            <a href={book} className="mt-5 inline-flex rounded-full px-7 py-3.5 text-base font-bold tracking-wide text-white transition hover:opacity-90" style={{ background: NAVY }}>Book an appointment</a>
+            <a href={book} className="mt-5 inline-flex rounded-full px-7 py-3.5 text-base font-bold tracking-wide text-white transition hover:opacity-90" style={{ background: NAVY }} {...editCopy(content, "details_book_cta", "Book an appointment")} />
           </div>
         </div>
       </section>

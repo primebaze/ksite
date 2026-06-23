@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { PivotHeader } from "./PivotHeader";
 import { PivotBooking } from "./PivotBooking";
@@ -126,7 +126,7 @@ export default function PivotDesign({ site, page = "home", basePath = "" }: Pres
           )}
         </div>
         <div>
-          <h4 className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: SAND }}>Explore</h4>
+          <h4 className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: SAND }} {...editCopy(content, "footer_explore", "Explore")} />
           <ul className="mt-4 space-y-2.5 text-sm">
             {nav.map((l) => (
               <li key={l.href}><a href={l.href} className="text-white/75 transition hover:text-white">{l.label}</a></li>
@@ -134,7 +134,7 @@ export default function PivotDesign({ site, page = "home", basePath = "" }: Pres
           </ul>
         </div>
         <div>
-          <h4 className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: SAND }}>Visit us</h4>
+          <h4 className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: SAND }} {...editCopy(content, "footer_visit", "Visit us")} />
           {content.address && <p data-edit="content.address" className="mt-4 whitespace-pre-line text-sm leading-relaxed text-white/75">{content.address}</p>}
           <div className="mt-3 space-y-1.5 text-sm">
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block text-white/75 transition hover:text-white">{content.phone}</a>}
@@ -159,14 +159,14 @@ export default function PivotDesign({ site, page = "home", basePath = "" }: Pres
   );
 
   // Sand page banner — clears the fixed header on sub-pages.
-  const banner = (kicker: string, title: string, blurb?: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string, blurb?: string, blurbKey?: string) => (
     <section style={{ background: SAND }} className="relative overflow-hidden">
       <span aria-hidden className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full" style={{ border: `1px solid rgba(63,74,51,0.16)` }} />
       <span aria-hidden className="pointer-events-none absolute -right-4 top-10 h-40 w-40 rounded-full" style={{ border: `1px solid rgba(192,122,82,0.3)` }} />
       <div className="relative mx-auto max-w-5xl px-6 pb-16 pt-36 text-center sm:pt-44">
-        <p className="text-xs font-semibold uppercase tracking-[0.32em]" style={{ color: CLAY }}>{kicker}</p>
-        <h1 style={serif} className="mt-3 text-4xl font-medium sm:text-5xl" >{title}</h1>
-        {blurb && <p className="mx-auto mt-5 max-w-2xl text-[15px] leading-relaxed" style={{ color: MUTED }}>{blurb}</p>}
+        <p className="text-xs font-semibold uppercase tracking-[0.32em]" style={{ color: CLAY }} {...editCopy(content, kickerKey, kicker)} />
+        <h1 style={serif} className="mt-3 text-4xl font-medium sm:text-5xl" {...editCopy(content, titleKey, title)} />
+        {blurb && <p className="mx-auto mt-5 max-w-2xl text-[15px] leading-relaxed" style={{ color: MUTED }} {...editCopy(content, blurbKey ?? `${titleKey}_blurb`, blurb)} />}
       </div>
     </section>
   );
@@ -175,7 +175,7 @@ export default function PivotDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "services") {
     return shell(
       <>
-        {banner("Treatments", "Care for every body", "Hands-on osteopathy and manual therapy, grouped by discipline. Every visit begins with a full assessment.")}
+        {banner("Treatments", "svc_kicker", "Care for every body", "svc_title", "Hands-on osteopathy and manual therapy, grouped by discipline. Every visit begins with a full assessment.", "svc_blurb")}
         <section className="mx-auto max-w-5xl px-6 py-20" style={{ background: OAT }}>
           {groups.length > 0 ? (
             <div className="space-y-14">
@@ -211,9 +211,9 @@ export default function PivotDesign({ site, page = "home", basePath = "" }: Pres
           ) : <p style={{ color: MUTED }}>Our treatment list is coming soon.</p>}
 
           <div className="mt-16 rounded-[2rem] px-8 py-12 text-center text-white" style={{ background: OLIVE }}>
-            <h3 style={serif} className="text-2xl">Not sure what you need?</h3>
-            <p className="mx-auto mt-3 max-w-lg text-[15px] leading-relaxed text-white/75">Book an appointment and we will assess your whole body, then recommend the gentlest path back to balance.</p>
-            <a href={book} className="mt-6 inline-flex rounded-full px-9 py-3.5 text-sm font-semibold uppercase tracking-[0.14em] text-white transition hover:opacity-90" style={{ background: CLAY }}>Book an appointment</a>
+            <h3 style={serif} className="text-2xl" {...editCopy(content, "svc_cta_heading", "Not sure what you need?")} />
+            <p className="mx-auto mt-3 max-w-lg text-[15px] leading-relaxed text-white/75" {...editCopy(content, "svc_cta_blurb", "Book an appointment and we will assess your whole body, then recommend the gentlest path back to balance.")} />
+            <a href={book} className="mt-6 inline-flex rounded-full px-9 py-3.5 text-sm font-semibold uppercase tracking-[0.14em] text-white transition hover:opacity-90" style={{ background: CLAY }} {...editCopy(content, "svc_cta_btn", "Book an appointment")} />
           </div>
         </section>
       </>,
@@ -224,7 +224,7 @@ export default function PivotDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "about") {
     return shell(
       <>
-        {banner("About", "Whole-body, hands-on care")}
+        {banner("About", "about_kicker", "Whole-body, hands-on care", "about_title")}
         <section className="mx-auto max-w-3xl px-6 py-20" style={{ background: OAT }}>
           {content.about ? (
             <p data-edit="content.about" className="text-[17px] leading-[1.9]" style={{ color: "#4d4636" }}>{content.about}</p>
@@ -244,8 +244,8 @@ export default function PivotDesign({ site, page = "home", basePath = "" }: Pres
           <section style={{ background: SAND }}>
             <div className="mx-auto max-w-6xl px-6 py-20">
               <div className="text-center">
-                <p className="text-xs font-semibold uppercase tracking-[0.32em]" style={{ color: CLAY }}>Our team</p>
-                <h2 style={{ ...serif, color: OLIVE }} className="mt-3 text-3xl sm:text-4xl">Meet your practitioners</h2>
+                <p className="text-xs font-semibold uppercase tracking-[0.32em]" style={{ color: CLAY }} {...editCopy(content, "about_team_kicker", "Our team")} />
+                <h2 style={{ ...serif, color: OLIVE }} className="mt-3 text-3xl sm:text-4xl" {...editCopy(content, "about_team_heading", "Meet your practitioners")} />
               </div>
               <div className="mt-14 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
                 {team.map((m) => (
@@ -268,8 +268,8 @@ export default function PivotDesign({ site, page = "home", basePath = "" }: Pres
 
         <section className="mx-auto max-w-3xl px-6 py-20" style={{ background: OAT }}>
           <div className="text-center">
-            <p className="text-xs font-semibold uppercase tracking-[0.32em]" style={{ color: CLAY }}>Good to know</p>
-            <h2 style={{ ...serif, color: OLIVE }} className="mt-3 text-3xl sm:text-4xl">Common questions</h2>
+            <p className="text-xs font-semibold uppercase tracking-[0.32em]" style={{ color: CLAY }} {...editCopy(content, "about_faq_kicker", "Good to know")} />
+            <h2 style={{ ...serif, color: OLIVE }} className="mt-3 text-3xl sm:text-4xl" {...editCopy(content, "about_faq_heading", "Common questions")} />
           </div>
           <dl className="mt-10 space-y-4">
             {FAQ.map((f) => (
@@ -288,7 +288,7 @@ export default function PivotDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Our clinic", "A calm, natural space", "Step inside the calm, light-filled rooms where we care for you.")}
+        {banner("Our clinic", "gallery_kicker", "A calm, natural space", "gallery_title", "Step inside the calm, light-filled rooms where we care for you.", "gallery_blurb")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-6xl px-6 py-16" style={{ background: OAT }}>
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
@@ -307,11 +307,11 @@ export default function PivotDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "reservations") {
     return shell(
       <>
-        {banner("Booking", "Book your appointment", "Tell us a little about you and what you would like help with. We will be in touch to confirm a time.")}
+        {banner("Booking", "book_kicker", "Book your appointment", "book_title", "Tell us a little about you and what you would like help with. We will be in touch to confirm a time.", "book_blurb")}
         <section className="mx-auto grid max-w-6xl gap-10 px-6 py-20 lg:grid-cols-[1fr_1.1fr] lg:gap-16" style={{ background: OAT }}>
           <div>
-            <h2 style={{ ...serif, color: OLIVE }} className="text-3xl">Your treatment journey</h2>
-            <p className="mt-4 text-[15px] leading-relaxed" style={{ color: MUTED }}>Every visit follows the same gentle, unhurried path. We listen first, assess your whole body, then treat with care.</p>
+            <h2 style={{ ...serif, color: OLIVE }} className="text-3xl" {...editCopy(content, "book_journey_heading", "Your treatment journey")} />
+            <p className="mt-4 text-[15px] leading-relaxed" style={{ color: MUTED }} {...editCopy(content, "book_journey_blurb", "Every visit follows the same gentle, unhurried path. We listen first, assess your whole body, then treat with care.")} />
             <ol className="mt-8 space-y-5">
               {JOURNEY.map((j) => (
                 <li key={j.step} className="flex gap-4">
@@ -337,10 +337,10 @@ export default function PivotDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "contact") {
     return shell(
       <>
-        {banner("Contact", "Get in touch", "Visit us, call, or send a message and we will get back to you soon.")}
+        {banner("Contact", "contact_kicker", "Get in touch", "contact_title", "Visit us, call, or send a message and we will get back to you soon.", "contact_blurb")}
         <section className="mx-auto grid max-w-6xl gap-12 px-6 py-20 lg:grid-cols-2 lg:gap-16" style={{ background: OAT }}>
           <div>
-            <h2 style={{ ...serif, color: OLIVE }} className="text-2xl">Clinic details</h2>
+            <h2 style={{ ...serif, color: OLIVE }} className="text-2xl" {...editCopy(content, "contact_details_heading", "Clinic details")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: "#4d4636" }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:opacity-70">{content.phone}</a>}
@@ -355,9 +355,9 @@ export default function PivotDesign({ site, page = "home", basePath = "" }: Pres
             )}
             <div className="mt-7 flex flex-wrap gap-3">
               {content.map_url && (
-                <a href={content.map_url} target="_blank" rel="noreferrer" className="inline-flex rounded-full px-7 py-3 text-xs font-semibold uppercase tracking-[0.14em] text-white transition hover:opacity-90" style={{ background: CLAY }}>Get directions</a>
+                <a href={content.map_url} target="_blank" rel="noreferrer" className="inline-flex rounded-full px-7 py-3 text-xs font-semibold uppercase tracking-[0.14em] text-white transition hover:opacity-90" style={{ background: CLAY }} {...editCopy(content, "contact_directions_cta", "Get directions")} />
               )}
-              <a href={book} className="inline-flex rounded-full border px-7 py-3 text-xs font-semibold uppercase tracking-[0.14em] transition hover:bg-[#3F4A33] hover:text-white" style={{ borderColor: OLIVE, color: OLIVE }}>Book appointment</a>
+              <a href={book} className="inline-flex rounded-full border px-7 py-3 text-xs font-semibold uppercase tracking-[0.14em] transition hover:bg-[#3F4A33] hover:text-white" style={{ borderColor: OLIVE, color: OLIVE }} {...editCopy(content, "contact_book_cta", "Book appointment")} />
             </div>
             {content.socials && content.socials.length > 0 && (
               <div className="mt-8 flex gap-4" style={{ color: OLIVE }}>
@@ -420,15 +420,15 @@ export default function PivotDesign({ site, page = "home", basePath = "" }: Pres
             {content.tagline ? (
               <p data-edit="content.tagline" className="text-xs font-semibold uppercase tracking-[0.32em]" style={{ color: SAND }}>{content.tagline}</p>
             ) : (
-              <p className="text-xs font-semibold uppercase tracking-[0.32em]" style={{ color: SAND }}>Osteopathy & manual therapy</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.32em]" style={{ color: SAND }} {...editCopy(content, "hero_eyebrow", "Osteopathy & manual therapy")} />
             )}
-            <h1 style={serif} className="mt-4 text-5xl font-medium leading-[1.04] [text-shadow:0_2px_24px_rgba(0,0,0,0.35)] sm:text-[4.5rem]">Restore your body&apos;s balance</h1>
+            <h1 style={serif} className="mt-4 text-5xl font-medium leading-[1.04] [text-shadow:0_2px_24px_rgba(0,0,0,0.35)] sm:text-[4.5rem]" {...editCopy(content, "hero_headline", "Restore your body’s balance")} />
             <p data-edit="tenant.business_name" className="mt-5 text-lg font-medium" style={{ color: SAND }}>{name}</p>
-            <p className="mt-4 max-w-md text-base leading-relaxed text-white/85">Gentle, whole-body hands-on care for all ages — easing pain, restoring movement and helping you feel like yourself again.</p>
+            <p className="mt-4 max-w-md text-base leading-relaxed text-white/85" {...editCopy(content, "hero_blurb", "Gentle, whole-body hands-on care for all ages — easing pain, restoring movement and helping you feel like yourself again.")} />
             <div className="mt-8 flex flex-wrap gap-3">
-              <a href={book} className="inline-flex rounded-full px-9 py-4 text-xs font-semibold uppercase tracking-[0.16em] text-white shadow-xl transition hover:opacity-90" style={{ background: CLAY }}>Book now</a>
+              <a href={book} className="inline-flex rounded-full px-9 py-4 text-xs font-semibold uppercase tracking-[0.16em] text-white shadow-xl transition hover:opacity-90" style={{ background: CLAY }} {...editCopy(content, "hero_book_cta", "Book now")} />
               {groups.length > 0 && (
-                <a href={href("services")} className="inline-flex rounded-full border border-white/60 px-9 py-4 text-xs font-semibold uppercase tracking-[0.16em] text-white backdrop-blur-sm transition hover:bg-white hover:text-[#3F4A33]">View treatments</a>
+                <a href={href("services")} className="inline-flex rounded-full border border-white/60 px-9 py-4 text-xs font-semibold uppercase tracking-[0.16em] text-white backdrop-blur-sm transition hover:bg-white hover:text-[#3F4A33]" {...editCopy(content, "hero_services_cta", "View treatments")} />
               )}
             </div>
           </div>
@@ -459,7 +459,7 @@ export default function PivotDesign({ site, page = "home", basePath = "" }: Pres
       {/* intro */}
       {content.about && (
         <section className="mx-auto max-w-3xl px-6 py-20 text-center" style={{ background: OAT }}>
-          <p className="text-xs font-semibold uppercase tracking-[0.32em]" style={{ color: CLAY }}>Welcome</p>
+          <p className="text-xs font-semibold uppercase tracking-[0.32em]" style={{ color: CLAY }} {...editCopy(content, "home_welcome_kicker", "Welcome")} />
           <p data-edit="content.about" className="mt-6 text-[19px] leading-[1.9]" style={{ color: "#4d4636" }}>{content.about}</p>
         </section>
       )}
@@ -468,9 +468,9 @@ export default function PivotDesign({ site, page = "home", basePath = "" }: Pres
       <section style={{ background: SAND }}>
         <div className="mx-auto max-w-6xl px-6 py-20">
           <div className="text-center">
-            <p className="text-xs font-semibold uppercase tracking-[0.32em]" style={{ color: CLAY }}>Who we help</p>
-            <h2 style={{ ...serif, color: OLIVE }} className="mt-3 text-3xl sm:text-4xl">Gentle care for every body</h2>
-            <p className="mx-auto mt-4 max-w-xl text-[15px] leading-relaxed" style={{ color: MUTED }}>Whatever stage of life you are in, our hands-on approach meets you where you are.</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.32em]" style={{ color: CLAY }} {...editCopy(content, "help_kicker", "Who we help")} />
+            <h2 style={{ ...serif, color: OLIVE }} className="mt-3 text-3xl sm:text-4xl" {...editCopy(content, "help_heading", "Gentle care for every body")} />
+            <p className="mx-auto mt-4 max-w-xl text-[15px] leading-relaxed" style={{ color: MUTED }} {...editCopy(content, "help_blurb", "Whatever stage of life you are in, our hands-on approach meets you where you are.")} />
           </div>
           <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
             {HELP.map((h) => (
@@ -489,10 +489,10 @@ export default function PivotDesign({ site, page = "home", basePath = "" }: Pres
         <section className="mx-auto max-w-6xl px-6 py-20" style={{ background: OAT }}>
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.32em]" style={{ color: CLAY }}>Treatments</p>
-              <h2 style={{ ...serif, color: OLIVE }} className="mt-3 text-3xl sm:text-4xl">Grouped by discipline</h2>
+              <p className="text-xs font-semibold uppercase tracking-[0.32em]" style={{ color: CLAY }} {...editCopy(content, "tease_kicker", "Treatments")} />
+              <h2 style={{ ...serif, color: OLIVE }} className="mt-3 text-3xl sm:text-4xl" {...editCopy(content, "tease_heading", "Grouped by discipline")} />
             </div>
-            <a href={href("services")} className="text-sm font-semibold" style={{ color: CLAY }}>View all treatments →</a>
+            <a href={href("services")} className="text-sm font-semibold" style={{ color: CLAY }} {...editCopy(content, "tease_all_cta", "View all treatments →")} />
           </div>
           <div className="mt-12 grid gap-6 sm:grid-cols-2">
             {teaseCategories.map((c) => (
@@ -516,9 +516,9 @@ export default function PivotDesign({ site, page = "home", basePath = "" }: Pres
       <section style={{ background: OLIVE }} className="text-white">
         <div className="mx-auto grid max-w-6xl gap-12 px-6 py-20 lg:grid-cols-[1fr_1.05fr] lg:gap-16">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.32em]" style={{ color: SAND }}>Your treatment journey</p>
-            <h2 style={serif} className="mt-3 text-3xl sm:text-4xl">Unhurried, gentle, whole-body</h2>
-            <p className="mt-4 max-w-md text-[15px] leading-relaxed text-white/70">From the first hello to lasting relief, every step is calm and considered.</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.32em]" style={{ color: SAND }} {...editCopy(content, "journey_kicker", "Your treatment journey")} />
+            <h2 style={serif} className="mt-3 text-3xl sm:text-4xl" {...editCopy(content, "journey_heading", "Unhurried, gentle, whole-body")} />
+            <p className="mt-4 max-w-md text-[15px] leading-relaxed text-white/70" {...editCopy(content, "journey_blurb", "From the first hello to lasting relief, every step is calm and considered.")} />
             <ol className="mt-9 space-y-6">
               {JOURNEY.map((j) => (
                 <li key={j.step} className="flex gap-4">
@@ -535,10 +535,10 @@ export default function PivotDesign({ site, page = "home", basePath = "" }: Pres
             <PivotBooking tenantId={tenant.id} name={name} />
           ) : (
             <div className="flex flex-col justify-center rounded-[2rem] p-9" style={{ background: OAT, color: OLIVE }}>
-              <h3 style={serif} className="text-2xl">Get in touch</h3>
+              <h3 style={serif} className="text-2xl" {...editCopy(content, "journey_getintouch", "Get in touch")} />
               {content.phone && <a href={`tel:${content.phone}`} className="mt-4 block font-medium">{content.phone}</a>}
               {content.email && <a href={`mailto:${content.email}`} className="mt-1 block font-medium">{content.email}</a>}
-              <a href={href("contact")} className="mt-6 inline-flex w-fit rounded-full px-8 py-3.5 text-xs font-semibold uppercase tracking-[0.14em] text-white transition hover:opacity-90" style={{ background: CLAY }}>Contact us</a>
+              <a href={href("contact")} className="mt-6 inline-flex w-fit rounded-full px-8 py-3.5 text-xs font-semibold uppercase tracking-[0.14em] text-white transition hover:opacity-90" style={{ background: CLAY }} {...editCopy(content, "journey_contact_btn", "Contact us")} />
             </div>
           )}
         </div>
@@ -548,8 +548,8 @@ export default function PivotDesign({ site, page = "home", basePath = "" }: Pres
       <section style={{ background: OAT }}>
         <div className="mx-auto max-w-6xl px-6 py-20">
           <div className="text-center">
-            <p className="text-xs font-semibold uppercase tracking-[0.32em]" style={{ color: CLAY }}>Kind words</p>
-            <h2 style={{ ...serif, color: OLIVE }} className="mt-3 text-3xl sm:text-4xl">What our patients say</h2>
+            <p className="text-xs font-semibold uppercase tracking-[0.32em]" style={{ color: CLAY }} {...editCopy(content, "reviews_kicker", "Kind words")} />
+            <h2 style={{ ...serif, color: OLIVE }} className="mt-3 text-3xl sm:text-4xl" {...editCopy(content, "reviews_heading", "What our patients say")} />
           </div>
           <div className="mt-12 grid gap-6 md:grid-cols-2">
             {REVIEWS.map((r) => (
@@ -569,14 +569,14 @@ export default function PivotDesign({ site, page = "home", basePath = "" }: Pres
       <section style={{ background: SAND }}>
         <div className="mx-auto grid max-w-6xl gap-10 px-6 py-16 md:grid-cols-3">
           <div>
-            <h3 className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: CLAY }}>Visit us</h3>
+            <h3 className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: CLAY }} {...editCopy(content, "details_visit_heading", "Visit us")} />
             {content.address && <p data-edit="content.address" className="mt-4 whitespace-pre-line text-sm leading-relaxed" style={{ color: "#4d4636" }}>{content.address}</p>}
             {content.map_url && (
-              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-4 inline-flex text-sm font-semibold" style={{ color: CLAY }}>Get directions →</a>
+              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-4 inline-flex text-sm font-semibold" style={{ color: CLAY }} {...editCopy(content, "details_directions_cta", "Get directions →")} />
             )}
           </div>
           <div>
-            <h3 className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: CLAY }}>Opening times</h3>
+            <h3 className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: CLAY }} {...editCopy(content, "details_hours_heading", "Opening times")} />
             {content.hours && content.hours.length > 0 ? (
               <ul className="mt-4 space-y-2 text-sm" style={{ color: "#4d4636" }}>
                 {content.hours.map((h, i) => (
@@ -586,12 +586,12 @@ export default function PivotDesign({ site, page = "home", basePath = "" }: Pres
             ) : <p className="mt-4 text-sm" style={{ color: MUTED }}>Open by appointment.</p>}
           </div>
           <div>
-            <h3 className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: CLAY }}>Contact</h3>
+            <h3 className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: CLAY }} {...editCopy(content, "details_contact_heading", "Contact")} />
             <div className="mt-4 space-y-1.5 text-sm" style={{ color: "#4d4636" }}>
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:opacity-70">{content.phone}</a>}
               {content.email && <a data-edit="content.email" href={`mailto:${content.email}`} className="block transition hover:opacity-70">{content.email}</a>}
             </div>
-            <a href={book} className="mt-5 inline-flex rounded-full px-7 py-3 text-xs font-semibold uppercase tracking-[0.14em] text-white transition hover:opacity-90" style={{ background: OLIVE }}>Book appointment</a>
+            <a href={book} className="mt-5 inline-flex rounded-full px-7 py-3 text-xs font-semibold uppercase tracking-[0.14em] text-white transition hover:opacity-90" style={{ background: OLIVE }} {...editCopy(content, "details_book_cta", "Book appointment")} />
           </div>
         </div>
       </section>

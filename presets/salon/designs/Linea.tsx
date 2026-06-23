@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { LineaHeader } from "./LineaHeader";
 import { LineaBooking } from "./LineaBooking";
@@ -106,10 +106,10 @@ export default function LineaDesign({ site, page = "home", basePath = "" }: Pres
           <div className="mt-5 flex flex-col items-center justify-between gap-3 text-xs text-neutral-400 sm:flex-row">
             <span>© {new Date().getFullYear()} {name}</span>
             <div className="flex flex-wrap justify-center gap-x-6 gap-y-2">
-              <a href={href("services")} className="hover:text-neutral-700">Treatments</a>
-              {bookingOn && <a href={href("reservations")} className="hover:text-neutral-700">Bookings policy</a>}
-              <a href={href("contact")} className="hover:text-neutral-700">Aftercare</a>
-              <a href={href("contact")} className="hover:text-neutral-700">Privacy policy</a>
+              <a href={href("services")} className="hover:text-neutral-700" {...editCopy(content, "legal_treatments", "Treatments")} />
+              {bookingOn && <a href={href("reservations")} className="hover:text-neutral-700" {...editCopy(content, "legal_bookings", "Bookings policy")} />}
+              <a href={href("contact")} className="hover:text-neutral-700" {...editCopy(content, "legal_aftercare", "Aftercare")} />
+              <a href={href("contact")} className="hover:text-neutral-700" {...editCopy(content, "legal_privacy", "Privacy policy")} />
             </div>
           </div>
         </div>
@@ -126,12 +126,12 @@ export default function LineaDesign({ site, page = "home", basePath = "" }: Pres
   );
 
   // Light page banner — also clears the fixed header on sub-pages.
-  const banner = (kicker: string, title: string, lead?: string) => (
+  const banner = (keyBase: string, kicker: string, title: string, lead?: string) => (
     <section style={{ background: CREAM }} className="border-b border-black/5">
       <div className="mx-auto max-w-3xl px-8 pb-14 pt-36 text-center sm:pt-40">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.3em]" style={{ color: SAGE }}>{kicker}</p>
-        <h1 style={{ ...serif, color: TAUPE }} className="mt-4 text-4xl font-medium sm:text-5xl">{title}</h1>
-        {lead && <p className="mx-auto mt-5 max-w-xl text-[15px] leading-[1.8] text-neutral-600">{lead}</p>}
+        <p className="text-[11px] font-semibold uppercase tracking-[0.3em]" style={{ color: SAGE }} {...editCopy(content, `${keyBase}_kicker`, kicker)} />
+        <h1 style={{ ...serif, color: TAUPE }} className="mt-4 text-4xl font-medium sm:text-5xl" {...editCopy(content, `${keyBase}_title`, title)} />
+        {lead && <p className="mx-auto mt-5 max-w-xl text-[15px] leading-[1.8] text-neutral-600" {...editCopy(content, `${keyBase}_lead`, lead)} />}
       </div>
     </section>
   );
@@ -140,7 +140,7 @@ export default function LineaDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "services") {
     return shell(
       <>
-        {banner("Our treatments", "Treatments & prices", "Explore our full range of treatments, from injectables and skincare to dermatology and aesthetic facials.")}
+        {banner("svc_banner", "Our treatments", "Treatments & prices", "Explore our full range of treatments, from injectables and skincare to dermatology and aesthetic facials.")}
         <section className="mx-auto max-w-3xl px-8 py-20">
           {groups.length > 0 ? (
             <div className="space-y-16">
@@ -168,7 +168,7 @@ export default function LineaDesign({ site, page = "home", basePath = "" }: Pres
             </div>
           ) : <p className="text-neutral-500">Our treatment list is coming soon.</p>}
           <div className="mt-16 text-center">
-            <a href={book} className="inline-flex px-10 py-4 text-[12px] font-semibold uppercase tracking-[0.22em] text-white transition hover:opacity-90" style={{ background: SAGE }}>Book a consultation</a>
+            <a href={book} className="inline-flex px-10 py-4 text-[12px] font-semibold uppercase tracking-[0.22em] text-white transition hover:opacity-90" style={{ background: SAGE }} {...editCopy(content, "svc_book_cta", "Book a consultation")} />
           </div>
         </section>
       </>,
@@ -179,7 +179,7 @@ export default function LineaDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "reservations") {
     return shell(
       <>
-        {banner("Appointments", "Book a consultation", "Tell us what you are looking for and when suits you. We will be in touch to confirm and answer any questions before your visit.")}
+        {banner("book_banner", "Appointments", "Book a consultation", "Tell us what you are looking for and when suits you. We will be in touch to confirm and answer any questions before your visit.")}
         <section className="mx-auto max-w-xl px-8 py-20">
           <LineaBooking tenantId={tenant.id} name={name} />
         </section>
@@ -191,10 +191,10 @@ export default function LineaDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "contact") {
     return shell(
       <>
-        {banner("Get in touch", "Visit the clinic")}
+        {banner("contact_banner", "Get in touch", "Visit the clinic")}
         <section className="mx-auto grid max-w-6xl gap-12 px-8 py-20 lg:grid-cols-2 lg:gap-20">
           <div>
-            <h2 style={{ ...serif, color: TAUPE }} className="text-2xl">Find us</h2>
+            <h2 style={{ ...serif, color: TAUPE }} className="text-2xl" {...editCopy(content, "contact_find_heading", "Find us")} />
             <div className="mt-5 space-y-4 text-[15px] leading-relaxed text-neutral-700">
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block hover:text-neutral-950">{content.phone}</a>}
@@ -208,7 +208,7 @@ export default function LineaDesign({ site, page = "home", basePath = "" }: Pres
               </ul>
             )}
             {content.map_url && (
-              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex border px-7 py-3 text-[11px] font-semibold uppercase tracking-[0.22em] transition hover:bg-neutral-900 hover:text-white" style={{ borderColor: TAUPE, color: TAUPE }}>Get directions</a>
+              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex border px-7 py-3 text-[11px] font-semibold uppercase tracking-[0.22em] transition hover:bg-neutral-900 hover:text-white" style={{ borderColor: TAUPE, color: TAUPE }} {...editCopy(content, "contact_directions_cta", "Get directions")} />
             )}
           </div>
           {contactOn && (
@@ -233,7 +233,7 @@ export default function LineaDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "about") {
     return shell(
       <>
-        {banner("About us", "Bespoke care, expert hands")}
+        {banner("about_banner", "About us", "Bespoke care, expert hands")}
         <section className="mx-auto max-w-3xl px-8 py-20">
           {content.about ? <p data-edit="content.about" className="text-[17px] leading-[1.9] text-neutral-700">{content.about}</p> : <p className="text-neutral-500">Our story is coming soon.</p>}
         </section>
@@ -243,8 +243,8 @@ export default function LineaDesign({ site, page = "home", basePath = "" }: Pres
           <section style={{ background: CREAM }} className="border-t border-black/5">
             <div className="mx-auto max-w-6xl px-8 py-20">
               <div className="text-center">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.3em]" style={{ color: SAGE }}>The team</p>
-                <h2 style={{ ...serif, color: TAUPE }} className="mt-4 text-3xl font-medium sm:text-4xl">Meet our practitioners</h2>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.3em]" style={{ color: SAGE }} {...editCopy(content, "about_team_eyebrow", "The team")} />
+                <h2 style={{ ...serif, color: TAUPE }} className="mt-4 text-3xl font-medium sm:text-4xl" {...editCopy(content, "about_team_heading", "Meet our practitioners")} />
               </div>
               <div className="mt-14 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
                 {team.map((m) => (
@@ -268,8 +268,8 @@ export default function LineaDesign({ site, page = "home", basePath = "" }: Pres
         {/* FAQ accordion */}
         <section className="mx-auto max-w-3xl px-8 py-20">
           <div className="text-center">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.3em]" style={{ color: SAGE }}>Good to know</p>
-            <h2 style={{ ...serif, color: TAUPE }} className="mt-4 text-3xl font-medium sm:text-4xl">Frequently asked questions</h2>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.3em]" style={{ color: SAGE }} {...editCopy(content, "about_faq_eyebrow", "Good to know")} />
+            <h2 style={{ ...serif, color: TAUPE }} className="mt-4 text-3xl font-medium sm:text-4xl" {...editCopy(content, "about_faq_heading", "Frequently asked questions")} />
           </div>
           <div className="mt-12">
             <LineaFaq items={FALLBACK_FAQ} />
@@ -283,7 +283,7 @@ export default function LineaDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Our work", "Before & after")}
+        {banner("gallery_banner", "Our work", "Before & after")}
         {gallery.length >= 2 && (
           <section className="px-8 pb-4 pt-16">
             <LineaBeforeAfter images={gallery} />
@@ -319,10 +319,8 @@ export default function LineaDesign({ site, page = "home", basePath = "" }: Pres
         <div className="relative z-10 mx-auto w-full max-w-6xl px-8 pt-24">
           <div className="max-w-xl text-white">
             {content.tagline && <p data-edit="content.tagline" className="text-[11px] font-semibold uppercase tracking-[0.3em] text-white/85 [text-shadow:0_1px_12px_rgba(0,0,0,0.5)]">{content.tagline}</p>}
-            <h1 style={serif} className="mt-5 text-4xl font-medium leading-[1.15] [text-shadow:0_2px_24px_rgba(0,0,0,0.5)] sm:text-5xl lg:text-6xl">
-              Bespoke skincare treatments from professional experts
-            </h1>
-            <a href={book} style={{ background: SAGE }} className="mt-9 inline-flex px-10 py-4 text-[12px] font-semibold uppercase tracking-[0.22em] text-white shadow-2xl transition hover:opacity-90">Book now</a>
+            <h1 style={serif} className="mt-5 text-4xl font-medium leading-[1.15] [text-shadow:0_2px_24px_rgba(0,0,0,0.5)] sm:text-5xl lg:text-6xl" {...editCopy(content, "hero_headline", "Bespoke skincare treatments from professional experts")} />
+            <a href={book} style={{ background: SAGE }} className="mt-9 inline-flex px-10 py-4 text-[12px] font-semibold uppercase tracking-[0.22em] text-white shadow-2xl transition hover:opacity-90" {...editCopy(content, "hero_book_cta", "Book now")} />
           </div>
         </div>
       </section>
@@ -330,7 +328,7 @@ export default function LineaDesign({ site, page = "home", basePath = "" }: Pres
       {/* intro — short welcome (teaser, not the full about page) */}
       {content.about && (
         <section className="mx-auto max-w-3xl px-8 py-20 text-center">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.3em]" style={{ color: SAGE }}>Welcome</p>
+          <p className="text-[11px] font-semibold uppercase tracking-[0.3em]" style={{ color: SAGE }} {...editCopy(content, "home_welcome_eyebrow", "Welcome")} />
           <p data-edit="content.about" className="mt-6 text-[18px] leading-[1.9] text-neutral-700">{content.about}</p>
         </section>
       )}
@@ -340,8 +338,8 @@ export default function LineaDesign({ site, page = "home", basePath = "" }: Pres
         <section style={{ background: CREAM }} className="border-y border-black/5">
           <div className="mx-auto max-w-6xl px-8 py-24">
             <div className="text-center">
-              <h2 style={{ ...serif, color: TAUPE }} className="text-3xl font-medium sm:text-4xl">Our treatments</h2>
-              <p className="mx-auto mt-4 max-w-2xl text-[15px] leading-[1.8] text-neutral-600">Explore our full range of treatments, including aesthetic wellness, dermatology and aesthetic facials. We also offer specialist holistic and nutritional support.</p>
+              <h2 style={{ ...serif, color: TAUPE }} className="text-3xl font-medium sm:text-4xl" {...editCopy(content, "home_treatments_heading", "Our treatments")} />
+              <p className="mx-auto mt-4 max-w-2xl text-[15px] leading-[1.8] text-neutral-600" {...editCopy(content, "home_treatments_blurb", "Explore our full range of treatments, including aesthetic wellness, dermatology and aesthetic facials. We also offer specialist holistic and nutritional support.")} />
             </div>
             <div className="mt-14 grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-4">
               {treatmentTiles.map((item, i) => {
@@ -359,13 +357,13 @@ export default function LineaDesign({ site, page = "home", basePath = "" }: Pres
                     <h3 data-edit={`item:${item.id}:name`} style={{ ...serif, color: TAUPE }} className="mt-6 text-xl">{item.name}</h3>
                     {item.description && <p data-edit={`item:${item.id}:description`} className="mx-auto mt-3 max-w-[18rem] text-sm leading-relaxed text-neutral-500">{item.description}</p>}
                     {item.price && <p data-edit={`item:${item.id}:price`} className="mt-3 text-sm font-semibold" style={{ color: SAGE }}>{item.price}</p>}
-                    <a href={href("services")} className="mt-5 inline-flex px-6 py-2.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-white transition hover:opacity-90" style={{ background: SAGE }}>Learn more</a>
+                    <a href={href("services")} className="mt-5 inline-flex px-6 py-2.5 text-[10px] font-semibold uppercase tracking-[0.2em] text-white transition hover:opacity-90" style={{ background: SAGE }} {...editCopy(content, "home_treatment_card_cta", "Learn more")} />
                   </div>
                 );
               })}
             </div>
             <div className="mt-16 text-center">
-              <a href={href("services")} className="inline-flex border px-10 py-4 text-[12px] font-semibold uppercase tracking-[0.22em] transition hover:bg-neutral-900 hover:text-white" style={{ borderColor: TAUPE, color: TAUPE }}>View all treatments</a>
+              <a href={href("services")} className="inline-flex border px-10 py-4 text-[12px] font-semibold uppercase tracking-[0.22em] transition hover:bg-neutral-900 hover:text-white" style={{ borderColor: TAUPE, color: TAUPE }} {...editCopy(content, "home_treatments_link", "View all treatments")} />
             </div>
           </div>
         </section>
@@ -391,8 +389,8 @@ export default function LineaDesign({ site, page = "home", basePath = "" }: Pres
       {gallery.length >= 2 && (
         <section style={{ background: MIST }} className="border-y border-black/5">
           <div className="mx-auto max-w-6xl px-8 py-24 text-center">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.3em]" style={{ color: SAGE }}>Real results</p>
-            <h2 style={{ ...serif, color: TAUPE }} className="mt-4 text-3xl font-medium sm:text-4xl">Before &amp; after</h2>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.3em]" style={{ color: SAGE }} {...editCopy(content, "home_results_eyebrow", "Real results")} />
+            <h2 style={{ ...serif, color: TAUPE }} className="mt-4 text-3xl font-medium sm:text-4xl" {...editCopy(content, "home_results_heading", "Before & after")} />
             <div className="mt-12">
               <LineaBeforeAfter images={gallery} />
             </div>
@@ -404,7 +402,7 @@ export default function LineaDesign({ site, page = "home", basePath = "" }: Pres
       {/* reviews carousel */}
       <section className="mx-auto max-w-6xl px-8 py-24">
         <div className="text-center">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.3em]" style={{ color: SAGE }}>Reviews</p>
+          <p className="text-[11px] font-semibold uppercase tracking-[0.3em]" style={{ color: SAGE }} {...editCopy(content, "home_reviews_eyebrow", "Reviews")} />
         </div>
         <div className="mt-10">
           <LineaReviews reviews={reviews} />
@@ -424,9 +422,9 @@ export default function LineaDesign({ site, page = "home", basePath = "" }: Pres
             ) : <div className="h-full w-full bg-gradient-to-br from-[#cdbfae] to-[#8d7d6c]" />}
           </div>
           <div className="flex flex-col justify-center px-8 py-16 sm:px-14">
-            <h2 style={{ ...serif, color: TAUPE }} className="text-3xl font-medium sm:text-4xl">Skincare store</h2>
-            <p className="mt-5 text-[15px] leading-[1.9] text-neutral-600">Discover our range of professional products, designed to enhance the effects of your in-clinic treatments and support daily skin health and protection against the environment.</p>
-            <a href={href("contact")} className="mt-8 inline-flex w-fit px-9 py-3.5 text-[12px] font-semibold uppercase tracking-[0.22em] text-white transition hover:opacity-90" style={{ background: SAGE }}>Ask about products</a>
+            <h2 style={{ ...serif, color: TAUPE }} className="text-3xl font-medium sm:text-4xl" {...editCopy(content, "store_heading", "Skincare store")} />
+            <p className="mt-5 text-[15px] leading-[1.9] text-neutral-600" {...editCopy(content, "store_blurb", "Discover our range of professional products, designed to enhance the effects of your in-clinic treatments and support daily skin health and protection against the environment.")} />
+            <a href={href("contact")} className="mt-8 inline-flex w-fit px-9 py-3.5 text-[12px] font-semibold uppercase tracking-[0.22em] text-white transition hover:opacity-90" style={{ background: SAGE }} {...editCopy(content, "store_cta", "Ask about products")} />
           </div>
         </div>
       </section>
@@ -434,8 +432,8 @@ export default function LineaDesign({ site, page = "home", basePath = "" }: Pres
       {/* Blog / insights grid */}
       <section className="mx-auto max-w-6xl px-8 py-24">
         <div className="text-center">
-          <h2 style={{ ...serif, color: TAUPE }} className="text-3xl font-medium sm:text-4xl">Insights</h2>
-          <p className="mx-auto mt-4 max-w-xl text-[15px] leading-[1.8] text-neutral-600">Keep up to date with our clinic, advice and skincare news.</p>
+          <h2 style={{ ...serif, color: TAUPE }} className="text-3xl font-medium sm:text-4xl" {...editCopy(content, "insights_heading", "Insights")} />
+          <p className="mx-auto mt-4 max-w-xl text-[15px] leading-[1.8] text-neutral-600" {...editCopy(content, "insights_blurb", "Keep up to date with our clinic, advice and skincare news.")} />
         </div>
         <div className="mt-14 grid gap-x-8 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
           {FALLBACK_INSIGHTS.map((post, i) => {
@@ -450,7 +448,7 @@ export default function LineaDesign({ site, page = "home", basePath = "" }: Pres
                 </div>
                 <h3 style={{ ...serif, color: TAUPE }} className="mt-5 text-xl leading-snug">{post.title}</h3>
                 <p className="mt-3 text-sm leading-relaxed text-neutral-500">{post.blurb}</p>
-                <a href={href("about")} className="mt-4 inline-flex text-[11px] font-semibold uppercase tracking-[0.18em]" style={{ color: SAGE }}>Read more</a>
+                <a href={href("about")} className="mt-4 inline-flex text-[11px] font-semibold uppercase tracking-[0.18em]" style={{ color: SAGE }} {...editCopy(content, "insights_card_link", "Read more")} />
               </article>
             );
           })}
@@ -461,9 +459,9 @@ export default function LineaDesign({ site, page = "home", basePath = "" }: Pres
       <section style={{ background: CREAM }} className="border-y border-black/5">
         <div className="mx-auto grid max-w-6xl items-center gap-12 px-8 py-20 lg:grid-cols-2 lg:gap-20">
           <div>
-            <h2 style={{ ...serif, color: TAUPE }} className="text-3xl font-medium sm:text-4xl">Book a consultation</h2>
-            <p className="mt-5 text-[15px] leading-[1.9] text-neutral-600">Book a consultation with one of our expert clinicians. Choose your treatment and find the best way to achieve your aesthetic goals.</p>
-            <a href={book} className="mt-8 inline-flex px-10 py-4 text-[12px] font-semibold uppercase tracking-[0.22em] text-white transition hover:opacity-90" style={{ background: SAGE }}>Book a consultation</a>
+            <h2 style={{ ...serif, color: TAUPE }} className="text-3xl font-medium sm:text-4xl" {...editCopy(content, "home_book_heading", "Book a consultation")} />
+            <p className="mt-5 text-[15px] leading-[1.9] text-neutral-600" {...editCopy(content, "home_book_blurb", "Book a consultation with one of our expert clinicians. Choose your treatment and find the best way to achieve your aesthetic goals.")} />
+            <a href={book} className="mt-8 inline-flex px-10 py-4 text-[12px] font-semibold uppercase tracking-[0.22em] text-white transition hover:opacity-90" style={{ background: SAGE }} {...editCopy(content, "home_book_cta", "Book a consultation")} />
           </div>
           <div className="aspect-[4/3] w-full overflow-hidden bg-neutral-200">
             {gallery[1]?.image_url ? (
@@ -480,8 +478,8 @@ export default function LineaDesign({ site, page = "home", basePath = "" }: Pres
       {/* newsletter signup band */}
       <section style={{ background: SAGE }} className="text-white">
         <div className="mx-auto max-w-3xl px-8 py-20 text-center">
-          <h2 style={serif} className="text-3xl font-medium sm:text-4xl">Sign up to our newsletter</h2>
-          <p className="mx-auto mt-4 max-w-md text-[15px] leading-[1.7] text-white/85">Skincare advice, clinic news and the occasional offer, straight to your inbox.</p>
+          <h2 style={serif} className="text-3xl font-medium sm:text-4xl" {...editCopy(content, "newsletter_heading", "Sign up to our newsletter")} />
+          <p className="mx-auto mt-4 max-w-md text-[15px] leading-[1.7] text-white/85" {...editCopy(content, "newsletter_blurb", "Skincare advice, clinic news and the occasional offer, straight to your inbox.")} />
           <LineaNewsletter tenantId={tenant.id} />
         </div>
       </section>

@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { LumiereHeader } from "./LumiereHeader";
 import { LumiereBooking } from "./LumiereBooking";
@@ -72,7 +72,7 @@ export default function LumiereDesign({ site, page = "home", basePath = "" }: Pr
         </div>
         <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-4">
           <div>
-            <h4 className="text-[11px] font-semibold uppercase tracking-[0.24em]" style={{ color: GOLD }}>The clinic</h4>
+            <h4 className="text-[11px] font-semibold uppercase tracking-[0.24em]" style={{ color: GOLD }} {...editCopy(content, "footer_clinic", "The clinic")} />
             {content.address && <p data-edit="content.address" className="mt-5 whitespace-pre-line text-sm leading-relaxed text-white/70">{content.address}</p>}
             <div className="mt-4 space-y-1.5 text-sm text-white/70">
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block hover:text-white">{content.phone}</a>}
@@ -87,7 +87,7 @@ export default function LumiereDesign({ site, page = "home", basePath = "" }: Pr
             )}
           </div>
           <div>
-            <h4 className="text-[11px] font-semibold uppercase tracking-[0.24em]" style={{ color: GOLD }}>Explore</h4>
+            <h4 className="text-[11px] font-semibold uppercase tracking-[0.24em]" style={{ color: GOLD }} {...editCopy(content, "footer_explore", "Explore")} />
             <ul className="mt-5 space-y-2.5 text-sm text-white/70">
               {([
                 groups.length > 0 && { label: "Treatments", href: href("services") },
@@ -101,7 +101,7 @@ export default function LumiereDesign({ site, page = "home", basePath = "" }: Pr
             </ul>
           </div>
           <div>
-            <h4 className="text-[11px] font-semibold uppercase tracking-[0.24em]" style={{ color: GOLD }}>Treatments</h4>
+            <h4 className="text-[11px] font-semibold uppercase tracking-[0.24em]" style={{ color: GOLD }} {...editCopy(content, "footer_treatments", "Treatments")} />
             {serviceSections.length > 0 ? (
               <ul className="mt-5 space-y-2.5 text-sm text-white/70">
                 {serviceSections.map((s) => (
@@ -111,7 +111,7 @@ export default function LumiereDesign({ site, page = "home", basePath = "" }: Pr
             ) : <p className="mt-5 text-sm text-white/50">Treatments coming soon.</p>}
           </div>
           <div>
-            <h4 className="text-[11px] font-semibold uppercase tracking-[0.24em]" style={{ color: GOLD }}>Opening times</h4>
+            <h4 className="text-[11px] font-semibold uppercase tracking-[0.24em]" style={{ color: GOLD }} {...editCopy(content, "footer_hours", "Opening times")} />
             {content.hours && content.hours.length > 0 ? (
               <ul className="mt-5 space-y-2 text-sm text-white/70">
                 {content.hours.map((h, i) => (
@@ -125,7 +125,7 @@ export default function LumiereDesign({ site, page = "home", basePath = "" }: Pr
       <div className="border-t border-white/10">
         <div className="mx-auto flex max-w-6xl flex-col gap-2 px-8 py-6 text-xs text-white/45 sm:flex-row sm:items-center sm:justify-between">
           <span>© {name}. All rights reserved.</span>
-          <span className="uppercase tracking-[0.2em]">Privacy policy</span>
+          <span className="uppercase tracking-[0.2em]" {...editCopy(content, "footer_privacy", "Privacy policy")} />
         </div>
       </div>
     </footer>
@@ -140,11 +140,11 @@ export default function LumiereDesign({ site, page = "home", basePath = "" }: Pr
   );
 
   // Light page banner — also clears the fixed header on sub-pages.
-  const banner = (kicker: string, title: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string) => (
     <section style={{ background: MIST }} className="border-b border-neutral-200">
       <div className="mx-auto max-w-6xl px-8 pb-14 pt-40 text-center sm:pt-44">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: GOLD }}>{kicker}</p>
-        <h1 style={serif} className="mt-4 text-4xl font-medium sm:text-5xl">{title}</h1>
+        <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: GOLD }} {...editCopy(content, kickerKey, kicker)} />
+        <h1 style={serif} className="mt-4 text-4xl font-medium sm:text-5xl" {...editCopy(content, titleKey, title)} />
       </div>
     </section>
   );
@@ -153,7 +153,7 @@ export default function LumiereDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "services") {
     return shell(
       <>
-        {banner("The menu", "Treatments & prices")}
+        {banner("The menu", "svc_kicker", "Treatments & prices", "svc_title")}
         <section className="mx-auto max-w-3xl px-8 py-20">
           {groups.length > 0 ? (
             <div className="space-y-16">
@@ -181,7 +181,7 @@ export default function LumiereDesign({ site, page = "home", basePath = "" }: Pr
             </div>
           ) : <p className="text-neutral-500">Our treatment list is coming soon.</p>}
           <div className="mt-16 text-center">
-            <a href={book} className="inline-flex px-10 py-4 text-[12px] font-semibold uppercase tracking-[0.22em] text-white transition hover:opacity-90" style={{ background: GOLD }}>Book a consultation</a>
+            <a href={book} className="inline-flex px-10 py-4 text-[12px] font-semibold uppercase tracking-[0.22em] text-white transition hover:opacity-90" style={{ background: GOLD }} {...editCopy(content, "svc_book_cta", "Book a consultation")} />
           </div>
         </section>
       </>,
@@ -192,9 +192,9 @@ export default function LumiereDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "reservations") {
     return shell(
       <>
-        {banner("Appointments", "Book your visit")}
+        {banner("Appointments", "book_kicker", "Book your visit", "book_title")}
         <section className="mx-auto max-w-xl px-8 py-20">
-          <p className="mb-8 text-center text-[17px] leading-[1.8] text-neutral-700">Tell us what you are looking for and when suits you. We will be in touch to confirm your appointment and answer any questions.</p>
+          <p className="mb-8 text-center text-[17px] leading-[1.8] text-neutral-700" {...editCopy(content, "book_blurb", "Tell us what you are looking for and when suits you. We will be in touch to confirm your appointment and answer any questions.")} />
           <LumiereBooking tenantId={tenant.id} name={name} />
         </section>
       </>,
@@ -205,7 +205,7 @@ export default function LumiereDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "contact") {
     return shell(
       <>
-        {banner("Get in touch", "Visit the clinic")}
+        {banner("Get in touch", "contact_kicker", "Visit the clinic", "contact_title")}
         <section className="mx-auto grid max-w-6xl gap-12 px-8 py-20 lg:grid-cols-2 lg:gap-20">
           <div>
             <div className="space-y-5 text-[15px] leading-relaxed text-neutral-700">
@@ -221,7 +221,7 @@ export default function LumiereDesign({ site, page = "home", basePath = "" }: Pr
               </ul>
             )}
             {content.map_url && (
-              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex border px-7 py-3 text-[11px] font-semibold uppercase tracking-[0.22em] transition hover:bg-neutral-900 hover:text-white" style={{ borderColor: INK, color: INK }}>Get directions</a>
+              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex border px-7 py-3 text-[11px] font-semibold uppercase tracking-[0.22em] transition hover:bg-neutral-900 hover:text-white" style={{ borderColor: INK, color: INK }} {...editCopy(content, "contact_directions_cta", "Get directions")} />
             )}
           </div>
           {contactOn && (
@@ -246,7 +246,7 @@ export default function LumiereDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "about") {
     return shell(
       <>
-        {banner("Our story", "A new standard in beauty")}
+        {banner("Our story", "about_kicker", "A new standard in beauty", "about_title")}
         <section className="mx-auto max-w-3xl px-8 py-20">
           {content.about ? <p data-edit="content.about" className="text-[17px] leading-[1.9] text-neutral-700">{content.about}</p> : <p className="text-neutral-500">Our story is coming soon.</p>}
         </section>
@@ -256,8 +256,8 @@ export default function LumiereDesign({ site, page = "home", basePath = "" }: Pr
           <section className="border-t border-neutral-200" style={{ background: MIST }}>
             <div className="mx-auto max-w-6xl px-8 py-20">
               <div className="text-center">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: GOLD }}>The team</p>
-                <h2 style={serif} className="mt-4 text-3xl font-medium sm:text-4xl">Meet our specialists</h2>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: GOLD }} {...editCopy(content, "about_team_kicker", "The team")} />
+                <h2 style={serif} className="mt-4 text-3xl font-medium sm:text-4xl" {...editCopy(content, "about_team_heading", "Meet our specialists")} />
               </div>
               <div className="mt-14 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
                 {team.map((m) => (
@@ -285,7 +285,7 @@ export default function LumiereDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Our work", "The gallery")}
+        {banner("Our work", "gallery_kicker", "The gallery", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="grid grid-cols-2 gap-1 sm:grid-cols-3">
             {gallery.map((g) => (
@@ -313,19 +313,19 @@ export default function LumiereDesign({ site, page = "home", basePath = "" }: Pr
         <div className="relative z-10 mt-auto flex flex-col items-center gap-5 px-6 pb-24 text-center sm:pb-28">
           <div className="flex items-center gap-3 text-sm text-white/90">
             <Stars />
-            <span className="tracking-wide">Loved by our clients</span>
+            <span className="tracking-wide" {...editCopy(content, "hero_reviews_label", "Loved by our clients")} />
           </div>
           <h1 data-edit="tenant.business_name" style={serif} className="text-4xl font-medium uppercase tracking-[0.12em] text-white [text-shadow:0_2px_24px_rgba(0,0,0,0.55)] sm:text-6xl">{name}</h1>
           {content.tagline && <p data-edit="content.tagline" className="text-[11px] font-semibold uppercase tracking-[0.34em] text-white/85 [text-shadow:0_2px_16px_rgba(0,0,0,0.5)]">{content.tagline}</p>}
-          <a href={book} style={{ background: GOLD }} className="mt-2 w-full max-w-xs px-10 py-4 text-center text-[12px] font-semibold uppercase tracking-[0.22em] text-white shadow-2xl transition hover:opacity-90 sm:w-auto">Book a consultation</a>
+          <a href={book} style={{ background: GOLD }} className="mt-2 w-full max-w-xs px-10 py-4 text-center text-[12px] font-semibold uppercase tracking-[0.22em] text-white shadow-2xl transition hover:opacity-90 sm:w-auto" {...editCopy(content, "hero_book_cta", "Book a consultation")} />
         </div>
       </section>
 
       {/* explore our services — image-tile grid teaser linking to full list */}
       {(allItems.length > 0 || serviceSections.length > 0) && (
         <section className="mx-auto max-w-6xl px-8 py-24 text-center">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: GOLD }}>An unrivalled experience</p>
-          <h2 style={serif} className="mt-4 text-4xl font-medium sm:text-5xl">Explore our treatments</h2>
+          <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: GOLD }} {...editCopy(content, "tease_kicker", "An unrivalled experience")} />
+          <h2 style={serif} className="mt-4 text-4xl font-medium sm:text-5xl" {...editCopy(content, "tease_heading", "Explore our treatments")} />
           {serviceSections.length > 0 && (
             <div className="mt-14 grid gap-1.5 sm:grid-cols-2 lg:grid-cols-3">
               {serviceSections.map((s, i) => {
@@ -346,7 +346,7 @@ export default function LumiereDesign({ site, page = "home", basePath = "" }: Pr
             </div>
           )}
           <div className="mt-12">
-            <a href={href("services")} className="inline-flex px-10 py-4 text-[12px] font-semibold uppercase tracking-[0.22em] text-white transition hover:opacity-90" style={{ background: INK }}>See all treatments</a>
+            <a href={href("services")} className="inline-flex px-10 py-4 text-[12px] font-semibold uppercase tracking-[0.22em] text-white transition hover:opacity-90" style={{ background: INK }} {...editCopy(content, "tease_all_cta", "See all treatments")} />
           </div>
         </section>
       )}
@@ -356,10 +356,10 @@ export default function LumiereDesign({ site, page = "home", basePath = "" }: Pr
         <section style={{ background: MIST }} className="border-y border-neutral-200">
           <div className="mx-auto grid max-w-6xl items-center gap-12 px-8 py-24 lg:grid-cols-2 lg:gap-20">
             <div>
-              <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: GOLD }}>A new standard</p>
-              <h2 style={serif} className="mt-4 text-3xl font-medium sm:text-4xl">Beauty, perfected</h2>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: GOLD }} {...editCopy(content, "home_about_kicker", "A new standard")} />
+              <h2 style={serif} className="mt-4 text-3xl font-medium sm:text-4xl" {...editCopy(content, "home_about_heading", "Beauty, perfected")} />
               <p data-edit="content.about" className="mt-6 text-[16px] leading-[1.9] text-neutral-700">{content.about}</p>
-              <a href={href("about")} className="mt-8 inline-flex border px-8 py-3.5 text-[11px] font-semibold uppercase tracking-[0.22em] transition hover:bg-neutral-900 hover:text-white" style={{ borderColor: INK, color: INK }}>Our story</a>
+              <a href={href("about")} className="mt-8 inline-flex border px-8 py-3.5 text-[11px] font-semibold uppercase tracking-[0.22em] transition hover:bg-neutral-900 hover:text-white" style={{ borderColor: INK, color: INK }} {...editCopy(content, "home_about_cta", "Our story")} />
             </div>
             <div className="aspect-[4/3] w-full overflow-hidden bg-neutral-200">
               {gallery[0]?.image_url ? (
@@ -377,18 +377,18 @@ export default function LumiereDesign({ site, page = "home", basePath = "" }: Pr
       {/* complimentary consultations band */}
       <section style={{ background: INK }} className="text-white">
         <div className="mx-auto flex max-w-4xl flex-col items-center gap-6 px-8 py-20 text-center">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: GOLD }}>No obligation</p>
-          <h2 style={serif} className="text-3xl font-medium sm:text-4xl">Complimentary consultations</h2>
-          <p className="max-w-xl text-[16px] leading-[1.9] text-white/75">Explore your options with our specialists and find the treatment that is right for you. We take the time to understand exactly what you want.</p>
-          <a href={book} className="mt-2 inline-flex px-10 py-4 text-[12px] font-semibold uppercase tracking-[0.22em] text-white transition hover:opacity-90" style={{ background: GOLD }}>Book a free consultation</a>
+          <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: GOLD }} {...editCopy(content, "consult_kicker", "No obligation")} />
+          <h2 style={serif} className="text-3xl font-medium sm:text-4xl" {...editCopy(content, "consult_heading", "Complimentary consultations")} />
+          <p className="max-w-xl text-[16px] leading-[1.9] text-white/75" {...editCopy(content, "consult_blurb", "Explore your options with our specialists and find the treatment that is right for you. We take the time to understand exactly what you want.")} />
+          <a href={book} className="mt-2 inline-flex px-10 py-4 text-[12px] font-semibold uppercase tracking-[0.22em] text-white transition hover:opacity-90" style={{ background: GOLD }} {...editCopy(content, "consult_cta", "Book a free consultation")} />
         </div>
       </section>
 
       {/* community / gallery teaser */}
       {gallery.length > 0 && (
         <section className="mx-auto max-w-6xl px-8 py-24 text-center">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: GOLD }}>Follow along</p>
-          <h2 style={serif} className="mt-4 text-3xl font-medium sm:text-4xl">Join our community</h2>
+          <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: GOLD }} {...editCopy(content, "community_kicker", "Follow along")} />
+          <h2 style={serif} className="mt-4 text-3xl font-medium sm:text-4xl" {...editCopy(content, "community_heading", "Join our community")} />
           <div className="mt-12 grid grid-cols-2 gap-1.5 sm:grid-cols-3 lg:grid-cols-5">
             {gallery.slice(0, 5).map((g) => (
               // eslint-disable-next-line @next/next/no-img-element
@@ -396,7 +396,7 @@ export default function LumiereDesign({ site, page = "home", basePath = "" }: Pr
             ))}
           </div>
           <div className="mt-12">
-            <a href={href("gallery")} className="inline-flex border px-10 py-4 text-[12px] font-semibold uppercase tracking-[0.22em] transition hover:bg-neutral-900 hover:text-white" style={{ borderColor: INK, color: INK }}>See more</a>
+            <a href={href("gallery")} className="inline-flex border px-10 py-4 text-[12px] font-semibold uppercase tracking-[0.22em] transition hover:bg-neutral-900 hover:text-white" style={{ borderColor: INK, color: INK }} {...editCopy(content, "community_cta", "See more")} />
           </div>
         </section>
       )}

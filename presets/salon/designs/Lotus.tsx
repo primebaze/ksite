@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { LotusHeader } from "./LotusHeader";
 import { LotusBooking } from "./LotusBooking";
@@ -132,7 +132,7 @@ export default function LotusDesign({ site, page = "home", basePath = "" }: Pres
           )}
         </div>
         <div>
-          <h4 className="text-[11px] font-semibold uppercase tracking-[0.24em]" style={{ color: GOLD }}>Explore</h4>
+          <h4 className="text-[11px] font-semibold uppercase tracking-[0.24em]" style={{ color: GOLD }} {...editCopy(content, "footer_explore", "Explore")} />
           <ul className="mt-4 space-y-2.5 text-sm">
             {nav.map((l) => (
               <li key={l.href}><a href={l.href} className="text-[#F3ECDD]/70 transition hover:text-[#F3ECDD]">{l.label}</a></li>
@@ -140,7 +140,7 @@ export default function LotusDesign({ site, page = "home", basePath = "" }: Pres
           </ul>
         </div>
         <div>
-          <h4 className="text-[11px] font-semibold uppercase tracking-[0.24em]" style={{ color: GOLD }}>Visit the clinic</h4>
+          <h4 className="text-[11px] font-semibold uppercase tracking-[0.24em]" style={{ color: GOLD }} {...editCopy(content, "footer_visit", "Visit the clinic")} />
           {content.address && <p data-edit="content.address" className="mt-4 whitespace-pre-line text-sm leading-relaxed text-[#F3ECDD]/70">{content.address}</p>}
           <div className="mt-3 space-y-1.5 text-sm">
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block text-[#F3ECDD]/70 transition hover:text-[#F3ECDD]">{content.phone}</a>}
@@ -163,13 +163,13 @@ export default function LotusDesign({ site, page = "home", basePath = "" }: Pres
   );
 
   // Sub-page banner — paper texture, clears the fixed header.
-  const banner = (kicker: string, title: string, blurb?: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string, blurb?: string, blurbKey?: string) => (
     <section style={paperBg}>
       <div className="mx-auto max-w-4xl px-6 pb-16 pt-36 text-center sm:pt-44">
         <span className="mx-auto block w-fit"><Lotus size={48} color={CLAY} /></span>
-        <p className="mt-5 text-[11px] font-semibold uppercase tracking-[0.36em]" style={{ color: JADE }}>{kicker}</p>
-        <h1 style={serif} className="mt-3 text-4xl font-medium sm:text-5xl">{title}</h1>
-        {blurb && <p className="mx-auto mt-5 max-w-2xl text-[15px] leading-relaxed text-[#23211C]/65">{blurb}</p>}
+        <p className="mt-5 text-[11px] font-semibold uppercase tracking-[0.36em]" style={{ color: JADE }} {...editCopy(content, kickerKey, kicker)} />
+        <h1 style={serif} className="mt-3 text-4xl font-medium sm:text-5xl" {...editCopy(content, titleKey, title)} />
+        {blurb && <p className="mx-auto mt-5 max-w-2xl text-[15px] leading-relaxed text-[#23211C]/65" {...editCopy(content, blurbKey ?? `${titleKey}_blurb`, blurb)} />}
       </div>
     </section>
   );
@@ -178,7 +178,7 @@ export default function LotusDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "services") {
     return shell(
       <>
-        {banner("Treatments", "Our therapies", "A full menu of acupuncture, herbal medicine and complementary therapies. Every plan begins with a personal consultation.")}
+        {banner("Treatments", "svc_kicker", "Our therapies", "svc_title", "A full menu of acupuncture, herbal medicine and complementary therapies. Every plan begins with a personal consultation.", "svc_blurb")}
         <section className="mx-auto max-w-4xl px-6 py-20" style={{ background: PAPER }}>
           {groups.length > 0 ? (
             <div className="space-y-16">
@@ -214,9 +214,9 @@ export default function LotusDesign({ site, page = "home", basePath = "" }: Pres
           ) : <p className="text-[#23211C]/55">Our treatment menu is coming soon.</p>}
 
           <div className="mt-16 rounded-2xl px-8 py-12 text-center" style={{ background: JADE }}>
-            <h3 style={serif} className="text-2xl text-[#F3ECDD]">Not sure where to begin?</h3>
-            <p className="mx-auto mt-3 max-w-lg text-[15px] leading-relaxed text-[#F3ECDD]/80">Book a first consultation and we will trace the pattern behind how you are feeling, then suggest a gentle, realistic course of care.</p>
-            <a href={book} className="mt-7 inline-flex rounded-full px-9 py-3.5 text-sm font-semibold uppercase tracking-[0.16em] text-white transition hover:opacity-90" style={{ background: CLAY }}>Book a consultation</a>
+            <h3 style={serif} className="text-2xl text-[#F3ECDD]" {...editCopy(content, "svc_cta_heading", "Not sure where to begin?")} />
+            <p className="mx-auto mt-3 max-w-lg text-[15px] leading-relaxed text-[#F3ECDD]/80" {...editCopy(content, "svc_cta_blurb", "Book a first consultation and we will trace the pattern behind how you are feeling, then suggest a gentle, realistic course of care.")} />
+            <a href={book} className="mt-7 inline-flex rounded-full px-9 py-3.5 text-sm font-semibold uppercase tracking-[0.16em] text-white transition hover:opacity-90" style={{ background: CLAY }} {...editCopy(content, "svc_cta_btn", "Book a consultation")} />
           </div>
         </section>
       </>,
@@ -227,7 +227,7 @@ export default function LotusDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "about") {
     return shell(
       <>
-        {banner("About", "Our philosophy")}
+        {banner("About", "about_kicker", "Our philosophy", "about_title")}
         <section className="px-6 py-20" style={{ background: PAPER }}>
           <div className="mx-auto max-w-3xl">
             {content.about ? (
@@ -249,8 +249,8 @@ export default function LotusDesign({ site, page = "home", basePath = "" }: Pres
           <section style={paperBg} className="border-t" >
             <div className="mx-auto max-w-6xl px-6 py-20" style={{ borderColor: "rgba(94,124,107,0.3)" }}>
               <div className="text-center">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.36em]" style={{ color: JADE }}>Our practitioners</p>
-                <h2 style={serif} className="mt-3 text-3xl sm:text-4xl">Meet your team</h2>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.36em]" style={{ color: JADE }} {...editCopy(content, "about_team_kicker", "Our practitioners")} />
+                <h2 style={serif} className="mt-3 text-3xl sm:text-4xl" {...editCopy(content, "about_team_heading", "Meet your team")} />
               </div>
               <div className="mt-14 grid gap-12 sm:grid-cols-2 lg:grid-cols-3">
                 {team.map((m) => (
@@ -274,8 +274,8 @@ export default function LotusDesign({ site, page = "home", basePath = "" }: Pres
         <section className="px-6 py-20" style={{ background: PAPER }}>
           <div className="mx-auto max-w-3xl">
             <div className="text-center">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.36em]" style={{ color: JADE }}>Good to know</p>
-              <h2 style={serif} className="mt-3 text-3xl sm:text-4xl">Common questions</h2>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.36em]" style={{ color: JADE }} {...editCopy(content, "about_faq_kicker", "Good to know")} />
+              <h2 style={serif} className="mt-3 text-3xl sm:text-4xl" {...editCopy(content, "about_faq_heading", "Common questions")} />
             </div>
             <dl className="mt-10 divide-y" style={{ borderColor: "rgba(94,124,107,0.3)" }}>
               {FAQ.map((f) => (
@@ -295,7 +295,7 @@ export default function LotusDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Gallery", "Inside the clinic", "A glimpse of our treatment rooms, our herbs and the quiet of the space.")}
+        {banner("Gallery", "gallery_kicker", "Inside the clinic", "gallery_title", "A glimpse of our treatment rooms, our herbs and the quiet of the space.", "gallery_blurb")}
         {gallery.length > 0 ? (
           <section className="px-6 py-16" style={{ background: PAPER }}>
             <div className="mx-auto grid max-w-6xl grid-cols-2 gap-3 sm:grid-cols-3">
@@ -314,12 +314,12 @@ export default function LotusDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "reservations") {
     return shell(
       <>
-        {banner("Booking", "Book your first visit", "Begin with a relaxed, unhurried consultation. Tell us how you are feeling and we will be in touch.")}
+        {banner("Booking", "book_kicker", "Book your first visit", "book_title", "Begin with a relaxed, unhurried consultation. Tell us how you are feeling and we will be in touch.", "book_blurb")}
         <section className="px-6 py-20" style={{ background: PAPER }}>
           <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
             <div>
-              <h2 style={serif} className="text-3xl">A calm, considered approach</h2>
-              <p className="mt-4 text-[15px] leading-relaxed text-[#23211C]/65">Every course of care starts with a conversation. We take time to understand your history and your patterns, then recommend only what is right for you — with clear pricing and no pressure.</p>
+              <h2 style={serif} className="text-3xl" {...editCopy(content, "book_approach_heading", "A calm, considered approach")} />
+              <p className="mt-4 text-[15px] leading-relaxed text-[#23211C]/65" {...editCopy(content, "book_approach_blurb", "Every course of care starts with a conversation. We take time to understand your history and your patterns, then recommend only what is right for you — with clear pricing and no pressure.")} />
               <ul className="mt-8 space-y-4 text-sm text-[#23211C]/80">
                 {["Unhurried first consultation", "Registered, experienced practitioners", "Tailored acupuncture & herbal plans", "A warm, private treatment room"].map((t) => (
                   <li key={t} className="flex items-start gap-3">
@@ -343,11 +343,11 @@ export default function LotusDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "contact") {
     return shell(
       <>
-        {banner("Contact", "Find us", "Visit the clinic, call, or send a message and we will get back to you.")}
+        {banner("Contact", "contact_kicker", "Find us", "contact_title", "Visit the clinic, call, or send a message and we will get back to you.", "contact_blurb")}
         <section className="px-6 py-20" style={{ background: PAPER }}>
           <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-2 lg:gap-16">
             <div>
-              <h2 style={serif} className="text-2xl">Clinic details</h2>
+              <h2 style={serif} className="text-2xl" {...editCopy(content, "contact_details_heading", "Clinic details")} />
               <div className="mt-6 space-y-4 text-[15px] leading-relaxed text-[#23211C]/80">
                 {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
                 {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-[#23211C]">{content.phone}</a>}
@@ -362,9 +362,9 @@ export default function LotusDesign({ site, page = "home", basePath = "" }: Pres
               )}
               <div className="mt-7 flex flex-wrap gap-3">
                 {content.map_url && (
-                  <a href={content.map_url} target="_blank" rel="noreferrer" className="inline-flex rounded-full px-7 py-3 text-xs font-semibold uppercase tracking-[0.16em] text-white transition hover:opacity-90" style={{ background: CLAY }}>Get directions</a>
+                  <a href={content.map_url} target="_blank" rel="noreferrer" className="inline-flex rounded-full px-7 py-3 text-xs font-semibold uppercase tracking-[0.16em] text-white transition hover:opacity-90" style={{ background: CLAY }} {...editCopy(content, "contact_directions_cta", "Get directions")} />
                 )}
-                <a href={book} className="inline-flex rounded-full border px-7 py-3 text-xs font-semibold uppercase tracking-[0.16em] transition hover:bg-[#23211C] hover:text-[#F3ECDD]" style={{ borderColor: INK, color: INK }}>Book a visit</a>
+                <a href={book} className="inline-flex rounded-full border px-7 py-3 text-xs font-semibold uppercase tracking-[0.16em] transition hover:bg-[#23211C] hover:text-[#F3ECDD]" style={{ borderColor: INK, color: INK }} {...editCopy(content, "contact_book_cta", "Book a visit")} />
               </div>
               {content.socials && content.socials.length > 0 && (
                 <div className="mt-8 flex gap-4" style={{ color: INK }}>
@@ -420,14 +420,14 @@ export default function LotusDesign({ site, page = "home", basePath = "" }: Pres
           {content.tagline ? (
             <p data-edit="content.tagline" className="mt-8 text-[11px] font-semibold uppercase tracking-[0.4em]" style={{ color: JADE }}>{content.tagline}</p>
           ) : (
-            <p className="mt-8 text-[11px] font-semibold uppercase tracking-[0.4em]" style={{ color: JADE }}>Acupuncture & Chinese medicine</p>
+            <p className="mt-8 text-[11px] font-semibold uppercase tracking-[0.4em]" style={{ color: JADE }} {...editCopy(content, "hero_eyebrow", "Acupuncture & Chinese medicine")} />
           )}
           <h1 data-edit="tenant.business_name" style={serif} className="mt-5 text-5xl font-medium leading-[1.06] sm:text-7xl">{name}</h1>
-          <p className="mt-6 max-w-xl text-[16px] leading-relaxed text-[#23211C]/65">Traditional healing for a modern life — restoring balance, easing pain and quieting the mind through the gentle art of acupuncture and herbal medicine.</p>
+          <p className="mt-6 max-w-xl text-[16px] leading-relaxed text-[#23211C]/65" {...editCopy(content, "hero_blurb", "Traditional healing for a modern life — restoring balance, easing pain and quieting the mind through the gentle art of acupuncture and herbal medicine.")} />
           <div className="mt-9 flex flex-wrap items-center justify-center gap-3">
-            <a href={book} className="inline-flex rounded-full px-9 py-4 text-xs font-semibold uppercase tracking-[0.18em] text-white shadow-lg transition hover:opacity-90" style={{ background: CLAY }}>Book a visit</a>
+            <a href={book} className="inline-flex rounded-full px-9 py-4 text-xs font-semibold uppercase tracking-[0.18em] text-white shadow-lg transition hover:opacity-90" style={{ background: CLAY }} {...editCopy(content, "hero_book_cta", "Book a visit")} />
             {groups.length > 0 && (
-              <a href={href("services")} className="inline-flex rounded-full border px-9 py-4 text-xs font-semibold uppercase tracking-[0.18em] transition hover:bg-[#23211C] hover:text-[#F3ECDD]" style={{ borderColor: INK, color: INK }}>View treatments</a>
+              <a href={href("services")} className="inline-flex rounded-full border px-9 py-4 text-xs font-semibold uppercase tracking-[0.18em] transition hover:bg-[#23211C] hover:text-[#F3ECDD]" style={{ borderColor: INK, color: INK }} {...editCopy(content, "hero_services_cta", "View treatments")} />
             )}
           </div>
         </div>
@@ -439,8 +439,8 @@ export default function LotusDesign({ site, page = "home", basePath = "" }: Pres
       <section style={{ background: JADE }}>
         <div className="mx-auto max-w-6xl px-6 py-20">
           <div className="text-center">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.36em]" style={{ color: "rgba(243,236,221,0.7)" }}>How it can help</p>
-            <h2 style={serif} className="mt-3 text-3xl text-[#F3ECDD] sm:text-4xl">Care for the whole self</h2>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.36em]" style={{ color: "rgba(243,236,221,0.7)" }} {...editCopy(content, "help_kicker", "How it can help")} />
+            <h2 style={serif} className="mt-3 text-3xl text-[#F3ECDD] sm:text-4xl" {...editCopy(content, "help_heading", "Care for the whole self")} />
           </div>
           <div className="mt-14 grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-5">
             {HELPS.map((h) => (
@@ -461,7 +461,7 @@ export default function LotusDesign({ site, page = "home", basePath = "" }: Pres
         <section className="px-6 py-24 text-center" style={{ background: PAPER }}>
           <div className="mx-auto max-w-3xl">
             <span className="mx-auto block w-fit"><Lotus size={44} color={CLAY} /></span>
-            <p className="mt-6 text-[11px] font-semibold uppercase tracking-[0.36em]" style={{ color: JADE }}>Welcome</p>
+            <p className="mt-6 text-[11px] font-semibold uppercase tracking-[0.36em]" style={{ color: JADE }} {...editCopy(content, "home_welcome_kicker", "Welcome")} />
             <p data-edit="content.about" className="mt-5 text-[20px] leading-[1.95] text-[#23211C]/80">{content.about}</p>
           </div>
         </section>
@@ -471,8 +471,8 @@ export default function LotusDesign({ site, page = "home", basePath = "" }: Pres
       <section style={paperBg} className="border-y" >
         <div className="mx-auto max-w-6xl px-6 py-20" style={{ borderColor: "rgba(94,124,107,0.25)" }}>
           <div className="text-center">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.36em]" style={{ color: JADE }}>Your treatment journey</p>
-            <h2 style={serif} className="mt-3 text-3xl sm:text-4xl">From first visit to balance</h2>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.36em]" style={{ color: JADE }} {...editCopy(content, "journey_kicker", "Your treatment journey")} />
+            <h2 style={serif} className="mt-3 text-3xl sm:text-4xl" {...editCopy(content, "journey_heading", "From first visit to balance")} />
           </div>
           <ol className="mt-14 grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
             {JOURNEY.map((j, i) => (
@@ -496,8 +496,8 @@ export default function LotusDesign({ site, page = "home", basePath = "" }: Pres
         <section className="px-6 py-24" style={{ background: PAPER }}>
           <div className="mx-auto max-w-5xl">
             <div className="text-center">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.36em]" style={{ color: JADE }}>Treatments</p>
-              <h2 style={serif} className="mt-3 text-3xl sm:text-4xl">Therapies we offer</h2>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.36em]" style={{ color: JADE }} {...editCopy(content, "tease_kicker", "Treatments")} />
+              <h2 style={serif} className="mt-3 text-3xl sm:text-4xl" {...editCopy(content, "tease_heading", "Therapies we offer")} />
             </div>
             <div className="mt-12 grid gap-x-14 gap-y-12 md:grid-cols-2">
               {teaseCategories.map((c) => (
@@ -518,7 +518,7 @@ export default function LotusDesign({ site, page = "home", basePath = "" }: Pres
               ))}
             </div>
             <div className="mt-14 text-center">
-              <a href={href("services")} className="inline-flex rounded-full px-9 py-3.5 text-sm font-semibold uppercase tracking-[0.16em] text-white transition hover:opacity-90" style={{ background: CLAY }}>View all treatments</a>
+              <a href={href("services")} className="inline-flex rounded-full px-9 py-3.5 text-sm font-semibold uppercase tracking-[0.16em] text-white transition hover:opacity-90" style={{ background: CLAY }} {...editCopy(content, "tease_all_cta", "View all treatments")} />
             </div>
           </div>
         </section>
@@ -537,7 +537,7 @@ export default function LotusDesign({ site, page = "home", basePath = "" }: Pres
           )}
         </div>
         <div className="flex flex-col justify-center px-8 py-16 sm:px-14" style={{ background: INK }}>
-          <p className="text-[11px] font-semibold uppercase tracking-[0.36em]" style={{ color: GOLD }}>In our patients' words</p>
+          <p className="text-[11px] font-semibold uppercase tracking-[0.36em]" style={{ color: GOLD }} {...editCopy(content, "reviews_kicker", "In our patients' words")} />
           <div className="mt-8 space-y-8">
             {REVIEWS.slice(0, 3).map((r) => (
               <figure key={r.author}>
@@ -554,8 +554,8 @@ export default function LotusDesign({ site, page = "home", basePath = "" }: Pres
         <div className="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
           <div className="flex flex-col justify-center">
             <span className="mb-5 block w-fit"><Lotus size={52} color={CLAY} /></span>
-            <h2 style={serif} className="text-3xl sm:text-4xl">Begin your path to balance</h2>
-            <p className="mt-4 max-w-md text-[15px] leading-relaxed text-[#23211C]/65">Book a first consultation and let us listen. We will trace the root of how you feel and shape a gentle course of care around you.</p>
+            <h2 style={serif} className="text-3xl sm:text-4xl" {...editCopy(content, "home_cta_heading", "Begin your path to balance")} />
+            <p className="mt-4 max-w-md text-[15px] leading-relaxed text-[#23211C]/65" {...editCopy(content, "home_cta_blurb", "Book a first consultation and let us listen. We will trace the root of how you feel and shape a gentle course of care around you.")} />
             <ul className="mt-6 space-y-2 text-sm text-[#23211C]/75">
               {["Acupuncture & herbal medicine", "Personalised, whole-body care", "Clear, honest guidance"].map((t) => (
                 <li key={t} className="flex items-start gap-2.5"><span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full" style={{ background: CLAY }} />{t}</li>
@@ -566,10 +566,10 @@ export default function LotusDesign({ site, page = "home", basePath = "" }: Pres
             <LotusBooking tenantId={tenant.id} name={name} />
           ) : (
             <div className="flex flex-col justify-center rounded-2xl px-8 py-14" style={{ background: JADE }}>
-              <h3 style={serif} className="text-2xl text-[#F3ECDD]">Get in touch</h3>
+              <h3 style={serif} className="text-2xl text-[#F3ECDD]" {...editCopy(content, "home_cta_getintouch", "Get in touch")} />
               {content.phone && <a href={`tel:${content.phone}`} className="mt-4 block text-[#F3ECDD]">{content.phone}</a>}
               {content.email && <a href={`mailto:${content.email}`} className="mt-1 block text-[#F3ECDD]">{content.email}</a>}
-              <a href={href("contact")} className="mt-6 inline-flex w-fit rounded-full px-8 py-3.5 text-xs font-semibold uppercase tracking-[0.16em] text-white transition hover:opacity-90" style={{ background: CLAY }}>Contact us</a>
+              <a href={href("contact")} className="mt-6 inline-flex w-fit rounded-full px-8 py-3.5 text-xs font-semibold uppercase tracking-[0.16em] text-white transition hover:opacity-90" style={{ background: CLAY }} {...editCopy(content, "home_cta_contact_btn", "Contact us")} />
             </div>
           )}
         </div>
@@ -579,14 +579,14 @@ export default function LotusDesign({ site, page = "home", basePath = "" }: Pres
       <section style={paperBg} className="border-t" >
         <div className="mx-auto grid max-w-6xl gap-10 px-6 py-16 md:grid-cols-3" style={{ borderColor: "rgba(94,124,107,0.25)" }}>
           <div>
-            <h3 className="text-[11px] font-semibold uppercase tracking-[0.24em]" style={{ color: JADE }}>Visit the clinic</h3>
+            <h3 className="text-[11px] font-semibold uppercase tracking-[0.24em]" style={{ color: JADE }} {...editCopy(content, "details_visit_heading", "Visit the clinic")} />
             {content.address && <p data-edit="content.address" className="mt-4 whitespace-pre-line text-sm leading-relaxed text-[#23211C]/75">{content.address}</p>}
             {content.map_url && (
-              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-4 inline-flex text-sm font-semibold" style={{ color: CLAY }}>Get directions →</a>
+              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-4 inline-flex text-sm font-semibold" style={{ color: CLAY }} {...editCopy(content, "details_directions_cta", "Get directions →")} />
             )}
           </div>
           <div>
-            <h3 className="text-[11px] font-semibold uppercase tracking-[0.24em]" style={{ color: JADE }}>Opening times</h3>
+            <h3 className="text-[11px] font-semibold uppercase tracking-[0.24em]" style={{ color: JADE }} {...editCopy(content, "details_hours_heading", "Opening times")} />
             {content.hours && content.hours.length > 0 ? (
               <ul className="mt-4 space-y-2 text-sm text-[#23211C]/75">
                 {content.hours.map((h, i) => (
@@ -596,12 +596,12 @@ export default function LotusDesign({ site, page = "home", basePath = "" }: Pres
             ) : <p className="mt-4 text-sm text-[#23211C]/55">Open by appointment.</p>}
           </div>
           <div>
-            <h3 className="text-[11px] font-semibold uppercase tracking-[0.24em]" style={{ color: JADE }}>Contact</h3>
+            <h3 className="text-[11px] font-semibold uppercase tracking-[0.24em]" style={{ color: JADE }} {...editCopy(content, "details_contact_heading", "Contact")} />
             <div className="mt-4 space-y-1.5 text-sm text-[#23211C]/75">
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-[#23211C]">{content.phone}</a>}
               {content.email && <a data-edit="content.email" href={`mailto:${content.email}`} className="block transition hover:text-[#23211C]">{content.email}</a>}
             </div>
-            <a href={book} className="mt-5 inline-flex rounded-full px-7 py-3 text-xs font-semibold uppercase tracking-[0.16em] text-white transition hover:opacity-90" style={{ background: CLAY }}>Book a visit</a>
+            <a href={book} className="mt-5 inline-flex rounded-full px-7 py-3 text-xs font-semibold uppercase tracking-[0.16em] text-white transition hover:opacity-90" style={{ background: CLAY }} {...editCopy(content, "details_book_cta", "Book a visit")} />
           </div>
         </div>
       </section>

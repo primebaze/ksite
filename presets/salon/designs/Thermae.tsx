@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { ThermaeHeader } from "./ThermaeHeader";
 import { ThermaeBooking } from "./ThermaeBooking";
@@ -137,7 +137,7 @@ export default function ThermaeDesign({ site, page = "home", basePath = "" }: Pr
             )}
           </div>
           <div>
-            <h4 className="text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: STONE }}>Wander</h4>
+            <h4 className="text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: STONE }} {...editCopy(content, "footer_wander_heading", "Wander")} />
             <ul className="mt-4 space-y-2.5 text-sm">
               {nav.map((l) => (
                 <li key={l.href}><a href={l.href} className="text-white/70 transition hover:text-white">{l.label}</a></li>
@@ -145,7 +145,7 @@ export default function ThermaeDesign({ site, page = "home", basePath = "" }: Pr
             </ul>
           </div>
           <div>
-            <h4 className="text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: STONE }}>Find us</h4>
+            <h4 className="text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: STONE }} {...editCopy(content, "footer_find_heading", "Find us")} />
             {content.address && <p data-edit="content.address" className="mt-4 whitespace-pre-line text-sm leading-relaxed text-white/70">{content.address}</p>}
             <div className="mt-3 space-y-1.5 text-sm">
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block text-white/70 transition hover:text-white">{content.phone}</a>}
@@ -171,7 +171,7 @@ export default function ThermaeDesign({ site, page = "home", basePath = "" }: Pr
   );
 
   // Calm page banner — clears the fixed header on sub-pages.
-  const banner = (kicker: string, title: string, blurb?: string) => (
+  const banner = (kickerKey: string, kicker: string, titleKey: string, title: string, blurbKey?: string, blurb?: string) => (
     <section className="relative overflow-hidden" style={{ background: MIST }}>
       <div
         aria-hidden
@@ -184,9 +184,9 @@ export default function ThermaeDesign({ site, page = "home", basePath = "" }: Pr
         style={{ background: "radial-gradient(circle, rgba(176,127,90,0.14), transparent 70%)" }}
       />
       <div className="relative mx-auto max-w-4xl px-6 pb-20 pt-36 text-center sm:pt-44">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: COPPER }}>{kicker}</p>
-        <h1 style={{ ...serif, color: SLATE }} className="mt-4 text-4xl font-medium leading-[1.08] sm:text-6xl">{title}</h1>
-        {blurb && <p className="mx-auto mt-6 max-w-2xl text-[16px] leading-relaxed text-[#2E3A3A]/70">{blurb}</p>}
+        <p className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: COPPER }} {...editCopy(content, kickerKey, kicker)} />
+        <h1 style={{ ...serif, color: SLATE }} className="mt-4 text-4xl font-medium leading-[1.08] sm:text-6xl" {...editCopy(content, titleKey, title)} />
+        {blurb && blurbKey && <p className="mx-auto mt-6 max-w-2xl text-[16px] leading-relaxed text-[#2E3A3A]/70" {...editCopy(content, blurbKey, blurb)} />}
         <Ripple className="mx-auto mt-8 h-5 w-40" />
       </div>
     </section>
@@ -196,7 +196,7 @@ export default function ThermaeDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "services") {
     return shell(
       <>
-        {banner("Rituals & journeys", "The treatment menu", "Choose a single treatment or a complete journey. Every ritual is shaped around how you wish to feel.")}
+        {banner("svc_kicker", "Rituals & journeys", "svc_title", "The treatment menu", "svc_blurb", "Choose a single treatment or a complete journey. Every ritual is shaped around how you wish to feel.")}
         <section style={{ background: CREAM }}>
           <div className="mx-auto max-w-5xl px-6 py-20 sm:py-28">
             {groups.length > 0 ? (
@@ -238,9 +238,9 @@ export default function ThermaeDesign({ site, page = "home", basePath = "" }: Pr
 
             <div className="mt-16 overflow-hidden rounded-[2rem] px-8 py-14 text-center" style={{ background: EUCALYPTUS }}>
               <Ripple className="mx-auto mb-6 h-5 w-40" color="rgba(255,255,255,0.6)" />
-              <h3 style={serif} className="text-2xl text-white sm:text-3xl">Unsure which journey is yours?</h3>
-              <p className="mx-auto mt-3 max-w-lg text-[15px] leading-relaxed text-white/80">Tell us how you wish to feel and we will craft the perfect sequence of warmth, water and touch.</p>
-              <a href={book} className="mt-7 inline-flex rounded-full bg-white px-9 py-3.5 text-[12px] font-semibold uppercase tracking-[0.18em] transition hover:opacity-90" style={{ color: SLATE }}>Reserve your visit</a>
+              <h3 style={serif} className="text-2xl text-white sm:text-3xl" {...editCopy(content, "svc_cta_heading", "Unsure which journey is yours?")} />
+              <p className="mx-auto mt-3 max-w-lg text-[15px] leading-relaxed text-white/80" {...editCopy(content, "svc_cta_blurb", "Tell us how you wish to feel and we will craft the perfect sequence of warmth, water and touch.")} />
+              <a href={book} className="mt-7 inline-flex rounded-full bg-white px-9 py-3.5 text-[12px] font-semibold uppercase tracking-[0.18em] transition hover:opacity-90" style={{ color: SLATE }} {...editCopy(content, "svc_cta_button", "Reserve your visit")} />
             </div>
           </div>
         </section>
@@ -252,7 +252,7 @@ export default function ThermaeDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "about") {
     return shell(
       <>
-        {banner("Our sanctuary", "A place to breathe")}
+        {banner("about_kicker", "Our sanctuary", "about_title", "A place to breathe")}
         <section style={{ background: CREAM }}>
           <div className="mx-auto max-w-3xl px-6 py-20 sm:py-24">
             {content.about ? (
@@ -274,8 +274,8 @@ export default function ThermaeDesign({ site, page = "home", basePath = "" }: Pr
           <section style={{ background: MIST }}>
             <div className="mx-auto max-w-6xl px-6 py-20 sm:py-24">
               <div className="text-center">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: COPPER }}>Your therapists</p>
-                <h2 style={{ ...serif, color: SLATE }} className="mt-3 text-3xl sm:text-4xl">The hands that care for you</h2>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: COPPER }} {...editCopy(content, "about_team_eyebrow", "Your therapists")} />
+                <h2 style={{ ...serif, color: SLATE }} className="mt-3 text-3xl sm:text-4xl" {...editCopy(content, "about_team_heading", "The hands that care for you")} />
               </div>
               <div className="mt-14 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
                 {team.map((m) => (
@@ -299,8 +299,8 @@ export default function ThermaeDesign({ site, page = "home", basePath = "" }: Pr
         <section style={{ background: CREAM }}>
           <div className="mx-auto max-w-3xl px-6 py-20 sm:py-24">
             <div className="text-center">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: COPPER }}>Good to know</p>
-              <h2 style={{ ...serif, color: SLATE }} className="mt-3 text-3xl sm:text-4xl">Before you arrive</h2>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: COPPER }} {...editCopy(content, "about_faq_eyebrow", "Good to know")} />
+              <h2 style={{ ...serif, color: SLATE }} className="mt-3 text-3xl sm:text-4xl" {...editCopy(content, "about_faq_heading", "Before you arrive")} />
             </div>
             <div className="mt-10 space-y-4">
               {FAQ.map((f) => (
@@ -320,7 +320,7 @@ export default function ThermaeDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "gallery") {
     return shell(
       <>
-        {banner("The spaces", "Within our walls", "Stone, water, warmth and quiet light — a glimpse of the calm that awaits.")}
+        {banner("gallery_kicker", "The spaces", "gallery_title", "Within our walls", "gallery_blurb", "Stone, water, warmth and quiet light — a glimpse of the calm that awaits.")}
         <section style={{ background: CREAM }}>
           {gallery.length > 0 ? (
             <div className="mx-auto max-w-6xl px-6 py-16 sm:py-20">
@@ -341,12 +341,12 @@ export default function ThermaeDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "reservations") {
     return shell(
       <>
-        {banner("Reservations", "Reserve your calm", "Choose your ritual and a time that suits. We will hold a quiet moment just for you.")}
+        {banner("res_kicker", "Reservations", "res_title", "Reserve your calm", "res_blurb", "Choose your ritual and a time that suits. We will hold a quiet moment just for you.")}
         <section style={{ background: CREAM }}>
           <div className="mx-auto grid max-w-6xl gap-10 px-6 py-20 sm:py-24 lg:grid-cols-[1fr_1.05fr] lg:gap-16">
             <div>
-              <h2 style={{ ...serif, color: SLATE }} className="text-3xl sm:text-4xl">A slow, considered welcome</h2>
-              <p className="mt-5 text-[15px] leading-relaxed text-[#2E3A3A]/70">From the moment you arrive, time softens. We will settle you in, understand how you wish to feel, and guide you gently through warmth, water and touch.</p>
+              <h2 style={{ ...serif, color: SLATE }} className="text-3xl sm:text-4xl" {...editCopy(content, "res_heading", "A slow, considered welcome")} />
+              <p className="mt-5 text-[15px] leading-relaxed text-[#2E3A3A]/70" {...editCopy(content, "res_body", "From the moment you arrive, time softens. We will settle you in, understand how you wish to feel, and guide you gently through warmth, water and touch.")} />
               <ul className="mt-8 space-y-4 text-sm" style={{ color: SLATE }}>
                 {["Thermal suite, sauna and steam access", "Treatments tailored to your body", "Quiet relaxation lounges to linger", "Botanical, eucalyptus-led care"].map((t) => (
                   <li key={t} className="flex items-start gap-3.5">
@@ -370,11 +370,11 @@ export default function ThermaeDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "contact") {
     return shell(
       <>
-        {banner("Contact", "Find your way to us", "Visit, call, or send a quiet word and we will respond with care.")}
+        {banner("contact_kicker", "Contact", "contact_title", "Find your way to us", "contact_blurb", "Visit, call, or send a quiet word and we will respond with care.")}
         <section style={{ background: CREAM }}>
           <div className="mx-auto grid max-w-6xl gap-12 px-6 py-20 sm:py-24 lg:grid-cols-2 lg:gap-16">
             <div>
-              <h2 style={{ ...serif, color: SLATE }} className="text-2xl sm:text-3xl">Visiting</h2>
+              <h2 style={{ ...serif, color: SLATE }} className="text-2xl sm:text-3xl" {...editCopy(content, "contact_visiting_heading", "Visiting")} />
               <div className="mt-6 space-y-4 text-[15px] leading-relaxed text-[#2E3A3A]/80">
                 {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
                 {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-[#2E3A3A]">{content.phone}</a>}
@@ -389,9 +389,9 @@ export default function ThermaeDesign({ site, page = "home", basePath = "" }: Pr
               )}
               <div className="mt-8 flex flex-wrap gap-3">
                 {content.map_url && (
-                  <a href={content.map_url} target="_blank" rel="noreferrer" className="inline-flex rounded-full px-7 py-3 text-[12px] font-semibold uppercase tracking-[0.16em] text-white transition hover:opacity-90" style={{ background: EUCALYPTUS }}>Directions</a>
+                  <a href={content.map_url} target="_blank" rel="noreferrer" className="inline-flex rounded-full px-7 py-3 text-[12px] font-semibold uppercase tracking-[0.16em] text-white transition hover:opacity-90" style={{ background: EUCALYPTUS }} {...editCopy(content, "contact_directions_cta", "Directions")} />
                 )}
-                <a href={book} className="inline-flex rounded-full border px-7 py-3 text-[12px] font-semibold uppercase tracking-[0.16em] transition hover:bg-[#2E3A3A] hover:text-white" style={{ borderColor: SLATE, color: SLATE }}>Reserve a visit</a>
+                <a href={book} className="inline-flex rounded-full border px-7 py-3 text-[12px] font-semibold uppercase tracking-[0.16em] transition hover:bg-[#2E3A3A] hover:text-white" style={{ borderColor: SLATE, color: SLATE }} {...editCopy(content, "contact_reserve_cta", "Reserve a visit")} />
               </div>
               {content.socials && content.socials.length > 0 && (
                 <div className="mt-8 flex gap-4" style={{ color: SLATE }}>
@@ -469,11 +469,11 @@ export default function ThermaeDesign({ site, page = "home", basePath = "" }: Pr
               </span>
             ))}
           </p>
-          <p className="mx-auto mt-7 max-w-md text-[15px] leading-relaxed text-white/80">A serene day spa of warm stone, eucalyptus steam and still water — time, gently returned to you.</p>
+          <p className="mx-auto mt-7 max-w-md text-[15px] leading-relaxed text-white/80" {...editCopy(content, "hero_sub", "A serene day spa of warm stone, eucalyptus steam and still water — time, gently returned to you.")} />
           <div className="mt-9 flex flex-wrap justify-center gap-3">
-            <a href={book} className="inline-flex rounded-full px-9 py-4 text-[12px] font-semibold uppercase tracking-[0.2em] text-white shadow-xl transition hover:opacity-90" style={{ background: COPPER }}>Reserve your visit</a>
+            <a href={book} className="inline-flex rounded-full px-9 py-4 text-[12px] font-semibold uppercase tracking-[0.2em] text-white shadow-xl transition hover:opacity-90" style={{ background: COPPER }} {...editCopy(content, "hero_reserve_cta", "Reserve your visit")} />
             {groups.length > 0 && (
-              <a href={href("services")} className="inline-flex rounded-full border border-white/60 px-9 py-4 text-[12px] font-semibold uppercase tracking-[0.2em] text-white backdrop-blur-sm transition hover:bg-white hover:text-[#2E3A3A]">Explore rituals</a>
+              <a href={href("services")} className="inline-flex rounded-full border border-white/60 px-9 py-4 text-[12px] font-semibold uppercase tracking-[0.2em] text-white backdrop-blur-sm transition hover:bg-white hover:text-[#2E3A3A]" {...editCopy(content, "hero_explore_cta", "Explore rituals")} />
             )}
           </div>
         </div>
@@ -501,7 +501,7 @@ export default function ThermaeDesign({ site, page = "home", basePath = "" }: Pr
       {content.about && (
         <section style={{ background: MIST }}>
           <div className="mx-auto max-w-3xl px-6 py-24 text-center">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: COPPER }}>Welcome</p>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: COPPER }} {...editCopy(content, "intro_eyebrow", "Welcome")} />
             <p data-edit="content.about" className="mt-7 text-[22px] font-light leading-[1.75] text-[#2E3A3A]/85" style={serif}>{content.about}</p>
             <Ripple className="mx-auto mt-9 h-5 w-40" />
           </div>
@@ -513,9 +513,9 @@ export default function ThermaeDesign({ site, page = "home", basePath = "" }: Pr
         <section style={{ background: CREAM }}>
           <div className="mx-auto max-w-6xl px-6 py-24">
             <div className="text-center">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: COPPER }}>Rituals & journeys</p>
-              <h2 style={{ ...serif, color: SLATE }} className="mt-3 text-3xl sm:text-4xl">Treatments to unwind by</h2>
-              <p className="mx-auto mt-4 max-w-xl text-[15px] leading-relaxed text-[#2E3A3A]/65">Massage, facials, body rituals and thermal journeys — each shaped around how you wish to feel.</p>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: COPPER }} {...editCopy(content, "journeys_eyebrow", "Rituals & journeys")} />
+              <h2 style={{ ...serif, color: SLATE }} className="mt-3 text-3xl sm:text-4xl" {...editCopy(content, "journeys_heading", "Treatments to unwind by")} />
+              <p className="mx-auto mt-4 max-w-xl text-[15px] leading-relaxed text-[#2E3A3A]/65" {...editCopy(content, "journeys_blurb", "Massage, facials, body rituals and thermal journeys — each shaped around how you wish to feel.")} />
             </div>
             <div className="mt-14 grid gap-x-14 gap-y-12 lg:grid-cols-2">
               {journeys.map((j) => (
@@ -539,7 +539,7 @@ export default function ThermaeDesign({ site, page = "home", basePath = "" }: Pr
               ))}
             </div>
             <div className="mt-14 text-center">
-              <a href={href("services")} className="inline-flex rounded-full px-9 py-3.5 text-[12px] font-semibold uppercase tracking-[0.18em] text-white transition hover:opacity-90" style={{ background: EUCALYPTUS }}>View the full menu</a>
+              <a href={href("services")} className="inline-flex rounded-full px-9 py-3.5 text-[12px] font-semibold uppercase tracking-[0.18em] text-white transition hover:opacity-90" style={{ background: EUCALYPTUS }} {...editCopy(content, "journeys_view_all", "View the full menu")} />
             </div>
           </div>
         </section>
@@ -549,9 +549,9 @@ export default function ThermaeDesign({ site, page = "home", basePath = "" }: Pr
       <section className="relative overflow-hidden" style={{ background: SLATE }}>
         <div className="mx-auto grid max-w-6xl items-center gap-12 px-6 py-24 lg:grid-cols-2 lg:gap-16">
           <div className="text-white">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: STONE }}>The spa experience</p>
-            <h2 style={serif} className="mt-3 text-3xl sm:text-4xl">Warmth, water & stillness</h2>
-            <p className="mt-5 text-[15px] leading-relaxed text-white/70">Move slowly between thermal pools, sauna and steam, then drift into our relaxation lounges. A complete journey for the body and the breath.</p>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: STONE }} {...editCopy(content, "experience_eyebrow", "The spa experience")} />
+            <h2 style={serif} className="mt-3 text-3xl sm:text-4xl" {...editCopy(content, "experience_heading", "Warmth, water & stillness")} />
+            <p className="mt-5 text-[15px] leading-relaxed text-white/70" {...editCopy(content, "experience_blurb", "Move slowly between thermal pools, sauna and steam, then drift into our relaxation lounges. A complete journey for the body and the breath.")} />
             <div className="mt-9 grid gap-5 sm:grid-cols-2">
               {[
                 { t: "Thermal suite", d: "Heated pools, sauna and eucalyptus steam." },
@@ -568,7 +568,7 @@ export default function ThermaeDesign({ site, page = "home", basePath = "" }: Pr
                 </div>
               ))}
             </div>
-            <a href={book} className="mt-9 inline-flex rounded-full px-8 py-3.5 text-[12px] font-semibold uppercase tracking-[0.18em] transition hover:opacity-90" style={{ background: COPPER, color: "#fff" }}>Begin your journey</a>
+            <a href={book} className="mt-9 inline-flex rounded-full px-8 py-3.5 text-[12px] font-semibold uppercase tracking-[0.18em] transition hover:opacity-90" style={{ background: COPPER, color: "#fff" }} {...editCopy(content, "experience_cta", "Begin your journey")} />
           </div>
           <div className="relative min-h-[360px] overflow-hidden rounded-[2.5rem] lg:min-h-[480px]">
             {hero ? (
@@ -586,8 +586,8 @@ export default function ThermaeDesign({ site, page = "home", basePath = "" }: Pr
       <section style={{ background: MIST }}>
         <div className="mx-auto max-w-6xl px-6 py-24">
           <div className="text-center">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: COPPER }}>Guest voices</p>
-            <h2 style={{ ...serif, color: SLATE }} className="mt-3 text-3xl sm:text-4xl">Moments of calm, remembered</h2>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: COPPER }} {...editCopy(content, "voices_eyebrow", "Guest voices")} />
+            <h2 style={{ ...serif, color: SLATE }} className="mt-3 text-3xl sm:text-4xl" {...editCopy(content, "voices_heading", "Moments of calm, remembered")} />
           </div>
           <div className="mt-14 grid gap-6 md:grid-cols-3">
             {REVIEWS.map((r) => (
@@ -617,10 +617,10 @@ export default function ThermaeDesign({ site, page = "home", basePath = "" }: Pr
             <div className="w-full"><ThermaeBooking tenantId={tenant.id} name={name} /></div>
           ) : (
             <div>
-              <h3 style={{ ...serif, color: SLATE }} className="text-3xl">Come and unwind</h3>
+              <h3 style={{ ...serif, color: SLATE }} className="text-3xl" {...editCopy(content, "invite_fallback_heading", "Come and unwind")} />
               {content.phone && <a href={`tel:${content.phone}`} className="mt-5 block" style={{ color: COPPER }}>{content.phone}</a>}
               {content.email && <a href={`mailto:${content.email}`} className="mt-1 block" style={{ color: COPPER }}>{content.email}</a>}
-              <a href={href("contact")} className="mt-7 inline-flex rounded-full px-8 py-3.5 text-[12px] font-semibold uppercase tracking-[0.16em] text-white transition hover:opacity-90" style={{ background: EUCALYPTUS }}>Contact us</a>
+              <a href={href("contact")} className="mt-7 inline-flex rounded-full px-8 py-3.5 text-[12px] font-semibold uppercase tracking-[0.16em] text-white transition hover:opacity-90" style={{ background: EUCALYPTUS }} {...editCopy(content, "invite_fallback_cta", "Contact us")} />
             </div>
           )}
         </div>
@@ -630,14 +630,14 @@ export default function ThermaeDesign({ site, page = "home", basePath = "" }: Pr
       <section style={{ background: MIST }}>
         <div className="mx-auto grid max-w-6xl gap-10 px-6 py-20 md:grid-cols-3">
           <div>
-            <h3 className="text-[11px] font-semibold uppercase tracking-[0.2em]" style={{ color: COPPER }}>Find us</h3>
+            <h3 className="text-[11px] font-semibold uppercase tracking-[0.2em]" style={{ color: COPPER }} {...editCopy(content, "visiting_find_heading", "Find us")} />
             {content.address && <p data-edit="content.address" className="mt-4 whitespace-pre-line text-sm leading-relaxed text-[#2E3A3A]/75">{content.address}</p>}
             {content.map_url && (
               <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-4 inline-flex text-sm font-semibold" style={{ color: EUCALYPTUS }}>Directions →</a>
             )}
           </div>
           <div>
-            <h3 className="text-[11px] font-semibold uppercase tracking-[0.2em]" style={{ color: COPPER }}>Opening times</h3>
+            <h3 className="text-[11px] font-semibold uppercase tracking-[0.2em]" style={{ color: COPPER }} {...editCopy(content, "visiting_hours_heading", "Opening times")} />
             {content.hours && content.hours.length > 0 ? (
               <ul className="mt-4 space-y-2 text-sm text-[#2E3A3A]/75">
                 {content.hours.map((h, i) => (
@@ -647,12 +647,12 @@ export default function ThermaeDesign({ site, page = "home", basePath = "" }: Pr
             ) : <p className="mt-4 text-sm text-[#2E3A3A]/55">Open by reservation.</p>}
           </div>
           <div>
-            <h3 className="text-[11px] font-semibold uppercase tracking-[0.2em]" style={{ color: COPPER }}>Reach us</h3>
+            <h3 className="text-[11px] font-semibold uppercase tracking-[0.2em]" style={{ color: COPPER }} {...editCopy(content, "visiting_reach_heading", "Reach us")} />
             <div className="mt-4 space-y-1.5 text-sm text-[#2E3A3A]/75">
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-[#2E3A3A]">{content.phone}</a>}
               {content.email && <a data-edit="content.email" href={`mailto:${content.email}`} className="block transition hover:text-[#2E3A3A]">{content.email}</a>}
             </div>
-            <a href={book} className="mt-5 inline-flex rounded-full px-7 py-3 text-[12px] font-semibold uppercase tracking-[0.16em] text-white transition hover:opacity-90" style={{ background: EUCALYPTUS }}>Reserve a visit</a>
+            <a href={book} className="mt-5 inline-flex rounded-full px-7 py-3 text-[12px] font-semibold uppercase tracking-[0.16em] text-white transition hover:opacity-90" style={{ background: EUCALYPTUS }} {...editCopy(content, "visiting_reserve_cta", "Reserve a visit")} />
           </div>
         </div>
       </section>

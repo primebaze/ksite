@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { AuroraHeader } from "./AuroraHeader";
 import { AuroraBooking } from "./AuroraBooking";
@@ -139,7 +139,7 @@ export default function AuroraDesign({ site, page = "home", basePath = "" }: Pre
           )}
         </div>
         <div>
-          <h4 className="text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: AQUA }}>Explore</h4>
+          <h4 className="text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: AQUA }} {...editCopy(content, "footer_explore", "Explore")} />
           <ul className="mt-4 space-y-2.5 text-sm">
             {nav.map((l) => (
               <li key={l.href}><a href={l.href} className="text-white/70 transition hover:text-white">{l.label}</a></li>
@@ -147,7 +147,7 @@ export default function AuroraDesign({ site, page = "home", basePath = "" }: Pre
           </ul>
         </div>
         <div>
-          <h4 className="text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: AQUA }}>Visit the clinic</h4>
+          <h4 className="text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: AQUA }} {...editCopy(content, "footer_visit", "Visit the clinic")} />
           {content.address && <p data-edit="content.address" className="mt-4 whitespace-pre-line text-sm leading-relaxed text-white/70">{content.address}</p>}
           <div className="mt-3 space-y-1.5 text-sm">
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block text-white/70 transition hover:text-white">{content.phone}</a>}
@@ -170,15 +170,15 @@ export default function AuroraDesign({ site, page = "home", basePath = "" }: Pre
   );
 
   // Dark aurora banner clearing the fixed header on sub-pages.
-  const banner = (kicker: string, title: string, blurb?: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string, blurb?: string, blurbKey?: string) => (
     <section className="relative overflow-hidden text-white" style={{ background: AURORA }}>
       <div className="absolute inset-x-0 bottom-0 h-px" style={{ background: `linear-gradient(90deg, transparent, ${AQUA}66, transparent)` }} aria-hidden />
       <div className="relative mx-auto max-w-5xl px-6 pb-16 pt-36 text-center sm:pt-44">
         <p className="inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.3em]" style={{ color: AQUA }}>
-          <Droplet size={13} /> {kicker}
+          <Droplet size={13} /> <span {...editCopy(content, kickerKey, kicker)} />
         </p>
-        <h1 style={display} className="mt-4 text-4xl font-semibold sm:text-5xl">{title}</h1>
-        {blurb && <p className="mx-auto mt-5 max-w-2xl text-[15px] leading-relaxed text-white/70">{blurb}</p>}
+        <h1 style={display} className="mt-4 text-4xl font-semibold sm:text-5xl" {...editCopy(content, titleKey, title)} />
+        {blurb && <p className="mx-auto mt-5 max-w-2xl text-[15px] leading-relaxed text-white/70" {...(blurbKey ? editCopy(content, blurbKey, blurb) : { children: blurb })} />}
       </div>
     </section>
   );
@@ -210,7 +210,7 @@ export default function AuroraDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "services") {
     return shell(
       <>
-        {banner("The drip menu", "Find your blend", "Browse our full menu of IV vitamin drips and booster shots, grouped by the goal they serve. Every session starts with a quick nurse consultation.")}
+        {banner("The drip menu", "svc_kicker", "Find your blend", "svc_title", "Browse our full menu of IV vitamin drips and booster shots, grouped by the goal they serve. Every session starts with a quick nurse consultation.", "svc_blurb")}
         <section className="mx-auto max-w-5xl px-6 py-20" style={{ background: OFF }}>
           {groups.length > 0 ? (
             <div className="space-y-14">
@@ -236,9 +236,9 @@ export default function AuroraDesign({ site, page = "home", basePath = "" }: Pre
           ) : <p className="text-neutral-500">Our drip menu is coming soon.</p>}
 
           <div className="mt-16 overflow-hidden rounded-3xl px-8 py-12 text-center text-white" style={{ background: AURORA }}>
-            <h3 style={display} className="text-2xl">Not sure which drip is right?</h3>
-            <p className="mx-auto mt-3 max-w-lg text-[15px] leading-relaxed text-white/75">Tell us how you want to feel and our nurses will match you to the perfect blend.</p>
-            <a href={book} className="mt-6 inline-flex rounded-full px-9 py-3.5 text-sm font-semibold uppercase tracking-[0.14em] transition hover:brightness-110" style={{ background: AQUA, color: NIGHT }}>Book a consultation</a>
+            <h3 style={display} className="text-2xl" {...editCopy(content, "svc_help_heading", "Not sure which drip is right?")} />
+            <p className="mx-auto mt-3 max-w-lg text-[15px] leading-relaxed text-white/75" {...editCopy(content, "svc_help_blurb", "Tell us how you want to feel and our nurses will match you to the perfect blend.")} />
+            <a href={book} className="mt-6 inline-flex rounded-full px-9 py-3.5 text-sm font-semibold uppercase tracking-[0.14em] transition hover:brightness-110" style={{ background: AQUA, color: NIGHT }} {...editCopy(content, "svc_help_cta", "Book a consultation")} />
           </div>
         </section>
       </>,
@@ -249,7 +249,7 @@ export default function AuroraDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "about") {
     return shell(
       <>
-        {banner("About", "Wellness, infused")}
+        {banner("About", "about_kicker", "Wellness, infused", "about_title")}
         <section className="mx-auto max-w-3xl px-6 py-20">
           {content.about ? (
             <p data-edit="content.about" className="text-[17px] leading-[1.9] text-neutral-700">{content.about}</p>
@@ -269,8 +269,8 @@ export default function AuroraDesign({ site, page = "home", basePath = "" }: Pre
           <section style={{ background: OFF }}>
             <div className="mx-auto max-w-6xl px-6 py-20">
               <div className="text-center">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.3em]" style={{ color: "#1c7a72" }}>Our team</p>
-                <h2 style={display} className="mt-3 text-3xl sm:text-4xl">Meet your clinicians</h2>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.3em]" style={{ color: "#1c7a72" }} {...editCopy(content, "team_kicker", "Our team")} />
+                <h2 style={display} className="mt-3 text-3xl sm:text-4xl" {...editCopy(content, "team_heading", "Meet your clinicians")} />
               </div>
               <div className="mt-14 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
                 {team.map((m) => (
@@ -293,8 +293,8 @@ export default function AuroraDesign({ site, page = "home", basePath = "" }: Pre
 
         <section className="mx-auto max-w-3xl px-6 py-20">
           <div className="text-center">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.3em]" style={{ color: "#1c7a72" }}>Good to know</p>
-            <h2 style={display} className="mt-3 text-3xl sm:text-4xl">Frequently asked</h2>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.3em]" style={{ color: "#1c7a72" }} {...editCopy(content, "faq_kicker", "Good to know")} />
+            <h2 style={display} className="mt-3 text-3xl sm:text-4xl" {...editCopy(content, "faq_heading", "Frequently asked")} />
           </div>
           <div className="mt-10 space-y-3">
             {FAQ.map((f) => (
@@ -316,7 +316,7 @@ export default function AuroraDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Gallery", "Inside the lounge", "A look at our infusion lounge and the calm, glowing space we have built for you.")}
+        {banner("Gallery", "gallery_kicker", "Inside the lounge", "gallery_title", "A look at our infusion lounge and the calm, glowing space we have built for you.", "gallery_blurb")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-6xl px-6 py-16" style={{ background: OFF }}>
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
@@ -335,12 +335,12 @@ export default function AuroraDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "reservations") {
     return shell(
       <>
-        {banner("Book", "Reserve your drip", "Choose a blend and a time that suits. Tell us a little about you and our nurses will confirm.")}
+        {banner("Book", "book_kicker", "Reserve your drip", "book_title", "Choose a blend and a time that suits. Tell us a little about you and our nurses will confirm.", "book_blurb")}
         <section style={{ background: OFF }}>
           <div className="mx-auto grid max-w-6xl gap-10 px-6 py-20 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
             <div>
-              <h2 style={display} className="text-3xl" >A calm, clinical experience</h2>
-              <p className="mt-4 text-[15px] leading-relaxed text-neutral-600">From check-in to glow, every step is nurse-led and unhurried. Settle into a lounge chair, let the blend do its work, and leave recharged.</p>
+              <h2 style={display} className="text-3xl" {...editCopy(content, "book_intro_heading", "A calm, clinical experience")} />
+              <p className="mt-4 text-[15px] leading-relaxed text-neutral-600" {...editCopy(content, "book_intro_blurb", "From check-in to glow, every step is nurse-led and unhurried. Settle into a lounge chair, let the blend do its work, and leave recharged.")} />
               <ul className="mt-7 space-y-3 text-sm text-neutral-700">
                 {["Registered, nurse-led infusions", "Pharmacy-grade vitamins and minerals", "Blends tailored to your goals", "Calm, private lounge setting"].map((t) => (
                   <li key={t} className="flex items-start gap-3">
@@ -364,11 +364,11 @@ export default function AuroraDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "contact") {
     return shell(
       <>
-        {banner("Contact", "Get in touch", "Visit the clinic, call, or send a message and we will get back to you.")}
+        {banner("Contact", "contact_kicker", "Get in touch", "contact_title", "Visit the clinic, call, or send a message and we will get back to you.", "contact_blurb")}
         <section style={{ background: OFF }}>
           <div className="mx-auto grid max-w-6xl gap-12 px-6 py-20 lg:grid-cols-2 lg:gap-16">
             <div>
-              <h2 style={display} className="text-2xl" >Clinic details</h2>
+              <h2 style={display} className="text-2xl" {...editCopy(content, "contact_details_heading", "Clinic details")} />
               <div className="mt-6 space-y-4 text-[15px] leading-relaxed text-neutral-700">
                 {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
                 {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-neutral-950">{content.phone}</a>}
@@ -383,9 +383,9 @@ export default function AuroraDesign({ site, page = "home", basePath = "" }: Pre
               )}
               <div className="mt-7 flex flex-wrap gap-3">
                 {content.map_url && (
-                  <a href={content.map_url} target="_blank" rel="noreferrer" className="inline-flex rounded-full px-7 py-3 text-xs font-semibold uppercase tracking-[0.14em] transition hover:brightness-110" style={{ background: AQUA, color: NIGHT }}>Get directions</a>
+                  <a href={content.map_url} target="_blank" rel="noreferrer" className="inline-flex rounded-full px-7 py-3 text-xs font-semibold uppercase tracking-[0.14em] transition hover:brightness-110" style={{ background: AQUA, color: NIGHT }} {...editCopy(content, "contact_directions", "Get directions")} />
                 )}
-                <a href={book} className="inline-flex rounded-full px-7 py-3 text-xs font-semibold uppercase tracking-[0.14em] text-white transition hover:brightness-110" style={{ background: NIGHT }}>Book a drip</a>
+                <a href={book} className="inline-flex rounded-full px-7 py-3 text-xs font-semibold uppercase tracking-[0.14em] text-white transition hover:brightness-110" style={{ background: NIGHT }} {...editCopy(content, "contact_book", "Book a drip")} />
               </div>
               {content.socials && content.socials.length > 0 && (
                 <div className="mt-8 flex gap-4" style={{ color: NIGHT }}>
@@ -457,17 +457,13 @@ export default function AuroraDesign({ site, page = "home", basePath = "" }: Pre
                 <Droplet size={13} /> IV vitamin therapy
               </p>
             )}
-            <h1 style={display} className="mt-6 text-5xl font-semibold leading-[1.02] sm:text-7xl">
-              Recharge from within
-            </h1>
+            <h1 style={display} className="mt-6 text-5xl font-semibold leading-[1.02] sm:text-7xl" {...editCopy(content, "hero_headline", "Recharge from within")} />
             <p data-edit="tenant.business_name" className="mt-4 text-lg font-medium" style={{ color: AQUA }}>{name}</p>
-            <p className="mt-5 max-w-lg text-base leading-relaxed text-white/80">
-              Nurse-led IV vitamin drips and wellness infusions for energy, immunity, glow, recovery and deep hydration — in one calm, 30-minute session.
-            </p>
+            <p className="mt-5 max-w-lg text-base leading-relaxed text-white/80" {...editCopy(content, "hero_subtitle", "Nurse-led IV vitamin drips and wellness infusions for energy, immunity, glow, recovery and deep hydration — in one calm, 30-minute session.")} />
             <div className="mt-9 flex flex-wrap gap-3">
-              <a href={book} className="inline-flex rounded-full px-9 py-4 text-xs font-semibold uppercase tracking-[0.16em] transition hover:brightness-110" style={{ background: AQUA, color: NIGHT, boxShadow: `0 16px 44px ${AQUA}55` }}>Book a drip</a>
+              <a href={book} className="inline-flex rounded-full px-9 py-4 text-xs font-semibold uppercase tracking-[0.16em] transition hover:brightness-110" style={{ background: AQUA, color: NIGHT, boxShadow: `0 16px 44px ${AQUA}55` }} {...editCopy(content, "hero_book_cta", "Book a drip")} />
               {groups.length > 0 && (
-                <a href={href("services")} className="inline-flex rounded-full border border-white/35 px-9 py-4 text-xs font-semibold uppercase tracking-[0.16em] text-white backdrop-blur-sm transition hover:bg-white/10">View the drip menu</a>
+                <a href={href("services")} className="inline-flex rounded-full border border-white/35 px-9 py-4 text-xs font-semibold uppercase tracking-[0.16em] text-white backdrop-blur-sm transition hover:bg-white/10" {...editCopy(content, "hero_menu_cta", "View the drip menu")} />
               )}
             </div>
           </div>
@@ -494,7 +490,7 @@ export default function AuroraDesign({ site, page = "home", basePath = "" }: Pre
       {/* ---- intro ---- */}
       {content.about && (
         <section className="mx-auto max-w-3xl px-6 py-20 text-center">
-          <p className="text-[11px] font-semibold uppercase tracking-[0.3em]" style={{ color: "#1c7a72" }}>Welcome</p>
+          <p className="text-[11px] font-semibold uppercase tracking-[0.3em]" style={{ color: "#1c7a72" }} {...editCopy(content, "intro_kicker", "Welcome")} />
           <p data-edit="content.about" className="mt-6 text-[19px] leading-[1.9] text-neutral-700">{content.about}</p>
         </section>
       )}
@@ -503,8 +499,8 @@ export default function AuroraDesign({ site, page = "home", basePath = "" }: Pre
       <section className="relative overflow-hidden text-white" style={{ background: AURORA }}>
         <div className="relative mx-auto max-w-6xl px-6 py-20">
           <div className="text-center">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.3em]" style={{ color: AQUA }}>How it works</p>
-            <h2 style={display} className="mt-3 text-3xl sm:text-4xl">Three steps to glow</h2>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.3em]" style={{ color: AQUA }} {...editCopy(content, "how_kicker", "How it works")} />
+            <h2 style={display} className="mt-3 text-3xl sm:text-4xl" {...editCopy(content, "how_heading", "Three steps to glow")} />
           </div>
           <div className="mt-14 grid gap-6 md:grid-cols-3">
             {STEPS.map((s, i) => (
@@ -527,10 +523,10 @@ export default function AuroraDesign({ site, page = "home", basePath = "" }: Pre
         <section className="mx-auto max-w-6xl px-6 py-20" style={{ background: "#fff" }}>
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
-              <p className="text-[11px] font-semibold uppercase tracking-[0.3em]" style={{ color: "#1c7a72" }}>The drip menu</p>
-              <h2 style={display} className="mt-3 text-3xl sm:text-4xl">Drips by goal</h2>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.3em]" style={{ color: "#1c7a72" }} {...editCopy(content, "menu_kicker", "The drip menu")} />
+              <h2 style={display} className="mt-3 text-3xl sm:text-4xl" {...editCopy(content, "menu_heading", "Drips by goal")} />
             </div>
-            <a href={href("services")} className="text-sm font-semibold" style={{ color: "#1c7a72" }}>View full menu →</a>
+            <a href={href("services")} className="text-sm font-semibold" style={{ color: "#1c7a72" }} {...editCopy(content, "menu_view_all", "View full menu →")} />
           </div>
           <div className="mt-12 grid gap-x-12 gap-y-12 sm:grid-cols-2">
             {goalGroups.map((g) => (
@@ -550,8 +546,8 @@ export default function AuroraDesign({ site, page = "home", basePath = "" }: Pre
       <section style={{ background: OFF }}>
         <div className="mx-auto max-w-6xl px-6 py-20">
           <div className="text-center">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.3em]" style={{ color: "#1c7a72" }}>Loved by clients</p>
-            <h2 style={display} className="mt-3 text-3xl sm:text-4xl">What our clients say</h2>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.3em]" style={{ color: "#1c7a72" }} {...editCopy(content, "reviews_kicker", "Loved by clients")} />
+            <h2 style={display} className="mt-3 text-3xl sm:text-4xl" {...editCopy(content, "reviews_heading", "What our clients say")} />
           </div>
           <div className="mt-12 grid gap-6 md:grid-cols-3">
             {REVIEWS.map((r) => (
@@ -572,9 +568,9 @@ export default function AuroraDesign({ site, page = "home", basePath = "" }: Pre
       {/* ---- CTA + booking ---- */}
       <section className="grid lg:grid-cols-2">
         <div className="relative flex flex-col justify-center overflow-hidden px-6 py-16 text-white sm:px-12 lg:py-24" style={{ background: AURORA }}>
-          <p className="text-[11px] font-semibold uppercase tracking-[0.3em]" style={{ color: AQUA }}>Ready when you are</p>
-          <h2 style={display} className="mt-4 text-3xl sm:text-4xl">Your glow starts here</h2>
-          <p className="mt-4 max-w-md text-[15px] leading-relaxed text-white/75">Book a nurse-led infusion and feel the difference in a single session — energy, hydration and glow, all in 30 minutes.</p>
+          <p className="text-[11px] font-semibold uppercase tracking-[0.3em]" style={{ color: AQUA }} {...editCopy(content, "cta_kicker", "Ready when you are")} />
+          <h2 style={display} className="mt-4 text-3xl sm:text-4xl" {...editCopy(content, "cta_heading", "Your glow starts here")} />
+          <p className="mt-4 max-w-md text-[15px] leading-relaxed text-white/75" {...editCopy(content, "cta_blurb", "Book a nurse-led infusion and feel the difference in a single session — energy, hydration and glow, all in 30 minutes.")} />
           <ul className="mt-6 space-y-2 text-sm text-white/80">
             {["Same-week appointments", "Walk-in friendly", "Memberships available"].map((t) => (
               <li key={t} className="flex items-center gap-2.5"><span className="h-1.5 w-1.5 rounded-full" style={{ background: AQUA }} />{t}</li>
@@ -590,10 +586,10 @@ export default function AuroraDesign({ site, page = "home", basePath = "" }: Pre
           </div>
         ) : (
           <div className="flex flex-col justify-center px-8 py-14" style={{ background: NIGHT }}>
-            <h3 style={display} className="text-2xl text-white">Get in touch</h3>
+            <h3 style={display} className="text-2xl text-white" {...editCopy(content, "booking_band_heading", "Get in touch")} />
             {content.phone && <a href={`tel:${content.phone}`} className="mt-4 block text-white/85">{content.phone}</a>}
             {content.email && <a href={`mailto:${content.email}`} className="mt-1 block text-white/85">{content.email}</a>}
-            <a href={href("contact")} className="mt-6 inline-flex w-fit rounded-full px-8 py-3.5 text-xs font-semibold uppercase tracking-[0.14em] transition hover:brightness-110" style={{ background: AQUA, color: NIGHT }}>Contact us</a>
+            <a href={href("contact")} className="mt-6 inline-flex w-fit rounded-full px-8 py-3.5 text-xs font-semibold uppercase tracking-[0.14em] transition hover:brightness-110" style={{ background: AQUA, color: NIGHT }} {...editCopy(content, "booking_band_cta", "Contact us")} />
           </div>
         )}
       </section>
@@ -602,14 +598,14 @@ export default function AuroraDesign({ site, page = "home", basePath = "" }: Pre
       <section className="border-t" style={{ background: "#fff", borderColor: LILAC }}>
         <div className="mx-auto grid max-w-6xl gap-10 px-6 py-16 md:grid-cols-3">
           <div>
-            <h3 className="text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: "#1c7a72" }}>Visit the clinic</h3>
+            <h3 className="text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: "#1c7a72" }} {...editCopy(content, "details_visit_heading", "Visit the clinic")} />
             {content.address && <p data-edit="content.address" className="mt-4 whitespace-pre-line text-sm leading-relaxed text-neutral-700">{content.address}</p>}
             {content.map_url && (
-              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-4 inline-flex text-sm font-semibold" style={{ color: "#1c7a72" }}>Get directions →</a>
+              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-4 inline-flex text-sm font-semibold" style={{ color: "#1c7a72" }} {...editCopy(content, "details_directions", "Get directions →")} />
             )}
           </div>
           <div>
-            <h3 className="text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: "#1c7a72" }}>Opening times</h3>
+            <h3 className="text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: "#1c7a72" }} {...editCopy(content, "details_hours_heading", "Opening times")} />
             {content.hours && content.hours.length > 0 ? (
               <ul className="mt-4 space-y-2 text-sm text-neutral-700">
                 {content.hours.map((h, i) => (
@@ -619,12 +615,12 @@ export default function AuroraDesign({ site, page = "home", basePath = "" }: Pre
             ) : <p className="mt-4 text-sm text-neutral-500">Open by appointment.</p>}
           </div>
           <div>
-            <h3 className="text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: "#1c7a72" }}>Contact</h3>
+            <h3 className="text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: "#1c7a72" }} {...editCopy(content, "details_contact_heading", "Contact")} />
             <div className="mt-4 space-y-1.5 text-sm text-neutral-700">
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-neutral-950">{content.phone}</a>}
               {content.email && <a data-edit="content.email" href={`mailto:${content.email}`} className="block transition hover:text-neutral-950">{content.email}</a>}
             </div>
-            <a href={book} className="mt-5 inline-flex rounded-full px-7 py-3 text-xs font-semibold uppercase tracking-[0.14em] text-white transition hover:brightness-110" style={{ background: NIGHT }}>Book a drip</a>
+            <a href={book} className="mt-5 inline-flex rounded-full px-7 py-3 text-xs font-semibold uppercase tracking-[0.14em] text-white transition hover:brightness-110" style={{ background: NIGHT }} {...editCopy(content, "details_book_cta", "Book a drip")} />
           </div>
         </div>
       </section>

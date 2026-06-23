@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { AxisHeader } from "./AxisHeader";
 import { AxisBooking } from "./AxisBooking";
@@ -126,7 +126,7 @@ export default function AxisDesign({ site, page = "home", basePath = "" }: Prese
           )}
         </div>
         <div>
-          <h4 className="text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: AMBER }}>Explore</h4>
+          <h4 className="text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: AMBER }} {...editCopy(content, "footer_explore", "Explore")} />
           <ul className="mt-4 space-y-2.5 text-sm">
             {nav.map((l) => (
               <li key={l.href}><a href={l.href} className="transition hover:text-white" style={{ color: "rgba(239,234,225,0.7)" }}>{l.label}</a></li>
@@ -134,7 +134,7 @@ export default function AxisDesign({ site, page = "home", basePath = "" }: Prese
           </ul>
         </div>
         <div>
-          <h4 className="text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: AMBER }}>Visit the clinic</h4>
+          <h4 className="text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: AMBER }} {...editCopy(content, "footer_visit", "Visit the clinic")} />
           {content.address && <p data-edit="content.address" className="mt-4 whitespace-pre-line text-sm leading-relaxed" style={{ color: "rgba(239,234,225,0.7)" }}>{content.address}</p>}
           <div className="mt-3 space-y-1.5 text-sm">
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white" style={{ color: "rgba(239,234,225,0.7)" }}>{content.phone}</a>}
@@ -157,13 +157,13 @@ export default function AxisDesign({ site, page = "home", basePath = "" }: Prese
   );
 
   // Bone page banner — clears the fixed header on sub-pages, with the spine tick.
-  const banner = (kicker: string, title: string, blurb?: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string, blurb?: string, blurbKey?: string) => (
     <section style={{ background: BONE }}>
       <div className="mx-auto max-w-5xl px-6 pb-14 pt-32 text-center sm:pt-40">
         <span aria-hidden className="mx-auto block h-8 w-[3px]" style={{ background: AMBER }} />
-        <p className="mt-5 text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: CLAY }}>{kicker}</p>
-        <h1 style={{ ...serif, color: CHARCOAL }} className="mt-3 text-4xl font-medium sm:text-5xl">{title}</h1>
-        {blurb && <p className="mx-auto mt-5 max-w-2xl text-[15px] leading-relaxed" style={{ color: "#5b5e5c" }}>{blurb}</p>}
+        <p className="mt-5 text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: CLAY }} {...editCopy(content, kickerKey, kicker)} />
+        <h1 style={{ ...serif, color: CHARCOAL }} className="mt-3 text-4xl font-medium sm:text-5xl" {...editCopy(content, titleKey, title)} />
+        {blurb && <p className="mx-auto mt-5 max-w-2xl text-[15px] leading-relaxed" style={{ color: "#5b5e5c" }} {...(blurbKey ? editCopy(content, blurbKey, blurb) : { children: blurb })} />}
       </div>
     </section>
   );
@@ -172,7 +172,7 @@ export default function AxisDesign({ site, page = "home", basePath = "" }: Prese
   if (page === "services") {
     return shell(
       <>
-        {banner("Treatments", "Care for your spine and posture", "From acute pain relief to long-term alignment, every plan begins with a full assessment.")}
+        {banner("Treatments", "svc_kicker", "Care for your spine and posture", "svc_title", "From acute pain relief to long-term alignment, every plan begins with a full assessment.", "svc_blurb")}
         <section className="mx-auto max-w-5xl px-6 py-20" style={{ background: "#fff" }}>
           {groups.length > 0 ? (
             <div className="space-y-16">
@@ -208,9 +208,9 @@ export default function AxisDesign({ site, page = "home", basePath = "" }: Prese
           ) : <p style={{ color: "#6b6e6c" }}>Our treatment menu is coming soon.</p>}
 
           <div className="mt-16 px-8 py-12 text-center" style={{ background: CHARCOAL }}>
-            <h3 style={serif} className="text-2xl text-white">Not sure what you need?</h3>
-            <p className="mx-auto mt-3 max-w-lg text-[15px] leading-relaxed" style={{ color: "rgba(239,234,225,0.7)" }}>Book an initial assessment and we will build a clear, structured plan around your pain and posture.</p>
-            <a href={book} className="mt-6 inline-flex px-9 py-3.5 text-sm font-semibold uppercase tracking-[0.16em] transition hover:opacity-90" style={{ background: AMBER, color: CHARCOAL }}>Book an assessment</a>
+            <h3 style={serif} className="text-2xl text-white" {...editCopy(content, "svc_help_heading", "Not sure what you need?")} />
+            <p className="mx-auto mt-3 max-w-lg text-[15px] leading-relaxed" style={{ color: "rgba(239,234,225,0.7)" }} {...editCopy(content, "svc_help_blurb", "Book an initial assessment and we will build a clear, structured plan around your pain and posture.")} />
+            <a href={book} className="mt-6 inline-flex px-9 py-3.5 text-sm font-semibold uppercase tracking-[0.16em] transition hover:opacity-90" style={{ background: AMBER, color: CHARCOAL }} {...editCopy(content, "svc_help_cta", "Book an assessment")} />
           </div>
         </section>
       </>,
@@ -221,7 +221,7 @@ export default function AxisDesign({ site, page = "home", basePath = "" }: Prese
   if (page === "about") {
     return shell(
       <>
-        {banner("About", "Structure you can rely on")}
+        {banner("About", "about_kicker", "Structure you can rely on", "about_title")}
         <section className="mx-auto max-w-3xl px-6 py-20" style={{ background: "#fff" }}>
           {content.about ? (
             <p data-edit="content.about" className="text-[17px] leading-[1.9]" style={{ color: "#3d403e" }}>{content.about}</p>
@@ -241,8 +241,8 @@ export default function AxisDesign({ site, page = "home", basePath = "" }: Prese
           <section className="border-t" style={{ background: BONE, borderColor: "rgba(37,40,43,0.08)" }}>
             <div className="mx-auto max-w-6xl px-6 py-20">
               <div className="text-center">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: CLAY }}>Our practitioners</p>
-                <h2 style={{ ...serif, color: CHARCOAL }} className="mt-3 text-3xl sm:text-4xl">Meet your clinical team</h2>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: CLAY }} {...editCopy(content, "team_kicker", "Our practitioners")} />
+                <h2 style={{ ...serif, color: CHARCOAL }} className="mt-3 text-3xl sm:text-4xl" {...editCopy(content, "team_heading", "Meet your clinical team")} />
               </div>
               <div className="mt-14 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
                 {team.map((m) => (
@@ -265,8 +265,8 @@ export default function AxisDesign({ site, page = "home", basePath = "" }: Prese
 
         <section className="mx-auto max-w-3xl px-6 py-20" style={{ background: "#fff" }}>
           <div className="text-center">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: CLAY }}>Good to know</p>
-            <h2 style={{ ...serif, color: CHARCOAL }} className="mt-3 text-3xl sm:text-4xl">Common questions</h2>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: CLAY }} {...editCopy(content, "faq_kicker", "Good to know")} />
+            <h2 style={{ ...serif, color: CHARCOAL }} className="mt-3 text-3xl sm:text-4xl" {...editCopy(content, "faq_heading", "Common questions")} />
           </div>
           <dl className="mt-10 divide-y" style={{ borderColor: "rgba(37,40,43,0.1)" }}>
             {FAQ.map((f) => (
@@ -288,7 +288,7 @@ export default function AxisDesign({ site, page = "home", basePath = "" }: Prese
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Gallery", "Inside the clinic", "A calm, considered space designed for assessment, treatment and recovery.")}
+        {banner("Gallery", "gallery_kicker", "Inside the clinic", "gallery_title", "A calm, considered space designed for assessment, treatment and recovery.", "gallery_blurb")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-6xl px-6 py-16" style={{ background: "#fff" }}>
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
@@ -307,11 +307,11 @@ export default function AxisDesign({ site, page = "home", basePath = "" }: Prese
   if (page === "reservations") {
     return shell(
       <>
-        {banner("Booking", "Book your assessment", "Tell us a little about your pain or posture and we will be in touch to confirm your time.")}
+        {banner("Booking", "book_kicker", "Book your assessment", "book_title", "Tell us a little about your pain or posture and we will be in touch to confirm your time.", "book_blurb")}
         <section className="mx-auto grid max-w-6xl gap-10 px-6 py-20 lg:grid-cols-[1fr_1.1fr] lg:gap-16" style={{ background: "#fff" }}>
           <div>
-            <h2 style={{ ...serif, color: CHARCOAL }} className="text-3xl">A clear path to relief</h2>
-            <p className="mt-4 text-[15px] leading-relaxed" style={{ color: "#6b6e6c" }}>Every journey starts with a thorough assessment. We will examine your posture and spine, explain what we find, and recommend a structured plan, with no pressure.</p>
+            <h2 style={{ ...serif, color: CHARCOAL }} className="text-3xl" {...editCopy(content, "book_intro_heading", "A clear path to relief")} />
+            <p className="mt-4 text-[15px] leading-relaxed" style={{ color: "#6b6e6c" }} {...editCopy(content, "book_intro_blurb", "Every journey starts with a thorough assessment. We will examine your posture and spine, explain what we find, and recommend a structured plan, with no pressure.")} />
             <ul className="mt-7 space-y-3 text-sm" style={{ color: "#3d403e" }}>
               {["Full posture and spinal assessment", "Registered, regulated chiropractors", "Gentle, precise adjustments", "Honest, structured care plans"].map((t) => (
                 <li key={t} className="flex items-start gap-3">
@@ -334,10 +334,10 @@ export default function AxisDesign({ site, page = "home", basePath = "" }: Prese
   if (page === "contact") {
     return shell(
       <>
-        {banner("Contact", "Get in touch", "Visit the clinic, call, or send a message and we will get back to you.")}
+        {banner("Contact", "contact_kicker", "Get in touch", "contact_title", "Visit the clinic, call, or send a message and we will get back to you.", "contact_blurb")}
         <section className="mx-auto grid max-w-6xl gap-12 px-6 py-20 lg:grid-cols-2 lg:gap-16" style={{ background: "#fff" }}>
           <div>
-            <h2 style={{ ...serif, color: CHARCOAL }} className="text-2xl">Clinic details</h2>
+            <h2 style={{ ...serif, color: CHARCOAL }} className="text-2xl" {...editCopy(content, "contact_details_heading", "Clinic details")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: "#3d403e" }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:opacity-70">{content.phone}</a>}
@@ -352,9 +352,9 @@ export default function AxisDesign({ site, page = "home", basePath = "" }: Prese
             )}
             <div className="mt-7 flex flex-wrap gap-3">
               {content.map_url && (
-                <a href={content.map_url} target="_blank" rel="noreferrer" className="inline-flex px-7 py-3 text-xs font-semibold uppercase tracking-[0.16em] transition hover:opacity-90" style={{ background: AMBER, color: CHARCOAL }}>Get directions</a>
+                <a href={content.map_url} target="_blank" rel="noreferrer" className="inline-flex px-7 py-3 text-xs font-semibold uppercase tracking-[0.16em] transition hover:opacity-90" style={{ background: AMBER, color: CHARCOAL }} {...editCopy(content, "contact_directions", "Get directions")} />
               )}
-              <a href={book} className="inline-flex border px-7 py-3 text-xs font-semibold uppercase tracking-[0.16em] transition hover:opacity-90" style={{ borderColor: CHARCOAL, color: CHARCOAL }}>Book an assessment</a>
+              <a href={book} className="inline-flex border px-7 py-3 text-xs font-semibold uppercase tracking-[0.16em] transition hover:opacity-90" style={{ borderColor: CHARCOAL, color: CHARCOAL }} {...editCopy(content, "contact_book", "Book an assessment")} />
             </div>
             {content.socials && content.socials.length > 0 && (
               <div className="mt-8 flex gap-4" style={{ color: CLAY }}>
@@ -416,20 +416,16 @@ export default function AxisDesign({ site, page = "home", basePath = "" }: Prese
               {content.tagline ? (
                 <p data-edit="content.tagline" className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: SAGE }}>{content.tagline}</p>
               ) : (
-                <p className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: SAGE }}>Chiropractic & spinal health</p>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: SAGE }} {...editCopy(content, "hero_kicker", "Chiropractic & spinal health")} />
               )}
             </div>
             <h1 data-edit="tenant.business_name" style={serif} className="mt-5 text-5xl font-medium leading-[1.04] text-white sm:text-7xl">{name}</h1>
-            <p style={{ ...serif, color: AMBER }} className="mt-4 text-2xl font-medium">
-              Aligned, balanced, pain-free.
-            </p>
-            <p className="mt-5 max-w-md text-base leading-relaxed" style={{ color: "rgba(239,234,225,0.78)" }}>
-              Precise, reassuring chiropractic care that gets to the root of your pain and keeps your spine moving freely.
-            </p>
+            <p style={{ ...serif, color: AMBER }} className="mt-4 text-2xl font-medium" {...editCopy(content, "hero_tagline", "Aligned, balanced, pain-free.")} />
+            <p className="mt-5 max-w-md text-base leading-relaxed" style={{ color: "rgba(239,234,225,0.78)" }} {...editCopy(content, "hero_subtitle", "Precise, reassuring chiropractic care that gets to the root of your pain and keeps your spine moving freely.")} />
             <div className="mt-8 flex flex-wrap gap-3">
-              <a href={book} className="inline-flex px-9 py-4 text-xs font-semibold uppercase tracking-[0.18em] transition hover:opacity-90" style={{ background: AMBER, color: CHARCOAL }}>Book an assessment</a>
+              <a href={book} className="inline-flex px-9 py-4 text-xs font-semibold uppercase tracking-[0.18em] transition hover:opacity-90" style={{ background: AMBER, color: CHARCOAL }} {...editCopy(content, "hero_book_cta", "Book an assessment")} />
               {groups.length > 0 && (
-                <a href={href("services")} className="inline-flex border px-9 py-4 text-xs font-semibold uppercase tracking-[0.18em] text-white transition hover:bg-white/10" style={{ borderColor: "rgba(239,234,225,0.4)" }}>View treatments</a>
+                <a href={href("services")} className="inline-flex border px-9 py-4 text-xs font-semibold uppercase tracking-[0.18em] text-white transition hover:bg-white/10" style={{ borderColor: "rgba(239,234,225,0.4)" }} {...editCopy(content, "hero_services_cta", "View treatments")} />
               )}
             </div>
           </div>
@@ -455,7 +451,7 @@ export default function AxisDesign({ site, page = "home", basePath = "" }: Prese
       {content.about && (
         <section className="mx-auto max-w-3xl px-6 py-20 text-center" style={{ background: "#fff" }}>
           <span aria-hidden className="mx-auto block h-8 w-[3px]" style={{ background: AMBER }} />
-          <p className="mt-5 text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: CLAY }}>Welcome</p>
+          <p className="mt-5 text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: CLAY }} {...editCopy(content, "intro_kicker", "Welcome")} />
           <p data-edit="content.about" className="mt-5 text-[19px] leading-[1.9]" style={{ color: "#3d403e" }}>{content.about}</p>
         </section>
       )}
@@ -466,8 +462,8 @@ export default function AxisDesign({ site, page = "home", basePath = "" }: Prese
           <div className="flex items-end gap-4">
             <Spine className="hidden sm:block" />
             <div>
-              <p className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: CLAY }}>What we help with</p>
-              <h2 style={{ ...serif, color: CHARCOAL }} className="mt-2 text-3xl sm:text-4xl">Relief for everyday pain</h2>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: CLAY }} {...editCopy(content, "conditions_kicker", "What we help with")} />
+              <h2 style={{ ...serif, color: CHARCOAL }} className="mt-2 text-3xl sm:text-4xl" {...editCopy(content, "conditions_heading", "Relief for everyday pain")} />
             </div>
           </div>
           <div className="mt-12 grid gap-px overflow-hidden sm:grid-cols-2 lg:grid-cols-3" style={{ background: "rgba(37,40,43,0.1)" }}>
@@ -488,8 +484,8 @@ export default function AxisDesign({ site, page = "home", basePath = "" }: Prese
       <section style={{ background: CHARCOAL }}>
         <div className="mx-auto max-w-6xl px-6 py-20">
           <div className="text-center">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: AMBER }}>Your path to relief</p>
-            <h2 style={serif} className="mt-3 text-3xl text-white sm:text-4xl">Three precise steps</h2>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: AMBER }} {...editCopy(content, "path_kicker", "Your path to relief")} />
+            <h2 style={serif} className="mt-3 text-3xl text-white sm:text-4xl" {...editCopy(content, "path_heading", "Three precise steps")} />
           </div>
           <div className="relative mt-14 grid gap-10 md:grid-cols-3">
             {/* connecting axis line */}
@@ -503,7 +499,7 @@ export default function AxisDesign({ site, page = "home", basePath = "" }: Prese
             ))}
           </div>
           <div className="mt-12 text-center">
-            <a href={book} className="inline-flex px-9 py-3.5 text-xs font-semibold uppercase tracking-[0.18em] transition hover:opacity-90" style={{ background: AMBER, color: CHARCOAL }}>Start with an assessment</a>
+            <a href={book} className="inline-flex px-9 py-3.5 text-xs font-semibold uppercase tracking-[0.18em] transition hover:opacity-90" style={{ background: AMBER, color: CHARCOAL }} {...editCopy(content, "path_cta", "Start with an assessment")} />
           </div>
         </div>
       </section>
@@ -514,8 +510,8 @@ export default function AxisDesign({ site, page = "home", basePath = "" }: Prese
           <div className="flex items-end gap-4">
             <Spine className="hidden sm:block" />
             <div>
-              <p className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: CLAY }}>Treatments</p>
-              <h2 style={{ ...serif, color: CHARCOAL }} className="mt-2 text-3xl sm:text-4xl">Adjustments, posture & wellness</h2>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: CLAY }} {...editCopy(content, "treatments_kicker", "Treatments")} />
+              <h2 style={{ ...serif, color: CHARCOAL }} className="mt-2 text-3xl sm:text-4xl" {...editCopy(content, "treatments_heading", "Adjustments, posture & wellness")} />
             </div>
           </div>
           <div className="mt-12 grid gap-x-12 gap-y-10 sm:grid-cols-2">
@@ -534,7 +530,7 @@ export default function AxisDesign({ site, page = "home", basePath = "" }: Prese
             ))}
           </div>
           <div className="mt-12">
-            <a href={href("services")} className="inline-flex px-9 py-3.5 text-sm font-semibold uppercase tracking-[0.16em] transition hover:opacity-90" style={{ background: CHARCOAL, color: "#fff" }}>View all treatments</a>
+            <a href={href("services")} className="inline-flex px-9 py-3.5 text-sm font-semibold uppercase tracking-[0.16em] transition hover:opacity-90" style={{ background: CHARCOAL, color: "#fff" }} {...editCopy(content, "treatments_cta", "View all treatments")} />
           </div>
         </section>
       )}
@@ -543,8 +539,8 @@ export default function AxisDesign({ site, page = "home", basePath = "" }: Prese
       <section style={{ background: BONE }}>
         <div className="mx-auto max-w-6xl px-6 py-20">
           <div className="text-center">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: CLAY }}>Patient stories</p>
-            <h2 style={{ ...serif, color: CHARCOAL }} className="mt-3 text-3xl sm:text-4xl">Back to moving freely</h2>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: CLAY }} {...editCopy(content, "reviews_kicker", "Patient stories")} />
+            <h2 style={{ ...serif, color: CHARCOAL }} className="mt-3 text-3xl sm:text-4xl" {...editCopy(content, "reviews_heading", "Back to moving freely")} />
           </div>
           <div className="mt-12 grid gap-px overflow-hidden sm:grid-cols-2" style={{ background: "rgba(37,40,43,0.1)" }}>
             {REVIEWS.map((r) => (
@@ -576,10 +572,10 @@ export default function AxisDesign({ site, page = "home", basePath = "" }: Prese
           <AxisBooking tenantId={tenant.id} name={name} />
         ) : (
           <div className="flex flex-col justify-center px-8 py-14" style={{ background: CHARCOAL }}>
-            <h3 style={serif} className="text-2xl text-white">Get in touch</h3>
+            <h3 style={serif} className="text-2xl text-white" {...editCopy(content, "booking_band_heading", "Get in touch")} />
             {content.phone && <a href={`tel:${content.phone}`} className="mt-4 block" style={{ color: BONE }}>{content.phone}</a>}
             {content.email && <a href={`mailto:${content.email}`} className="mt-1 block" style={{ color: BONE }}>{content.email}</a>}
-            <a href={href("contact")} className="mt-6 inline-flex w-fit px-8 py-3.5 text-xs font-semibold uppercase tracking-[0.16em] transition hover:opacity-90" style={{ background: AMBER, color: CHARCOAL }}>Contact us</a>
+            <a href={href("contact")} className="mt-6 inline-flex w-fit px-8 py-3.5 text-xs font-semibold uppercase tracking-[0.16em] transition hover:opacity-90" style={{ background: AMBER, color: CHARCOAL }} {...editCopy(content, "booking_band_cta", "Contact us")} />
           </div>
         )}
       </section>
@@ -588,14 +584,14 @@ export default function AxisDesign({ site, page = "home", basePath = "" }: Prese
       <section className="border-t" style={{ background: "#fff", borderColor: "rgba(37,40,43,0.08)" }}>
         <div className="mx-auto grid max-w-6xl gap-10 px-6 py-16 md:grid-cols-3">
           <div>
-            <h3 className="text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: CLAY }}>Visit the clinic</h3>
+            <h3 className="text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: CLAY }} {...editCopy(content, "details_visit_heading", "Visit the clinic")} />
             {content.address && <p data-edit="content.address" className="mt-4 whitespace-pre-line text-sm leading-relaxed" style={{ color: "#3d403e" }}>{content.address}</p>}
             {content.map_url && (
-              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-4 inline-flex text-sm font-semibold" style={{ color: CLAY }}>Get directions →</a>
+              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-4 inline-flex text-sm font-semibold" style={{ color: CLAY }} {...editCopy(content, "details_directions", "Get directions →")} />
             )}
           </div>
           <div>
-            <h3 className="text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: CLAY }}>Opening times</h3>
+            <h3 className="text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: CLAY }} {...editCopy(content, "details_hours_heading", "Opening times")} />
             {content.hours && content.hours.length > 0 ? (
               <ul className="mt-4 space-y-2 text-sm" style={{ color: "#3d403e" }}>
                 {content.hours.map((h, i) => (
@@ -605,12 +601,12 @@ export default function AxisDesign({ site, page = "home", basePath = "" }: Prese
             ) : <p className="mt-4 text-sm" style={{ color: "#6b6e6c" }}>Open by appointment.</p>}
           </div>
           <div>
-            <h3 className="text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: CLAY }}>Contact</h3>
+            <h3 className="text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: CLAY }} {...editCopy(content, "details_contact_heading", "Contact")} />
             <div className="mt-4 space-y-1.5 text-sm" style={{ color: "#3d403e" }}>
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:opacity-70">{content.phone}</a>}
               {content.email && <a data-edit="content.email" href={`mailto:${content.email}`} className="block transition hover:opacity-70">{content.email}</a>}
             </div>
-            <a href={book} className="mt-5 inline-flex px-7 py-3 text-xs font-semibold uppercase tracking-[0.16em] transition hover:opacity-90" style={{ background: CHARCOAL, color: "#fff" }}>Book an assessment</a>
+            <a href={book} className="mt-5 inline-flex px-7 py-3 text-xs font-semibold uppercase tracking-[0.16em] transition hover:opacity-90" style={{ background: CHARCOAL, color: "#fff" }} {...editCopy(content, "details_book_cta", "Book an assessment")} />
           </div>
         </div>
       </section>

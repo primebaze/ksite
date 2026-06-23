@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { StillwaterHeader } from "./StillwaterHeader";
 import { StillwaterBooking } from "./StillwaterBooking";
@@ -121,7 +121,7 @@ export default function StillwaterDesign({ site, page = "home", basePath = "" }:
           )}
         </div>
         <div>
-          <h4 className="text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: DRIFT }}>Explore</h4>
+          <h4 className="text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: DRIFT }} {...editCopy(content, "footer_explore_heading", "Explore")} />
           <ul className="mt-4 space-y-2.5 text-sm">
             {nav.map((l) => (
               <li key={l.href}><a href={l.href} className="text-[#F2EDE3]/75 transition hover:text-white">{l.label}</a></li>
@@ -129,7 +129,7 @@ export default function StillwaterDesign({ site, page = "home", basePath = "" }:
           </ul>
         </div>
         <div>
-          <h4 className="text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: DRIFT }}>Visit us</h4>
+          <h4 className="text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: DRIFT }} {...editCopy(content, "footer_visit_heading", "Visit us")} />
           {content.address && <p data-edit="content.address" className="mt-4 whitespace-pre-line text-sm leading-relaxed text-[#F2EDE3]/75">{content.address}</p>}
           <div className="mt-3 space-y-1.5 text-sm">
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block text-[#F2EDE3]/75 transition hover:text-white">{content.phone}</a>}
@@ -152,16 +152,16 @@ export default function StillwaterDesign({ site, page = "home", basePath = "" }:
   );
 
   // Quiet oat page banner — clears the fixed header on sub-pages.
-  const banner = (kicker: string, title: string, blurb?: string) => (
+  const banner = (kickerKey: string, kicker: string, titleKey: string, title: string, blurbKey?: string, blurb?: string) => (
     <section style={{ background: OAT }}>
       <div className="mx-auto max-w-4xl px-6 pb-16 pt-32 text-center sm:pt-40">
         <div className="flex items-center justify-center gap-3">
           <span className="h-px w-8" style={{ background: SAGE }} />
-          <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: SAGE }}>{kicker}</p>
+          <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: SAGE }} {...editCopy(content, kickerKey, kicker)} />
           <span className="h-px w-8" style={{ background: SAGE }} />
         </div>
-        <h1 style={{ ...serif, color: TEAL }} className="mt-4 text-4xl font-medium sm:text-5xl">{title}</h1>
-        {blurb && <p className="mx-auto mt-5 max-w-2xl text-[15px] leading-relaxed" style={{ color: "rgba(35,42,44,0.62)" }}>{blurb}</p>}
+        <h1 style={{ ...serif, color: TEAL }} className="mt-4 text-4xl font-medium sm:text-5xl" {...editCopy(content, titleKey, title)} />
+        {blurb && blurbKey && <p className="mx-auto mt-5 max-w-2xl text-[15px] leading-relaxed" style={{ color: "rgba(35,42,44,0.62)" }} {...editCopy(content, blurbKey, blurb)} />}
       </div>
     </section>
   );
@@ -170,7 +170,7 @@ export default function StillwaterDesign({ site, page = "home", basePath = "" }:
   if (page === "services") {
     return shell(
       <main style={{ color: INK }}>
-        {banner("Treatments", "Find the right work for your body", "Every session is tailored — choose a treatment below, or tell us where you hold tension and we will guide you.")}
+        {banner("svc_kicker", "Treatments", "svc_title", "Find the right work for your body", "svc_blurb", "Every session is tailored — choose a treatment below, or tell us where you hold tension and we will guide you.")}
         <section className="mx-auto max-w-4xl px-6 py-20">
           {groups.length > 0 ? (
             <div className="space-y-16">
@@ -206,9 +206,9 @@ export default function StillwaterDesign({ site, page = "home", basePath = "" }:
           ) : <p style={{ color: "rgba(35,42,44,0.55)" }}>Our treatment menu is coming soon.</p>}
 
           <div className="mt-16 rounded-2xl px-8 py-12 text-center" style={{ background: OAT }}>
-            <h3 style={{ ...serif, color: TEAL }} className="text-2xl">Not sure where to begin?</h3>
-            <p className="mx-auto mt-3 max-w-lg text-[15px] leading-relaxed" style={{ color: "rgba(35,42,44,0.62)" }}>Tell us where you carry tension and we will match you to the right hands and pressure.</p>
-            <a href={book} className="mt-6 inline-flex rounded-full px-9 py-3.5 text-[11px] font-semibold uppercase tracking-[0.2em] transition hover:opacity-90" style={{ background: TEAL, color: OAT }}>Book a session</a>
+            <h3 style={{ ...serif, color: TEAL }} className="text-2xl" {...editCopy(content, "svc_cta_heading", "Not sure where to begin?")} />
+            <p className="mx-auto mt-3 max-w-lg text-[15px] leading-relaxed" style={{ color: "rgba(35,42,44,0.62)" }} {...editCopy(content, "svc_cta_blurb", "Tell us where you carry tension and we will match you to the right hands and pressure.")} />
+            <a href={book} className="mt-6 inline-flex rounded-full px-9 py-3.5 text-[11px] font-semibold uppercase tracking-[0.2em] transition hover:opacity-90" style={{ background: TEAL, color: OAT }} {...editCopy(content, "svc_cta_button", "Book a session")} />
           </div>
         </section>
       </main>,
@@ -219,7 +219,7 @@ export default function StillwaterDesign({ site, page = "home", basePath = "" }:
   if (page === "about") {
     return shell(
       <main style={{ color: INK }}>
-        {banner("About", "A quiet practice built around release")}
+        {banner("about_kicker", "About", "about_title", "A quiet practice built around release")}
         <section className="mx-auto max-w-3xl px-6 py-20">
           {content.about ? (
             <p data-edit="content.about" className="text-[17px] leading-[1.95]" style={{ color: "rgba(35,42,44,0.75)" }}>{content.about}</p>
@@ -239,8 +239,8 @@ export default function StillwaterDesign({ site, page = "home", basePath = "" }:
           <section style={{ background: OAT }}>
             <div className="mx-auto max-w-6xl px-6 py-20">
               <div className="text-center">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: SAGE }}>Your therapists</p>
-                <h2 style={{ ...serif, color: TEAL }} className="mt-3 text-3xl sm:text-4xl">The hands behind the work</h2>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: SAGE }} {...editCopy(content, "about_team_eyebrow", "Your therapists")} />
+                <h2 style={{ ...serif, color: TEAL }} className="mt-3 text-3xl sm:text-4xl" {...editCopy(content, "about_team_heading", "The hands behind the work")} />
               </div>
               <div className="mt-14 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
                 {team.map((m) => (
@@ -263,8 +263,8 @@ export default function StillwaterDesign({ site, page = "home", basePath = "" }:
 
         <section className="mx-auto max-w-3xl px-6 py-20">
           <div className="text-center">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: SAGE }}>Good to know</p>
-            <h2 style={{ ...serif, color: TEAL }} className="mt-3 text-3xl sm:text-4xl">Questions, answered</h2>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: SAGE }} {...editCopy(content, "about_faq_eyebrow", "Good to know")} />
+            <h2 style={{ ...serif, color: TEAL }} className="mt-3 text-3xl sm:text-4xl" {...editCopy(content, "about_faq_heading", "Questions, answered")} />
           </div>
           <div className="mt-10 divide-y" style={{ borderColor: "rgba(35,42,44,0.12)", borderTop: "1px solid rgba(35,42,44,0.12)", borderBottom: "1px solid rgba(35,42,44,0.12)" }}>
             {FAQ.map((it) => (
@@ -283,7 +283,7 @@ export default function StillwaterDesign({ site, page = "home", basePath = "" }:
   if (page === "gallery") {
     return shell(
       <main style={{ color: INK }}>
-        {banner("Gallery", "Inside the practice", "A glimpse of our calm, private treatment rooms.")}
+        {banner("gallery_kicker", "Gallery", "gallery_title", "Inside the practice", "gallery_blurb", "A glimpse of our calm, private treatment rooms.")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-6xl px-6 py-16">
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
@@ -302,11 +302,11 @@ export default function StillwaterDesign({ site, page = "home", basePath = "" }:
   if (page === "reservations") {
     return shell(
       <main style={{ color: INK }}>
-        {banner("Book", "Reserve your time to unwind", "Request a session below. Tell us where you hold tension and a time that suits — we will confirm with you.")}
+        {banner("book_kicker", "Book", "book_title", "Reserve your time to unwind", "book_blurb", "Request a session below. Tell us where you hold tension and a time that suits — we will confirm with you.")}
         <section className="mx-auto grid max-w-6xl gap-10 px-6 py-20 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
           <div>
-            <h2 style={{ ...serif, color: TEAL }} className="text-3xl">Unhurried, attentive care</h2>
-            <p className="mt-4 text-[15px] leading-relaxed" style={{ color: "rgba(35,42,44,0.65)" }}>Every booking begins with listening. We will agree pressure and focus before we start, and check in throughout so the session is always working for you.</p>
+            <h2 style={{ ...serif, color: TEAL }} className="text-3xl" {...editCopy(content, "book_heading", "Unhurried, attentive care")} />
+            <p className="mt-4 text-[15px] leading-relaxed" style={{ color: "rgba(35,42,44,0.65)" }} {...editCopy(content, "book_body", "Every booking begins with listening. We will agree pressure and focus before we start, and check in throughout so the session is always working for you.")} />
             <ul className="mt-7 space-y-3 text-sm" style={{ color: "rgba(35,42,44,0.75)" }}>
               {["Pressure tailored to you, never one-size-fits-all", "Qualified, experienced bodywork therapists", "Warm, low-lit, private treatment rooms", "Simple aftercare so the release lasts"].map((t) => (
                 <li key={t} className="flex items-start gap-3">
@@ -329,10 +329,10 @@ export default function StillwaterDesign({ site, page = "home", basePath = "" }:
   if (page === "contact") {
     return shell(
       <main style={{ color: INK }}>
-        {banner("Contact", "Get in touch", "Visit us, call, or send a message and we will get back to you.")}
+        {banner("contact_kicker", "Contact", "contact_title", "Get in touch", "contact_blurb", "Visit us, call, or send a message and we will get back to you.")}
         <section className="mx-auto grid max-w-6xl gap-12 px-6 py-20 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={{ ...serif, color: TEAL }} className="text-2xl">Clinic details</h2>
+            <h2 style={{ ...serif, color: TEAL }} className="text-2xl" {...editCopy(content, "contact_details_heading", "Clinic details")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: "rgba(35,42,44,0.75)" }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:opacity-60">{content.phone}</a>}
@@ -347,9 +347,9 @@ export default function StillwaterDesign({ site, page = "home", basePath = "" }:
             )}
             <div className="mt-7 flex flex-wrap gap-3">
               {content.map_url && (
-                <a href={content.map_url} target="_blank" rel="noreferrer" className="inline-flex rounded-full px-7 py-3 text-[11px] font-semibold uppercase tracking-[0.2em] transition hover:opacity-90" style={{ background: TEAL, color: OAT }}>Get directions</a>
+                <a href={content.map_url} target="_blank" rel="noreferrer" className="inline-flex rounded-full px-7 py-3 text-[11px] font-semibold uppercase tracking-[0.2em] transition hover:opacity-90" style={{ background: TEAL, color: OAT }} {...editCopy(content, "contact_directions_cta", "Get directions")} />
               )}
-              <a href={book} className="inline-flex rounded-full border px-7 py-3 text-[11px] font-semibold uppercase tracking-[0.2em] transition hover:bg-[#3A5159] hover:text-[#F2EDE3]" style={{ borderColor: TEAL, color: TEAL }}>Book a session</a>
+              <a href={book} className="inline-flex rounded-full border px-7 py-3 text-[11px] font-semibold uppercase tracking-[0.2em] transition hover:bg-[#3A5159] hover:text-[#F2EDE3]" style={{ borderColor: TEAL, color: TEAL }} {...editCopy(content, "contact_book_cta", "Book a session")} />
             </div>
             {content.socials && content.socials.length > 0 && (
               <div className="mt-8 flex gap-4" style={{ color: TEAL }}>
@@ -402,9 +402,9 @@ export default function StillwaterDesign({ site, page = "home", basePath = "" }:
               {name} is a calm, focused massage &amp; bodywork practice. Expert hands, unhurried sessions, and pressure tailored to your body — to release tension and bring you back to ease.
             </p>
             <div className="mt-9 flex flex-wrap gap-3">
-              <a href={book} className="inline-flex rounded-full px-9 py-4 text-[11px] font-semibold uppercase tracking-[0.22em] transition hover:opacity-90" style={{ background: TEAL, color: OAT }}>Book a session</a>
+              <a href={book} className="inline-flex rounded-full px-9 py-4 text-[11px] font-semibold uppercase tracking-[0.22em] transition hover:opacity-90" style={{ background: TEAL, color: OAT }} {...editCopy(content, "hero_book_cta", "Book a session")} />
               {groups.length > 0 && (
-                <a href={href("services")} className="inline-flex rounded-full border px-9 py-4 text-[11px] font-semibold uppercase tracking-[0.22em] transition hover:bg-[#3A5159] hover:text-[#F2EDE3]" style={{ borderColor: TEAL, color: TEAL }}>View treatments</a>
+                <a href={href("services")} className="inline-flex rounded-full border px-9 py-4 text-[11px] font-semibold uppercase tracking-[0.22em] transition hover:bg-[#3A5159] hover:text-[#F2EDE3]" style={{ borderColor: TEAL, color: TEAL }} {...editCopy(content, "hero_services_cta", "View treatments")} />
               )}
             </div>
           </div>
@@ -423,7 +423,7 @@ export default function StillwaterDesign({ site, page = "home", basePath = "" }:
         <section className="mx-auto max-w-3xl px-6 py-20 text-center">
           <div className="flex items-center justify-center gap-3">
             <span className="h-px w-8" style={{ background: SAGE }} />
-            <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: SAGE }}>Welcome</p>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: SAGE }} {...editCopy(content, "welcome_eyebrow", "Welcome")} />
             <span className="h-px w-8" style={{ background: SAGE }} />
           </div>
           <p data-edit="content.about" className="mt-6 text-[19px] leading-[1.95]" style={{ color: "rgba(35,42,44,0.72)" }}>{content.about}</p>
@@ -434,9 +434,9 @@ export default function StillwaterDesign({ site, page = "home", basePath = "" }:
       <section style={{ background: OAT_DEEP }}>
         <div className="mx-auto max-w-5xl px-6 py-20">
           <div className="text-center">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: SAGE }}>Where to start</p>
-            <h2 style={{ ...serif, color: TEAL }} className="mt-3 text-3xl sm:text-4xl">Find the right treatment</h2>
-            <p className="mx-auto mt-4 max-w-xl text-[15px] leading-relaxed" style={{ color: "rgba(35,42,44,0.62)" }}>Four ways into the work. Not sure which is for you? Tell us where you hold tension and we will match you.</p>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: SAGE }} {...editCopy(content, "approach_eyebrow", "Where to start")} />
+            <h2 style={{ ...serif, color: TEAL }} className="mt-3 text-3xl sm:text-4xl" {...editCopy(content, "approach_heading", "Find the right treatment")} />
+            <p className="mx-auto mt-4 max-w-xl text-[15px] leading-relaxed" style={{ color: "rgba(35,42,44,0.62)" }} {...editCopy(content, "approach_blurb", "Four ways into the work. Not sure which is for you? Tell us where you hold tension and we will match you.")} />
           </div>
           <ul className="mx-auto mt-12 max-w-3xl divide-y" style={{ borderColor: "rgba(35,42,44,0.14)", borderTop: "1px solid rgba(35,42,44,0.14)", borderBottom: "1px solid rgba(35,42,44,0.14)" }}>
             {APPROACH.map((a, i) => (
@@ -457,8 +457,8 @@ export default function StillwaterDesign({ site, page = "home", basePath = "" }:
         <section className="mx-auto max-w-5xl px-6 py-20">
           <div className="flex items-end justify-between gap-6">
             <div>
-              <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: SAGE }}>Treatments</p>
-              <h2 style={{ ...serif, color: TEAL }} className="mt-3 text-3xl sm:text-4xl">A menu built around the body</h2>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: SAGE }} {...editCopy(content, "teaser_eyebrow", "Treatments")} />
+              <h2 style={{ ...serif, color: TEAL }} className="mt-3 text-3xl sm:text-4xl" {...editCopy(content, "teaser_heading", "A menu built around the body")} />
             </div>
             <a href={href("services")} className="hidden shrink-0 text-[11px] font-semibold uppercase tracking-[0.2em] transition hover:opacity-60 sm:inline" style={{ color: TEAL }}>View all →</a>
           </div>
@@ -478,7 +478,7 @@ export default function StillwaterDesign({ site, page = "home", basePath = "" }:
             ))}
           </div>
           <div className="mt-12 text-center sm:hidden">
-            <a href={href("services")} className="inline-flex rounded-full px-9 py-3.5 text-[11px] font-semibold uppercase tracking-[0.2em] transition hover:opacity-90" style={{ background: TEAL, color: OAT }}>View all treatments</a>
+            <a href={href("services")} className="inline-flex rounded-full px-9 py-3.5 text-[11px] font-semibold uppercase tracking-[0.2em] transition hover:opacity-90" style={{ background: TEAL, color: OAT }} {...editCopy(content, "teaser_view_all", "View all treatments")} />
           </div>
         </section>
       )}
@@ -487,9 +487,9 @@ export default function StillwaterDesign({ site, page = "home", basePath = "" }:
       <section style={{ background: TEAL }}>
         <div className="mx-auto max-w-6xl px-6 py-20 text-[#F2EDE3]">
           <div className="max-w-xl">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: DRIFT }}>What to expect</p>
-            <h2 style={serif} className="mt-3 text-3xl text-white sm:text-4xl">Your visit, start to finish</h2>
-            <p className="mt-4 text-[15px] leading-relaxed text-[#F2EDE3]/75">No surprises, no pressure to do more than you need. Just calm, considered care from the moment you arrive.</p>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: DRIFT }} {...editCopy(content, "expect_eyebrow", "What to expect")} />
+            <h2 style={serif} className="mt-3 text-3xl text-white sm:text-4xl" {...editCopy(content, "expect_heading", "Your visit, start to finish")} />
+            <p className="mt-4 text-[15px] leading-relaxed text-[#F2EDE3]/75" {...editCopy(content, "expect_blurb", "No surprises, no pressure to do more than you need. Just calm, considered care from the moment you arrive.")} />
           </div>
           <div className="mt-12 grid gap-px overflow-hidden rounded-2xl sm:grid-cols-2 lg:grid-cols-4" style={{ background: "rgba(242,237,227,0.14)" }}>
             {EXPECT.map((e) => (
@@ -507,8 +507,8 @@ export default function StillwaterDesign({ site, page = "home", basePath = "" }:
       <section style={{ background: OAT }}>
         <div className="mx-auto max-w-6xl px-6 py-20">
           <div className="text-center">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: SAGE }}>In their words</p>
-            <h2 style={{ ...serif, color: TEAL }} className="mt-3 text-3xl sm:text-4xl">How it feels to leave lighter</h2>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: SAGE }} {...editCopy(content, "reviews_eyebrow", "In their words")} />
+            <h2 style={{ ...serif, color: TEAL }} className="mt-3 text-3xl sm:text-4xl" {...editCopy(content, "reviews_heading", "How it feels to leave lighter")} />
           </div>
           <div className="mt-12 grid gap-6 md:grid-cols-2">
             {REVIEWS.map((r) => (
@@ -526,8 +526,8 @@ export default function StillwaterDesign({ site, page = "home", basePath = "" }:
       {team.length > 0 && (
         <section className="mx-auto max-w-6xl px-6 py-20">
           <div className="text-center">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: SAGE }}>Your therapists</p>
-            <h2 style={{ ...serif, color: TEAL }} className="mt-3 text-3xl sm:text-4xl">Expert, intuitive hands</h2>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: SAGE }} {...editCopy(content, "therapists_eyebrow", "Your therapists")} />
+            <h2 style={{ ...serif, color: TEAL }} className="mt-3 text-3xl sm:text-4xl" {...editCopy(content, "therapists_heading", "Expert, intuitive hands")} />
           </div>
           <div className="mt-14 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
             {team.slice(0, 6).map((m) => (
@@ -551,19 +551,19 @@ export default function StillwaterDesign({ site, page = "home", basePath = "" }:
       <section style={{ background: OAT_DEEP }}>
         <div className="mx-auto grid max-w-6xl items-stretch gap-10 px-6 py-20 lg:grid-cols-[0.95fr_1.05fr] lg:gap-14">
           <div className="flex flex-col justify-center">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: SAGE }}>Ready when you are</p>
-            <h2 style={{ ...serif, color: TEAL }} className="mt-3 text-3xl sm:text-4xl">Make space to feel better</h2>
-            <p className="mt-4 max-w-md text-[15px] leading-relaxed" style={{ color: "rgba(35,42,44,0.65)" }}>Book a session and let your body rest. We will confirm your time and tailor the work to exactly what you need.</p>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.32em]" style={{ color: SAGE }} {...editCopy(content, "bookband_eyebrow", "Ready when you are")} />
+            <h2 style={{ ...serif, color: TEAL }} className="mt-3 text-3xl sm:text-4xl" {...editCopy(content, "bookband_heading", "Make space to feel better")} />
+            <p className="mt-4 max-w-md text-[15px] leading-relaxed" style={{ color: "rgba(35,42,44,0.65)" }} {...editCopy(content, "bookband_blurb", "Book a session and let your body rest. We will confirm your time and tailor the work to exactly what you need.")} />
             <Ripple className="mt-7 h-5 w-48" />
           </div>
           {bookingOn ? (
             <StillwaterBooking tenantId={tenant.id} name={name} />
           ) : (
             <div className="flex flex-col justify-center rounded-2xl p-9" style={{ background: TEAL }}>
-              <h3 style={serif} className="text-2xl text-white">Get in touch</h3>
+              <h3 style={serif} className="text-2xl text-white" {...editCopy(content, "bookband_fallback_heading", "Get in touch")} />
               {content.phone && <a href={`tel:${content.phone}`} className="mt-4 block text-[#F2EDE3]">{content.phone}</a>}
               {content.email && <a href={`mailto:${content.email}`} className="mt-1 block text-[#F2EDE3]">{content.email}</a>}
-              <a href={href("contact")} className="mt-6 inline-flex w-fit rounded-full px-8 py-3.5 text-[11px] font-semibold uppercase tracking-[0.2em] transition hover:opacity-90" style={{ background: OAT, color: TEAL }}>Contact us</a>
+              <a href={href("contact")} className="mt-6 inline-flex w-fit rounded-full px-8 py-3.5 text-[11px] font-semibold uppercase tracking-[0.2em] transition hover:opacity-90" style={{ background: OAT, color: TEAL }} {...editCopy(content, "bookband_fallback_cta", "Contact us")} />
             </div>
           )}
         </div>
@@ -573,14 +573,14 @@ export default function StillwaterDesign({ site, page = "home", basePath = "" }:
       <section style={{ background: OAT }} className="border-t" >
         <div className="mx-auto grid max-w-6xl gap-10 px-6 py-16 md:grid-cols-3" style={{ borderColor: "rgba(35,42,44,0.08)" }}>
           <div>
-            <h3 className="text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: SAGE }}>Visit us</h3>
+            <h3 className="text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: SAGE }} {...editCopy(content, "details_visit_heading", "Visit us")} />
             {content.address && <p data-edit="content.address" className="mt-4 whitespace-pre-line text-sm leading-relaxed" style={{ color: "rgba(35,42,44,0.72)" }}>{content.address}</p>}
             {content.map_url && (
               <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-4 inline-flex text-sm font-semibold" style={{ color: TEAL }}>Get directions →</a>
             )}
           </div>
           <div>
-            <h3 className="text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: SAGE }}>Opening times</h3>
+            <h3 className="text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: SAGE }} {...editCopy(content, "details_hours_heading", "Opening times")} />
             {content.hours && content.hours.length > 0 ? (
               <ul className="mt-4 space-y-2 text-sm" style={{ color: "rgba(35,42,44,0.72)" }}>
                 {content.hours.map((h, i) => (
@@ -590,12 +590,12 @@ export default function StillwaterDesign({ site, page = "home", basePath = "" }:
             ) : <p className="mt-4 text-sm" style={{ color: "rgba(35,42,44,0.5)" }}>Open by appointment.</p>}
           </div>
           <div>
-            <h3 className="text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: SAGE }}>Contact</h3>
+            <h3 className="text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: SAGE }} {...editCopy(content, "details_contact_heading", "Contact")} />
             <div className="mt-4 space-y-1.5 text-sm" style={{ color: "rgba(35,42,44,0.72)" }}>
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:opacity-60">{content.phone}</a>}
               {content.email && <a data-edit="content.email" href={`mailto:${content.email}`} className="block transition hover:opacity-60">{content.email}</a>}
             </div>
-            <a href={book} className="mt-5 inline-flex rounded-full px-7 py-3 text-[11px] font-semibold uppercase tracking-[0.2em] transition hover:opacity-90" style={{ background: TEAL, color: OAT }}>Book a session</a>
+            <a href={book} className="mt-5 inline-flex rounded-full px-7 py-3 text-[11px] font-semibold uppercase tracking-[0.2em] transition hover:opacity-90" style={{ background: TEAL, color: OAT }} {...editCopy(content, "details_book_cta", "Book a session")} />
           </div>
         </div>
       </section>

@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { AlignHeader } from "./AlignHeader";
 import { AlignBooking } from "./AlignBooking";
@@ -118,7 +118,7 @@ export default function AlignDesign({ site, page = "home", basePath = "" }: Pres
           )}
         </div>
         <div>
-          <h4 className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: AQUA }}>Explore</h4>
+          <h4 className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: AQUA }} {...editCopy(content, "footer_explore", "Explore")} />
           <ul className="mt-4 space-y-2.5 text-sm">
             {nav.map((l) => (
               <li key={l.href}><a href={l.href} className="text-white/70 transition hover:text-white">{l.label}</a></li>
@@ -126,7 +126,7 @@ export default function AlignDesign({ site, page = "home", basePath = "" }: Pres
           </ul>
         </div>
         <div>
-          <h4 className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: AQUA }}>Visit us</h4>
+          <h4 className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: AQUA }} {...editCopy(content, "footer_visit", "Visit us")} />
           {content.address && <p data-edit="content.address" className="mt-4 whitespace-pre-line text-sm leading-relaxed text-white/70">{content.address}</p>}
           <div className="mt-3 space-y-1.5 text-sm">
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block text-white/70 transition hover:text-white">{content.phone}</a>}
@@ -152,7 +152,7 @@ export default function AlignDesign({ site, page = "home", basePath = "" }: Pres
 
   // Sub-page banner — a deep-teal band that clears the fixed header, with a
   // subtle alignment grid and a coral kicker dot.
-  const banner = (kicker: string, title: string, blurb?: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string, blurb?: string, blurbKey?: string) => (
     <section className="relative overflow-hidden" style={{ background: `linear-gradient(160deg, ${TEAL} 0%, #0a5757 100%)` }}>
       <div
         className="pointer-events-none absolute inset-0 opacity-[0.10]"
@@ -164,10 +164,10 @@ export default function AlignDesign({ site, page = "home", basePath = "" }: Pres
       />
       <div className="relative mx-auto max-w-5xl px-6 pb-16 pt-32 text-center sm:pt-40">
         <p className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.28em] text-white/85">
-          <span className="h-1.5 w-1.5 rounded-full" style={{ background: CORAL }} />{kicker}
+          <span className="h-1.5 w-1.5 rounded-full" style={{ background: CORAL }} /><span {...editCopy(content, kickerKey, kicker)} />
         </p>
-        <h1 style={serif} className="mt-4 text-4xl font-medium text-white sm:text-5xl">{title}</h1>
-        {blurb && <p className="mx-auto mt-5 max-w-2xl text-[15px] leading-relaxed text-white/75">{blurb}</p>}
+        <h1 style={serif} className="mt-4 text-4xl font-medium text-white sm:text-5xl" {...editCopy(content, titleKey, title)} />
+        {blurb && <p className="mx-auto mt-5 max-w-2xl text-[15px] leading-relaxed text-white/75" {...(blurbKey ? editCopy(content, blurbKey, blurb) : { children: blurb })} />}
       </div>
     </section>
   );
@@ -176,7 +176,7 @@ export default function AlignDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "services") {
     return shell(
       <>
-        {banner("Treatments", "Aligners, braces & retainers", "Browse our full range of orthodontic treatments. Every plan begins with a free consultation and 3D digital scan.")}
+        {banner("Treatments", "svc_kicker", "Aligners, braces & retainers", "svc_title", "Browse our full range of orthodontic treatments. Every plan begins with a free consultation and 3D digital scan.", "svc_blurb")}
         <section className="mx-auto max-w-5xl px-6 py-20" style={{ background: OFF }}>
           {groups.length > 0 ? (
             <div className="space-y-14">
@@ -213,9 +213,9 @@ export default function AlignDesign({ site, page = "home", basePath = "" }: Pres
 
           <div className="mt-16 overflow-hidden rounded-3xl px-8 py-12 text-center" style={{ background: AQUA }}>
             <SmileArc className="mx-auto" color={TEAL} />
-            <h3 className="mt-4 text-2xl" style={{ ...serif, color: INK }}>Not sure where to start?</h3>
-            <p className="mx-auto mt-3 max-w-lg text-[15px] leading-relaxed" style={{ color: "rgba(30,42,42,0.75)" }}>Book a free consultation and 3D scan. We will show you your future smile before you decide.</p>
-            <a href={book} className="mt-6 inline-flex rounded-full px-9 py-3.5 text-sm font-semibold uppercase tracking-[0.14em] transition hover:opacity-90" style={{ background: TEAL, color: "#fff" }}>Book a consultation</a>
+            <h3 className="mt-4 text-2xl" style={{ ...serif, color: INK }} {...editCopy(content, "svc_help_heading", "Not sure where to start?")} />
+            <p className="mx-auto mt-3 max-w-lg text-[15px] leading-relaxed" style={{ color: "rgba(30,42,42,0.75)" }} {...editCopy(content, "svc_help_blurb", "Book a free consultation and 3D scan. We will show you your future smile before you decide.")} />
+            <a href={book} className="mt-6 inline-flex rounded-full px-9 py-3.5 text-sm font-semibold uppercase tracking-[0.14em] transition hover:opacity-90" style={{ background: TEAL, color: "#fff" }} {...editCopy(content, "svc_help_cta", "Book a consultation")} />
           </div>
         </section>
       </>,
@@ -226,7 +226,7 @@ export default function AlignDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "about") {
     return shell(
       <>
-        {banner("About", "Modern orthodontics, done with confidence")}
+        {banner("About", "about_kicker", "Modern orthodontics, done with confidence", "about_title")}
         <section className="mx-auto max-w-3xl px-6 py-20" style={{ background: OFF }}>
           {content.about ? (
             <p data-edit="content.about" className="text-[17px] leading-[1.9] text-neutral-700">{content.about}</p>
@@ -246,8 +246,8 @@ export default function AlignDesign({ site, page = "home", basePath = "" }: Pres
           <section className="border-t" style={{ background: "#fff", borderColor: "rgba(14,110,110,0.12)" }}>
             <div className="mx-auto max-w-6xl px-6 py-20">
               <div className="text-center">
-                <p className="text-xs font-semibold uppercase tracking-[0.28em]" style={{ color: CORAL }}>Our team</p>
-                <h2 style={serif} className="mt-3 text-3xl sm:text-4xl">Meet your orthodontists</h2>
+                <p className="text-xs font-semibold uppercase tracking-[0.28em]" style={{ color: CORAL }} {...editCopy(content, "team_kicker", "Our team")} />
+                <h2 style={serif} className="mt-3 text-3xl sm:text-4xl" {...editCopy(content, "team_heading", "Meet your orthodontists")} />
               </div>
               <div className="mt-14 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
                 {team.map((m) => (
@@ -270,8 +270,8 @@ export default function AlignDesign({ site, page = "home", basePath = "" }: Pres
 
         <section className="mx-auto max-w-3xl px-6 py-20" style={{ background: OFF }}>
           <div className="text-center">
-            <p className="text-xs font-semibold uppercase tracking-[0.28em]" style={{ color: CORAL }}>Good to know</p>
-            <h2 style={serif} className="mt-3 text-3xl sm:text-4xl">Common questions</h2>
+            <p className="text-xs font-semibold uppercase tracking-[0.28em]" style={{ color: CORAL }} {...editCopy(content, "faq_kicker", "Good to know")} />
+            <h2 style={serif} className="mt-3 text-3xl sm:text-4xl" {...editCopy(content, "faq_heading", "Common questions")} />
           </div>
           <div className="mt-10 divide-y border-y" style={{ borderColor: "rgba(14,110,110,0.14)" }}>
             {FAQ.map((it) => (
@@ -293,7 +293,7 @@ export default function AlignDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Gallery", "Smiles & spaces", "Real transformations and a look inside our modern clinic.")}
+        {banner("Gallery", "gallery_kicker", "Smiles & spaces", "gallery_title", "Real transformations and a look inside our modern clinic.", "gallery_blurb")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-6xl px-6 py-16" style={{ background: OFF }}>
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
@@ -312,10 +312,10 @@ export default function AlignDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "reservations") {
     return shell(
       <>
-        {banner("Consultation", "Book your smile assessment", "Free, no obligation, and impression-free. Tell us a little about you and we will be in touch.")}
+        {banner("Consultation", "book_kicker", "Book your smile assessment", "book_title", "Free, no obligation, and impression-free. Tell us a little about you and we will be in touch.", "book_blurb")}
         <section className="mx-auto grid max-w-6xl gap-10 px-6 py-20 lg:grid-cols-[1fr_1.05fr] lg:gap-16" style={{ background: OFF }}>
           <div>
-            <h2 className="text-3xl" style={{ ...serif, color: INK }}>A confident, modern approach</h2>
+            <h2 className="text-3xl" style={{ ...serif, color: INK }} {...editCopy(content, "book_intro_heading", "A confident, modern approach")} />
             <p className="mt-4 text-[15px] leading-relaxed text-neutral-600">Every journey starts with a 3D digital scan and an honest conversation. We will assess your bite, show you your future smile, and recommend only what is right for you — with clear pricing and 0% finance options.</p>
             <ul className="mt-7 space-y-3 text-sm text-neutral-700">
               {["Free, no obligation consultation", "Impression-free 3D scanning", "See your result before you start", "0% APR finance available"].map((t) => (
@@ -339,10 +339,10 @@ export default function AlignDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "contact") {
     return shell(
       <>
-        {banner("Contact", "Get in touch", "Visit us, call, or send a message and we will get back to you.")}
+        {banner("Contact", "contact_kicker", "Get in touch", "contact_title", "Visit us, call, or send a message and we will get back to you.", "contact_blurb")}
         <section className="mx-auto grid max-w-6xl gap-12 px-6 py-20 lg:grid-cols-2 lg:gap-16" style={{ background: OFF }}>
           <div>
-            <h2 className="text-2xl" style={{ ...serif, color: INK }}>Clinic details</h2>
+            <h2 className="text-2xl" style={{ ...serif, color: INK }} {...editCopy(content, "contact_details_heading", "Clinic details")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed text-neutral-700">
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-neutral-950">{content.phone}</a>}
@@ -357,9 +357,9 @@ export default function AlignDesign({ site, page = "home", basePath = "" }: Pres
             )}
             <div className="mt-7 flex flex-wrap gap-3">
               {content.map_url && (
-                <a href={content.map_url} target="_blank" rel="noreferrer" className="inline-flex rounded-full px-7 py-3 text-xs font-semibold uppercase tracking-[0.14em] text-white transition hover:opacity-90" style={{ background: TEAL }}>Get directions</a>
+                <a href={content.map_url} target="_blank" rel="noreferrer" className="inline-flex rounded-full px-7 py-3 text-xs font-semibold uppercase tracking-[0.14em] text-white transition hover:opacity-90" style={{ background: TEAL }} {...editCopy(content, "contact_directions_cta", "Get directions")} />
               )}
-              <a href={book} className="inline-flex rounded-full border px-7 py-3 text-xs font-semibold uppercase tracking-[0.14em] transition hover:bg-neutral-900 hover:text-white" style={{ borderColor: INK, color: INK }}>Book consult</a>
+              <a href={book} className="inline-flex rounded-full border px-7 py-3 text-xs font-semibold uppercase tracking-[0.14em] transition hover:bg-neutral-900 hover:text-white" style={{ borderColor: INK, color: INK }} {...editCopy(content, "contact_book_cta", "Book consult")} />
             </div>
             {content.socials && content.socials.length > 0 && (
               <div className="mt-8 flex gap-4" style={{ color: TEAL }}>
@@ -417,9 +417,9 @@ export default function AlignDesign({ site, page = "home", basePath = "" }: Pres
             <p data-edit="tenant.business_name" className="mt-5 text-sm font-semibold uppercase tracking-[0.22em] text-white/70">{name}</p>
             <p className="mt-4 max-w-md text-base leading-relaxed text-white/80">Clear aligners and braces, planned in 3D and guided with confidence. See your future smile before you begin.</p>
             <div className="mt-8 flex flex-wrap gap-3">
-              <a href={book} className="inline-flex rounded-full px-8 py-4 text-xs font-semibold uppercase tracking-[0.16em] shadow-xl transition hover:opacity-90" style={{ background: CORAL, color: INK }}>Book free consult</a>
+              <a href={book} className="inline-flex rounded-full px-8 py-4 text-xs font-semibold uppercase tracking-[0.16em] shadow-xl transition hover:opacity-90" style={{ background: CORAL, color: INK }} {...editCopy(content, "hero_book_cta", "Book free consult")} />
               {groups.length > 0 && (
-                <a href={href("services")} className="inline-flex rounded-full border border-white/40 px-8 py-4 text-xs font-semibold uppercase tracking-[0.16em] text-white backdrop-blur-sm transition hover:bg-white hover:text-[#0a5757]">View treatments</a>
+                <a href={href("services")} className="inline-flex rounded-full border border-white/40 px-8 py-4 text-xs font-semibold uppercase tracking-[0.16em] text-white backdrop-blur-sm transition hover:bg-white hover:text-[#0a5757]" {...editCopy(content, "hero_services_cta", "View treatments")} />
               )}
             </div>
             <div className="mt-9 flex flex-wrap items-center gap-x-7 gap-y-3 text-xs font-medium uppercase tracking-[0.14em] text-white/70">
@@ -484,8 +484,8 @@ export default function AlignDesign({ site, page = "home", basePath = "" }: Pres
         <div className="pointer-events-none absolute inset-0 opacity-[0.07]" aria-hidden style={{ backgroundImage: "linear-gradient(to right, #fff 1px, transparent 1px), linear-gradient(to bottom, #fff 1px, transparent 1px)", backgroundSize: "40px 40px" }} />
         <div className="relative mx-auto max-w-6xl px-6 py-24">
           <div className="text-center">
-            <p className="text-xs font-semibold uppercase tracking-[0.28em]" style={{ color: CORAL }}>Your aligner journey</p>
-            <h2 style={serif} className="mt-3 text-3xl text-white sm:text-4xl">Three steps to a confident smile</h2>
+            <p className="text-xs font-semibold uppercase tracking-[0.28em]" style={{ color: CORAL }} {...editCopy(content, "journey_kicker", "Your aligner journey")} />
+            <h2 style={serif} className="mt-3 text-3xl text-white sm:text-4xl" {...editCopy(content, "journey_heading", "Three steps to a confident smile")} />
           </div>
           <div className="relative mt-16 grid gap-10 md:grid-cols-3">
             {/* connecting line */}
@@ -499,7 +499,7 @@ export default function AlignDesign({ site, page = "home", basePath = "" }: Pres
             ))}
           </div>
           <div className="mt-14 text-center">
-            <a href={book} className="inline-flex rounded-full px-9 py-3.5 text-xs font-semibold uppercase tracking-[0.16em] transition hover:opacity-90" style={{ background: AQUA, color: INK }}>Start your journey</a>
+            <a href={book} className="inline-flex rounded-full px-9 py-3.5 text-xs font-semibold uppercase tracking-[0.16em] transition hover:opacity-90" style={{ background: AQUA, color: INK }} {...editCopy(content, "journey_cta", "Start your journey")} />
           </div>
         </div>
       </section>
@@ -509,10 +509,10 @@ export default function AlignDesign({ site, page = "home", basePath = "" }: Pres
         <section className="mx-auto max-w-6xl px-6 py-24" style={{ background: OFF }}>
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.28em]" style={{ color: TEAL }}>Treatments</p>
-              <h2 style={serif} className="mt-3 text-3xl sm:text-4xl">Built around your smile</h2>
+              <p className="text-xs font-semibold uppercase tracking-[0.28em]" style={{ color: TEAL }} {...editCopy(content, "treatments_kicker", "Treatments")} />
+              <h2 style={serif} className="mt-3 text-3xl sm:text-4xl" {...editCopy(content, "treatments_heading", "Built around your smile")} />
             </div>
-            <a href={href("services")} className="text-sm font-semibold underline-offset-4 hover:underline" style={{ color: CORAL }}>View all treatments →</a>
+            <a href={href("services")} className="text-sm font-semibold underline-offset-4 hover:underline" style={{ color: CORAL }} {...editCopy(content, "treatments_view_all", "View all treatments →")} />
           </div>
           <div className="mt-12 grid gap-6 md:grid-cols-3">
             {teaseCategories.map((c) => (
@@ -538,8 +538,8 @@ export default function AlignDesign({ site, page = "home", basePath = "" }: Pres
       <section style={{ background: AQUA }}>
         <div className="mx-auto max-w-6xl px-6 py-24">
           <div className="text-center">
-            <p className="text-xs font-semibold uppercase tracking-[0.28em]" style={{ color: TEAL }}>Patient stories</p>
-            <h2 className="mt-3 text-3xl sm:text-4xl" style={{ ...serif, color: INK }}>Transformations they love</h2>
+            <p className="text-xs font-semibold uppercase tracking-[0.28em]" style={{ color: TEAL }} {...editCopy(content, "reviews_kicker", "Patient stories")} />
+            <h2 className="mt-3 text-3xl sm:text-4xl" style={{ ...serif, color: INK }} {...editCopy(content, "reviews_heading", "Transformations they love")} />
           </div>
           <div className="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {REVIEWS.slice(0, 3).map((r, idx) => (
@@ -560,8 +560,8 @@ export default function AlignDesign({ site, page = "home", basePath = "" }: Pres
         <div className="relative flex flex-col justify-center overflow-hidden px-6 py-20 sm:px-12" style={{ background: `linear-gradient(150deg, ${TEAL}, #0a5757)` }}>
           <div className="pointer-events-none absolute inset-0 opacity-[0.10]" aria-hidden style={{ backgroundImage: "linear-gradient(to right, #fff 1px, transparent 1px), linear-gradient(to bottom, #fff 1px, transparent 1px)", backgroundSize: "38px 38px" }} />
           <div className="relative text-white">
-            <p className="text-xs font-semibold uppercase tracking-[0.28em]" style={{ color: AQUA }}>Affordable from day one</p>
-            <h2 style={serif} className="mt-4 text-3xl sm:text-4xl">0% APR finance & a free consultation</h2>
+            <p className="text-xs font-semibold uppercase tracking-[0.28em]" style={{ color: AQUA }} {...editCopy(content, "finance_kicker", "Affordable from day one")} />
+            <h2 style={serif} className="mt-4 text-3xl sm:text-4xl" {...editCopy(content, "finance_heading", "0% APR finance & a free consultation")} />
             <p className="mt-4 max-w-md text-[15px] leading-relaxed text-white/80">Spread the cost of your treatment interest-free, and start with a no obligation 3D smile assessment. Confident care, on your terms.</p>
             <ul className="mt-6 space-y-2 text-sm text-white/85">
               {["Interest-free monthly plans", "No obligation, impression-free assessment", "Clear, fixed pricing"].map((t) => (
@@ -569,7 +569,7 @@ export default function AlignDesign({ site, page = "home", basePath = "" }: Pres
               ))}
             </ul>
             <div className="mt-8">
-              <a href={book} className="inline-flex rounded-full px-9 py-4 text-xs font-semibold uppercase tracking-[0.16em] transition hover:opacity-90" style={{ background: CORAL, color: INK }}>Book a consultation</a>
+              <a href={book} className="inline-flex rounded-full px-9 py-4 text-xs font-semibold uppercase tracking-[0.16em] transition hover:opacity-90" style={{ background: CORAL, color: INK }} {...editCopy(content, "finance_cta", "Book a consultation")} />
             </div>
           </div>
         </div>
@@ -599,10 +599,10 @@ export default function AlignDesign({ site, page = "home", basePath = "" }: Pres
             <AlignBooking tenantId={tenant.id} name={name} />
           ) : (
             <div className="flex h-full flex-col justify-center rounded-3xl px-8 py-14" style={{ background: TEAL }}>
-              <h3 style={serif} className="text-2xl text-white">Get in touch</h3>
+              <h3 style={serif} className="text-2xl text-white" {...editCopy(content, "booking_band_heading", "Get in touch")} />
               {content.phone && <a href={`tel:${content.phone}`} className="mt-4 block text-white/90">{content.phone}</a>}
               {content.email && <a href={`mailto:${content.email}`} className="mt-1 block text-white/90">{content.email}</a>}
-              <a href={href("contact")} className="mt-6 inline-flex w-fit rounded-full px-8 py-3.5 text-xs font-semibold uppercase tracking-[0.14em] transition hover:opacity-90" style={{ background: CORAL, color: INK }}>Contact us</a>
+              <a href={href("contact")} className="mt-6 inline-flex w-fit rounded-full px-8 py-3.5 text-xs font-semibold uppercase tracking-[0.14em] transition hover:opacity-90" style={{ background: CORAL, color: INK }} {...editCopy(content, "booking_band_cta", "Contact us")} />
             </div>
           )}
         </div>
@@ -612,14 +612,14 @@ export default function AlignDesign({ site, page = "home", basePath = "" }: Pres
       <section className="border-t" style={{ background: "#fff", borderColor: "rgba(14,110,110,0.12)" }}>
         <div className="mx-auto grid max-w-6xl gap-10 px-6 py-16 md:grid-cols-3">
           <div>
-            <h3 className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: CORAL }}>Visit us</h3>
+            <h3 className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: CORAL }} {...editCopy(content, "details_visit_heading", "Visit us")} />
             {content.address && <p data-edit="content.address" className="mt-4 whitespace-pre-line text-sm leading-relaxed text-neutral-700">{content.address}</p>}
             {content.map_url && (
-              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-4 inline-flex text-sm font-semibold" style={{ color: TEAL }}>Get directions →</a>
+              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-4 inline-flex text-sm font-semibold" style={{ color: TEAL }} {...editCopy(content, "details_directions", "Get directions →")} />
             )}
           </div>
           <div>
-            <h3 className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: CORAL }}>Opening times</h3>
+            <h3 className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: CORAL }} {...editCopy(content, "details_hours_heading", "Opening times")} />
             {content.hours && content.hours.length > 0 ? (
               <ul className="mt-4 space-y-2 text-sm text-neutral-700">
                 {content.hours.map((h, i) => (
@@ -629,12 +629,12 @@ export default function AlignDesign({ site, page = "home", basePath = "" }: Pres
             ) : <p className="mt-4 text-sm text-neutral-500">Open by appointment.</p>}
           </div>
           <div>
-            <h3 className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: CORAL }}>Contact</h3>
+            <h3 className="text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: CORAL }} {...editCopy(content, "details_contact_heading", "Contact")} />
             <div className="mt-4 space-y-1.5 text-sm text-neutral-700">
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-neutral-950">{content.phone}</a>}
               {content.email && <a data-edit="content.email" href={`mailto:${content.email}`} className="block transition hover:text-neutral-950">{content.email}</a>}
             </div>
-            <a href={book} className="mt-5 inline-flex rounded-full px-7 py-3 text-xs font-semibold uppercase tracking-[0.14em] transition hover:opacity-90" style={{ background: TEAL, color: "#fff" }}>Book consult</a>
+            <a href={book} className="mt-5 inline-flex rounded-full px-7 py-3 text-xs font-semibold uppercase tracking-[0.14em] transition hover:opacity-90" style={{ background: TEAL, color: "#fff" }} {...editCopy(content, "details_book_cta", "Book consult")} />
           </div>
         </div>
       </section>

@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { AtelierHeader } from "./AtelierHeader";
 import { AtelierBooking } from "./AtelierBooking";
@@ -61,15 +61,13 @@ export default function AtelierDesign({ site, page = "home", basePath = "" }: Pr
     <footer style={{ background: INK }} className="text-white">
       {/* favourite brands strip */}
       <div className="border-b border-white/10 px-6 py-12 text-center">
-        <SectionKicker light>The high quality products</SectionKicker>
-        <h4 style={serif} className="mt-3 text-2xl text-white">Crafted with brands we trust</h4>
+        <SectionKicker light><span {...editCopy(content, "footer_brands_kicker", "The high quality products")} /></SectionKicker>
+        <h4 style={serif} className="mt-3 text-2xl text-white" {...editCopy(content, "footer_brands_heading", "Crafted with brands we trust")} />
       </div>
       <div className="mx-auto grid max-w-6xl gap-12 px-6 py-16 sm:px-8 lg:grid-cols-[1.1fr_1fr_1fr]">
         <div>
           <a href={href("home")} data-edit="tenant.business_name" style={serif} className="text-2xl tracking-[0.08em] text-white">{name}</a>
-          <p className="mt-4 max-w-sm text-sm leading-relaxed text-white/70">
-            A refined hair and beauty salon. Book your visit and let our stylists take care of the rest.
-          </p>
+          <p className="mt-4 max-w-sm text-sm leading-relaxed text-white/70" {...editCopy(content, "footer_blurb", "A refined hair and beauty salon. Book your visit and let our stylists take care of the rest.")} />
           {content.socials && content.socials.length > 0 && (
             <div className="mt-6 flex gap-3">
               {content.socials.map((s) => (
@@ -82,19 +80,19 @@ export default function AtelierDesign({ site, page = "home", basePath = "" }: Pr
         </div>
 
         <div>
-          <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-white/60">Contact us</h4>
+          <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-white/60" {...editCopy(content, "footer_contact_heading", "Contact us")} />
           {content.address && <p data-edit="content.address" className="mt-5 whitespace-pre-line text-sm leading-relaxed text-white/80">{content.address}</p>}
           <div className="mt-4 space-y-1.5 text-sm text-white/80">
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block hover:text-white">{content.phone}</a>}
             {content.email && <a data-edit="content.email" href={`mailto:${content.email}`} className="block hover:text-white">{content.email}</a>}
           </div>
           {content.map_url && (
-            <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-5 inline-flex text-xs font-semibold uppercase tracking-[0.18em] text-white/90 underline-offset-4 hover:underline" style={{ color: "#e7a8b3" }}>Get directions</a>
+            <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-5 inline-flex text-xs font-semibold uppercase tracking-[0.18em] text-white/90 underline-offset-4 hover:underline" style={{ color: "#e7a8b3" }} {...editCopy(content, "footer_directions", "Get directions")} />
           )}
         </div>
 
         <div>
-          <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-white/60">Opening hours</h4>
+          <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-white/60" {...editCopy(content, "footer_hours_heading", "Opening hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm text-white/80">
               {content.hours.map((h, i) => (
@@ -102,7 +100,7 @@ export default function AtelierDesign({ site, page = "home", basePath = "" }: Pr
               ))}
             </ul>
           ) : <p className="mt-5 text-sm text-white/60">Open by appointment.</p>}
-          <a href={book} style={{ background: WINE }} className="mt-7 inline-flex px-7 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-white transition hover:opacity-90">Book an appointment</a>
+          <a href={book} style={{ background: WINE }} className="mt-7 inline-flex px-7 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-white transition hover:opacity-90" {...editCopy(content, "footer_book_cta", "Book an appointment")} />
         </div>
       </div>
       <p className="border-t border-white/10 px-8 py-6 text-center text-xs text-white/45">© {name}. All rights reserved.</p>
@@ -118,12 +116,12 @@ export default function AtelierDesign({ site, page = "home", basePath = "" }: Pr
   );
 
   // Wine page banner — also clears the fixed header on sub-pages.
-  const banner = (kicker: string, title: string, blurb?: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string, blurb?: string, blurbKey?: string) => (
     <section style={{ background: INK }} className="text-white">
       <div className="mx-auto max-w-6xl px-6 pb-16 pt-36 text-center sm:px-8 sm:pt-40">
-        <SectionKicker light>{kicker}</SectionKicker>
-        <h1 style={serif} className="mt-4 text-4xl font-medium sm:text-5xl">{title}</h1>
-        {blurb && <p className="mx-auto mt-5 max-w-2xl text-[15px] leading-relaxed text-white/70">{blurb}</p>}
+        <SectionKicker light><span {...editCopy(content, kickerKey, kicker)} /></SectionKicker>
+        <h1 style={serif} className="mt-4 text-4xl font-medium sm:text-5xl" {...editCopy(content, titleKey, title)} />
+        {blurb && <p className="mx-auto mt-5 max-w-2xl text-[15px] leading-relaxed text-white/70" {...(blurbKey ? editCopy(content, blurbKey, blurb) : { children: blurb })} />}
       </div>
     </section>
   );
@@ -132,7 +130,7 @@ export default function AtelierDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "services") {
     return shell(
       <>
-        {banner("Our bespoke services", "Treatments & prices", "Every treatment is tailored to you. Browse the list below and book the moment that suits.")}
+        {banner("Our bespoke services", "svc_kicker", "Treatments & prices", "svc_title", "Every treatment is tailored to you. Browse the list below and book the moment that suits.", "svc_blurb")}
         <section className="mx-auto max-w-6xl px-6 py-20 sm:px-8">
           {groups.length > 0 ? (
             <div className="space-y-16">
@@ -160,7 +158,7 @@ export default function AtelierDesign({ site, page = "home", basePath = "" }: Pr
             </div>
           ) : <p className="text-neutral-500">Our treatment list is coming soon.</p>}
           <div className="mt-16 text-center">
-            <a href={book} style={{ background: WINE }} className="inline-flex px-9 py-4 text-sm font-semibold uppercase tracking-[0.18em] text-white transition hover:opacity-90">Book your appointment</a>
+            <a href={book} style={{ background: WINE }} className="inline-flex px-9 py-4 text-sm font-semibold uppercase tracking-[0.18em] text-white transition hover:opacity-90" {...editCopy(content, "svc_book_cta", "Book your appointment")} />
           </div>
         </section>
       </>,
@@ -171,7 +169,7 @@ export default function AtelierDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "about") {
     return shell(
       <>
-        {banner("Why choose us", "About the salon")}
+        {banner("Why choose us", "about_kicker", "About the salon", "about_title")}
         <section className="mx-auto max-w-3xl px-6 py-20 sm:px-8">
           {content.about ? (
             <p data-edit="content.about" className="text-[17px] leading-[1.9] text-neutral-700">{content.about}</p>
@@ -183,8 +181,8 @@ export default function AtelierDesign({ site, page = "home", basePath = "" }: Pr
           <section style={{ background: CREAM }} className="border-y border-black/5">
             <div className="mx-auto max-w-6xl px-6 py-20 sm:px-8">
               <div className="text-center">
-                <SectionKicker>Meet the team</SectionKicker>
-                <h2 style={serif} className="mt-3 text-3xl text-neutral-900">Our stylists</h2>
+                <SectionKicker><span {...editCopy(content, "team_kicker", "Meet the team")} /></SectionKicker>
+                <h2 style={serif} className="mt-3 text-3xl text-neutral-900" {...editCopy(content, "team_heading", "Our stylists")} />
               </div>
               <div className="mt-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
                 {team.map((m) => (
@@ -212,7 +210,7 @@ export default function AtelierDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Our work", "A look inside")}
+        {banner("Our work", "gallery_kicker", "A look inside", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="grid grid-cols-2 gap-1 sm:grid-cols-3">
             {gallery.map((g) => (
@@ -229,16 +227,16 @@ export default function AtelierDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "reservations") {
     return shell(
       <>
-        {banner("Book your visit", "Request an appointment", "Tell us what you would like and when. We will confirm your slot by phone or email.")}
+        {banner("Book your visit", "book_kicker", "Request an appointment", "book_title", "Tell us what you would like and when. We will confirm your slot by phone or email.", "book_blurb")}
         <section className="mx-auto max-w-xl px-6 py-20 sm:px-8">
           {bookingOn ? (
             <AtelierBooking tenantId={tenant.id} name={name} />
           ) : (
             <div className="text-center">
-              <p className="text-neutral-600">To book, please call or email us and we will arrange your visit.</p>
+              <p className="text-neutral-600" {...editCopy(content, "book_fallback_text", "To book, please call or email us and we will arrange your visit.")} />
               <div className="mt-6 flex flex-col items-center gap-3">
                 {content.phone && <a href={`tel:${content.phone}`} style={{ background: WINE }} className="inline-flex px-8 py-3.5 text-sm font-semibold uppercase tracking-[0.16em] text-white">Call {content.phone}</a>}
-                {content.booking_url && <a href={content.booking_url} target="_blank" rel="noreferrer" className="text-sm font-semibold uppercase tracking-[0.16em]" style={{ color: WINE }}>Book online</a>}
+                {content.booking_url && <a href={content.booking_url} target="_blank" rel="noreferrer" className="text-sm font-semibold uppercase tracking-[0.16em]" style={{ color: WINE }} {...editCopy(content, "book_online_cta", "Book online")} />}
               </div>
             </div>
           )}
@@ -251,7 +249,7 @@ export default function AtelierDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "contact") {
     return shell(
       <>
-        {banner("Have a question?", "Get in touch")}
+        {banner("Have a question?", "contact_kicker", "Get in touch", "contact_title")}
         <section className="mx-auto grid max-w-6xl gap-12 px-6 py-20 sm:px-8 lg:grid-cols-2 lg:gap-20">
           <div>
             <div className="space-y-5 text-[15px] leading-relaxed text-neutral-700">
@@ -267,7 +265,7 @@ export default function AtelierDesign({ site, page = "home", basePath = "" }: Pr
               </ul>
             )}
             {content.map_url && (
-              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex px-7 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-white transition hover:opacity-90" style={{ background: WINE }}>Get directions</a>
+              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex px-7 py-3 text-xs font-semibold uppercase tracking-[0.18em] text-white transition hover:opacity-90" style={{ background: WINE }} {...editCopy(content, "contact_directions", "Get directions")} />
             )}
             {content.socials && content.socials.length > 0 && (
               <div className="mt-8 flex gap-3">
@@ -314,13 +312,11 @@ export default function AtelierDesign({ site, page = "home", basePath = "" }: Pr
           <h1 style={serif} className="max-w-2xl text-5xl font-medium leading-[1.05] text-white [text-shadow:0_2px_24px_rgba(0,0,0,0.5)] sm:text-6xl lg:text-7xl">
             <span data-edit="tenant.business_name">{name}</span>
           </h1>
-          <p className="mt-5 max-w-md text-lg text-white/85 [text-shadow:0_1px_14px_rgba(0,0,0,0.5)]">
-            We care about your hair, your skin and your time.
-          </p>
+          <p className="mt-5 max-w-md text-lg text-white/85 [text-shadow:0_1px_14px_rgba(0,0,0,0.5)]" {...editCopy(content, "hero_subtitle", "We care about your hair, your skin and your time.")} />
           <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-            <a href={book} style={{ background: WINE }} className="inline-flex justify-center px-9 py-4 text-sm font-semibold uppercase tracking-[0.18em] text-white shadow-xl transition hover:opacity-90">Book now</a>
+            <a href={book} style={{ background: WINE }} className="inline-flex justify-center px-9 py-4 text-sm font-semibold uppercase tracking-[0.18em] text-white shadow-xl transition hover:opacity-90" {...editCopy(content, "hero_book_cta", "Book now")} />
             {groups.length > 0 && (
-              <a href={href("services")} className="inline-flex justify-center border border-white/70 px-9 py-4 text-sm font-semibold uppercase tracking-[0.18em] text-white backdrop-blur-sm transition hover:bg-white hover:text-neutral-900">View services</a>
+              <a href={href("services")} className="inline-flex justify-center border border-white/70 px-9 py-4 text-sm font-semibold uppercase tracking-[0.18em] text-white backdrop-blur-sm transition hover:bg-white hover:text-neutral-900" {...editCopy(content, "hero_services_cta", "View services")} />
             )}
           </div>
         </div>
@@ -331,8 +327,8 @@ export default function AtelierDesign({ site, page = "home", basePath = "" }: Pr
         <section className="border-b border-black/5 bg-white">
           <div className="mx-auto max-w-6xl px-6 py-24 sm:px-8">
             <div className="text-center">
-              <SectionKicker>Our services</SectionKicker>
-              <h2 style={serif} className="mt-3 text-4xl text-neutral-900 sm:text-5xl">What we do</h2>
+              <SectionKicker><span {...editCopy(content, "home_svc_kicker", "Our services")} /></SectionKicker>
+              <h2 style={serif} className="mt-3 text-4xl text-neutral-900 sm:text-5xl" {...editCopy(content, "home_svc_heading", "What we do")} />
             </div>
             <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {featured.slice(0, 4).map((item) => (
@@ -344,7 +340,7 @@ export default function AtelierDesign({ site, page = "home", basePath = "" }: Pr
               ))}
             </div>
             <div className="mt-12 text-center">
-              <a href={href("services")} className="inline-flex border px-9 py-3.5 text-xs font-semibold uppercase tracking-[0.2em] transition hover:bg-neutral-900 hover:text-white" style={{ borderColor: INK, color: INK }}>Explore our services</a>
+              <a href={href("services")} className="inline-flex border px-9 py-3.5 text-xs font-semibold uppercase tracking-[0.2em] transition hover:bg-neutral-900 hover:text-white" style={{ borderColor: INK, color: INK }} {...editCopy(content, "home_svc_cta", "Explore our services")} />
             </div>
           </div>
         </section>
@@ -355,10 +351,10 @@ export default function AtelierDesign({ site, page = "home", basePath = "" }: Pr
         <section style={{ background: CREAM }} className="border-b border-black/5">
           <div className="mx-auto grid max-w-6xl items-center gap-12 px-6 py-24 sm:px-8 lg:grid-cols-2 lg:gap-16">
             <div>
-              <SectionKicker>Why choose us</SectionKicker>
-              <h2 style={serif} className="mt-3 text-4xl text-neutral-900 sm:text-5xl">A salon that puts you first</h2>
+              <SectionKicker><span {...editCopy(content, "why_kicker", "Why choose us")} /></SectionKicker>
+              <h2 style={serif} className="mt-3 text-4xl text-neutral-900 sm:text-5xl" {...editCopy(content, "why_heading", "A salon that puts you first")} />
               <p data-edit="content.about" className="mt-6 text-[17px] leading-[1.9] text-neutral-700">{content.about}</p>
-              <a href={href("about")} className="mt-7 inline-flex text-sm font-semibold uppercase tracking-[0.16em]" style={{ color: WINE }}>More about us</a>
+              <a href={href("about")} className="mt-7 inline-flex text-sm font-semibold uppercase tracking-[0.16em]" style={{ color: WINE }} {...editCopy(content, "why_cta", "More about us")} />
             </div>
             <div className="overflow-hidden rounded-2xl bg-neutral-200">
               {gallery[0] ? (
@@ -378,10 +374,10 @@ export default function AtelierDesign({ site, page = "home", basePath = "" }: Pr
       {/* offer / booking band */}
       <section style={{ background: INK }} className="text-white">
         <div className="mx-auto flex max-w-6xl flex-col items-center gap-6 px-6 py-20 text-center sm:px-8">
-          <SectionKicker light>Ready when you are</SectionKicker>
-          <h2 style={serif} className="max-w-2xl text-4xl font-medium sm:text-5xl">Book your appointment today</h2>
-          <p className="max-w-xl text-[15px] leading-relaxed text-white/70">Reserve your slot online in seconds. We will confirm by phone or email and have everything ready for your visit.</p>
-          <a href={book} style={{ background: WINE }} className="inline-flex px-10 py-4 text-sm font-semibold uppercase tracking-[0.18em] text-white transition hover:opacity-90">Book now</a>
+          <SectionKicker light><span {...editCopy(content, "cta_kicker", "Ready when you are")} /></SectionKicker>
+          <h2 style={serif} className="max-w-2xl text-4xl font-medium sm:text-5xl" {...editCopy(content, "cta_heading", "Book your appointment today")} />
+          <p className="max-w-xl text-[15px] leading-relaxed text-white/70" {...editCopy(content, "cta_blurb", "Reserve your slot online in seconds. We will confirm by phone or email and have everything ready for your visit.")} />
+          <a href={book} style={{ background: WINE }} className="inline-flex px-10 py-4 text-sm font-semibold uppercase tracking-[0.18em] text-white transition hover:opacity-90" {...editCopy(content, "cta_book", "Book now")} />
         </div>
       </section>
 
@@ -391,10 +387,10 @@ export default function AtelierDesign({ site, page = "home", basePath = "" }: Pr
           <div className="mx-auto max-w-6xl px-6 py-24 sm:px-8">
             <div className="flex flex-wrap items-end justify-between gap-4">
               <div>
-                <SectionKicker>Our work</SectionKicker>
-                <h2 style={serif} className="mt-3 text-4xl text-neutral-900 sm:text-5xl">Recent looks</h2>
+                <SectionKicker><span {...editCopy(content, "gallery_teaser_kicker", "Our work")} /></SectionKicker>
+                <h2 style={serif} className="mt-3 text-4xl text-neutral-900 sm:text-5xl" {...editCopy(content, "gallery_teaser_heading", "Recent looks")} />
               </div>
-              <a href={href("gallery")} className="text-sm font-semibold uppercase tracking-[0.15em]" style={{ color: WINE }}>View gallery</a>
+              <a href={href("gallery")} className="text-sm font-semibold uppercase tracking-[0.15em]" style={{ color: WINE }} {...editCopy(content, "gallery_teaser_cta", "View gallery")} />
             </div>
             <div className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
               {gallery.slice(0, 4).map((g) => (

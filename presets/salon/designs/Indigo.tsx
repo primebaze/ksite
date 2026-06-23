@@ -84,7 +84,7 @@ export default function IndigoDesign({ site, page = "home", basePath = "" }: Pre
             )}
           </div>
           <div>
-            <h4 className="text-xs font-bold uppercase tracking-[0.18em] text-neutral-500">Explore</h4>
+            <h4 className="text-xs font-bold uppercase tracking-[0.18em] text-neutral-500" {...editCopy(content, "footer_explore", "Explore")} />
             <ul className="mt-5 space-y-2.5 text-sm font-semibold" style={{ color: INK }}>
               {nav.map((l) => (
                 <li key={l.href}><a href={l.href} className="transition hover:opacity-60">{l.label}</a></li>
@@ -92,7 +92,7 @@ export default function IndigoDesign({ site, page = "home", basePath = "" }: Pre
             </ul>
           </div>
           <div>
-            <h4 className="text-xs font-bold uppercase tracking-[0.18em] text-neutral-500">Opening hours</h4>
+            <h4 className="text-xs font-bold uppercase tracking-[0.18em] text-neutral-500" {...editCopy(content, "footer_hours", "Opening hours")} />
             {content.hours && content.hours.length > 0 ? (
               <ul className="mt-5 space-y-2 text-sm text-neutral-700">
                 {content.hours.map((h, i) => (
@@ -102,7 +102,7 @@ export default function IndigoDesign({ site, page = "home", basePath = "" }: Pre
             ) : <p className="mt-5 text-sm text-neutral-500">Open by appointment.</p>}
           </div>
           <div>
-            <h4 className="text-xs font-bold uppercase tracking-[0.18em] text-neutral-500">Find us</h4>
+            <h4 className="text-xs font-bold uppercase tracking-[0.18em] text-neutral-500" {...editCopy(content, "footer_findus", "Find us")} />
             {content.address && <p data-edit="content.address" className="mt-5 whitespace-pre-line text-sm leading-relaxed text-neutral-700">{content.address}</p>}
             <div className="mt-4 space-y-1.5 text-sm text-neutral-700">
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block hover:text-neutral-950">{content.phone}</a>}
@@ -169,7 +169,7 @@ export default function IndigoDesign({ site, page = "home", basePath = "" }: Pre
                 </div>
               ))}
               <div className="pt-4">
-                <a href={book} className="inline-flex rounded-full px-8 py-4 text-sm font-bold transition hover:opacity-85" style={{ background: MINT, color: INK, border: `1.5px solid ${INK}` }}>Book your appointment</a>
+                <a href={book} className="inline-flex rounded-full px-8 py-4 text-sm font-bold transition hover:opacity-85" style={{ background: MINT, color: INK, border: `1.5px solid ${INK}` }} {...editCopy(content, "svc_book_cta", "Book your appointment")} />
               </div>
             </div>
           ) : <p className="text-neutral-500">Our services are coming soon.</p>}
@@ -187,7 +187,7 @@ export default function IndigoDesign({ site, page = "home", basePath = "" }: Pre
           {content.booking_url ? (
             <div className="rounded-3xl border border-black/10 bg-white p-9 text-center shadow-sm">
               <p className="text-lg leading-relaxed text-neutral-700">Pick a time that suits you and we will see you soon.</p>
-              <a href={content.booking_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex rounded-full px-9 py-4 text-sm font-bold transition hover:opacity-85" style={{ background: MINT, color: INK, border: `1.5px solid ${INK}` }}>Book online</a>
+              <a href={content.booking_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex rounded-full px-9 py-4 text-sm font-bold transition hover:opacity-85" style={{ background: MINT, color: INK, border: `1.5px solid ${INK}` }} {...editCopy(content, "book_online_cta", "Book online")} />
             </div>
           ) : (
             <IndigoBooking tenantId={tenant.id} name={name} />
@@ -219,7 +219,7 @@ export default function IndigoDesign({ site, page = "home", basePath = "" }: Pre
               </ul>
             )}
             {content.map_url && (
-              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex rounded-full px-7 py-3.5 text-sm font-bold transition hover:opacity-85" style={{ background: MINT, color: INK, border: `1.5px solid ${INK}` }}>Get directions</a>
+              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex rounded-full px-7 py-3.5 text-sm font-bold transition hover:opacity-85" style={{ background: MINT, color: INK, border: `1.5px solid ${INK}` }} {...editCopy(content, "directions_cta", "Get directions")} />
             )}
           </div>
           {contactOn && (
@@ -299,9 +299,9 @@ export default function IndigoDesign({ site, page = "home", basePath = "" }: Pre
               )}
             </h1>
             <div className="mt-8 flex flex-wrap items-center gap-4">
-              <a href={book} className="inline-flex rounded-full px-7 py-4 text-sm font-bold transition hover:opacity-85" style={{ background: MINT, color: INK, border: `1.5px solid ${INK}` }}>Book appointment</a>
+              <a href={book} className="inline-flex rounded-full px-7 py-4 text-sm font-bold transition hover:opacity-85" style={{ background: MINT, color: INK, border: `1.5px solid ${INK}` }} {...editCopy(content, "hero_book_cta", "Book appointment")} />
               {groups.length > 0 && (
-                <a href={href("services")} className="inline-flex rounded-full border px-7 py-4 text-sm font-bold transition hover:bg-black/5" style={{ borderColor: INK, color: INK }}>See our services</a>
+                <a href={href("services")} className="inline-flex rounded-full border px-7 py-4 text-sm font-bold transition hover:bg-black/5" style={{ borderColor: INK, color: INK }} {...editCopy(content, "hero_services_cta", "See our services")} />
               )}
             </div>
           </div>
@@ -320,24 +320,24 @@ export default function IndigoDesign({ site, page = "home", basePath = "" }: Pre
                 ) : (
                   <div data-edit-image="img:home_services" className="aspect-[16/10] w-full" style={{ background: `linear-gradient(135deg, ${PINK}, ${MINT})` }} />
                 )}
-                <span className="absolute left-4 top-4"><Chip color={MINT}>Services</Chip></span>
+                <span className="absolute left-4 top-4"><Chip color={MINT}><span {...editCopy(content, "card_services_label", "Services")} /></Chip></span>
               </a>
             )}
             <a href={href("reservations")} className="group relative flex min-h-[14rem] flex-col justify-between overflow-hidden rounded-3xl p-7" style={{ background: PINK }}>
-              <span className="text-2xl font-extrabold tracking-tight" style={{ color: INK }}>Book your visit</span>
-              <span className="text-sm font-semibold" style={{ color: INK }}>Pick a time online &rarr;</span>
+              <span className="text-2xl font-extrabold tracking-tight" style={{ color: INK }} {...editCopy(content, "card_book_label", "Book your visit")} />
+              <span className="text-sm font-semibold" style={{ color: INK }} {...editCopy(content, "card_book_sub", "Pick a time online →")} />
             </a>
             {gallery.length > 0 && (
               <a href={href("gallery")} className="group relative overflow-hidden rounded-3xl bg-neutral-100">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img loading="lazy" decoding="async" src={(gallery[1] ?? gallery[0]).image_url} alt="" className="aspect-square w-full object-cover transition duration-500 group-hover:scale-[1.02]" />
-                <span className="absolute left-4 top-4"><Chip color={BLUE}>Gallery</Chip></span>
+                <span className="absolute left-4 top-4"><Chip color={BLUE}><span {...editCopy(content, "card_gallery_label", "Gallery")} /></Chip></span>
               </a>
             )}
             {content.about && (
               <a href={href("about")} className="group relative flex min-h-[14rem] flex-col justify-between overflow-hidden rounded-3xl p-7 lg:col-span-2" style={{ background: BLUE }}>
-                <span className="text-2xl font-extrabold tracking-tight" style={{ color: INK }}>About us</span>
-                <span className="text-sm font-semibold" style={{ color: INK }}>The people and the philosophy &rarr;</span>
+                <span className="text-2xl font-extrabold tracking-tight" style={{ color: INK }} {...editCopy(content, "card_about_label", "About us")} />
+                <span className="text-sm font-semibold" style={{ color: INK }} {...editCopy(content, "card_about_sub", "The people and the philosophy →")} />
               </a>
             )}
           </div>
@@ -359,9 +359,9 @@ export default function IndigoDesign({ site, page = "home", basePath = "" }: Pre
           <div className="mx-auto max-w-5xl px-6 py-24 sm:px-8">
             <div className="flex flex-wrap items-end justify-between gap-4">
               <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl" style={{ color: INK }}>
-                <span className="rounded-lg px-2" style={{ background: MINT }}>Popular services</span>
+                <span className="rounded-lg px-2" style={{ background: MINT }} {...editCopy(content, "home_services_heading", "Popular services")} />
               </h2>
-              <a href={href("services")} className="text-sm font-bold transition hover:opacity-60" style={{ color: INK }}>See the full list &rarr;</a>
+              <a href={href("services")} className="text-sm font-bold transition hover:opacity-60" style={{ color: INK }} {...editCopy(content, "home_services_link", "See the full list →")} />
             </div>
             <div className="mt-12 grid gap-x-12 gap-y-5 md:grid-cols-2">
               {featured.map((item) => (
@@ -383,7 +383,7 @@ export default function IndigoDesign({ site, page = "home", basePath = "" }: Pre
         <section style={{ background: PAPER }}>
           <div className="mx-auto max-w-7xl px-6 py-24 sm:px-8">
             <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl" style={{ color: INK }}>
-              <span className="rounded-lg px-2" style={{ background: PINK }}>Our stylists</span>
+              <span className="rounded-lg px-2" style={{ background: PINK }} {...editCopy(content, "home_stylists_heading", "Our stylists")} />
             </h2>
             <div className="mt-12 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
               {team.map((m) => (
