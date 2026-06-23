@@ -2,6 +2,7 @@ import { createElement } from "react";
 import { notFound, redirect } from "next/navigation";
 import { getMyTenantFull } from "@/lib/my-site";
 import { getPresetComponent } from "@/presets";
+import { SiteFieldStyles } from "@/presets/shared";
 import { InlineEditor } from "@/components/InlineEditor";
 import { pageFromPath } from "@/lib/site-pages";
 import { saveInline, addInlineItem, deleteInlineItem } from "../actions";
@@ -51,6 +52,7 @@ export default async function PreviewPage({
         contactEnabled: site.content.contact_form_enabled !== false,
       }}
     >
+      <SiteFieldStyles />
       {preset}
     </InlineEditor>
   );

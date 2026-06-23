@@ -16,16 +16,6 @@ const MINT = "#9fe7c6";
 const fieldCls =
   "mt-1.5 w-full rounded-xl border border-black/15 bg-white px-4 py-3 text-[15px] text-neutral-900 outline-none transition focus:border-neutral-900";
 
-// Selects need the native control chevron removed (it renders as a clashing
-// double-arrow on macOS) and replaced with a single caret matching the design.
-const selectCls = `${fieldCls} cursor-pointer appearance-none bg-no-repeat pr-11`;
-const caretStyle = {
-  backgroundImage:
-    "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%2315130f' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E\")",
-  backgroundPosition: "right 0.85rem center",
-  backgroundSize: "1.1rem",
-} as const;
-
 export function IndigoBooking({ tenantId, name }: { tenantId: string; name: string }) {
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
   const [error, setError] = useState("");
@@ -111,7 +101,7 @@ export function IndigoBooking({ tenantId, name }: { tenantId: string; name: stri
             </label>
             <label className="block">
               <span className="text-xs font-semibold uppercase tracking-wider text-neutral-500">Preferred time</span>
-              <select name="time" className={selectCls} style={caretStyle} defaultValue="11:00">
+              <select name="time" className={fieldCls} defaultValue="11:00">
                 {["9:00", "10:00", "11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00"].map((t) => (
                   <option key={t}>{t}</option>
                 ))}

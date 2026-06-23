@@ -3,6 +3,7 @@ import { createElement } from "react";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getPresetComponent } from "@/presets";
+import { SiteFieldStyles } from "@/presets/shared";
 import { sampleSiteFor } from "@/lib/sample-site";
 import { BUILDS, buildFor } from "@/lib/builds";
 import { pageFromPath } from "@/lib/site-pages";
@@ -62,6 +63,7 @@ export default async function SamplePage({
 
   return (
     <div className="relative">
+      <SiteFieldStyles />
       {!embed && (
         <div className="fixed bottom-5 left-1/2 z-[100] flex -translate-x-1/2 items-center gap-2 rounded-full border border-white/10 bg-black/80 px-2 py-2 text-sm text-white shadow-2xl backdrop-blur">
           {/* Return to the tab they came from (else this sample's category). */}

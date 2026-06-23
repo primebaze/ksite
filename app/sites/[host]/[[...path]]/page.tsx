@@ -3,6 +3,7 @@ import { createElement } from "react";
 import { notFound } from "next/navigation";
 import { getSiteByHost } from "@/lib/tenant";
 import { getPresetComponent } from "@/presets";
+import { SiteFieldStyles } from "@/presets/shared";
 import { pageFromPath } from "@/lib/site-pages";
 import { archetypeFor } from "@/lib/verticals";
 import { APP_DOMAIN } from "@/lib/marketing";
@@ -101,6 +102,7 @@ export default async function SitePage({ params }: Props) {
   // Live tenant site: multi-page, nav at the domain root (basePath "").
   return (
     <>
+      <SiteFieldStyles />
       <JsonLd data={tenantJsonLd(site, canonicalBase(site.tenant))} />
       {createElement(getPresetComponent(site.tenant.preset), { site, page, basePath: "", multiPage: true })}
     </>
