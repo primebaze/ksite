@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { PixelHeader } from "./PixelHeader";
 import { TradesSocialIcon } from "./TradesMobileNav";
@@ -155,13 +155,13 @@ export default function PixelDesign({ site, page = "home", basePath = "" }: Pres
     </div>
   );
 
-  const banner = (kicker: string, title: string, blurb?: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string, blurb?: string, blurbKey?: string) => (
     <section className="relative overflow-hidden" style={{ background: PANEL, borderBottom: `1px solid ${LINE}` }}>
       <div className="pointer-events-none absolute inset-0" style={{ backgroundImage: PIXEL_GRID, backgroundSize: "32px 32px" }} />
       <div className="relative mx-auto max-w-7xl px-8 pb-16 pt-36 sm:pt-44">
-        <Tag>{kicker}</Tag>
-        <h1 style={{ ...display, color: PAPER }} className="mt-5 max-w-3xl text-4xl font-bold leading-[1.02] tracking-[-0.02em] sm:text-6xl">{title}</h1>
-        {blurb && <p className="mt-5 max-w-xl text-[16px] leading-relaxed" style={{ color: GREY }}>{blurb}</p>}
+        <Tag><span {...editCopy(content, kickerKey, kicker)} /></Tag>
+        <h1 style={{ ...display, color: PAPER }} className="mt-5 max-w-3xl text-4xl font-bold leading-[1.02] tracking-[-0.02em] sm:text-6xl" {...editCopy(content, titleKey, title)} />
+        {blurb && <p className="mt-5 max-w-xl text-[16px] leading-relaxed" style={{ color: GREY }} {...editCopy(content, blurbKey ?? "", blurb)} />}
       </div>
     </section>
   );
@@ -170,7 +170,7 @@ export default function PixelDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "services") {
     return shell(
       <>
-        {banner("What we do", "Services", "Design and build for the modern web — beautiful, fast and made to convert.")}
+        {banner("What we do", "svc_kicker", "Services", "svc_title", "Design and build for the modern web — beautiful, fast and made to convert.", "svc_blurb")}
         <section className="mx-auto max-w-5xl px-8 py-20">
           {services.length > 0 ? (
             <ul className="divide-y" style={{ borderColor: LINE }}>
@@ -198,12 +198,12 @@ export default function PixelDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "about") {
     return shell(
       <>
-        {banner("The studio", "We craft websites that work")}
+        {banner("The studio", "about_kicker", "We craft websites that work", "about_title")}
         <section className="mx-auto max-w-3xl px-8 py-20">
           {content.about ? <p data-edit="content.about" className="text-[17px] leading-[1.9]" style={{ color: GREY }}>{content.about}</p> : <p style={{ color: MUTE }}>Our story is coming soon.</p>}
           {content.accreditations && content.accreditations.length > 0 && (
             <>
-              <h3 style={{ ...display, color: PAPER }} className="mt-12 text-xs font-semibold uppercase tracking-[0.22em]">Tools &amp; credentials</h3>
+              <h3 style={{ ...display, color: PAPER }} className="mt-12 text-xs font-semibold uppercase tracking-[0.22em]" {...editCopy(content, "about_tools_heading", "Tools & credentials")} />
               <div className="mt-5 flex flex-wrap gap-3">
                 {content.accreditations.map((a) => (
                   <span key={a} className="rounded-lg border px-4 py-2 text-[12px] font-medium" style={{ borderColor: `${INDIGO}55`, color: PAPER, background: PANEL }}>{a}</span>
@@ -213,7 +213,7 @@ export default function PixelDesign({ site, page = "home", basePath = "" }: Pres
           )}
           {content.service_areas && content.service_areas.length > 0 && (
             <>
-              <h3 style={{ ...display, color: PAPER }} className="mt-12 text-xs font-semibold uppercase tracking-[0.22em]">Who we work with</h3>
+              <h3 style={{ ...display, color: PAPER }} className="mt-12 text-xs font-semibold uppercase tracking-[0.22em]" {...editCopy(content, "about_clients_heading", "Who we work with")} />
               <p className="mt-4 text-[15px] leading-relaxed" style={{ color: MUTE }}>{content.service_areas.join(" · ")}</p>
             </>
           )}
@@ -227,10 +227,10 @@ export default function PixelDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "contact") {
     return shell(
       <>
-        {banner("Get in touch", "Start a project", "Tell us about your project and we'll come back with a plan and a free consultation.")}
+        {banner("Get in touch", "contact_kicker", "Start a project", "contact_title", "Tell us about your project and we'll come back with a plan and a free consultation.", "contact_blurb")}
         <section className="mx-auto grid max-w-7xl gap-12 px-8 py-20 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={{ ...display, color: PAPER }} className="text-2xl font-bold tracking-[-0.01em]">Let&apos;s talk</h2>
+            <h2 style={{ ...display, color: PAPER }} className="text-2xl font-bold tracking-[-0.01em]" {...editCopy(content, "contact_heading", "Let's talk")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: GREY }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -269,7 +269,7 @@ export default function PixelDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Selected work", "Work", "A look at recent websites and products we've designed and shipped.")}
+        {banner("Selected work", "work_kicker", "Work", "work_title", "A look at recent websites and products we've designed and shipped.", "work_blurb")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-7xl px-8 py-16">
             <div className="grid gap-6 sm:grid-cols-2">
@@ -367,10 +367,10 @@ export default function PixelDesign({ site, page = "home", basePath = "" }: Pres
       {content.about && (
         <section className="mx-auto grid max-w-7xl items-center gap-12 px-8 py-24 lg:grid-cols-2 lg:gap-16">
           <div>
-            <Tag color={MINT}>The studio</Tag>
-            <h2 style={{ ...display, color: PAPER }} className="mt-4 text-4xl font-bold leading-[1.05] tracking-[-0.02em] sm:text-5xl">Design and build, under one roof</h2>
+            <Tag color={MINT}><span {...editCopy(content, "home_about_kicker", "The studio")} /></Tag>
+            <h2 style={{ ...display, color: PAPER }} className="mt-4 text-4xl font-bold leading-[1.05] tracking-[-0.02em] sm:text-5xl" {...editCopy(content, "home_about_heading", "Design and build, under one roof")} />
             <p data-edit="content.about" className="mt-6 text-[16px] leading-[1.9]" style={{ color: GREY }}>{content.about}</p>
-            <a href={href("about")} className="mt-6 inline-flex items-center gap-2 text-[13px] font-semibold tracking-wide" style={{ color: INDIGO }}>More about the studio →</a>
+            <a href={href("about")} className="mt-6 inline-flex items-center gap-2 text-[13px] font-semibold tracking-wide" style={{ color: INDIGO }} {...editCopy(content, "home_about_link", "More about the studio →")} />
           </div>
           <div className="relative">
             <div className="overflow-hidden rounded-2xl" style={{ background: CARD, border: `1px solid ${LINE}` }}>
@@ -391,8 +391,8 @@ export default function PixelDesign({ site, page = "home", basePath = "" }: Pres
       {services.length > 0 && (
         <section style={{ background: PANEL, borderTop: `1px solid ${LINE}`, borderBottom: `1px solid ${LINE}` }}>
           <div className="mx-auto max-w-5xl px-8 py-24">
-            <Tag>What we do</Tag>
-            <h2 style={{ ...display, color: PAPER }} className="mt-4 text-4xl font-bold tracking-[-0.02em] sm:text-5xl">Services</h2>
+            <Tag><span {...editCopy(content, "home_svc_kicker", "What we do")} /></Tag>
+            <h2 style={{ ...display, color: PAPER }} className="mt-4 text-4xl font-bold tracking-[-0.02em] sm:text-5xl" {...editCopy(content, "home_svc_heading", "Services")} />
             <ul className="mt-12 divide-y" style={{ borderColor: LINE }}>
               {services.slice(0, 6).map((s, i) => (
                 <li key={s.id} className="flex items-baseline justify-between gap-8 py-6">
@@ -414,8 +414,8 @@ export default function PixelDesign({ site, page = "home", basePath = "" }: Pres
 
       {/* process band — Discover → Design → Build → Launch */}
       <section className="mx-auto max-w-7xl px-8 py-24">
-        <Tag color={MINT}>How we work</Tag>
-        <h2 style={{ ...display, color: PAPER }} className="mt-4 text-4xl font-bold tracking-[-0.02em] sm:text-5xl">Discover → Design → Build → Launch</h2>
+        <Tag color={MINT}><span {...editCopy(content, "home_process_kicker", "How we work")} /></Tag>
+        <h2 style={{ ...display, color: PAPER }} className="mt-4 text-4xl font-bold tracking-[-0.02em] sm:text-5xl" {...editCopy(content, "home_process_heading", "Discover → Design → Build → Launch")} />
         <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
           {process.map((p, i) => (
             <div key={p.k} className="relative rounded-2xl p-6" style={{ background: CARD, border: `1px solid ${LINE}` }}>
@@ -431,8 +431,8 @@ export default function PixelDesign({ site, page = "home", basePath = "" }: Pres
       {gallery.length > 0 && (
         <section style={{ background: PANEL, borderTop: `1px solid ${LINE}`, borderBottom: `1px solid ${LINE}` }}>
           <div className="mx-auto max-w-7xl px-8 py-24">
-            <Tag>Selected work</Tag>
-            <h2 style={{ ...display, color: PAPER }} className="mt-4 text-4xl font-bold tracking-[-0.02em] sm:text-5xl">Recent projects</h2>
+            <Tag><span {...editCopy(content, "home_work_kicker", "Selected work")} /></Tag>
+            <h2 style={{ ...display, color: PAPER }} className="mt-4 text-4xl font-bold tracking-[-0.02em] sm:text-5xl" {...editCopy(content, "home_work_heading", "Recent projects")} />
             <div className="mt-12 grid gap-6 sm:grid-cols-2">
               {gallery.slice(0, 4).map((g) => (
                 <figure key={g.id} className="overflow-hidden rounded-2xl" style={{ background: CARD, border: `1px solid ${LINE}` }}>
@@ -454,7 +454,7 @@ export default function PixelDesign({ site, page = "home", basePath = "" }: Pres
       {/* tech / credibility strip */}
       <section className="mx-auto max-w-7xl px-8 py-20">
         <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-center">
-          <p className="max-w-md text-[15px] leading-relaxed" style={{ color: MUTE }}>Built on a modern, performance-first stack — fast, accessible and SEO-ready by default.</p>
+          <p className="max-w-md text-[15px] leading-relaxed" style={{ color: MUTE }} {...editCopy(content, "home_tech_blurb", "Built on a modern, performance-first stack — fast, accessible and SEO-ready by default.")} />
           <div className="flex flex-wrap gap-2">
             {(content.accreditations && content.accreditations.length > 0
               ? content.accreditations
@@ -471,8 +471,8 @@ export default function PixelDesign({ site, page = "home", basePath = "" }: Pres
         <div className="pointer-events-none absolute inset-0" style={{ background: "radial-gradient(60% 80% at 70% 50%, rgba(75,107,251,0.2), transparent 70%)" }} />
         <div className="relative mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 px-8 py-20 sm:flex-row sm:items-center">
           <div>
-            <h2 style={{ ...display, color: PAPER }} className="text-3xl font-bold leading-[1.05] tracking-[-0.02em] sm:text-4xl">Got a project in mind?</h2>
-            <p className="mt-3 text-[15px]" style={{ color: GREY }}>Free, no-obligation project consultation. Let&apos;s build something great.</p>
+            <h2 style={{ ...display, color: PAPER }} className="text-3xl font-bold leading-[1.05] tracking-[-0.02em] sm:text-4xl" {...editCopy(content, "cta_heading", "Got a project in mind?")} />
+            <p className="mt-3 text-[15px]" style={{ color: GREY }} {...editCopy(content, "cta_sub", "Free, no-obligation project consultation. Let's build something great.")} />
           </div>
           <div className="flex flex-wrap gap-3">
             {btnPrimary(ctaLabel, cta)}

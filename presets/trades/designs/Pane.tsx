@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { PaneHeader, PaneMark } from "./PaneHeader";
 import { TradesSocialIcon } from "./TradesMobileNav";
@@ -129,7 +129,7 @@ export default function PaneDesign({ site, page = "home", basePath = "" }: Prese
           )}
         </div>
         <div>
-          <h4 style={display} className="text-xs font-extrabold uppercase tracking-[0.2em] text-white/90">Company</h4>
+          <h4 style={display} className="text-xs font-extrabold uppercase tracking-[0.2em] text-white/90" {...editCopy(content, "footer_company", "Company")} />
           <ul className="mt-5 space-y-3 text-sm text-white/65">
             {nav.map((l) => (
               <li key={l.label}><a href={l.href} className="transition hover:text-white">{l.label}</a></li>
@@ -137,7 +137,7 @@ export default function PaneDesign({ site, page = "home", basePath = "" }: Prese
           </ul>
         </div>
         <div>
-          <h4 style={display} className="text-xs font-extrabold uppercase tracking-[0.2em] text-white/90">Contact</h4>
+          <h4 style={display} className="text-xs font-extrabold uppercase tracking-[0.2em] text-white/90" {...editCopy(content, "footer_contact", "Contact")} />
           <div className="mt-5 space-y-3 text-sm text-white/65">
             {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -145,7 +145,7 @@ export default function PaneDesign({ site, page = "home", basePath = "" }: Prese
           </div>
         </div>
         <div>
-          <h4 style={display} className="text-xs font-extrabold uppercase tracking-[0.2em] text-white/90">Hours</h4>
+          <h4 style={display} className="text-xs font-extrabold uppercase tracking-[0.2em] text-white/90" {...editCopy(content, "footer_hours", "Hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm text-white/65">
               {content.hours.map((h, i) => (
@@ -171,12 +171,12 @@ export default function PaneDesign({ site, page = "home", basePath = "" }: Prese
   );
 
   // Inner-page banner: navy with a faint pane-grid + glint, matching the hero signature.
-  const banner = (kicker: string, title: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string) => (
     <section className="relative isolate overflow-hidden" style={{ background: NAVY }}>
       <PaneGrid />
       <div className="relative mx-auto max-w-7xl px-8 pb-14 pt-32 text-white sm:pt-40">
-        <Kicker light>{kicker}</Kicker>
-        <h1 style={display} className="mt-4 text-4xl font-extrabold leading-[0.98] tracking-tight sm:text-6xl">{title}</h1>
+        <Kicker light><span {...editCopy(content, kickerKey, kicker)} /></Kicker>
+        <h1 style={display} className="mt-4 text-4xl font-extrabold leading-[0.98] tracking-tight sm:text-6xl" {...editCopy(content, titleKey, title)} />
       </div>
     </section>
   );
@@ -185,7 +185,7 @@ export default function PaneDesign({ site, page = "home", basePath = "" }: Prese
   if (page === "services") {
     return shell(
       <>
-        {banner("What we clean", "Our Services")}
+        {banner("What we clean", "svc_kicker", "Our Services", "svc_title")}
         <section className="mx-auto max-w-5xl px-8 py-20">
           {services.length > 0 ? (
             <ul className="divide-y" style={{ borderColor: LINE }}>
@@ -213,12 +213,12 @@ export default function PaneDesign({ site, page = "home", basePath = "" }: Prese
   if (page === "about") {
     return shell(
       <>
-        {banner("Who we are", "Reliable, every visit")}
+        {banner("Who we are", "about_kicker", "Reliable, every visit", "about_title")}
         <section className="mx-auto max-w-3xl px-8 py-20">
           {content.about ? <p data-edit="content.about" className="text-[17px] leading-[1.9]" style={{ color: MUTE }}>{content.about}</p> : <p style={{ color: MUTE }}>Our story is coming soon.</p>}
           {content.accreditations && content.accreditations.length > 0 && (
             <>
-              <h3 style={{ ...display, color: NAVY }} className="mt-12 text-xs font-extrabold uppercase tracking-[0.2em]">Insured &amp; accredited</h3>
+              <h3 style={{ ...display, color: NAVY }} className="mt-12 text-xs font-extrabold uppercase tracking-[0.2em]" {...editCopy(content, "about_insured_heading", "Insured & accredited")} />
               <div className="mt-5 flex flex-wrap gap-3">
                 {content.accreditations.map((a) => (
                   <span key={a} className="rounded-full border-2 px-4 py-2 text-[11px] font-bold uppercase tracking-[0.12em]" style={{ borderColor: `${SKY}55`, color: NAVY }}>{a}</span>
@@ -228,7 +228,7 @@ export default function PaneDesign({ site, page = "home", basePath = "" }: Prese
           )}
           {content.service_areas && content.service_areas.length > 0 && (
             <>
-              <h3 style={{ ...display, color: NAVY }} className="mt-12 text-xs font-extrabold uppercase tracking-[0.2em]">Areas we cover</h3>
+              <h3 style={{ ...display, color: NAVY }} className="mt-12 text-xs font-extrabold uppercase tracking-[0.2em]" {...editCopy(content, "about_areas_heading", "Areas we cover")} />
               <p className="mt-4 text-[15px] leading-relaxed" style={{ color: MUTE }}>{content.service_areas.join(" · ")}</p>
             </>
           )}
@@ -242,10 +242,10 @@ export default function PaneDesign({ site, page = "home", basePath = "" }: Prese
   if (page === "contact") {
     return shell(
       <>
-        {banner("Get in touch", "Request A Quote")}
+        {banner("Get in touch", "contact_kicker", "Request A Quote", "contact_title")}
         <section className="mx-auto grid max-w-7xl gap-12 px-8 py-20 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={{ ...display, color: NAVY }} className="text-2xl font-extrabold tracking-tight">Speak to the team</h2>
+            <h2 style={{ ...display, color: NAVY }} className="text-2xl font-extrabold tracking-tight" {...editCopy(content, "contact_team_heading", "Speak to the team")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: MUTE }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-[color:#14344C]" style={{ color: MUTE }}>{content.phone}</a>}
@@ -284,7 +284,7 @@ export default function PaneDesign({ site, page = "home", basePath = "" }: Prese
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Recent rounds", "Our Work")}
+        {banner("Recent rounds", "gallery_kicker", "Our Work", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-7xl px-2 py-12 sm:px-4">
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
@@ -336,7 +336,7 @@ export default function PaneDesign({ site, page = "home", basePath = "" }: Prese
             <span data-edit="content.tagline" className="block">{content.tagline ?? "Crystal-clear, every time."}</span>
           </h1>
           <p data-edit="tenant.business_name" className="mt-5 text-sm font-bold uppercase tracking-[0.22em] text-white/70">{name}</p>
-          <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-white/80">Reliable residential &amp; commercial rounds with pure-water reach-&amp;-wash poles — left spotless, dry and streak-free.</p>
+          <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-white/80" {...editCopy(content, "hero_sub", "Reliable residential & commercial rounds with pure-water reach-&-wash poles — left spotless, dry and streak-free.")} />
           <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:gap-4">
             {btnPrimary(ctaLabel, cta)}
             {phone && btnOnDark(`Call ${phone}`, `tel:${phone}`)}
@@ -368,10 +368,10 @@ export default function PaneDesign({ site, page = "home", basePath = "" }: Prese
       {content.about && (
         <section className="mx-auto grid max-w-7xl items-center gap-12 px-8 py-24 lg:grid-cols-2 lg:gap-16">
           <div>
-            <Kicker>Who we are</Kicker>
-            <h2 style={{ ...display, color: NAVY }} className="mt-4 text-4xl font-extrabold leading-[0.98] tracking-tight sm:text-5xl">A round you can rely on</h2>
+            <Kicker><span {...editCopy(content, "home_about_kicker", "Who we are")} /></Kicker>
+            <h2 style={{ ...display, color: NAVY }} className="mt-4 text-4xl font-extrabold leading-[0.98] tracking-tight sm:text-5xl" {...editCopy(content, "home_about_heading", "A round you can rely on")} />
             <p data-edit="content.about" className="mt-6 text-[16px] leading-[1.9]" style={{ color: MUTE }}>{content.about}</p>
-            <a href={href("about")} className="mt-6 inline-flex items-center gap-2 text-[12px] font-extrabold uppercase tracking-[0.16em]" style={{ color: SKY }}>More about us →</a>
+            <a href={href("about")} className="mt-6 inline-flex items-center gap-2 text-[12px] font-extrabold uppercase tracking-[0.16em]" style={{ color: SKY }} {...editCopy(content, "home_about_link", "More about us →")} />
           </div>
           <div className="relative">
             {gallery[0] ? (
@@ -391,8 +391,8 @@ export default function PaneDesign({ site, page = "home", basePath = "" }: Prese
       {services.length > 0 ? (
         <section style={{ background: GREY }}>
           <div className="mx-auto max-w-5xl px-8 py-24">
-            <Kicker>What we clean</Kicker>
-            <h2 style={{ ...display, color: NAVY }} className="mt-4 text-4xl font-extrabold tracking-tight sm:text-5xl">Our services</h2>
+            <Kicker><span {...editCopy(content, "home_services_kicker", "What we clean")} /></Kicker>
+            <h2 style={{ ...display, color: NAVY }} className="mt-4 text-4xl font-extrabold tracking-tight sm:text-5xl" {...editCopy(content, "home_services_heading", "Our services")} />
             <ul className="mt-10 divide-y" style={{ borderColor: LINE }}>
               {services.slice(0, 6).map((s, i) => (
                 <li key={s.id} className="flex items-start justify-between gap-8 py-6">
@@ -414,8 +414,8 @@ export default function PaneDesign({ site, page = "home", basePath = "" }: Prese
         // fallback "what we clean" chips when no catalog yet
         <section style={{ background: GREY }}>
           <div className="mx-auto max-w-5xl px-8 py-24">
-            <Kicker>What we clean</Kicker>
-            <h2 style={{ ...display, color: NAVY }} className="mt-4 text-4xl font-extrabold tracking-tight sm:text-5xl">From glass to gutters</h2>
+            <Kicker><span {...editCopy(content, "home_clean_kicker", "What we clean")} /></Kicker>
+            <h2 style={{ ...display, color: NAVY }} className="mt-4 text-4xl font-extrabold tracking-tight sm:text-5xl" {...editCopy(content, "home_clean_heading", "From glass to gutters")} />
             <div className="mt-10 flex flex-wrap gap-3">
               {whatWeClean.map((w) => (
                 <span key={w} className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-sm font-bold" style={{ color: NAVY, border: `1px solid ${LINE}` }}>
@@ -432,10 +432,10 @@ export default function PaneDesign({ site, page = "home", basePath = "" }: Prese
       <section className="mx-auto max-w-7xl px-8 py-24">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
-            <Kicker>Regular rounds</Kicker>
-            <h2 style={{ ...display, color: NAVY }} className="mt-4 text-4xl font-extrabold tracking-tight sm:text-5xl">Pick your schedule</h2>
+            <Kicker><span {...editCopy(content, "home_rounds_kicker", "Regular rounds")} /></Kicker>
+            <h2 style={{ ...display, color: NAVY }} className="mt-4 text-4xl font-extrabold tracking-tight sm:text-5xl" {...editCopy(content, "home_rounds_heading", "Pick your schedule")} />
           </div>
-          <p className="max-w-sm text-sm leading-relaxed" style={{ color: MUTE }}>We text the night before and clean front &amp; back. No contracts — cancel any time.</p>
+          <p className="max-w-sm text-sm leading-relaxed" style={{ color: MUTE }} {...editCopy(content, "home_rounds_sub", "We text the night before and clean front & back. No contracts — cancel any time.")} />
         </div>
         <div className="mt-10 grid gap-5 sm:grid-cols-3">
           {plans.map((p, i) => (
@@ -455,8 +455,8 @@ export default function PaneDesign({ site, page = "home", basePath = "" }: Prese
       {gallery.length > 0 && (
         <section style={{ background: GREY }}>
           <div className="mx-auto max-w-7xl px-8 py-24">
-            <Kicker>Recent rounds</Kicker>
-            <h2 style={{ ...display, color: NAVY }} className="mt-4 text-4xl font-extrabold tracking-tight sm:text-5xl">Our work</h2>
+            <Kicker><span {...editCopy(content, "home_work_kicker", "Recent rounds")} /></Kicker>
+            <h2 style={{ ...display, color: NAVY }} className="mt-4 text-4xl font-extrabold tracking-tight sm:text-5xl" {...editCopy(content, "home_work_heading", "Our work")} />
             <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
               {gallery.slice(0, 4).map((g) => (
                 // eslint-disable-next-line @next/next/no-img-element
@@ -473,8 +473,8 @@ export default function PaneDesign({ site, page = "home", basePath = "" }: Prese
         <section className="relative isolate overflow-hidden" style={{ background: NAVY }}>
           <PaneGrid />
           <div className="relative mx-auto max-w-7xl px-8 py-20 text-white">
-            <Kicker light>Areas covered</Kicker>
-            <h2 style={display} className="mt-4 text-3xl font-extrabold tracking-tight sm:text-4xl">On the round near you</h2>
+            <Kicker light><span {...editCopy(content, "home_areas_kicker", "Areas covered")} /></Kicker>
+            <h2 style={display} className="mt-4 text-3xl font-extrabold tracking-tight sm:text-4xl" {...editCopy(content, "home_areas_heading", "On the round near you")} />
             <p className="mt-6 max-w-4xl text-lg leading-relaxed text-white/75">{content.service_areas.join(" · ")}</p>
           </div>
         </section>
@@ -484,8 +484,8 @@ export default function PaneDesign({ site, page = "home", basePath = "" }: Prese
       <section style={{ background: SKY }}>
         <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 px-8 py-16 sm:flex-row sm:items-center" style={{ color: WHITE }}>
           <div>
-            <h2 style={display} className="text-3xl font-extrabold leading-[0.98] tracking-tight sm:text-4xl">Ready for streak-free windows?</h2>
-            <p className="mt-2 text-sm font-bold uppercase tracking-[0.12em]" style={{ color: "#ffffffcc" }}>Free, no-obligation quotes.</p>
+            <h2 style={display} className="text-3xl font-extrabold leading-[0.98] tracking-tight sm:text-4xl" {...editCopy(content, "cta_heading", "Ready for streak-free windows?")} />
+            <p className="mt-2 text-sm font-bold uppercase tracking-[0.12em]" style={{ color: "#ffffffcc" }} {...editCopy(content, "cta_sub", "Free, no-obligation quotes.")} />
           </div>
           <a href={phone ? `tel:${phone}` : cta} className="rounded-full px-9 py-4 text-[12px] font-extrabold uppercase tracking-[0.14em] transition hover:brightness-105" style={{ background: NAVY, color: WHITE }}>
             {phone ? `Call ${phone}` : ctaLabel}

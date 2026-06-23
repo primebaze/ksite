@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { RenderHeader } from "./RenderHeader";
 import { TradesSocialIcon } from "./TradesMobileNav";
@@ -116,7 +116,7 @@ export default function RenderDesign({ site, page = "home", basePath = "" }: Pre
           )}
         </div>
         <div>
-          <h4 style={display} className="text-xs font-semibold uppercase tracking-[0.24em]" >Company</h4>
+          <h4 style={display} className="text-xs font-semibold uppercase tracking-[0.24em]" {...editCopy(content, "footer_company", "Company")} />
           <ul className="mt-5 space-y-3 text-sm" style={{ color: "#A9A498" }}>
             {nav.map((l) => (
               <li key={l.label}><a href={l.href} className="transition hover:text-white">{l.label}</a></li>
@@ -124,7 +124,7 @@ export default function RenderDesign({ site, page = "home", basePath = "" }: Pre
           </ul>
         </div>
         <div>
-          <h4 style={display} className="text-xs font-semibold uppercase tracking-[0.24em]">Contact</h4>
+          <h4 style={display} className="text-xs font-semibold uppercase tracking-[0.24em]" {...editCopy(content, "footer_contact", "Contact")} />
           <div className="mt-5 space-y-3 text-sm" style={{ color: "#A9A498" }}>
             {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -132,7 +132,7 @@ export default function RenderDesign({ site, page = "home", basePath = "" }: Pre
           </div>
         </div>
         <div>
-          <h4 style={display} className="text-xs font-semibold uppercase tracking-[0.24em]">Hours</h4>
+          <h4 style={display} className="text-xs font-semibold uppercase tracking-[0.24em]" {...editCopy(content, "footer_hours", "Hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm" style={{ color: "#A9A498" }}>
               {content.hours.map((h, i) => (
@@ -158,11 +158,11 @@ export default function RenderDesign({ site, page = "home", basePath = "" }: Pre
   );
 
   // Inner-page banner: a smooth trowelled plaster band, sand hairline below.
-  const banner = (kicker: string, title: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string) => (
     <section style={{ background: sweep(CARD, PLASTER), borderBottom: `1px solid ${SAND}` }}>
       <div className="mx-auto max-w-7xl px-8 pb-16 pt-36 sm:pt-44">
-        <Kicker>{kicker}</Kicker>
-        <h1 style={{ ...display, color: INK }} className="mt-5 text-4xl font-semibold leading-[1.02] tracking-tight sm:text-6xl">{title}</h1>
+        <Kicker><span {...editCopy(content, kickerKey, kicker)} /></Kicker>
+        <h1 style={{ ...display, color: INK }} className="mt-5 text-4xl font-semibold leading-[1.02] tracking-tight sm:text-6xl" {...editCopy(content, titleKey, title)} />
       </div>
     </section>
   );
@@ -171,7 +171,7 @@ export default function RenderDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "services") {
     return shell(
       <>
-        {banner("What we do", "Our services")}
+        {banner("What we do", "svc_kicker", "Our services", "svc_title")}
         <section className="mx-auto max-w-4xl px-8 py-20">
           {services.length > 0 ? (
             <ul className="divide-y" style={{ borderColor: `${PUTTY}80` }}>
@@ -196,12 +196,12 @@ export default function RenderDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "about") {
     return shell(
       <>
-        {banner("Who we are", "A flawless finish, every time")}
+        {banner("Who we are", "about_kicker", "A flawless finish, every time", "about_title")}
         <section className="mx-auto max-w-3xl px-8 py-20">
           {content.about ? <p data-edit="content.about" className="text-[17px] leading-[1.9]" style={{ color: MUTE }}>{content.about}</p> : <p style={{ color: MUTE }}>Our story is coming soon.</p>}
           {content.accreditations && content.accreditations.length > 0 && (
             <>
-              <h3 style={{ ...display, color: INK }} className="mt-12 text-xs font-semibold uppercase tracking-[0.24em]" >Accredited &amp; insured</h3>
+              <h3 style={{ ...display, color: INK }} className="mt-12 text-xs font-semibold uppercase tracking-[0.24em]" {...editCopy(content, "about_accredited_heading", "Accredited & insured")} />
               <div className="mt-5 flex flex-wrap gap-3">
                 {content.accreditations.map((a) => (
                   <span key={a} className="rounded-full px-4 py-2 text-[11px] font-medium uppercase tracking-[0.14em]" style={{ background: CARD, border: `1px solid ${SAND}`, color: INK }}>{a}</span>
@@ -211,7 +211,7 @@ export default function RenderDesign({ site, page = "home", basePath = "" }: Pre
           )}
           {content.service_areas && content.service_areas.length > 0 && (
             <>
-              <h3 style={{ ...display, color: INK }} className="mt-12 text-xs font-semibold uppercase tracking-[0.24em]" >Areas we cover</h3>
+              <h3 style={{ ...display, color: INK }} className="mt-12 text-xs font-semibold uppercase tracking-[0.24em]" {...editCopy(content, "about_areas_heading", "Areas we cover")} />
               <p className="mt-4 text-[15px] leading-relaxed" style={{ color: MUTE }}>{content.service_areas.join(" · ")}</p>
             </>
           )}
@@ -225,10 +225,10 @@ export default function RenderDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "contact") {
     return shell(
       <>
-        {banner("Get in touch", "Request a quote")}
+        {banner("Get in touch", "contact_kicker", "Request a quote", "contact_title")}
         <section className="mx-auto grid max-w-7xl gap-12 px-8 py-20 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={{ ...display, color: INK }} className="text-2xl font-semibold tracking-tight" >Talk to a plasterer</h2>
+            <h2 style={{ ...display, color: INK }} className="text-2xl font-semibold tracking-tight" {...editCopy(content, "contact_lead_heading", "Talk to a plasterer")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: MUTE }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-[#2A2C2E]">{content.phone}</a>}
@@ -267,7 +267,7 @@ export default function RenderDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Recent work", "Rough to smooth")}
+        {banner("Recent work", "gallery_kicker", "Rough to smooth", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-7xl px-8 py-16">
             <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -342,7 +342,7 @@ export default function RenderDesign({ site, page = "home", basePath = "" }: Pre
       <section style={{ background: INK }}>
         <div className="mx-auto max-w-7xl px-8 py-12">
           <div className="flex flex-wrap items-center gap-x-3 gap-y-3">
-            <span className="mr-2 text-[11px] font-semibold uppercase tracking-[0.28em]" style={{ color: SAND }}>What we do</span>
+            <span className="mr-2 text-[11px] font-semibold uppercase tracking-[0.28em]" style={{ color: SAND }} {...editCopy(content, "home_disciplines_label", "What we do")} />
             {whatWeDo.map((w) => (
               <span key={w} className="rounded-full px-4 py-1.5 text-[13px] tracking-wide" style={{ background: "#ffffff10", color: "#E6E2DA", border: `1px solid ${STEEL}55` }}>{w}</span>
             ))}
@@ -364,8 +364,8 @@ export default function RenderDesign({ site, page = "home", basePath = "" }: Pre
             </div>
           </div>
           <div className="order-1 lg:order-2">
-            <Kicker>Who we are</Kicker>
-            <h2 style={{ ...display, color: INK }} className="mt-5 text-4xl font-semibold leading-[1.05] tracking-tight sm:text-5xl">The smoothest finish on the street</h2>
+            <Kicker><span {...editCopy(content, "home_about_kicker", "Who we are")} /></Kicker>
+            <h2 style={{ ...display, color: INK }} className="mt-5 text-4xl font-semibold leading-[1.05] tracking-tight sm:text-5xl" {...editCopy(content, "home_about_heading", "The smoothest finish on the street")} />
             <p data-edit="content.about" className="mt-6 text-[16px] leading-[1.9]" style={{ color: MUTE }}>{content.about}</p>
             <a href={href("about")} className="mt-7 inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-[0.2em]" style={{ color: STEEL }}>More about us →</a>
           </div>
@@ -376,8 +376,8 @@ export default function RenderDesign({ site, page = "home", basePath = "" }: Pre
       {services.length > 0 && (
         <section style={{ background: sweep(CARD, PLASTER), borderTop: `1px solid ${SAND}`, borderBottom: `1px solid ${SAND}` }}>
           <div className="mx-auto max-w-4xl px-8 py-24">
-            <Kicker>What we do</Kicker>
-            <h2 style={{ ...display, color: INK }} className="mt-5 text-4xl font-semibold tracking-tight sm:text-5xl">Our services</h2>
+            <Kicker><span {...editCopy(content, "home_services_kicker", "What we do")} /></Kicker>
+            <h2 style={{ ...display, color: INK }} className="mt-5 text-4xl font-semibold tracking-tight sm:text-5xl" {...editCopy(content, "home_services_heading", "Our services")} />
             <ul className="mt-12 divide-y" style={{ borderColor: `${PUTTY}80` }}>
               {services.slice(0, 6).map((s) => (
                 <li key={s.id} className="flex items-start justify-between gap-8 py-7">
@@ -396,8 +396,8 @@ export default function RenderDesign({ site, page = "home", basePath = "" }: Pre
 
       {/* smooth process — 3-step strip */}
       <section className="mx-auto max-w-7xl px-8 py-24">
-        <Kicker>How it works</Kicker>
-        <h2 style={{ ...display, color: INK }} className="mt-5 text-4xl font-semibold tracking-tight sm:text-5xl">A smooth process</h2>
+        <Kicker><span {...editCopy(content, "home_process_kicker", "How it works")} /></Kicker>
+        <h2 style={{ ...display, color: INK }} className="mt-5 text-4xl font-semibold tracking-tight sm:text-5xl" {...editCopy(content, "home_process_heading", "A smooth process")} />
         <div className="mt-12 grid gap-6 md:grid-cols-3">
           {steps.map((s) => (
             <div key={s.n} className="rounded-[22px] p-8" style={{ background: CARD, border: `1px solid ${PUTTY}55` }}>
@@ -414,9 +414,9 @@ export default function RenderDesign({ site, page = "home", basePath = "" }: Pre
         <section style={{ background: INK }}>
           <div className="mx-auto max-w-7xl px-8 py-24">
             <span className="inline-flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.28em]" style={{ color: SAND }}>
-              <span className="inline-block h-[2px] w-7 rounded-full" style={{ background: SAND }} />Recent work
+              <span className="inline-block h-[2px] w-7 rounded-full" style={{ background: SAND }} /><span {...editCopy(content, "home_work_kicker", "Recent work")} />
             </span>
-            <h2 style={{ ...display, color: PLASTER }} className="mt-5 text-4xl font-semibold tracking-tight sm:text-5xl">Rough to smooth</h2>
+            <h2 style={{ ...display, color: PLASTER }} className="mt-5 text-4xl font-semibold tracking-tight sm:text-5xl" {...editCopy(content, "home_work_heading", "Rough to smooth")} />
             <div className="mt-10 grid grid-cols-2 gap-4 sm:grid-cols-4">
               {gallery.slice(0, 4).map((g) => (
                 <figure key={g.id} className="overflow-hidden rounded-2xl" style={{ border: `1px solid ${STEEL}55` }}>
@@ -434,7 +434,7 @@ export default function RenderDesign({ site, page = "home", basePath = "" }: Pre
       {content.service_areas && content.service_areas.length > 0 && (
         <section style={{ background: sweep(SAND, CARD) }}>
           <div className="mx-auto max-w-7xl px-8 py-16">
-            <span className="text-[11px] font-semibold uppercase tracking-[0.28em]" style={{ color: STEEL }}>Areas we cover</span>
+            <span className="text-[11px] font-semibold uppercase tracking-[0.28em]" style={{ color: STEEL }} {...editCopy(content, "home_areas_label", "Areas we cover")} />
             <div className="mt-5 flex flex-wrap gap-x-6 gap-y-3 text-lg" style={{ ...display, color: INK }}>
               {content.service_areas.map((a, i) => (
                 <span key={a} className="inline-flex items-center gap-6">
@@ -451,8 +451,8 @@ export default function RenderDesign({ site, page = "home", basePath = "" }: Pre
       <section style={{ background: INK }}>
         <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 px-8 py-16 sm:flex-row sm:items-center">
           <div>
-            <h2 style={{ ...display, color: PLASTER }} className="text-3xl font-semibold leading-[1.05] tracking-tight sm:text-4xl">Ready for walls worth touching?</h2>
-            <p className="mt-2 text-sm tracking-[0.04em]" style={{ color: "#A9A498" }}>Free, no-obligation quotes — a clean, flawless finish guaranteed.</p>
+            <h2 style={{ ...display, color: PLASTER }} className="text-3xl font-semibold leading-[1.05] tracking-tight sm:text-4xl" {...editCopy(content, "cta_heading", "Ready for walls worth touching?")} />
+            <p className="mt-2 text-sm tracking-[0.04em]" style={{ color: "#A9A498" }} {...editCopy(content, "cta_sub", "Free, no-obligation quotes — a clean, flawless finish guaranteed.")} />
           </div>
           <a href={phone ? `tel:${phone}` : cta} className="rounded-full px-9 py-4 text-[12px] font-semibold uppercase tracking-[0.18em] transition hover:brightness-110" style={{ background: SAND, color: INK }}>
             {phone ? `Call ${phone}` : ctaLabel}

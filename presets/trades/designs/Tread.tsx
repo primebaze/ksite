@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { CSSProperties, ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { TreadHeader } from "./TreadHeader";
 import { TradesSocialIcon } from "./TradesMobileNav";
@@ -137,7 +137,7 @@ export default function TreadDesign({ site, page = "home", basePath = "" }: Pres
           )}
         </div>
         <div>
-          <h4 style={display} className="text-xs font-extrabold uppercase tracking-[0.22em] text-white/45">Fitting centre</h4>
+          <h4 style={display} className="text-xs font-extrabold uppercase tracking-[0.22em] text-white/45" {...editCopy(content, "footer_fittingcentre", "Fitting centre")} />
           <ul className="mt-5 space-y-3 text-sm" style={{ color: GREY }}>
             {nav.map((l) => (
               <li key={l.label}><a href={l.href} className="transition hover:text-white">{l.label}</a></li>
@@ -145,7 +145,7 @@ export default function TreadDesign({ site, page = "home", basePath = "" }: Pres
           </ul>
         </div>
         <div>
-          <h4 style={display} className="text-xs font-extrabold uppercase tracking-[0.22em] text-white/45">Contact</h4>
+          <h4 style={display} className="text-xs font-extrabold uppercase tracking-[0.22em] text-white/45" {...editCopy(content, "footer_contact", "Contact")} />
           <div className="mt-5 space-y-3 text-sm" style={{ color: GREY }}>
             {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -153,7 +153,7 @@ export default function TreadDesign({ site, page = "home", basePath = "" }: Pres
           </div>
         </div>
         <div>
-          <h4 style={display} className="text-xs font-extrabold uppercase tracking-[0.22em] text-white/45">Hours</h4>
+          <h4 style={display} className="text-xs font-extrabold uppercase tracking-[0.22em] text-white/45" {...editCopy(content, "footer_hours", "Hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm" style={{ color: GREY }}>
               {content.hours.map((h, i) => (
@@ -178,12 +178,12 @@ export default function TreadDesign({ site, page = "home", basePath = "" }: Pres
     </div>
   );
 
-  const banner = (kicker: string, title: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string) => (
     <section className="relative overflow-hidden" style={{ background: SLATE, borderBottom: `3px solid ${ORANGE}` }}>
       <Rim className="pointer-events-none absolute -right-16 -top-16 h-80 w-80" stroke="#ffffff" opacity={0.06} />
       <div className="relative mx-auto max-w-7xl px-8 pb-14 pt-32 sm:pt-40">
-        <Kicker>{kicker}</Kicker>
-        <h1 style={{ ...display, color: WHITE }} className="mt-4 text-4xl font-extrabold uppercase leading-[0.95] tracking-tight sm:text-6xl">{title}</h1>
+        <Kicker><span {...editCopy(content, kickerKey, kicker)} /></Kicker>
+        <h1 style={{ ...display, color: WHITE }} className="mt-4 text-4xl font-extrabold uppercase leading-[0.95] tracking-tight sm:text-6xl" {...editCopy(content, titleKey, title)} />
       </div>
     </section>
   );
@@ -192,7 +192,7 @@ export default function TreadDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "services") {
     return shell(
       <>
-        {banner("What we do", "Tyres & Fitting")}
+        {banner("What we do", "svc_kicker", "Tyres & Fitting", "svc_title")}
         <section className="mx-auto max-w-5xl px-8 py-20">
           {services.length > 0 ? (
             <ul className="divide-y" style={{ borderColor: "#ffffff14" }}>
@@ -217,12 +217,12 @@ export default function TreadDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "about") {
     return shell(
       <>
-        {banner("Who we are", "Fitted Right, Fast")}
+        {banner("Who we are", "about_kicker", "Fitted Right, Fast", "about_title")}
         <section className="mx-auto max-w-3xl px-8 py-20">
           {content.about ? <p data-edit="content.about" className="text-[17px] leading-[1.9]" style={{ color: GREY }}>{content.about}</p> : <p style={{ color: GREY }}>Our story is coming soon.</p>}
           {content.accreditations && content.accreditations.length > 0 && (
             <>
-              <h3 style={{ ...display, color: WHITE }} className="mt-12 text-xs font-extrabold uppercase tracking-[0.22em]">Approved &amp; trusted</h3>
+              <h3 style={{ ...display, color: WHITE }} className="mt-12 text-xs font-extrabold uppercase tracking-[0.22em]" {...editCopy(content, "about_accreditations_heading", "Approved & trusted")} />
               <div className="mt-5 flex flex-wrap gap-3">
                 {content.accreditations.map((a) => (
                   <span key={a} className="rounded-full border-2 px-4 py-2 text-[11px] font-bold uppercase tracking-[0.14em]" style={{ borderColor: `${ORANGE}66`, color: WHITE }}>{a}</span>
@@ -232,7 +232,7 @@ export default function TreadDesign({ site, page = "home", basePath = "" }: Pres
           )}
           {content.service_areas && content.service_areas.length > 0 && (
             <>
-              <h3 style={{ ...display, color: WHITE }} className="mt-12 text-xs font-extrabold uppercase tracking-[0.22em]">Areas we cover</h3>
+              <h3 style={{ ...display, color: WHITE }} className="mt-12 text-xs font-extrabold uppercase tracking-[0.22em]" {...editCopy(content, "about_areas_heading", "Areas we cover")} />
               <p className="mt-4 text-[15px] leading-relaxed" style={{ color: GREY }}>{content.service_areas.join(" · ")}</p>
             </>
           )}
@@ -246,10 +246,10 @@ export default function TreadDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "contact") {
     return shell(
       <>
-        {banner("Get booked in", "Book A Fitting")}
+        {banner("Get booked in", "contact_kicker", "Book A Fitting", "contact_title")}
         <section className="mx-auto grid max-w-7xl gap-12 px-8 py-20 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={{ ...display, color: WHITE }} className="text-2xl font-extrabold uppercase tracking-tight">Find the centre</h2>
+            <h2 style={{ ...display, color: WHITE }} className="text-2xl font-extrabold uppercase tracking-tight" {...editCopy(content, "contact_heading", "Find the centre")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: GREY }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -291,7 +291,7 @@ export default function TreadDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "gallery") {
     return shell(
       <>
-        {banner("In the bay", "Our Work")}
+        {banner("In the bay", "gallery_kicker", "Our Work", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-7xl px-2 py-12 sm:px-4">
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
@@ -334,7 +334,7 @@ export default function TreadDesign({ site, page = "home", basePath = "" }: Pres
             <span data-edit="content.tagline" className="block">{content.tagline ?? "Tyres fitted today, all major brands."}</span>
           </h1>
           <p data-edit="tenant.business_name" className="mt-5 text-sm font-bold uppercase tracking-[0.25em] text-white/70">{name}</p>
-          <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-white/75">New &amp; part-worn tyres, wheel alignment and balancing — fitted while you wait. Free fitting, price-match promise, same-day slots.</p>
+          <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-white/75" {...editCopy(content, "hero_blurb", "New & part-worn tyres, wheel alignment and balancing — fitted while you wait. Free fitting, price-match promise, same-day slots.")} />
           <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:gap-4">
             {btnPrimary(ctaLabel, cta)}
             {phone && btnGhost(`Call ${phone}`, `tel:${phone}`)}
@@ -347,11 +347,11 @@ export default function TreadDesign({ site, page = "home", basePath = "" }: Pres
         <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-5 px-8 py-7 text-black sm:flex-row">
           <div className="flex items-center gap-3">
             <Tread color="#17191C" />
-            <p style={display} className="text-lg font-extrabold uppercase tracking-tight sm:text-xl">Got your reg or tyre size?</p>
+            <p style={display} className="text-lg font-extrabold uppercase tracking-tight sm:text-xl" {...editCopy(content, "home_search_heading", "Got your reg or tyre size?")} />
           </div>
           <div className="flex w-full max-w-md items-center gap-2 sm:w-auto">
-            <span className="flex-1 rounded-full bg-black/10 px-5 py-3 text-sm font-bold uppercase tracking-[0.12em] text-black/60 sm:w-64">e.g. AB12 CDE · 205/55 R16</span>
-            <a href={cta} className="shrink-0 rounded-full bg-black px-6 py-3 text-[12px] font-extrabold uppercase tracking-[0.16em] text-white transition hover:brightness-125">Get price</a>
+            <span className="flex-1 rounded-full bg-black/10 px-5 py-3 text-sm font-bold uppercase tracking-[0.12em] text-black/60 sm:w-64" {...editCopy(content, "home_search_placeholder", "e.g. AB12 CDE · 205/55 R16")} />
+            <a href={cta} className="shrink-0 rounded-full bg-black px-6 py-3 text-[12px] font-extrabold uppercase tracking-[0.16em] text-white transition hover:brightness-125" {...editCopy(content, "home_search_cta", "Get price")} />
           </div>
         </div>
       </section>
@@ -383,10 +383,10 @@ export default function TreadDesign({ site, page = "home", basePath = "" }: Pres
             <span className="pointer-events-none absolute -bottom-2 -left-2 h-16 w-16 rounded-bl-lg" style={{ borderBottom: `4px solid ${ORANGE}`, borderLeft: `4px solid ${ORANGE}` }} />
           </div>
           <div>
-            <Kicker>Who we are</Kicker>
-            <h2 style={{ ...display, color: WHITE }} className="mt-4 text-4xl font-extrabold uppercase leading-[0.95] tracking-tight sm:text-5xl">Fitted right, fitted fast</h2>
+            <Kicker><span {...editCopy(content, "home_about_kicker", "Who we are")} /></Kicker>
+            <h2 style={{ ...display, color: WHITE }} className="mt-4 text-4xl font-extrabold uppercase leading-[0.95] tracking-tight sm:text-5xl" {...editCopy(content, "home_about_heading", "Fitted right, fitted fast")} />
             <p data-edit="content.about" className="mt-6 text-[16px] leading-[1.9]" style={{ color: GREY }}>{content.about}</p>
-            <a href={href("about")} className="mt-6 inline-flex items-center gap-2 text-[12px] font-extrabold uppercase tracking-[0.18em]" style={{ color: ORANGE }}>More about us →</a>
+            <a href={href("about")} className="mt-6 inline-flex items-center gap-2 text-[12px] font-extrabold uppercase tracking-[0.18em]" style={{ color: ORANGE }} {...editCopy(content, "home_about_link", "More about us →")} />
           </div>
         </section>
       )}
@@ -395,8 +395,8 @@ export default function TreadDesign({ site, page = "home", basePath = "" }: Pres
       {services.length > 0 && (
         <section style={{ background: SLATE, borderTop: "1px solid #ffffff12", borderBottom: "1px solid #ffffff12" }}>
           <div className="mx-auto max-w-5xl px-8 py-24">
-            <Kicker>What we do</Kicker>
-            <h2 style={{ ...display, color: WHITE }} className="mt-4 text-4xl font-extrabold uppercase tracking-tight sm:text-5xl">New tyres to alignment</h2>
+            <Kicker><span {...editCopy(content, "home_services_kicker", "What we do")} /></Kicker>
+            <h2 style={{ ...display, color: WHITE }} className="mt-4 text-4xl font-extrabold uppercase tracking-tight sm:text-5xl" {...editCopy(content, "home_services_heading", "New tyres to alignment")} />
             <ul className="mt-12 divide-y" style={{ borderColor: "#ffffff1a" }}>
               {services.slice(0, 6).map((s) => (
                 <li key={s.id} className="flex items-baseline justify-between gap-8 py-5">
@@ -415,8 +415,8 @@ export default function TreadDesign({ site, page = "home", basePath = "" }: Pres
 
       {/* all major brands strip */}
       <section className="mx-auto max-w-7xl px-8 py-20">
-        <Kicker>All major brands</Kicker>
-        <h2 style={{ ...display, color: WHITE }} className="mt-4 text-3xl font-extrabold uppercase tracking-tight sm:text-4xl">Budget to premium, stocked &amp; fitted</h2>
+        <Kicker><span {...editCopy(content, "home_brands_kicker", "All major brands")} /></Kicker>
+        <h2 style={{ ...display, color: WHITE }} className="mt-4 text-3xl font-extrabold uppercase tracking-tight sm:text-4xl" {...editCopy(content, "home_brands_heading", "Budget to premium, stocked & fitted")} />
         <div className="mt-10 grid grid-cols-2 gap-px overflow-hidden rounded-lg sm:grid-cols-4" style={{ background: "#ffffff14" }}>
           {BRANDS.map((b) => (
             <div key={b} className="flex items-center justify-center px-4 py-7 text-center" style={{ background: STEEL }}>
@@ -424,15 +424,15 @@ export default function TreadDesign({ site, page = "home", basePath = "" }: Pres
             </div>
           ))}
         </div>
-        <p className="mt-5 text-sm" style={{ color: GREY }}>Plus quality part-worn tyres — every tyre fitted, balanced and checked.</p>
+        <p className="mt-5 text-sm" style={{ color: GREY }} {...editCopy(content, "home_brands_note", "Plus quality part-worn tyres — every tyre fitted, balanced and checked.")} />
       </section>
 
       {/* work strip */}
       {gallery.length > 0 && (
         <section style={{ background: SLATE, borderTop: "1px solid #ffffff12", borderBottom: "1px solid #ffffff12" }}>
           <div className="mx-auto max-w-7xl px-8 py-24">
-            <Kicker>In the bay</Kicker>
-            <h2 style={{ ...display, color: WHITE }} className="mt-4 text-4xl font-extrabold uppercase tracking-tight sm:text-5xl">Our work</h2>
+            <Kicker><span {...editCopy(content, "home_work_kicker", "In the bay")} /></Kicker>
+            <h2 style={{ ...display, color: WHITE }} className="mt-4 text-4xl font-extrabold uppercase tracking-tight sm:text-5xl" {...editCopy(content, "home_work_heading", "Our work")} />
             <div className="mt-10 grid grid-cols-2 gap-2 sm:grid-cols-4">
               {gallery.slice(0, 4).map((g) => (
                 // eslint-disable-next-line @next/next/no-img-element
@@ -449,9 +449,9 @@ export default function TreadDesign({ site, page = "home", basePath = "" }: Pres
         <section className="mx-auto max-w-7xl px-8 py-20">
           <div className="grid gap-12 lg:grid-cols-[1fr_1.2fr] lg:gap-16">
             <div>
-              <Kicker>Open &amp; fitting</Kicker>
-              <h2 style={{ ...display, color: WHITE }} className="mt-4 text-3xl font-extrabold uppercase tracking-tight sm:text-4xl">Drop in or book ahead</h2>
-              <p className="mt-5 text-[15px] leading-relaxed" style={{ color: GREY }}>Same-day slots most days — and mobile fitting if you can&apos;t come to us.</p>
+              <Kicker><span {...editCopy(content, "home_hours_kicker", "Open & fitting")} /></Kicker>
+              <h2 style={{ ...display, color: WHITE }} className="mt-4 text-3xl font-extrabold uppercase tracking-tight sm:text-4xl" {...editCopy(content, "home_hours_heading", "Drop in or book ahead")} />
+              <p className="mt-5 text-[15px] leading-relaxed" style={{ color: GREY }} {...editCopy(content, "home_hours_sub", "Same-day slots most days — and mobile fitting if you can't come to us.")} />
               <div className="mt-7">{btnPrimary(ctaLabel, cta)}</div>
             </div>
             <ul className="divide-y self-start" style={{ borderColor: "#ffffff14" }}>
@@ -471,8 +471,8 @@ export default function TreadDesign({ site, page = "home", basePath = "" }: Pres
         <Rim className="pointer-events-none absolute -right-10 -top-10 h-64 w-64" stroke="#17191C" opacity={0.12} />
         <div className="relative mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 px-8 py-16 text-black sm:flex-row sm:items-center">
           <div>
-            <h2 style={display} className="text-3xl font-extrabold uppercase leading-[0.95] tracking-tight sm:text-4xl">Need tyres today? Roll in.</h2>
-            <p className="mt-2 text-sm font-bold uppercase tracking-[0.14em] text-black/70">Free fitting · price-match · while you wait.</p>
+            <h2 style={display} className="text-3xl font-extrabold uppercase leading-[0.95] tracking-tight sm:text-4xl" {...editCopy(content, "cta_heading", "Need tyres today? Roll in.")} />
+            <p className="mt-2 text-sm font-bold uppercase tracking-[0.14em] text-black/70" {...editCopy(content, "cta_sub", "Free fitting · price-match · while you wait.")} />
           </div>
           <a href={phone ? `tel:${phone}` : cta} className="rounded-full bg-black px-9 py-4 text-[12px] font-extrabold uppercase tracking-[0.16em] text-white transition hover:brightness-125">{phone ? `Call ${phone}` : ctaLabel}</a>
         </div>

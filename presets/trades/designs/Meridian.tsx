@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { MeridianHeader } from "./MeridianHeader";
 import { TradesSocialIcon } from "./TradesMobileNav";
@@ -65,13 +65,13 @@ export default function MeridianDesign({ site, page = "home", basePath = "" }: P
           )}
         </div>
         <div>
-          <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-white/40">Explore</h4>
+          <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-white/40" {...editCopy(content, "footer_explore", "Explore")} />
           <ul className="mt-5 space-y-3 text-sm text-white/70">
             {nav.map((l) => (<li key={l.label}><a href={l.href} className="transition hover:text-white">{l.label}</a></li>))}
           </ul>
         </div>
         <div>
-          <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-white/40">Contact</h4>
+          <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-white/40" {...editCopy(content, "footer_contact", "Contact")} />
           <div className="mt-5 space-y-3 text-sm text-white/70">
             {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -79,7 +79,7 @@ export default function MeridianDesign({ site, page = "home", basePath = "" }: P
           </div>
         </div>
         <div>
-          <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-white/40">Hours</h4>
+          <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-white/40" {...editCopy(content, "footer_hours", "Hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm text-white/70">
               {content.hours.map((h, i) => (<li key={i} className="flex justify-between gap-5"><span data-edit={`hours:${i}:day`}>{h.day}</span><span data-edit={`hours:${i}:open`} className="text-white/40">{h.open}</span></li>))}
@@ -103,11 +103,11 @@ export default function MeridianDesign({ site, page = "home", basePath = "" }: P
   );
 
   // banner doubles as the spacer clearing the fixed header on sub-pages
-  const banner = (kicker: string, title: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string) => (
     <section style={{ background: SOFT, borderBottom: `1px solid ${LINE}` }}>
       <div className="mx-auto max-w-6xl px-6 pb-16 pt-32 text-center sm:pt-40">
-        <Kicker center>{kicker}</Kicker>
-        <h1 style={{ ...serif, color: INK }} className="mt-4 text-4xl font-medium leading-[1.05] tracking-tight sm:text-5xl">{title}</h1>
+        <Kicker center><span {...editCopy(content, kickerKey, kicker)} /></Kicker>
+        <h1 style={{ ...serif, color: INK }} className="mt-4 text-4xl font-medium leading-[1.05] tracking-tight sm:text-5xl" {...editCopy(content, titleKey, title)} />
       </div>
     </section>
   );
@@ -116,7 +116,7 @@ export default function MeridianDesign({ site, page = "home", basePath = "" }: P
   if (page === "services") {
     return shell(
       <>
-        {banner("What we offer", "Our services")}
+        {banner("What we offer", "svc_kicker", "Our services", "svc_title")}
         <section className="mx-auto max-w-5xl px-6 py-20">
           {services.length > 0 ? (
             <div className="divide-y" style={{ borderColor: LINE }}>
@@ -144,12 +144,12 @@ export default function MeridianDesign({ site, page = "home", basePath = "" }: P
   if (page === "about") {
     return shell(
       <>
-        {banner("About us", "A considered approach")}
+        {banner("About us", "about_kicker", "A considered approach", "about_title")}
         <section className="mx-auto max-w-3xl px-6 py-20">
           {content.about ? <p data-edit="content.about" className="text-[18px] leading-[1.95]" style={{ color: GREY }}>{content.about}</p> : <p style={{ color: GREY }}>Our story is coming soon.</p>}
           {content.accreditations && content.accreditations.length > 0 && (
             <>
-              <h3 style={{ ...serif, color: INK }} className="mt-12 text-2xl font-medium">Accreditations</h3>
+              <h3 style={{ ...serif, color: INK }} className="mt-12 text-2xl font-medium" {...editCopy(content, "about_accreditations_heading", "Accreditations")} />
               <div className="mt-5 flex flex-wrap gap-3">
                 {content.accreditations.map((a) => (<span key={a} className="border px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.12em]" style={{ borderColor: LINE, color: GREY }}>{a}</span>))}
               </div>
@@ -157,7 +157,7 @@ export default function MeridianDesign({ site, page = "home", basePath = "" }: P
           )}
           {content.service_areas && content.service_areas.length > 0 && (
             <>
-              <h3 style={{ ...serif, color: INK }} className="mt-12 text-2xl font-medium">Areas we cover</h3>
+              <h3 style={{ ...serif, color: INK }} className="mt-12 text-2xl font-medium" {...editCopy(content, "about_areas_heading", "Areas we cover")} />
               <p className="mt-4 text-[16px] leading-relaxed" style={{ color: GREY }}>{content.service_areas.join(" · ")}</p>
             </>
           )}
@@ -173,7 +173,7 @@ export default function MeridianDesign({ site, page = "home", basePath = "" }: P
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Our work", "Gallery")}
+        {banner("Our work", "gallery_kicker", "Gallery", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-6xl px-4 py-12">
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
@@ -192,10 +192,10 @@ export default function MeridianDesign({ site, page = "home", basePath = "" }: P
   if (page === "contact") {
     return shell(
       <>
-        {banner("Get in touch", "Let's talk")}
+        {banner("Get in touch", "contact_kicker", "Let's talk", "contact_title")}
         <section className="mx-auto grid max-w-6xl gap-12 px-6 py-20 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={{ ...serif, color: INK }} className="text-2xl font-medium">Find us</h2>
+            <h2 style={{ ...serif, color: INK }} className="text-2xl font-medium" {...editCopy(content, "contact_find_heading", "Find us")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: GREY }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-[#9a7b4f]">{content.phone}</a>}
@@ -265,10 +265,10 @@ export default function MeridianDesign({ site, page = "home", basePath = "" }: P
             <span className="pointer-events-none absolute -bottom-3 -right-3 h-20 w-20" style={{ borderBottom: `1px solid ${GOLD}`, borderRight: `1px solid ${GOLD}` }} />
           </div>
           <div>
-            <Kicker>About us</Kicker>
-            <h2 style={{ ...serif, color: INK }} className="mt-4 text-4xl font-medium leading-tight tracking-tight sm:text-5xl">A standard you can feel</h2>
+            <Kicker><span {...editCopy(content, "home_about_kicker", "About us")} /></Kicker>
+            <h2 style={{ ...serif, color: INK }} className="mt-4 text-4xl font-medium leading-tight tracking-tight sm:text-5xl" {...editCopy(content, "home_about_heading", "A standard you can feel")} />
             {content.about && <p data-edit="content.about" className="mt-6 text-[16px] leading-[1.9]" style={{ color: GREY }}>{content.about}</p>}
-            <a href={href("about")} className="mt-7 inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-[0.16em]" style={{ color: GOLD }}>Read more →</a>
+            <a href={href("about")} className="mt-7 inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-[0.16em]" style={{ color: GOLD }} {...editCopy(content, "home_about_link", "Read more →")} />
           </div>
         </section>
       )}
@@ -278,8 +278,8 @@ export default function MeridianDesign({ site, page = "home", basePath = "" }: P
         <section style={{ background: SOFT, borderTop: `1px solid ${LINE}`, borderBottom: `1px solid ${LINE}` }}>
           <div className="mx-auto max-w-5xl px-6 py-24">
             <div className="text-center">
-              <Kicker center>What we offer</Kicker>
-              <h2 style={{ ...serif, color: INK }} className="mt-4 text-3xl font-medium tracking-tight sm:text-4xl">Our services</h2>
+              <Kicker center><span {...editCopy(content, "home_services_kicker", "What we offer")} /></Kicker>
+              <h2 style={{ ...serif, color: INK }} className="mt-4 text-3xl font-medium tracking-tight sm:text-4xl" {...editCopy(content, "home_services_heading", "Our services")} />
             </div>
             <div className="mt-12 divide-y" style={{ borderColor: LINE }}>
               {services.slice(0, 6).map((s, i) => (
@@ -294,7 +294,7 @@ export default function MeridianDesign({ site, page = "home", basePath = "" }: P
               ))}
             </div>
             <div className="mt-12 text-center">
-              <a href={href("services")} className="inline-flex border px-8 py-3.5 text-[12px] font-semibold uppercase tracking-[0.16em] transition hover:bg-white" style={{ borderColor: GOLD, color: GOLD }}>View all services</a>
+              <a href={href("services")} className="inline-flex border px-8 py-3.5 text-[12px] font-semibold uppercase tracking-[0.16em] transition hover:bg-white" style={{ borderColor: GOLD, color: GOLD }} {...editCopy(content, "home_services_link", "View all services")} />
             </div>
           </div>
         </section>
@@ -304,8 +304,8 @@ export default function MeridianDesign({ site, page = "home", basePath = "" }: P
       {gallery.length > 0 && (
         <section className="py-24">
           <div className="mx-auto max-w-6xl px-6 text-center">
-            <Kicker center>Our work</Kicker>
-            <h2 style={{ ...serif, color: INK }} className="mx-auto mt-4 max-w-2xl text-3xl font-medium leading-snug tracking-tight sm:text-4xl">Work we&apos;re proud to put our name to.</h2>
+            <Kicker center><span {...editCopy(content, "home_gallery_kicker", "Our work")} /></Kicker>
+            <h2 style={{ ...serif, color: INK }} className="mx-auto mt-4 max-w-2xl text-3xl font-medium leading-snug tracking-tight sm:text-4xl" {...editCopy(content, "home_gallery_heading", "Work we're proud to put our name to.")} />
           </div>
           <div className="mx-auto mt-12 grid max-w-6xl grid-cols-2 gap-3 px-4 sm:grid-cols-4">
             {gallery.slice(0, 4).map((g) => (
@@ -314,7 +314,7 @@ export default function MeridianDesign({ site, page = "home", basePath = "" }: P
             ))}
           </div>
           <div className="mt-10 text-center">
-            <a href={href("gallery")} className="inline-flex border px-8 py-3.5 text-[12px] font-semibold uppercase tracking-[0.16em] transition hover:bg-neutral-50" style={{ borderColor: INK, color: INK }}>View gallery</a>
+            <a href={href("gallery")} className="inline-flex border px-8 py-3.5 text-[12px] font-semibold uppercase tracking-[0.16em] transition hover:bg-neutral-50" style={{ borderColor: INK, color: INK }} {...editCopy(content, "home_gallery_link", "View gallery")} />
           </div>
         </section>
       )}
@@ -322,9 +322,9 @@ export default function MeridianDesign({ site, page = "home", basePath = "" }: P
       {/* closing CTA */}
       <section style={{ background: INK }} className="text-white">
         <div className="mx-auto max-w-2xl px-6 py-24 text-center">
-          <Kicker center light>Get started</Kicker>
-          <h2 style={serif} className="mt-5 text-3xl font-medium tracking-tight sm:text-4xl">Let&apos;s create something exceptional</h2>
-          <p className="mx-auto mt-4 max-w-md text-[15px] leading-relaxed text-white/65">Get in touch for a tailored quote — we&apos;ll handle the rest with care.</p>
+          <Kicker center light><span {...editCopy(content, "cta_kicker", "Get started")} /></Kicker>
+          <h2 style={serif} className="mt-5 text-3xl font-medium tracking-tight sm:text-4xl" {...editCopy(content, "cta_heading", "Let's create something exceptional")} />
+          <p className="mx-auto mt-4 max-w-md text-[15px] leading-relaxed text-white/65" {...editCopy(content, "cta_sub", "Get in touch for a tailored quote — we'll handle the rest with care.")} />
           <a href={cta} className="mt-8 inline-flex bg-white px-8 py-4 text-[12px] font-semibold uppercase tracking-[0.16em] text-neutral-900 transition hover:opacity-90">{ctaLabel}</a>
         </div>
       </section>

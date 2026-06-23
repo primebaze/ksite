@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { ParquetHeader } from "./ParquetHeader";
 import { TradesSocialIcon } from "./TradesMobileNav";
@@ -180,11 +180,11 @@ export default function ParquetDesign({ site, page = "home", basePath = "" }: Pr
     </div>
   );
 
-  const banner = (kicker: string, title: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string) => (
     <section style={{ background: GREIGE }}>
       <div className="mx-auto max-w-7xl px-8 pb-12 pt-32 sm:pt-40">
-        <Kicker>{kicker}</Kicker>
-        <h1 style={{ ...display, color: ESPRESSO }} className="mt-4 text-4xl font-bold leading-[0.98] tracking-tight sm:text-6xl">{title}</h1>
+        <Kicker><span {...editCopy(content, kickerKey, kicker)} /></Kicker>
+        <h1 style={{ ...display, color: ESPRESSO }} className="mt-4 text-4xl font-bold leading-[0.98] tracking-tight sm:text-6xl" {...editCopy(content, titleKey, title)} />
       </div>
       <HerringboneRule color={TEAL} />
     </section>
@@ -194,7 +194,7 @@ export default function ParquetDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "services") {
     return shell(
       <>
-        {banner("What we fit", "Our flooring services")}
+        {banner("What we fit", "svc_kicker", "Our flooring services", "svc_title")}
         <section className="mx-auto max-w-4xl px-8 py-20">
           {services.length > 0 ? (
             <ul className="divide-y" style={{ borderColor: `${ESPRESSO}1f` }}>
@@ -219,12 +219,12 @@ export default function ParquetDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "about") {
     return shell(
       <>
-        {banner("Who we are", "Floors fitted to last")}
+        {banner("Who we are", "about_kicker", "Floors fitted to last", "about_title")}
         <section className="mx-auto max-w-3xl px-8 py-20">
           {content.about ? <p data-edit="content.about" className="text-[17px] leading-[1.9]" style={{ color: MUTE }}>{content.about}</p> : <p style={{ color: MUTE }}>Our story is coming soon.</p>}
           {content.accreditations && content.accreditations.length > 0 && (
             <>
-              <h3 style={{ ...display, color: ESPRESSO }} className="mt-12 text-xs font-bold uppercase tracking-[0.2em]">Accredited &amp; insured</h3>
+              <h3 style={{ ...display, color: ESPRESSO }} className="mt-12 text-xs font-bold uppercase tracking-[0.2em]" {...editCopy(content, "about_accred_heading", "Accredited & insured")} />
               <div className="mt-5 flex flex-wrap gap-3">
                 {content.accreditations.map((a) => (
                   <span key={a} className="rounded-full border px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.12em]" style={{ borderColor: `${TEAL}66`, color: ESPRESSO }}>{a}</span>
@@ -234,7 +234,7 @@ export default function ParquetDesign({ site, page = "home", basePath = "" }: Pr
           )}
           {content.service_areas && content.service_areas.length > 0 && (
             <>
-              <h3 style={{ ...display, color: ESPRESSO }} className="mt-12 text-xs font-bold uppercase tracking-[0.2em]">Areas we cover</h3>
+              <h3 style={{ ...display, color: ESPRESSO }} className="mt-12 text-xs font-bold uppercase tracking-[0.2em]" {...editCopy(content, "about_areas_heading", "Areas we cover")} />
               <p className="mt-4 text-[15px] leading-relaxed" style={{ color: MUTE }}>{content.service_areas.join(" · ")}</p>
             </>
           )}
@@ -248,11 +248,11 @@ export default function ParquetDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "contact") {
     return shell(
       <>
-        {banner("Get in touch", "Request a quote")}
+        {banner("Get in touch", "contact_kicker", "Request a quote", "contact_title")}
         <section className="mx-auto grid max-w-7xl gap-12 px-8 py-20 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={{ ...display, color: ESPRESSO }} className="text-2xl font-bold tracking-tight">Book a free measure</h2>
-            <p className="mt-3 text-[15px] leading-relaxed" style={{ color: MUTE }}>Tell us about the room and we&apos;ll measure up, advise on the right floor and come back with a fixed price.</p>
+            <h2 style={{ ...display, color: ESPRESSO }} className="text-2xl font-bold tracking-tight" {...editCopy(content, "contact_heading", "Book a free measure")} />
+            <p className="mt-3 text-[15px] leading-relaxed" style={{ color: MUTE }} {...editCopy(content, "contact_blurb", "Tell us about the room and we'll measure up, advise on the right floor and come back with a fixed price.")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: MUTE }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-[#34291F]">{content.phone}</a>}
@@ -291,7 +291,7 @@ export default function ParquetDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Rooms transformed", "Our work")}
+        {banner("Rooms transformed", "work_kicker", "Our work", "work_title")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-7xl px-8 py-16">
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -363,8 +363,8 @@ export default function ParquetDesign({ site, page = "home", basePath = "" }: Pr
       {fitTypes && (
         <section style={{ background: IVORY }}>
           <div className="mx-auto max-w-4xl px-8 py-20 sm:py-24">
-            <Kicker>What we fit</Kicker>
-            <h2 style={{ ...display, color: ESPRESSO }} className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl">Flooring for every room</h2>
+            <Kicker><span {...editCopy(content, "home_fit_kicker", "What we fit")} /></Kicker>
+            <h2 style={{ ...display, color: ESPRESSO }} className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl" {...editCopy(content, "home_fit_heading", "Flooring for every room")} />
             <ul className="mt-10 divide-y" style={{ borderColor: `${ESPRESSO}1f` }}>
               {fitTypes.map((s) => (
                 <li key={s.id} className="flex items-baseline justify-between gap-8 py-6" style={{ borderColor: `${ESPRESSO}1f` }}>
@@ -385,8 +385,8 @@ export default function ParquetDesign({ site, page = "home", basePath = "" }: Pr
       <section style={{ background: GREIGE }}>
         <HerringboneRule color={HONEY} />
         <div className="mx-auto max-w-7xl px-8 py-20 sm:py-24">
-          <Kicker color={ESPRESSO}>How it works</Kicker>
-          <h2 style={{ ...display, color: ESPRESSO }} className="mt-4 text-3xl font-bold tracking-tight sm:text-4xl">Measure &middot; Supply &middot; Fit</h2>
+          <Kicker color={ESPRESSO}><span {...editCopy(content, "home_steps_kicker", "How it works")} /></Kicker>
+          <h2 style={{ ...display, color: ESPRESSO }} className="mt-4 text-3xl font-bold tracking-tight sm:text-4xl" {...editCopy(content, "home_steps_heading", "Measure · Supply · Fit")} />
           <div className="mt-12 grid gap-px sm:grid-cols-3" style={{ background: `${ESPRESSO}1f` }}>
             {steps.map((s) => (
               <div key={s.n} className="p-8" style={{ background: GREIGE }}>
@@ -413,10 +413,10 @@ export default function ParquetDesign({ site, page = "home", basePath = "" }: Pr
               )}
             </div>
             <div>
-              <Kicker>Who we are</Kicker>
-              <h2 style={{ ...display, color: ESPRESSO }} className="mt-4 text-4xl font-bold leading-[0.98] tracking-tight sm:text-5xl">Specialists in floors that last</h2>
+              <Kicker><span {...editCopy(content, "home_about_kicker", "Who we are")} /></Kicker>
+              <h2 style={{ ...display, color: ESPRESSO }} className="mt-4 text-4xl font-bold leading-[0.98] tracking-tight sm:text-5xl" {...editCopy(content, "home_about_heading", "Specialists in floors that last")} />
               <p data-edit="content.about" className="mt-6 text-[16px] leading-[1.9]" style={{ color: MUTE }}>{content.about}</p>
-              <a href={href("about")} className="mt-6 inline-flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.16em]" style={{ color: TEAL }}>More about us →</a>
+              <a href={href("about")} className="mt-6 inline-flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.16em]" style={{ color: TEAL }} {...editCopy(content, "home_about_link", "More about us →")} />
             </div>
           </div>
         </section>
@@ -426,8 +426,8 @@ export default function ParquetDesign({ site, page = "home", basePath = "" }: Pr
       {gallery.length > 0 && (
         <section style={{ background: IVORY, borderTop: `1px solid ${ESPRESSO}12` }}>
           <div className="mx-auto max-w-7xl px-8 py-24">
-            <Kicker>Rooms transformed</Kicker>
-            <h2 style={{ ...display, color: ESPRESSO }} className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl">Our work</h2>
+            <Kicker><span {...editCopy(content, "home_work_kicker", "Rooms transformed")} /></Kicker>
+            <h2 style={{ ...display, color: ESPRESSO }} className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl" {...editCopy(content, "home_work_heading", "Our work")} />
             <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {gallery.slice(0, 6).map((g) => (
                 <figure key={g.id} className="overflow-hidden rounded-xl bg-white" style={{ border: `1px solid ${ESPRESSO}14` }}>
@@ -446,7 +446,7 @@ export default function ParquetDesign({ site, page = "home", basePath = "" }: Pr
       {content.service_areas && content.service_areas.length > 0 && (
         <section style={{ background: ESPRESSO }} className="text-[#E9E2D6]">
           <div className="mx-auto max-w-7xl px-8 py-16">
-            <Kicker color={HONEY}>Areas covered</Kicker>
+            <Kicker color={HONEY}><span {...editCopy(content, "home_areas_kicker", "Areas covered")} /></Kicker>
             <div className="mt-6 flex flex-wrap gap-x-6 gap-y-3 text-lg" style={{ fontFamily: "var(--font-space)" }}>
               {content.service_areas.map((a) => (
                 <span key={a} className="font-bold tracking-tight text-[#F5F1EA]">{a}</span>
@@ -460,8 +460,8 @@ export default function ParquetDesign({ site, page = "home", basePath = "" }: Pr
       <section style={{ background: TEAL }}>
         <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 px-8 py-16 text-white sm:flex-row sm:items-center">
           <div>
-            <h2 style={display} className="text-3xl font-bold leading-[0.98] tracking-tight sm:text-4xl">Ready to transform your floors?</h2>
-            <p className="mt-2 text-sm font-semibold uppercase tracking-[0.13em] text-white/75">Free measure &amp; no-obligation quote.</p>
+            <h2 style={display} className="text-3xl font-bold leading-[0.98] tracking-tight sm:text-4xl" {...editCopy(content, "cta_heading", "Ready to transform your floors?")} />
+            <p className="mt-2 text-sm font-semibold uppercase tracking-[0.13em] text-white/75" {...editCopy(content, "cta_sub", "Free measure & no-obligation quote.")} />
           </div>
           <a href={phone ? `tel:${phone}` : cta} className="rounded-full bg-white px-9 py-4 text-[12px] font-bold uppercase tracking-[0.14em] transition hover:brightness-105" style={{ color: TEAL }}>
             {phone ? `Call ${phone}` : ctaLabel}

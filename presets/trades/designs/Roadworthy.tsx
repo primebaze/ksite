@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { RoadworthyHeader } from "./RoadworthyHeader";
 import { TradesSocialIcon } from "./TradesMobileNav";
@@ -121,7 +121,7 @@ export default function RoadworthyDesign({ site, page = "home", basePath = "" }:
           )}
         </div>
         <div>
-          <h4 style={display} className="text-xs font-extrabold uppercase tracking-[0.2em] text-white/50">Centre</h4>
+          <h4 style={display} className="text-xs font-extrabold uppercase tracking-[0.2em] text-white/50" {...editCopy(content, "footer_centre", "Centre")} />
           <ul className="mt-5 space-y-3 text-sm text-white/70">
             {nav.map((l) => (
               <li key={l.label}><a href={l.href} className="transition hover:text-white">{l.label}</a></li>
@@ -129,7 +129,7 @@ export default function RoadworthyDesign({ site, page = "home", basePath = "" }:
           </ul>
         </div>
         <div>
-          <h4 style={display} className="text-xs font-extrabold uppercase tracking-[0.2em] text-white/50">Contact</h4>
+          <h4 style={display} className="text-xs font-extrabold uppercase tracking-[0.2em] text-white/50" {...editCopy(content, "footer_contact", "Contact")} />
           <div className="mt-5 space-y-3 text-sm text-white/70">
             {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -137,7 +137,7 @@ export default function RoadworthyDesign({ site, page = "home", basePath = "" }:
           </div>
         </div>
         <div>
-          <h4 style={display} className="text-xs font-extrabold uppercase tracking-[0.2em] text-white/50">Hours</h4>
+          <h4 style={display} className="text-xs font-extrabold uppercase tracking-[0.2em] text-white/50" {...editCopy(content, "footer_hours", "Hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm text-white/70">
               {content.hours.map((h, i) => (
@@ -162,11 +162,11 @@ export default function RoadworthyDesign({ site, page = "home", basePath = "" }:
     </div>
   );
 
-  const banner = (kicker: string, title: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string) => (
     <section style={{ background: "#ffffff", borderBottom: `3px solid ${GREEN}` }}>
       <div className="mx-auto max-w-7xl px-8 pb-14 pt-32 sm:pt-40">
-        <Kicker>{kicker}</Kicker>
-        <h1 style={{ ...display, color: NAVY }} className="mt-4 text-4xl font-extrabold uppercase leading-[0.95] tracking-tight sm:text-6xl">{title}</h1>
+        <Kicker><span {...editCopy(content, kickerKey, kicker)} /></Kicker>
+        <h1 style={{ ...display, color: NAVY }} className="mt-4 text-4xl font-extrabold uppercase leading-[0.95] tracking-tight sm:text-6xl" {...editCopy(content, titleKey, title)} />
       </div>
     </section>
   );
@@ -193,7 +193,7 @@ export default function RoadworthyDesign({ site, page = "home", basePath = "" }:
   if (page === "services") {
     return shell(
       <>
-        {banner("What we offer", "Our Services")}
+        {banner("What we offer", "svc_kicker", "Our Services", "svc_title")}
         <section className="mx-auto max-w-5xl px-8 py-20">
           {services.length > 0 ? serviceList(services) : <p style={{ color: STEEL }}>Services coming soon.</p>}
           <div className="mt-12">{greenBtn(ctaLabel, cta)}</div>
@@ -206,12 +206,12 @@ export default function RoadworthyDesign({ site, page = "home", basePath = "" }:
   if (page === "about") {
     return shell(
       <>
-        {banner("Who we are", "Honest, Local, Approved")}
+        {banner("Who we are", "about_kicker", "Honest, Local, Approved", "about_title")}
         <section className="mx-auto max-w-3xl px-8 py-20">
           {content.about ? <p data-edit="content.about" className="text-[17px] leading-[1.9]" style={{ color: STEEL }}>{content.about}</p> : <p style={{ color: STEEL }}>Our story is coming soon.</p>}
           {content.accreditations && content.accreditations.length > 0 && (
             <>
-              <h3 style={{ ...display, color: NAVY }} className="mt-12 text-xs font-extrabold uppercase tracking-[0.2em]">Approved &amp; accredited</h3>
+              <h3 style={{ ...display, color: NAVY }} className="mt-12 text-xs font-extrabold uppercase tracking-[0.2em]" {...editCopy(content, "about_approved_heading", "Approved & accredited")} />
               <div className="mt-5 flex flex-wrap gap-3">
                 {content.accreditations.map((a) => (
                   <span key={a} className="inline-flex items-center gap-2 rounded-full border-2 px-4 py-2 text-[11px] font-bold uppercase tracking-[0.12em]" style={{ borderColor: `${GREEN}66`, color: NAVY }}><Tick size={13} />{a}</span>
@@ -221,7 +221,7 @@ export default function RoadworthyDesign({ site, page = "home", basePath = "" }:
           )}
           {content.service_areas && content.service_areas.length > 0 && (
             <>
-              <h3 style={{ ...display, color: NAVY }} className="mt-12 text-xs font-extrabold uppercase tracking-[0.2em]">Areas we cover</h3>
+              <h3 style={{ ...display, color: NAVY }} className="mt-12 text-xs font-extrabold uppercase tracking-[0.2em]" {...editCopy(content, "about_areas_heading", "Areas we cover")} />
               <p className="mt-4 text-[15px] leading-relaxed" style={{ color: STEEL }}>{content.service_areas.join(" · ")}</p>
             </>
           )}
@@ -235,10 +235,10 @@ export default function RoadworthyDesign({ site, page = "home", basePath = "" }:
   if (page === "contact") {
     return shell(
       <>
-        {banner("Get in touch", "Book Your MOT")}
+        {banner("Get in touch", "contact_kicker", "Book Your MOT", "contact_title")}
         <section className="mx-auto grid max-w-7xl gap-12 px-8 py-20 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={{ ...display, color: NAVY }} className="text-2xl font-extrabold uppercase tracking-tight">Find the centre</h2>
+            <h2 style={{ ...display, color: NAVY }} className="text-2xl font-extrabold uppercase tracking-tight" {...editCopy(content, "contact_lead_heading", "Find the centre")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: STEEL }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-[#182433]">{content.phone}</a>}
@@ -275,7 +275,7 @@ export default function RoadworthyDesign({ site, page = "home", basePath = "" }:
   if (page === "gallery") {
     return shell(
       <>
-        {banner("The workshop", "Our Work")}
+        {banner("The workshop", "gallery_kicker", "Our Work", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-7xl px-2 py-12 sm:px-4">
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
@@ -342,10 +342,10 @@ export default function RoadworthyDesign({ site, page = "home", basePath = "" }:
         <section style={{ background: GREEN }}>
           <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-5 px-8 py-10 text-white sm:flex-row sm:items-center">
             <div className="flex items-baseline gap-3">
-              <span className="text-sm font-extrabold uppercase tracking-[0.18em] text-white/80">MOT from</span>
+              <span className="text-sm font-extrabold uppercase tracking-[0.18em] text-white/80" {...editCopy(content, "home_price_label", "MOT from")} />
               <span style={display} className="text-4xl font-extrabold sm:text-5xl">{firstPrice}</span>
             </div>
-            <p className="text-sm font-bold uppercase tracking-[0.12em] text-white/85">Fixed prices · no surprises · free retest included</p>
+            <p className="text-sm font-bold uppercase tracking-[0.12em] text-white/85" {...editCopy(content, "home_price_note", "Fixed prices · no surprises · free retest included")} />
             <a href={cta} className="rounded-full bg-white px-8 py-3.5 text-[12px] font-extrabold uppercase tracking-[0.14em] transition hover:bg-[#eef2ee]" style={{ color: NAVY }}>{ctaLabel}</a>
           </div>
         </section>
@@ -364,8 +364,8 @@ export default function RoadworthyDesign({ site, page = "home", basePath = "" }:
             <span className="absolute -bottom-5 -right-5 hidden lg:block"><Roundel size={108} /></span>
           </div>
           <div>
-            <Kicker>Who we are</Kicker>
-            <h2 style={{ ...display, color: NAVY }} className="mt-4 text-4xl font-extrabold uppercase leading-[0.98] tracking-tight sm:text-5xl">No-nonsense, honest workmanship</h2>
+            <Kicker><span {...editCopy(content, "home_about_kicker", "Who we are")} /></Kicker>
+            <h2 style={{ ...display, color: NAVY }} className="mt-4 text-4xl font-extrabold uppercase leading-[0.98] tracking-tight sm:text-5xl" {...editCopy(content, "home_about_heading", "No-nonsense, honest workmanship")} />
             <p data-edit="content.about" className="mt-6 text-[16px] leading-[1.9]" style={{ color: STEEL }}>{content.about}</p>
             <a href={href("about")} className="mt-6 inline-flex items-center gap-2 text-[12px] font-extrabold uppercase tracking-[0.16em]" style={{ color: GREEN }}>More about us →</a>
           </div>
@@ -376,8 +376,8 @@ export default function RoadworthyDesign({ site, page = "home", basePath = "" }:
       {services.length > 0 && (
         <section style={{ background: "#ffffff", borderTop: `1px solid ${LINE}`, borderBottom: `1px solid ${LINE}` }}>
           <div className="mx-auto max-w-5xl px-8 py-24">
-            <Kicker>What we offer</Kicker>
-            <h2 style={{ ...display, color: NAVY }} className="mt-4 text-4xl font-extrabold uppercase tracking-tight sm:text-5xl">Our services</h2>
+            <Kicker><span {...editCopy(content, "home_services_kicker", "What we offer")} /></Kicker>
+            <h2 style={{ ...display, color: NAVY }} className="mt-4 text-4xl font-extrabold uppercase tracking-tight sm:text-5xl" {...editCopy(content, "home_services_heading", "Our services")} />
             <div className="mt-12">{serviceList(services.slice(0, 6))}</div>
             <div className="mt-12">{ghostBtn("View all services", href("services"))}</div>
           </div>
@@ -389,8 +389,8 @@ export default function RoadworthyDesign({ site, page = "home", basePath = "" }:
         <div className="flex items-start gap-4 rounded-2xl p-7" style={{ background: `${AMBER}14`, border: `1px solid ${AMBER}55` }}>
           <span className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-sm font-extrabold text-white" style={{ background: AMBER, fontFamily: "var(--font-space)" }}>!</span>
           <div>
-            <p style={{ ...display, color: NAVY }} className="text-sm font-extrabold uppercase tracking-[0.1em]">Advisories explained, never inflated</p>
-            <p className="mt-1.5 text-sm leading-relaxed" style={{ color: STEEL }}>If your vehicle needs work, we show you exactly what and why — honest advice, fixed prices and a free retest if anything comes up.</p>
+            <p style={{ ...display, color: NAVY }} className="text-sm font-extrabold uppercase tracking-[0.1em]" {...editCopy(content, "home_advisory_heading", "Advisories explained, never inflated")} />
+            <p className="mt-1.5 text-sm leading-relaxed" style={{ color: STEEL }} {...editCopy(content, "home_advisory_body", "If your vehicle needs work, we show you exactly what and why — honest advice, fixed prices and a free retest if anything comes up.")} />
           </div>
         </div>
       </section>
@@ -398,8 +398,8 @@ export default function RoadworthyDesign({ site, page = "home", basePath = "" }:
       {/* work strip */}
       {gallery.length > 0 && (
         <section className="mx-auto max-w-7xl px-8 pb-24">
-          <Kicker>The workshop</Kicker>
-          <h2 style={{ ...display, color: NAVY }} className="mt-4 text-4xl font-extrabold uppercase tracking-tight sm:text-5xl">Our work</h2>
+          <Kicker><span {...editCopy(content, "home_work_kicker", "The workshop")} /></Kicker>
+          <h2 style={{ ...display, color: NAVY }} className="mt-4 text-4xl font-extrabold uppercase tracking-tight sm:text-5xl" {...editCopy(content, "home_work_heading", "Our work")} />
           <div className="mt-10 grid grid-cols-2 gap-2 sm:grid-cols-4">
             {gallery.slice(0, 4).map((g) => (
               // eslint-disable-next-line @next/next/no-img-element
@@ -416,8 +416,8 @@ export default function RoadworthyDesign({ site, page = "home", basePath = "" }:
           <div className="flex items-center gap-6">
             <span className="hidden sm:block"><Roundel size={96} /></span>
             <div>
-              <h2 style={display} className="text-3xl font-extrabold uppercase leading-[0.98] tracking-tight sm:text-4xl">Pass with confidence.</h2>
-              <p className="mt-2 text-sm font-bold uppercase tracking-[0.12em] text-white/60">Same-day slots · while-you-wait · free retest.</p>
+              <h2 style={display} className="text-3xl font-extrabold uppercase leading-[0.98] tracking-tight sm:text-4xl" {...editCopy(content, "cta_heading", "Pass with confidence.")} />
+              <p className="mt-2 text-sm font-bold uppercase tracking-[0.12em] text-white/60" {...editCopy(content, "cta_sub", "Same-day slots · while-you-wait · free retest.")} />
             </div>
           </div>
           <a href={phone ? `tel:${phone}` : cta} className="rounded-full px-9 py-4 text-[12px] font-extrabold uppercase tracking-[0.14em] text-white transition hover:brightness-110" style={{ background: GREEN }}>{phone ? `Call ${phone}` : ctaLabel}</a>

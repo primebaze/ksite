@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { SummitHeader } from "./SummitHeader";
 import { TradesSocialIcon } from "./TradesMobileNav";
@@ -69,7 +69,7 @@ export default function SummitDesign({ site, page = "home", basePath = "" }: Pre
           )}
         </div>
         <div>
-          <h4 className="text-[11px] font-bold uppercase tracking-[0.2em] text-white/40">Company</h4>
+          <h4 className="text-[11px] font-bold uppercase tracking-[0.2em] text-white/40" {...editCopy(content, "footer_company", "Company")} />
           <ul className="mt-5 space-y-3 text-sm text-white/65">
             {nav.map((l) => (
               <li key={l.label}><a href={l.href} className="transition hover:text-white">{l.label}</a></li>
@@ -77,7 +77,7 @@ export default function SummitDesign({ site, page = "home", basePath = "" }: Pre
           </ul>
         </div>
         <div>
-          <h4 className="text-[11px] font-bold uppercase tracking-[0.2em] text-white/40">Contact</h4>
+          <h4 className="text-[11px] font-bold uppercase tracking-[0.2em] text-white/40" {...editCopy(content, "footer_contact", "Contact")} />
           <div className="mt-5 space-y-3 text-sm text-white/65">
             {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -85,7 +85,7 @@ export default function SummitDesign({ site, page = "home", basePath = "" }: Pre
           </div>
         </div>
         <div>
-          <h4 className="text-[11px] font-bold uppercase tracking-[0.2em] text-white/40">Hours</h4>
+          <h4 className="text-[11px] font-bold uppercase tracking-[0.2em] text-white/40" {...editCopy(content, "footer_hours", "Hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm text-white/65">
               {content.hours.map((h, i) => (
@@ -110,12 +110,12 @@ export default function SummitDesign({ site, page = "home", basePath = "" }: Pre
     </div>
   );
 
-  const banner = (kicker: string, title: string, blurb?: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string, blurb?: string, blurbKey?: string) => (
     <section style={{ background: MIST, borderBottom: `1px solid ${LINE}` }}>
       <div className="mx-auto max-w-6xl px-6 py-16 sm:py-20">
-        <Kicker>{kicker}</Kicker>
-        <h1 style={{ ...sans, color: INK }} className="mt-4 max-w-3xl text-4xl font-bold leading-[1.04] tracking-tight sm:text-5xl">{title}</h1>
-        {blurb && <p className="mt-5 max-w-xl text-[16px] leading-relaxed" style={{ color: SLATE }}>{blurb}</p>}
+        <Kicker><span {...editCopy(content, kickerKey, kicker)} /></Kicker>
+        <h1 style={{ ...sans, color: INK }} className="mt-4 max-w-3xl text-4xl font-bold leading-[1.04] tracking-tight sm:text-5xl" {...editCopy(content, titleKey, title)} />
+        {blurb && <p className="mt-5 max-w-xl text-[16px] leading-relaxed" style={{ color: SLATE }} {...editCopy(content, blurbKey ?? "", blurb)} />}
       </div>
     </section>
   );
@@ -124,7 +124,7 @@ export default function SummitDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "services") {
     return shell(
       <>
-        {banner("Capabilities", "Services that move the needle", "Senior-led, outcome-focused work — clearly scoped and measurably delivered.")}
+        {banner("Capabilities", "svc_kicker", "Services that move the needle", "svc_title", "Senior-led, outcome-focused work — clearly scoped and measurably delivered.", "svc_blurb")}
         <section className="mx-auto max-w-5xl px-6 py-20">
           {services.length > 0 ? (
             <ul className="divide-y" style={{ borderColor: LINE }}>
@@ -154,13 +154,13 @@ export default function SummitDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "about") {
     return shell(
       <>
-        {banner("About us", "Partners in your growth")}
+        {banner("About us", "about_kicker", "Partners in your growth", "about_title")}
         <section className="mx-auto grid max-w-6xl gap-12 px-6 py-20 lg:grid-cols-[1.4fr_1fr]">
           <div>
             {content.about ? <p data-edit="content.about" className="text-[17px] leading-[1.9]" style={{ color: SLATE }}>{content.about}</p> : <p style={{ color: SLATE }}>Our story is coming soon.</p>}
             {content.service_areas && content.service_areas.length > 0 && (
               <>
-                <h3 style={{ ...sans, color: INK }} className="mt-12 text-2xl font-bold tracking-tight">Who we work with</h3>
+                <h3 style={{ ...sans, color: INK }} className="mt-12 text-2xl font-bold tracking-tight" {...editCopy(content, "about_clients_heading", "Who we work with")} />
                 <div className="mt-5 flex flex-wrap gap-2">
                   {content.service_areas.map((a) => (
                     <span key={a} className="rounded-lg border px-4 py-1.5 text-sm" style={{ borderColor: LINE, color: SLATE }}>{a}</span>
@@ -172,7 +172,7 @@ export default function SummitDesign({ site, page = "home", basePath = "" }: Pre
           <aside className="h-fit rounded-2xl p-7" style={{ background: MIST, border: `1px solid ${LINE}` }}>
             {content.accreditations && content.accreditations.length > 0 && (
               <>
-                <h4 className="text-[11px] font-bold uppercase tracking-[0.2em]" style={{ color: INDIGO }}>Credentials</h4>
+                <h4 className="text-[11px] font-bold uppercase tracking-[0.2em]" style={{ color: INDIGO }} {...editCopy(content, "about_credentials_heading", "Credentials")} />
                 <ul className="mt-4 space-y-3 text-sm" style={{ color: INK }}>
                   {content.accreditations.map((a) => (
                     <li key={a} className="flex items-start gap-2"><span style={{ color: INDIGO }}>✓</span><span>{a}</span></li>
@@ -195,10 +195,10 @@ export default function SummitDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "contact") {
     return shell(
       <>
-        {banner("Get in touch", "Let's talk", "Tell us about your goals and we'll arrange a no-obligation conversation.")}
+        {banner("Get in touch", "contact_kicker", "Let's talk", "contact_title", "Tell us about your goals and we'll arrange a no-obligation conversation.", "contact_blurb")}
         <section className="mx-auto grid max-w-6xl gap-12 px-6 py-20 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={{ ...sans, color: INK }} className="text-2xl font-bold tracking-tight">Our office</h2>
+            <h2 style={{ ...sans, color: INK }} className="text-2xl font-bold tracking-tight" {...editCopy(content, "contact_heading", "Our office")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: SLATE }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-[#4f46e5]">{content.phone}</a>}
@@ -212,7 +212,7 @@ export default function SummitDesign({ site, page = "home", basePath = "" }: Pre
               </ul>
             )}
             {content.map_url && (
-              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex rounded-lg border px-6 py-3 text-sm font-bold transition hover:bg-neutral-50" style={{ borderColor: LINE, color: INK }}>Get directions</a>
+              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex rounded-lg border px-6 py-3 text-sm font-bold transition hover:bg-neutral-50" style={{ borderColor: LINE, color: INK }} {...editCopy(content, "directions_cta", "Get directions")} />
             )}
           </div>
           {(bookingOn || contactOn) && (
@@ -237,7 +237,7 @@ export default function SummitDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Selected work", "Case studies & projects")}
+        {banner("Selected work", "gallery_kicker", "Case studies & projects", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-6xl px-6 py-16">
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
@@ -272,7 +272,7 @@ export default function SummitDesign({ site, page = "home", basePath = "" }: Pre
           <p data-edit="tenant.business_name" className="mt-6 text-sm font-bold uppercase tracking-[0.22em] text-white/55">{name}</p>
           <div className="mt-9 flex flex-wrap gap-3">
             <a href={cta} className="inline-flex rounded-lg px-7 py-4 text-sm font-bold text-white transition hover:opacity-90" style={{ background: INDIGO }}>{ctaLabel}</a>
-            {services.length > 0 && <a href={href("services")} className="inline-flex rounded-lg border px-7 py-4 text-sm font-bold text-white backdrop-blur transition hover:bg-white/10" style={{ borderColor: "#ffffff3a" }}>Our services</a>}
+            {services.length > 0 && <a href={href("services")} className="inline-flex rounded-lg border px-7 py-4 text-sm font-bold text-white backdrop-blur transition hover:bg-white/10" style={{ borderColor: "#ffffff3a" }} {...editCopy(content, "hero_services_cta", "Our services")} />}
           </div>
         </div>
       </section>
@@ -298,10 +298,10 @@ export default function SummitDesign({ site, page = "home", basePath = "" }: Pre
         <section className="mx-auto max-w-5xl px-6 py-24">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
-              <Kicker>Capabilities</Kicker>
-              <h2 style={{ ...sans, color: INK }} className="mt-4 text-3xl font-bold tracking-tight sm:text-4xl">What we do</h2>
+              <Kicker><span {...editCopy(content, "home_caps_kicker", "Capabilities")} /></Kicker>
+              <h2 style={{ ...sans, color: INK }} className="mt-4 text-3xl font-bold tracking-tight sm:text-4xl" {...editCopy(content, "home_caps_heading", "What we do")} />
             </div>
-            <a href={href("services")} className="text-sm font-bold underline-offset-4 hover:underline" style={{ color: INDIGO }}>All services →</a>
+            <a href={href("services")} className="text-sm font-bold underline-offset-4 hover:underline" style={{ color: INDIGO }} {...editCopy(content, "home_caps_link", "All services →")} />
           </div>
           <ul className="mt-12 divide-y" style={{ borderColor: LINE }}>
             {services.slice(0, 6).map((s, i) => (
@@ -324,10 +324,10 @@ export default function SummitDesign({ site, page = "home", basePath = "" }: Pre
       {content.about && (
         <section style={{ background: INK }}>
           <div className="mx-auto grid max-w-6xl gap-6 px-6 py-24 lg:grid-cols-[auto_1fr] lg:gap-16">
-            <div className="lg:pt-2"><Kicker light>About us</Kicker></div>
+            <div className="lg:pt-2"><Kicker light><span {...editCopy(content, "home_about_kicker", "About us")} /></Kicker></div>
             <div>
               <p data-edit="content.about" style={sans} className="max-w-3xl text-3xl font-bold leading-[1.25] tracking-tight text-white sm:text-[2.6rem]">{content.about}</p>
-              <a href={href("about")} className="mt-7 inline-flex items-center gap-2 text-sm font-bold" style={{ color: "#a5a8ff" }}>More about us →</a>
+              <a href={href("about")} className="mt-7 inline-flex items-center gap-2 text-sm font-bold" style={{ color: "#a5a8ff" }} {...editCopy(content, "home_about_link", "More about us →")} />
             </div>
           </div>
         </section>
@@ -336,23 +336,23 @@ export default function SummitDesign({ site, page = "home", basePath = "" }: Pre
       {/* work */}
       {gallery.length > 0 && (
         <section className="mx-auto max-w-6xl px-6 py-24">
-          <Kicker>Selected work</Kicker>
-          <h2 style={{ ...sans, color: INK }} className="mt-4 text-3xl font-bold tracking-tight sm:text-4xl">Recent projects</h2>
+          <Kicker><span {...editCopy(content, "home_work_kicker", "Selected work")} /></Kicker>
+          <h2 style={{ ...sans, color: INK }} className="mt-4 text-3xl font-bold tracking-tight sm:text-4xl" {...editCopy(content, "home_work_heading", "Recent projects")} />
           <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
             {gallery.slice(0, 4).map((g) => (
               // eslint-disable-next-line @next/next/no-img-element
               <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[4/3] w-full rounded-xl object-cover" />
             ))}
           </div>
-          <a href={href("gallery")} className="mt-10 inline-flex rounded-lg border px-7 py-3.5 text-sm font-bold transition hover:bg-neutral-50" style={{ borderColor: LINE, color: INK }}>View all work</a>
+          <a href={href("gallery")} className="mt-10 inline-flex rounded-lg border px-7 py-3.5 text-sm font-bold transition hover:bg-neutral-50" style={{ borderColor: LINE, color: INK }} {...editCopy(content, "home_work_link", "View all work")} />
         </section>
       )}
 
       {/* closing CTA */}
       <section style={{ background: INDIGO }}>
         <div className="mx-auto max-w-3xl px-6 py-24 text-center text-white">
-          <h2 style={sans} className="text-3xl font-bold tracking-tight sm:text-4xl">Ready to make progress?</h2>
-          <p className="mx-auto mt-4 max-w-md text-[16px] leading-relaxed text-white/75">Book a no-obligation consultation and we&apos;ll map out the clearest path forward.</p>
+          <h2 style={sans} className="text-3xl font-bold tracking-tight sm:text-4xl" {...editCopy(content, "cta_heading", "Ready to make progress?")} />
+          <p className="mx-auto mt-4 max-w-md text-[16px] leading-relaxed text-white/75" {...editCopy(content, "cta_sub", "Book a no-obligation consultation and we'll map out the clearest path forward.")} />
           <a href={cta} className="mt-8 inline-flex rounded-lg bg-white px-8 py-4 text-sm font-bold transition hover:opacity-90" style={{ color: INDIGO }}>{ctaLabel}</a>
         </div>
       </section>

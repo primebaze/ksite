@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { VapourHeader } from "./VapourHeader";
 import { TradesSocialIcon } from "./TradesMobileNav";
@@ -119,7 +119,7 @@ export default function VapourDesign({ site, page = "home", basePath = "" }: Pre
           )}
         </div>
         <div>
-          <h4 style={display} className="text-xs font-extrabold uppercase tracking-[0.22em] text-white/50">Shop</h4>
+          <h4 style={display} className="text-xs font-extrabold uppercase tracking-[0.22em] text-white/50" {...editCopy(content, "footer_shop", "Shop")} />
           <ul className="mt-5 space-y-3 text-sm" style={{ color: MUTE }}>
             {nav.map((l) => (
               <li key={l.label}><a href={l.href} className="transition hover:text-white">{l.label}</a></li>
@@ -127,7 +127,7 @@ export default function VapourDesign({ site, page = "home", basePath = "" }: Pre
           </ul>
         </div>
         <div>
-          <h4 style={display} className="text-xs font-extrabold uppercase tracking-[0.22em] text-white/50">Find us</h4>
+          <h4 style={display} className="text-xs font-extrabold uppercase tracking-[0.22em] text-white/50" {...editCopy(content, "footer_findus", "Find us")} />
           <div className="mt-5 space-y-3 text-sm" style={{ color: MUTE }}>
             {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -135,7 +135,7 @@ export default function VapourDesign({ site, page = "home", basePath = "" }: Pre
           </div>
         </div>
         <div>
-          <h4 style={display} className="text-xs font-extrabold uppercase tracking-[0.22em] text-white/50">Opening hours</h4>
+          <h4 style={display} className="text-xs font-extrabold uppercase tracking-[0.22em] text-white/50" {...editCopy(content, "footer_hours", "Opening hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm" style={{ color: MUTE }}>
               {content.hours.map((h, i) => (
@@ -160,13 +160,13 @@ export default function VapourDesign({ site, page = "home", basePath = "" }: Pre
     </div>
   );
 
-  const banner = (kicker: string, title: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string) => (
     <section className="relative overflow-hidden" style={{ background: PANEL, borderBottom: `1px solid ${PINK}33` }}>
       <div className="pointer-events-none absolute -right-24 -top-24 h-72 w-72 rounded-full" style={{ background: `radial-gradient(circle, ${PINK}33, transparent 70%)` }} />
       <div className="pointer-events-none absolute -left-20 bottom-0 h-64 w-64 rounded-full" style={{ background: `radial-gradient(circle, ${TEAL}26, transparent 70%)` }} />
       <div className="relative mx-auto max-w-7xl px-8 pb-14 pt-32 sm:pt-40">
-        <Kicker>{kicker}</Kicker>
-        <h1 style={{ ...display, color: LILAC }} className="mt-4 text-4xl font-extrabold leading-[0.98] tracking-tight sm:text-6xl">{title}</h1>
+        <Kicker><span {...editCopy(content, kickerKey, kicker)} /></Kicker>
+        <h1 style={{ ...display, color: LILAC }} className="mt-4 text-4xl font-extrabold leading-[0.98] tracking-tight sm:text-6xl" {...editCopy(content, titleKey, title)} />
       </div>
     </section>
   );
@@ -175,7 +175,7 @@ export default function VapourDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "services") {
     return shell(
       <>
-        {banner("What we stock", "The shop")}
+        {banner("What we stock", "shop_kicker", "The shop", "shop_title")}
         <section className="mx-auto max-w-5xl px-8 py-20">
           <div className="mb-12 flex flex-wrap gap-3">
             {FLAVOURS.map((f) => <FlavourTag key={f.label} label={f.label} c={f.c} />)}
@@ -212,16 +212,16 @@ export default function VapourDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "about") {
     return shell(
       <>
-        {banner("Our shop", "Helping you switch")}
+        {banner("Our shop", "about_kicker", "Helping you switch", "about_title")}
         <section className="mx-auto max-w-3xl px-8 py-20">
           {content.about ? <p data-edit="content.about" className="text-[17px] leading-[1.9]" style={{ color: MUTE }}>{content.about}</p> : <p style={{ color: MUTE }}>Our story is coming soon.</p>}
           <div className="mt-12 rounded-2xl p-6" style={{ background: CARD, border: `1px solid ${TEAL}33` }}>
-            <h3 style={{ ...display, color: TEAL }} className="text-xs font-extrabold uppercase tracking-[0.22em]">New to vaping?</h3>
-            <p className="mt-3 text-[15px] leading-relaxed" style={{ color: MUTE }}>Pop in and our team will help you find the right starter kit, nicotine strength and flavour to make switching simple.</p>
+            <h3 style={{ ...display, color: TEAL }} className="text-xs font-extrabold uppercase tracking-[0.22em]" {...editCopy(content, "about_newtovaping_heading", "New to vaping?")} />
+            <p className="mt-3 text-[15px] leading-relaxed" style={{ color: MUTE }} {...editCopy(content, "about_newtovaping_body", "Pop in and our team will help you find the right starter kit, nicotine strength and flavour to make switching simple.")} />
           </div>
           {content.accreditations && content.accreditations.length > 0 && (
             <>
-              <h3 style={{ ...display, color: LILAC }} className="mt-12 text-xs font-extrabold uppercase tracking-[0.22em]">Trusted &amp; compliant</h3>
+              <h3 style={{ ...display, color: LILAC }} className="mt-12 text-xs font-extrabold uppercase tracking-[0.22em]" {...editCopy(content, "about_trusted_heading", "Trusted & compliant")} />
               <div className="mt-5 flex flex-wrap gap-3">
                 {content.accreditations.map((a) => (
                   <span key={a} className="rounded-full border px-4 py-2 text-[11px] font-bold uppercase tracking-[0.12em]" style={{ borderColor: `${PINK}66`, color: LILAC }}>{a}</span>
@@ -231,7 +231,7 @@ export default function VapourDesign({ site, page = "home", basePath = "" }: Pre
           )}
           {content.service_areas && content.service_areas.length > 0 && (
             <>
-              <h3 style={{ ...display, color: LILAC }} className="mt-12 text-xs font-extrabold uppercase tracking-[0.22em]">Where to find us</h3>
+              <h3 style={{ ...display, color: LILAC }} className="mt-12 text-xs font-extrabold uppercase tracking-[0.22em]" {...editCopy(content, "about_whereto_heading", "Where to find us")} />
               <p className="mt-4 text-[15px] leading-relaxed" style={{ color: MUTE }}>{content.service_areas.join(" · ")}</p>
             </>
           )}
@@ -245,10 +245,10 @@ export default function VapourDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "contact") {
     return shell(
       <>
-        {banner("Visit us", "Come say hello")}
+        {banner("Visit us", "contact_kicker", "Come say hello", "contact_title")}
         <section className="mx-auto grid max-w-7xl gap-12 px-8 py-20 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={{ ...display, color: LILAC }} className="text-2xl font-extrabold tracking-tight">Find the shop</h2>
+            <h2 style={{ ...display, color: LILAC }} className="text-2xl font-extrabold tracking-tight" {...editCopy(content, "contact_findshop_heading", "Find the shop")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: MUTE }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -261,7 +261,7 @@ export default function VapourDesign({ site, page = "home", basePath = "" }: Pre
                 ))}
               </ul>
             )}
-            <p className="mt-8 text-sm font-bold uppercase tracking-[0.14em]" style={{ color: TEAL }}>In store &amp; click &amp; collect</p>
+            <p className="mt-8 text-sm font-bold uppercase tracking-[0.14em]" style={{ color: TEAL }} {...editCopy(content, "contact_instore_label", "In store & click & collect")} />
             <div className="mt-6">{ageNote}</div>
             {content.map_url && <div className="mt-7">{ghostBtn("Get directions", content.map_url)}</div>}
           </div>
@@ -288,7 +288,7 @@ export default function VapourDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "gallery") {
     return shell(
       <>
-        {banner("In store", "Inside the shop")}
+        {banner("In store", "gallery_kicker", "Inside the shop", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-7xl px-2 py-12 sm:px-4">
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
@@ -348,10 +348,10 @@ export default function VapourDesign({ site, page = "home", basePath = "" }: Pre
       {content.about && (
         <section className="mx-auto grid max-w-7xl items-center gap-12 px-8 py-24 lg:grid-cols-2 lg:gap-16">
           <div>
-            <Kicker>Our shop</Kicker>
-            <h2 style={{ ...display, color: LILAC }} className="mt-4 text-4xl font-extrabold leading-[0.98] tracking-tight sm:text-5xl">More than a vape shop</h2>
+            <Kicker><span {...editCopy(content, "home_about_kicker", "Our shop")} /></Kicker>
+            <h2 style={{ ...display, color: LILAC }} className="mt-4 text-4xl font-extrabold leading-[0.98] tracking-tight sm:text-5xl" {...editCopy(content, "home_about_heading", "More than a vape shop")} />
             <p data-edit="content.about" className="mt-6 text-[16px] leading-[1.9]" style={{ color: MUTE }}>{content.about}</p>
-            <a href={href("about")} className="mt-6 inline-flex items-center gap-2 text-[12px] font-extrabold uppercase tracking-[0.18em]" style={{ color: TEAL }}>About the shop →</a>
+            <a href={href("about")} className="mt-6 inline-flex items-center gap-2 text-[12px] font-extrabold uppercase tracking-[0.18em]" style={{ color: TEAL }} {...editCopy(content, "home_about_link", "About the shop →")} />
           </div>
           <div className="relative">
             {gallery[0] ? (
@@ -368,8 +368,8 @@ export default function VapourDesign({ site, page = "home", basePath = "" }: Pre
       {/* what we stock — ranges list (clean divide-y rows) */}
       <section style={{ background: PANEL, borderTop: "1px solid #ffffff12", borderBottom: "1px solid #ffffff12" }}>
         <div className="mx-auto max-w-5xl px-8 py-24">
-          <Kicker>What we stock</Kicker>
-          <h2 style={{ ...display, color: LILAC }} className="mt-4 text-4xl font-extrabold tracking-tight sm:text-5xl">The range</h2>
+          <Kicker><span {...editCopy(content, "home_stock_kicker", "What we stock")} /></Kicker>
+          <h2 style={{ ...display, color: LILAC }} className="mt-4 text-4xl font-extrabold tracking-tight sm:text-5xl" {...editCopy(content, "home_stock_heading", "The range")} />
           {products.length > 0 ? (
             <ul className="mt-12 divide-y" style={{ borderColor: "#ffffff14" }}>
               {products.slice(0, 6).map((s) => (
@@ -404,9 +404,9 @@ export default function VapourDesign({ site, page = "home", basePath = "" }: Pre
         <div className="relative mx-auto max-w-7xl px-8 py-24">
           <div className="grid gap-10 lg:grid-cols-[1fr_1.2fr] lg:items-center lg:gap-16">
             <div>
-              <Kicker>New to vaping?</Kicker>
-              <h2 style={{ ...display, color: LILAC }} className="mt-4 text-4xl font-extrabold leading-[0.98] tracking-tight sm:text-5xl">We&apos;ll help you switch</h2>
-              <p className="mt-5 text-[16px] leading-[1.9]" style={{ color: MUTE }}>Not sure where to start? Our team will guide you through kits, nicotine strengths and flavours so making the switch is simple and stress-free.</p>
+              <Kicker><span {...editCopy(content, "home_switch_kicker", "New to vaping?")} /></Kicker>
+              <h2 style={{ ...display, color: LILAC }} className="mt-4 text-4xl font-extrabold leading-[0.98] tracking-tight sm:text-5xl" {...editCopy(content, "home_switch_heading", "We'll help you switch")} />
+              <p className="mt-5 text-[16px] leading-[1.9]" style={{ color: MUTE }} {...editCopy(content, "home_switch_body", "Not sure where to start? Our team will guide you through kits, nicotine strengths and flavours so making the switch is simple and stress-free.")} />
             </div>
             <div className="grid gap-4 sm:grid-cols-3">
               {[
@@ -427,8 +427,8 @@ export default function VapourDesign({ site, page = "home", basePath = "" }: Pre
       {/* in store strip */}
       {gallery.length > 0 && (
         <section className="mx-auto max-w-7xl px-8 py-12">
-          <Kicker>In store</Kicker>
-          <h2 style={{ ...display, color: LILAC }} className="mt-4 text-4xl font-extrabold tracking-tight sm:text-5xl">Inside the shop</h2>
+          <Kicker><span {...editCopy(content, "home_instore_kicker", "In store")} /></Kicker>
+          <h2 style={{ ...display, color: LILAC }} className="mt-4 text-4xl font-extrabold tracking-tight sm:text-5xl" {...editCopy(content, "home_instore_heading", "Inside the shop")} />
           <div className="mt-10 grid grid-cols-2 gap-2 sm:grid-cols-4">
             {gallery.slice(0, 4).map((g) => (
               // eslint-disable-next-line @next/next/no-img-element
@@ -443,9 +443,9 @@ export default function VapourDesign({ site, page = "home", basePath = "" }: Pre
       <section style={{ background: PANEL, borderTop: "1px solid #ffffff12" }}>
         <div className="mx-auto grid max-w-7xl gap-8 px-8 py-20 lg:grid-cols-[1.4fr_1fr] lg:items-center lg:gap-16">
           <div>
-            <Kicker>Visit us</Kicker>
-            <h2 style={{ ...display, color: LILAC }} className="mt-4 text-4xl font-extrabold leading-[0.98] tracking-tight sm:text-5xl">In store &amp; click &amp; collect</h2>
-            <p className="mt-5 max-w-md text-[16px] leading-relaxed" style={{ color: MUTE }}>Reserve online, collect at the counter — or pop in to browse the full range and get expert advice.</p>
+            <Kicker><span {...editCopy(content, "home_visit_kicker", "Visit us")} /></Kicker>
+            <h2 style={{ ...display, color: LILAC }} className="mt-4 text-4xl font-extrabold leading-[0.98] tracking-tight sm:text-5xl" {...editCopy(content, "home_visit_heading", "In store & click & collect")} />
+            <p className="mt-5 max-w-md text-[16px] leading-relaxed" style={{ color: MUTE }} {...editCopy(content, "home_visit_body", "Reserve online, collect at the counter — or pop in to browse the full range and get expert advice.")} />
             {content.hours && content.hours.length > 0 && (
               <ul className="mt-8 max-w-sm space-y-2 border-t pt-6 text-sm" style={{ borderColor: "#ffffff1f", color: MUTE }}>
                 {content.hours.map((h, i) => (
@@ -472,8 +472,8 @@ export default function VapourDesign({ site, page = "home", basePath = "" }: Pre
         <div className="pointer-events-none absolute -right-16 -top-16 h-64 w-64 rounded-full" style={{ background: "radial-gradient(circle, rgba(255,255,255,0.25), transparent 65%)" }} />
         <div className="relative mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 px-8 py-16 text-white sm:flex-row sm:items-center">
           <div>
-            <h2 style={display} className="text-3xl font-extrabold leading-[0.98] tracking-tight sm:text-4xl">Find your next flavour.</h2>
-            <p className="mt-2 text-sm font-bold uppercase tracking-[0.14em] text-white/80">18+ only · ID may be required</p>
+            <h2 style={display} className="text-3xl font-extrabold leading-[0.98] tracking-tight sm:text-4xl" {...editCopy(content, "cta_heading", "Find your next flavour.")} />
+            <p className="mt-2 text-sm font-bold uppercase tracking-[0.14em] text-white/80" {...editCopy(content, "cta_sub", "18+ only · ID may be required")} />
           </div>
           <a href={phone ? `tel:${phone}` : cta} className="rounded-full bg-[#110D18] px-9 py-4 text-[12px] font-extrabold uppercase tracking-[0.14em] text-white transition hover:brightness-125">{phone ? `Call ${phone}` : ctaLabel}</a>
         </div>

@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { PanelworksHeader } from "./PanelworksHeader";
 import { TradesSocialIcon } from "./TradesMobileNav";
@@ -142,11 +142,11 @@ export default function PanelworksDesign({ site, page = "home", basePath = "" }:
     </div>
   );
 
-  const banner = (kicker: string, title: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string) => (
     <section style={{ background: INK, borderBottom: `2px solid ${RED}` }}>
       <div className="mx-auto max-w-7xl px-8 pb-14 pt-32 sm:pt-40">
-        <Kicker>{kicker}</Kicker>
-        <h1 style={{ ...display, color: WHITE }} className="mt-4 text-4xl font-bold uppercase leading-[0.96] tracking-tight sm:text-6xl">{title}</h1>
+        <Kicker><span {...editCopy(content, kickerKey, kicker)} /></Kicker>
+        <h1 style={{ ...display, color: WHITE }} className="mt-4 text-4xl font-bold uppercase leading-[0.96] tracking-tight sm:text-6xl" {...editCopy(content, titleKey, title)} />
         {/* panel-seam rule under every banner heading */}
         <div className="mt-7 h-px w-full" style={{ background: "linear-gradient(90deg,#ffffff22,transparent)" }} />
       </div>
@@ -176,7 +176,7 @@ export default function PanelworksDesign({ site, page = "home", basePath = "" }:
   if (page === "services") {
     return shell(
       <>
-        {banner("What we do", "Repair Services")}
+        {banner("What we do", "svc_kicker", "Repair Services", "svc_title")}
         <section className="mx-auto max-w-5xl px-8 py-20">
           {services.length > 0 ? (
             serviceRows(services)
@@ -197,7 +197,7 @@ export default function PanelworksDesign({ site, page = "home", basePath = "" }:
   if (page === "about") {
     return shell(
       <>
-        {banner("The bodyshop", "Back To Flawless")}
+        {banner("The bodyshop", "about_kicker", "Back To Flawless", "about_title")}
         <section className="mx-auto max-w-3xl px-8 py-20">
           {content.about ? <p data-edit="content.about" className="text-[17px] leading-[1.9]" style={{ color: MUTE }}>{content.about}</p> : <p style={{ color: MUTE }}>Our story is coming soon.</p>}
 
@@ -209,7 +209,7 @@ export default function PanelworksDesign({ site, page = "home", basePath = "" }:
 
           {content.accreditations && content.accreditations.length > 0 && (
             <>
-              <h3 style={{ ...display, color: WHITE }} className="mt-12 text-xs font-bold uppercase tracking-[0.22em]">Approved &amp; accredited</h3>
+              <h3 style={{ ...display, color: WHITE }} className="mt-12 text-xs font-bold uppercase tracking-[0.22em]" {...editCopy(content, "about_accred_heading", "Approved & accredited")} />
               <div className="mt-5 flex flex-wrap gap-3">
                 {content.accreditations.map((a) => (
                   <span key={a} className="border px-4 py-2 text-[11px] font-bold uppercase tracking-[0.14em]" style={{ borderColor: `${RED}66`, color: WHITE }}>{a}</span>
@@ -219,7 +219,7 @@ export default function PanelworksDesign({ site, page = "home", basePath = "" }:
           )}
           {content.service_areas && content.service_areas.length > 0 && (
             <>
-              <h3 style={{ ...display, color: WHITE }} className="mt-12 text-xs font-bold uppercase tracking-[0.22em]">Areas we cover</h3>
+              <h3 style={{ ...display, color: WHITE }} className="mt-12 text-xs font-bold uppercase tracking-[0.22em]" {...editCopy(content, "about_areas_heading", "Areas we cover")} />
               <p className="mt-4 text-[15px] leading-relaxed" style={{ color: MUTE }}>{content.service_areas.join(" · ")}</p>
             </>
           )}
@@ -233,11 +233,11 @@ export default function PanelworksDesign({ site, page = "home", basePath = "" }:
   if (page === "contact") {
     return shell(
       <>
-        {banner("Free estimate", "Request A Quote")}
+        {banner("Free estimate", "contact_kicker", "Request A Quote", "contact_title")}
         <section className="mx-auto grid max-w-7xl gap-12 px-8 py-20 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={{ ...display, color: WHITE }} className="text-2xl font-bold uppercase tracking-tight">Bring it in</h2>
-            <p className="mt-4 max-w-md text-[15px] leading-relaxed" style={{ color: MUTE }}>Send a few photos of the damage and we&apos;ll come back with a free, no-obligation estimate. Courtesy cars available while we work.</p>
+            <h2 style={{ ...display, color: WHITE }} className="text-2xl font-bold uppercase tracking-tight" {...editCopy(content, "contact_bring_heading", "Bring it in")} />
+            <p className="mt-4 max-w-md text-[15px] leading-relaxed" style={{ color: MUTE }} {...editCopy(content, "contact_bring_blurb", "Send a few photos of the damage and we'll come back with a free, no-obligation estimate. Courtesy cars available while we work.")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: MUTE }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -274,7 +274,7 @@ export default function PanelworksDesign({ site, page = "home", basePath = "" }:
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Before & after", "Our Work")}
+        {banner("Before & after", "work_kicker", "Our Work", "work_title")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-7xl px-2 py-12 sm:px-4">
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
@@ -311,12 +311,12 @@ export default function PanelworksDesign({ site, page = "home", basePath = "" }:
         <div className="relative z-10 mx-auto w-full max-w-7xl px-8 py-28 text-white">
           <div className="flex items-center gap-4">
             <PaintChips />
-            <span className="text-[11px] font-bold uppercase tracking-[0.26em]" style={{ color: SILVER }}>Paint &amp; panel · colour matched</span>
+            <span className="text-[11px] font-bold uppercase tracking-[0.26em]" style={{ color: SILVER }} {...editCopy(content, "hero_eyebrow", "Paint & panel · colour matched")} />
           </div>
           <h1 style={display} className="mt-6 max-w-4xl text-5xl font-bold uppercase leading-[0.92] tracking-tight [text-shadow:0_2px_24px_rgba(0,0,0,0.5)] sm:text-7xl">
             <span data-edit="content.tagline" className="block">{content.tagline ?? "Back to flawless."}</span>
           </h1>
-          <p className="mt-5 max-w-xl text-base leading-relaxed text-white/80">Accident repair, dent &amp; scratch, resprays and panel work — finished like the day you bought it.</p>
+          <p className="mt-5 max-w-xl text-base leading-relaxed text-white/80" {...editCopy(content, "hero_sub", "Accident repair, dent & scratch, resprays and panel work — finished like the day you bought it.")} />
           <p data-edit="tenant.business_name" className="mt-5 text-sm font-bold uppercase tracking-[0.25em] text-white/55">{name}</p>
           <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:gap-4">
             {redBtn(ctaLabel, cta)}
@@ -340,8 +340,8 @@ export default function PanelworksDesign({ site, page = "home", basePath = "" }:
       {/* what we do — colour-chip + panel-seam service grid */}
       <section style={{ background: INK, borderBottom: "1px solid #ffffff12" }}>
         <div className="mx-auto max-w-7xl px-8 py-24">
-          <Kicker>What we do</Kicker>
-          <h2 style={{ ...display, color: WHITE }} className="mt-4 text-4xl font-bold uppercase tracking-tight sm:text-5xl">Crash repair &amp; refinishing</h2>
+          <Kicker><span {...editCopy(content, "home_svc_kicker", "What we do")} /></Kicker>
+          <h2 style={{ ...display, color: WHITE }} className="mt-4 text-4xl font-bold uppercase tracking-tight sm:text-5xl" {...editCopy(content, "home_svc_heading", "Crash repair & refinishing")} />
           {services.length > 0 ? (
             <div className="mt-12">{serviceRows(services.slice(0, 6))}</div>
           ) : (
@@ -379,10 +379,10 @@ export default function PanelworksDesign({ site, page = "home", basePath = "" }:
             <span className="pointer-events-none absolute -bottom-2 -left-2 h-16 w-16" style={{ borderBottom: `4px solid ${RED}`, borderLeft: `4px solid ${RED}` }} />
           </div>
           <div>
-            <Kicker>The bodyshop</Kicker>
-            <h2 style={{ ...display, color: WHITE }} className="mt-4 text-4xl font-bold uppercase leading-[0.96] tracking-tight sm:text-5xl">Like the day you bought it</h2>
+            <Kicker><span {...editCopy(content, "home_about_kicker", "The bodyshop")} /></Kicker>
+            <h2 style={{ ...display, color: WHITE }} className="mt-4 text-4xl font-bold uppercase leading-[0.96] tracking-tight sm:text-5xl" {...editCopy(content, "home_about_heading", "Like the day you bought it")} />
             <p data-edit="content.about" className="mt-6 text-[16px] leading-[1.9]" style={{ color: MUTE }}>{content.about}</p>
-            <a href={href("about")} className="mt-6 inline-flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.18em]" style={{ color: RED }}>About the bodyshop →</a>
+            <a href={href("about")} className="mt-6 inline-flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.18em]" style={{ color: RED }} {...editCopy(content, "home_about_link", "About the bodyshop →")} />
           </div>
         </section>
       )}
@@ -391,8 +391,8 @@ export default function PanelworksDesign({ site, page = "home", basePath = "" }:
       {gallery.length > 0 && (
         <section style={{ background: INK, borderTop: "1px solid #ffffff12", borderBottom: "1px solid #ffffff12" }}>
           <div className="mx-auto max-w-7xl px-8 py-24">
-            <Kicker>Before &amp; after</Kicker>
-            <h2 style={{ ...display, color: WHITE }} className="mt-4 text-4xl font-bold uppercase tracking-tight sm:text-5xl">The transformation</h2>
+            <Kicker><span {...editCopy(content, "home_work_kicker", "Before & after")} /></Kicker>
+            <h2 style={{ ...display, color: WHITE }} className="mt-4 text-4xl font-bold uppercase tracking-tight sm:text-5xl" {...editCopy(content, "home_work_heading", "The transformation")} />
             <div className="mt-10 grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
               {gallery.slice(0, 8).map((g) => (
                 <figure key={g.id} className="group relative overflow-hidden">
@@ -428,7 +428,7 @@ export default function PanelworksDesign({ site, page = "home", basePath = "" }:
       {content.service_areas && content.service_areas.length > 0 && (
         <section style={{ background: INK, borderTop: "1px solid #ffffff12" }}>
           <div className="mx-auto max-w-7xl px-8 py-16">
-            <Kicker>Areas covered</Kicker>
+            <Kicker><span {...editCopy(content, "home_areas_kicker", "Areas covered")} /></Kicker>
             <p className="mt-5 flex flex-wrap gap-x-3 gap-y-2 text-lg font-semibold" style={{ color: SILVER }}>
               {content.service_areas.map((a, i) => (
                 <span key={a} className="flex items-center gap-3">
@@ -445,8 +445,8 @@ export default function PanelworksDesign({ site, page = "home", basePath = "" }:
       <section style={{ background: RED }}>
         <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 px-8 py-16 text-white sm:flex-row sm:items-center">
           <div>
-            <h2 style={display} className="text-3xl font-bold uppercase leading-[0.96] tracking-tight sm:text-4xl">Had a knock? Let&apos;s put it right.</h2>
-            <p className="mt-2 text-sm font-bold uppercase tracking-[0.14em] text-white/80">Free estimates · courtesy cars · lifetime guarantee.</p>
+            <h2 style={display} className="text-3xl font-bold uppercase leading-[0.96] tracking-tight sm:text-4xl" {...editCopy(content, "cta_heading", "Had a knock? Let's put it right.")} />
+            <p className="mt-2 text-sm font-bold uppercase tracking-[0.14em] text-white/80" {...editCopy(content, "cta_sub", "Free estimates · courtesy cars · lifetime guarantee.")} />
           </div>
           <a href={phone ? `tel:${phone}` : cta} className="bg-[#15181C] px-9 py-4 text-[12px] font-bold uppercase tracking-[0.16em] text-white transition hover:brightness-125">{phone ? `Call ${phone}` : ctaLabel}</a>
         </div>

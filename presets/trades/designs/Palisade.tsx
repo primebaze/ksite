@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { CSSProperties, ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { PalisadeHeader } from "./PalisadeHeader";
 import { TradesSocialIcon } from "./TradesMobileNav";
@@ -124,7 +124,7 @@ export default function PalisadeDesign({ site, page = "home", basePath = "" }: P
           )}
         </div>
         <div>
-          <h4 style={display} className="text-xs font-extrabold uppercase tracking-[0.22em]" >Company</h4>
+          <h4 style={display} className="text-xs font-extrabold uppercase tracking-[0.22em]" {...editCopy(content, "footer_company", "Company")} />
           <ul className="mt-5 space-y-3 text-sm text-white/70">
             {nav.map((l) => (
               <li key={l.label}><a href={l.href} className="transition hover:text-white">{l.label}</a></li>
@@ -132,7 +132,7 @@ export default function PalisadeDesign({ site, page = "home", basePath = "" }: P
           </ul>
         </div>
         <div>
-          <h4 style={display} className="text-xs font-extrabold uppercase tracking-[0.22em]">Contact</h4>
+          <h4 style={display} className="text-xs font-extrabold uppercase tracking-[0.22em]" {...editCopy(content, "footer_contact", "Contact")} />
           <div className="mt-5 space-y-3 text-sm text-white/70">
             {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -140,7 +140,7 @@ export default function PalisadeDesign({ site, page = "home", basePath = "" }: P
           </div>
         </div>
         <div>
-          <h4 style={display} className="text-xs font-extrabold uppercase tracking-[0.22em]">Hours</h4>
+          <h4 style={display} className="text-xs font-extrabold uppercase tracking-[0.22em]" {...editCopy(content, "footer_hours", "Hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm text-white/70">
               {content.hours.map((h, i) => (
@@ -167,11 +167,11 @@ export default function PalisadeDesign({ site, page = "home", basePath = "" }: P
     </div>
   );
 
-  const banner = (kicker: string, title: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string) => (
     <section style={{ background: PINE }} className="text-white">
       <div className="mx-auto max-w-7xl px-8 pb-14 pt-32 sm:pt-40">
-        <Kicker>{kicker}</Kicker>
-        <h1 style={display} className="mt-4 text-4xl font-extrabold uppercase leading-[0.95] tracking-tight sm:text-6xl">{title}</h1>
+        <Kicker><span {...editCopy(content, kickerKey, kicker)} /></Kicker>
+        <h1 style={display} className="mt-4 text-4xl font-extrabold uppercase leading-[0.95] tracking-tight sm:text-6xl" {...editCopy(content, titleKey, title)} />
       </div>
       <SlatRow color={CEDAR} height={20} className="mx-auto max-w-7xl px-8 pb-0" />
     </section>
@@ -181,7 +181,7 @@ export default function PalisadeDesign({ site, page = "home", basePath = "" }: P
   if (page === "services") {
     return shell(
       <>
-        {banner("What we install", "Our Services")}
+        {banner("What we install", "svc_kicker", "Our Services", "svc_title")}
         <section className="mx-auto max-w-4xl px-8 py-20">
           {services.length > 0 ? (
             <ul className="divide-y" style={{ borderColor: LINE }}>
@@ -209,12 +209,12 @@ export default function PalisadeDesign({ site, page = "home", basePath = "" }: P
   if (page === "about") {
     return shell(
       <>
-        {banner("Who we are", "Boundaries Done Properly")}
+        {banner("Who we are", "about_kicker", "Boundaries Done Properly", "about_title")}
         <section className="mx-auto max-w-3xl px-8 py-20">
           {content.about ? <p data-edit="content.about" className="text-[17px] leading-[1.9]" style={{ color: INK }}>{content.about}</p> : <p style={{ color: STONE }}>Our story is coming soon.</p>}
           {content.accreditations && content.accreditations.length > 0 && (
             <>
-              <h3 style={display} className="mt-12 text-xs font-extrabold uppercase tracking-[0.22em]" >Guaranteed &amp; insured</h3>
+              <h3 style={display} className="mt-12 text-xs font-extrabold uppercase tracking-[0.22em]" {...editCopy(content, "about_guaranteed_heading", "Guaranteed & insured")} />
               <div className="mt-5 flex flex-wrap gap-3">
                 {content.accreditations.map((a) => (
                   <span key={a} className="rounded-sm border-2 px-4 py-2 text-[11px] font-bold uppercase tracking-[0.14em]" style={{ borderColor: CEDAR, color: PINE }}>{a}</span>
@@ -224,7 +224,7 @@ export default function PalisadeDesign({ site, page = "home", basePath = "" }: P
           )}
           {content.service_areas && content.service_areas.length > 0 && (
             <>
-              <h3 style={display} className="mt-12 text-xs font-extrabold uppercase tracking-[0.22em]" >Areas we cover</h3>
+              <h3 style={display} className="mt-12 text-xs font-extrabold uppercase tracking-[0.22em]" {...editCopy(content, "about_areas_heading", "Areas we cover")} />
               <p className="mt-4 text-[15px] leading-relaxed" style={{ color: STONE }}>{content.service_areas.join(" · ")}</p>
             </>
           )}
@@ -238,10 +238,10 @@ export default function PalisadeDesign({ site, page = "home", basePath = "" }: P
   if (page === "contact") {
     return shell(
       <>
-        {banner("Get in touch", "Request A Quote")}
+        {banner("Get in touch", "contact_kicker", "Request A Quote", "contact_title")}
         <section className="mx-auto grid max-w-7xl gap-12 px-8 py-20 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={{ ...display, color: PINE }} className="text-2xl font-extrabold uppercase tracking-tight">Speak to the team</h2>
+            <h2 style={{ ...display, color: PINE }} className="text-2xl font-extrabold uppercase tracking-tight" {...editCopy(content, "contact_team_heading", "Speak to the team")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: STONE }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:opacity-70" style={{ color: PINE }}>{content.phone}</a>}
@@ -280,7 +280,7 @@ export default function PalisadeDesign({ site, page = "home", basePath = "" }: P
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Recent jobs", "Our Work")}
+        {banner("Recent jobs", "gallery_kicker", "Our Work", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-7xl px-2 py-12 sm:px-4">
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
@@ -359,10 +359,10 @@ export default function PalisadeDesign({ site, page = "home", basePath = "" }: P
       {content.about && (
         <section className="mx-auto grid max-w-7xl items-center gap-12 px-8 py-24 lg:grid-cols-2 lg:gap-16">
           <div>
-            <Kicker>Who we are</Kicker>
-            <h2 style={{ ...display, color: PINE }} className="mt-4 text-4xl font-extrabold uppercase leading-[0.95] tracking-tight sm:text-5xl">Timber craftsmanship, built to last</h2>
+            <Kicker><span {...editCopy(content, "home_about_kicker", "Who we are")} /></Kicker>
+            <h2 style={{ ...display, color: PINE }} className="mt-4 text-4xl font-extrabold uppercase leading-[0.95] tracking-tight sm:text-5xl" {...editCopy(content, "home_about_heading", "Timber craftsmanship, built to last")} />
             <p data-edit="content.about" className="mt-6 text-[16px] leading-[1.9]" style={{ color: STONE }}>{content.about}</p>
-            <a href={href("about")} className="mt-6 inline-flex items-center gap-2 text-[12px] font-extrabold uppercase tracking-[0.18em]" style={{ color: CEDAR }}>More about us →</a>
+            <a href={href("about")} className="mt-6 inline-flex items-center gap-2 text-[12px] font-extrabold uppercase tracking-[0.18em]" style={{ color: CEDAR }} {...editCopy(content, "home_about_link", "More about us →")} />
           </div>
           <div className="relative">
             {gallery[0] ? (
@@ -380,8 +380,8 @@ export default function PalisadeDesign({ site, page = "home", basePath = "" }: P
       {services.length > 0 && (
         <section style={{ background: PANEL, borderTop: `1px solid ${LINE}`, borderBottom: `1px solid ${LINE}` }}>
           <div className="mx-auto max-w-4xl px-8 py-24">
-            <Kicker>What we install</Kicker>
-            <h2 style={{ ...display, color: PINE }} className="mt-4 text-4xl font-extrabold uppercase tracking-tight sm:text-5xl">Our services</h2>
+            <Kicker><span {...editCopy(content, "home_services_kicker", "What we install")} /></Kicker>
+            <h2 style={{ ...display, color: PINE }} className="mt-4 text-4xl font-extrabold uppercase tracking-tight sm:text-5xl" {...editCopy(content, "home_services_heading", "Our services")} />
             <ul className="mt-10 divide-y" style={{ borderColor: LINE }}>
               {services.slice(0, 6).map((s) => (
                 <li key={s.id} className="flex items-baseline justify-between gap-8 py-6">
@@ -400,9 +400,9 @@ export default function PalisadeDesign({ site, page = "home", basePath = "" }: P
 
       {/* materials showcase — timber types */}
       <section className="mx-auto max-w-7xl px-8 py-24">
-        <Kicker>Materials</Kicker>
-        <h2 style={{ ...display, color: PINE }} className="mt-4 text-4xl font-extrabold uppercase tracking-tight sm:text-5xl">Timber, chosen well</h2>
-        <p className="mt-4 max-w-2xl text-[15px] leading-relaxed" style={{ color: STONE }}>We build with the right material for the job — from value softwood to premium cedar, hardwood and low-maintenance composite.</p>
+        <Kicker><span {...editCopy(content, "home_materials_kicker", "Materials")} /></Kicker>
+        <h2 style={{ ...display, color: PINE }} className="mt-4 text-4xl font-extrabold uppercase tracking-tight sm:text-5xl" {...editCopy(content, "home_materials_heading", "Timber, chosen well")} />
+        <p className="mt-4 max-w-2xl text-[15px] leading-relaxed" style={{ color: STONE }} {...editCopy(content, "home_materials_sub", "We build with the right material for the job — from value softwood to premium cedar, hardwood and low-maintenance composite.")} />
         <div className="mt-12 grid gap-px overflow-hidden rounded-sm sm:grid-cols-2 lg:grid-cols-4" style={{ background: LINE }}>
           {materials.map((m, i) => (
             <div key={m.name} className="flex flex-col gap-3 bg-[#ffffff] p-7">
@@ -418,8 +418,8 @@ export default function PalisadeDesign({ site, page = "home", basePath = "" }: P
       {gallery.length > 0 && (
         <section style={{ background: PINE }} className="text-white">
           <div className="mx-auto max-w-7xl px-8 py-24">
-            <Kicker color={OFF}>Recent jobs</Kicker>
-            <h2 style={display} className="mt-4 text-4xl font-extrabold uppercase tracking-tight sm:text-5xl">Before &amp; after</h2>
+            <Kicker color={OFF}><span {...editCopy(content, "home_work_kicker", "Recent jobs")} /></Kicker>
+            <h2 style={display} className="mt-4 text-4xl font-extrabold uppercase tracking-tight sm:text-5xl" {...editCopy(content, "home_work_heading", "Before & after")} />
             <div className="mt-10 grid grid-cols-2 gap-2 sm:grid-cols-4">
               {gallery.slice(0, 4).map((g) => (
                 // eslint-disable-next-line @next/next/no-img-element
@@ -427,7 +427,7 @@ export default function PalisadeDesign({ site, page = "home", basePath = "" }: P
               ))}
             </div>
             <div className="mt-10">
-              <a href={href("gallery")} className="inline-flex rounded-sm border-2 px-8 py-4 text-[12px] font-extrabold uppercase tracking-[0.16em] text-white transition hover:bg-white/10" style={{ borderColor: "#ffffff55" }}>See more work</a>
+              <a href={href("gallery")} className="inline-flex rounded-sm border-2 px-8 py-4 text-[12px] font-extrabold uppercase tracking-[0.16em] text-white transition hover:bg-white/10" style={{ borderColor: "#ffffff55" }} {...editCopy(content, "home_work_link", "See more work")} />
             </div>
           </div>
         </section>
@@ -436,8 +436,8 @@ export default function PalisadeDesign({ site, page = "home", basePath = "" }: P
       {/* areas covered band */}
       {content.service_areas && content.service_areas.length > 0 && (
         <section className="mx-auto max-w-7xl px-8 py-20">
-          <Kicker>Areas covered</Kicker>
-          <h2 style={{ ...display, color: PINE }} className="mt-4 text-3xl font-extrabold uppercase tracking-tight sm:text-4xl">Working across your area</h2>
+          <Kicker><span {...editCopy(content, "home_areas_kicker", "Areas covered")} /></Kicker>
+          <h2 style={{ ...display, color: PINE }} className="mt-4 text-3xl font-extrabold uppercase tracking-tight sm:text-4xl" {...editCopy(content, "home_areas_heading", "Working across your area")} />
           <div className="mt-8 flex flex-wrap gap-3">
             {content.service_areas.map((a) => (
               <span key={a} className="rounded-sm border px-4 py-2 text-[12px] font-bold uppercase tracking-[0.12em]" style={{ borderColor: LINE, color: INK, background: "#ffffff" }}>{a}</span>
@@ -451,8 +451,8 @@ export default function PalisadeDesign({ site, page = "home", basePath = "" }: P
         <SlatRow color="#ffffff" height={18} className="mx-auto max-w-7xl px-8 pt-12 opacity-50" />
         <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 px-8 py-14 sm:flex-row sm:items-center">
           <div>
-            <h2 style={display} className="text-3xl font-extrabold uppercase leading-[0.95] tracking-tight sm:text-4xl">Ready for a new boundary?</h2>
-            <p className="mt-2 text-sm font-bold uppercase tracking-[0.14em] text-white/80">Free site visit and a clear, fixed price.</p>
+            <h2 style={display} className="text-3xl font-extrabold uppercase leading-[0.95] tracking-tight sm:text-4xl" {...editCopy(content, "cta_heading", "Ready for a new boundary?")} />
+            <p className="mt-2 text-sm font-bold uppercase tracking-[0.14em] text-white/80" {...editCopy(content, "cta_sub", "Free site visit and a clear, fixed price.")} />
           </div>
           <a href={phone ? `tel:${phone}` : cta} className="rounded-sm px-9 py-4 text-[12px] font-extrabold uppercase tracking-[0.16em] text-white transition hover:brightness-110" style={{ background: PINE }}>
             {phone ? `Call ${phone}` : ctaLabel}

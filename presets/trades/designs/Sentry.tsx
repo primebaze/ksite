@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { CSSProperties, ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { SentryHeader } from "./SentryHeader";
 import { TradesSocialIcon } from "./TradesMobileNav";
@@ -87,8 +87,8 @@ export default function SentryDesign({ site, page = "home", basePath = "" }: Pre
   const processStrip = (
     <section style={{ background: PAPER }}>
       <div className="mx-auto max-w-7xl px-8 py-24">
-        <Kicker>How it works</Kicker>
-        <h2 style={{ ...display, color: TEAL_DK }} className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl">Inspect. Treat. Protect.</h2>
+        <Kicker><span {...editCopy(content, "process_kicker", "How it works")} /></Kicker>
+        <h2 style={{ ...display, color: TEAL_DK }} className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl" {...editCopy(content, "process_heading", "Inspect. Treat. Protect.")} />
         <div className="mt-12 grid gap-6 md:grid-cols-3">
           {[
             { n: "01", t: "Inspect", d: "A thorough survey to find the source, scale and entry points — and a clear, honest plan." },
@@ -134,7 +134,7 @@ export default function SentryDesign({ site, page = "home", basePath = "" }: Pre
           )}
         </div>
         <div>
-          <h4 style={display} className="text-xs font-bold uppercase tracking-[0.22em] text-white/90">Company</h4>
+          <h4 style={display} className="text-xs font-bold uppercase tracking-[0.22em] text-white/90" {...editCopy(content, "footer_company", "Company")} />
           <ul className="mt-5 space-y-3 text-sm text-white/60">
             {nav.map((l) => (
               <li key={l.label}><a href={l.href} className="transition hover:text-white">{l.label}</a></li>
@@ -142,7 +142,7 @@ export default function SentryDesign({ site, page = "home", basePath = "" }: Pre
           </ul>
         </div>
         <div>
-          <h4 style={display} className="text-xs font-bold uppercase tracking-[0.22em] text-white/90">Contact</h4>
+          <h4 style={display} className="text-xs font-bold uppercase tracking-[0.22em] text-white/90" {...editCopy(content, "footer_contact", "Contact")} />
           <div className="mt-5 space-y-3 text-sm text-white/60">
             {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -150,7 +150,7 @@ export default function SentryDesign({ site, page = "home", basePath = "" }: Pre
           </div>
         </div>
         <div>
-          <h4 style={display} className="text-xs font-bold uppercase tracking-[0.22em] text-white/90">Hours</h4>
+          <h4 style={display} className="text-xs font-bold uppercase tracking-[0.22em] text-white/90" {...editCopy(content, "footer_hours", "Hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm text-white/60">
               {content.hours.map((h, i) => (
@@ -175,12 +175,12 @@ export default function SentryDesign({ site, page = "home", basePath = "" }: Pre
     </div>
   );
 
-  const banner = (kicker: string, title: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string) => (
     <section style={{ background: TEAL }} className="relative overflow-hidden text-white">
       <RingDecor />
       <div className="relative mx-auto max-w-7xl px-8 pb-16 pt-32 sm:pt-40">
-        <Kicker light>{kicker}</Kicker>
-        <h1 style={display} className="mt-4 text-4xl font-bold leading-[1.02] tracking-tight sm:text-6xl">{title}</h1>
+        <Kicker light><span {...editCopy(content, kickerKey, kicker)} /></Kicker>
+        <h1 style={display} className="mt-4 text-4xl font-bold leading-[1.02] tracking-tight sm:text-6xl" {...editCopy(content, titleKey, title)} />
       </div>
     </section>
   );
@@ -189,7 +189,7 @@ export default function SentryDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "services") {
     return shell(
       <>
-        {banner("What we handle", "Pest control services")}
+        {banner("What we handle", "svc_kicker", "Pest control services", "svc_title")}
         <section className="mx-auto max-w-4xl px-8 py-20">
           {services.length > 0 ? (
             <ul className="divide-y" style={{ borderColor: LINE }}>
@@ -218,12 +218,12 @@ export default function SentryDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "about") {
     return shell(
       <>
-        {banner("Who we are", "Discreet. Effective. Trusted.")}
+        {banner("Who we are", "about_kicker", "Discreet. Effective. Trusted.", "about_title")}
         <section className="mx-auto max-w-3xl px-8 py-20">
           {content.about ? <p data-edit="content.about" className="text-[17px] leading-[1.9]" style={{ color: SLATE }}>{content.about}</p> : <p style={{ color: SLATE }}>Our story is coming soon.</p>}
           {content.accreditations && content.accreditations.length > 0 && (
             <>
-              <h3 style={display} className="mt-12 text-xs font-bold uppercase tracking-[0.22em]" >Certified &amp; fully insured</h3>
+              <h3 style={display} className="mt-12 text-xs font-bold uppercase tracking-[0.22em]" {...editCopy(content, "about_certified_heading", "Certified & fully insured")} />
               <div className="mt-5 flex flex-wrap gap-3">
                 {content.accreditations.map((a) => (
                   <span key={a} className="inline-flex items-center gap-2 rounded-full border px-4 py-2 text-[11px] font-bold uppercase tracking-[0.12em]" style={{ borderColor: LINE, color: TEAL }}><Shield size={13} color={TEAL} />{a}</span>
@@ -233,7 +233,7 @@ export default function SentryDesign({ site, page = "home", basePath = "" }: Pre
           )}
           {content.service_areas && content.service_areas.length > 0 && (
             <>
-              <h3 style={display} className="mt-12 text-xs font-bold uppercase tracking-[0.22em]" >Areas we cover</h3>
+              <h3 style={display} className="mt-12 text-xs font-bold uppercase tracking-[0.22em]" {...editCopy(content, "about_areas_heading", "Areas we cover")} />
               <p className="mt-4 text-[15px] leading-relaxed" style={{ color: SLATE }}>{content.service_areas.join(" · ")}</p>
             </>
           )}
@@ -247,11 +247,11 @@ export default function SentryDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "contact") {
     return shell(
       <>
-        {banner("Get in touch", "Request a quote")}
+        {banner("Get in touch", "contact_kicker", "Request a quote", "contact_title")}
         <section className="mx-auto grid max-w-7xl gap-12 px-8 py-20 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={display} className="text-2xl font-bold tracking-tight" >Speak to the team</h2>
-            <p className="mt-3 text-sm leading-relaxed" style={{ color: SLATE }}>Discreet, same-day call-out across the area. Tell us what you&apos;ve seen and we&apos;ll handle the rest.</p>
+            <h2 style={display} className="text-2xl font-bold tracking-tight" {...editCopy(content, "contact_lead_heading", "Speak to the team")} />
+            <p className="mt-3 text-sm leading-relaxed" style={{ color: SLATE }} {...editCopy(content, "contact_lead_sub", "Discreet, same-day call-out across the area. Tell us what you've seen and we'll handle the rest.")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: SLATE }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block font-semibold transition hover:text-[#1C3F3A]">{content.phone}</a>}
@@ -290,7 +290,7 @@ export default function SentryDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Recent work", "Jobs done right")}
+        {banner("Recent work", "gallery_kicker", "Jobs done right", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-7xl px-2 py-12 sm:px-4">
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
@@ -373,7 +373,7 @@ export default function SentryDesign({ site, page = "home", basePath = "" }: Pre
         <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-5 px-8 py-8 sm:flex-row sm:items-center" style={{ color: TEAL_DK }}>
           <div className="flex items-center gap-4">
             <Shield size={28} color={TEAL_DK} stroke={1.8} />
-            <p style={display} className="text-xl font-bold tracking-tight sm:text-2xl">Infestation? We can be there today.</p>
+            <p style={display} className="text-xl font-bold tracking-tight sm:text-2xl" {...editCopy(content, "home_urgency_heading", "Infestation? We can be there today.")} />
           </div>
           <a href={phone ? `tel:${phone}` : cta} className="rounded-full px-7 py-3.5 text-[12px] font-bold uppercase tracking-[0.14em] text-white transition hover:brightness-110" style={{ background: TEAL_DK }}>
             {phone ? `Call ${phone}` : ctaLabel}
@@ -385,8 +385,8 @@ export default function SentryDesign({ site, page = "home", basePath = "" }: Pre
       {content.about && (
         <section className="mx-auto grid max-w-7xl items-center gap-12 px-8 py-24 lg:grid-cols-2 lg:gap-16">
           <div>
-            <Kicker>Who we are</Kicker>
-            <h2 style={{ ...display, color: TEAL_DK }} className="mt-4 text-4xl font-bold leading-[1.02] tracking-tight sm:text-5xl">Protection you can rely on</h2>
+            <Kicker><span {...editCopy(content, "home_about_kicker", "Who we are")} /></Kicker>
+            <h2 style={{ ...display, color: TEAL_DK }} className="mt-4 text-4xl font-bold leading-[1.02] tracking-tight sm:text-5xl" {...editCopy(content, "home_about_heading", "Protection you can rely on")} />
             <p data-edit="content.about" className="mt-6 text-[16px] leading-[1.9]" style={{ color: SLATE }}>{content.about}</p>
             <a href={href("about")} className="mt-6 inline-flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.16em]" style={{ color: TEAL }}>More about us →</a>
           </div>
@@ -405,8 +405,8 @@ export default function SentryDesign({ site, page = "home", basePath = "" }: Pre
       {/* what we handle — clean divider list */}
       <section style={{ background: "#ffffff", borderTop: `1px solid ${LINE}`, borderBottom: `1px solid ${LINE}` }}>
         <div className="mx-auto max-w-7xl px-8 py-24">
-          <Kicker>What we handle</Kicker>
-          <h2 style={{ ...display, color: TEAL_DK }} className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl">Every pest, covered</h2>
+          <Kicker><span {...editCopy(content, "home_handle_kicker", "What we handle")} /></Kicker>
+          <h2 style={{ ...display, color: TEAL_DK }} className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl" {...editCopy(content, "home_handle_heading", "Every pest, covered")} />
           <div className="mt-12 grid gap-x-12 sm:grid-cols-2">
             {[handleList.slice(0, Math.ceil(handleList.length / 2)), handleList.slice(Math.ceil(handleList.length / 2))].map((col, ci) => (
               <ul key={ci} className="divide-y" style={{ borderColor: LINE }}>
@@ -427,7 +427,7 @@ export default function SentryDesign({ site, page = "home", basePath = "" }: Pre
       {content.accreditations && content.accreditations.length > 0 && (
         <section style={{ background: PAPER }}>
           <div className="mx-auto max-w-7xl px-8 py-14">
-            <p className="text-center text-[11px] font-bold uppercase tracking-[0.24em]" style={{ color: SLATE }}>Certified, insured &amp; accredited</p>
+            <p className="text-center text-[11px] font-bold uppercase tracking-[0.24em]" style={{ color: SLATE }} {...editCopy(content, "home_certs_label", "Certified, insured & accredited")} />
             <div className="mt-7 flex flex-wrap items-center justify-center gap-3">
               {content.accreditations.map((a) => (
                 <span key={a} className="inline-flex items-center gap-2 rounded-full bg-white px-5 py-2.5 text-[12px] font-bold uppercase tracking-[0.1em]" style={{ border: `1px solid ${LINE}`, color: TEAL }}><Shield size={15} color={TEAL} />{a}</span>
@@ -443,8 +443,8 @@ export default function SentryDesign({ site, page = "home", basePath = "" }: Pre
       {/* work strip */}
       {gallery.length > 0 && (
         <section className="mx-auto max-w-7xl px-8 py-24">
-          <Kicker>Recent work</Kicker>
-          <h2 style={{ ...display, color: TEAL_DK }} className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl">Jobs done right</h2>
+          <Kicker><span {...editCopy(content, "home_work_kicker", "Recent work")} /></Kicker>
+          <h2 style={{ ...display, color: TEAL_DK }} className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl" {...editCopy(content, "home_work_heading", "Jobs done right")} />
           <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
             {gallery.slice(0, 4).map((g) => (
               // eslint-disable-next-line @next/next/no-img-element
@@ -460,8 +460,8 @@ export default function SentryDesign({ site, page = "home", basePath = "" }: Pre
         <section style={{ background: TEAL }} className="relative overflow-hidden text-white">
           <RingDecor />
           <div className="relative mx-auto max-w-7xl px-8 py-20">
-            <Kicker light>Areas covered</Kicker>
-            <h2 style={display} className="mt-4 text-3xl font-bold tracking-tight sm:text-4xl">Local protection, fast</h2>
+            <Kicker light><span {...editCopy(content, "home_areas_kicker", "Areas covered")} /></Kicker>
+            <h2 style={display} className="mt-4 text-3xl font-bold tracking-tight sm:text-4xl" {...editCopy(content, "home_areas_heading", "Local protection, fast")} />
             <div className="mt-8 flex flex-wrap gap-3">
               {content.service_areas.map((a) => (
                 <span key={a} className="rounded-full px-5 py-2.5 text-sm font-semibold" style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.18)" }}>{a}</span>
@@ -475,8 +475,8 @@ export default function SentryDesign({ site, page = "home", basePath = "" }: Pre
       <section style={{ background: TEAL_DK }} className="text-white">
         <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 px-8 py-16 sm:flex-row sm:items-center">
           <div>
-            <h2 style={display} className="text-3xl font-bold leading-[1.02] tracking-tight sm:text-4xl">Get your free, no-obligation quote.</h2>
-            <p className="mt-2 text-sm font-semibold uppercase tracking-[0.12em] text-white/60">Discreet · Same-day call-out · Guaranteed results</p>
+            <h2 style={display} className="text-3xl font-bold leading-[1.02] tracking-tight sm:text-4xl" {...editCopy(content, "cta_heading", "Get your free, no-obligation quote.")} />
+            <p className="mt-2 text-sm font-semibold uppercase tracking-[0.12em] text-white/60" {...editCopy(content, "cta_sub", "Discreet · Same-day call-out · Guaranteed results")} />
           </div>
           {btnAmber(phone ? `Call ${phone}` : ctaLabel, phone ? `tel:${phone}` : cta)}
         </div>

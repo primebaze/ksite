@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { MendwellHeader } from "./MendwellHeader";
 import { TradesSocialIcon } from "./TradesMobileNav";
@@ -138,7 +138,7 @@ export default function MendwellDesign({ site, page = "home", basePath = "" }: P
           )}
         </div>
         <div>
-          <h4 style={display} className="text-xs font-bold uppercase tracking-[0.18em] text-white/45">Explore</h4>
+          <h4 style={display} className="text-xs font-bold uppercase tracking-[0.18em] text-white/45" {...editCopy(content, "footer_explore", "Explore")} />
           <ul className="mt-5 space-y-3 text-sm text-white/70">
             {nav.map((l) => (
               <li key={l.label}><a href={l.href} className="transition hover:text-white">{l.label}</a></li>
@@ -146,7 +146,7 @@ export default function MendwellDesign({ site, page = "home", basePath = "" }: P
           </ul>
         </div>
         <div>
-          <h4 style={display} className="text-xs font-bold uppercase tracking-[0.18em] text-white/45">Contact</h4>
+          <h4 style={display} className="text-xs font-bold uppercase tracking-[0.18em] text-white/45" {...editCopy(content, "footer_contact", "Contact")} />
           <div className="mt-5 space-y-3 text-sm text-white/70">
             {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -154,7 +154,7 @@ export default function MendwellDesign({ site, page = "home", basePath = "" }: P
           </div>
         </div>
         <div>
-          <h4 style={display} className="text-xs font-bold uppercase tracking-[0.18em] text-white/45">Hours</h4>
+          <h4 style={display} className="text-xs font-bold uppercase tracking-[0.18em] text-white/45" {...editCopy(content, "footer_hours", "Hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm text-white/70">
               {content.hours.map((h, i) => (
@@ -179,12 +179,12 @@ export default function MendwellDesign({ site, page = "home", basePath = "" }: P
     </div>
   );
 
-  const banner = (kicker: string, title: string, sub?: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string, sub?: string, subKey?: string) => (
     <section style={{ background: BLUE }} className="text-white">
       <div className="mx-auto max-w-6xl px-8 pb-16 pt-32 sm:pt-40">
-        <Kicker light>{kicker}</Kicker>
-        <h1 style={display} className="mt-4 text-4xl font-bold tracking-[-0.02em] sm:text-6xl">{title}</h1>
-        {sub && <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-white/75">{sub}</p>}
+        <Kicker light><span {...editCopy(content, kickerKey, kicker)} /></Kicker>
+        <h1 style={display} className="mt-4 text-4xl font-bold tracking-[-0.02em] sm:text-6xl" {...editCopy(content, titleKey, title)} />
+        {sub && subKey && <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-white/75" {...editCopy(content, subKey, sub)} />}
       </div>
     </section>
   );
@@ -211,7 +211,7 @@ export default function MendwellDesign({ site, page = "home", basePath = "" }: P
   if (page === "services") {
     return shell(
       <>
-        {banner("What we can do", "Services", "From flat-pack and shelving to repairs, painting and gutters — if it needs doing around the home, we'll sort it.")}
+        {banner("What we can do", "svc_kicker", "Services", "svc_title", "From flat-pack and shelving to repairs, painting and gutters — if it needs doing around the home, we'll sort it.", "svc_sub")}
         <section className="mx-auto max-w-3xl px-8 py-20">
           {services.length > 0 ? servicesList : <p style={{ color: SLATE }}>Services coming soon.</p>}
           <div className="mt-12">{btnPrimary(ctaLabel, cta)}</div>
@@ -224,7 +224,7 @@ export default function MendwellDesign({ site, page = "home", basePath = "" }: P
   if (page === "about") {
     return shell(
       <>
-        {banner("About us", "A reliable pair of hands", "Friendly, tidy and properly insured — the kind of help you'd recommend to a neighbour.")}
+        {banner("About us", "about_kicker", "A reliable pair of hands", "about_title", "Friendly, tidy and properly insured — the kind of help you'd recommend to a neighbour.", "about_sub")}
         <section className="mx-auto max-w-3xl px-8 py-20">
           {content.about ? <p data-edit="content.about" className="text-[17px] leading-[1.9]" style={{ color: SLATE }}>{content.about}</p> : <p style={{ color: SLATE }}>Our story is coming soon.</p>}
           <div className="mt-10 grid gap-3 sm:grid-cols-2">
@@ -236,7 +236,7 @@ export default function MendwellDesign({ site, page = "home", basePath = "" }: P
           </div>
           {content.accreditations && content.accreditations.length > 0 && (
             <>
-              <h3 style={{ ...display, color: INK }} className="mt-12 text-xs font-bold uppercase tracking-[0.18em]">Accredited &amp; insured</h3>
+              <h3 style={{ ...display, color: INK }} className="mt-12 text-xs font-bold uppercase tracking-[0.18em]" {...editCopy(content, "about_accredited_heading", "Accredited & insured")} />
               <div className="mt-5 flex flex-wrap gap-3">
                 {content.accreditations.map((a) => (
                   <span key={a} className="rounded-full border px-4 py-2 text-[11px] font-bold uppercase tracking-[0.12em]" style={{ borderColor: LINE, color: SLATE }}>{a}</span>
@@ -246,7 +246,7 @@ export default function MendwellDesign({ site, page = "home", basePath = "" }: P
           )}
           {content.service_areas && content.service_areas.length > 0 && (
             <>
-              <h3 style={{ ...display, color: INK }} className="mt-12 text-xs font-bold uppercase tracking-[0.18em]">Areas we cover</h3>
+              <h3 style={{ ...display, color: INK }} className="mt-12 text-xs font-bold uppercase tracking-[0.18em]" {...editCopy(content, "about_areas_heading", "Areas we cover")} />
               <p className="mt-4 text-[15px] leading-relaxed" style={{ color: SLATE }}>{content.service_areas.join(" · ")}</p>
             </>
           )}
@@ -260,10 +260,10 @@ export default function MendwellDesign({ site, page = "home", basePath = "" }: P
   if (page === "contact") {
     return shell(
       <>
-        {banner("Get in touch", "Request a quote", "Tell us about the job and we'll come back quickly with a fair, fixed price.")}
+        {banner("Get in touch", "contact_kicker", "Request a quote", "contact_title", "Tell us about the job and we'll come back quickly with a fair, fixed price.", "contact_sub")}
         <section className="mx-auto grid max-w-6xl gap-12 px-8 py-20 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={{ ...display, color: INK }} className="text-2xl font-bold tracking-[-0.01em]">Have a chat with us</h2>
+            <h2 style={{ ...display, color: INK }} className="text-2xl font-bold tracking-[-0.01em]" {...editCopy(content, "contact_chat_heading", "Have a chat with us")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: SLATE }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-[#2E5BBA]">{content.phone}</a>}
@@ -309,7 +309,7 @@ export default function MendwellDesign({ site, page = "home", basePath = "" }: P
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Jobs we've done", "Our work", "A few recent jobs — small fixes and bigger projects, all sorted properly.")}
+        {banner("Jobs we've done", "gallery_kicker", "Our work", "gallery_title", "A few recent jobs — small fixes and bigger projects, all sorted properly.", "gallery_sub")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-6xl px-2 py-12 sm:px-4">
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
@@ -365,7 +365,7 @@ export default function MendwellDesign({ site, page = "home", basePath = "" }: P
               <div className="aspect-[4/5] w-full rounded-3xl" style={{ background: "linear-gradient(160deg,#3a67c4,#244a99)" }} />
             )}
             <div className="absolute -bottom-5 -left-3 w-[78%] max-w-xs rounded-2xl bg-white p-5 shadow-xl sm:-left-5">
-              <p style={{ ...display, color: INK }} className="text-sm font-bold uppercase tracking-[0.12em]">Things we'll sort</p>
+              <p style={{ ...display, color: INK }} className="text-sm font-bold uppercase tracking-[0.12em]" {...editCopy(content, "hero_card_heading", "Things we'll sort")} />
               <ul className="mt-3 space-y-2">
                 {["Flat-pack & shelving", "Repairs & touch-ups", "Gutters & odd jobs"].map((t) => (
                   <li key={t} className="flex items-center gap-2.5 text-sm font-semibold" style={{ color: SLATE }}>
@@ -391,13 +391,13 @@ export default function MendwellDesign({ site, page = "home", basePath = "" }: P
       {content.about && (
         <section className="mx-auto grid max-w-6xl items-center gap-12 px-8 py-24 lg:grid-cols-2 lg:gap-16">
           <div>
-            <Kicker>About us</Kicker>
-            <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-bold leading-[1.05] tracking-[-0.02em] sm:text-4xl">A reliable pair of hands around the home</h2>
+            <Kicker><span {...editCopy(content, "home_about_kicker", "About us")} /></Kicker>
+            <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-bold leading-[1.05] tracking-[-0.02em] sm:text-4xl" {...editCopy(content, "home_about_heading", "A reliable pair of hands around the home")} />
             <p data-edit="content.about" className="mt-6 text-[16px] leading-[1.9]" style={{ color: SLATE }}>{content.about}</p>
-            <a href={href("about")} className="mt-6 inline-flex items-center gap-2 text-[14px] font-bold" style={{ color: BLUE }}>More about us →</a>
+            <a href={href("about")} className="mt-6 inline-flex items-center gap-2 text-[14px] font-bold" style={{ color: BLUE }} {...editCopy(content, "home_about_link", "More about us →")} />
           </div>
           <div className="rounded-3xl p-8" style={{ background: TINT }}>
-            <p style={{ ...display, color: INK }} className="text-sm font-bold uppercase tracking-[0.14em]">Why folks call us back</p>
+            <p style={{ ...display, color: INK }} className="text-sm font-bold uppercase tracking-[0.14em]" {...editCopy(content, "home_about_aside_heading", "Why folks call us back")} />
             <div className="mt-5 grid gap-3">
               {trust.map((t) => (
                 <div key={t} className="flex items-center gap-3 rounded-2xl bg-white px-4 py-3 text-sm font-semibold" style={{ color: INK }}>
@@ -413,9 +413,9 @@ export default function MendwellDesign({ site, page = "home", basePath = "" }: P
       {services.length > 0 && (
         <section style={{ background: TINT, borderTop: `1px solid ${LINE}`, borderBottom: `1px solid ${LINE}` }}>
           <div className="mx-auto max-w-3xl px-8 py-24">
-            <Kicker>What we can do</Kicker>
-            <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-bold tracking-[-0.02em] sm:text-4xl">Things we'll happily sort</h2>
-            <p className="mt-3 text-[15px] leading-relaxed" style={{ color: SLATE }}>If it&apos;s on your to-do list, it&apos;s on ours. No job too small.</p>
+            <Kicker><span {...editCopy(content, "home_services_kicker", "What we can do")} /></Kicker>
+            <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-bold tracking-[-0.02em] sm:text-4xl" {...editCopy(content, "home_services_heading", "Things we'll happily sort")} />
+            <p className="mt-3 text-[15px] leading-relaxed" style={{ color: SLATE }} {...editCopy(content, "home_services_sub", "If it's on your to-do list, it's on ours. No job too small.")} />
             <div className="mt-10 rounded-3xl bg-white p-6 sm:p-8">{servicesList}</div>
             <div className="mt-10">{btnSolid("View all services", href("services"))}</div>
           </div>
@@ -424,8 +424,8 @@ export default function MendwellDesign({ site, page = "home", basePath = "" }: P
 
       {/* how it works — simple 3-step */}
       <section className="mx-auto max-w-6xl px-8 py-24">
-        <Kicker>How it works</Kicker>
-        <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-bold tracking-[-0.02em] sm:text-4xl">Three easy steps</h2>
+        <Kicker><span {...editCopy(content, "home_steps_kicker", "How it works")} /></Kicker>
+        <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-bold tracking-[-0.02em] sm:text-4xl" {...editCopy(content, "home_steps_heading", "Three easy steps")} />
         <div className="mt-12 grid gap-6 sm:grid-cols-3">
           {steps.map((s, i) => (
             <div key={s.n} className="relative rounded-3xl border p-7" style={{ borderColor: LINE, background: "#ffffff" }}>
@@ -441,8 +441,8 @@ export default function MendwellDesign({ site, page = "home", basePath = "" }: P
       {gallery.length > 0 && (
         <section style={{ background: TINT, borderTop: `1px solid ${LINE}`, borderBottom: `1px solid ${LINE}` }}>
           <div className="mx-auto max-w-6xl px-8 py-24">
-            <Kicker>Jobs we&apos;ve done</Kicker>
-            <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-bold tracking-[-0.02em] sm:text-4xl">Our work</h2>
+            <Kicker><span {...editCopy(content, "home_work_kicker", "Jobs we've done")} /></Kicker>
+            <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-bold tracking-[-0.02em] sm:text-4xl" {...editCopy(content, "home_work_heading", "Our work")} />
             <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
               {gallery.slice(0, 4).map((g) => (
                 // eslint-disable-next-line @next/next/no-img-element
@@ -458,9 +458,9 @@ export default function MendwellDesign({ site, page = "home", basePath = "" }: P
       <section className="mx-auto max-w-6xl px-8 py-20">
         <div className="grid items-center gap-8 rounded-3xl px-8 py-10 sm:grid-cols-[1.3fr_1fr]" style={{ background: INK }}>
           <div className="text-white">
-            <Kicker light>Honest pricing</Kicker>
-            <h2 style={display} className="mt-4 text-3xl font-bold tracking-[-0.02em] sm:text-4xl">Fair, upfront prices — no surprises</h2>
-            <p className="mt-3 max-w-md text-[15px] leading-relaxed text-white/70">Fixed prices for clear jobs, hourly rates for the rest. You&apos;ll always know the cost before we start.</p>
+            <Kicker light><span {...editCopy(content, "home_pricing_kicker", "Honest pricing")} /></Kicker>
+            <h2 style={display} className="mt-4 text-3xl font-bold tracking-[-0.02em] sm:text-4xl" {...editCopy(content, "home_pricing_heading", "Fair, upfront prices — no surprises")} />
+            <p className="mt-3 max-w-md text-[15px] leading-relaxed text-white/70" {...editCopy(content, "home_pricing_sub", "Fixed prices for clear jobs, hourly rates for the rest. You'll always know the cost before we start.")} />
           </div>
           <div className="grid gap-3">
             {["Free, no-obligation quotes", "Fixed or hourly — you choose", "No call-out fee for quotes"].map((t) => (
@@ -476,7 +476,7 @@ export default function MendwellDesign({ site, page = "home", basePath = "" }: P
       {content.service_areas && content.service_areas.length > 0 && (
         <section style={{ background: TINT, borderTop: `1px solid ${LINE}` }}>
           <div className="mx-auto max-w-6xl px-8 py-16 text-center">
-            <Kicker>Areas we cover</Kicker>
+            <Kicker><span {...editCopy(content, "home_areas_kicker", "Areas we cover")} /></Kicker>
             <div className="mt-6 flex flex-wrap justify-center gap-2.5">
               {content.service_areas.map((a) => (
                 <span key={a} className="rounded-full bg-white px-4 py-2 text-sm font-semibold" style={{ color: INK, border: `1px solid ${LINE}` }}>{a}</span>
@@ -490,8 +490,8 @@ export default function MendwellDesign({ site, page = "home", basePath = "" }: P
       <section style={{ background: AMBER }}>
         <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-6 px-8 py-16 sm:flex-row sm:items-center" style={{ color: INK }}>
           <div>
-            <h2 style={display} className="text-3xl font-bold leading-[1.05] tracking-[-0.02em] sm:text-4xl">Got a job that needs doing?</h2>
-            <p className="mt-2 text-sm font-bold uppercase tracking-[0.1em]" style={{ color: "#1B253399" }}>No job too small — let&apos;s get it sorted.</p>
+            <h2 style={display} className="text-3xl font-bold leading-[1.05] tracking-[-0.02em] sm:text-4xl" {...editCopy(content, "cta_heading", "Got a job that needs doing?")} />
+            <p className="mt-2 text-sm font-bold uppercase tracking-[0.1em]" style={{ color: "#1B253399" }} {...editCopy(content, "cta_sub", "No job too small — let's get it sorted.")} />
           </div>
           <a href={phone ? `tel:${phone}` : cta} className="rounded-full px-8 py-4 text-[14px] font-bold text-white transition hover:bg-[#244A99]" style={{ background: BLUE }}>
             {phone ? `Call ${phone}` : ctaLabel}

@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { VelocityHeader } from "./VelocityHeader";
 import { TradesSocialIcon } from "./TradesMobileNav";
@@ -77,7 +77,7 @@ export default function VelocityDesign({ site, page = "home", basePath = "" }: P
           )}
         </div>
         <div>
-          <h4 style={display} className="text-xs font-bold uppercase tracking-[0.2em] text-white/45">Workshop</h4>
+          <h4 style={display} className="text-xs font-bold uppercase tracking-[0.2em] text-white/45" {...editCopy(content, "footer_workshop", "Workshop")} />
           <ul className="mt-5 space-y-3 text-sm" style={{ color: MUTE }}>
             {nav.map((l) => (
               <li key={l.label}><a href={l.href} className="transition hover:text-white">{l.label}</a></li>
@@ -85,7 +85,7 @@ export default function VelocityDesign({ site, page = "home", basePath = "" }: P
           </ul>
         </div>
         <div>
-          <h4 style={display} className="text-xs font-bold uppercase tracking-[0.2em] text-white/45">Contact</h4>
+          <h4 style={display} className="text-xs font-bold uppercase tracking-[0.2em] text-white/45" {...editCopy(content, "footer_contact", "Contact")} />
           <div className="mt-5 space-y-3 text-sm" style={{ color: MUTE }}>
             {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -93,7 +93,7 @@ export default function VelocityDesign({ site, page = "home", basePath = "" }: P
           </div>
         </div>
         <div>
-          <h4 style={display} className="text-xs font-bold uppercase tracking-[0.2em] text-white/45">Hours</h4>
+          <h4 style={display} className="text-xs font-bold uppercase tracking-[0.2em] text-white/45" {...editCopy(content, "footer_hours", "Hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm" style={{ color: MUTE }}>
               {content.hours.map((h, i) => (
@@ -118,11 +118,11 @@ export default function VelocityDesign({ site, page = "home", basePath = "" }: P
     </div>
   );
 
-  const banner = (kicker: string, title: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string) => (
     <section style={{ background: PANEL, borderBottom: `1px solid ${CYAN}33` }}>
       <div className="mx-auto max-w-7xl px-8 pb-14 pt-32 sm:pt-40">
-        <Kicker>{kicker}</Kicker>
-        <h1 style={{ ...display, color: TEXT }} className="mt-4 text-4xl font-bold uppercase leading-[0.98] tracking-tight sm:text-6xl">{title}</h1>
+        <Kicker><span {...editCopy(content, kickerKey, kicker)} /></Kicker>
+        <h1 style={{ ...display, color: TEXT }} className="mt-4 text-4xl font-bold uppercase leading-[0.98] tracking-tight sm:text-6xl" {...editCopy(content, titleKey, title)} />
       </div>
     </section>
   );
@@ -131,7 +131,7 @@ export default function VelocityDesign({ site, page = "home", basePath = "" }: P
   if (page === "services") {
     return shell(
       <>
-        {banner("Workshop", "Services")}
+        {banner("Workshop", "svc_kicker", "Services", "svc_title")}
         <section className="mx-auto max-w-5xl px-8 py-20">
           {services.length > 0 ? (
             <ul className="divide-y" style={{ borderColor: "#ffffff14" }}>
@@ -156,12 +156,12 @@ export default function VelocityDesign({ site, page = "home", basePath = "" }: P
   if (page === "about") {
     return shell(
       <>
-        {banner("The team", "Engineered To Perform")}
+        {banner("The team", "about_kicker", "Engineered To Perform", "about_title")}
         <section className="mx-auto max-w-3xl px-8 py-20">
           {content.about ? <p data-edit="content.about" className="text-[17px] leading-[1.9]" style={{ color: MUTE }}>{content.about}</p> : <p style={{ color: MUTE }}>Our story is coming soon.</p>}
           {content.accreditations && content.accreditations.length > 0 && (
             <>
-              <h3 style={{ ...display, color: TEXT }} className="mt-12 text-xs font-bold uppercase tracking-[0.2em]">Certified</h3>
+              <h3 style={{ ...display, color: TEXT }} className="mt-12 text-xs font-bold uppercase tracking-[0.2em]" {...editCopy(content, "about_certified_heading", "Certified")} />
               <div className="mt-5 flex flex-wrap gap-3">
                 {content.accreditations.map((a) => (
                   <span key={a} className="rounded-md border px-4 py-2 text-[11px] font-bold uppercase tracking-[0.12em]" style={{ borderColor: `${CYAN}55`, color: TEXT }}>{a}</span>
@@ -171,7 +171,7 @@ export default function VelocityDesign({ site, page = "home", basePath = "" }: P
           )}
           {content.service_areas && content.service_areas.length > 0 && (
             <>
-              <h3 style={{ ...display, color: TEXT }} className="mt-12 text-xs font-bold uppercase tracking-[0.2em]">Areas covered</h3>
+              <h3 style={{ ...display, color: TEXT }} className="mt-12 text-xs font-bold uppercase tracking-[0.2em]" {...editCopy(content, "about_areas_heading", "Areas covered")} />
               <p className="mt-4 text-[15px] leading-relaxed" style={{ color: MUTE }}>{content.service_areas.join(" · ")}</p>
             </>
           )}
@@ -185,10 +185,10 @@ export default function VelocityDesign({ site, page = "home", basePath = "" }: P
   if (page === "contact") {
     return shell(
       <>
-        {banner("Book in", "Get In Touch")}
+        {banner("Book in", "contact_kicker", "Get In Touch", "contact_title")}
         <section className="mx-auto grid max-w-7xl gap-12 px-8 py-20 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={{ ...display, color: TEXT }} className="text-2xl font-bold uppercase tracking-tight">Find the workshop</h2>
+            <h2 style={{ ...display, color: TEXT }} className="text-2xl font-bold uppercase tracking-tight" {...editCopy(content, "contact_findworkshop_heading", "Find the workshop")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: MUTE }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -225,7 +225,7 @@ export default function VelocityDesign({ site, page = "home", basePath = "" }: P
   if (page === "gallery") {
     return shell(
       <>
-        {banner("The work", "Gallery")}
+        {banner("The work", "gallery_kicker", "Gallery", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-7xl px-2 py-12 sm:px-4">
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
@@ -298,10 +298,10 @@ export default function VelocityDesign({ site, page = "home", basePath = "" }: P
             <span className="pointer-events-none absolute -bottom-2 -right-2 h-16 w-16 rounded-br-lg" style={{ borderBottom: `3px solid ${CYAN}`, borderRight: `3px solid ${CYAN}` }} />
           </div>
           <div>
-            <Kicker>The team</Kicker>
-            <h2 style={{ ...display, color: TEXT }} className="mt-4 text-4xl font-bold uppercase leading-[0.98] tracking-tight sm:text-5xl">Engineered to perform</h2>
+            <Kicker><span {...editCopy(content, "home_about_kicker", "The team")} /></Kicker>
+            <h2 style={{ ...display, color: TEXT }} className="mt-4 text-4xl font-bold uppercase leading-[0.98] tracking-tight sm:text-5xl" {...editCopy(content, "home_about_heading", "Engineered to perform")} />
             <p data-edit="content.about" className="mt-6 text-[16px] leading-[1.9]" style={{ color: MUTE }}>{content.about}</p>
-            <a href={href("about")} className="mt-6 inline-flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.18em]" style={{ color: CYAN }}>About the workshop →</a>
+            <a href={href("about")} className="mt-6 inline-flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.18em]" style={{ color: CYAN }} {...editCopy(content, "home_about_link", "About the workshop →")} />
           </div>
         </section>
       )}
@@ -310,8 +310,8 @@ export default function VelocityDesign({ site, page = "home", basePath = "" }: P
       {services.length > 0 && (
         <section style={{ background: PANEL, borderTop: "1px solid #ffffff12", borderBottom: "1px solid #ffffff12" }}>
           <div className="mx-auto max-w-5xl px-8 py-24">
-            <Kicker>Workshop</Kicker>
-            <h2 style={{ ...display, color: TEXT }} className="mt-4 text-4xl font-bold uppercase tracking-tight sm:text-5xl">Services</h2>
+            <Kicker><span {...editCopy(content, "home_services_kicker", "Workshop")} /></Kicker>
+            <h2 style={{ ...display, color: TEXT }} className="mt-4 text-4xl font-bold uppercase tracking-tight sm:text-5xl" {...editCopy(content, "home_services_heading", "Services")} />
             <ul className="mt-12 divide-y" style={{ borderColor: "#ffffff14" }}>
               {services.slice(0, 6).map((s) => (
                 <li key={s.id} className="flex items-baseline justify-between gap-8 py-5">
@@ -331,8 +331,8 @@ export default function VelocityDesign({ site, page = "home", basePath = "" }: P
       {/* gallery */}
       {gallery.length > 0 && (
         <section className="mx-auto max-w-7xl px-8 py-24">
-          <Kicker>The work</Kicker>
-          <h2 style={{ ...display, color: TEXT }} className="mt-4 text-4xl font-bold uppercase tracking-tight sm:text-5xl">Recent jobs</h2>
+          <Kicker><span {...editCopy(content, "home_work_kicker", "The work")} /></Kicker>
+          <h2 style={{ ...display, color: TEXT }} className="mt-4 text-4xl font-bold uppercase tracking-tight sm:text-5xl" {...editCopy(content, "home_work_heading", "Recent jobs")} />
           <div className="mt-10 grid grid-cols-2 gap-2 sm:grid-cols-4">
             {gallery.slice(0, 4).map((g) => (
               // eslint-disable-next-line @next/next/no-img-element
@@ -346,7 +346,7 @@ export default function VelocityDesign({ site, page = "home", basePath = "" }: P
       {/* closing CTA */}
       <section className="relative overflow-hidden" style={{ background: CYAN }}>
         <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 px-8 py-16 text-[#0b0e14] sm:flex-row sm:items-center">
-          <h2 style={display} className="text-3xl font-bold uppercase leading-[0.98] tracking-tight sm:text-4xl">Book your vehicle in today</h2>
+          <h2 style={display} className="text-3xl font-bold uppercase leading-[0.98] tracking-tight sm:text-4xl" {...editCopy(content, "cta_heading", "Book your vehicle in today")} />
           <a href={phone ? `tel:${phone}` : cta} className="rounded-md bg-[#0b0e14] px-9 py-4 text-[12px] font-bold uppercase tracking-[0.14em] text-white transition hover:brightness-125">{phone ? `Call ${phone}` : ctaLabel}</a>
         </div>
       </section>

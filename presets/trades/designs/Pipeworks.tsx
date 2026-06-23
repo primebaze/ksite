@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { PipeworksHeader } from "./PipeworksHeader";
 import { TradesSocialIcon } from "./TradesMobileNav";
@@ -149,12 +149,12 @@ export default function PipeworksDesign({ site, page = "home", basePath = "" }: 
   );
 
   // Inner-page banner — navy block with the water-line motif at its base.
-  const banner = (kicker: string, title: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string) => (
     <section className="relative isolate overflow-hidden" style={{ background: NAVY }}>
       <div className="pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full opacity-20" style={{ background: `radial-gradient(circle, ${WATER}, transparent 70%)` }} />
       <div className="relative mx-auto max-w-7xl px-6 pb-20 pt-36 sm:px-8 sm:pt-44">
-        <Kicker on="dark">{kicker}</Kicker>
-        <h1 style={display} className="mt-4 text-4xl font-bold leading-[1.02] tracking-tight text-white sm:text-6xl">{title}</h1>
+        <Kicker on="dark"><span {...editCopy(content, kickerKey, kicker)} /></Kicker>
+        <h1 style={display} className="mt-4 text-4xl font-bold leading-[1.02] tracking-tight text-white sm:text-6xl" {...editCopy(content, titleKey, title)} />
       </div>
       <WaterLine color={AQUA} className="absolute inset-x-0 bottom-0 h-6 w-full" />
     </section>
@@ -164,7 +164,7 @@ export default function PipeworksDesign({ site, page = "home", basePath = "" }: 
   if (page === "services") {
     return shell(
       <>
-        {banner("What we do", "Plumbing & heating, sorted")}
+        {banner("What we do", "svc_kicker", "Plumbing & heating, sorted", "svc_title")}
         <section className="mx-auto max-w-4xl px-6 py-20 sm:px-8">
           {services.length > 0 ? (
             <ul className="divide-y" style={{ borderColor: "rgba(16,42,67,0.10)" }}>
@@ -192,12 +192,12 @@ export default function PipeworksDesign({ site, page = "home", basePath = "" }: 
   if (page === "about") {
     return shell(
       <>
-        {banner("Who we are", "Trusted local engineers")}
+        {banner("Who we are", "about_kicker", "Trusted local engineers", "about_title")}
         <section className="mx-auto max-w-3xl px-6 py-20 sm:px-8">
           {content.about ? <p data-edit="content.about" className="text-[17px] leading-[1.9]" style={{ color: INK }}>{content.about}</p> : <p style={{ color: MUTE }}>Our story is coming soon.</p>}
           {trustBadges.length > 0 && (
             <>
-              <h3 style={{ ...display, color: NAVY }} className="mt-12 text-xs font-bold uppercase tracking-[0.2em]">Accredited &amp; insured</h3>
+              <h3 style={{ ...display, color: NAVY }} className="mt-12 text-xs font-bold uppercase tracking-[0.2em]" {...editCopy(content, "about_accred_heading", "Accredited & insured")} />
               <div className="mt-5 flex flex-wrap gap-3">
                 {trustBadges.map((a) => (
                   <span key={a} className="rounded-full px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.1em]" style={{ background: MIST, color: NAVY }}>{a}</span>
@@ -207,7 +207,7 @@ export default function PipeworksDesign({ site, page = "home", basePath = "" }: 
           )}
           {content.service_areas && content.service_areas.length > 0 && (
             <>
-              <h3 style={display} className="mt-12 text-xs font-bold uppercase tracking-[0.2em]">Areas we cover</h3>
+              <h3 style={display} className="mt-12 text-xs font-bold uppercase tracking-[0.2em]" {...editCopy(content, "about_areas_heading", "Areas we cover")} />
               <p className="mt-4 text-[15px] leading-relaxed" style={{ color: MUTE }}>{content.service_areas.join(" · ")}</p>
             </>
           )}
@@ -221,10 +221,10 @@ export default function PipeworksDesign({ site, page = "home", basePath = "" }: 
   if (page === "contact") {
     return shell(
       <>
-        {banner("Get in touch", "Request a quote")}
+        {banner("Get in touch", "contact_kicker", "Request a quote", "contact_title")}
         <section className="mx-auto grid max-w-7xl gap-12 px-6 py-20 sm:px-8 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={{ ...display, color: NAVY }} className="text-2xl font-bold tracking-tight">Speak to the team</h2>
+            <h2 style={{ ...display, color: NAVY }} className="text-2xl font-bold tracking-tight" {...editCopy(content, "contact_heading", "Speak to the team")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: MUTE }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block font-semibold transition hover:text-[#2C8FE0]" style={{ color: INK }}>{content.phone}</a>}
@@ -236,7 +236,7 @@ export default function PipeworksDesign({ site, page = "home", basePath = "" }: 
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" aria-hidden><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z" /></svg>
                 </span>
                 <div>
-                  <p className="text-[11px] font-semibold uppercase tracking-[0.16em]" style={{ color: AQUA }}>24/7 emergency line</p>
+                  <p className="text-[11px] font-semibold uppercase tracking-[0.16em]" style={{ color: AQUA }} {...editCopy(content, "contact_emergency_label", "24/7 emergency line")} />
                   <a href={`tel:${phone}`} style={display} className="text-lg font-bold text-white">{phone}</a>
                 </div>
               </div>
@@ -272,7 +272,7 @@ export default function PipeworksDesign({ site, page = "home", basePath = "" }: 
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Recent jobs", "Our work")}
+        {banner("Recent jobs", "work_kicker", "Our work", "work_title")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-7xl px-4 py-14 sm:px-8">
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
@@ -362,10 +362,10 @@ export default function PipeworksDesign({ site, page = "home", basePath = "" }: 
             </span>
           </div>
           <div className="order-1 lg:order-2">
-            <Kicker>Who we are</Kicker>
-            <h2 style={{ ...display, color: NAVY }} className="mt-4 text-3xl font-bold leading-[1.08] tracking-tight sm:text-4xl">Clean work, done right — first time</h2>
+            <Kicker><span {...editCopy(content, "home_about_kicker", "Who we are")} /></Kicker>
+            <h2 style={{ ...display, color: NAVY }} className="mt-4 text-3xl font-bold leading-[1.08] tracking-tight sm:text-4xl" {...editCopy(content, "home_about_heading", "Clean work, done right — first time")} />
             <p data-edit="content.about" className="mt-6 text-[16px] leading-[1.9]" style={{ color: MUTE }}>{content.about}</p>
-            <a href={href("about")} className="mt-6 inline-flex items-center gap-2 text-[13px] font-bold uppercase tracking-[0.14em]" style={{ color: WATER }}>More about us →</a>
+            <a href={href("about")} className="mt-6 inline-flex items-center gap-2 text-[13px] font-bold uppercase tracking-[0.14em]" style={{ color: WATER }} {...editCopy(content, "home_about_link", "More about us →")} />
           </div>
         </section>
       )}
@@ -373,8 +373,8 @@ export default function PipeworksDesign({ site, page = "home", basePath = "" }: 
       {/* why us — guarantee strip */}
       <section style={{ background: MIST }}>
         <div className="mx-auto max-w-7xl px-6 py-20 sm:px-8">
-          <Kicker>Why choose us</Kicker>
-          <h2 style={{ ...display, color: NAVY }} className="mt-4 text-3xl font-bold tracking-tight sm:text-4xl">No mess, no surprises</h2>
+          <Kicker><span {...editCopy(content, "home_why_kicker", "Why choose us")} /></Kicker>
+          <h2 style={{ ...display, color: NAVY }} className="mt-4 text-3xl font-bold tracking-tight sm:text-4xl" {...editCopy(content, "home_why_heading", "No mess, no surprises")} />
           <div className="mt-12 grid gap-6 md:grid-cols-3">
             {guarantees.map((g) => (
               <div key={g.t} className="rounded-3xl bg-white p-7 shadow-sm" style={{ border: "1px solid rgba(16,42,67,0.06)" }}>
@@ -392,8 +392,8 @@ export default function PipeworksDesign({ site, page = "home", basePath = "" }: 
       {/* services — clean divider rows */}
       {services.length > 0 && (
         <section className="mx-auto max-w-4xl px-6 py-24 sm:px-8">
-          <Kicker>What we do</Kicker>
-          <h2 style={{ ...display, color: NAVY }} className="mt-4 text-3xl font-bold tracking-tight sm:text-4xl">Our services</h2>
+          <Kicker><span {...editCopy(content, "home_svc_kicker", "What we do")} /></Kicker>
+          <h2 style={{ ...display, color: NAVY }} className="mt-4 text-3xl font-bold tracking-tight sm:text-4xl" {...editCopy(content, "home_svc_heading", "Our services")} />
           <ul className="mt-10 divide-y" style={{ borderColor: "rgba(16,42,67,0.10)" }}>
             {services.slice(0, 8).map((s, i) => (
               <li key={s.id} className="group flex items-start justify-between gap-6 py-6">
@@ -417,8 +417,8 @@ export default function PipeworksDesign({ site, page = "home", basePath = "" }: 
         <section style={{ background: NAVY }} className="relative">
           <WaterLine color={AQUA} className="absolute inset-x-0 top-0 h-5 w-full opacity-40" />
           <div className="mx-auto max-w-7xl px-6 py-24 sm:px-8">
-            <Kicker on="dark">Recent jobs</Kicker>
-            <h2 style={display} className="mt-4 text-3xl font-bold tracking-tight text-white sm:text-4xl">Our work</h2>
+            <Kicker on="dark"><span {...editCopy(content, "home_work_kicker", "Recent jobs")} /></Kicker>
+            <h2 style={display} className="mt-4 text-3xl font-bold tracking-tight text-white sm:text-4xl" {...editCopy(content, "home_work_heading", "Our work")} />
             <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
               {gallery.slice(0, 4).map((g) => (
                 // eslint-disable-next-line @next/next/no-img-element
@@ -433,8 +433,8 @@ export default function PipeworksDesign({ site, page = "home", basePath = "" }: 
       {/* areas covered band */}
       {content.service_areas && content.service_areas.length > 0 && (
         <section className="mx-auto max-w-7xl px-6 py-20 sm:px-8">
-          <Kicker>Where we work</Kicker>
-          <h2 style={{ ...display, color: NAVY }} className="mt-4 text-3xl font-bold tracking-tight sm:text-4xl">Areas we cover</h2>
+          <Kicker><span {...editCopy(content, "home_areas_kicker", "Where we work")} /></Kicker>
+          <h2 style={{ ...display, color: NAVY }} className="mt-4 text-3xl font-bold tracking-tight sm:text-4xl" {...editCopy(content, "home_areas_heading", "Areas we cover")} />
           <div className="mt-8 flex flex-wrap gap-3">
             {content.service_areas.map((a) => (
               <span key={a} className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold" style={{ background: MIST, color: NAVY }}>
@@ -451,8 +451,8 @@ export default function PipeworksDesign({ site, page = "home", basePath = "" }: 
         <div className="pointer-events-none absolute -left-20 bottom-0 h-72 w-72 rounded-full opacity-20" style={{ background: `radial-gradient(circle, ${WATER}, transparent 70%)` }} />
         <div className="relative mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 px-6 py-20 text-white sm:flex-row sm:items-center sm:px-8">
           <div>
-            <h2 style={display} className="text-3xl font-bold leading-[1.08] tracking-tight sm:text-4xl">Need it sorted today?</h2>
-            <p className="mt-2 text-sm font-semibold uppercase tracking-[0.12em] text-white/55">Free, no-obligation quotes.</p>
+            <h2 style={display} className="text-3xl font-bold leading-[1.08] tracking-tight sm:text-4xl" {...editCopy(content, "cta_heading", "Need it sorted today?")} />
+            <p className="mt-2 text-sm font-semibold uppercase tracking-[0.12em] text-white/55" {...editCopy(content, "cta_sub", "Free, no-obligation quotes.")} />
           </div>
           <div className="flex flex-col gap-3 sm:flex-row">
             {btnCopper(ctaLabel, cta)}

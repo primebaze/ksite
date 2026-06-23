@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { CSSProperties, ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { TesseraHeader } from "./TesseraHeader";
 import { TradesSocialIcon } from "./TradesMobileNav";
@@ -149,7 +149,7 @@ export default function TesseraDesign({ site, page = "home", basePath = "" }: Pr
           )}
         </div>
         <div>
-          <h4 style={display} className="text-xs font-bold uppercase tracking-[0.22em]" >Studio</h4>
+          <h4 style={display} className="text-xs font-bold uppercase tracking-[0.22em]" {...editCopy(content, "footer_studio", "Studio")} />
           <ul className="mt-5 space-y-3 text-sm text-white/60">
             {nav.map((l) => (
               <li key={l.label}><a href={l.href} className="transition hover:text-white">{l.label}</a></li>
@@ -157,7 +157,7 @@ export default function TesseraDesign({ site, page = "home", basePath = "" }: Pr
           </ul>
         </div>
         <div>
-          <h4 style={display} className="text-xs font-bold uppercase tracking-[0.22em]">Contact</h4>
+          <h4 style={display} className="text-xs font-bold uppercase tracking-[0.22em]" {...editCopy(content, "footer_contact", "Contact")} />
           <div className="mt-5 space-y-3 text-sm text-white/60">
             {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -165,7 +165,7 @@ export default function TesseraDesign({ site, page = "home", basePath = "" }: Pr
           </div>
         </div>
         <div>
-          <h4 style={display} className="text-xs font-bold uppercase tracking-[0.22em]">Hours</h4>
+          <h4 style={display} className="text-xs font-bold uppercase tracking-[0.22em]" {...editCopy(content, "footer_hours", "Hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm text-white/60">
               {content.hours.map((h, i) => (
@@ -191,12 +191,12 @@ export default function TesseraDesign({ site, page = "home", basePath = "" }: Pr
   );
 
   // Inner-page banner — geometric: ink panel with a tessellating tile field behind.
-  const banner = (kicker: string, title: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string) => (
     <section className="relative overflow-hidden" style={{ background: INK }}>
       <TileField rows={10} cols={26} className="pointer-events-none absolute inset-0 opacity-[0.14]" />
       <div className="relative mx-auto max-w-7xl px-8 pb-16 pt-36 sm:pt-44">
-        <Kicker light>{kicker}</Kicker>
-        <h1 style={display} className="mt-4 text-4xl font-bold uppercase leading-[0.95] tracking-tight text-white sm:text-6xl" >{title}</h1>
+        <Kicker light><span {...editCopy(content, kickerKey, kicker)} /></Kicker>
+        <h1 style={display} className="mt-4 text-4xl font-bold uppercase leading-[0.95] tracking-tight text-white sm:text-6xl" {...editCopy(content, titleKey, title)} />
       </div>
       <TileRule />
     </section>
@@ -206,7 +206,7 @@ export default function TesseraDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "services") {
     return shell(
       <>
-        {banner("What we tile", "Our Services")}
+        {banner("What we tile", "svc_kicker", "Our Services", "svc_title")}
         <section className="mx-auto max-w-4xl px-8 py-20">
           {services.length > 0 ? (
             <ul className="divide-y" style={{ borderColor: LINE }}>
@@ -234,12 +234,12 @@ export default function TesseraDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "about") {
     return shell(
       <>
-        {banner("The studio", "Precision, By Hand")}
+        {banner("The studio", "about_kicker", "Precision, By Hand", "about_title")}
         <section className="mx-auto max-w-3xl px-8 py-20">
           {content.about ? <p data-edit="content.about" className="text-[17px] leading-[1.9]" style={{ color: MUTE }}>{content.about}</p> : <p style={{ color: MUTE }}>Our story is coming soon.</p>}
           {content.accreditations && content.accreditations.length > 0 && (
             <>
-              <h3 style={{ ...display, color: INK }} className="mt-12 text-xs font-bold uppercase tracking-[0.22em]" >Accredited &amp; insured</h3>
+              <h3 style={{ ...display, color: INK }} className="mt-12 text-xs font-bold uppercase tracking-[0.22em]" {...editCopy(content, "about_accreditations_heading", "Accredited & insured")} />
               <div className="mt-5 flex flex-wrap gap-3">
                 {content.accreditations.map((a) => (
                   <span key={a} className="border px-4 py-2 text-[11px] font-bold uppercase tracking-[0.14em]" style={{ borderColor: GLAZE, color: GLAZE }}>{a}</span>
@@ -249,7 +249,7 @@ export default function TesseraDesign({ site, page = "home", basePath = "" }: Pr
           )}
           {content.service_areas && content.service_areas.length > 0 && (
             <>
-              <h3 style={{ ...display, color: INK }} className="mt-12 text-xs font-bold uppercase tracking-[0.22em]" >Areas we cover</h3>
+              <h3 style={{ ...display, color: INK }} className="mt-12 text-xs font-bold uppercase tracking-[0.22em]" {...editCopy(content, "about_areas_heading", "Areas we cover")} />
               <p className="mt-4 text-[15px] leading-relaxed" style={{ color: MUTE }}>{content.service_areas.join(" · ")}</p>
             </>
           )}
@@ -263,10 +263,10 @@ export default function TesseraDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "contact") {
     return shell(
       <>
-        {banner("Start your project", "Request A Quote")}
+        {banner("Start your project", "contact_kicker", "Request A Quote", "contact_title")}
         <section className="mx-auto grid max-w-7xl gap-12 px-8 py-20 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={{ ...display, color: INK }} className="text-2xl font-semibold uppercase tracking-tight" >Talk to the tiler</h2>
+            <h2 style={{ ...display, color: INK }} className="text-2xl font-semibold uppercase tracking-tight" {...editCopy(content, "contact_heading", "Talk to the tiler")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: MUTE }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-[#2E6E8E]">{content.phone}</a>}
@@ -305,7 +305,7 @@ export default function TesseraDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Laid by us", "Our Work")}
+        {banner("Laid by us", "gallery_kicker", "Our Work", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-7xl px-2 py-12 sm:px-4">
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
@@ -372,10 +372,10 @@ export default function TesseraDesign({ site, page = "home", basePath = "" }: Pr
       {content.about && (
         <section className="mx-auto grid max-w-7xl items-center gap-12 px-8 py-24 lg:grid-cols-2 lg:gap-16">
           <div>
-            <Kicker>The studio</Kicker>
-            <h2 style={{ ...display, color: INK }} className="mt-4 text-4xl font-bold uppercase leading-[0.95] tracking-tight sm:text-5xl">Every line, considered</h2>
+            <Kicker><span {...editCopy(content, "home_about_kicker", "The studio")} /></Kicker>
+            <h2 style={{ ...display, color: INK }} className="mt-4 text-4xl font-bold uppercase leading-[0.95] tracking-tight sm:text-5xl" {...editCopy(content, "home_about_heading", "Every line, considered")} />
             <p data-edit="content.about" className="mt-6 text-[16px] leading-[1.9]" style={{ color: MUTE }}>{content.about}</p>
-            <a href={href("about")} className="mt-6 inline-flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.18em]" style={{ color: GLAZE }}>More about the studio →</a>
+            <a href={href("about")} className="mt-6 inline-flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.18em]" style={{ color: GLAZE }} {...editCopy(content, "home_about_link", "More about the studio →")} />
           </div>
           <div className="relative">
             {gallery[0] ? (
@@ -398,8 +398,8 @@ export default function TesseraDesign({ site, page = "home", basePath = "" }: Pr
       {services.length > 0 && (
         <section style={{ background: "#ffffff", borderTop: `1px solid ${LINE}`, borderBottom: `1px solid ${LINE}` }}>
           <div className="mx-auto max-w-4xl px-8 py-24">
-            <Kicker>What we tile</Kicker>
-            <h2 style={{ ...display, color: INK }} className="mt-4 text-4xl font-bold uppercase tracking-tight sm:text-5xl">Our services</h2>
+            <Kicker><span {...editCopy(content, "home_services_kicker", "What we tile")} /></Kicker>
+            <h2 style={{ ...display, color: INK }} className="mt-4 text-4xl font-bold uppercase tracking-tight sm:text-5xl" {...editCopy(content, "home_services_heading", "Our services")} />
             <ul className="mt-12 divide-y" style={{ borderColor: LINE }}>
               {services6.map((s, i) => (
                 <li key={s.id} className="flex items-baseline justify-between gap-8 py-6">
@@ -425,8 +425,8 @@ export default function TesseraDesign({ site, page = "home", basePath = "" }: Pr
       {/* work — before/after-ready tile gallery */}
       {gallery.length > 0 && (
         <section className="mx-auto max-w-7xl px-8 py-24">
-          <Kicker>Laid by us</Kicker>
-          <h2 style={{ ...display, color: INK }} className="mt-4 text-4xl font-bold uppercase tracking-tight sm:text-5xl">Recent work</h2>
+          <Kicker><span {...editCopy(content, "home_work_kicker", "Laid by us")} /></Kicker>
+          <h2 style={{ ...display, color: INK }} className="mt-4 text-4xl font-bold uppercase tracking-tight sm:text-5xl" {...editCopy(content, "home_work_heading", "Recent work")} />
           <div className="mt-10 grid grid-cols-2 gap-2 sm:grid-cols-4">
             {gallery.slice(0, 4).map((g) => (
               <figure key={g.id} className="relative overflow-hidden">
@@ -444,7 +444,7 @@ export default function TesseraDesign({ site, page = "home", basePath = "" }: Pr
       {content.service_areas && content.service_areas.length > 0 && (
         <section style={{ background: CERAMIC, borderTop: `1px solid ${LINE}` }}>
           <div className="mx-auto max-w-7xl px-8 py-16">
-            <Kicker>Areas covered</Kicker>
+            <Kicker><span {...editCopy(content, "home_areas_kicker", "Areas covered")} /></Kicker>
             <div className="mt-6 flex flex-wrap gap-x-3 gap-y-3">
               {content.service_areas.map((a) => (
                 <span key={a} className="inline-flex items-center gap-2 border px-4 py-2 text-[13px] font-semibold uppercase tracking-[0.1em]" style={{ borderColor: GROUT, color: INK }}>
@@ -462,8 +462,8 @@ export default function TesseraDesign({ site, page = "home", basePath = "" }: Pr
         <TileField rows={8} cols={26} className="pointer-events-none absolute inset-0 opacity-[0.14]" />
         <div className="relative mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 px-8 py-20 text-white sm:flex-row sm:items-center">
           <div>
-            <h2 style={display} className="text-3xl font-bold uppercase leading-[0.95] tracking-tight sm:text-4xl">Got tiles to lay? Let&apos;s talk.</h2>
-            <p className="mt-3 text-sm font-semibold uppercase tracking-[0.14em] text-white/60">Free, fixed quotes — insured, level, sealed for life.</p>
+            <h2 style={display} className="text-3xl font-bold uppercase leading-[0.95] tracking-tight sm:text-4xl" {...editCopy(content, "cta_heading", "Got tiles to lay? Let's talk.")} />
+            <p className="mt-3 text-sm font-semibold uppercase tracking-[0.14em] text-white/60" {...editCopy(content, "cta_sub", "Free, fixed quotes — insured, level, sealed for life.")} />
           </div>
           <a href={phone ? `tel:${phone}` : cta} className="px-9 py-4 text-[12px] font-bold uppercase tracking-[0.16em] transition hover:brightness-110" style={{ background: CLAY, color: CERAMIC }}>
             {phone ? `Call ${phone}` : ctaLabel}

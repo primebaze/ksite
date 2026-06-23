@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { RadiateHeader } from "./RadiateHeader";
 import { TradesSocialIcon } from "./TradesMobileNav";
@@ -172,13 +172,13 @@ export default function RadiateDesign({ site, page = "home", basePath = "" }: Pr
   );
 
   // Inner-page banner — charcoal block with a radiating-heat glow in the corner.
-  const banner = (kicker: string, title: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string) => (
     <section className="relative isolate overflow-hidden" style={{ background: CHARCOAL }}>
       <HeatGlyph className="pointer-events-none absolute -right-16 -top-20 h-80 w-80 opacity-25" />
       <div className="pointer-events-none absolute -left-32 bottom-0 h-72 w-72 rounded-full opacity-30" style={{ background: `radial-gradient(circle, ${EMBER}44, transparent 70%)` }} />
       <div className="relative mx-auto max-w-7xl px-6 pb-20 pt-36 sm:px-8 sm:pt-44">
-        <Kicker on="dark">{kicker}</Kicker>
-        <h1 style={display} className="mt-4 text-4xl font-extrabold uppercase leading-[0.98] tracking-tight text-white sm:text-6xl">{title}</h1>
+        <Kicker on="dark"><span {...editCopy(content, kickerKey, kicker)} /></Kicker>
+        <h1 style={display} className="mt-4 text-4xl font-extrabold uppercase leading-[0.98] tracking-tight text-white sm:text-6xl" {...editCopy(content, titleKey, title)} />
       </div>
       <FinLines color={AMBER} className="absolute inset-x-0 bottom-0 h-4 w-full opacity-60" />
     </section>
@@ -188,7 +188,7 @@ export default function RadiateDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "services") {
     return shell(
       <>
-        {banner("What we do", "Heating, sorted properly")}
+        {banner("What we do", "svc_kicker", "Heating, sorted properly", "svc_title")}
         <section className="mx-auto max-w-4xl px-6 py-20 sm:px-8">
           {services.length > 0 ? (
             <ul className="divide-y" style={{ borderColor: "rgba(33,28,26,0.10)" }}>
@@ -216,12 +216,12 @@ export default function RadiateDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "about") {
     return shell(
       <>
-        {banner("Who we are", "Keeping homes warm")}
+        {banner("Who we are", "about_kicker", "Keeping homes warm", "about_title")}
         <section className="mx-auto max-w-3xl px-6 py-20 sm:px-8">
           {content.about ? <p data-edit="content.about" className="text-[17px] leading-[1.9]" style={{ color: INK }}>{content.about}</p> : <p style={{ color: MUTE }}>Our story is coming soon.</p>}
           {trustBadges.length > 0 && (
             <>
-              <h3 style={{ ...display, color: CHARCOAL }} className="mt-12 text-xs font-extrabold uppercase tracking-[0.2em]">Gas Safe &amp; insured</h3>
+              <h3 style={{ ...display, color: CHARCOAL }} className="mt-12 text-xs font-extrabold uppercase tracking-[0.2em]" {...editCopy(content, "about_gassafe_heading", "Gas Safe & insured")} />
               <div className="mt-5 flex flex-wrap gap-3">
                 {trustBadges.map((a) => (
                   <span key={a} className="rounded-full px-4 py-2 text-[11px] font-bold uppercase tracking-[0.1em]" style={{ background: SAND, color: CHARCOAL }}>{a}</span>
@@ -231,7 +231,7 @@ export default function RadiateDesign({ site, page = "home", basePath = "" }: Pr
           )}
           {content.service_areas && content.service_areas.length > 0 && (
             <>
-              <h3 style={{ ...display, color: CHARCOAL }} className="mt-12 text-xs font-extrabold uppercase tracking-[0.2em]">Areas we cover</h3>
+              <h3 style={{ ...display, color: CHARCOAL }} className="mt-12 text-xs font-extrabold uppercase tracking-[0.2em]" {...editCopy(content, "about_areas_heading", "Areas we cover")} />
               <p className="mt-4 text-[15px] leading-relaxed" style={{ color: MUTE }}>{content.service_areas.join(" · ")}</p>
             </>
           )}
@@ -245,10 +245,10 @@ export default function RadiateDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "contact") {
     return shell(
       <>
-        {banner("Get in touch", "Request a quote")}
+        {banner("Get in touch", "contact_kicker", "Request a quote", "contact_title")}
         <section className="mx-auto grid max-w-7xl gap-12 px-6 py-20 sm:px-8 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={{ ...display, color: CHARCOAL }} className="text-2xl font-extrabold uppercase tracking-tight">Speak to the team</h2>
+            <h2 style={{ ...display, color: CHARCOAL }} className="text-2xl font-extrabold uppercase tracking-tight" {...editCopy(content, "contact_heading", "Speak to the team")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: MUTE }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block font-semibold transition hover:text-[#E2622E]" style={{ color: INK }}>{content.phone}</a>}
@@ -260,7 +260,7 @@ export default function RadiateDesign({ site, page = "home", basePath = "" }: Pr
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" aria-hidden><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.9a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.7 2z" /></svg>
                 </span>
                 <div>
-                  <p className="text-[11px] font-bold uppercase tracking-[0.16em]" style={{ color: AMBER }}>24/7 breakdown line</p>
+                  <p className="text-[11px] font-bold uppercase tracking-[0.16em]" style={{ color: AMBER }} {...editCopy(content, "contact_breakdown_label", "24/7 breakdown line")} />
                   <a href={`tel:${phone}`} style={display} className="text-lg font-extrabold text-white">{phone}</a>
                 </div>
               </div>
@@ -296,7 +296,7 @@ export default function RadiateDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Recent jobs", "Our work")}
+        {banner("Recent jobs", "work_kicker", "Our work", "work_title")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-7xl px-4 py-14 sm:px-8">
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
@@ -384,10 +384,10 @@ export default function RadiateDesign({ site, page = "home", basePath = "" }: Pr
             </span>
           </div>
           <div className="order-1 lg:order-2">
-            <Kicker>Who we are</Kicker>
-            <h2 style={{ ...display, color: CHARCOAL }} className="mt-4 text-3xl font-extrabold uppercase leading-[1.02] tracking-tight sm:text-4xl">Heating done by the book</h2>
+            <Kicker><span {...editCopy(content, "home_about_kicker", "Who we are")} /></Kicker>
+            <h2 style={{ ...display, color: CHARCOAL }} className="mt-4 text-3xl font-extrabold uppercase leading-[1.02] tracking-tight sm:text-4xl" {...editCopy(content, "home_about_heading", "Heating done by the book")} />
             <p data-edit="content.about" className="mt-6 text-[16px] leading-[1.9]" style={{ color: MUTE }}>{content.about}</p>
-            <a href={href("about")} className="mt-6 inline-flex items-center gap-2 text-[13px] font-extrabold uppercase tracking-[0.14em]" style={{ color: EMBER }}>More about us →</a>
+            <a href={href("about")} className="mt-6 inline-flex items-center gap-2 text-[13px] font-extrabold uppercase tracking-[0.14em]" style={{ color: EMBER }} {...editCopy(content, "home_about_link", "More about us →")} />
           </div>
         </section>
       )}
@@ -395,8 +395,8 @@ export default function RadiateDesign({ site, page = "home", basePath = "" }: Pr
       {/* why us — warmth promises */}
       <section style={{ background: SAND }}>
         <div className="mx-auto max-w-7xl px-6 py-20 sm:px-8">
-          <Kicker>Why choose us</Kicker>
-          <h2 style={{ ...display, color: CHARCOAL }} className="mt-4 text-3xl font-extrabold uppercase tracking-tight sm:text-4xl">Warmth you can rely on</h2>
+          <Kicker><span {...editCopy(content, "home_why_kicker", "Why choose us")} /></Kicker>
+          <h2 style={{ ...display, color: CHARCOAL }} className="mt-4 text-3xl font-extrabold uppercase tracking-tight sm:text-4xl" {...editCopy(content, "home_why_heading", "Warmth you can rely on")} />
           <div className="mt-12 grid gap-6 md:grid-cols-3">
             {promises.map((g) => (
               <div key={g.t} className="rounded-3xl bg-white p-7 shadow-sm" style={{ border: "1px solid rgba(33,28,26,0.06)" }}>
@@ -414,8 +414,8 @@ export default function RadiateDesign({ site, page = "home", basePath = "" }: Pr
       {/* services — clean divider rows */}
       {services.length > 0 && (
         <section className="mx-auto max-w-4xl px-6 py-24 sm:px-8">
-          <Kicker>What we do</Kicker>
-          <h2 style={{ ...display, color: CHARCOAL }} className="mt-4 text-3xl font-extrabold uppercase tracking-tight sm:text-4xl">Our services</h2>
+          <Kicker><span {...editCopy(content, "home_svc_kicker", "What we do")} /></Kicker>
+          <h2 style={{ ...display, color: CHARCOAL }} className="mt-4 text-3xl font-extrabold uppercase tracking-tight sm:text-4xl" {...editCopy(content, "home_svc_heading", "Our services")} />
           <ul className="mt-10 divide-y" style={{ borderColor: "rgba(33,28,26,0.10)" }}>
             {services.slice(0, 8).map((s, i) => (
               <li key={s.id} className="group flex items-start justify-between gap-6 py-6">
@@ -439,17 +439,17 @@ export default function RadiateDesign({ site, page = "home", basePath = "" }: Pr
         <FinLines color={COPPER} className="absolute inset-x-0 top-0 h-4 w-full opacity-50" />
         <div className="relative mx-auto flex max-w-7xl flex-col items-start justify-between gap-8 px-6 py-20 sm:px-8 lg:flex-row lg:items-center">
           <div className="max-w-xl">
-            <Kicker on="dark">New boiler?</Kicker>
-            <h2 style={display} className="mt-4 text-3xl font-extrabold uppercase leading-[1.02] tracking-tight text-white sm:text-4xl">A warmer, cheaper-to-run home</h2>
-            <p className="mt-5 text-[15px] leading-relaxed text-white/70">A-rated boilers from all the leading brands, supplied and fitted by Gas Safe engineers — with smart controls and a long manufacturer warranty. Spread the cost with interest-free finance.</p>
+            <Kicker on="dark"><span {...editCopy(content, "home_boiler_kicker", "New boiler?")} /></Kicker>
+            <h2 style={display} className="mt-4 text-3xl font-extrabold uppercase leading-[1.02] tracking-tight text-white sm:text-4xl" {...editCopy(content, "home_boiler_heading", "A warmer, cheaper-to-run home")} />
+            <p className="mt-5 text-[15px] leading-relaxed text-white/70" {...editCopy(content, "home_boiler_sub", "A-rated boilers from all the leading brands, supplied and fitted by Gas Safe engineers — with smart controls and a long manufacturer warranty. Spread the cost with interest-free finance.")} />
             <div className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 text-[12px] font-bold uppercase tracking-[0.14em] text-white/60">
-              <span>Worcester Bosch</span><span>Vaillant</span><span>Ideal</span><span>Baxi</span><span>Viessmann</span>
+              <span {...editCopy(content, "home_boiler_brand1", "Worcester Bosch")} /><span {...editCopy(content, "home_boiler_brand2", "Vaillant")} /><span {...editCopy(content, "home_boiler_brand3", "Ideal")} /><span {...editCopy(content, "home_boiler_brand4", "Baxi")} /><span {...editCopy(content, "home_boiler_brand5", "Viessmann")} />
             </div>
           </div>
           <div className="w-full shrink-0 rounded-3xl p-7 text-center sm:w-auto" style={{ background: `linear-gradient(150deg, ${EMBER}, ${COPPER})` }}>
-            <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-white/80">New boilers from</p>
-            <p style={display} className="mt-1 text-5xl font-extrabold text-white">£1,895</p>
-            <p className="mt-1 text-[12px] font-semibold text-white/80">supplied &amp; fitted · 10-yr warranty</p>
+            <p className="text-[11px] font-bold uppercase tracking-[0.18em] text-white/80" {...editCopy(content, "home_boiler_price_label", "New boilers from")} />
+            <p style={display} className="mt-1 text-5xl font-extrabold text-white" {...editCopy(content, "home_boiler_price", "£1,895")} />
+            <p className="mt-1 text-[12px] font-semibold text-white/80" {...editCopy(content, "home_boiler_price_note", "supplied & fitted · 10-yr warranty")} />
             <div className="mt-5">{btnGlass(ctaLabel, cta)}</div>
           </div>
         </div>
@@ -458,8 +458,8 @@ export default function RadiateDesign({ site, page = "home", basePath = "" }: Pr
       {/* work strip */}
       {gallery.length > 0 && (
         <section className="mx-auto max-w-7xl px-6 py-24 sm:px-8">
-          <Kicker>Recent jobs</Kicker>
-          <h2 style={{ ...display, color: CHARCOAL }} className="mt-4 text-3xl font-extrabold uppercase tracking-tight sm:text-4xl">Our work</h2>
+          <Kicker><span {...editCopy(content, "home_work_kicker", "Recent jobs")} /></Kicker>
+          <h2 style={{ ...display, color: CHARCOAL }} className="mt-4 text-3xl font-extrabold uppercase tracking-tight sm:text-4xl" {...editCopy(content, "home_work_heading", "Our work")} />
           <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
             {gallery.slice(0, 4).map((g) => (
               // eslint-disable-next-line @next/next/no-img-element
@@ -474,8 +474,8 @@ export default function RadiateDesign({ site, page = "home", basePath = "" }: Pr
       {content.service_areas && content.service_areas.length > 0 && (
         <section style={{ background: SAND }}>
           <div className="mx-auto max-w-7xl px-6 py-20 sm:px-8">
-            <Kicker>Where we work</Kicker>
-            <h2 style={{ ...display, color: CHARCOAL }} className="mt-4 text-3xl font-extrabold uppercase tracking-tight sm:text-4xl">Areas we cover</h2>
+            <Kicker><span {...editCopy(content, "home_areas_kicker", "Where we work")} /></Kicker>
+            <h2 style={{ ...display, color: CHARCOAL }} className="mt-4 text-3xl font-extrabold uppercase tracking-tight sm:text-4xl" {...editCopy(content, "home_areas_heading", "Areas we cover")} />
             <div className="mt-8 flex flex-wrap gap-3">
               {content.service_areas.map((a) => (
                 <span key={a} className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-bold" style={{ background: "#ffffff", color: CHARCOAL, border: "1px solid rgba(33,28,26,0.08)" }}>
@@ -493,8 +493,8 @@ export default function RadiateDesign({ site, page = "home", basePath = "" }: Pr
         <HeatGlyph className="pointer-events-none absolute -left-24 -bottom-24 h-80 w-80 opacity-25" />
         <div className="relative mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 px-6 py-20 text-white sm:flex-row sm:items-center sm:px-8">
           <div>
-            <h2 style={display} className="text-3xl font-extrabold uppercase leading-[1.02] tracking-tight sm:text-4xl">Ready for a warmer home?</h2>
-            <p className="mt-2 text-sm font-bold uppercase tracking-[0.12em] text-white/55">Free, no-obligation quotes.</p>
+            <h2 style={display} className="text-3xl font-extrabold uppercase leading-[1.02] tracking-tight sm:text-4xl" {...editCopy(content, "cta_heading", "Ready for a warmer home?")} />
+            <p className="mt-2 text-sm font-bold uppercase tracking-[0.12em] text-white/55" {...editCopy(content, "cta_sub", "Free, no-obligation quotes.")} />
           </div>
           <div className="flex flex-col gap-3 sm:flex-row">
             {btnEmber(ctaLabel, cta)}

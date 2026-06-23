@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { MarigoldHeader } from "./MarigoldHeader";
 import { TradesSocialIcon } from "./TradesMobileNav";
@@ -68,7 +68,7 @@ export default function MarigoldDesign({ site, page = "home", basePath = "" }: P
           )}
         </div>
         <div>
-          <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-white/45">Explore</h4>
+          <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-white/45" {...editCopy(content, "footer_explore", "Explore")} />
           <ul className="mt-5 space-y-3 text-sm text-white/70">
             {nav.map((l) => (
               <li key={l.label}><a href={l.href} className="transition hover:text-white">{l.label}</a></li>
@@ -76,7 +76,7 @@ export default function MarigoldDesign({ site, page = "home", basePath = "" }: P
           </ul>
         </div>
         <div>
-          <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-white/45">Contact</h4>
+          <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-white/45" {...editCopy(content, "footer_contact", "Contact")} />
           <div className="mt-5 space-y-3 text-sm text-white/70">
             {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -84,7 +84,7 @@ export default function MarigoldDesign({ site, page = "home", basePath = "" }: P
           </div>
         </div>
         <div>
-          <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-white/45">Hours</h4>
+          <h4 className="text-xs font-bold uppercase tracking-[0.2em] text-white/45" {...editCopy(content, "footer_hours", "Hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm text-white/70">
               {content.hours.map((h, i) => (
@@ -109,12 +109,12 @@ export default function MarigoldDesign({ site, page = "home", basePath = "" }: P
     </div>
   );
 
-  const banner = (kicker: string, title: string, blurb?: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string, blurb?: string, blurbKey?: string) => (
     <section style={{ background: MINT, borderBottom: `1px solid ${LINE}` }}>
       <div className="mx-auto max-w-6xl px-6 py-16 text-center sm:py-20">
-        <Kicker>{kicker}</Kicker>
-        <h1 style={{ ...sans, color: INK }} className="mx-auto mt-5 max-w-3xl text-4xl font-extrabold leading-[1.05] tracking-tight sm:text-5xl">{title}</h1>
-        {blurb && <p className="mx-auto mt-5 max-w-xl text-[16px] leading-relaxed" style={{ color: SLATE }}>{blurb}</p>}
+        <Kicker><span {...editCopy(content, kickerKey, kicker)} /></Kicker>
+        <h1 style={{ ...sans, color: INK }} className="mx-auto mt-5 max-w-3xl text-4xl font-extrabold leading-[1.05] tracking-tight sm:text-5xl" {...editCopy(content, titleKey, title)} />
+        {blurb && blurbKey && <p className="mx-auto mt-5 max-w-xl text-[16px] leading-relaxed" style={{ color: SLATE }} {...editCopy(content, blurbKey, blurb)} />}
       </div>
     </section>
   );
@@ -123,7 +123,7 @@ export default function MarigoldDesign({ site, page = "home", basePath = "" }: P
   if (page === "services") {
     return shell(
       <>
-        {banner("What we do", "Sparkling results, every time", "Reliable, friendly and fully insured — pick what you need and we'll handle the rest.")}
+        {banner("What we do", "svc_kicker", "Sparkling results, every time", "svc_title", "Reliable, friendly and fully insured — pick what you need and we'll handle the rest.", "svc_blurb")}
         <section className="mx-auto max-w-4xl px-6 py-20">
           {services.length > 0 ? (
             <ul className="divide-y rounded-3xl border bg-white px-6 sm:px-9" style={{ borderColor: LINE }}>
@@ -150,13 +150,13 @@ export default function MarigoldDesign({ site, page = "home", basePath = "" }: P
   if (page === "about") {
     return shell(
       <>
-        {banner("About us", "Friendly faces you can trust")}
+        {banner("About us", "about_kicker", "Friendly faces you can trust", "about_title")}
         <section className="mx-auto grid max-w-6xl gap-12 px-6 py-20 lg:grid-cols-[1.4fr_1fr]">
           <div>
             {content.about ? <p data-edit="content.about" className="text-[17px] leading-[1.9]" style={{ color: SLATE }}>{content.about}</p> : <p style={{ color: SLATE }}>Our story is coming soon.</p>}
             {content.service_areas && content.service_areas.length > 0 && (
               <>
-                <h3 style={{ color: INK }} className="mt-12 text-2xl font-bold tracking-tight">Where we work</h3>
+                <h3 style={{ color: INK }} className="mt-12 text-2xl font-bold tracking-tight" {...editCopy(content, "about_areas_heading", "Where we work")} />
                 <div className="mt-5 flex flex-wrap gap-2">
                   {content.service_areas.map((a) => (
                     <span key={a} className="rounded-full border px-4 py-1.5 text-sm" style={{ borderColor: LINE, color: SLATE }}>{a}</span>
@@ -168,7 +168,7 @@ export default function MarigoldDesign({ site, page = "home", basePath = "" }: P
           <aside className="h-fit rounded-3xl p-7" style={{ background: MINT, border: `1px solid ${LINE}` }}>
             {content.accreditations && content.accreditations.length > 0 && (
               <>
-                <h4 className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: DEEP }}>Why choose us</h4>
+                <h4 className="text-xs font-bold uppercase tracking-[0.2em]" style={{ color: DEEP }} {...editCopy(content, "about_why_heading", "Why choose us")} />
                 <ul className="mt-4 space-y-3 text-sm" style={{ color: INK }}>
                   {content.accreditations.map((a) => (
                     <li key={a} className="flex items-start gap-2"><span style={{ color: TEAL }}>✓</span><span>{a}</span></li>
@@ -191,10 +191,10 @@ export default function MarigoldDesign({ site, page = "home", basePath = "" }: P
   if (page === "contact") {
     return shell(
       <>
-        {banner("Get in touch", "Get a free quote", "Tell us what you need cleaned or sorted and we'll get straight back to you.")}
+        {banner("Get in touch", "contact_kicker", "Get a free quote", "contact_title", "Tell us what you need cleaned or sorted and we'll get straight back to you.", "contact_blurb")}
         <section className="mx-auto grid max-w-6xl gap-12 px-6 py-20 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={{ color: INK }} className="text-2xl font-bold tracking-tight">How to reach us</h2>
+            <h2 style={{ color: INK }} className="text-2xl font-bold tracking-tight" {...editCopy(content, "contact_reach_heading", "How to reach us")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: SLATE }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-[#0e9488]">{content.phone}</a>}
@@ -233,7 +233,7 @@ export default function MarigoldDesign({ site, page = "home", basePath = "" }: P
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Our work", "Before & after")}
+        {banner("Our work", "gallery_kicker", "Before & after", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-6xl px-6 py-16">
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
@@ -298,8 +298,8 @@ export default function MarigoldDesign({ site, page = "home", basePath = "" }: P
       {services.length > 0 && (
         <section className="mx-auto max-w-4xl px-6 py-24">
           <div className="text-center">
-            <Kicker>What we do</Kicker>
-            <h2 style={{ color: INK }} className="mt-5 text-3xl font-extrabold tracking-tight sm:text-4xl">Our services</h2>
+            <Kicker><span {...editCopy(content, "home_services_kicker", "What we do")} /></Kicker>
+            <h2 style={{ color: INK }} className="mt-5 text-3xl font-extrabold tracking-tight sm:text-4xl" {...editCopy(content, "home_services_heading", "Our services")} />
           </div>
           <ul className="mt-12 divide-y rounded-3xl border bg-white px-6 sm:px-9" style={{ borderColor: LINE }}>
             {services.slice(0, 6).map((s) => (
@@ -313,7 +313,7 @@ export default function MarigoldDesign({ site, page = "home", basePath = "" }: P
             ))}
           </ul>
           <div className="mt-10 text-center">
-            <a href={href("services")} className="text-sm font-bold underline-offset-4 hover:underline" style={{ color: TEAL }}>View all services →</a>
+            <a href={href("services")} className="text-sm font-bold underline-offset-4 hover:underline" style={{ color: TEAL }} {...editCopy(content, "home_services_link", "View all services →")} />
           </div>
         </section>
       )}
@@ -322,17 +322,17 @@ export default function MarigoldDesign({ site, page = "home", basePath = "" }: P
       {content.about && (
         <section style={{ background: MINT, borderTop: `1px solid ${LINE}`, borderBottom: `1px solid ${LINE}` }}>
           <div className="mx-auto max-w-3xl px-6 py-24 text-center">
-            <Kicker>About us</Kicker>
+            <Kicker><span {...editCopy(content, "home_about_kicker", "About us")} /></Kicker>
             <p data-edit="content.about" style={{ color: INK }} className="mt-6 text-2xl font-semibold leading-[1.45] sm:text-[2rem]">{content.about}</p>
-            <a href={href("about")} className="mt-7 inline-flex items-center gap-2 text-sm font-bold" style={{ color: TEAL }}>Read more →</a>
+            <a href={href("about")} className="mt-7 inline-flex items-center gap-2 text-sm font-bold" style={{ color: TEAL }} {...editCopy(content, "home_about_link", "Read more →")} />
           </div>
         </section>
       )}
 
       {/* closing CTA */}
       <section className="mx-auto max-w-4xl px-6 py-24 text-center">
-        <h2 style={{ color: INK }} className="text-3xl font-extrabold tracking-tight sm:text-4xl">Ready for a fresh start?</h2>
-        <p className="mx-auto mt-4 max-w-lg text-[16px] leading-relaxed" style={{ color: SLATE }}>Get a free, no-obligation quote today — friendly, reliable and always on time.</p>
+        <h2 style={{ color: INK }} className="text-3xl font-extrabold tracking-tight sm:text-4xl" {...editCopy(content, "cta_heading", "Ready for a fresh start?")} />
+        <p className="mx-auto mt-4 max-w-lg text-[16px] leading-relaxed" style={{ color: SLATE }} {...editCopy(content, "cta_sub", "Get a free, no-obligation quote today — friendly, reliable and always on time.")} />
         <a href={cta} className="mt-8 inline-flex rounded-full px-8 py-4 text-sm font-bold text-white transition hover:opacity-90" style={{ background: TEAL }}>{ctaLabel}</a>
       </section>
     </>,

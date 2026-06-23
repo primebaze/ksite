@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { PennyHeader } from "./PennyHeader";
 import { TradesSocialIcon } from "./TradesMobileNav";
@@ -165,15 +165,15 @@ export default function PennyDesign({ site, page = "home", basePath = "" }: Pres
     </div>
   );
 
-  const banner = (kicker: string, title: string, blurb?: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string, blurb?: string, blurbKey?: string) => (
     <section style={{ background: `linear-gradient(150deg, ${MINT} 0%, ${MINT_DEEP} 100%)` }} className="relative overflow-hidden">
       <div className="pointer-events-none absolute -right-6 bottom-0 w-44 opacity-90 sm:w-56">
         <CoinTick className="h-full w-full" />
       </div>
       <div className="relative mx-auto max-w-6xl px-8 pb-16 pt-32 sm:pt-40">
-        <Kicker light>{kicker}</Kicker>
-        <h1 style={{ ...display, color: "#ffffff" }} className="mt-4 max-w-3xl text-4xl font-bold leading-[1.05] tracking-[-0.01em] sm:text-6xl">{title}</h1>
-        {blurb && <p className="mt-5 max-w-xl text-[16px] leading-relaxed text-white/80">{blurb}</p>}
+        <Kicker light><span {...editCopy(content, kickerKey, kicker)} /></Kicker>
+        <h1 style={{ ...display, color: "#ffffff" }} className="mt-4 max-w-3xl text-4xl font-bold leading-[1.05] tracking-[-0.01em] sm:text-6xl" {...editCopy(content, titleKey, title)} />
+        {blurb && <p className="mt-5 max-w-xl text-[16px] leading-relaxed text-white/80" {...editCopy(content, blurbKey ?? "", blurb)} />}
       </div>
     </section>
   );
@@ -182,7 +182,7 @@ export default function PennyDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "services") {
     return shell(
       <>
-        {banner("What we do", "Everything to keep your books sorted", "Friendly, jargon-free finance admin — clearly priced and built around your small business.")}
+        {banner("What we do", "svc_kicker", "Everything to keep your books sorted", "svc_title", "Friendly, jargon-free finance admin — clearly priced and built around your small business.", "svc_blurb")}
         <section className="mx-auto max-w-4xl px-8 py-20">
           {services.length > 0 ? (
             <div className="divide-y" style={{ borderColor: LINE }}>
@@ -208,13 +208,13 @@ export default function PennyDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "about") {
     return shell(
       <>
-        {banner("Hello there", "The friendly face behind your figures")}
+        {banner("Hello there", "about_kicker", "The friendly face behind your figures", "about_title")}
         <section className="mx-auto grid max-w-6xl gap-12 px-8 py-20 lg:grid-cols-[1.4fr_1fr]">
           <div>
             {content.about ? <p data-edit="content.about" className="text-[17px] leading-[1.9]" style={{ color: MUTE }}>{content.about}</p> : <p style={{ color: MUTE }}>Our story is coming soon.</p>}
             {content.service_areas && content.service_areas.length > 0 && (
               <>
-                <h3 style={{ ...display, color: INK }} className="mt-12 text-2xl font-bold tracking-[-0.01em]">Who we help</h3>
+                <h3 style={{ ...display, color: INK }} className="mt-12 text-2xl font-bold tracking-[-0.01em]" {...editCopy(content, "about_help_heading", "Who we help")} />
                 <div className="mt-5 flex flex-wrap gap-2">
                   {content.service_areas.map((a) => (
                     <span key={a} className="rounded-full border px-4 py-1.5 text-sm" style={{ borderColor: LINE, color: MUTE }}>{a}</span>
@@ -224,7 +224,7 @@ export default function PennyDesign({ site, page = "home", basePath = "" }: Pres
             )}
           </div>
           <aside className="h-fit rounded-3xl p-7" style={{ background: BUTTER, border: `1px solid ${LINE}` }}>
-            <h4 style={{ ...display, color: MINT_DEEP }} className="text-xs font-bold uppercase tracking-[0.18em]">Why clients love us</h4>
+            <h4 style={{ ...display, color: MINT_DEEP }} className="text-xs font-bold uppercase tracking-[0.18em]" {...editCopy(content, "about_love_heading", "Why clients love us")} />
             <ul className="mt-4 space-y-3 text-sm" style={{ color: INK }}>
               {trust.map((a) => (
                 <li key={a} className="flex items-start gap-2.5"><span style={{ color: CORAL }}>✓</span><span>{a}</span></li>
@@ -245,10 +245,10 @@ export default function PennyDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "contact") {
     return shell(
       <>
-        {banner("Let's chat", "Get a free quote", "Tell us a little about your business and we'll come back with a friendly, fixed-fee quote.")}
+        {banner("Let's chat", "contact_kicker", "Get a free quote", "contact_title", "Tell us a little about your business and we'll come back with a friendly, fixed-fee quote.", "contact_blurb")}
         <section className="mx-auto grid max-w-6xl gap-12 px-8 py-20 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={{ ...display, color: INK }} className="text-2xl font-bold tracking-[-0.01em]">Say hello</h2>
+            <h2 style={{ ...display, color: INK }} className="text-2xl font-bold tracking-[-0.01em]" {...editCopy(content, "contact_heading", "Say hello")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: MUTE }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-[#2BB78A]">{content.phone}</a>}
@@ -292,7 +292,7 @@ export default function PennyDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "gallery") {
     return shell(
       <>
-        {banner("A peek behind the books", "Our gallery")}
+        {banner("A peek behind the books", "gallery_kicker", "Our gallery", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-6xl px-8 py-16">
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
@@ -360,10 +360,10 @@ export default function PennyDesign({ site, page = "home", basePath = "" }: Pres
         <section className="mx-auto max-w-5xl px-8 py-24">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
-              <Kicker>What we do</Kicker>
-              <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-bold tracking-[-0.01em] sm:text-4xl">Everything to keep you sorted</h2>
+              <Kicker><span {...editCopy(content, "home_svc_kicker", "What we do")} /></Kicker>
+              <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-bold tracking-[-0.01em] sm:text-4xl" {...editCopy(content, "home_svc_heading", "Everything to keep you sorted")} />
             </div>
-            <a href={href("services")} className="text-sm font-bold underline-offset-4 hover:underline" style={{ color: MINT_DEEP }}>All services →</a>
+            <a href={href("services")} className="text-sm font-bold underline-offset-4 hover:underline" style={{ color: MINT_DEEP }} {...editCopy(content, "home_svc_link", "All services →")} />
           </div>
           <div className="mt-12 divide-y" style={{ borderColor: LINE }}>
             {services.slice(0, 6).map((s, i) => (
@@ -380,8 +380,8 @@ export default function PennyDesign({ site, page = "home", basePath = "" }: Pres
         </section>
       ) : (
         <section className="mx-auto max-w-5xl px-8 py-24">
-          <Kicker>What we do</Kicker>
-          <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-bold tracking-[-0.01em] sm:text-4xl">Everything to keep you sorted</h2>
+          <Kicker><span {...editCopy(content, "home_svc_empty_kicker", "What we do")} /></Kicker>
+          <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-bold tracking-[-0.01em] sm:text-4xl" {...editCopy(content, "home_svc_empty_heading", "Everything to keep you sorted")} />
           <div className="mt-12 grid gap-px overflow-hidden rounded-3xl sm:grid-cols-2 lg:grid-cols-3" style={{ background: LINE }}>
             {["Bookkeeping", "VAT returns", "Payroll", "Self-assessment", "Invoicing", "Management accounts"].map((t) => (
               <div key={t} className="flex items-center gap-3 p-7" style={{ background: "#ffffff" }}>
@@ -409,10 +409,10 @@ export default function PennyDesign({ site, page = "home", basePath = "" }: Pres
               <span className="pointer-events-none absolute -bottom-4 -right-4 hidden h-20 w-20 rounded-2xl sm:block" style={{ background: MINT }} />
             </div>
             <div>
-              <Kicker>Hello there</Kicker>
-              <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-bold leading-[1.1] tracking-[-0.01em] sm:text-4xl">Friendly, jargon-free finance on your side</h2>
+              <Kicker><span {...editCopy(content, "home_about_kicker", "Hello there")} /></Kicker>
+              <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-bold leading-[1.1] tracking-[-0.01em] sm:text-4xl" {...editCopy(content, "home_about_heading", "Friendly, jargon-free finance on your side")} />
               <p data-edit="content.about" className="mt-6 text-[16px] leading-[1.9]" style={{ color: MUTE }}>{content.about}</p>
-              <a href={href("about")} className="mt-7 inline-flex items-center gap-2 text-[14px] font-bold" style={{ color: MINT_DEEP }}>More about us →</a>
+              <a href={href("about")} className="mt-7 inline-flex items-center gap-2 text-[14px] font-bold" style={{ color: MINT_DEEP }} {...editCopy(content, "home_about_link", "More about us →")} />
             </div>
           </div>
         </section>
@@ -425,9 +425,9 @@ export default function PennyDesign({ site, page = "home", basePath = "" }: Pres
         </div>
         <div className="relative mx-auto flex max-w-6xl flex-col items-start justify-between gap-6 px-8 py-16 sm:flex-row sm:items-center">
           <div>
-            <Kicker light>Simple pricing</Kicker>
+            <Kicker light><span {...editCopy(content, "home_pricing_kicker", "Simple pricing")} /></Kicker>
             <h2 style={{ ...display, color: "#ffffff" }} className="mt-4 text-3xl font-bold tracking-[-0.01em] sm:text-4xl">Fixed monthly fees{pricePoint ? <> from <span style={{ color: BUTTER }}>{pricePoint}</span></> : <> — no surprises</>}</h2>
-            <p className="mt-2 max-w-md text-[15px] leading-relaxed text-white/80">One simple monthly price. No hidden costs, no hourly billing — just tidy books and total peace of mind.</p>
+            <p className="mt-2 max-w-md text-[15px] leading-relaxed text-white/80" {...editCopy(content, "home_pricing_sub", "One simple monthly price. No hidden costs, no hourly billing — just tidy books and total peace of mind.")} />
           </div>
           <div className="shrink-0">{btnCoral("Get a free quote", cta)}</div>
         </div>
@@ -436,8 +436,8 @@ export default function PennyDesign({ site, page = "home", basePath = "" }: Pres
       {/* how it works — 3 friendly steps */}
       <section className="mx-auto max-w-6xl px-8 py-24">
         <div className="text-center">
-          <div className="flex justify-center"><Kicker>How it works</Kicker></div>
-          <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-bold tracking-[-0.01em] sm:text-4xl">Getting sorted is easy</h2>
+          <div className="flex justify-center"><Kicker><span {...editCopy(content, "home_steps_kicker", "How it works")} /></Kicker></div>
+          <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-bold tracking-[-0.01em] sm:text-4xl" {...editCopy(content, "home_steps_heading", "Getting sorted is easy")} />
         </div>
         <div className="mt-14 grid gap-8 sm:grid-cols-3">
           {steps.map((s, i) => (
@@ -455,10 +455,10 @@ export default function PennyDesign({ site, page = "home", basePath = "" }: Pres
         <section className="mx-auto max-w-6xl px-8 pb-24">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
-              <Kicker>A peek behind the books</Kicker>
-              <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-bold tracking-[-0.01em] sm:text-4xl">Our gallery</h2>
+              <Kicker><span {...editCopy(content, "home_gallery_kicker", "A peek behind the books")} /></Kicker>
+              <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-bold tracking-[-0.01em] sm:text-4xl" {...editCopy(content, "home_gallery_heading", "Our gallery")} />
             </div>
-            <a href={href("gallery")} className="text-sm font-bold underline-offset-4 hover:underline" style={{ color: MINT_DEEP }}>View all →</a>
+            <a href={href("gallery")} className="text-sm font-bold underline-offset-4 hover:underline" style={{ color: MINT_DEEP }} {...editCopy(content, "home_gallery_link", "View all →")} />
           </div>
           <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
             {gallery.slice(0, 4).map((g) => (
@@ -472,9 +472,9 @@ export default function PennyDesign({ site, page = "home", basePath = "" }: Pres
       {/* closing free-quote CTA */}
       <section style={{ background: BUTTER, borderTop: `1px solid ${LINE}` }}>
         <div className="mx-auto max-w-4xl px-8 py-24 text-center">
-          <div className="flex justify-center"><Kicker>Free, no-obligation</Kicker></div>
-          <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-bold tracking-[-0.01em] sm:text-4xl">Ready to get your books sorted?</h2>
-          <p className="mx-auto mt-4 max-w-lg text-[16px] leading-relaxed" style={{ color: MUTE }}>Book a friendly, no-pressure chat. We&apos;ll listen first, then show you exactly how we can help — and what it&apos;ll cost.</p>
+          <div className="flex justify-center"><Kicker><span {...editCopy(content, "cta_kicker", "Free, no-obligation")} /></Kicker></div>
+          <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-bold tracking-[-0.01em] sm:text-4xl" {...editCopy(content, "cta_heading", "Ready to get your books sorted?")} />
+          <p className="mx-auto mt-4 max-w-lg text-[16px] leading-relaxed" style={{ color: MUTE }} {...editCopy(content, "cta_sub", "Book a friendly, no-pressure chat. We'll listen first, then show you exactly how we can help — and what it'll cost.")} />
           <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
             {btnCoral(ctaLabel, cta)}
             {phone && btnOutline(`Call ${phone}`, `tel:${phone}`)}

@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { ZephyrHeader } from "./ZephyrHeader";
 import { TradesSocialIcon } from "./TradesMobileNav";
@@ -132,7 +132,7 @@ export default function ZephyrDesign({ site, page = "home", basePath = "" }: Pre
           )}
         </div>
         <div>
-          <h4 style={display} className="text-xs font-bold uppercase tracking-[0.22em]" >Company</h4>
+          <h4 style={display} className="text-xs font-bold uppercase tracking-[0.22em]" {...editCopy(content, "footer_company", "Company")} />
           <ul className="mt-5 space-y-3 text-sm text-white/65">
             {nav.map((l) => (
               <li key={l.label}><a href={l.href} className="transition hover:text-white">{l.label}</a></li>
@@ -140,7 +140,7 @@ export default function ZephyrDesign({ site, page = "home", basePath = "" }: Pre
           </ul>
         </div>
         <div>
-          <h4 style={display} className="text-xs font-bold uppercase tracking-[0.22em]">Contact</h4>
+          <h4 style={display} className="text-xs font-bold uppercase tracking-[0.22em]" {...editCopy(content, "footer_contact", "Contact")} />
           <div className="mt-5 space-y-3 text-sm text-white/65">
             {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -148,7 +148,7 @@ export default function ZephyrDesign({ site, page = "home", basePath = "" }: Pre
           </div>
         </div>
         <div>
-          <h4 style={display} className="text-xs font-bold uppercase tracking-[0.22em]">Hours</h4>
+          <h4 style={display} className="text-xs font-bold uppercase tracking-[0.22em]" {...editCopy(content, "footer_hours", "Hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm text-white/65">
               {content.hours.map((h, i) => (
@@ -174,13 +174,13 @@ export default function ZephyrDesign({ site, page = "home", basePath = "" }: Pre
   );
 
   // Inner-page banner: a slate band with airflow streamlines threading across.
-  const banner = (kicker: string, title: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string) => (
     <section className="relative overflow-hidden" style={{ background: SLATE }}>
       <Airflow className="pointer-events-none absolute inset-0 h-full w-full" stroke={CYAN} opacity={0.18} />
       <div className="pointer-events-none absolute -right-20 -top-24 h-72 w-72 rounded-full" style={{ background: "radial-gradient(circle, rgba(37,180,214,0.22), transparent 70%)" }} />
       <div className="relative mx-auto max-w-7xl px-8 pb-16 pt-32 sm:pt-40">
-        <Kicker light>{kicker}</Kicker>
-        <h1 style={display} className="mt-4 text-4xl font-bold leading-[1.0] tracking-tight text-white sm:text-6xl">{title}</h1>
+        <Kicker light><span {...editCopy(content, kickerKey, kicker)} /></Kicker>
+        <h1 style={display} className="mt-4 text-4xl font-bold leading-[1.0] tracking-tight text-white sm:text-6xl" {...editCopy(content, titleKey, title)} />
       </div>
     </section>
   );
@@ -189,7 +189,7 @@ export default function ZephyrDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "services") {
     return shell(
       <>
-        {banner("What we do", "Climate services")}
+        {banner("What we do", "svc_kicker", "Climate services", "svc_title")}
         <section className="mx-auto max-w-5xl px-8 py-20">
           {services.length > 0 ? (
             <ul className="divide-y" style={{ borderColor: SILVER }}>
@@ -217,12 +217,12 @@ export default function ZephyrDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "about") {
     return shell(
       <>
-        {banner("Who we are", "Year-round comfort")}
+        {banner("Who we are", "about_kicker", "Year-round comfort", "about_title")}
         <section className="mx-auto max-w-3xl px-8 py-20">
           {content.about ? <p data-edit="content.about" className="text-[17px] leading-[1.9]" style={{ color: INK }}>{content.about}</p> : <p style={{ color: MUTE }}>Our story is coming soon.</p>}
           {content.accreditations && content.accreditations.length > 0 && (
             <>
-              <h3 style={display} className="mt-12 text-xs font-bold uppercase tracking-[0.22em]" >Certified &amp; insured</h3>
+              <h3 style={display} className="mt-12 text-xs font-bold uppercase tracking-[0.22em]" {...editCopy(content, "about_certified_heading", "Certified & insured")} />
               <div className="mt-5 flex flex-wrap gap-3">
                 {content.accreditations.map((a) => (
                   <span key={a} className="rounded-full border px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.14em]" style={{ borderColor: `${CYAN}66`, color: TEAL }}>{a}</span>
@@ -232,7 +232,7 @@ export default function ZephyrDesign({ site, page = "home", basePath = "" }: Pre
           )}
           {content.service_areas && content.service_areas.length > 0 && (
             <>
-              <h3 style={display} className="mt-12 text-xs font-bold uppercase tracking-[0.22em]" >Areas we cover</h3>
+              <h3 style={display} className="mt-12 text-xs font-bold uppercase tracking-[0.22em]" {...editCopy(content, "about_areas_heading", "Areas we cover")} />
               <p className="mt-4 text-[15px] leading-relaxed" style={{ color: MUTE }}>{content.service_areas.join(" · ")}</p>
             </>
           )}
@@ -246,10 +246,10 @@ export default function ZephyrDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "contact") {
     return shell(
       <>
-        {banner("Get in touch", "Request a quote")}
+        {banner("Get in touch", "contact_kicker", "Request a quote", "contact_title")}
         <section className="mx-auto grid max-w-7xl gap-12 px-8 py-20 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={{ ...display, color: SLATE }} className="text-2xl font-bold tracking-tight" >Speak to the team</h2>
+            <h2 style={{ ...display, color: SLATE }} className="text-2xl font-bold tracking-tight" {...editCopy(content, "contact_team_heading", "Speak to the team")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: MUTE }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-[#15616E]">{content.phone}</a>}
@@ -288,7 +288,7 @@ export default function ZephyrDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Recent installs", "Our work")}
+        {banner("Recent installs", "gallery_kicker", "Our work", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-7xl px-2 py-12 sm:px-4">
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
@@ -337,7 +337,7 @@ export default function ZephyrDesign({ site, page = "home", basePath = "" }: Pre
             <span data-edit="content.tagline" className="block">{content.tagline ?? "Perfect temperature, all year round."}</span>
           </h1>
           <p data-edit="tenant.business_name" className="mt-5 text-sm font-bold uppercase tracking-[0.25em] text-white/75">{name}</p>
-          <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-white/75">Cool air in summer, efficient warmth in winter — air-conditioning, ventilation and heat-pump specialists for homes and businesses.</p>
+          <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-white/75" {...editCopy(content, "hero_sub", "Cool air in summer, efficient warmth in winter — air-conditioning, ventilation and heat-pump specialists for homes and businesses.")} />
           <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:gap-4">
             {btnPrimary(ctaLabel, cta)}
             {phone && btnGhost(`Call ${phone}`, `tel:${phone}`)}
@@ -364,15 +364,15 @@ export default function ZephyrDesign({ site, page = "home", basePath = "" }: Pre
             <div className="flex h-11 w-11 items-center justify-center rounded-full" style={{ background: `${CYAN}1f` }}>
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden><path d="M12 2v20M12 2l-3 3M12 2l3 3M12 22l-3-3M12 22l3-3M3.3 7l17.4 10M3.3 7l4.1-.4M3.3 7l.4 4.1M20.7 17l-4.1.4M20.7 17l-.4-4.1M20.7 7L3.3 17M20.7 7l-4.1-.4M20.7 7l.4 4.1M3.3 17l4.1.4M3.3 17l-.4-4.1" stroke={CYAN} strokeWidth="1.4" strokeLinecap="round" /></svg>
             </div>
-            <h3 style={display} className="mt-5 text-2xl font-bold tracking-tight" >Cooling</h3>
-            <p className="mt-3 text-[15px] leading-relaxed" style={{ color: MUTE }}>Crisp, quiet air-conditioning that holds the perfect temperature through the hottest days — precisely sized so you never pay for capacity you don&apos;t need.</p>
+            <h3 style={display} className="mt-5 text-2xl font-bold tracking-tight" {...editCopy(content, "home_cooling_heading", "Cooling")} />
+            <p className="mt-3 text-[15px] leading-relaxed" style={{ color: MUTE }} {...editCopy(content, "home_cooling_body", "Crisp, quiet air-conditioning that holds the perfect temperature through the hottest days — precisely sized so you never pay for capacity you don't need.")} />
           </div>
           <div className="rounded-3xl p-9" style={{ background: SLATE, color: "#ffffff" }}>
             <div className="flex h-11 w-11 items-center justify-center rounded-full" style={{ background: "#ffffff1f" }}>
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden><path d="M12 3c-2 3 1 4 0 7-1 2 1 4 0 7M9 7c-1 1 .5 2 0 3.5M15 7c-1 1 .5 2 0 3.5" stroke="#7fdcf0" strokeWidth="1.6" strokeLinecap="round" /></svg>
             </div>
-            <h3 style={display} className="mt-5 text-2xl font-bold tracking-tight" >Heating</h3>
-            <p className="mt-3 text-[15px] leading-relaxed text-white/75">Reverse-cycle and air-source heat pumps deliver efficient, low-carbon warmth from the very same system — one clean install for comfort all year round.</p>
+            <h3 style={display} className="mt-5 text-2xl font-bold tracking-tight" {...editCopy(content, "home_heating_heading", "Heating")} />
+            <p className="mt-3 text-[15px] leading-relaxed text-white/75" {...editCopy(content, "home_heating_body", "Reverse-cycle and air-source heat pumps deliver efficient, low-carbon warmth from the very same system — one clean install for comfort all year round.")} />
           </div>
         </div>
       </section>
@@ -380,8 +380,8 @@ export default function ZephyrDesign({ site, page = "home", basePath = "" }: Pre
       {/* what we do — clean divider rows */}
       <section style={{ background: "#ffffff", borderTop: `1px solid ${SILVER}`, borderBottom: `1px solid ${SILVER}` }}>
         <div className="mx-auto max-w-5xl px-8 py-24">
-          <Kicker>What we do</Kicker>
-          <h2 style={{ ...display, color: SLATE }} className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl">Air-con, ventilation &amp; climate control</h2>
+          <Kicker><span {...editCopy(content, "home_whatwedo_kicker", "What we do")} /></Kicker>
+          <h2 style={{ ...display, color: SLATE }} className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl" {...editCopy(content, "home_whatwedo_heading", "Air-con, ventilation & climate control")} />
           {services.length > 0 ? (
             <ul className="mt-12 divide-y" style={{ borderColor: SILVER }}>
               {services.slice(0, 8).map((s, i) => (
@@ -429,10 +429,10 @@ export default function ZephyrDesign({ site, page = "home", basePath = "" }: Pre
             <Airflow className="pointer-events-none absolute -bottom-4 left-6 right-6 h-16" stroke={CYAN} opacity={0.7} />
           </div>
           <div>
-            <Kicker>Who we are</Kicker>
-            <h2 style={{ ...display, color: SLATE }} className="mt-4 text-4xl font-bold leading-[1.0] tracking-tight sm:text-5xl">Fresh air, engineered properly</h2>
+            <Kicker><span {...editCopy(content, "home_about_kicker", "Who we are")} /></Kicker>
+            <h2 style={{ ...display, color: SLATE }} className="mt-4 text-4xl font-bold leading-[1.0] tracking-tight sm:text-5xl" {...editCopy(content, "home_about_heading", "Fresh air, engineered properly")} />
             <p data-edit="content.about" className="mt-6 text-[16px] leading-[1.9]" style={{ color: MUTE }}>{content.about}</p>
-            <a href={href("about")} className="mt-6 inline-flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.18em]" style={{ color: TEAL }}>More about us →</a>
+            <a href={href("about")} className="mt-6 inline-flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.18em]" style={{ color: TEAL }} {...editCopy(content, "home_about_link", "More about us →")} />
           </div>
         </section>
       )}
@@ -441,8 +441,8 @@ export default function ZephyrDesign({ site, page = "home", basePath = "" }: Pre
       {gallery.length > 0 && (
         <section style={{ background: MINT }}>
           <div className="mx-auto max-w-7xl px-8 py-24">
-            <Kicker>Recent installs</Kicker>
-            <h2 style={{ ...display, color: SLATE }} className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl">Our work</h2>
+            <Kicker><span {...editCopy(content, "home_work_kicker", "Recent installs")} /></Kicker>
+            <h2 style={{ ...display, color: SLATE }} className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl" {...editCopy(content, "home_work_heading", "Our work")} />
             <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
               {gallery.slice(0, 4).map((g) => (
                 // eslint-disable-next-line @next/next/no-img-element
@@ -459,7 +459,7 @@ export default function ZephyrDesign({ site, page = "home", basePath = "" }: Pre
         <section style={{ background: SLATE }} className="relative overflow-hidden text-white">
           <Airflow className="pointer-events-none absolute inset-0 h-full w-full" stroke={CYAN} opacity={0.14} />
           <div className="relative mx-auto max-w-7xl px-8 py-16">
-            <Kicker light>Areas we cover</Kicker>
+            <Kicker light><span {...editCopy(content, "home_areas_kicker", "Areas we cover")} /></Kicker>
             <div className="mt-6 flex flex-wrap gap-x-3 gap-y-3">
               {content.service_areas.map((a) => (
                 <span key={a} className="rounded-full border px-4 py-2 text-[13px] font-semibold tracking-wide text-white/85" style={{ borderColor: "#ffffff2a" }}>{a}</span>
@@ -474,8 +474,8 @@ export default function ZephyrDesign({ site, page = "home", basePath = "" }: Pre
         <Airflow className="pointer-events-none absolute inset-0 h-full w-full" stroke="#ffffff" opacity={0.2} />
         <div className="relative mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 px-8 py-16 text-white sm:flex-row sm:items-center">
           <div>
-            <h2 style={display} className="text-3xl font-bold leading-[1.0] tracking-tight sm:text-4xl">Ready for the perfect temperature?</h2>
-            <p className="mt-2 text-sm font-semibold uppercase tracking-[0.14em] text-white/80">Free site survey · fixed-price quotes.</p>
+            <h2 style={display} className="text-3xl font-bold leading-[1.0] tracking-tight sm:text-4xl" {...editCopy(content, "cta_heading", "Ready for the perfect temperature?")} />
+            <p className="mt-2 text-sm font-semibold uppercase tracking-[0.14em] text-white/80" {...editCopy(content, "cta_sub", "Free site survey · fixed-price quotes.")} />
           </div>
           <a href={phone ? `tel:${phone}` : cta} className="rounded-full px-9 py-4 text-[12px] font-bold uppercase tracking-[0.16em] transition hover:brightness-110" style={{ background: "#06222b", color: "#ffffff" }}>
             {phone ? `Call ${phone}` : ctaLabel}

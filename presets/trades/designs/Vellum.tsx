@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { VellumHeader } from "./VellumHeader";
 import { TradesSocialIcon } from "./TradesMobileNav";
@@ -102,7 +102,7 @@ export default function VellumDesign({ site, page = "home", basePath = "" }: Pre
         <div>
           <a href={href("home")} className="block">
             <span data-edit="tenant.business_name" style={serif} className="text-2xl font-medium tracking-tight text-[#F6EFDD]">{name}</span>
-            <span className="mt-1 block text-[8px] uppercase tracking-[0.42em] text-[#EFE6D4]/45" style={display}>Independent Bookshop</span>
+            <span className="mt-1 block text-[8px] uppercase tracking-[0.42em] text-[#EFE6D4]/45" style={display} {...editCopy(content, "footer_subtitle", "Independent Bookshop")} />
           </a>
           {content.tagline && <p data-edit="content.tagline" className="mt-5 max-w-xs text-sm leading-relaxed text-[#EFE6D4]/65">{content.tagline}</p>}
           {content.accreditations && content.accreditations.length > 0 && (
@@ -121,13 +121,13 @@ export default function VellumDesign({ site, page = "home", basePath = "" }: Pre
           )}
         </div>
         <div>
-          <h4 style={display} className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#EFE6D4]/45">The shop</h4>
+          <h4 style={display} className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#EFE6D4]/45" {...editCopy(content, "footer_shop", "The shop")} />
           <ul className="mt-5 space-y-3 text-sm text-[#EFE6D4]/75">
             {nav.map((l) => (<li key={l.label}><a href={l.href} className="transition hover:text-white">{l.label}</a></li>))}
           </ul>
         </div>
         <div>
-          <h4 style={display} className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#EFE6D4]/45">Find us</h4>
+          <h4 style={display} className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#EFE6D4]/45" {...editCopy(content, "footer_findus", "Find us")} />
           <div className="mt-5 space-y-3 text-sm text-[#EFE6D4]/75">
             {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -135,7 +135,7 @@ export default function VellumDesign({ site, page = "home", basePath = "" }: Pre
           </div>
         </div>
         <div>
-          <h4 style={display} className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#EFE6D4]/45">Opening hours</h4>
+          <h4 style={display} className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[#EFE6D4]/45" {...editCopy(content, "footer_hours", "Opening hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm text-[#EFE6D4]/75">
               {content.hours.map((h, i) => (<li key={i} className="flex justify-between gap-5"><span data-edit={`hours:${i}:day`}>{h.day}</span><span data-edit={`hours:${i}:open`} className="text-[#EFE6D4]/45">{h.open}</span></li>))}
@@ -158,11 +158,11 @@ export default function VellumDesign({ site, page = "home", basePath = "" }: Pre
     </div>
   );
 
-  const banner = (kicker: string, title: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string) => (
     <section style={{ background: PAGE, borderBottom: `1px solid ${LINE}` }}>
       <div className="mx-auto max-w-6xl px-6 pb-12 pt-32 text-center sm:pt-40">
-        <Kicker center>{kicker}</Kicker>
-        <h1 style={{ ...serif, color: INK }} className="mt-4 text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl">{title}</h1>
+        <Kicker center><span {...editCopy(content, kickerKey, kicker)} /></Kicker>
+        <h1 style={{ ...serif, color: INK }} className="mt-4 text-4xl font-medium leading-[1.04] tracking-tight sm:text-5xl" {...editCopy(content, titleKey, title)} />
         <div className="mt-7 flex justify-center"><Shelf count={20} /></div>
       </div>
     </section>
@@ -186,16 +186,14 @@ export default function VellumDesign({ site, page = "home", basePath = "" }: Pre
     const ranges = products.length > 0 ? products : defaultRanges.map((r, i) => ({ id: `range-${i}`, ...r, price: "" }));
     return shell(
       <>
-        {banner("What you'll find", "On our shelves")}
+        {banner("What you'll find", "shop_kicker", "On our shelves", "shop_title")}
         <section className="mx-auto max-w-4xl px-6 py-16">
           <div className="divide-y" style={{ borderColor: LINE }}>
             {ranges.map((s) => (
               <Row key={s.id} title={s.name} desc={s.description ?? undefined} price={s.price || undefined} id={products.length > 0 ? s.id : undefined} />
             ))}
           </div>
-          <p className="mt-10 text-sm leading-relaxed" style={{ color: MUTE }}>
-            Can&apos;t see what you&apos;re after? We can order in almost any book in print — usually within a day or two. Just ask.
-          </p>
+          <p className="mt-10 text-sm leading-relaxed" style={{ color: MUTE }} {...editCopy(content, "shop_order_note", "Can't see what you're after? We can order in almost any book in print — usually within a day or two. Just ask.")} />
           <div className="mt-8">{btnSolid(ctaLabel, cta)}</div>
         </section>
       </>,
@@ -206,12 +204,12 @@ export default function VellumDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "about") {
     return shell(
       <>
-        {banner("Our story", "A shop full of recommendations")}
+        {banner("Our story", "about_kicker", "A shop full of recommendations", "about_title")}
         <section className="mx-auto max-w-3xl px-6 py-20">
           {content.about ? <p data-edit="content.about" className="text-[18px] leading-[1.95]" style={{ color: MUTE }}>{content.about}</p> : <p style={{ color: MUTE }}>Our story is coming soon.</p>}
           {content.accreditations && content.accreditations.length > 0 && (
             <>
-              <h3 style={{ ...serif, color: INK }} className="mt-12 text-2xl font-medium">Proudly part of</h3>
+              <h3 style={{ ...serif, color: INK }} className="mt-12 text-2xl font-medium" {...editCopy(content, "about_proudly_heading", "Proudly part of")} />
               <div className="mt-5 flex flex-wrap gap-3">
                 {content.accreditations.map((a) => (
                   <span key={a} className="rounded-full border px-4 py-2 text-[11px] uppercase tracking-[0.14em]" style={{ ...display, borderColor: `${GREEN}55`, color: GREEN }}>{a}</span>
@@ -221,7 +219,7 @@ export default function VellumDesign({ site, page = "home", basePath = "" }: Pre
           )}
           {content.service_areas && content.service_areas.length > 0 && (
             <>
-              <h3 style={{ ...serif, color: INK }} className="mt-12 text-2xl font-medium">Readers from</h3>
+              <h3 style={{ ...serif, color: INK }} className="mt-12 text-2xl font-medium" {...editCopy(content, "about_readers_heading", "Readers from")} />
               <p className="mt-4 text-[16px] leading-relaxed" style={{ color: MUTE }}>{content.service_areas.join(" · ")}</p>
             </>
           )}
@@ -235,7 +233,7 @@ export default function VellumDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "gallery") {
     return shell(
       <>
-        {banner("In store", "Come and browse")}
+        {banner("In store", "gallery_kicker", "Come and browse", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-6xl px-4 py-12">
             <div className="columns-2 gap-3 sm:columns-3 [&>*]:mb-3">
@@ -254,10 +252,10 @@ export default function VellumDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "contact") {
     return shell(
       <>
-        {banner("Visit us", "Come in for a browse")}
+        {banner("Visit us", "contact_kicker", "Come in for a browse", "contact_title")}
         <section className="mx-auto grid max-w-6xl gap-12 px-6 py-20 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={{ ...serif, color: INK }} className="text-2xl font-medium">Find the shop</h2>
+            <h2 style={{ ...serif, color: INK }} className="text-2xl font-medium" {...editCopy(content, "contact_findshop_heading", "Find the shop")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: MUTE }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-[#7C3A33]">{content.phone}</a>}
@@ -269,7 +267,7 @@ export default function VellumDesign({ site, page = "home", basePath = "" }: Pre
               </ul>
             )}
             {content.map_url && (
-              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex rounded-full border px-6 py-3 text-[12px] font-semibold uppercase tracking-[0.12em] transition hover:bg-[#20211C0a]" style={{ ...display, borderColor: GREEN, color: GREEN }}>Get directions</a>
+              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex rounded-full border px-6 py-3 text-[12px] font-semibold uppercase tracking-[0.12em] transition hover:bg-[#20211C0a]" style={{ ...display, borderColor: GREEN, color: GREEN }} {...editCopy(content, "directions_cta", "Get directions")} />
             )}
           </div>
           {(bookingOn || contactOn) && (
@@ -306,9 +304,7 @@ export default function VellumDesign({ site, page = "home", basePath = "" }: Pre
               <span data-edit="content.tagline" className="block">{content.tagline ?? "Books worth getting lost in."}</span>
             </h1>
             <p data-edit="tenant.business_name" className="mt-5 text-[13px] font-semibold uppercase tracking-[0.25em]" style={{ ...display, color: BURGUNDY }}>{name}</p>
-            <p className="mt-5 max-w-md text-[16px] leading-relaxed" style={{ color: MUTE }}>
-              A small, characterful bookshop with shelves chosen by hand, recommendations always going spare, and a comfy corner to read in. Browsers very welcome.
-            </p>
+            <p className="mt-5 max-w-md text-[16px] leading-relaxed" style={{ color: MUTE }} {...editCopy(content, "hero_intro", "A small, characterful bookshop with shelves chosen by hand, recommendations always going spare, and a comfy corner to read in. Browsers very welcome.")} />
             <div className="mt-9 flex flex-wrap gap-3">
               {products.length > 0 ? btnSolid("Browse the shelves", href("services")) : btnSolid(ctaLabel, cta)}
               {phone ? btnOutline(`Call ${phone}`, `tel:${phone}`) : btnOutline("Visit us", href("contact"))}
@@ -338,10 +334,10 @@ export default function VellumDesign({ site, page = "home", basePath = "" }: Pre
           <div className="mx-auto max-w-6xl px-6 py-20">
             <div className="flex flex-wrap items-end justify-between gap-4">
               <div>
-                <Kicker>Staff picks · this month</Kicker>
-                <h2 style={{ ...serif, color: INK }} className="mt-3 text-3xl font-medium tracking-tight sm:text-4xl">Books we&apos;re pressing on everyone</h2>
+                <Kicker><span {...editCopy(content, "home_picks_kicker", "Staff picks · this month")} /></Kicker>
+                <h2 style={{ ...serif, color: INK }} className="mt-3 text-3xl font-medium tracking-tight sm:text-4xl" {...editCopy(content, "home_picks_heading", "Books we're pressing on everyone")} />
               </div>
-              <a href={href("services")} className="text-sm font-medium underline-offset-4 hover:underline" style={{ color: BURGUNDY }}>See the shelves →</a>
+              <a href={href("services")} className="text-sm font-medium underline-offset-4 hover:underline" style={{ color: BURGUNDY }} {...editCopy(content, "home_picks_link", "See the shelves →")} />
             </div>
             <div className="mt-10 grid gap-10 sm:grid-cols-3">
               {staffPicks.map((s, i) => (
@@ -370,25 +366,23 @@ export default function VellumDesign({ site, page = "home", basePath = "" }: Pre
 
       {/* what you'll find — ranges list (clean divide-y rows) */}
       <section className="mx-auto max-w-4xl px-6 py-24">
-        <Kicker center>What you&apos;ll find</Kicker>
-        <h2 style={{ ...serif, color: INK }} className="mx-auto mt-3 max-w-xl text-center text-3xl font-medium leading-snug tracking-tight sm:text-4xl">Shelves to wander, in no particular hurry</h2>
+        <Kicker center><span {...editCopy(content, "home_find_kicker", "What you'll find")} /></Kicker>
+        <h2 style={{ ...serif, color: INK }} className="mx-auto mt-3 max-w-xl text-center text-3xl font-medium leading-snug tracking-tight sm:text-4xl" {...editCopy(content, "home_find_heading", "Shelves to wander, in no particular hurry")} />
         <div className="mt-12 divide-y" style={{ borderColor: LINE }}>
           {homeRanges.map((r) => (
             <Row key={r.name} title={r.name} desc={r.description} />
           ))}
         </div>
-        <p className="mt-8 text-center text-sm leading-relaxed" style={{ color: MUTE }}>
-          Not in stock? We&apos;ll order almost any book in print, usually in a day or two.
-        </p>
+        <p className="mt-8 text-center text-sm leading-relaxed" style={{ color: MUTE }} {...editCopy(content, "home_find_note", "Not in stock? We'll order almost any book in print, usually in a day or two.")} />
       </section>
 
       {/* about statement */}
       {content.about && (
         <section style={{ background: PAGE, borderTop: `1px solid ${LINE}`, borderBottom: `1px solid ${LINE}` }}>
           <div className="mx-auto max-w-3xl px-6 py-24 text-center">
-            <Kicker center>Our story</Kicker>
+            <Kicker center><span {...editCopy(content, "home_story_kicker", "Our story")} /></Kicker>
             <p data-edit="content.about" style={{ ...serif, color: INK }} className="mt-6 text-2xl font-medium leading-[1.5] sm:text-[2rem]">{content.about}</p>
-            <a href={href("about")} className="mt-7 inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-[0.16em]" style={{ ...display, color: BURGUNDY }}>More about us →</a>
+            <a href={href("about")} className="mt-7 inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-[0.16em]" style={{ ...display, color: BURGUNDY }} {...editCopy(content, "home_story_link", "More about us →")} />
           </div>
         </section>
       )}
@@ -401,9 +395,9 @@ export default function VellumDesign({ site, page = "home", basePath = "" }: Pre
               <p className="flex items-center gap-2.5 text-[11px] font-semibold uppercase tracking-[0.3em]" style={{ ...display, color: GOLD }}>
                 <span className="inline-block h-3 w-[3px] rounded-[1px]" style={{ background: GOLD }} />Events &amp; book clubs
               </p>
-              <h2 style={serif} className="mt-3 max-w-xl text-3xl font-medium tracking-tight text-[#F6EFDD] sm:text-4xl">Author evenings, story times and a monthly book club</h2>
-              <p className="mt-4 max-w-lg text-[15px] leading-relaxed text-[#EFE6D4]/75">There&apos;s nearly always something on — readings, signings, children&apos;s story times and our book club (everyone welcome, no homework required). Ask in store or get in touch to join the mailing list.</p>
-              <div className="mt-7"><a href={cta} className="inline-flex rounded-full px-7 py-3.5 text-[12px] font-semibold uppercase tracking-[0.16em] transition hover:opacity-90" style={{ ...display, background: GOLD, color: INK }}>Join the list</a></div>
+              <h2 style={serif} className="mt-3 max-w-xl text-3xl font-medium tracking-tight text-[#F6EFDD] sm:text-4xl" {...editCopy(content, "home_events_heading", "Author evenings, story times and a monthly book club")} />
+              <p className="mt-4 max-w-lg text-[15px] leading-relaxed text-[#EFE6D4]/75" {...editCopy(content, "home_events_body", "There's nearly always something on — readings, signings, children's story times and our book club (everyone welcome, no homework required). Ask in store or get in touch to join the mailing list.")} />
+              <div className="mt-7"><a href={cta} className="inline-flex rounded-full px-7 py-3.5 text-[12px] font-semibold uppercase tracking-[0.16em] transition hover:opacity-90" style={{ ...display, background: GOLD, color: INK }} {...editCopy(content, "home_events_cta", "Join the list")} /></div>
             </div>
             <div className="hidden lg:block"><Shelf count={10} className="rotate-90 origin-center scale-[1.6]" /></div>
           </div>
@@ -413,8 +407,8 @@ export default function VellumDesign({ site, page = "home", basePath = "" }: Pre
       {/* in store strip */}
       {gallery.length > 0 && (
         <section className="mx-auto max-w-6xl px-6 py-24">
-          <Kicker center>In store</Kicker>
-          <h2 style={{ ...serif, color: INK }} className="mx-auto mt-3 max-w-2xl text-center text-3xl font-medium leading-snug tracking-tight sm:text-4xl">A proper bookshop to spend an afternoon in</h2>
+          <Kicker center><span {...editCopy(content, "home_instore_kicker", "In store")} /></Kicker>
+          <h2 style={{ ...serif, color: INK }} className="mx-auto mt-3 max-w-2xl text-center text-3xl font-medium leading-snug tracking-tight sm:text-4xl" {...editCopy(content, "home_instore_heading", "A proper bookshop to spend an afternoon in")} />
           <div className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-4">
             {gallery.slice(0, 4).map((g) => (
               // eslint-disable-next-line @next/next/no-img-element
@@ -429,8 +423,8 @@ export default function VellumDesign({ site, page = "home", basePath = "" }: Pre
       <section style={{ background: PAGE, borderTop: `1px solid ${LINE}` }}>
         <div className="mx-auto grid max-w-6xl gap-10 px-6 py-20 lg:grid-cols-2 lg:gap-16">
           <div>
-            <Kicker>Visit us</Kicker>
-            <h2 style={{ ...serif, color: INK }} className="mt-3 text-3xl font-medium tracking-tight sm:text-4xl">Opening hours &amp; find us</h2>
+            <Kicker><span {...editCopy(content, "home_visit_kicker", "Visit us")} /></Kicker>
+            <h2 style={{ ...serif, color: INK }} className="mt-3 text-3xl font-medium tracking-tight sm:text-4xl" {...editCopy(content, "home_visit_heading", "Opening hours & find us")} />
             <div className="mt-6 space-y-3 text-[15px] leading-relaxed" style={{ color: MUTE }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-[#7C3A33]">{content.phone}</a>}
@@ -452,7 +446,7 @@ export default function VellumDesign({ site, page = "home", basePath = "" }: Pre
                 ))}
               </ul>
             ) : (
-              <p className="text-[15px] leading-relaxed" style={{ color: MUTE }}>Open Tuesday to Sunday. Pop in whenever the lights are on — there&apos;s always a recommendation waiting.</p>
+              <p className="text-[15px] leading-relaxed" style={{ color: MUTE }} {...editCopy(content, "home_visit_hours_fallback", "Open Tuesday to Sunday. Pop in whenever the lights are on — there's always a recommendation waiting.")} />
             )}
           </div>
         </div>
@@ -462,8 +456,8 @@ export default function VellumDesign({ site, page = "home", basePath = "" }: Pre
       <section style={{ background: BURGUNDY }} className="text-[#F3EAD8]">
         <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-6 px-6 py-16 sm:flex-row sm:items-center">
           <div>
-            <h2 style={serif} className="text-3xl font-medium leading-[1.05] tracking-tight sm:text-4xl">Looking for something in particular?</h2>
-            <p className="mt-2 max-w-md text-[15px] leading-relaxed text-[#F3EAD8]/80">Reserve a title, order anything in print, or just ask us what to read next.</p>
+            <h2 style={serif} className="text-3xl font-medium leading-[1.05] tracking-tight sm:text-4xl" {...editCopy(content, "cta_heading", "Looking for something in particular?")} />
+            <p className="mt-2 max-w-md text-[15px] leading-relaxed text-[#F3EAD8]/80" {...editCopy(content, "cta_sub", "Reserve a title, order anything in print, or just ask us what to read next.")} />
           </div>
           <a href={cta} className="inline-flex shrink-0 rounded-full bg-[#F3EAD8] px-8 py-4 text-[12px] font-semibold uppercase tracking-[0.16em] transition hover:opacity-90" style={{ ...display, color: BURGUNDY }}>{ctaLabel}</a>
         </div>

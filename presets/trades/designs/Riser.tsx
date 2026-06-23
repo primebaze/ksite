@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { CSSProperties, ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { RiserHeader } from "./RiserHeader";
 import { TradesSocialIcon } from "./TradesMobileNav";
@@ -111,7 +111,7 @@ export default function RiserDesign({ site, page = "home", basePath = "" }: Pres
           )}
         </div>
         <div>
-          <h4 style={display} className="text-xs font-extrabold uppercase tracking-[0.22em]">Company</h4>
+          <h4 style={display} className="text-xs font-extrabold uppercase tracking-[0.22em]" {...editCopy(content, "footer_company", "Company")} />
           <ul className="mt-5 space-y-3 text-sm" style={{ color: MUTE }}>
             {nav.map((l) => (
               <li key={l.label}><a href={l.href} className="transition hover:text-white">{l.label}</a></li>
@@ -119,7 +119,7 @@ export default function RiserDesign({ site, page = "home", basePath = "" }: Pres
           </ul>
         </div>
         <div>
-          <h4 style={display} className="text-xs font-extrabold uppercase tracking-[0.22em]">Contact</h4>
+          <h4 style={display} className="text-xs font-extrabold uppercase tracking-[0.22em]" {...editCopy(content, "footer_contact", "Contact")} />
           <div className="mt-5 space-y-3 text-sm" style={{ color: MUTE }}>
             {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -127,7 +127,7 @@ export default function RiserDesign({ site, page = "home", basePath = "" }: Pres
           </div>
         </div>
         <div>
-          <h4 style={display} className="text-xs font-extrabold uppercase tracking-[0.22em]">Hours</h4>
+          <h4 style={display} className="text-xs font-extrabold uppercase tracking-[0.22em]" {...editCopy(content, "footer_hours", "Hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm" style={{ color: MUTE }}>
               {content.hours.map((h, i) => (
@@ -152,12 +152,12 @@ export default function RiserDesign({ site, page = "home", basePath = "" }: Pres
     </div>
   );
 
-  const banner = (kicker: string, title: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string) => (
     <section style={{ background: PANEL }}>
       <div className="h-1 w-full" style={{ background: HAZARD }} />
       <div className="mx-auto max-w-7xl px-8 pb-14 pt-32 sm:pt-40">
-        <Kicker>{kicker}</Kicker>
-        <h1 style={display} className="mt-4 text-4xl font-extrabold uppercase leading-[0.95] tracking-tight sm:text-6xl" >{title}</h1>
+        <Kicker><span {...editCopy(content, kickerKey, kicker)} /></Kicker>
+        <h1 style={display} className="mt-4 text-4xl font-extrabold uppercase leading-[0.95] tracking-tight sm:text-6xl" {...editCopy(content, titleKey, title)} />
       </div>
     </section>
   );
@@ -166,7 +166,7 @@ export default function RiserDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "services") {
     return shell(
       <>
-        {banner("What we offer", "Our Services")}
+        {banner("What we offer", "svc_kicker", "Our Services", "svc_title")}
         <section className="mx-auto max-w-5xl px-8 py-20">
           {services.length > 0 ? (
             <ul className="divide-y" style={{ borderColor: "#ffffff14" }}>
@@ -194,7 +194,7 @@ export default function RiserDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "about") {
     return shell(
       <>
-        {banner("Who we are", "Safe Access, Built Right")}
+        {banner("Who we are", "about_kicker", "Safe Access, Built Right", "about_title")}
         <section className="mx-auto max-w-3xl px-8 py-20">
           {content.about ? <p data-edit="content.about" className="text-[17px] leading-[1.9]" style={{ color: MUTE }}>{content.about}</p> : <p style={{ color: MUTE }}>Our story is coming soon.</p>}
 
@@ -207,7 +207,7 @@ export default function RiserDesign({ site, page = "home", basePath = "" }: Pres
             ))}
           </div>
 
-          <h3 style={display} className="mt-12 text-xs font-extrabold uppercase tracking-[0.22em]">Accredited &amp; insured</h3>
+          <h3 style={display} className="mt-12 text-xs font-extrabold uppercase tracking-[0.22em]" {...editCopy(content, "about_accredited_heading", "Accredited & insured")} />
           <div className="mt-5 flex flex-wrap gap-3">
             {certs.map((a) => (
               <span key={a} className="border-2 px-4 py-2 text-[11px] font-bold uppercase tracking-[0.14em]" style={{ borderColor: `${HIVIS}66`, color: OFFWHITE }}>{a}</span>
@@ -215,7 +215,7 @@ export default function RiserDesign({ site, page = "home", basePath = "" }: Pres
           </div>
           {content.service_areas && content.service_areas.length > 0 && (
             <>
-              <h3 style={display} className="mt-12 text-xs font-extrabold uppercase tracking-[0.22em]">Areas we cover</h3>
+              <h3 style={display} className="mt-12 text-xs font-extrabold uppercase tracking-[0.22em]" {...editCopy(content, "about_areas_heading", "Areas we cover")} />
               <p className="mt-4 text-[15px] leading-relaxed" style={{ color: MUTE }}>{content.service_areas.join(" · ")}</p>
             </>
           )}
@@ -229,11 +229,11 @@ export default function RiserDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "contact") {
     return shell(
       <>
-        {banner("Get in touch", "Request A Quote")}
+        {banner("Get in touch", "contact_kicker", "Request A Quote", "contact_title")}
         <section className="mx-auto grid max-w-7xl gap-12 px-8 py-20 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={display} className="text-2xl font-extrabold uppercase tracking-tight">Speak to the team</h2>
-            <p className="mt-3 max-w-md text-sm leading-relaxed" style={{ color: MUTE }}>Tell us about the job — commercial or domestic — and we&apos;ll arrange a free site visit and a written quote.</p>
+            <h2 style={display} className="text-2xl font-extrabold uppercase tracking-tight" {...editCopy(content, "contact_lead_heading", "Speak to the team")} />
+            <p className="mt-3 max-w-md text-sm leading-relaxed" style={{ color: MUTE }} {...editCopy(content, "contact_lead_sub", "Tell us about the job — commercial or domestic — and we'll arrange a free site visit and a written quote.")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: MUTE }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -272,7 +272,7 @@ export default function RiserDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Recent jobs", "Our Work")}
+        {banner("Recent jobs", "gallery_kicker", "Our Work", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-7xl px-2 py-12 sm:px-4">
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
@@ -355,20 +355,20 @@ export default function RiserDesign({ site, page = "home", basePath = "" }: Pres
       {/* safety-certification trust strip */}
       <section style={{ background: HIVIS }}>
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-center gap-x-10 gap-y-3 px-8 py-5 text-[12px] font-extrabold uppercase tracking-[0.18em] text-[#1B1E22]">
-          <span>CISRS qualified</span>
+          <span {...editCopy(content, "home_cert_1", "CISRS qualified")} />
           <span className="opacity-40">/</span>
-          <span>TG20 compliant</span>
+          <span {...editCopy(content, "home_cert_2", "TG20 compliant")} />
           <span className="opacity-40">/</span>
-          <span>NASC standards</span>
+          <span {...editCopy(content, "home_cert_3", "NASC standards")} />
           <span className="opacity-40">/</span>
-          <span>Fully insured</span>
+          <span {...editCopy(content, "home_cert_4", "Fully insured")} />
         </div>
       </section>
 
       {/* trust pillars — lead hard with safety */}
       <section className="mx-auto max-w-7xl px-8 py-24">
-        <Kicker>Why specify us</Kicker>
-        <h2 style={{ ...display, color: OFFWHITE }} className="mt-4 text-4xl font-extrabold uppercase leading-[0.95] tracking-tight sm:text-5xl">Safety is the spec</h2>
+        <Kicker><span {...editCopy(content, "home_trust_kicker", "Why specify us")} /></Kicker>
+        <h2 style={{ ...display, color: OFFWHITE }} className="mt-4 text-4xl font-extrabold uppercase leading-[0.95] tracking-tight sm:text-5xl" {...editCopy(content, "home_trust_heading", "Safety is the spec")} />
         <div className="mt-12 grid gap-px sm:grid-cols-2 lg:grid-cols-4" style={{ background: "#ffffff14" }}>
           {trust.map((p, i) => (
             <div key={p.t} className="flex flex-col p-7" style={{ background: CARD, borderTop: `3px solid ${i % 2 === 0 ? HIVIS : BLUE}` }}>
@@ -382,8 +382,8 @@ export default function RiserDesign({ site, page = "home", basePath = "" }: Pres
       {/* what we offer — clean divider list */}
       <section style={{ background: PANEL, borderTop: "1px solid #ffffff14", borderBottom: "1px solid #ffffff14" }}>
         <div className="mx-auto max-w-7xl px-8 py-24">
-          <Kicker color={BLUE}>What we offer</Kicker>
-          <h2 style={{ ...display, color: OFFWHITE }} className="mt-4 text-4xl font-extrabold uppercase tracking-tight sm:text-5xl">Access solutions</h2>
+          <Kicker color={BLUE}><span {...editCopy(content, "home_offer_kicker", "What we offer")} /></Kicker>
+          <h2 style={{ ...display, color: OFFWHITE }} className="mt-4 text-4xl font-extrabold uppercase tracking-tight sm:text-5xl" {...editCopy(content, "home_offer_heading", "Access solutions")} />
           <ul className="mt-12 grid gap-x-12 sm:grid-cols-2">
             {offers.map((o, i) => (
               <li key={o.name + i} className="flex items-center gap-5 border-b py-5" style={{ borderColor: "#ffffff14" }}>
@@ -414,8 +414,8 @@ export default function RiserDesign({ site, page = "home", basePath = "" }: Pres
       {content.about && (
         <section className="mx-auto grid max-w-7xl items-center gap-12 px-8 py-24 lg:grid-cols-2 lg:gap-16">
           <div>
-            <Kicker>Who we are</Kicker>
-            <h2 style={{ ...display, color: OFFWHITE }} className="mt-4 text-4xl font-extrabold uppercase leading-[0.95] tracking-tight sm:text-5xl">A safe pair of hands at height</h2>
+            <Kicker><span {...editCopy(content, "home_about_kicker", "Who we are")} /></Kicker>
+            <h2 style={{ ...display, color: OFFWHITE }} className="mt-4 text-4xl font-extrabold uppercase leading-[0.95] tracking-tight sm:text-5xl" {...editCopy(content, "home_about_heading", "A safe pair of hands at height")} />
             <p data-edit="content.about" className="mt-6 text-[16px] leading-[1.9]" style={{ color: MUTE }}>{content.about}</p>
             <a href={href("about")} className="mt-6 inline-flex items-center gap-2 text-[12px] font-extrabold uppercase tracking-[0.18em]" style={{ color: HIVIS }}>More about us →</a>
           </div>
@@ -436,8 +436,8 @@ export default function RiserDesign({ site, page = "home", basePath = "" }: Pres
       {gallery.length > 0 && (
         <section style={{ background: PANEL, borderTop: "1px solid #ffffff14" }}>
           <div className="mx-auto max-w-7xl px-8 py-24">
-            <Kicker color={BLUE}>Recent jobs</Kicker>
-            <h2 style={{ ...display, color: OFFWHITE }} className="mt-4 text-4xl font-extrabold uppercase tracking-tight sm:text-5xl">Our work</h2>
+            <Kicker color={BLUE}><span {...editCopy(content, "home_work_kicker", "Recent jobs")} /></Kicker>
+            <h2 style={{ ...display, color: OFFWHITE }} className="mt-4 text-4xl font-extrabold uppercase tracking-tight sm:text-5xl" {...editCopy(content, "home_work_heading", "Our work")} />
             <div className="mt-10 grid grid-cols-2 gap-2 sm:grid-cols-4">
               {gallery.slice(0, 4).map((g) => (
                 // eslint-disable-next-line @next/next/no-img-element
@@ -452,7 +452,7 @@ export default function RiserDesign({ site, page = "home", basePath = "" }: Pres
       {/* areas covered band */}
       {content.service_areas && content.service_areas.length > 0 && (
         <section className="mx-auto max-w-7xl px-8 py-20">
-          <Kicker>Areas covered</Kicker>
+          <Kicker><span {...editCopy(content, "home_areas_kicker", "Areas covered")} /></Kicker>
           <div className="mt-6 flex flex-wrap gap-2.5">
             {content.service_areas.map((a) => (
               <span key={a} className="border px-4 py-2 text-[12px] font-bold uppercase tracking-[0.12em]" style={{ borderColor: "#ffffff26", color: OFFWHITE }}>{a}</span>
@@ -466,8 +466,8 @@ export default function RiserDesign({ site, page = "home", basePath = "" }: Pres
         <div className="h-1.5 w-full" style={{ background: HAZARD }} />
         <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 px-8 py-16 text-[#1B1E22] sm:flex-row sm:items-center">
           <div>
-            <h2 style={display} className="text-3xl font-extrabold uppercase leading-[0.95] tracking-tight sm:text-4xl">Planning a job? Book a free site visit.</h2>
-            <p className="mt-2 text-sm font-bold uppercase tracking-[0.14em] text-[#1B1E22]/70">Survey, design and a written quote — no obligation.</p>
+            <h2 style={display} className="text-3xl font-extrabold uppercase leading-[0.95] tracking-tight sm:text-4xl" {...editCopy(content, "cta_heading", "Planning a job? Book a free site visit.")} />
+            <p className="mt-2 text-sm font-bold uppercase tracking-[0.14em] text-[#1B1E22]/70" {...editCopy(content, "cta_sub", "Survey, design and a written quote — no obligation.")} />
           </div>
           <a href={phone ? `tel:${phone}` : cta} className="bg-[#1B1E22] px-9 py-4 text-[12px] font-extrabold uppercase tracking-[0.16em] text-white transition hover:brightness-125">
             {phone ? `Call ${phone}` : ctaLabel}

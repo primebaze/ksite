@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { RollwellHeader } from "./RollwellHeader";
 import { TradesSocialIcon } from "./TradesMobileNav";
@@ -122,7 +122,7 @@ export default function RollwellDesign({ site, page = "home", basePath = "" }: P
           )}
         </div>
         <div>
-          <h4 style={display} className="text-xs font-bold uppercase tracking-[0.22em] text-white/50">Company</h4>
+          <h4 style={display} className="text-xs font-bold uppercase tracking-[0.22em] text-white/50" {...editCopy(content, "footer_company", "Company")} />
           <ul className="mt-5 space-y-3 text-sm text-white/70">
             {nav.map((l) => (
               <li key={l.label}><a href={l.href} className="transition hover:text-white">{l.label}</a></li>
@@ -130,7 +130,7 @@ export default function RollwellDesign({ site, page = "home", basePath = "" }: P
           </ul>
         </div>
         <div>
-          <h4 style={display} className="text-xs font-bold uppercase tracking-[0.22em] text-white/50">Contact</h4>
+          <h4 style={display} className="text-xs font-bold uppercase tracking-[0.22em] text-white/50" {...editCopy(content, "footer_contact", "Contact")} />
           <div className="mt-5 space-y-3 text-sm text-white/70">
             {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -138,7 +138,7 @@ export default function RollwellDesign({ site, page = "home", basePath = "" }: P
           </div>
         </div>
         <div>
-          <h4 style={display} className="text-xs font-bold uppercase tracking-[0.22em] text-white/50">Hours</h4>
+          <h4 style={display} className="text-xs font-bold uppercase tracking-[0.22em] text-white/50" {...editCopy(content, "footer_hours", "Hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm text-white/70">
               {content.hours.map((h, i) => (
@@ -163,11 +163,11 @@ export default function RollwellDesign({ site, page = "home", basePath = "" }: P
     </div>
   );
 
-  const banner = (kicker: string, title: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string) => (
     <section style={{ background: PAPER, borderBottom: `1px solid ${LINE}` }}>
       <div className="mx-auto max-w-7xl px-8 pb-14 pt-32 sm:pt-40">
-        <Kicker>{kicker}</Kicker>
-        <h1 style={display} className="mt-4 text-4xl font-bold leading-[0.98] tracking-[-0.02em] sm:text-6xl">{title}</h1>
+        <Kicker><span {...editCopy(content, kickerKey, kicker)} /></Kicker>
+        <h1 style={display} className="mt-4 text-4xl font-bold leading-[0.98] tracking-[-0.02em] sm:text-6xl" {...editCopy(content, titleKey, title)} />
         <PaintStripe className="mt-7 max-w-xs" />
       </div>
     </section>
@@ -195,7 +195,7 @@ export default function RollwellDesign({ site, page = "home", basePath = "" }: P
   if (page === "services") {
     return shell(
       <>
-        {banner("What we do", "Our services")}
+        {banner("What we do", "svc_kicker", "Our services", "svc_title")}
         <section className="mx-auto max-w-4xl px-8 py-20">
           {services.length > 0 ? servicesList : <p style={{ color: MUTE }}>Services coming soon.</p>}
           <div className="mt-12">{btnPrimary(ctaLabel, cta)}</div>
@@ -208,7 +208,7 @@ export default function RollwellDesign({ site, page = "home", basePath = "" }: P
   if (page === "about") {
     return shell(
       <>
-        {banner("Who we are", "A fresh pair of hands")}
+        {banner("Who we are", "about_kicker", "A fresh pair of hands", "about_title")}
         <section className="mx-auto max-w-3xl px-8 py-20">
           {content.about ? <p data-edit="content.about" className="text-[17px] leading-[1.9]" style={{ color: MUTE }}>{content.about}</p> : <p style={{ color: MUTE }}>Our story is coming soon.</p>}
           <div className="mt-12 grid gap-4 sm:grid-cols-2">
@@ -221,7 +221,7 @@ export default function RollwellDesign({ site, page = "home", basePath = "" }: P
           </div>
           {content.accreditations && content.accreditations.length > 0 && (
             <>
-              <h3 style={display} className="mt-12 text-xs font-bold uppercase tracking-[0.22em]" >Accredited &amp; insured</h3>
+              <h3 style={display} className="mt-12 text-xs font-bold uppercase tracking-[0.22em]" {...editCopy(content, "about_accredited_heading", "Accredited & insured")} />
               <div className="mt-5 flex flex-wrap gap-3">
                 {content.accreditations.map((a) => (
                   <span key={a} className="rounded-full border px-4 py-2 text-[11px] font-bold uppercase tracking-[0.12em]" style={{ borderColor: COBALT, color: INK }}>{a}</span>
@@ -231,7 +231,7 @@ export default function RollwellDesign({ site, page = "home", basePath = "" }: P
           )}
           {content.service_areas && content.service_areas.length > 0 && (
             <>
-              <h3 style={display} className="mt-12 text-xs font-bold uppercase tracking-[0.22em]" >Areas we cover</h3>
+              <h3 style={display} className="mt-12 text-xs font-bold uppercase tracking-[0.22em]" {...editCopy(content, "about_areas_heading", "Areas we cover")} />
               <p className="mt-4 text-[15px] leading-relaxed" style={{ color: MUTE }}>{content.service_areas.join(" · ")}</p>
             </>
           )}
@@ -245,11 +245,11 @@ export default function RollwellDesign({ site, page = "home", basePath = "" }: P
   if (page === "contact") {
     return shell(
       <>
-        {banner("Get in touch", "Request a quote")}
+        {banner("Get in touch", "contact_kicker", "Request a quote", "contact_title")}
         <section className="mx-auto grid max-w-7xl gap-12 px-8 py-20 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={display} className="text-2xl font-bold tracking-[-0.01em]">Tell us about your project</h2>
-            <p className="mt-3 text-[15px] leading-relaxed" style={{ color: MUTE }}>A room, a whole house, inside or out — send the details and we&apos;ll come back with a clear, no-obligation price.</p>
+            <h2 style={display} className="text-2xl font-bold tracking-[-0.01em]" {...editCopy(content, "contact_lead_heading", "Tell us about your project")} />
+            <p className="mt-3 text-[15px] leading-relaxed" style={{ color: MUTE }} {...editCopy(content, "contact_lead_sub", "A room, a whole house, inside or out — send the details and we'll come back with a clear, no-obligation price.")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: MUTE }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-[#2F5FD0]">{content.phone}</a>}
@@ -288,7 +288,7 @@ export default function RollwellDesign({ site, page = "home", basePath = "" }: P
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Before & after", "Our work")}
+        {banner("Before & after", "gallery_kicker", "Our work", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-7xl px-8 py-16">
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
@@ -328,9 +328,9 @@ export default function RollwellDesign({ site, page = "home", basePath = "" }: P
               {phone && btnGhost(`Call ${phone}`, `tel:${phone}`)}
             </div>
             <div className="mt-9 flex flex-wrap gap-x-6 gap-y-2 text-[12px] font-bold uppercase tracking-[0.12em]" style={{ color: MUTE }}>
-              <span className="inline-flex items-center gap-2"><span className="h-2 w-2 rounded-[2px]" style={{ background: COBALT }} />Insured</span>
-              <span className="inline-flex items-center gap-2"><span className="h-2 w-2 rounded-[2px]" style={{ background: OCHRE }} />Free quotes</span>
-              <span className="inline-flex items-center gap-2"><span className="h-2 w-2 rounded-[2px]" style={{ background: SAGE }} />Dust-free finish</span>
+              <span className="inline-flex items-center gap-2"><span className="h-2 w-2 rounded-[2px]" style={{ background: COBALT }} /><span {...editCopy(content, "home_trust_1", "Insured")} /></span>
+              <span className="inline-flex items-center gap-2"><span className="h-2 w-2 rounded-[2px]" style={{ background: OCHRE }} /><span {...editCopy(content, "home_trust_2", "Free quotes")} /></span>
+              <span className="inline-flex items-center gap-2"><span className="h-2 w-2 rounded-[2px]" style={{ background: SAGE }} /><span {...editCopy(content, "home_trust_3", "Dust-free finish")} /></span>
             </div>
           </div>
           <div className="relative">
@@ -351,7 +351,7 @@ export default function RollwellDesign({ site, page = "home", basePath = "" }: P
                   <span key={c} className="h-9 w-9 rounded-lg" style={{ background: c }} />
                 ))}
               </div>
-              <p className="mt-2 text-[10px] font-bold uppercase tracking-[0.16em]" style={{ color: MUTE }}>Any colour you like</p>
+              <p className="mt-2 text-[10px] font-bold uppercase tracking-[0.16em]" style={{ color: MUTE }} {...editCopy(content, "home_swatch_label", "Any colour you like")} />
             </div>
           </div>
         </div>
@@ -375,8 +375,8 @@ export default function RollwellDesign({ site, page = "home", basePath = "" }: P
       {content.about && (
         <section className="mx-auto grid max-w-7xl items-center gap-12 px-8 py-24 lg:grid-cols-2 lg:gap-16">
           <div>
-            <Kicker>Who we are</Kicker>
-            <h2 style={display} className="mt-4 text-4xl font-bold leading-[1.0] tracking-[-0.02em] sm:text-5xl">Tidy work, flawless finish</h2>
+            <Kicker><span {...editCopy(content, "home_about_kicker", "Who we are")} /></Kicker>
+            <h2 style={display} className="mt-4 text-4xl font-bold leading-[1.0] tracking-[-0.02em] sm:text-5xl" {...editCopy(content, "home_about_heading", "Tidy work, flawless finish")} />
             <p data-edit="content.about" className="mt-6 text-[16px] leading-[1.9]" style={{ color: MUTE }}>{content.about}</p>
             <a href={href("about")} className="mt-6 inline-flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.16em]" style={{ color: COBALT }}>More about us →</a>
           </div>
@@ -396,9 +396,9 @@ export default function RollwellDesign({ site, page = "home", basePath = "" }: P
       {services.length > 0 && (
         <section style={{ background: PAPER, borderTop: `1px solid ${LINE}`, borderBottom: `1px solid ${LINE}` }}>
           <div className="mx-auto max-w-4xl px-8 py-24">
-            <Kicker>What we do</Kicker>
-            <h2 style={display} className="mt-4 text-4xl font-bold tracking-[-0.02em] sm:text-5xl">Interior, exterior &amp; everything between</h2>
-            <p className="mt-4 max-w-xl text-[15px] leading-relaxed" style={{ color: MUTE }}>Walls &amp; ceilings, woodwork, wallpapering, exterior and commercial — all to the same crisp standard.</p>
+            <Kicker><span {...editCopy(content, "home_services_kicker", "What we do")} /></Kicker>
+            <h2 style={display} className="mt-4 text-4xl font-bold tracking-[-0.02em] sm:text-5xl" {...editCopy(content, "home_services_heading", "Interior, exterior & everything between")} />
+            <p className="mt-4 max-w-xl text-[15px] leading-relaxed" style={{ color: MUTE }} {...editCopy(content, "home_services_sub", "Walls & ceilings, woodwork, wallpapering, exterior and commercial — all to the same crisp standard.")} />
             <div className="mt-10">{servicesList}</div>
             <div className="mt-12">{btnGhost("See all services", href("services"))}</div>
           </div>
@@ -408,8 +408,8 @@ export default function RollwellDesign({ site, page = "home", basePath = "" }: P
       {/* work — before & after angle */}
       {gallery.length > 0 && (
         <section className="mx-auto max-w-7xl px-8 py-24">
-          <Kicker>Before &amp; after</Kicker>
-          <h2 style={display} className="mt-4 text-4xl font-bold tracking-[-0.02em] sm:text-5xl">Recent transformations</h2>
+          <Kicker><span {...editCopy(content, "home_work_kicker", "Before & after")} /></Kicker>
+          <h2 style={display} className="mt-4 text-4xl font-bold tracking-[-0.02em] sm:text-5xl" {...editCopy(content, "home_work_heading", "Recent transformations")} />
           <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
             {gallery.slice(0, 4).map((g, i) => (
               <figure key={g.id} className="overflow-hidden rounded-2xl" style={{ background: PAPER, border: `1px solid ${LINE}` }}>
@@ -430,7 +430,7 @@ export default function RollwellDesign({ site, page = "home", basePath = "" }: P
       {content.service_areas && content.service_areas.length > 0 && (
         <section style={{ background: INK }} className="text-white">
           <div className="mx-auto max-w-7xl px-8 py-16">
-            <Kicker>Areas we cover</Kicker>
+            <Kicker><span {...editCopy(content, "home_areas_kicker", "Areas we cover")} /></Kicker>
             <div className="mt-6 flex flex-wrap gap-3">
               {content.service_areas.map((a) => (
                 <span key={a} className="rounded-full border px-5 py-2 text-sm font-semibold" style={{ borderColor: "#ffffff2e" }}>{a}</span>
@@ -444,8 +444,8 @@ export default function RollwellDesign({ site, page = "home", basePath = "" }: P
       <section style={{ background: COBALT }} className="text-white">
         <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 px-8 py-16 sm:flex-row sm:items-center">
           <div>
-            <h2 style={display} className="text-3xl font-bold leading-[1.0] tracking-[-0.02em] sm:text-4xl">Ready for a fresh coat?</h2>
-            <p className="mt-2 text-sm font-semibold uppercase tracking-[0.12em] text-white/75">Free, no-obligation quotes.</p>
+            <h2 style={display} className="text-3xl font-bold leading-[1.0] tracking-[-0.02em] sm:text-4xl" {...editCopy(content, "cta_heading", "Ready for a fresh coat?")} />
+            <p className="mt-2 text-sm font-semibold uppercase tracking-[0.12em] text-white/75" {...editCopy(content, "cta_sub", "Free, no-obligation quotes.")} />
           </div>
           <a href={phone ? `tel:${phone}` : cta} className="rounded-full bg-white px-9 py-4 text-[12px] font-bold uppercase tracking-[0.14em] transition hover:brightness-95" style={{ color: COBALT }}>
             {phone ? `Call ${phone}` : ctaLabel}

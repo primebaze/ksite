@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { RidgelineHeader } from "./RidgelineHeader";
 import { TradesSocialIcon } from "./TradesMobileNav";
@@ -108,7 +108,7 @@ export default function RidgelineDesign({ site, page = "home", basePath = "" }: 
           )}
         </div>
         <div>
-          <h4 style={{ ...display, color: SKY }} className="text-xs font-bold uppercase tracking-[0.22em]">Company</h4>
+          <h4 style={{ ...display, color: SKY }} className="text-xs font-bold uppercase tracking-[0.22em]" {...editCopy(content, "footer_company", "Company")} />
           <ul className="mt-5 space-y-3 text-sm text-white/65">
             {nav.map((l) => (
               <li key={l.label}><a href={l.href} className="transition hover:text-white">{l.label}</a></li>
@@ -116,7 +116,7 @@ export default function RidgelineDesign({ site, page = "home", basePath = "" }: 
           </ul>
         </div>
         <div>
-          <h4 style={{ ...display, color: SKY }} className="text-xs font-bold uppercase tracking-[0.22em]">Contact</h4>
+          <h4 style={{ ...display, color: SKY }} className="text-xs font-bold uppercase tracking-[0.22em]" {...editCopy(content, "footer_contact", "Contact")} />
           <div className="mt-5 space-y-3 text-sm text-white/65">
             {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -124,7 +124,7 @@ export default function RidgelineDesign({ site, page = "home", basePath = "" }: 
           </div>
         </div>
         <div>
-          <h4 style={{ ...display, color: SKY }} className="text-xs font-bold uppercase tracking-[0.22em]">Hours</h4>
+          <h4 style={{ ...display, color: SKY }} className="text-xs font-bold uppercase tracking-[0.22em]" {...editCopy(content, "footer_hours", "Hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm text-white/65">
               {content.hours.map((h, i) => (
@@ -150,11 +150,11 @@ export default function RidgelineDesign({ site, page = "home", basePath = "" }: 
   );
 
   // Slate page banner with the ridge motif along the bottom edge.
-  const banner = (kicker: string, title: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string) => (
     <section style={{ background: SLATE }} className="relative text-white">
       <div className="mx-auto max-w-7xl px-8 pb-16 pt-32 sm:pt-40">
-        <Kicker light>{kicker}</Kicker>
-        <h1 style={display} className="mt-4 text-4xl font-bold leading-[1.02] tracking-tight sm:text-6xl">{title}</h1>
+        <Kicker light><span {...editCopy(content, kickerKey, kicker)} /></Kicker>
+        <h1 style={display} className="mt-4 text-4xl font-bold leading-[1.02] tracking-tight sm:text-6xl" {...editCopy(content, titleKey, title)} />
       </div>
       <RidgeBand color={PAPER} height={18} />
     </section>
@@ -164,7 +164,7 @@ export default function RidgelineDesign({ site, page = "home", basePath = "" }: 
   if (page === "services") {
     return shell(
       <>
-        {banner("What we do", "Roofing services")}
+        {banner("What we do", "svc_kicker", "Roofing services", "svc_title")}
         <section className="mx-auto max-w-4xl px-8 py-20">
           {services.length > 0 ? (
             <ul className="divide-y" style={{ borderColor: "#34404C22" }}>
@@ -189,7 +189,7 @@ export default function RidgelineDesign({ site, page = "home", basePath = "" }: 
   if (page === "about") {
     return shell(
       <>
-        {banner("Who we are", "A roofer you can rely on")}
+        {banner("Who we are", "about_kicker", "A roofer you can rely on", "about_title")}
         <section className="mx-auto max-w-3xl px-8 py-20">
           {content.about ? <p data-edit="content.about" className="text-[17px] leading-[1.9]" style={{ color: SLATE }}>{content.about}</p> : <p style={{ color: MUTE }}>Our story is coming soon.</p>}
           <div className="mt-10 flex flex-wrap gap-2.5">
@@ -201,7 +201,7 @@ export default function RidgelineDesign({ site, page = "home", basePath = "" }: 
           </div>
           {content.accreditations && content.accreditations.length > 0 && (
             <>
-              <h3 style={{ ...display, color: SLATE }} className="mt-12 text-xs font-bold uppercase tracking-[0.22em]">Accredited &amp; insured</h3>
+              <h3 style={{ ...display, color: SLATE }} className="mt-12 text-xs font-bold uppercase tracking-[0.22em]" {...editCopy(content, "about_accredited_heading", "Accredited & insured")} />
               <div className="mt-5 flex flex-wrap gap-3">
                 {content.accreditations.map((a) => (
                   <span key={a} className="rounded-full border px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.14em]" style={{ borderColor: `${TILE}66`, color: SLATE }}>{a}</span>
@@ -211,7 +211,7 @@ export default function RidgelineDesign({ site, page = "home", basePath = "" }: 
           )}
           {content.service_areas && content.service_areas.length > 0 && (
             <>
-              <h3 style={{ ...display, color: SLATE }} className="mt-12 text-xs font-bold uppercase tracking-[0.22em]">Areas we cover</h3>
+              <h3 style={{ ...display, color: SLATE }} className="mt-12 text-xs font-bold uppercase tracking-[0.22em]" {...editCopy(content, "about_areas_heading", "Areas we cover")} />
               <p className="mt-4 text-[15px] leading-relaxed" style={{ color: MUTE }}>{content.service_areas.join(" · ")}</p>
             </>
           )}
@@ -225,11 +225,11 @@ export default function RidgelineDesign({ site, page = "home", basePath = "" }: 
   if (page === "contact") {
     return shell(
       <>
-        {banner("Get in touch", "Request a free quote")}
+        {banner("Get in touch", "contact_kicker", "Request a free quote", "contact_title")}
         <section className="mx-auto grid max-w-7xl gap-12 px-8 py-20 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={{ ...display, color: SLATE }} className="text-2xl font-bold tracking-tight">Book a roof inspection</h2>
-            <p className="mt-3 text-[15px] leading-relaxed" style={{ color: MUTE }}>Free, no-obligation. We&apos;ll inspect, advise and quote — including emergency leaks.</p>
+            <h2 style={{ ...display, color: SLATE }} className="text-2xl font-bold tracking-tight" {...editCopy(content, "contact_lead_heading", "Book a roof inspection")} />
+            <p className="mt-3 text-[15px] leading-relaxed" style={{ color: MUTE }} {...editCopy(content, "contact_lead_sub", "Free, no-obligation. We'll inspect, advise and quote — including emergency leaks.")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: SLATE }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block font-semibold transition hover:text-[#C45A3B]">{content.phone}</a>}
@@ -268,7 +268,7 @@ export default function RidgelineDesign({ site, page = "home", basePath = "" }: 
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Recent roofs", "Our work")}
+        {banner("Recent roofs", "gallery_kicker", "Our work", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-7xl px-8 py-16">
             <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
@@ -349,8 +349,8 @@ export default function RidgelineDesign({ site, page = "home", basePath = "" }: 
             <RidgeBand color={TILE} height={14} className="absolute inset-x-0 -bottom-1 rounded-b-xl" />
           </div>
           <div>
-            <Kicker>Who we are</Kicker>
-            <h2 style={{ ...display, color: SLATE }} className="mt-4 text-4xl font-bold leading-[1.04] tracking-tight sm:text-5xl">Built to keep the weather out</h2>
+            <Kicker><span {...editCopy(content, "home_about_kicker", "Who we are")} /></Kicker>
+            <h2 style={{ ...display, color: SLATE }} className="mt-4 text-4xl font-bold leading-[1.04] tracking-tight sm:text-5xl" {...editCopy(content, "home_about_heading", "Built to keep the weather out")} />
             <p data-edit="content.about" className="mt-6 text-[16px] leading-[1.9]" style={{ color: MUTE }}>{content.about}</p>
             <a href={href("about")} className="mt-6 inline-flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.18em]" style={{ color: TILE }}>More about us →</a>
           </div>
@@ -360,8 +360,8 @@ export default function RidgelineDesign({ site, page = "home", basePath = "" }: 
       {/* what we do — clean divider rows */}
       <section style={{ background: "#fff", borderTop: "1px solid #34404C14", borderBottom: "1px solid #34404C14" }}>
         <div className="mx-auto max-w-4xl px-8 py-24">
-          <Kicker>What we do</Kicker>
-          <h2 style={{ ...display, color: SLATE }} className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl">Every kind of roof</h2>
+          <Kicker><span {...editCopy(content, "home_services_kicker", "What we do")} /></Kicker>
+          <h2 style={{ ...display, color: SLATE }} className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl" {...editCopy(content, "home_services_heading", "Every kind of roof")} />
           <ul className="mt-12 divide-y" style={{ borderColor: "#34404C1f" }}>
             {whatWeDo.map((s) => (
               <li key={s.id} className="flex items-start justify-between gap-6 py-6" style={{ borderColor: "#34404C1f" }}>
@@ -380,8 +380,8 @@ export default function RidgelineDesign({ site, page = "home", basePath = "" }: 
       {/* work — recent roofs */}
       {gallery.length > 0 && (
         <section className="mx-auto max-w-7xl px-8 py-24">
-          <Kicker>Recent roofs</Kicker>
-          <h2 style={{ ...display, color: SLATE }} className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl">Our work</h2>
+          <Kicker><span {...editCopy(content, "home_work_kicker", "Recent roofs")} /></Kicker>
+          <h2 style={{ ...display, color: SLATE }} className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl" {...editCopy(content, "home_work_heading", "Our work")} />
           <div className="mt-10 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {gallery.slice(0, 3).map((g) => (
               <figure key={g.id} className="overflow-hidden rounded-lg" style={{ background: "#fff", border: "1px solid #34404C1a" }}>
@@ -400,8 +400,8 @@ export default function RidgelineDesign({ site, page = "home", basePath = "" }: 
         <section style={{ background: SLATE }} className="relative text-white">
           <RidgeBand color={PAPER} height={16} className="rotate-180" />
           <div className="mx-auto max-w-7xl px-8 py-20">
-            <Kicker light>Where we work</Kicker>
-            <h2 style={display} className="mt-4 text-3xl font-bold tracking-tight sm:text-4xl">Areas we cover</h2>
+            <Kicker light><span {...editCopy(content, "home_areas_kicker", "Where we work")} /></Kicker>
+            <h2 style={display} className="mt-4 text-3xl font-bold tracking-tight sm:text-4xl" {...editCopy(content, "home_areas_heading", "Areas we cover")} />
             <div className="mt-8 flex flex-wrap gap-2.5">
               {content.service_areas.map((a) => (
                 <span key={a} className="inline-flex items-center gap-2 rounded-full px-4 py-2 text-[13px] font-semibold" style={{ background: "#ffffff14", color: "#fff" }}>
@@ -417,8 +417,8 @@ export default function RidgelineDesign({ site, page = "home", basePath = "" }: 
       <section style={{ background: INK }} className="text-white">
         <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 px-8 py-16 sm:flex-row sm:items-center">
           <div>
-            <h2 style={display} className="text-3xl font-bold leading-[1.04] tracking-tight sm:text-4xl">Got a leak? Need a new roof?</h2>
-            <p className="mt-2 text-sm font-semibold uppercase tracking-[0.14em] text-white/60">Free roof inspections &amp; honest quotes.</p>
+            <h2 style={display} className="text-3xl font-bold leading-[1.04] tracking-tight sm:text-4xl" {...editCopy(content, "cta_heading", "Got a leak? Need a new roof?")} />
+            <p className="mt-2 text-sm font-semibold uppercase tracking-[0.14em] text-white/60" {...editCopy(content, "cta_sub", "Free roof inspections & honest quotes.")} />
           </div>
           <a href={phone ? `tel:${phone}` : cta} className="rounded-full px-9 py-4 text-[12px] font-bold uppercase tracking-[0.16em] transition hover:brightness-110" style={{ background: TILE, color: PAPER }}>
             {phone ? `Call ${phone}` : ctaLabel}

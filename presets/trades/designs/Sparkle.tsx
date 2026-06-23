@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { SparkleHeader, SparkleMark } from "./SparkleHeader";
 import { TradesSocialIcon } from "./TradesMobileNav";
@@ -148,7 +148,7 @@ export default function SparkleDesign({ site, page = "home", basePath = "" }: Pr
           )}
         </div>
         <div>
-          <h4 style={display} className="text-xs font-extrabold uppercase tracking-[0.18em] text-white/45">Explore</h4>
+          <h4 style={display} className="text-xs font-extrabold uppercase tracking-[0.18em] text-white/45" {...editCopy(content, "footer_explore", "Explore")} />
           <ul className="mt-5 space-y-3 text-sm text-white/70">
             {nav.map((l) => (
               <li key={l.label}><a href={l.href} className="transition hover:text-white">{l.label}</a></li>
@@ -156,7 +156,7 @@ export default function SparkleDesign({ site, page = "home", basePath = "" }: Pr
           </ul>
         </div>
         <div>
-          <h4 style={display} className="text-xs font-extrabold uppercase tracking-[0.18em] text-white/45">Contact</h4>
+          <h4 style={display} className="text-xs font-extrabold uppercase tracking-[0.18em] text-white/45" {...editCopy(content, "footer_contact", "Contact")} />
           <div className="mt-5 space-y-3 text-sm text-white/70">
             {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -164,7 +164,7 @@ export default function SparkleDesign({ site, page = "home", basePath = "" }: Pr
           </div>
         </div>
         <div>
-          <h4 style={display} className="text-xs font-extrabold uppercase tracking-[0.18em] text-white/45">Hours</h4>
+          <h4 style={display} className="text-xs font-extrabold uppercase tracking-[0.18em] text-white/45" {...editCopy(content, "footer_hours", "Hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm text-white/70">
               {content.hours.map((h, i) => (
@@ -189,13 +189,13 @@ export default function SparkleDesign({ site, page = "home", basePath = "" }: Pr
     </div>
   );
 
-  const banner = (kicker: string, title: string, blurb?: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string, blurb?: string, blurbKey?: string) => (
     <section className="relative overflow-hidden" style={{ background: `linear-gradient(160deg, ${AQUA} 0%, #0f8a84 100%)` }}>
       <Bubbles />
       <div className="relative mx-auto max-w-7xl px-6 pb-16 pt-32 text-white sm:pt-36">
-        <Kicker light>{kicker}</Kicker>
-        <h1 style={display} className="mt-5 max-w-3xl text-4xl font-extrabold leading-[1.02] tracking-tight sm:text-6xl">{title}</h1>
-        {blurb && <p className="mt-5 max-w-xl text-[16px] leading-relaxed text-white/85">{blurb}</p>}
+        <Kicker light><span {...editCopy(content, kickerKey, kicker)} /></Kicker>
+        <h1 style={display} className="mt-5 max-w-3xl text-4xl font-extrabold leading-[1.02] tracking-tight sm:text-6xl" {...editCopy(content, titleKey, title)} />
+        {blurb && <p className="mt-5 max-w-xl text-[16px] leading-relaxed text-white/85" {...editCopy(content, blurbKey ?? "", blurb)} />}
       </div>
     </section>
   );
@@ -204,7 +204,7 @@ export default function SparkleDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "services") {
     return shell(
       <>
-        {banner("What we clean", "A spotless finish, top to bottom", "Regular cleans, deep cleans, end-of-tenancy, offices, carpets and ovens — pick what you need and we'll sort the rest.")}
+        {banner("What we clean", "svc_kicker", "A spotless finish, top to bottom", "svc_title", "Regular cleans, deep cleans, end-of-tenancy, offices, carpets and ovens — pick what you need and we'll sort the rest.", "svc_blurb")}
         <section className="mx-auto max-w-4xl px-6 py-20">
           {services.length > 0 ? (
             <ul className="divide-y" style={{ borderColor: LINE }}>
@@ -233,13 +233,13 @@ export default function SparkleDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "about") {
     return shell(
       <>
-        {banner("About us", "Friendly, vetted, spotless", "Reliable cleaners you'll be happy to have in your home or office.")}
+        {banner("About us", "about_kicker", "Friendly, vetted, spotless", "about_title", "Reliable cleaners you'll be happy to have in your home or office.", "about_blurb")}
         <section className="mx-auto grid max-w-7xl gap-12 px-6 py-20 lg:grid-cols-[1.4fr_1fr]">
           <div>
             {content.about ? <p data-edit="content.about" className="text-[17px] leading-[1.9]" style={{ color: SLATE }}>{content.about}</p> : <p style={{ color: SLATE }}>Our story is coming soon.</p>}
             {content.service_areas && content.service_areas.length > 0 && (
               <>
-                <h3 style={{ ...display, color: INK }} className="mt-12 text-2xl font-extrabold tracking-tight">Areas we cover</h3>
+                <h3 style={{ ...display, color: INK }} className="mt-12 text-2xl font-extrabold tracking-tight" {...editCopy(content, "about_areas_heading", "Areas we cover")} />
                 <div className="mt-5 flex flex-wrap gap-2">
                   {content.service_areas.map((a) => (
                     <span key={a} className="rounded-full border px-4 py-1.5 text-sm" style={{ borderColor: LINE, color: SLATE }}>{a}</span>
@@ -250,7 +250,7 @@ export default function SparkleDesign({ site, page = "home", basePath = "" }: Pr
             <div className="mt-12">{btnLemon(ctaLabel, cta)}</div>
           </div>
           <aside className="h-fit rounded-3xl p-7" style={{ background: SKY }}>
-            <h4 style={{ ...display, color: AQUA }} className="text-xs font-extrabold uppercase tracking-[0.18em]">Why book us</h4>
+            <h4 style={{ ...display, color: AQUA }} className="text-xs font-extrabold uppercase tracking-[0.18em]" {...editCopy(content, "about_whybook_heading", "Why book us")} />
             <ul className="mt-4 space-y-3 text-sm" style={{ color: INK }}>
               {trust.map((a) => (
                 <li key={a} className="flex items-start gap-2.5"><span className="mt-0.5 shrink-0"><SparkleMark color={AQUA} size={14} /></span><span>{a}</span></li>
@@ -270,10 +270,10 @@ export default function SparkleDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "contact") {
     return shell(
       <>
-        {banner("Get in touch", "Request a quote", "Tell us what needs cleaning and we'll come back with a fast, no-obligation price.")}
+        {banner("Get in touch", "contact_kicker", "Request a quote", "contact_title", "Tell us what needs cleaning and we'll come back with a fast, no-obligation price.", "contact_blurb")}
         <section className="mx-auto grid max-w-7xl gap-12 px-6 py-20 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={{ ...display, color: INK }} className="text-2xl font-extrabold tracking-tight">Speak to the team</h2>
+            <h2 style={{ ...display, color: INK }} className="text-2xl font-extrabold tracking-tight" {...editCopy(content, "contact_heading", "Speak to the team")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: SLATE }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-[#19A7A0]">{content.phone}</a>}
@@ -310,7 +310,7 @@ export default function SparkleDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Our work", "Before & after", "Real homes and offices, transformed. See the sparkle for yourself.")}
+        {banner("Our work", "gallery_kicker", "Before & after", "gallery_title", "Real homes and offices, transformed. See the sparkle for yourself.", "gallery_blurb")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-7xl px-6 py-16">
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
@@ -389,8 +389,8 @@ export default function SparkleDesign({ site, page = "home", basePath = "" }: Pr
       {services.length > 0 && (
         <section className="mx-auto max-w-4xl px-6 py-24">
           <div className="text-center">
-            <Kicker>What we clean</Kicker>
-            <h2 style={{ ...display, color: INK }} className="mt-5 text-3xl font-extrabold tracking-tight sm:text-5xl">Every corner, sparkling</h2>
+            <Kicker><span {...editCopy(content, "home_clean_kicker", "What we clean")} /></Kicker>
+            <h2 style={{ ...display, color: INK }} className="mt-5 text-3xl font-extrabold tracking-tight sm:text-5xl" {...editCopy(content, "home_clean_heading", "Every corner, sparkling")} />
           </div>
           <ul className="mt-12 divide-y" style={{ borderColor: LINE }}>
             {services.slice(0, 8).map((s) => (
@@ -407,7 +407,7 @@ export default function SparkleDesign({ site, page = "home", basePath = "" }: Pr
             ))}
           </ul>
           <div className="mt-10 text-center">
-            <a href={href("services")} className="text-sm font-extrabold underline-offset-4 hover:underline" style={{ color: AQUA }}>See all services →</a>
+            <a href={href("services")} className="text-sm font-extrabold underline-offset-4 hover:underline" style={{ color: AQUA }} {...editCopy(content, "home_clean_link", "See all services →")} />
           </div>
         </section>
       )}
@@ -416,8 +416,8 @@ export default function SparkleDesign({ site, page = "home", basePath = "" }: Pr
       <section style={{ background: SKY }}>
         <div className="mx-auto max-w-7xl px-6 py-24">
           <div className="text-center">
-            <Kicker>Regular or one-off</Kicker>
-            <h2 style={{ ...display, color: INK }} className="mt-5 text-3xl font-extrabold tracking-tight sm:text-4xl">Clean your way</h2>
+            <Kicker><span {...editCopy(content, "home_plans_kicker", "Regular or one-off")} /></Kicker>
+            <h2 style={{ ...display, color: INK }} className="mt-5 text-3xl font-extrabold tracking-tight sm:text-4xl" {...editCopy(content, "home_plans_heading", "Clean your way")} />
           </div>
           <div className="mt-12 grid gap-5 sm:grid-cols-2">
             {plans.map((p) => (
@@ -436,10 +436,10 @@ export default function SparkleDesign({ site, page = "home", basePath = "" }: Pr
       {content.about && (
         <section className="mx-auto grid max-w-7xl items-center gap-12 px-6 py-24 lg:grid-cols-2 lg:gap-16">
           <div>
-            <Kicker>About us</Kicker>
-            <h2 style={{ ...display, color: INK }} className="mt-5 text-3xl font-extrabold leading-[1.05] tracking-tight sm:text-4xl">Cleaners you can trust</h2>
+            <Kicker><span {...editCopy(content, "home_about_kicker", "About us")} /></Kicker>
+            <h2 style={{ ...display, color: INK }} className="mt-5 text-3xl font-extrabold leading-[1.05] tracking-tight sm:text-4xl" {...editCopy(content, "home_about_heading", "Cleaners you can trust")} />
             <p data-edit="content.about" className="mt-6 text-[16px] leading-[1.9]" style={{ color: SLATE }}>{content.about}</p>
-            <a href={href("about")} className="mt-6 inline-flex items-center gap-2 text-sm font-extrabold" style={{ color: AQUA }}>More about us →</a>
+            <a href={href("about")} className="mt-6 inline-flex items-center gap-2 text-sm font-extrabold" style={{ color: AQUA }} {...editCopy(content, "home_about_link", "More about us →")} />
           </div>
           <div className="relative">
             {gallery[0] ? (
@@ -458,8 +458,8 @@ export default function SparkleDesign({ site, page = "home", basePath = "" }: Pr
         <section style={{ background: SKY }}>
           <div className="mx-auto max-w-7xl px-6 py-24">
             <div className="text-center">
-              <Kicker>Our work</Kicker>
-              <h2 style={{ ...display, color: INK }} className="mt-5 text-3xl font-extrabold tracking-tight sm:text-4xl">Before &amp; after</h2>
+              <Kicker><span {...editCopy(content, "home_work_kicker", "Our work")} /></Kicker>
+              <h2 style={{ ...display, color: INK }} className="mt-5 text-3xl font-extrabold tracking-tight sm:text-4xl" {...editCopy(content, "home_work_heading", "Before & after")} />
             </div>
             <div className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-4">
               {gallery.slice(0, 4).map((g) => (
@@ -476,7 +476,7 @@ export default function SparkleDesign({ site, page = "home", basePath = "" }: Pr
       {content.service_areas && content.service_areas.length > 0 && (
         <section className="mx-auto max-w-7xl px-6 py-20">
           <div className="rounded-[2rem] px-8 py-12 text-center" style={{ background: AQUA }}>
-            <h2 style={display} className="text-2xl font-extrabold tracking-tight text-white sm:text-3xl">Areas we cover</h2>
+            <h2 style={display} className="text-2xl font-extrabold tracking-tight text-white sm:text-3xl" {...editCopy(content, "home_areas_heading", "Areas we cover")} />
             <div className="mt-6 flex flex-wrap justify-center gap-2.5">
               {content.service_areas.map((a) => (
                 <span key={a} className="rounded-full px-4 py-1.5 text-sm font-semibold text-white" style={{ background: "#ffffff26" }}>{a}</span>
@@ -491,8 +491,8 @@ export default function SparkleDesign({ site, page = "home", basePath = "" }: Pr
         <Bubbles />
         <div className="relative mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 px-6 py-20 text-white sm:flex-row sm:items-center">
           <div>
-            <h2 style={display} className="text-3xl font-extrabold leading-[1.05] tracking-tight sm:text-4xl">Ready for a sparkling clean?</h2>
-            <p className="mt-3 text-sm font-semibold uppercase tracking-[0.1em] text-white/65">Free, no-obligation quotes.</p>
+            <h2 style={display} className="text-3xl font-extrabold leading-[1.05] tracking-tight sm:text-4xl" {...editCopy(content, "cta_heading", "Ready for a sparkling clean?")} />
+            <p className="mt-3 text-sm font-semibold uppercase tracking-[0.1em] text-white/65" {...editCopy(content, "cta_sub", "Free, no-obligation quotes.")} />
           </div>
           {btnLemon(phone ? `Call ${phone}` : ctaLabel, phone ? `tel:${phone}` : cta)}
         </div>

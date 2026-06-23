@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { ShortlistHeader } from "./ShortlistHeader";
 import { TradesSocialIcon } from "./TradesMobileNav";
@@ -112,7 +112,7 @@ export default function ShortlistDesign({ site, page = "home", basePath = "" }: 
           )}
         </div>
         <div>
-          <h4 style={display} className="text-xs font-bold uppercase tracking-[0.2em] text-white/50">Agency</h4>
+          <h4 style={display} className="text-xs font-bold uppercase tracking-[0.2em] text-white/50" {...editCopy(content, "footer_agency", "Agency")} />
           <ul className="mt-5 space-y-3 text-sm text-white/70">
             {nav.map((l) => (
               <li key={l.label}><a href={l.href} className="transition hover:text-white">{l.label}</a></li>
@@ -120,7 +120,7 @@ export default function ShortlistDesign({ site, page = "home", basePath = "" }: 
           </ul>
         </div>
         <div>
-          <h4 style={display} className="text-xs font-bold uppercase tracking-[0.2em] text-white/50">Contact</h4>
+          <h4 style={display} className="text-xs font-bold uppercase tracking-[0.2em] text-white/50" {...editCopy(content, "footer_contact", "Contact")} />
           <div className="mt-5 space-y-3 text-sm text-white/70">
             {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -128,7 +128,7 @@ export default function ShortlistDesign({ site, page = "home", basePath = "" }: 
           </div>
         </div>
         <div>
-          <h4 style={display} className="text-xs font-bold uppercase tracking-[0.2em] text-white/50">Hours</h4>
+          <h4 style={display} className="text-xs font-bold uppercase tracking-[0.2em] text-white/50" {...editCopy(content, "footer_hours", "Hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm text-white/70">
               {content.hours.map((h, i) => (
@@ -153,13 +153,13 @@ export default function ShortlistDesign({ site, page = "home", basePath = "" }: 
     </div>
   );
 
-  const banner = (kicker: string, title: string, blurb?: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string, blurb?: string, blurbKey?: string) => (
     <section style={{ background: INDIGO }} className="relative overflow-hidden text-white">
       <ConnectMark className="pointer-events-none absolute -right-10 top-6 hidden h-64 w-64 opacity-40 sm:block" />
       <div className="relative mx-auto max-w-6xl px-8 pb-16 pt-32 sm:pt-40">
-        <Kicker light>{kicker}</Kicker>
-        <h1 style={display} className="mt-4 max-w-3xl text-4xl font-bold leading-[1.02] tracking-[-0.02em] sm:text-6xl">{title}</h1>
-        {blurb && <p className="mt-5 max-w-xl text-[16px] leading-relaxed text-white/75">{blurb}</p>}
+        <Kicker light><span {...editCopy(content, kickerKey, kicker)} /></Kicker>
+        <h1 style={display} className="mt-4 max-w-3xl text-4xl font-bold leading-[1.02] tracking-[-0.02em] sm:text-6xl" {...editCopy(content, titleKey, title)} />
+        {blurb && <p className="mt-5 max-w-xl text-[16px] leading-relaxed text-white/75" {...editCopy(content, blurbKey ?? "", blurb)} />}
       </div>
     </section>
   );
@@ -168,7 +168,7 @@ export default function ShortlistDesign({ site, page = "home", basePath = "" }: 
   if (page === "services") {
     return shell(
       <>
-        {banner("Sectors we recruit for", "Specialists across the roles that matter", "Deep expertise in the markets we know best — for the people who build them and the teams who need them.")}
+        {banner("Sectors we recruit for", "svc_kicker", "Specialists across the roles that matter", "svc_title", "Deep expertise in the markets we know best — for the people who build them and the teams who need them.", "svc_blurb")}
         <section className="mx-auto max-w-5xl px-8 py-20">
           {services.length > 0 ? (
             <div className="divide-y" style={{ borderColor: LINE }}>
@@ -194,12 +194,12 @@ export default function ShortlistDesign({ site, page = "home", basePath = "" }: 
   if (page === "about") {
     return shell(
       <>
-        {banner("Who we are", "People-first recruitment, done properly")}
+        {banner("Who we are", "about_kicker", "People-first recruitment, done properly", "about_title")}
         <section className="mx-auto max-w-3xl px-8 py-20">
           {content.about ? <p data-edit="content.about" className="text-[17px] leading-[1.9]" style={{ color: SLATE }}>{content.about}</p> : <p style={{ color: SLATE }}>Our story is coming soon.</p>}
           {content.accreditations && content.accreditations.length > 0 && (
             <>
-              <h3 style={{ ...display, color: INK }} className="mt-12 text-xs font-bold uppercase tracking-[0.2em]">Members &amp; accreditations</h3>
+              <h3 style={{ ...display, color: INK }} className="mt-12 text-xs font-bold uppercase tracking-[0.2em]" {...editCopy(content, "about_accreditations_heading", "Members & accreditations")} />
               <div className="mt-5 flex flex-wrap gap-3">
                 {content.accreditations.map((a) => (
                   <span key={a} className="rounded-full border-2 px-4 py-2 text-[12px] font-bold" style={{ borderColor: `${INDIGO}33`, color: INDIGO }}>{a}</span>
@@ -209,7 +209,7 @@ export default function ShortlistDesign({ site, page = "home", basePath = "" }: 
           )}
           {content.service_areas && content.service_areas.length > 0 && (
             <>
-              <h3 style={{ ...display, color: INK }} className="mt-12 text-xs font-bold uppercase tracking-[0.2em]">Where we work</h3>
+              <h3 style={{ ...display, color: INK }} className="mt-12 text-xs font-bold uppercase tracking-[0.2em]" {...editCopy(content, "about_areas_heading", "Where we work")} />
               <p className="mt-4 text-[15px] leading-relaxed" style={{ color: SLATE }}>{content.service_areas.join(" · ")}</p>
             </>
           )}
@@ -223,10 +223,10 @@ export default function ShortlistDesign({ site, page = "home", basePath = "" }: 
   if (page === "contact") {
     return shell(
       <>
-        {banner("Let's talk", "Hire great people — or find your next role", "Whether you're building a team or planning your next move, we'd love to hear from you.")}
+        {banner("Let's talk", "contact_kicker", "Hire great people — or find your next role", "contact_title", "Whether you're building a team or planning your next move, we'd love to hear from you.", "contact_blurb")}
         <section className="mx-auto grid max-w-6xl gap-12 px-8 py-20 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={{ ...display, color: INK }} className="text-2xl font-bold tracking-[-0.01em]">Talk to the team</h2>
+            <h2 style={{ ...display, color: INK }} className="text-2xl font-bold tracking-[-0.01em]" {...editCopy(content, "contact_heading", "Talk to the team")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: SLATE }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-[#2A2E7A]">{content.phone}</a>}
@@ -240,7 +240,7 @@ export default function ShortlistDesign({ site, page = "home", basePath = "" }: 
               </ul>
             )}
             {content.map_url && (
-              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex rounded-full border-2 px-6 py-3 text-sm font-bold transition hover:bg-[#f0f0f8]" style={{ borderColor: LINE, color: INDIGO }}>Get directions</a>
+              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex rounded-full border-2 px-6 py-3 text-sm font-bold transition hover:bg-[#f0f0f8]" style={{ borderColor: LINE, color: INDIGO }} {...editCopy(content, "directions_cta", "Get directions")} />
             )}
           </div>
           {(bookingOn || contactOn) && (
@@ -265,7 +265,7 @@ export default function ShortlistDesign({ site, page = "home", basePath = "" }: 
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Success stories", "People we've placed, teams we've built")}
+        {banner("Success stories", "gallery_kicker", "People we've placed, teams we've built", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-6xl px-6 py-16">
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
@@ -359,8 +359,8 @@ export default function ShortlistDesign({ site, page = "home", basePath = "" }: 
       {/* two-audience split (full) */}
       <section className="mx-auto max-w-6xl px-8 py-24">
         <div className="text-center">
-          <Kicker>Two paths, one partner</Kicker>
-          <h2 style={{ ...display, color: INK }} className="mx-auto mt-4 max-w-2xl text-4xl font-bold leading-[1.02] tracking-[-0.02em] sm:text-5xl">Whichever side of the table you're on</h2>
+          <Kicker><span {...editCopy(content, "home_split_kicker", "Two paths, one partner")} /></Kicker>
+          <h2 style={{ ...display, color: INK }} className="mx-auto mt-4 max-w-2xl text-4xl font-bold leading-[1.02] tracking-[-0.02em] sm:text-5xl" {...editCopy(content, "home_split_heading", "Whichever side of the table you're on")} />
         </div>
         <div className="mt-14 grid gap-6 lg:grid-cols-2">
           {audiences.map((a) => (
@@ -390,10 +390,10 @@ export default function ShortlistDesign({ site, page = "home", basePath = "" }: 
           <div className="mx-auto max-w-6xl px-8 py-24">
             <div className="flex flex-wrap items-end justify-between gap-4">
               <div>
-                <Kicker>What we recruit for</Kicker>
-                <h2 style={{ ...display, color: INK }} className="mt-4 text-4xl font-bold tracking-[-0.02em] sm:text-5xl">Sectors we know inside out</h2>
+                <Kicker><span {...editCopy(content, "home_sectors_kicker", "What we recruit for")} /></Kicker>
+                <h2 style={{ ...display, color: INK }} className="mt-4 text-4xl font-bold tracking-[-0.02em] sm:text-5xl" {...editCopy(content, "home_sectors_heading", "Sectors we know inside out")} />
               </div>
-              <a href={href("services")} className="text-sm font-bold underline-offset-4 hover:underline" style={{ color: CORAL }}>All sectors →</a>
+              <a href={href("services")} className="text-sm font-bold underline-offset-4 hover:underline" style={{ color: CORAL }} {...editCopy(content, "home_sectors_link", "All sectors →")} />
             </div>
             <div className="mt-12 divide-y" style={{ borderColor: LINE }}>
               {services.slice(0, 6).map((s, i) => (
@@ -415,8 +415,8 @@ export default function ShortlistDesign({ site, page = "home", basePath = "" }: 
       <section style={{ background: INDIGO }} className="relative overflow-hidden text-white">
         <ConnectMark className="pointer-events-none absolute -left-16 -bottom-10 hidden h-72 w-72 opacity-30 sm:block" />
         <div className="relative mx-auto max-w-6xl px-8 py-24">
-          <Kicker light>How it works</Kicker>
-          <h2 style={display} className="mt-4 text-4xl font-bold tracking-[-0.02em] sm:text-5xl">From brief to placement</h2>
+          <Kicker light><span {...editCopy(content, "home_process_kicker", "How it works")} /></Kicker>
+          <h2 style={display} className="mt-4 text-4xl font-bold tracking-[-0.02em] sm:text-5xl" {...editCopy(content, "home_process_heading", "From brief to placement")} />
           <div className="mt-14 grid gap-px overflow-hidden rounded-3xl sm:grid-cols-2 lg:grid-cols-4" style={{ background: "rgba(255,255,255,0.14)" }}>
             {process.map((p, i) => (
               <div key={p.n} className="relative bg-[#2A2E7A] p-7">
@@ -433,10 +433,10 @@ export default function ShortlistDesign({ site, page = "home", basePath = "" }: 
       {content.about && (
         <section className="mx-auto grid max-w-6xl items-center gap-12 px-8 py-24 lg:grid-cols-[1fr_0.9fr] lg:gap-16">
           <div>
-            <Kicker>About us</Kicker>
-            <h2 style={{ ...display, color: INK }} className="mt-4 text-4xl font-bold leading-[1.02] tracking-[-0.02em] sm:text-5xl">Recruitment built on real relationships</h2>
+            <Kicker><span {...editCopy(content, "home_about_kicker", "About us")} /></Kicker>
+            <h2 style={{ ...display, color: INK }} className="mt-4 text-4xl font-bold leading-[1.02] tracking-[-0.02em] sm:text-5xl" {...editCopy(content, "home_about_heading", "Recruitment built on real relationships")} />
             <p data-edit="content.about" className="mt-6 text-[16px] leading-[1.9]" style={{ color: SLATE }}>{content.about}</p>
-            <a href={href("about")} className="mt-6 inline-flex items-center gap-2 text-[13px] font-bold" style={{ color: CORAL }}>More about us →</a>
+            <a href={href("about")} className="mt-6 inline-flex items-center gap-2 text-[13px] font-bold" style={{ color: CORAL }} {...editCopy(content, "home_about_link", "More about us →")} />
           </div>
           <div className="relative">
             {gallery[0] || hero ? (
@@ -448,8 +448,8 @@ export default function ShortlistDesign({ site, page = "home", basePath = "" }: 
             <div className="absolute -bottom-5 -left-5 flex items-center gap-3 rounded-2xl bg-white px-5 py-4" style={{ boxShadow: "0 24px 60px -34px rgba(24,26,46,0.6)" }}>
               <ConnectMark className="h-10 w-10" />
               <div>
-                <p style={{ ...display, color: INK }} className="text-lg font-bold leading-none">Great people</p>
-                <p className="text-[12px] font-semibold" style={{ color: SLATE }}>Great roles</p>
+                <p style={{ ...display, color: INK }} className="text-lg font-bold leading-none" {...editCopy(content, "home_about_badge_title", "Great people")} />
+                <p className="text-[12px] font-semibold" style={{ color: SLATE }} {...editCopy(content, "home_about_badge_sub", "Great roles")} />
               </div>
             </div>
           </div>
@@ -473,10 +473,8 @@ export default function ShortlistDesign({ site, page = "home", basePath = "" }: 
       {/* clients / testimonial strip */}
       <section className="mx-auto max-w-5xl px-8 py-24 text-center">
         <ConnectMark className="mx-auto h-12 w-12" />
-        <blockquote style={{ ...display, color: INK }} className="mx-auto mt-7 max-w-3xl text-2xl font-bold leading-[1.35] tracking-[-0.01em] sm:text-[2rem]">
-          “They actually listened — and sent us a shortlist where every single person was worth meeting.”
-        </blockquote>
-        <p className="mt-6 text-[12px] font-bold uppercase tracking-[0.18em]" style={{ color: SLATE }}>Trusted by teams across our sectors</p>
+        <blockquote style={{ ...display, color: INK }} className="mx-auto mt-7 max-w-3xl text-2xl font-bold leading-[1.35] tracking-[-0.01em] sm:text-[2rem]" {...editCopy(content, "home_testimonial", "“They actually listened — and sent us a shortlist where every single person was worth meeting.”")} />
+        <p className="mt-6 text-[12px] font-bold uppercase tracking-[0.18em]" style={{ color: SLATE }} {...editCopy(content, "home_testimonial_sub", "Trusted by teams across our sectors")} />
         {content.accreditations && content.accreditations.length > 0 && (
           <div className="mt-6 flex flex-wrap items-center justify-center gap-x-8 gap-y-3 text-[12px] font-bold uppercase tracking-[0.14em]" style={{ color: "#9a9cbb" }}>
             {content.accreditations.map((a) => <span key={a}>{a}</span>)}
@@ -489,8 +487,8 @@ export default function ShortlistDesign({ site, page = "home", basePath = "" }: 
         <div className="pointer-events-none absolute inset-0" style={{ background: "radial-gradient(80% 120% at 100% 0%, rgba(111,211,166,0.22), transparent 55%)" }} />
         <div className="relative mx-auto flex max-w-6xl flex-col items-start justify-between gap-6 px-8 py-16 sm:flex-row sm:items-center">
           <div>
-            <h2 style={display} className="text-3xl font-bold leading-[1.05] tracking-[-0.02em] sm:text-4xl">Ready to find the right fit?</h2>
-            <p className="mt-2 text-sm font-semibold text-white/65">For employers and candidates alike — let&apos;s talk.</p>
+            <h2 style={display} className="text-3xl font-bold leading-[1.05] tracking-[-0.02em] sm:text-4xl" {...editCopy(content, "cta_heading", "Ready to find the right fit?")} />
+            <p className="mt-2 text-sm font-semibold text-white/65" {...editCopy(content, "cta_sub", "For employers and candidates alike — let's talk.")} />
           </div>
           <div className="flex flex-col gap-3 sm:flex-row">
             {pill(ctaLabel, cta)}

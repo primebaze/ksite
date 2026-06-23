@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { TerraceHeader } from "./TerraceHeader";
 import { TradesSocialIcon } from "./TradesMobileNav";
@@ -67,10 +67,10 @@ export default function TerraceDesign({ site, page = "home", basePath = "" }: Pr
   );
 
   // editorial section eyebrow — a fine sandstone rule + letter-spaced label
-  const eyebrow = (text: string, light = false) => (
+  const eyebrow = (text: string, light = false, key?: string) => (
     <span className="inline-flex items-center gap-3 text-[11px] font-semibold uppercase tracking-[0.28em]" style={{ color: light ? SAND : SLATE }}>
       <span className="block h-px w-8" style={{ background: SAND }} />
-      {text}
+      {key ? <span {...editCopy(content, key, text)} /> : text}
     </span>
   );
 
@@ -117,7 +117,7 @@ export default function TerraceDesign({ site, page = "home", basePath = "" }: Pr
           )}
         </div>
         <div>
-          <h4 style={{ ...display, color: SAND }} className="text-[11px] font-semibold uppercase tracking-[0.24em]">Studio</h4>
+          <h4 style={{ ...display, color: SAND }} className="text-[11px] font-semibold uppercase tracking-[0.24em]" {...editCopy(content, "footer_studio", "Studio")} />
           <ul className="mt-5 space-y-3 text-sm text-white/70">
             {nav.map((l) => (
               <li key={l.label}><a href={l.href} className="transition hover:text-white">{l.label}</a></li>
@@ -125,7 +125,7 @@ export default function TerraceDesign({ site, page = "home", basePath = "" }: Pr
           </ul>
         </div>
         <div>
-          <h4 style={{ ...display, color: SAND }} className="text-[11px] font-semibold uppercase tracking-[0.24em]">Enquiries</h4>
+          <h4 style={{ ...display, color: SAND }} className="text-[11px] font-semibold uppercase tracking-[0.24em]" {...editCopy(content, "footer_enquiries", "Enquiries")} />
           <div className="mt-5 space-y-3 text-sm text-white/70">
             {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -133,7 +133,7 @@ export default function TerraceDesign({ site, page = "home", basePath = "" }: Pr
           </div>
         </div>
         <div>
-          <h4 style={{ ...display, color: SAND }} className="text-[11px] font-semibold uppercase tracking-[0.24em]">Studio hours</h4>
+          <h4 style={{ ...display, color: SAND }} className="text-[11px] font-semibold uppercase tracking-[0.24em]" {...editCopy(content, "footer_hours", "Studio hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm text-white/70">
               {content.hours.map((h, i) => (
@@ -159,12 +159,12 @@ export default function TerraceDesign({ site, page = "home", basePath = "" }: Pr
   );
 
   // dark editorial banner for sub-pages
-  const banner = (kicker: string, title: string, lead?: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string, lead?: string, leadKey?: string) => (
     <section style={{ background: SLATE }} className="relative">
       <div className="mx-auto max-w-7xl px-8 pb-16 pt-36 sm:pt-44">
-        {eyebrow(kicker, true)}
-        <h1 style={display} className="mt-5 max-w-4xl text-4xl font-medium uppercase leading-[1.05] tracking-[0.04em] text-white sm:text-6xl">{title}</h1>
-        {lead && <p className="mt-6 max-w-2xl text-[16px] leading-relaxed text-white/70">{lead}</p>}
+        {eyebrow(kicker, true, kickerKey)}
+        <h1 style={display} className="mt-5 max-w-4xl text-4xl font-medium uppercase leading-[1.05] tracking-[0.04em] text-white sm:text-6xl" {...editCopy(content, titleKey, title)} />
+        {lead && <p className="mt-6 max-w-2xl text-[16px] leading-relaxed text-white/70" {...editCopy(content, leadKey ?? "", lead)} />}
       </div>
       <div className="h-px w-full" style={{ background: `linear-gradient(90deg, transparent, ${SAND}, transparent)` }} />
     </section>
@@ -192,7 +192,7 @@ export default function TerraceDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "services") {
     return shell(
       <>
-        {banner("What we create", "Garden design & build", "From a single considered patio to a complete garden transformation — every project is designed in-house and built by our own craftsmen.")}
+        {banner("What we create", "svc_kicker", "Garden design & build", "svc_title", "From a single considered patio to a complete garden transformation — every project is designed in-house and built by our own craftsmen.", "svc_lead")}
         <section className="mx-auto max-w-4xl px-8 py-20 sm:py-24">
           {services.length > 0 ? servicesList : <p style={{ color: MUTE }}>Services coming soon.</p>}
           <div className="mt-14">{btnPrimary(ctaLabel, cta)}</div>
@@ -205,13 +205,13 @@ export default function TerraceDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "about") {
     return shell(
       <>
-        {banner("The studio", "A garden design practice")}
+        {banner("The studio", "about_kicker", "A garden design practice", "about_title")}
         <section className="mx-auto grid max-w-7xl gap-12 px-8 py-20 sm:py-24 lg:grid-cols-[1.2fr_1fr] lg:gap-16">
           <div className="max-w-2xl">
             {content.about ? <p data-edit="content.about" className="text-[17px] leading-[1.95]" style={{ color: MUTE }}>{content.about}</p> : <p style={{ color: MUTE }}>Our story is coming soon.</p>}
             {content.accreditations && content.accreditations.length > 0 && (
               <>
-                <h3 style={{ ...display, color: SLATE }} className="mt-12 text-[11px] font-semibold uppercase tracking-[0.24em]">Awards &amp; accreditations</h3>
+                <h3 style={{ ...display, color: SLATE }} className="mt-12 text-[11px] font-semibold uppercase tracking-[0.24em]" {...editCopy(content, "about_accreditations_heading", "Awards & accreditations")} />
                 <div className="mt-5 flex flex-wrap gap-3">
                   {content.accreditations.map((a) => (
                     <span key={a} className="border px-4 py-2 text-[11px] font-medium uppercase tracking-[0.14em]" style={{ borderColor: SAND, color: SLATE }}>{a}</span>
@@ -221,7 +221,7 @@ export default function TerraceDesign({ site, page = "home", basePath = "" }: Pr
             )}
             {content.service_areas && content.service_areas.length > 0 && (
               <>
-                <h3 style={{ ...display, color: SLATE }} className="mt-12 text-[11px] font-semibold uppercase tracking-[0.24em]">Areas we cover</h3>
+                <h3 style={{ ...display, color: SLATE }} className="mt-12 text-[11px] font-semibold uppercase tracking-[0.24em]" {...editCopy(content, "about_areas_heading", "Areas we cover")} />
                 <p className="mt-4 text-[15px] leading-relaxed" style={{ color: MUTE }}>{content.service_areas.join(" · ")}</p>
               </>
             )}
@@ -245,11 +245,11 @@ export default function TerraceDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "contact") {
     return shell(
       <>
-        {banner("Start a project", "Request a consultation", "Tell us about your garden and how you'd like to use it. We'll arrange a visit and talk through the possibilities.")}
+        {banner("Start a project", "contact_kicker", "Request a consultation", "contact_title", "Tell us about your garden and how you'd like to use it. We'll arrange a visit and talk through the possibilities.", "contact_lead")}
         <section className="mx-auto grid max-w-7xl gap-12 px-8 py-20 sm:py-24 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={{ ...display, color: SLATE }} className="text-2xl font-medium uppercase tracking-[0.06em]">Speak to the studio</h2>
-            <p className="mt-3 max-w-md text-[15px] leading-relaxed" style={{ color: MUTE }}>Every garden begins with a conversation. Share a few details and we&apos;ll be in touch to arrange your design consultation.</p>
+            <h2 style={{ ...display, color: SLATE }} className="text-2xl font-medium uppercase tracking-[0.06em]" {...editCopy(content, "contact_heading", "Speak to the studio")} />
+            <p className="mt-3 max-w-md text-[15px] leading-relaxed" style={{ color: MUTE }} {...editCopy(content, "contact_intro", "Every garden begins with a conversation. Share a few details and we'll be in touch to arrange your design consultation.")} />
             <div className="mt-7 space-y-4 text-[15px] leading-relaxed" style={{ color: MUTE }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block font-medium transition hover:text-[#34423A]">{content.phone}</a>}
@@ -288,7 +288,7 @@ export default function TerraceDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Selected work", "A portfolio of gardens", "A few of the gardens we've designed and built — patios, planting, outdoor living and complete transformations.")}
+        {banner("Selected work", "gallery_kicker", "A portfolio of gardens", "gallery_title", "A few of the gardens we've designed and built — patios, planting, outdoor living and complete transformations.", "gallery_lead")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-7xl px-8 py-16 sm:py-20">
             <div className="columns-1 gap-5 sm:columns-2 lg:columns-3 [&>figure]:mb-5">
@@ -341,7 +341,7 @@ export default function TerraceDesign({ site, page = "home", basePath = "" }: Pr
       {content.service_areas && content.service_areas.length > 0 && (
         <section style={{ background: INK }}>
           <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-x-4 gap-y-2 px-8 py-5 text-[12px] font-medium uppercase tracking-[0.18em] text-white/80">
-            <span style={{ color: SAND }}>Designing &amp; building across</span>
+            <span style={{ color: SAND }} {...editCopy(content, "home_areas_label", "Designing & building across")} />
             {content.service_areas.map((a, i) => (
               <span key={a} className="flex items-center gap-4">
                 {i > 0 && <span style={{ color: SAGE }}>·</span>}
@@ -356,10 +356,10 @@ export default function TerraceDesign({ site, page = "home", basePath = "" }: Pr
       {content.about && (
         <section className="mx-auto grid max-w-7xl items-center gap-12 px-8 py-24 sm:py-28 lg:grid-cols-2 lg:gap-20">
           <div>
-            {eyebrow("The studio")}
-            <h2 style={{ ...display, color: SLATE }} className="mt-5 text-4xl font-medium uppercase leading-[1.08] tracking-[0.03em] sm:text-5xl">Considered gardens, built to last</h2>
+            {eyebrow("The studio", false, "home_about_kicker")}
+            <h2 style={{ ...display, color: SLATE }} className="mt-5 text-4xl font-medium uppercase leading-[1.08] tracking-[0.03em] sm:text-5xl" {...editCopy(content, "home_about_heading", "Considered gardens, built to last")} />
             <p data-edit="content.about" className="mt-7 text-[16px] leading-[1.95]" style={{ color: MUTE }}>{content.about}</p>
-            <a href={href("about")} className="mt-7 inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em]" style={{ color: SAND }}>About the studio →</a>
+            <a href={href("about")} className="mt-7 inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em]" style={{ color: SAND }} {...editCopy(content, "home_about_link", "About the studio →")} />
           </div>
           <div className="relative">
             {gallery[0] ? (
@@ -376,8 +376,8 @@ export default function TerraceDesign({ site, page = "home", basePath = "" }: Pr
       {/* design & build process — structural signature */}
       <section style={{ background: SLATE }} className="text-white">
         <div className="mx-auto max-w-7xl px-8 py-24 sm:py-28">
-          {eyebrow("How we work", true)}
-          <h2 style={display} className="mt-5 max-w-2xl text-4xl font-medium uppercase leading-[1.08] tracking-[0.03em] sm:text-5xl">From first sketch to last plant</h2>
+          {eyebrow("How we work", true, "home_process_kicker")}
+          <h2 style={display} className="mt-5 max-w-2xl text-4xl font-medium uppercase leading-[1.08] tracking-[0.03em] sm:text-5xl" {...editCopy(content, "home_process_heading", "From first sketch to last plant")} />
           <div className="mt-14 grid gap-px overflow-hidden sm:grid-cols-2 lg:grid-cols-4" style={{ background: "#ffffff14" }}>
             {process.map((p) => (
               <div key={p.n} className="flex flex-col px-7 py-9" style={{ background: SLATE }}>
@@ -393,9 +393,9 @@ export default function TerraceDesign({ site, page = "home", basePath = "" }: Pr
       {/* what we create — services list */}
       {services.length > 0 && (
         <section className="mx-auto max-w-4xl px-8 py-24 sm:py-28">
-          {eyebrow("What we create")}
-          <h2 style={{ ...display, color: SLATE }} className="mt-5 text-4xl font-medium uppercase tracking-[0.03em] sm:text-5xl">Our work</h2>
-          <p className="mt-5 max-w-2xl text-[16px] leading-relaxed" style={{ color: MUTE }}>Garden design, patios &amp; paving, planting schemes, outdoor living, water features and lighting — designed and built as one.</p>
+          {eyebrow("What we create", false, "home_services_kicker")}
+          <h2 style={{ ...display, color: SLATE }} className="mt-5 text-4xl font-medium uppercase tracking-[0.03em] sm:text-5xl" {...editCopy(content, "home_services_heading", "Our work")} />
+          <p className="mt-5 max-w-2xl text-[16px] leading-relaxed" style={{ color: MUTE }} {...editCopy(content, "home_services_intro", "Garden design, patios & paving, planting schemes, outdoor living, water features and lighting — designed and built as one.")} />
           <div className="mt-12">{servicesList}</div>
           <div className="mt-12">{btnOutline("All services", href("services"), true)}</div>
         </section>
@@ -407,10 +407,10 @@ export default function TerraceDesign({ site, page = "home", basePath = "" }: Pr
           <div className="mx-auto max-w-7xl px-8 py-24 sm:py-28">
             <div className="flex flex-wrap items-end justify-between gap-6">
               <div>
-                {eyebrow("Selected work")}
-                <h2 style={{ ...display, color: SLATE }} className="mt-5 text-4xl font-medium uppercase tracking-[0.03em] sm:text-5xl">A portfolio of gardens</h2>
+                {eyebrow("Selected work", false, "home_portfolio_kicker")}
+                <h2 style={{ ...display, color: SLATE }} className="mt-5 text-4xl font-medium uppercase tracking-[0.03em] sm:text-5xl" {...editCopy(content, "home_portfolio_heading", "A portfolio of gardens")} />
               </div>
-              <a href={href("gallery")} className="text-[11px] font-semibold uppercase tracking-[0.2em]" style={{ color: SLATE }}>View full portfolio →</a>
+              <a href={href("gallery")} className="text-[11px] font-semibold uppercase tracking-[0.2em]" style={{ color: SLATE }} {...editCopy(content, "home_portfolio_link", "View full portfolio →")} />
             </div>
             <div className="mt-12 grid grid-cols-2 gap-4 lg:grid-cols-4">
               {gallery.slice(0, 8).map((g, i) => (
@@ -427,9 +427,9 @@ export default function TerraceDesign({ site, page = "home", basePath = "" }: Pr
       {/* closing CTA */}
       <section style={{ background: INK }} className="text-white">
         <div className="mx-auto max-w-7xl px-8 py-24 text-center sm:py-28">
-          {eyebrow("Start a project", true)}
-          <h2 style={display} className="mx-auto mt-6 max-w-3xl text-4xl font-medium uppercase leading-[1.06] tracking-[0.03em] sm:text-6xl">Let&apos;s design your garden</h2>
-          <p className="mx-auto mt-6 max-w-xl text-[16px] leading-relaxed text-white/70">Book a design consultation and we&apos;ll talk through how your garden could look, work and feel.</p>
+          {eyebrow("Start a project", true, "cta_kicker")}
+          <h2 style={display} className="mx-auto mt-6 max-w-3xl text-4xl font-medium uppercase leading-[1.06] tracking-[0.03em] sm:text-6xl" {...editCopy(content, "cta_heading", "Let's design your garden")} />
+          <p className="mx-auto mt-6 max-w-xl text-[16px] leading-relaxed text-white/70" {...editCopy(content, "cta_sub", "Book a design consultation and we'll talk through how your garden could look, work and feel.")} />
           <div className="mt-10 flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
             {btnPrimary(ctaLabel, cta)}
             {phone && btnOutline(`Call ${phone}`, `tel:${phone}`)}
