@@ -4,10 +4,12 @@ import { getTenantFull, getTenantBilling, getLatestKyc, getClientAuth } from "@/
 import { SITE_BASE } from "@/lib/marketing";
 import { VERTICALS, verticalFor } from "@/lib/verticals";
 import { SiteEditor, type EditorActions } from "@/components/SiteEditor";
+import { DeleteAccountButton } from "@/components/DeleteAccountButton";
 import {
   cancelSubscriptionAction,
   catalogDelete,
   catalogSave,
+  deleteTenantAction,
   emailClientAction,
   galleryDelete,
   gallerySave,
@@ -325,6 +327,17 @@ export default async function EditTenant({
           <textarea name="content_json" rows={12} defaultValue={JSON.stringify(content, null, 2)} className={`${input} font-mono text-xs`} />
           <button className={`${btn} mt-3`}>Save JSON</button>
         </form>
+      </section>
+
+      {/* Danger zone — permanent account deletion */}
+      <section className="rounded-2xl border border-red-500/25 bg-red-500/[0.04] p-6">
+        <h2 className="text-lg font-semibold text-red-300">Danger zone</h2>
+        <p className="mt-0.5 text-sm text-ink/50">
+          Permanently delete this account — site, content, enquiries and login — and cancel any subscription. This cannot be undone.
+        </p>
+        <div className="mt-4">
+          <DeleteAccountButton id={id} businessName={tenant.business_name} action={deleteTenantAction} />
+        </div>
       </section>
     </div>
   );

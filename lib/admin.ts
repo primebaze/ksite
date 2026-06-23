@@ -383,6 +383,45 @@ export async function cancelSubscriptionForTenant(tenantId: string): Promise<voi
   sendAdminLifecycleAlert({ subject: "Cancellation scheduled", businessName: name, detail: endDate ? `Ends ${endDate}.` : "Ends at period end.", tenantId }).catch(() => {});
 }
 
+// Permanently delete a tenant account. Cancels any Stripe subscription, removes
+// the tenant row (every child table cascades), and deletes the owner's login —
+// unless that owner still has another site or is a staff member (we never lock
+// staff out of the admin). Irreversible.
+export async function deleteTenantAccount(tenantId: string): Promise<void> {
+  const c = client();
+  const { data: t } = await c.from("tenants").select("owner_id,business_name").eq("id", tenantId).maybeSingle();
+  if (!t) return;
+  const ownerId = (t as { owner_id?: string | null }).owner_id ?? null;
+
+  // Best-effort: cancel any live subscription immediately so they aren't billed.
+  try {
+    const billing = await getTenantBilling(tenantId);
+    const stripe = getStripe();
+    if (stripe && billing?.stripe_subscription_id) {
+      await stripe.subscriptions.cancel(billing.stripe_subscription_id).catch(() => {});
+    }
+  } catch {
+    // ignore — deletion proceeds regardless of Stripe state
+  }
+
+  // Delete the tenant; FK cascades wipe themes, content, catalog, gallery, team,
+  // leads, billing, support tickets, KYC and form submissions.
+  const { error } = await c.from("tenants").delete().eq("id", tenantId);
+  if (error) throw new Error(error.message);
+
+  // Delete the owner's auth login, but only if they own no other site and
+  // aren't staff.
+  if (ownerId) {
+    const { data: others } = await c.from("tenants").select("id").eq("owner_id", ownerId).limit(1);
+    if (!others || others.length === 0) {
+      const { data: u } = await c.auth.admin.getUserById(ownerId);
+      const email = u?.user?.email ?? null;
+      const staff = email ? await isStaff(email) : false;
+      if (!staff) await c.auth.admin.deleteUser(ownerId).catch(() => {});
+    }
+  }
+}
+
 // Find a Supabase auth user id by email, or create the account (so a new client
 // can be linked at site-creation). The owner won't know this password — staff
 // set one from the tenant's "Client login" card afterwards.

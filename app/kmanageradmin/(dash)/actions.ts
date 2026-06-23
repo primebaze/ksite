@@ -1,8 +1,24 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { createTenant, requireStaff, resolveOwnerId, sendOwnerWelcome } from "@/lib/admin";
+import { revalidatePath } from "next/cache";
+import { createTenant, deleteTenantAccount, requireStaff, resolveOwnerId, sendOwnerWelcome } from "@/lib/admin";
 import { isVertical } from "@/lib/verticals";
+
+// Bulk-delete selected accounts from the clients list. Irreversible.
+export async function deleteTenantsAction(formData: FormData) {
+  await requireStaff();
+  const ids = formData.getAll("ids").map(String).filter(Boolean);
+  for (const id of ids) {
+    try {
+      await deleteTenantAccount(id);
+    } catch {
+      // skip a failed row, keep deleting the rest
+    }
+  }
+  revalidatePath("/kmanageradmin");
+  redirect(`/kmanageradmin?deleted=${ids.length}`);
+}
 
 export async function createTenantAction(formData: FormData) {
   await requireStaff();

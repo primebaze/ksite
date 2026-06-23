@@ -5,6 +5,7 @@ import { redirect } from "next/navigation";
 import {
   adminUpdateClientAuth,
   cancelSubscriptionForTenant,
+  deleteTenantAccount,
   deleteCatalogItem,
   deleteGalleryImage,
   deleteTeamMember,
@@ -310,4 +311,22 @@ export async function teamDelete(formData: FormData) {
   const id = String(formData.get("id"));
   await deleteTeamMember(id, String(formData.get("item_id")));
   refresh(id);
+}
+
+// (deleteTenantAction below is imported by the tenant page's Danger zone.)
+// Permanently delete this whole account. Irreversible. Confirmation is enforced
+// in the UI (staff must type the business name); we re-check the typed value
+// here so a stray POST can't delete without it.
+export async function deleteTenantAction(formData: FormData) {
+  await requireStaff();
+  const id = String(formData.get("id"));
+  const site = await getTenantFull(id);
+  if (!site) redirect("/kmanageradmin");
+  const typed = String(formData.get("confirm") ?? "").trim();
+  if (typed !== (site.tenant.business_name ?? "").trim()) {
+    redirect(`/kmanageradmin/${id}?error=${encodeURIComponent("Type the business name exactly to confirm deletion.")}`);
+  }
+  await deleteTenantAccount(id);
+  revalidatePath("/kmanageradmin");
+  redirect("/kmanageradmin?deleted=1");
 }

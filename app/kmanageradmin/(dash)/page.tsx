@@ -2,6 +2,8 @@ import Link from "next/link";
 import { listTenants, getAdminStats, getOpenTicketCount, type TenantListRow } from "@/lib/admin";
 import { SITE_BASE } from "@/lib/marketing";
 import { verticalFor } from "@/lib/verticals";
+import { ConfirmSubmit } from "@/components/ConfirmSubmit";
+import { deleteTenantsAction } from "./actions";
 
 export const dynamic = "force-dynamic";
 
@@ -50,11 +52,18 @@ function liveUrl(t: TenantListRow) {
 const fmtDate = (iso: string) => new Date(iso).toLocaleDateString("en-GB", { day: "numeric", month: "short", year: "numeric" });
 const initialOf = (name: string) => (name.trim()[0] ?? "?").toUpperCase();
 
-export default async function AdminHome() {
+export default async function AdminHome({ searchParams }: { searchParams: Promise<{ deleted?: string }> }) {
+  const { deleted } = await searchParams;
   const [tenants, stats, openTickets] = await Promise.all([listTenants(), getAdminStats(), getOpenTicketCount()]);
+  const deletedCount = deleted ? Number(deleted) : 0;
 
   return (
     <div>
+      {deletedCount > 0 && (
+        <p className="mb-5 rounded-xl border border-ink/10 bg-ink/[0.03] px-4 py-3 text-sm text-ink/70">
+          Deleted {deletedCount} account{deletedCount === 1 ? "" : "s"}.
+        </p>
+      )}
       {/* Header */}
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
@@ -87,9 +96,19 @@ export default async function AdminHome() {
           No clients yet. Create your first one.
         </p>
       ) : (
-        <ul className="mt-4 overflow-hidden rounded-2xl border border-ink/[0.08] bg-ink/[0.02]">
+        <form action={deleteTenantsAction} className="mt-4">
+          <div className="mb-2 flex justify-end">
+            <ConfirmSubmit
+              message="Permanently delete the selected accounts and their logins? This cannot be undone."
+              className="rounded-lg border border-red-500/30 px-3 py-1.5 text-sm font-medium text-red-300 transition hover:bg-red-500/10"
+            >
+              Delete selected
+            </ConfirmSubmit>
+          </div>
+          <ul className="overflow-hidden rounded-2xl border border-ink/[0.08] bg-ink/[0.02]">
           {tenants.map((t) => (
             <li key={t.id} className="flex items-center gap-4 border-b border-ink/[0.06] px-4 py-4 transition last:border-b-0 hover:bg-ink/[0.03] sm:px-5">
+              <input type="checkbox" name="ids" value={t.id} aria-label={`Select ${t.business_name}`} className="size-4 shrink-0 cursor-pointer accent-red-500" />
               <div className="grid size-10 shrink-0 place-items-center rounded-xl bg-ink/[0.06] text-sm font-semibold text-ink/80">
                 {initialOf(t.business_name)}
               </div>
@@ -109,7 +128,8 @@ export default async function AdminHome() {
               </div>
             </li>
           ))}
-        </ul>
+          </ul>
+        </form>
       )}
     </div>
   );
