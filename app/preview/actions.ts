@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import {
+  deleteMyCatalogItem,
   getMyTenantFull,
   updateMyContent,
   updateMyTenant,
@@ -86,6 +87,35 @@ export async function saveInline(changes: Record<string, string>): Promise<{ ok:
 
   if (tenantDirty) await updateMyTenant(tenant as Parameters<typeof updateMyTenant>[0]);
   if (contentDirty) await updateMyContent(content as SiteContent);
+  revalidatePath("/preview");
+  return { ok: true };
+}
+
+// Add a blank catalog item from the in-page editor. It inherits the first
+// item's section/category so it lands in the same list, then the owner edits
+// it inline. Returns ok; the editor reloads to show the new row.
+export async function addInlineItem(): Promise<{ ok: boolean }> {
+  const site = await getMyTenantFull();
+  if (!site) return { ok: false };
+  const first = site.catalog[0];
+  const maxSort = site.catalog.reduce((m, c) => Math.max(m, c.sort_order ?? 0), 0);
+  await upsertMyCatalogItem({
+    name: "New item",
+    description: "Add a short description",
+    price: "",
+    section: first?.section ?? null,
+    category: first?.category ?? null,
+    sort_order: maxSort + 1,
+  });
+  revalidatePath("/preview");
+  return { ok: true };
+}
+
+// Delete a catalog item from the in-page editor. RLS scopes the delete to the
+// owner's own tenant, so a stray id can't touch another site.
+export async function deleteInlineItem(id: string): Promise<{ ok: boolean }> {
+  if (!id) return { ok: false };
+  await deleteMyCatalogItem(id);
   revalidatePath("/preview");
   return { ok: true };
 }

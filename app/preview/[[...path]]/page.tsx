@@ -4,7 +4,7 @@ import { getMyTenantFull } from "@/lib/my-site";
 import { getPresetComponent } from "@/presets";
 import { InlineEditor } from "@/components/InlineEditor";
 import { pageFromPath } from "@/lib/site-pages";
-import { saveInline } from "../actions";
+import { saveInline, addInlineItem, deleteInlineItem } from "../actions";
 
 export const dynamic = "force-dynamic";
 export const metadata: import("next").Metadata = { robots: { index: false, follow: false } };
@@ -39,6 +39,8 @@ export default async function PreviewPage({
   return (
     <InlineEditor
       save={saveInline}
+      addItem={addInlineItem}
+      deleteItem={deleteInlineItem}
       design={{
         style: site.content.style,
         primary: site.theme.primary_color || "#141414",

@@ -14,10 +14,16 @@ export function InlineEditor({
   children,
   save,
   design,
+  addItem,
+  deleteItem,
 }: {
   children: ReactNode;
   save: (changes: Record<string, string>) => Promise<{ ok: boolean }>;
   design?: DesignProps;
+  /** Add a blank catalog item (lessons/services/menu) and reload. */
+  addItem?: () => Promise<{ ok: boolean }>;
+  /** Delete a catalog item by id and reload. */
+  deleteItem?: (id: string) => Promise<{ ok: boolean }>;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const fileRef = useRef<HTMLInputElement>(null);
@@ -25,6 +31,8 @@ export function InlineEditor({
   const [status, setStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
   const [designOpen, setDesignOpen] = useState(false);
   const [uploadingImg, setUploadingImg] = useState(false);
+  const [hasCatalog, setHasCatalog] = useState(false);
+  const [busy, setBusy] = useState(false);
 
   const flash = (s: "saved" | "error") => {
     setStatus(s);
@@ -34,6 +42,17 @@ export function InlineEditor({
   const pickImage = (field: string) => {
     fieldRef.current = field;
     fileRef.current?.click();
+  };
+
+  const onAddItem = async () => {
+    if (!addItem || busy) return;
+    setBusy(true);
+    const res = await addItem();
+    if (res.ok) window.location.reload();
+    else {
+      setBusy(false);
+      window.alert("Couldn’t add an item. Please try again.");
+    }
   };
 
   useEffect(() => {
@@ -97,8 +116,52 @@ export function InlineEditor({
       cleanups.push(() => el.removeEventListener("click", onClick));
     }
 
+    // --- catalog items: a delete control per row (and detect that this page
+    // has a list, so the dock can show "Add item"). Every design names items
+    // with data-edit="item:<id>:name", so we anchor off that.
+    let itemCount = 0;
+    if (deleteItem) {
+      const seen = new Set<string>();
+      for (const el of Array.from(root.querySelectorAll<HTMLElement>("[data-edit]"))) {
+        const m = /^item:([^:]+):name$/.exec(el.getAttribute("data-edit") || "");
+        if (!m) continue;
+        const id = m[1];
+        if (seen.has(id)) continue;
+        seen.add(id);
+        const row = (el.closest("li,tr") as HTMLElement | null) ?? el.parentElement;
+        if (!row) continue;
+        if (getComputedStyle(row).position === "static") row.style.position = "relative";
+        const del = document.createElement("button");
+        del.type = "button";
+        del.title = "Delete this item";
+        del.setAttribute("aria-label", "Delete this item");
+        del.textContent = "✕";
+        del.style.cssText =
+          "position:absolute;top:-8px;right:-8px;z-index:60;width:24px;height:24px;display:flex;align-items:center;justify-content:center;border-radius:9999px;background:#dc2626;color:#fff;font-size:12px;line-height:1;border:2px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.35);cursor:pointer;";
+        const onDel = async (ev: Event) => {
+          ev.preventDefault();
+          ev.stopPropagation();
+          if (!window.confirm("Delete this item? This can’t be undone.")) return;
+          del.disabled = true;
+          del.style.opacity = "0.5";
+          const res = await deleteItem(id);
+          if (res.ok) window.location.reload();
+          else {
+            del.disabled = false;
+            del.style.opacity = "1";
+            window.alert("Couldn’t delete that. Please try again.");
+          }
+        };
+        del.addEventListener("click", onDel);
+        row.appendChild(del);
+        cleanups.push(() => del.remove());
+      }
+      itemCount = seen.size;
+    }
+    setHasCatalog(itemCount > 0);
+
     return () => cleanups.forEach((c) => c());
-  }, [save]);
+  }, [save, deleteItem]);
 
   const onFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const input = e.currentTarget;
@@ -193,6 +256,17 @@ export function InlineEditor({
           >
             <span aria-hidden>🖼️</span> Photo
           </button>
+
+          {hasCatalog && addItem && (
+            <button
+              type="button"
+              onClick={onAddItem}
+              disabled={busy}
+              className="flex shrink-0 items-center gap-1.5 rounded-full border border-white/20 px-3 py-1.5 font-medium text-white transition hover:bg-white/10 disabled:opacity-60"
+            >
+              <span aria-hidden>＋</span> {busy ? "Adding…" : "Add item"}
+            </button>
+          )}
 
           <a href="/dashboard" data-tour="done" className="shrink-0 rounded-full bg-white px-4 py-1.5 font-semibold text-black transition hover:bg-white/90">Done</a>
         </div>
