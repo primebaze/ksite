@@ -151,13 +151,13 @@ export default function LarderDesign({ site, page = "home", basePath = "" }: Pre
                   <div key={section.section} className={si > 0 ? "mt-20" : ""}>
                     {section.section && (
                       <div className="mb-8 flex items-baseline gap-5">
-                        <h2 style={display} className="text-2xl font-normal tracking-wide">{section.section}</h2>
+                        <h2 data-edit={`section:${section.categories[0]?.items[0]?.id ?? ""}`} style={display} className="text-2xl font-normal tracking-wide">{section.section}</h2>
                         <span className="h-px flex-1" style={{ background: `${INK}26` }} aria-hidden />
                       </div>
                     )}
                     {section.categories.map((catg) => (
                       <div key={catg.category ?? "_"} className="mb-10">
-                        {catg.category && <p className="mb-3 text-[10px] font-medium uppercase tracking-[0.28em]" style={{ color: SAGE }}>{catg.category}</p>}
+                        {catg.category && <p data-edit={`category:${catg.items[0]?.id ?? ""}`} className="mb-3 text-[10px] font-medium uppercase tracking-[0.28em]" style={{ color: SAGE }}>{catg.category}</p>}
                         <ul className="divide-y" style={{ borderColor: `${INK}1f` }}>
                           {catg.items.map((item) => (
                             <li key={item.id} className="flex items-baseline justify-between gap-8 py-5">

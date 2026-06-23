@@ -173,12 +173,12 @@ export default function PulpDesign({ site, page = "home", basePath = "" }: Prese
                   <div key={section.section} className="break-inside-avoid">
                     {section.section && (
                       <div className="mb-5">
-                        <span style={{ ...display, background: TINTS[si % TINTS.length], color: "#fff" }} className="inline-block rounded-full px-5 py-1.5 text-lg font-bold">{section.section}</span>
+                        <span data-edit={`section:${section.categories[0]?.items[0]?.id ?? ""}`} style={{ ...display, background: TINTS[si % TINTS.length], color: "#fff" }} className="inline-block rounded-full px-5 py-1.5 text-lg font-bold">{section.section}</span>
                       </div>
                     )}
                     {section.categories.map((catg) => (
                       <div key={catg.category ?? "_"} className="mb-6">
-                        {catg.category && <p className="mb-2 text-xs font-extrabold uppercase tracking-[0.16em]" style={{ color: PINK }}>{catg.category}</p>}
+                        {catg.category && <p data-edit={`category:${catg.items[0]?.id ?? ""}`} className="mb-2 text-xs font-extrabold uppercase tracking-[0.16em]" style={{ color: PINK }}>{catg.category}</p>}
                         <ul className="divide-y" style={{ borderColor: `${INK}1f` }}>
                           {catg.items.map((item) => (
                             <li key={item.id} className="flex items-baseline justify-between gap-8 py-5">

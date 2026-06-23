@@ -169,12 +169,12 @@ export default function BotanicaDesign({ site, page = "home", basePath = "" }: P
                     {section.section && (
                       <div className="mb-9 text-center">
                         <span className="mx-auto mb-3 block h-px w-10" style={{ background: GOLD }} />
-                        <h3 style={{ ...serif, color: GREEN }} className="text-2xl sm:text-3xl">{section.section}</h3>
+                        <h3 data-edit={`section:${section.categories[0]?.items[0]?.id ?? ""}`} style={{ ...serif, color: GREEN }} className="text-2xl sm:text-3xl">{section.section}</h3>
                       </div>
                     )}
                     {section.categories.map((catg) => (
                       <div key={catg.category ?? "_"} className="mb-8 last:mb-0">
-                        {catg.category && <p className="mb-4 text-center text-[11px] font-semibold uppercase tracking-[0.28em]" style={{ color: GOLD }}>{catg.category}</p>}
+                        {catg.category && <p data-edit={`category:${catg.items[0]?.id ?? ""}`} className="mb-4 text-center text-[11px] font-semibold uppercase tracking-[0.28em]" style={{ color: GOLD }}>{catg.category}</p>}
                         <ul className="divide-y" style={{ borderColor: "rgba(13,59,46,0.25)" }}>
                           {catg.items.map((item) => (
                             <li key={item.id} className="flex items-baseline justify-between gap-8 py-5">

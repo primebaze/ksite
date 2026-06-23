@@ -186,13 +186,13 @@ export default function ComptoirDesign({ site, page = "home", basePath = "" }: P
                     <div key={section.section} className="break-inside-avoid">
                       {section.section && (
                         <div className="mb-7 text-center">
-                          <h2 style={serif} className="text-3xl">{section.section}</h2>
+                          <h2 data-edit={`section:${section.categories[0]?.items[0]?.id ?? ""}`} style={serif} className="text-3xl">{section.section}</h2>
                           <div className="mt-3"><Fleuron /></div>
                         </div>
                       )}
                       {section.categories.map((catg) => (
                         <div key={catg.category ?? "_"} className="mb-9">
-                          {catg.category && <p className="mb-4 text-center text-[11px] font-semibold uppercase tracking-[0.26em]" style={{ color: RED }}>{catg.category}</p>}
+                          {catg.category && <p data-edit={`category:${catg.items[0]?.id ?? ""}`} className="mb-4 text-center text-[11px] font-semibold uppercase tracking-[0.26em]" style={{ color: RED }}>{catg.category}</p>}
                           <ul className="divide-y" style={{ borderColor: `${BRASS}33` }}>
                             {catg.items.map((item) => (
                               <li key={item.id} className="flex items-baseline justify-between gap-6 py-5">

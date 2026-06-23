@@ -129,7 +129,7 @@ export default function EmberDesign({ site, page = "home", basePath = "" }: Pres
             <div className="grid items-start gap-x-16 gap-y-14 md:grid-cols-2">
               {groups.map((section) => (
                 <div key={section.section} className="break-inside-avoid">
-                  {section.section && <h3 style={serif} className="mb-5 border-b border-neutral-200 pb-3 text-lg uppercase tracking-[0.16em]">{section.section}</h3>}
+                  {section.section && <h3 data-edit={`section:${section.categories[0]?.items[0]?.id ?? ""}`} style={serif} className="mb-5 border-b border-neutral-200 pb-3 text-lg uppercase tracking-[0.16em]">{section.section}</h3>}
                   {section.categories.map((catg) => (
                     <ul key={catg.category ?? "_"} className="divide-y" style={{ borderColor: `${NAVY}1f` }}>
                       {catg.items.map((item) => (

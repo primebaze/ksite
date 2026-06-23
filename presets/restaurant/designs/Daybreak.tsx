@@ -159,12 +159,12 @@ export default function DaybreakDesign({ site, page = "home", basePath = "" }: P
                   {groups.map((section) => (
                     <div key={section.section} className="break-inside-avoid rounded-[1.5rem] bg-white p-8 shadow-[0_14px_44px_-26px_rgba(0,0,0,0.32)]">
                       {section.section && (
-                        <h2 style={{ ...serif, color: GREEN }} className="text-2xl font-semibold">{section.section}</h2>
+                        <h2 data-edit={`section:${section.categories[0]?.items[0]?.id ?? ""}`} style={{ ...serif, color: GREEN }} className="text-2xl font-semibold">{section.section}</h2>
                       )}
                       <div className="mt-1 h-1 w-12 rounded-full" style={{ background: TOMATO }} />
                       {section.categories.map((catg) => (
                         <div key={catg.category ?? "_"} className="mt-6 first:mt-5">
-                          {catg.category && <h3 className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-neutral-400">{catg.category}</h3>}
+                          {catg.category && <h3 data-edit={`category:${catg.items[0]?.id ?? ""}`} className="mb-3 text-xs font-semibold uppercase tracking-[0.2em] text-neutral-400">{catg.category}</h3>}
                           <ul className="space-y-4">
                             {catg.items.map((item) => (
                               <li key={item.id}>

@@ -151,13 +151,13 @@ export default function MarbleDesign({ site, page = "home", basePath = "" }: Pre
                 {groups.map((section) => (
                   <div key={section.section}>
                     {section.section && (
-                      <h2 className="mb-10 text-center text-3xl uppercase tracking-[0.14em] sm:text-4xl" style={{ ...serif, color: GOLD }}>
+                      <h2 data-edit={`section:${section.categories[0]?.items[0]?.id ?? ""}`} className="mb-10 text-center text-3xl uppercase tracking-[0.14em] sm:text-4xl" style={{ ...serif, color: GOLD }}>
                         {section.section}
                       </h2>
                     )}
                     {section.categories.map((catg) => (
                       <div key={catg.category ?? "_"} className="mb-12 last:mb-0">
-                        {catg.category && <p className="mb-6 text-center text-xs font-semibold uppercase tracking-[0.3em] text-[#efe8db]/45">{catg.category}</p>}
+                        {catg.category && <p data-edit={`category:${catg.items[0]?.id ?? ""}`} className="mb-6 text-center text-xs font-semibold uppercase tracking-[0.3em] text-[#efe8db]/45">{catg.category}</p>}
                         <ul className="space-y-10">
                           {catg.items.map((item) => (
                             <li key={item.id} className="text-center">

@@ -157,13 +157,13 @@ export default function DriftDesign({ site, page = "home", basePath = "" }: Pres
                 <div key={section.section}>
                   {section.section && (
                     <div className="mb-8 flex items-center gap-4">
-                      <h2 className="text-2xl font-semibold sm:text-3xl">{section.section}</h2>
+                      <h2 data-edit={`section:${section.categories[0]?.items[0]?.id ?? ""}`} className="text-2xl font-semibold sm:text-3xl">{section.section}</h2>
                       <span className="h-px flex-1" style={{ background: "#e6e6e2" }} />
                     </div>
                   )}
                   {section.categories.map((catg) => (
                     <div key={catg.category ?? "_"} className="mt-6">
-                      {catg.category && <p className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-neutral-400">{catg.category}</p>}
+                      {catg.category && <p data-edit={`category:${catg.items[0]?.id ?? ""}`} className="mb-4 text-xs font-semibold uppercase tracking-[0.2em] text-neutral-400">{catg.category}</p>}
                       <div className="grid gap-5 sm:grid-cols-2">
                         {catg.items.map((item) => (
                           <div

@@ -160,7 +160,7 @@ export default function Flow({ site, page = "home", basePath = "" }: PresetProps
               {groups.map((section, gi) => (
                 <div key={section.section || gi}>
                   {section.section && (
-                    <p className="mb-7 flex items-center gap-4 text-[11px] uppercase tracking-[0.3em]" style={{ color: CLAY }}>
+                    <p data-edit={`section:${section.categories[0]?.items[0]?.id ?? ""}`} className="mb-7 flex items-center gap-4 text-[11px] uppercase tracking-[0.3em]" style={{ color: CLAY }}>
                       <span className="h-px w-8" style={{ background: `${CLAY}66` }} />{section.section}<span className="h-px flex-1" style={{ background: `${SAGE}22` }} />
                     </p>
                   )}

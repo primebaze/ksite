@@ -197,12 +197,12 @@ export default function ReverieDesign({ site, page = "home", basePath = "" }: Pr
               {groups.map((section, gi) => (
                 <div key={section.section || gi}>
                   {section.section && (
-                    <h2 style={{ ...display, color: PLUM }} className="mb-6 text-2xl tracking-[-0.01em]">{section.section}</h2>
+                    <h2 data-edit={`section:${section.categories[0]?.items[0]?.id ?? ""}`} style={{ ...display, color: PLUM }} className="mb-6 text-2xl tracking-[-0.01em]">{section.section}</h2>
                   )}
                   {section.categories.map((catg) => (
                     <div key={catg.category ?? "_"} className={section.categories.length > 1 ? "mt-8" : ""}>
                       {catg.category && (
-                        <p className="mb-3 text-[11px] uppercase tracking-[0.28em]" style={{ color: GOLD }}>{catg.category}</p>
+                        <p data-edit={`category:${catg.items[0]?.id ?? ""}`} className="mb-3 text-[11px] uppercase tracking-[0.28em]" style={{ color: GOLD }}>{catg.category}</p>
                       )}
                       <ul className="divide-y" style={{ borderColor: LINE }}>
                         {catg.items.map((item) => (

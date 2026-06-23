@@ -203,13 +203,13 @@ export default function DecantDesign({ site, page = "home", basePath = "" }: Pre
                 <div key={section.section} className="break-inside-avoid">
                   {section.section && (
                     <div className="mb-7 flex items-baseline gap-5">
-                      <h2 style={{ ...display, color: OAT }} className="text-2xl font-medium tracking-tight sm:text-3xl">{section.section}</h2>
+                      <h2 data-edit={`section:${section.categories[0]?.items[0]?.id ?? ""}`} style={{ ...display, color: OAT }} className="text-2xl font-medium tracking-tight sm:text-3xl">{section.section}</h2>
                       <span className="h-px flex-1" style={{ background: `${AMBER}55` }} />
                     </div>
                   )}
                   {section.categories.map((catg) => (
                     <div key={catg.category ?? "_"} className="mb-9 last:mb-0">
-                      {catg.category && <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.26em]" style={{ color: AMBER }}>{catg.category}</p>}
+                      {catg.category && <p data-edit={`category:${catg.items[0]?.id ?? ""}`} className="mb-3 text-[11px] font-semibold uppercase tracking-[0.26em]" style={{ color: AMBER }}>{catg.category}</p>}
                       <ul className="divide-y" style={{ borderColor: `${OAT}1f` }}>
                         {catg.items.map((item) => (
                           <li key={item.id} className="flex items-baseline justify-between gap-8 py-5">

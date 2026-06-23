@@ -145,10 +145,10 @@ export default function LacquerDesign({ site, page = "home", basePath = "" }: Pr
               <div className="space-y-16">
                 {groups.map((section) => (
                   <div key={section.section}>
-                    {section.section && <h3 className="mb-6 text-center text-xl uppercase tracking-[0.2em]" style={{ ...serif, color: GOLD }}>{section.section}</h3>}
+                    {section.section && <h3 data-edit={`section:${section.categories[0]?.items[0]?.id ?? ""}`} className="mb-6 text-center text-xl uppercase tracking-[0.2em]" style={{ ...serif, color: GOLD }}>{section.section}</h3>}
                     {section.categories.map((catg) => (
                       <div key={catg.category ?? "_"} className="mb-8">
-                        {catg.category && <p className="mb-4 text-center text-[11px] font-semibold uppercase tracking-[0.28em] text-white/45">{catg.category}</p>}
+                        {catg.category && <p data-edit={`category:${catg.items[0]?.id ?? ""}`} className="mb-4 text-center text-[11px] font-semibold uppercase tracking-[0.28em] text-white/45">{catg.category}</p>}
                         <ul className="divide-y" style={{ borderColor: "rgba(255,255,255,0.08)" }}>
                           {catg.items.map((item) => (
                             <li key={item.id} className="flex items-baseline justify-between gap-8 py-5">

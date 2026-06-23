@@ -183,13 +183,13 @@ export default function TavernDesign({ site, page = "home", basePath = "" }: Pre
                     <div key={section.section} className="break-inside-avoid">
                       {section.section && (
                         <div className="mb-5">
-                          <h3 className="text-2xl font-semibold italic" style={{ ...display, color: BURGUNDY }}>{section.section}</h3>
+                          <h3 data-edit={`section:${section.categories[0]?.items[0]?.id ?? ""}`} className="text-2xl font-semibold italic" style={{ ...display, color: BURGUNDY }}>{section.section}</h3>
                           <span className="mt-2 block h-px w-full" style={{ background: "rgba(176,141,46,0.5)" }} />
                         </div>
                       )}
                       {section.categories.map((catg) => (
                         <div key={catg.category ?? "_"} className="mb-7">
-                          {catg.category && <p className="mb-2.5 text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: BRASS }}>{catg.category}</p>}
+                          {catg.category && <p data-edit={`category:${catg.items[0]?.id ?? ""}`} className="mb-2.5 text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: BRASS }}>{catg.category}</p>}
                           <ul className="divide-y" style={{ borderColor: "rgba(58,42,28,0.18)" }}>
                             {catg.items.map((item) => (
                               <li key={item.id} className="flex items-baseline justify-between gap-8 py-4">

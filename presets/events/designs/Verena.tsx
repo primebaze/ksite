@@ -151,10 +151,10 @@ export default function Verena({ site, page = "home", basePath = "" }: PresetPro
             <>
               {groups.map((section, gi) => (
                 <div key={section.section || gi} className={gi > 0 ? "mt-16" : ""}>
-                  {section.section && <h2 style={{ ...serif, color: INK }} className="text-center text-3xl">{section.section}</h2>}
+                  {section.section && <h2 data-edit={`section:${section.categories[0]?.items[0]?.id ?? ""}`} style={{ ...serif, color: INK }} className="text-center text-3xl">{section.section}</h2>}
                   {section.categories.map((catg) => (
                     <div key={catg.category ?? "_"} className="mt-8">
-                      {catg.category && <p className="mb-4 text-center text-[11px] font-semibold uppercase tracking-[0.24em]" style={{ color: GOLD }}>{catg.category}</p>}
+                      {catg.category && <p data-edit={`category:${catg.items[0]?.id ?? ""}`} className="mb-4 text-center text-[11px] font-semibold uppercase tracking-[0.24em]" style={{ color: GOLD }}>{catg.category}</p>}
                       <ul className="divide-y" style={{ borderColor: LINE }}>
                         {catg.items.map((item) => (
                           <li key={item.id} className="flex items-baseline justify-between gap-8 py-5">

@@ -176,12 +176,12 @@ export default function StackDesign({ site, page = "home", basePath = "" }: Pres
                     <div key={section.section} className="break-inside-avoid">
                       {section.section && (
                         <div className="mb-6">
-                          <span style={{ ...display, background: CHARCOAL, color: MUSTARD }} className="inline-block border-[3px] px-4 py-1.5 text-2xl font-black uppercase tracking-tight shadow-[5px_5px_0_0_#D62828]" >{section.section}</span>
+                          <span data-edit={`section:${section.categories[0]?.items[0]?.id ?? ""}`} style={{ ...display, background: CHARCOAL, color: MUSTARD }} className="inline-block border-[3px] px-4 py-1.5 text-2xl font-black uppercase tracking-tight shadow-[5px_5px_0_0_#D62828]" >{section.section}</span>
                         </div>
                       )}
                       {section.categories.map((catg) => (
                         <div key={catg.category ?? "_"} className="mb-8">
-                          {catg.category && <p className="mb-2 text-xs font-black uppercase tracking-[0.18em]" style={{ color: KETCHUP }}>{catg.category}</p>}
+                          {catg.category && <p data-edit={`category:${catg.items[0]?.id ?? ""}`} className="mb-2 text-xs font-black uppercase tracking-[0.18em]" style={{ color: KETCHUP }}>{catg.category}</p>}
                           <ul className="divide-y-[2px]" style={{ borderColor: CHARCOAL }}>
                             {catg.items.map((item) => {
                               counter += 1;

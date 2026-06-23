@@ -212,12 +212,12 @@ export default function CurbsideDesign({ site, page = "home", basePath = "" }: P
                       <div key={section.section} className="break-inside-avoid">
                         {section.section && (
                           <div className="mb-6">
-                            <span style={{ ...display, background: STICKER_TINTS[si % STICKER_TINTS.length], color: ASPHALT, borderColor: ASPHALT }} className="inline-block -rotate-1 border-[3px] px-4 py-1.5 text-2xl font-black uppercase tracking-tight shadow-[4px_4px_0_0_#1B1B1D]">{section.section}</span>
+                            <span data-edit={`section:${section.categories[0]?.items[0]?.id ?? ""}`} style={{ ...display, background: STICKER_TINTS[si % STICKER_TINTS.length], color: ASPHALT, borderColor: ASPHALT }} className="inline-block -rotate-1 border-[3px] px-4 py-1.5 text-2xl font-black uppercase tracking-tight shadow-[4px_4px_0_0_#1B1B1D]">{section.section}</span>
                           </div>
                         )}
                         {section.categories.map((catg) => (
                           <div key={catg.category ?? "_"} className="mb-8">
-                            {catg.category && <p className="mb-2 text-xs font-black uppercase tracking-[0.18em]" style={{ color: TEAL }}>{catg.category}</p>}
+                            {catg.category && <p data-edit={`category:${catg.items[0]?.id ?? ""}`} className="mb-2 text-xs font-black uppercase tracking-[0.18em]" style={{ color: TEAL }}>{catg.category}</p>}
                             <ul className="divide-y-[2.5px]" style={{ borderColor: ASPHALT }}>
                               {catg.items.map((item) => (
                                 <li key={item.id} className="flex items-baseline gap-5 py-5">

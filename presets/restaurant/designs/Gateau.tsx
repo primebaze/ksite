@@ -160,13 +160,13 @@ export default function GateauDesign({ site, page = "home", basePath = "" }: Pre
                     <div key={section.section} className="break-inside-avoid">
                       {section.section && (
                         <div className="text-center">
-                          <h2 style={display} className="text-2xl font-normal italic lowercase tracking-[0.04em] text-[color:#3B2C28]">{section.section}</h2>
+                          <h2 data-edit={`section:${section.categories[0]?.items[0]?.id ?? ""}`} style={display} className="text-2xl font-normal italic lowercase tracking-[0.04em] text-[color:#3B2C28]">{section.section}</h2>
                           <Scallop className="mx-auto mt-3" color={ROSE} />
                         </div>
                       )}
                       {section.categories.map((catg) => (
                         <div key={catg.category ?? "_"} className="mt-8">
-                          {catg.category && <p className="mb-3 text-center text-[10px] font-medium uppercase tracking-[0.3em] text-[color:#3B2C28]/45">{catg.category}</p>}
+                          {catg.category && <p data-edit={`category:${catg.items[0]?.id ?? ""}`} className="mb-3 text-center text-[10px] font-medium uppercase tracking-[0.3em] text-[color:#3B2C28]/45">{catg.category}</p>}
                           <ul className="divide-y" style={{ borderColor: `${GOLD}33` }}>
                             {catg.items.map((item) => (
                               <li key={item.id} className="flex items-baseline justify-between gap-8 py-5">

@@ -218,10 +218,10 @@ export default function MilestoneDesign({ site, page = "home", basePath = "" }: 
       <div className="space-y-12">
         {groups.map((section, gi) => (
           <div key={section.section || gi}>
-            {section.section && <h2 style={{ ...display, color: NAVY }} className="text-2xl font-semibold">{section.section}</h2>}
+            {section.section && <h2 data-edit={`section:${section.categories[0]?.items[0]?.id ?? ""}`} style={{ ...display, color: NAVY }} className="text-2xl font-semibold">{section.section}</h2>}
             {section.categories.map((catg) => (
               <div key={catg.category ?? "_"} className="mt-4">
-                {catg.category && <p className="mb-2 text-xs font-semibold uppercase tracking-[0.16em]" style={{ color: CORAL_DK }}>{catg.category}</p>}
+                {catg.category && <p data-edit={`category:${catg.items[0]?.id ?? ""}`} className="mb-2 text-xs font-semibold uppercase tracking-[0.16em]" style={{ color: CORAL_DK }}>{catg.category}</p>}
                 <ul className="divide-y" style={{ borderColor: `${NAVY}12` }}>
                   {catg.items.map((item) => (
                     <li key={item.id} className="flex items-baseline justify-between gap-6 py-5">

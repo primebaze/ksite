@@ -151,13 +151,13 @@ export default function Hollow({ site, page = "home", basePath = "" }: PresetPro
               {groups.map((section, gi) => (
                 <div key={section.section || gi}>
                   {section.section && (
-                    <p className="mb-6 flex items-center justify-center gap-4 text-center text-[11px] uppercase tracking-[0.3em]" style={{ color: SAND }}>
+                    <p data-edit={`section:${section.categories[0]?.items[0]?.id ?? ""}`} className="mb-6 flex items-center justify-center gap-4 text-center text-[11px] uppercase tracking-[0.3em]" style={{ color: SAND }}>
                       <span className="h-px w-8" style={{ background: `${SAND}66` }} />{section.section}<span className="h-px w-8" style={{ background: `${SAND}66` }} />
                     </p>
                   )}
                   {section.categories.map((catg) => (
                     <div key={catg.category ?? "_"} className="mt-6">
-                      {catg.category && <p className="mb-2 text-[11px] font-semibold uppercase tracking-[0.2em]" style={{ color: SAGE }}>{catg.category}</p>}
+                      {catg.category && <p data-edit={`category:${catg.items[0]?.id ?? ""}`} className="mb-2 text-[11px] font-semibold uppercase tracking-[0.2em]" style={{ color: SAGE }}>{catg.category}</p>}
                       <ul className="divide-y" style={{ borderColor: HAIR }}>
                         {catg.items.map((item) => (
                           <li key={item.id} className="flex items-baseline justify-between gap-8 py-5">

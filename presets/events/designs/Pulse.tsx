@@ -145,10 +145,10 @@ export default function Pulse({ site, page = "home", basePath = "" }: PresetProp
             <>
               {groups.map((section, gi) => (
                 <div key={section.section || gi} className={gi > 0 ? "mt-16" : ""}>
-                  {section.section && <h2 style={{ ...display, color: TEXT }} className="text-2xl font-extrabold uppercase tracking-tight">{section.section}</h2>}
+                  {section.section && <h2 data-edit={`section:${section.categories[0]?.items[0]?.id ?? ""}`} style={{ ...display, color: TEXT }} className="text-2xl font-extrabold uppercase tracking-tight">{section.section}</h2>}
                   {section.categories.map((catg) => (
                     <div key={catg.category ?? "_"} className="mt-6">
-                      {catg.category && <p className="mb-3 text-[11px] font-bold uppercase tracking-[0.24em]" style={{ color: CYAN }}>{catg.category}</p>}
+                      {catg.category && <p data-edit={`category:${catg.items[0]?.id ?? ""}`} className="mb-3 text-[11px] font-bold uppercase tracking-[0.24em]" style={{ color: CYAN }}>{catg.category}</p>}
                       <ul className="divide-y" style={{ borderColor: "#ffffff1f" }}>
                         {catg.items.map((item) => (
                           <li key={item.id} className="flex items-baseline justify-between gap-8 py-5">

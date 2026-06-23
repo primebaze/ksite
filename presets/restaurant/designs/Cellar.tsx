@@ -154,13 +154,13 @@ export default function CellarDesign({ site, page = "home", basePath = "" }: Pre
                   <div key={section.section} className="break-inside-avoid">
                     {section.section && (
                       <div className="mb-7 flex items-baseline gap-5">
-                        <h2 style={{ ...serif, color: OAT }} className="text-2xl font-normal tracking-tight sm:text-3xl">{section.section}</h2>
+                        <h2 data-edit={`section:${section.categories[0]?.items[0]?.id ?? ""}`} style={{ ...serif, color: OAT }} className="text-2xl font-normal tracking-tight sm:text-3xl">{section.section}</h2>
                         <span className="h-px flex-1" style={{ background: `${GOLD}55` }} />
                       </div>
                     )}
                     {section.categories.map((catg) => (
                       <div key={catg.category ?? "_"} className="mb-9 last:mb-0">
-                        {catg.category && <p className="mb-3 text-[10px] font-medium uppercase tracking-[0.3em]" style={{ color: ROSE }}>{catg.category}</p>}
+                        {catg.category && <p data-edit={`category:${catg.items[0]?.id ?? ""}`} className="mb-3 text-[10px] font-medium uppercase tracking-[0.3em]" style={{ color: ROSE }}>{catg.category}</p>}
                         <ul className="divide-y" style={{ borderColor: `${OAT}1f` }}>
                           {catg.items.map((item) => (
                             <li key={item.id} className="flex items-baseline justify-between gap-8 py-5">

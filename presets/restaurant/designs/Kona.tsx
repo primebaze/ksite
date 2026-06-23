@@ -197,12 +197,12 @@ export default function KonaDesign({ site, page = "home", basePath = "" }: Prese
                     {section.section && (
                       <div className="mb-5 flex items-center gap-3">
                         <span aria-hidden className="h-3 w-3 rounded-full" style={{ background: CORAL }} />
-                        <span style={{ ...display, color: NAVY }} className="text-2xl font-semibold">{section.section}</span>
+                        <span data-edit={`section:${section.categories[0]?.items[0]?.id ?? ""}`} style={{ ...display, color: NAVY }} className="text-2xl font-semibold">{section.section}</span>
                       </div>
                     )}
                     {section.categories.map((catg) => (
                       <div key={catg.category ?? "_"} className="mb-6">
-                        {catg.category && <p className="mb-2 text-xs font-bold uppercase tracking-[0.16em]" style={{ color: TEAL }}>{catg.category}</p>}
+                        {catg.category && <p data-edit={`category:${catg.items[0]?.id ?? ""}`} className="mb-2 text-xs font-bold uppercase tracking-[0.16em]" style={{ color: TEAL }}>{catg.category}</p>}
                         <ul className="divide-y" style={{ borderColor: `${NAVY}1f` }}>
                           {catg.items.map((item) => {
                             const tags = itemTags(item);

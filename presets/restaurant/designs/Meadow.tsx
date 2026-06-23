@@ -150,12 +150,12 @@ export default function MeadowDesign({ site, page = "home", basePath = "" }: Pre
                   <div key={section.section} className="break-inside-avoid">
                     {section.section && (
                       <div className="mb-5">
-                        <span style={{ ...display, background: MINT, color: INK }} className="inline-block rounded-full px-4 py-1.5 text-lg font-semibold">{section.section}</span>
+                        <span data-edit={`section:${section.categories[0]?.items[0]?.id ?? ""}`} style={{ ...display, background: MINT, color: INK }} className="inline-block rounded-full px-4 py-1.5 text-lg font-semibold">{section.section}</span>
                       </div>
                     )}
                     {section.categories.map((catg) => (
                       <div key={catg.category ?? "_"} className="mb-6">
-                        {catg.category && <p className="mb-2 text-xs font-bold uppercase tracking-[0.16em] text-neutral-400">{catg.category}</p>}
+                        {catg.category && <p data-edit={`category:${catg.items[0]?.id ?? ""}`} className="mb-2 text-xs font-bold uppercase tracking-[0.16em] text-neutral-400">{catg.category}</p>}
                         <ul className="divide-y" style={{ borderColor: `${INK}1f` }}>
                           {catg.items.map((item) => (
                             <li key={item.id} className="flex items-baseline justify-between gap-8 py-5">

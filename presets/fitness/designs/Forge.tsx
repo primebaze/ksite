@@ -165,7 +165,7 @@ export default function Forge({ site, page = "home", basePath = "" }: PresetProp
                 <div key={section.section || gi}>
                   {section.section && (
                     <h2 style={display} className="mb-7 text-2xl font-black uppercase tracking-[-0.01em]" >
-                      <span style={{ color: TEXT }}>{section.section}</span>
+                      <span data-edit={`section:${section.categories[0]?.items[0]?.id ?? ""}`} style={{ color: TEXT }}>{section.section}</span>
                     </h2>
                   )}
                   <div className="grid gap-4 md:grid-cols-2">

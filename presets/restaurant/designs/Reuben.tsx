@@ -174,13 +174,13 @@ export default function ReubenDesign({ site, page = "home", basePath = "" }: Pre
                       <div key={section.section} className="break-inside-avoid">
                         {section.section && (
                           <div className="mb-5 flex items-center gap-3">
-                            <span style={{ ...display, color: INK }} className="text-2xl font-bold uppercase tracking-tight">{section.section}</span>
+                            <span data-edit={`section:${section.categories[0]?.items[0]?.id ?? ""}`} style={{ ...display, color: INK }} className="text-2xl font-bold uppercase tracking-tight">{section.section}</span>
                             <span className="h-[3px] flex-1" style={{ background: DELI }} />
                           </div>
                         )}
                         {section.categories.map((catg) => (
                           <div key={catg.category ?? "_"} className="mb-7">
-                            {catg.category && <p className="mb-2 text-xs font-bold uppercase tracking-[0.18em]" style={{ color: BRICK }}>{catg.category}</p>}
+                            {catg.category && <p data-edit={`category:${catg.items[0]?.id ?? ""}`} className="mb-2 text-xs font-bold uppercase tracking-[0.18em]" style={{ color: BRICK }}>{catg.category}</p>}
                             <ul className="divide-y-2" style={{ borderColor: "#e1d6ba" }}>
                               {catg.items.map((item) => (
                                 <li key={item.id} className="flex items-baseline justify-between gap-8 py-4">

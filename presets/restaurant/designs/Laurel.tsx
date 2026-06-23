@@ -181,12 +181,12 @@ export default function LaurelDesign({ site, page = "home", basePath = "" }: Pre
                 <div key={section.section} className="break-inside-avoid">
                   {si > 0 && <GoldDivider />}
                   {section.section && (
-                    <h2 style={serif} className="mt-2 text-center text-2xl uppercase tracking-[0.18em]" >{section.section}</h2>
+                    <h2 data-edit={`section:${section.categories[0]?.items[0]?.id ?? ""}`} style={serif} className="mt-2 text-center text-2xl uppercase tracking-[0.18em]" >{section.section}</h2>
                   )}
                   {section.categories.map((catg) => (
                     <div key={catg.category ?? "_"} className="mt-8">
                       {catg.category && (
-                        <p className="mb-5 text-center text-xs font-semibold uppercase tracking-[0.3em]" style={{ color: GOLD }}>{catg.category}</p>
+                        <p data-edit={`category:${catg.items[0]?.id ?? ""}`} className="mb-5 text-center text-xs font-semibold uppercase tracking-[0.3em]" style={{ color: GOLD }}>{catg.category}</p>
                       )}
                       <ul className="space-y-7">
                         {catg.items.map((item) => (

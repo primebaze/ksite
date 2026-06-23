@@ -137,13 +137,13 @@ export default function LanternDesign({ site, page = "home", basePath = "" }: Pr
                   <div key={section.section} className="break-inside-avoid">
                     {section.section && (
                       <h3 style={serif} className="mb-4 text-xl text-[#f3ede1]">
-                        <span className="border-b-2 pb-1" style={{ borderColor: RED }}>{section.section}</span>
+                        <span data-edit={`section:${section.categories[0]?.items[0]?.id ?? ""}`} className="border-b-2 pb-1" style={{ borderColor: RED }}>{section.section}</span>
                       </h3>
                     )}
                     {section.categories.map((catg) => (
                       <div key={catg.category ?? "_"} className="mb-6">
                         {catg.category && (
-                          <span className="mb-3 inline-flex rounded-sm px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.18em]" style={{ background: "rgba(193,39,45,0.18)", color: GOLD }}>
+                          <span data-edit={`category:${catg.items[0]?.id ?? ""}`} className="mb-3 inline-flex rounded-sm px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.18em]" style={{ background: "rgba(193,39,45,0.18)", color: GOLD }}>
                             {catg.category}
                           </span>
                         )}

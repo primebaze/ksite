@@ -166,12 +166,12 @@ export default function CinderDesign({ site, page = "home", basePath = "" }: Pre
                 {groups.map((section, gi) => (
                   <div key={section.section || gi} id={`sec-${gi}`} className={gi > 0 ? "mt-16" : ""}>
                     {section.section && (
-                      <h2 style={{ ...serif, color: GOLD }} className="text-center text-3xl">{section.section}</h2>
+                      <h2 data-edit={`section:${section.categories[0]?.items[0]?.id ?? ""}`} style={{ ...serif, color: GOLD }} className="text-center text-3xl">{section.section}</h2>
                     )}
                     {section.categories.map((catg) => (
                       <div key={catg.category ?? "_"} className="mt-10">
                         {catg.category && (
-                          <p className="mb-6 flex items-center justify-center gap-4 text-[11px] uppercase tracking-[0.3em]" style={{ color: CREAM }}>
+                          <p data-edit={`category:${catg.items[0]?.id ?? ""}`} className="mb-6 flex items-center justify-center gap-4 text-[11px] uppercase tracking-[0.3em]" style={{ color: CREAM }}>
                             <span className="h-px w-8" style={{ background: `${GOLD}66` }} />{catg.category}<span className="h-px w-8" style={{ background: `${GOLD}66` }} />
                           </p>
                         )}

@@ -167,14 +167,14 @@ export default function SaffronDesign({ site, page = "home", basePath = "" }: Pr
                     <div key={section.section}>
                       {section.section && (
                         <div className="mb-7 text-center">
-                          <h2 style={{ ...serif, color: MAROON }} className="text-2xl tracking-[0.08em] sm:text-3xl">{section.section}</h2>
+                          <h2 data-edit={`section:${section.categories[0]?.items[0]?.id ?? ""}`} style={{ ...serif, color: MAROON }} className="text-2xl tracking-[0.08em] sm:text-3xl">{section.section}</h2>
                           <GoldDivider className="mt-4" />
                         </div>
                       )}
                       {section.categories.map((catg) => (
                         <div key={catg.category ?? "_"} className="mb-9">
                           {catg.category && (
-                            <p className="mb-4 text-center text-[11px] font-semibold uppercase tracking-[0.28em]" style={{ color: MARIGOLD }}>{catg.category}</p>
+                            <p data-edit={`category:${catg.items[0]?.id ?? ""}`} className="mb-4 text-center text-[11px] font-semibold uppercase tracking-[0.28em]" style={{ color: MARIGOLD }}>{catg.category}</p>
                           )}
                           {/* thali-inspired: each section framed by a thin gold rule */}
                           <ul className="divide-y border-y" style={{ borderColor: `${GOLD}40` }}>

@@ -174,13 +174,13 @@ export default function CrumbDesign({ site, page = "home", basePath = "" }: Pres
                     <div key={section.section} className="break-inside-avoid">
                       {section.section && (
                         <div className="mb-7 text-center">
-                          <h2 style={display} className="text-3xl font-light tracking-tight text-[color:#43342A]">{section.section}</h2>
+                          <h2 data-edit={`section:${section.categories[0]?.items[0]?.id ?? ""}`} style={display} className="text-3xl font-light tracking-tight text-[color:#43342A]">{section.section}</h2>
                           <div className="mx-auto mt-3 w-24"><Sketch /></div>
                         </div>
                       )}
                       {section.categories.map((catg) => (
                         <div key={catg.category ?? "_"} className="mb-8 last:mb-0">
-                          {catg.category && <p className="mb-3 text-center text-[11px] font-medium uppercase tracking-[0.26em] text-[color:#C98A3C]">{catg.category}</p>}
+                          {catg.category && <p data-edit={`category:${catg.items[0]?.id ?? ""}`} className="mb-3 text-center text-[11px] font-medium uppercase tracking-[0.26em] text-[color:#C98A3C]">{catg.category}</p>}
                           <ul className="divide-y" style={{ borderColor: `${INK}22` }}>
                             {catg.items.map((item) => (
                               <li key={item.id} className="flex items-baseline justify-between gap-8 py-5">

@@ -228,12 +228,12 @@ export default function CragDesign({ site, page = "home", basePath = "" }: Prese
               {groups.map((section, gi) => (
                 <div key={section.section || gi}>
                   {section.section && (
-                    <h2 style={{ ...display, color: ORANGE }} className="mb-6 text-2xl font-extrabold uppercase tracking-[0.02em]">{section.section}</h2>
+                    <h2 data-edit={`section:${section.categories[0]?.items[0]?.id ?? ""}`} style={{ ...display, color: ORANGE }} className="mb-6 text-2xl font-extrabold uppercase tracking-[0.02em]">{section.section}</h2>
                   )}
                   {section.categories.map((catg) => (
                     <div key={catg.category ?? "_"} className={section.categories.length > 1 ? "mt-8" : ""}>
                       {catg.category && (
-                        <p className="mb-3 text-[11px] font-bold uppercase tracking-[0.24em]" style={{ color: MUTE }}>{catg.category}</p>
+                        <p data-edit={`category:${catg.items[0]?.id ?? ""}`} className="mb-3 text-[11px] font-bold uppercase tracking-[0.24em]" style={{ color: MUTE }}>{catg.category}</p>
                       )}
                       {catalogList(catg.items)}
                     </div>

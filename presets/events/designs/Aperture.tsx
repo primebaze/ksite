@@ -164,10 +164,10 @@ export default function Aperture({ site, page = "home", basePath = "" }: PresetP
             <>
               {groups.map((section, gi) => (
                 <div key={section.section || gi} className={gi > 0 ? "mt-16" : ""}>
-                  {section.section && <h2 style={{ ...serif, color: INK }} className="text-2xl">{section.section}</h2>}
+                  {section.section && <h2 data-edit={`section:${section.categories[0]?.items[0]?.id ?? ""}`} style={{ ...serif, color: INK }} className="text-2xl">{section.section}</h2>}
                   {section.categories.map((catg) => (
                     <div key={catg.category ?? "_"} className="mt-6">
-                      {catg.category && <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.24em]" style={{ color: ACCENT }}>{catg.category}</p>}
+                      {catg.category && <p data-edit={`category:${catg.items[0]?.id ?? ""}`} className="mb-3 text-[11px] font-semibold uppercase tracking-[0.24em]" style={{ color: ACCENT }}>{catg.category}</p>}
                       <ul className="divide-y" style={{ borderColor: LINE }}>
                         {catg.items.map((item) => (
                           <li key={item.id} className="flex items-baseline justify-between gap-8 py-5">

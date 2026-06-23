@@ -192,10 +192,10 @@ export default function RoadcraftDesign({ site, page = "home", basePath = "" }: 
       <div className="space-y-12">
         {groups.map((section, gi) => (
           <div key={section.section || gi}>
-            {section.section && <h2 className="text-2xl font-black uppercase tracking-tight" style={{ color: CHARCOAL }}>{section.section}</h2>}
+            {section.section && <h2 data-edit={`section:${section.categories[0]?.items[0]?.id ?? ""}`} className="text-2xl font-black uppercase tracking-tight" style={{ color: CHARCOAL }}>{section.section}</h2>}
             {section.categories.map((catg) => (
               <div key={catg.category ?? "_"} className="mt-4">
-                {catg.category && <p className="mb-2 text-xs font-black uppercase tracking-[0.18em]" style={{ color: RED }}>{catg.category}</p>}
+                {catg.category && <p data-edit={`category:${catg.items[0]?.id ?? ""}`} className="mb-2 text-xs font-black uppercase tracking-[0.18em]" style={{ color: RED }}>{catg.category}</p>}
                 <ul className="divide-y" style={{ borderColor: LINE }}>
                   {catg.items.map(lessonRow)}
                 </ul>

@@ -225,13 +225,13 @@ export default function GildedDesign({ site, page = "home", basePath = "" }: Pre
                     <Fan className="pointer-events-none absolute bottom-2 right-2 h-10 w-10 opacity-40" />
                     {section.section && (
                       <div className="mb-8 text-center">
-                        <h2 style={{ ...serif, color: IVORY }} className="text-2xl font-normal uppercase tracking-[0.14em] sm:text-3xl">{section.section}</h2>
+                        <h2 data-edit={`section:${section.categories[0]?.items[0]?.id ?? ""}`} style={{ ...serif, color: IVORY }} className="text-2xl font-normal uppercase tracking-[0.14em] sm:text-3xl">{section.section}</h2>
                         <DecoDivider className="mt-4" />
                       </div>
                     )}
                     {section.categories.map((catg) => (
                       <div key={catg.category ?? "_"} className="mb-9 last:mb-0">
-                        {catg.category && <p className="mb-3 text-center text-[10px] font-medium uppercase tracking-[0.34em]" style={{ color: BLUSH }}>{catg.category}</p>}
+                        {catg.category && <p data-edit={`category:${catg.items[0]?.id ?? ""}`} className="mb-3 text-center text-[10px] font-medium uppercase tracking-[0.34em]" style={{ color: BLUSH }}>{catg.category}</p>}
                         <ul className="divide-y" style={{ borderColor: `${GOLD}24` }}>
                           {catg.items.map((item) => (
                             <li key={item.id} className="flex items-baseline justify-between gap-8 py-5">

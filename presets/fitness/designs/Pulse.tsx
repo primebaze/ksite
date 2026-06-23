@@ -159,7 +159,7 @@ export default function Pulse({ site, page = "home", basePath = "" }: PresetProp
             <div className="space-y-14">
               {groups.map((section, gi) => (
                 <div key={section.section || gi}>
-                  {section.section && <h2 className="mb-7 text-2xl font-extrabold tracking-[-0.01em]" style={{ color: TEXT }}>{section.section}</h2>}
+                  {section.section && <h2 data-edit={`section:${section.categories[0]?.items[0]?.id ?? ""}`} className="mb-7 text-2xl font-extrabold tracking-[-0.01em]" style={{ color: TEXT }}>{section.section}</h2>}
                   <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
                     {section.categories.flatMap((c) => c.items).map((item) => (
                       <div key={item.id} className="flex flex-col rounded-3xl p-7 transition hover:-translate-y-1" style={{ background: PANEL, border: "1px solid #ffffff1a" }}>

@@ -153,12 +153,12 @@ export default function FornoDesign({ site, page = "home", basePath = "" }: Pres
                     {section.section && (
                       <div className="mb-5 flex items-center gap-3">
                         <span className="h-2.5 w-2.5 rotate-45" style={{ background: TOMATO }} />
-                        <h2 style={display} className="text-2xl font-black uppercase tracking-tight text-[color:#1C1A17]">{section.section}</h2>
+                        <h2 data-edit={`section:${section.categories[0]?.items[0]?.id ?? ""}`} style={display} className="text-2xl font-black uppercase tracking-tight text-[color:#1C1A17]">{section.section}</h2>
                       </div>
                     )}
                     {section.categories.map((catg) => (
                       <div key={catg.category ?? "_"} className="mb-6">
-                        {catg.category && <p className="mb-2 text-xs font-bold uppercase tracking-[0.18em]" style={{ color: BASIL }}>{catg.category}</p>}
+                        {catg.category && <p data-edit={`category:${catg.items[0]?.id ?? ""}`} className="mb-2 text-xs font-bold uppercase tracking-[0.18em]" style={{ color: BASIL }}>{catg.category}</p>}
                         <ul className="divide-y" style={{ borderColor: `${CHARCOAL}1a` }}>
                           {catg.items.map((item) => (
                             <li key={item.id} className="flex items-baseline justify-between gap-8 py-5">

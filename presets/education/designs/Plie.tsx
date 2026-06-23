@@ -216,10 +216,10 @@ export default function PlieDesign({ site, page = "home", basePath = "" }: Prese
       <div className="space-y-12">
         {groups.map((section, gi) => (
           <div key={section.section || gi}>
-            {section.section && <h2 style={{ ...display, color: CORAL }} className="text-2xl font-semibold">{section.section}</h2>}
+            {section.section && <h2 data-edit={`section:${section.categories[0]?.items[0]?.id ?? ""}`} style={{ ...display, color: CORAL }} className="text-2xl font-semibold">{section.section}</h2>}
             {section.categories.map((catg) => (
               <div key={catg.category ?? "_"} className="mt-4">
-                {catg.category && <p className="mb-2 text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: TEAL }}>{catg.category}</p>}
+                {catg.category && <p data-edit={`category:${catg.items[0]?.id ?? ""}`} className="mb-2 text-xs font-semibold uppercase tracking-[0.18em]" style={{ color: TEAL }}>{catg.category}</p>}
                 <ul className="divide-y" style={{ borderColor: `${INK}14` }}>
                   {catg.items.map((item) => (
                     <li key={item.id} className="flex items-baseline justify-between gap-6 py-5">

@@ -20,9 +20,9 @@ const MUTE = "#5a6478"; // muted body text on light
 const LIGHT = "#f5f7fb"; // light section tint
 const LINE = "#e3e8f0";
 
-function Eyebrow({ children, light = false }: { children: ReactNode; light?: boolean }) {
+function Eyebrow({ children, light = false, ...rest }: { children: ReactNode; light?: boolean } & Record<string, unknown>) {
   return (
-    <p className="text-[12px] font-bold uppercase tracking-[0.22em]" style={{ color: light ? "#aeb9ff" : INDIGO }}>
+    <p {...rest} className="text-[12px] font-bold uppercase tracking-[0.22em]" style={{ color: light ? "#aeb9ff" : INDIGO }}>
       {children}
     </p>
   );
@@ -165,10 +165,10 @@ export default function SummitDesign({ site, page = "home", basePath = "" }: Pre
       <div className="space-y-12">
         {groups.map((section, gi) => (
           <div key={section.section || gi}>
-            {section.section && <h2 className="text-2xl font-bold tracking-tight" style={{ color: nameColor }}>{section.section}</h2>}
+            {section.section && <h2 data-edit={`section:${section.categories[0]?.items[0]?.id ?? ""}`} className="text-2xl font-bold tracking-tight" style={{ color: nameColor }}>{section.section}</h2>}
             {section.categories.map((catg) => (
               <div key={catg.category ?? "_"} className="mt-4">
-                {catg.category && <Eyebrow>{catg.category}</Eyebrow>}
+                {catg.category && <Eyebrow data-edit={`category:${catg.items[0]?.id ?? ""}`}>{catg.category}</Eyebrow>}
                 <ul className="mt-2 divide-y" style={{ borderColor: lineColor }}>
                   {catg.items.map((item) => (
                     <li key={item.id} className="flex items-baseline justify-between gap-6 py-5">

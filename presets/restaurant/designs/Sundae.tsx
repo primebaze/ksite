@@ -193,12 +193,12 @@ export default function SundaeDesign({ site, page = "home", basePath = "" }: Pre
                     <div key={section.section} className="break-inside-avoid">
                       {section.section && (
                         <div className="mb-5">
-                          <span style={{ ...display, background: PISTACHIO, color: COCOA, borderColor: COCOA }} className="inline-block rounded-full border-2 px-5 py-1.5 text-lg font-bold">{section.section}</span>
+                          <span data-edit={`section:${section.categories[0]?.items[0]?.id ?? ""}`} style={{ ...display, background: PISTACHIO, color: COCOA, borderColor: COCOA }} className="inline-block rounded-full border-2 px-5 py-1.5 text-lg font-bold">{section.section}</span>
                         </div>
                       )}
                       {section.categories.map((catg) => (
                         <div key={catg.category ?? "_"} className="mb-7">
-                          {catg.category && <p className="mb-2 text-xs font-extrabold lowercase tracking-wide" style={{ color: CHERRY }}>{catg.category}</p>}
+                          {catg.category && <p data-edit={`category:${catg.items[0]?.id ?? ""}`} className="mb-2 text-xs font-extrabold lowercase tracking-wide" style={{ color: CHERRY }}>{catg.category}</p>}
                           <ul className="divide-y" style={{ borderColor: `${COCOA}26` }}>
                             {catg.items.map((item) => (
                               <li key={item.id} className="flex items-baseline justify-between gap-8 py-4">

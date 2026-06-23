@@ -200,12 +200,12 @@ export default function LemongrassDesign({ site, page = "home", basePath = "" }:
                     {section.section && (
                       <div className="mb-5 flex items-center gap-2.5">
                         <Leaf size={20} fill={CHARTREUSE} vein={EMERALD} />
-                        <span style={{ ...display, color: EMERALD }} className="text-2xl font-semibold">{section.section}</span>
+                        <span data-edit={`section:${section.categories[0]?.items[0]?.id ?? ""}`} style={{ ...display, color: EMERALD }} className="text-2xl font-semibold">{section.section}</span>
                       </div>
                     )}
                     {section.categories.map((catg) => (
                       <div key={catg.category ?? "_"} className="mb-7">
-                        {catg.category && <p className="mb-2 text-xs font-bold uppercase tracking-[0.16em]" style={{ color: CHILLI }}>{catg.category}</p>}
+                        {catg.category && <p data-edit={`category:${catg.items[0]?.id ?? ""}`} className="mb-2 text-xs font-bold uppercase tracking-[0.16em]" style={{ color: CHILLI }}>{catg.category}</p>}
                         <ul className="divide-y" style={{ borderColor: `${EMERALD}1f` }}>
                           {catg.items.map((item) => (
                             <li key={item.id} className="flex items-baseline justify-between gap-8 py-5">

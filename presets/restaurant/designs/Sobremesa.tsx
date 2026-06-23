@@ -193,12 +193,12 @@ export default function SobremesaDesign({ site, page = "home", basePath = "" }: 
                     {section.section && (
                       <div className="mb-6 flex items-center gap-3">
                         <span aria-hidden className="h-px w-7" style={{ background: OCHRE }} />
-                        <h3 style={{ ...serif, color: RIOJA }} className="text-2xl font-medium sm:text-3xl">{section.section}</h3>
+                        <h3 data-edit={`section:${section.categories[0]?.items[0]?.id ?? ""}`} style={{ ...serif, color: RIOJA }} className="text-2xl font-medium sm:text-3xl">{section.section}</h3>
                       </div>
                     )}
                     {section.categories.map((catg) => (
                       <div key={catg.category ?? "_"} className="mb-7">
-                        {catg.category && <p className="mb-3 text-[11px] font-semibold uppercase tracking-[0.24em]" style={{ color: OLIVE }}>{catg.category}</p>}
+                        {catg.category && <p data-edit={`category:${catg.items[0]?.id ?? ""}`} className="mb-3 text-[11px] font-semibold uppercase tracking-[0.24em]" style={{ color: OLIVE }}>{catg.category}</p>}
                         <ul className="divide-y" style={{ borderColor: "rgba(36,24,19,0.18)" }}>
                           {catg.items.map((item) => (
                             <li key={item.id} className="flex items-baseline justify-between gap-8 py-5">

@@ -238,10 +238,10 @@ export default function ConfettiDesign({ site, page = "home", basePath = "" }: P
             <>
               {groups.map((section, gi) => (
                 <div key={section.section || gi} className={gi > 0 ? "mt-16" : ""}>
-                  {section.section && <h2 style={{ ...display, color: INK }} className="text-2xl font-semibold tracking-tight">{section.section}</h2>}
+                  {section.section && <h2 data-edit={`section:${section.categories[0]?.items[0]?.id ?? ""}`} style={{ ...display, color: INK }} className="text-2xl font-semibold tracking-tight">{section.section}</h2>}
                   {section.categories.map((catg, ci) => (
                     <div key={catg.category ?? "_"} className="mt-6">
-                      {catg.category && <p className="mb-3 text-[12px] font-bold uppercase tracking-[0.18em]" style={{ color: PARTY[ci % PARTY.length] }}>{catg.category}</p>}
+                      {catg.category && <p data-edit={`category:${catg.items[0]?.id ?? ""}`} className="mb-3 text-[12px] font-bold uppercase tracking-[0.18em]" style={{ color: PARTY[ci % PARTY.length] }}>{catg.category}</p>}
                       <ul className="divide-y" style={{ borderColor: LINE }}>
                         {catg.items.map((item) => (
                           <li key={item.id} className="flex items-baseline justify-between gap-8 py-5">

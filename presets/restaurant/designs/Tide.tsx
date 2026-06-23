@@ -146,10 +146,10 @@ export default function TideDesign({ site, page = "home", basePath = "" }: Prese
               <div className="space-y-16">
                 {groups.map((section) => (
                   <div key={section.section}>
-                    {section.section && <h2 className="mb-7 text-2xl font-extrabold uppercase tracking-[0.06em]" style={{ color: CHARCOAL }}>{section.section}</h2>}
+                    {section.section && <h2 data-edit={`section:${section.categories[0]?.items[0]?.id ?? ""}`} className="mb-7 text-2xl font-extrabold uppercase tracking-[0.06em]" style={{ color: CHARCOAL }}>{section.section}</h2>}
                     {section.categories.map((catg) => (
                       <div key={catg.category ?? "_"} className="mb-8">
-                        {catg.category && <h3 className="mb-4 text-xs font-bold uppercase tracking-[0.2em]" style={{ color: RED }}>{catg.category}</h3>}
+                        {catg.category && <h3 data-edit={`category:${catg.items[0]?.id ?? ""}`} className="mb-4 text-xs font-bold uppercase tracking-[0.2em]" style={{ color: RED }}>{catg.category}</h3>}
                         <ul className="grid gap-x-12 gap-y-5 md:grid-cols-2">
                           {catg.items.map((item) => (
                             <li key={item.id} className="border-b border-neutral-300/60 pb-4">

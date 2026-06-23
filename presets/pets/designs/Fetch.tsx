@@ -163,10 +163,10 @@ export default function Fetch({ site, page = "home", basePath = "" }: PresetProp
             <div className="space-y-14">
               {groups.map((section, gi) => (
                 <div key={section.section || gi}>
-                  {section.section && <h2 style={{ ...display, color: INK }} className="text-2xl font-bold tracking-tight">{section.section}</h2>}
+                  {section.section && <h2 data-edit={`section:${section.categories[0]?.items[0]?.id ?? ""}`} style={{ ...display, color: INK }} className="text-2xl font-bold tracking-tight">{section.section}</h2>}
                   {section.categories.map((catg) => (
                     <div key={catg.category ?? "_"} className="mt-5">
-                      {catg.category && <p className="mb-1 text-[11px] font-bold uppercase tracking-[0.18em]" style={{ color: GREEN }}>{catg.category}</p>}
+                      {catg.category && <p data-edit={`category:${catg.items[0]?.id ?? ""}`} className="mb-1 text-[11px] font-bold uppercase tracking-[0.18em]" style={{ color: GREEN }}>{catg.category}</p>}
                       <ul className="divide-y" style={{ borderColor: HAIR }}>
                         {catg.items.map((item) => (
                           <li key={item.id} className="flex items-baseline justify-between gap-8 py-5">

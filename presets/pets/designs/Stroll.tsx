@@ -195,10 +195,10 @@ export default function StrollDesign({ site, page = "home", basePath = "" }: Pre
             <div className="space-y-14">
               {groups.map((section, gi) => (
                 <div key={section.section || gi}>
-                  {section.section && <h2 style={{ ...display, color: ACCENTS[gi % ACCENTS.length] }} className="text-2xl font-extrabold tracking-tight">{section.section}</h2>}
+                  {section.section && <h2 data-edit={`section:${section.categories[0]?.items[0]?.id ?? ""}`} style={{ ...display, color: ACCENTS[gi % ACCENTS.length] }} className="text-2xl font-extrabold tracking-tight">{section.section}</h2>}
                   {section.categories.map((catg) => (
                     <div key={catg.category ?? "_"} className="mt-5">
-                      {catg.category && <p className="mb-1 text-[12px] font-bold uppercase tracking-[0.16em]" style={{ color: SKY }}>{catg.category}</p>}
+                      {catg.category && <p data-edit={`category:${catg.items[0]?.id ?? ""}`} className="mb-1 text-[12px] font-bold uppercase tracking-[0.16em]" style={{ color: SKY }}>{catg.category}</p>}
                       <ul className="divide-y" style={{ borderColor: HAIR }}>
                         {catg.items.map((item) => (
                           <li key={item.id} className="flex items-baseline justify-between gap-8 py-5">
