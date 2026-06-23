@@ -136,7 +136,15 @@ function LeadForm({
                 {f.type === "textarea" ? (
                   <textarea name={f.key} required={f.required} rows={3} className={inputCls} style={inputStyle} />
                 ) : (
-                  <input name={f.key} type={f.type ?? "text"} required={f.required} className={inputCls} style={inputStyle} />
+                  <input
+                    name={f.key}
+                    type={f.type ?? "text"}
+                    required={f.required}
+                    // Number fields (e.g. party size) must be a sensible positive count.
+                    {...(f.type === "number" ? { min: 1, max: 99, step: 1, inputMode: "numeric" as const } : {})}
+                    className={inputCls}
+                    style={inputStyle}
+                  />
                 )}
               </label>
             ))}
