@@ -94,6 +94,24 @@ const HERO_BY_KEY: Record<string, string> = {
   vet: "1576201836106-db1758fd1c97", dog_groomer: "1583337130417-3346a1be7dee",
   photographer: "1492691527719-9d1e07e534b4", videographer: "1492691527719-9d1e07e534b4",
   nursery: "1587654780291-39c9404d746b",
+  // Driving school sits in the Education group, but its photos must be cars/the
+  // road, not classrooms — pin it to the (proven) Automotive imagery instead.
+  driving_school: "1503376780353-7e6692767b70",
+};
+
+// Per-key gallery override. Driving school needs car/road photos, not the
+// Education group's classroom pool that galleryFor would otherwise use.
+const GALLERY_BY_KEY: Record<string, string[]> = {
+  driving_school: [
+    "1492144534655-ae79c964c9d7",
+    "1486262715619-67b85e0b08d3",
+    "1568605117036-5fe5e7bab0b7",
+    "1487754180451-c456f719a1fc",
+    "1493238792000-8113da705763",
+    "1605559424843-9e4c228bf1c2",
+    "1552519507-da3b142c6e3d",
+    "1525609004556-c46c7d6cf023",
+  ],
 };
 
 // heroFor + the unique-assignment precompute live at the end of this file,
@@ -220,8 +238,10 @@ export function heroFor(key: string): string | undefined {
 export function galleryFor(key: string, n = 6): string[] {
   const build = buildFor(key);
   if (!build) return [];
-  const pool = HERO_POOL[build.group] ?? [];
   const heroId = HERO.get(key);
+  // A per-key override (e.g. driving school needs cars, not its group's
+  // classroom pool) wins; otherwise fall back to the build's group pool.
+  const pool = GALLERY_BY_KEY[key] ?? HERO_POOL[build.group] ?? [];
   const ids = pool.filter((id) => id !== heroId).slice(0, n);
   return ids.map((id) => `https://images.unsplash.com/photo-${id}?w=1100&q=70&auto=format&fit=crop`);
 }

@@ -30,6 +30,44 @@ function Step({ n, title, body }: { n: string; title: string; body: string }) {
   );
 }
 
+// Generic, honestly-true driving-school strengths (no invented stats, so a real
+// client can stand behind every word). Each is an icon + a short reassurance.
+const WHY = [
+  {
+    title: "Calm, patient instructors",
+    body: "Friendly, fully qualified instructors who teach at a pace that suits you — nervous first-timers welcome.",
+    icon: <path d="M12 12a4 4 0 100-8 4 4 0 000 8zM4 20a8 8 0 0116 0" />,
+  },
+  {
+    title: "Lessons that fit your life",
+    body: "Door-to-door pick-up and flexible times around work, school or college — manual or automatic.",
+    icon: <path d="M8 2v3M16 2v3M4 8h16M5 6h14a1 1 0 011 1v12a1 1 0 01-1 1H5a1 1 0 01-1-1V7a1 1 0 011-1z" />,
+  },
+  {
+    title: "Ready for test day",
+    body: "Mock tests, theory support and Pass Plus so you sit your test calm, prepared and confident.",
+    icon: <path d="M9 11l3 3L22 4M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11" />,
+  },
+];
+
+function Why({ ink, mute, green, line }: { ink: string; mute: string; green: string; line: string }) {
+  return (
+    <section className="mx-auto max-w-6xl px-6 pt-20">
+      <div className="grid gap-5 sm:grid-cols-3">
+        {WHY.map((w) => (
+          <div key={w.title} className="rounded-2xl border p-7" style={{ borderColor: line, background: "#fff" }}>
+            <span className="flex h-12 w-12 items-center justify-center rounded-xl" style={{ background: MINT, color: green }}>
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round">{w.icon}</svg>
+            </span>
+            <h3 className="mt-5 text-lg font-extrabold tracking-tight" style={{ color: ink }}>{w.title}</h3>
+            <p className="mt-2 text-sm leading-relaxed" style={{ color: mute }}>{w.body}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 export default function IgnitionDesign({ site, page = "home", basePath = "" }: PresetProps) {
   const { tenant, theme, content, catalog, gallery } = site;
   const tokens = tokensFor(content, theme);
@@ -325,6 +363,9 @@ export default function IgnitionDesign({ site, page = "home", basePath = "" }: P
           </div>
         </div>
       </section>
+
+      {/* why learn with us */}
+      <Why ink={INK} mute={MUTE} green={GREEN} line={LINE} />
 
       {/* how it works */}
       <section className="mx-auto max-w-6xl px-6 py-20">
