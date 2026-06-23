@@ -81,6 +81,10 @@ export async function saveInline(changes: Record<string, string>): Promise<{ ok:
         content.hours = hours;
         contentDirty = true;
       }
+    } else if (key.startsWith("copy:")) {
+      // "copy:<slug>" — override a baked design string (heading/CTA/label).
+      content.copy = { ...((content.copy as Record<string, string>) ?? {}), [key.slice("copy:".length)]: val };
+      contentDirty = true;
     } else if (key.startsWith("section:")) {
       // "section:<refItemId>" — rename the section label across all its items.
       await renameMyCatalogSection(key.slice("section:".length), val);

@@ -45,11 +45,12 @@ export interface SiteContent {
   /** Per-slot content image overrides (key -> uploaded url), set by tapping any
    *  editable image in the live editor. See `editImg` in presets/shared. */
   images?: Record<string, string>;
+  /** Per-slot overrides for a design's baked copy (headings, CTAs, button and
+   *  section labels), keyed by a stable slug. Lets owners reword any baked
+   *  string inline; the design falls back to its default until overridden.
+   *  See `editCopy` in presets/shared. */
+  copy?: Record<string, string>;
   about?: string;
-  /** Optional overrides for a design's baked headlines (about-page title and
-   *  closing call-to-action), so owners can reword them inline. */
-  about_heading?: string;
-  cta_heading?: string;
   cuisine_type?: string; // restaurant
   hours?: { day: string; open: string }[];
   address?: string;

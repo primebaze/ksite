@@ -34,6 +34,18 @@ export function editImg(content: SiteContent, key: string, fallback?: string) {
   return { src: content.images?.[key] ?? fallback ?? "", "data-edit-image": `img:${key}` } as const;
 }
 
+// Make any baked text string editable + persistent. Spread onto the element
+// whose text you want editable (it provides both the data-edit hook and the
+// text as `children`):
+//   <h1 className="…" {...editCopy(content, "about_title", "It is not just about hair")} />
+//   <span className="…" {...editCopy(content, "cta_label", "Book appointment")} />
+// The live editor saves edits to content.copy[<key>]; the override then wins
+// over the fallback. Public sites just render the resolved text — the attribute
+// is inert until the editor loads. Keys must be unique within a design.
+export function editCopy(content: SiteContent, key: string, fallback: string) {
+  return { "data-edit": `copy:${key}`, children: content.copy?.[key] ?? fallback } as const;
+}
+
 export interface StyleTokens {
   style: SiteStyle;
   serif: boolean;

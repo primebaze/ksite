@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { editImg, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, editImg, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { IndigoHeader } from "./IndigoHeader";
 import { IndigoBooking } from "./IndigoBooking";
@@ -126,11 +126,11 @@ export default function IndigoDesign({ site, page = "home", basePath = "" }: Pre
   );
 
   // Page banner clears the fixed header on sub-pages.
-  const banner = (kicker: string, title: string, color: string, editKey?: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string, color: string) => (
     <section style={{ background: PAPER }}>
       <div className="mx-auto max-w-7xl px-6 pb-12 pt-32 sm:px-8 sm:pt-36">
-        <Chip color={color}>{kicker}</Chip>
-        <h1 {...(editKey ? { "data-edit": editKey } : {})} className="mt-5 max-w-4xl text-4xl font-extrabold leading-[1.02] tracking-tight sm:text-6xl" style={{ color: INK }}>{title}</h1>
+        <Chip color={color}><span {...editCopy(content, kickerKey, kicker)} /></Chip>
+        <h1 className="mt-5 max-w-4xl text-4xl font-extrabold leading-[1.02] tracking-tight sm:text-6xl" style={{ color: INK }} {...editCopy(content, titleKey, title)} />
       </div>
     </section>
   );
@@ -139,7 +139,7 @@ export default function IndigoDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "services") {
     return shell(
       <>
-        {banner("Services", "What we do", MINT)}
+        {banner("Services", "svc_kicker", "What we do", "svc_title", MINT)}
         <section className="mx-auto max-w-5xl px-6 pb-24 pt-8 sm:px-8">
           {groups.length > 0 ? (
             <div className="space-y-16">
@@ -182,7 +182,7 @@ export default function IndigoDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "reservations") {
     return shell(
       <>
-        {banner("Book", "Book your visit", PINK)}
+        {banner("Book", "book_kicker", "Book your visit", "book_title", PINK)}
         <section className="mx-auto max-w-2xl px-6 pb-24 pt-8 sm:px-8">
           {content.booking_url ? (
             <div className="rounded-3xl border border-black/10 bg-white p-9 text-center shadow-sm">
@@ -201,7 +201,7 @@ export default function IndigoDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "contact") {
     return shell(
       <>
-        {banner("Contact", "Say hello", BLUE)}
+        {banner("Contact", "contact_kicker", "Say hello", "contact_title", BLUE)}
         <section className="mx-auto grid max-w-6xl gap-12 px-6 pb-24 pt-8 sm:px-8 lg:grid-cols-2 lg:gap-16">
           <div>
             <div className="space-y-5 text-[15px] leading-relaxed text-neutral-700">
@@ -242,7 +242,7 @@ export default function IndigoDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "about") {
     return shell(
       <>
-        {banner("About", content.about_heading ?? "It is not just about hair", PINK, "content.about_heading")}
+        {banner("About", "about_kicker", "It is not just about hair", "about_title", PINK)}
         <section className="mx-auto max-w-3xl px-6 pb-24 pt-8 sm:px-8">
           {content.about ? (
             <p data-edit="content.about" className="text-2xl font-medium leading-[1.5] tracking-tight text-neutral-800 sm:text-3xl">{content.about}</p>
@@ -256,7 +256,7 @@ export default function IndigoDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Gallery", "Recent work", BLUE)}
+        {banner("Gallery", "gallery_kicker", "Recent work", "gallery_title", BLUE)}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-7xl px-6 pb-24 pt-8 sm:px-8">
             <div className="columns-1 gap-4 sm:columns-2 lg:columns-3 [&>*]:mb-4">
@@ -408,7 +408,7 @@ export default function IndigoDesign({ site, page = "home", basePath = "" }: Pre
       {/* closing call to action band */}
       <section style={{ background: INK }}>
         <div className="mx-auto flex max-w-7xl flex-col items-start gap-7 px-6 py-20 sm:px-8 lg:flex-row lg:items-center lg:justify-between">
-          <h2 data-edit="content.cta_heading" className="max-w-2xl text-3xl font-extrabold leading-tight tracking-tight text-white sm:text-4xl">{content.cta_heading ?? "Ready when you are."}</h2>
+          <h2 className="max-w-2xl text-3xl font-extrabold leading-tight tracking-tight text-white sm:text-4xl" {...editCopy(content, "cta_heading", "Ready when you are.")} />
           <a href={book} className="inline-flex rounded-full px-9 py-4 text-sm font-bold transition hover:opacity-85" style={{ background: MINT, color: INK }}>Book appointment</a>
         </div>
       </section>
