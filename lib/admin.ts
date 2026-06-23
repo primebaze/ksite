@@ -16,6 +16,7 @@ import {
   sendKycRequestEmail,
   sendOperatorEmail,
   sendOwnerWelcomeEmail,
+  sendPasswordResetEmail,
   sendSupportClientReply,
 } from "./email";
 import { SITE_URL } from "./seo";
@@ -466,6 +467,19 @@ export async function sendOwnerWelcome(email: string, businessName: string): Pro
   if (error || !hashedToken) throw new Error(error?.message ?? "Could not generate a set-password link.");
   const link = `${SITE_URL}/auth/confirm?token_hash=${encodeURIComponent(hashedToken)}&type=recovery`;
   await sendOwnerWelcomeEmail({ to: e, businessName, link });
+}
+
+// Self-serve password reset: mint a one-time recovery link and email it. Routed
+// through /auth/confirm like every other auth email (→ /set-password). Throws
+// if the email has no account; the public action swallows that so it can't be
+// used to probe which emails are registered.
+export async function sendPasswordReset(email: string): Promise<void> {
+  const e = email.trim().toLowerCase();
+  const { data, error } = await client().auth.admin.generateLink({ type: "recovery", email: e });
+  const hashedToken = data?.properties?.hashed_token;
+  if (error || !hashedToken) throw new Error(error?.message ?? "Could not generate a reset link.");
+  const link = `${SITE_URL}/auth/confirm?token_hash=${encodeURIComponent(hashedToken)}&type=recovery`;
+  await sendPasswordResetEmail({ to: e, link });
 }
 
 export async function createTenant(input: {

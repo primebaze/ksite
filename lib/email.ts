@@ -350,6 +350,22 @@ export async function sendOwnerWelcomeEmail({ to, businessName, link }: { to: st
   });
 }
 
+// Self-serve "forgot password" — emails a one-time recovery link.
+export async function sendPasswordResetEmail({ to, link }: { to: string; link: string }) {
+  await sendTransactionalEmail({
+    to: [to],
+    subject: "Reset your Kovasite password",
+    html: renderNotice({
+      eyebrow: "Password reset",
+      title: "Reset your password",
+      body: "We received a request to reset the password for your Kovasite account. Choose a new password to sign back in.",
+      cta: "Reset your password",
+      link,
+      secondary: "This link expires shortly for your security. If you didn't request this, you can safely ignore this email — your password won't change.",
+    }),
+  });
+}
+
 // Ask a client to complete identity / business verification.
 export async function sendKycRequestEmail({ to, businessName }: { to: string; businessName: string }) {
   const base = (process.env.NEXT_PUBLIC_SITE_URL || "https://kovasite.com").replace(/\/$/, "");

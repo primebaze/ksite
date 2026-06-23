@@ -31,7 +31,10 @@ export default async function LoginPage({
               <input name="email" type="email" required defaultValue={email ?? ""} className={input} autoComplete="email" />
             </div>
             <div>
-              <label className="text-sm font-medium">Password</label>
+              <div className="flex items-baseline justify-between">
+                <label className="text-sm font-medium">Password</label>
+                <Link href="/forgot-password" className="text-xs text-ink/45 hover:text-ink">Forgot password?</Link>
+              </div>
               <input name="password" type="password" required className={input} autoComplete="current-password" />
             </div>
             {error && <p className="rounded-lg bg-red-500/10 px-4 py-3 text-sm text-red-300">{error}</p>}
