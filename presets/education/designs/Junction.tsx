@@ -320,11 +320,8 @@ export default function JunctionDesign({ site, page = "home", basePath = "" }: P
   // ---- HOME ----
   const featuredCount = Math.min(6, groups.flatMap((g) => g.categories.flatMap((c) => c.items)).length);
 
-  const reviews = [
-    { quote: "Calm, methodical and never made me feel rushed. The intensive course got me test-ready in a fortnight.", who: "Amara · passed first time" },
-    { quote: "Genuinely professional from the first phone call. Modern dual-control car and a structured plan every lesson.", who: "Daniel · automatic course" },
-    { quote: "I'd been with two schools before — the difference here was the structure. Theory and practical lined up perfectly.", who: "Priya · weekly lessons" },
-  ];
+  // Owner-managed reviews (edited in the dashboard); section hides when empty.
+  const reviews = (content.reviews ?? []).map((r) => ({ quote: r.quote, who: [r.name, r.meta].filter(Boolean).join(" · ") }));
 
   const pathway = [
     { step: "01", title: "Theory mastery", body: "Hazard perception and theory test prep built into your plan, so the written test is never an afterthought." },
@@ -451,7 +448,8 @@ export default function JunctionDesign({ site, page = "home", basePath = "" }: P
         </section>
       )}
 
-      {/* learner reviews */}
+      {/* learner reviews — owner-managed; hidden until they add some */}
+      {reviews.length > 0 && (
       <section style={{ background: STONE_DK }}>
         <div className="mx-auto max-w-6xl px-6 py-20">
           <div className="max-w-xl">
@@ -459,8 +457,8 @@ export default function JunctionDesign({ site, page = "home", basePath = "" }: P
             <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl" style={{ color: NAVY }}>Trusted by the people we taught</h2>
           </div>
           <div className="mt-12 grid gap-5 lg:grid-cols-3">
-            {reviews.map((r) => (
-              <figure key={r.who} className="flex flex-col rounded-xl border bg-white p-7" style={{ borderColor: LINE }}>
+            {reviews.map((r, i) => (
+              <figure key={i} className="flex flex-col rounded-xl border bg-white p-7" style={{ borderColor: LINE }}>
                 <div className="text-sm tracking-[0.3em]" style={{ color: BRASS }}>★★★★★</div>
                 <blockquote className="mt-4 flex-1 text-[15px] leading-relaxed" style={{ color: NAVY }}>“{r.quote}”</blockquote>
                 <figcaption className="mt-5 text-xs font-bold uppercase tracking-[0.12em]" style={{ color: SLATE }}>{r.who}</figcaption>
@@ -469,6 +467,7 @@ export default function JunctionDesign({ site, page = "home", basePath = "" }: P
           </div>
         </div>
       </section>
+      )}
 
       {/* gallery strip */}
       {gallery.length > 0 && (

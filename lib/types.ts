@@ -59,6 +59,8 @@ export interface SiteContent {
   accreditations?: string[]; // trades (Gas Safe, NICEIC, etc.)
   emergency_phone?: string; // trades
   socials?: { label: string; url: string }[];
+  /** Customer reviews / testimonials (owner-managed). Section hides when empty. */
+  reviews?: { quote: string; name?: string; meta?: string }[];
   cta_label?: string;
   cta_url?: string;
 }

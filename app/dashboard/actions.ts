@@ -133,6 +133,14 @@ export async function saveSocials(formData: FormData) {
   refresh();
 }
 
+export async function saveReviews(formData: FormData) {
+  const site = await getMyTenantFull();
+  if (!site) return;
+  const reviews = zipRows(formData, ["quote", "name", "meta"]).filter((r) => r.quote) as { quote: string; name?: string; meta?: string }[];
+  await updateMyContent({ ...site.content, reviews });
+  refresh();
+}
+
 export async function saveOrderingLinks(formData: FormData) {
   const site = await getMyTenantFull();
   if (!site) return;

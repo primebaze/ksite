@@ -241,14 +241,10 @@ export default function MilestoneDesign({ site, page = "home", basePath = "" }: 
     );
   };
 
-  // Warm static learner reviews (no real brand names).
-  const reviews = [
-    { quote: "I was so nervous I nearly cancelled my first lesson. My instructor was so calm and kind — I never felt rushed once.", who: "Hannah", note: "Passed first time" },
-    { quote: "I'd had bad experiences before and lost all my confidence. Here it felt completely different — patient, gentle, no pressure at all.", who: "Marcus", note: "Nervous learner" },
-    { quote: "At 52 I thought I was too old to start. They were lovely about it and went at exactly my pace. So glad I finally did it.", who: "Denise", note: "Late starter" },
-  ];
+  // Owner-managed reviews (edited in the dashboard); section hides when empty.
+  const reviews = (content.reviews ?? []).map((r) => ({ quote: r.quote, who: r.name ?? "", note: r.meta }));
 
-  const reviewsSection = (
+  const reviewsSection = reviews.length === 0 ? null : (
     <section style={{ background: CARD }}>
       <div className="mx-auto max-w-6xl px-6 py-20">
         <div className="max-w-2xl">
@@ -256,8 +252,8 @@ export default function MilestoneDesign({ site, page = "home", basePath = "" }: 
           <h2 style={{ ...display, color: NAVY }} className="mt-4 text-3xl font-semibold sm:text-4xl">From learners who were nervous too</h2>
         </div>
         <div className="mt-12 grid gap-5 sm:grid-cols-3">
-          {reviews.map((r) => (
-            <figure key={r.who} className="flex h-full flex-col rounded-[1.75rem] p-7" style={{ background: CREAM, border: `1px solid ${NAVY}0d` }}>
+          {reviews.map((r, i) => (
+            <figure key={i} className="flex h-full flex-col rounded-[1.75rem] p-7" style={{ background: CREAM, border: `1px solid ${NAVY}0d` }}>
               <span aria-hidden style={{ ...display, color: CORAL }} className="text-3xl leading-none">“</span>
               <blockquote className="mt-2 text-[15px] leading-relaxed" style={{ color: NAVY }}>{r.quote}</blockquote>
               <figcaption className="mt-5 flex items-center gap-3">

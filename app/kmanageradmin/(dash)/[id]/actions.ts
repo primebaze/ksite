@@ -117,6 +117,16 @@ export async function saveSocials(formData: FormData) {
   refresh(id);
 }
 
+export async function saveReviews(formData: FormData) {
+  await requireStaff();
+  const id = String(formData.get("id"));
+  const site = await getTenantFull(id);
+  if (!site) redirect("/kmanageradmin");
+  const reviews = zipRows(formData, ["quote", "name", "meta"]).filter((r) => r.quote) as { quote: string; name?: string; meta?: string }[];
+  await updateContent(id, { ...site.content, reviews });
+  refresh(id);
+}
+
 export async function saveOrderingLinks(formData: FormData) {
   await requireStaff();
   const id = String(formData.get("id"));

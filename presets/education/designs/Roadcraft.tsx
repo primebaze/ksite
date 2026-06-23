@@ -317,11 +317,8 @@ export default function RoadcraftDesign({ site, page = "home", basePath = "" }: 
     { title: "Intensive courses", body: "Need a licence quickly? Fast-track courses with a test slot built in from day one." },
   ];
 
-  const reviews = [
-    { quote: "Passed first time with zero faults. The mock tests made the real thing feel easy.", name: "Learner, manual", tag: "Passed first time" },
-    { quote: "Did the one-week intensive course and passed at the end of it. Brilliant from start to finish.", name: "Learner, intensive", tag: "Passed in 7 days" },
-    { quote: "Nervous driver who finally got there. Patient, clear and seriously good at the job.", name: "Learner, automatic", tag: "Passed first time" },
-  ];
+  // Owner-managed reviews (edited in the dashboard); section hides when empty.
+  const reviews = (content.reviews ?? []).map((r) => ({ quote: r.quote, name: r.name, tag: r.meta }));
 
   return shell(
     <>
@@ -431,7 +428,8 @@ export default function RoadcraftDesign({ site, page = "home", basePath = "" }: 
         </section>
       )}
 
-      {/* REVIEWS — passed first time */}
+      {/* REVIEWS — owner-managed; hidden until they add some */}
+      {reviews.length > 0 && (
       <section style={{ background: PAPER, borderTop: `1px solid ${LINE}` }}>
         <div className="mx-auto max-w-6xl px-6 py-20">
           <div className="max-w-2xl">
@@ -439,8 +437,8 @@ export default function RoadcraftDesign({ site, page = "home", basePath = "" }: 
             <h2 className="mt-3 text-3xl font-black uppercase tracking-tight sm:text-5xl" style={{ color: CHARCOAL }}>Passed first time</h2>
           </div>
           <div className="mt-12 grid gap-5 sm:grid-cols-3">
-            {reviews.map((r) => (
-              <figure key={r.quote} className="flex flex-col rounded-lg border bg-white p-7" style={{ borderColor: LINE }}>
+            {reviews.map((r, i) => (
+              <figure key={i} className="flex flex-col rounded-lg border bg-white p-7" style={{ borderColor: LINE }}>
                 <span className="inline-flex w-fit rounded-sm px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.16em]" style={{ background: AMBER, color: CHARCOAL }}>{r.tag}</span>
                 <blockquote className="mt-4 flex-1 text-[15px] font-semibold leading-relaxed" style={{ color: CHARCOAL }}>“{r.quote}”</blockquote>
                 <figcaption className="mt-4 text-xs font-bold uppercase tracking-[0.12em]" style={{ color: ASPHALT }}>{r.name}</figcaption>
@@ -449,6 +447,7 @@ export default function RoadcraftDesign({ site, page = "home", basePath = "" }: 
           </div>
         </div>
       </section>
+      )}
 
       {/* gallery strip */}
       {gallery.length > 0 && (

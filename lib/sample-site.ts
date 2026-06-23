@@ -269,6 +269,17 @@ export function sampleSiteFor(key: string): TenantSite | null {
             ],
           }
         : {}),
+      // Demo reviews for the driving-school designs (the only ones with a
+      // reviews section). Real sites start empty and the section stays hidden.
+      ...(key === "driving_school"
+        ? {
+            reviews: [
+              { quote: "Passed first time with zero faults. Booking around work was so easy.", name: "Maya", meta: "Passed in 4 months" },
+              { quote: "Calm, patient and genuinely encouraging — I went from terrified to confident.", name: "Tom", meta: "Automatic learner" },
+              { quote: "Loved tracking my progress between lessons. Knew exactly what to practise.", name: "Priya", meta: "Passed first time" },
+            ],
+          }
+        : {}),
     },
     catalog: starter.items.map((it, i) => ({
       id: `${key}-item-${i}`,

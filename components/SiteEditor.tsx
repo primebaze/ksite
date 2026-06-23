@@ -10,6 +10,7 @@ export interface EditorActions {
   saveContent: (formData: FormData) => Promise<void>;
   saveHours: (formData: FormData) => Promise<void>;
   saveSocials: (formData: FormData) => Promise<void>;
+  saveReviews: (formData: FormData) => Promise<void>;
   saveOrderingLinks: (formData: FormData) => Promise<void>;
   catalogSave: (formData: FormData) => Promise<void>;
   catalogDelete: (formData: FormData) => Promise<void>;
@@ -166,6 +167,13 @@ export function SiteEditor({ site, actions }: { site: TenantSite; actions: Edito
             <ListEditor tenantId={id} action={actions.saveOrderingLinks} addLabel="+ Add link"
               columns={[{ name: "label", label: "Label (e.g. Order on Deliveroo)" }, { name: "url", label: "URL (https://…)" }]}
               initial={(content.ordering_links ?? []).map((o) => ({ label: o.label ?? "", url: o.url ?? "" }))} />
+          </div>
+          <div>
+            <h3 className="mb-1 text-sm font-medium text-white/70">Reviews</h3>
+            <p className="mb-3 text-xs text-white/40">Real customer reviews. Leave empty to hide the reviews section on your site.</p>
+            <ListEditor tenantId={id} action={actions.saveReviews} addLabel="+ Add review"
+              columns={[{ name: "quote", label: "What they said" }, { name: "name", label: "Name" }, { name: "meta", label: "e.g. Passed first time" }]}
+              initial={(content.reviews ?? []).map((r) => ({ quote: r.quote ?? "", name: r.name ?? "", meta: r.meta ?? "" }))} />
           </div>
         </div>
       </Card>

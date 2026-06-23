@@ -58,12 +58,8 @@ export default function ClutchDesign({ site, page = "home", basePath = "" }: Pre
     { label: "Contact", href: href("contact") },
   ].filter(Boolean) as { label: string; href: string }[];
 
-  // Static learner reviews — generic, no real brand names.
-  const reviews = [
-    { quote: "Passed first time with zero faults. The online booking made fitting lessons around work so easy.", name: "Maya", meta: "Passed in 4 months" },
-    { quote: "Calm, patient and genuinely encouraging. I went from terrified to confident on the motorway.", name: "Tom", meta: "Automatic learner" },
-    { quote: "Loved being able to track my progress between lessons. Knew exactly what to practise.", name: "Priya", meta: "Passed first time" },
-  ];
+  // Owner-managed reviews (edited in the dashboard); the section hides when empty.
+  const reviews = content.reviews ?? [];
 
   // Header: solid by default; transparent-over-hero only on the home page.
   const transparentHeader = page === "home";
@@ -437,7 +433,8 @@ export default function ClutchDesign({ site, page = "home", basePath = "" }: Pre
         </section>
       )}
 
-      {/* reviews */}
+      {/* reviews — owner-managed; hidden until they add some */}
+      {reviews.length > 0 && (
       <section style={{ background: "#e3f6f4" }}>
         <div className="mx-auto max-w-6xl px-6 py-20">
           <div className="max-w-2xl">
@@ -445,8 +442,8 @@ export default function ClutchDesign({ site, page = "home", basePath = "" }: Pre
             <h2 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl" style={{ color: INK }}>Passed first time</h2>
           </div>
           <div className="mt-10 grid gap-5 sm:grid-cols-3">
-            {reviews.map((r) => (
-              <figure key={r.name} className="flex flex-col rounded-3xl bg-white p-7" style={{ border: `1px solid ${LINE}` }}>
+            {reviews.map((r, i) => (
+              <figure key={i} className="flex flex-col rounded-3xl bg-white p-7" style={{ border: `1px solid ${LINE}` }}>
                 <div className="text-base" style={{ color: LIME, textShadow: `0 0 1px ${TEAL}` }} aria-hidden>★★★★★</div>
                 <blockquote className="mt-3 flex-1 text-[15px] leading-relaxed" style={{ color: INK }}>“{r.quote}”</blockquote>
                 <figcaption className="mt-5 text-sm">
@@ -458,6 +455,7 @@ export default function ClutchDesign({ site, page = "home", basePath = "" }: Pre
           </div>
         </div>
       </section>
+      )}
 
       {/* gallery strip */}
       {gallery.length > 0 && (
