@@ -1,13 +1,14 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { AnimatePresence, motion } from "motion/react";
-
-const EASE = [0.22, 0.61, 0.36, 1] as const;
 
 // Hero headline: a still "For Businesses:" with the type quickly scrolling
 // through in a fixed-width clipped slot — "For Businesses: Cafés",
 // "…: Salons", … The slot is sized to the widest word so nothing shifts.
+//
+// Each new word rises into the slot via a CSS keyframe (word-rise in
+// globals.css), re-triggered by the React key change — no motion runtime, so
+// the homepage hero ships no animation library.
 export function BusinessesRotator({ words }: { words: string[] }) {
   const [i, setI] = useState(0);
   const longest = words.reduce((a, b) => (b.length >= a.length ? b : a), "");
@@ -26,18 +27,13 @@ export function BusinessesRotator({ words }: { words: string[] }) {
         <span className="invisible col-start-1 row-start-1 whitespace-nowrap" aria-hidden>
           {longest}
         </span>
-        <AnimatePresence initial={false}>
-          <motion.span
-            key={words[i]}
-            className="col-start-1 row-start-1 inline-block whitespace-nowrap"
-            initial={{ y: "1em", opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: "-1em", opacity: 0 }}
-            transition={{ duration: 0.32, ease: EASE }}
-          >
-            {words[i]}
-          </motion.span>
-        </AnimatePresence>
+        <span
+          key={words[i]}
+          className="col-start-1 row-start-1 inline-block whitespace-nowrap"
+          style={{ animation: "word-rise 0.32s cubic-bezier(0.22, 0.61, 0.36, 1) both" }}
+        >
+          {words[i]}
+        </span>
       </span>
     </span>
   );

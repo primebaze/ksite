@@ -126,3 +126,16 @@ button[aria-disabled="true"] {
     transform: translateX(240%);
   }
 }
+
+/* Hero word rotator: each new word slides up into the clipped slot. Replaces a
+   motion-library animation so the homepage hero ships no animation runtime. */
+@keyframes word-rise {
+  from {
+    transform: translateY(1em);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}

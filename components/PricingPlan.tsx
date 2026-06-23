@@ -1,29 +1,51 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
-import { motion } from "motion/react";
+import { useEffect, useRef, useState } from "react";
 import { PLAN, gbp } from "@/lib/marketing";
 
 // One plan, billed monthly or yearly (yearly gives 2 months free). A small
 // segmented toggle switches the headline price; the features are the same.
+//
+// The active "pill" slides between the two buttons using a CSS transition over
+// a position measured from the active button (the buttons differ in width), so
+// the toggle needs no motion runtime.
 export function PricingPlan() {
   const [yearly, setYearly] = useState(false);
+  const monthlyRef = useRef<HTMLButtonElement>(null);
+  const yearlyRef = useRef<HTMLButtonElement>(null);
+  const [pill, setPill] = useState<{ left: number; width: number }>({ left: 0, width: 0 });
+
+  useEffect(() => {
+    const measure = () => {
+      const btn = (yearly ? yearlyRef : monthlyRef).current;
+      if (btn) setPill({ left: btn.offsetLeft, width: btn.offsetWidth });
+    };
+    measure();
+    window.addEventListener("resize", measure);
+    return () => window.removeEventListener("resize", measure);
+  }, [yearly]);
 
   return (
     <div className="mx-auto max-w-md">
       {/* Billing toggle */}
-      <div className="mx-auto flex w-fit items-center gap-1 rounded-full border border-ink/10 bg-ink/[0.03] p-1 text-sm">
-        {([["monthly", "Monthly"], ["yearly", "Yearly"]] as const).map(([key, label]) => {
+      <div className="relative mx-auto flex w-fit items-center gap-1 rounded-full border border-ink/10 bg-ink/[0.03] p-1 text-sm">
+        {/* Sliding active pill (measured from the active button) */}
+        <span
+          aria-hidden
+          className="absolute top-1 bottom-1 rounded-full bg-ink transition-all duration-300 ease-out"
+          style={{ left: pill.left, width: pill.width, opacity: pill.width ? 1 : 0 }}
+        />
+        {([["monthly", "Monthly", monthlyRef], ["yearly", "Yearly", yearlyRef]] as const).map(([key, label, ref]) => {
           const active = (key === "yearly") === yearly;
           return (
             <button
+              ref={ref}
               key={key}
               type="button"
               onClick={() => setYearly(key === "yearly")}
-              className={`relative rounded-full px-4 py-1.5 font-medium transition ${active ? "text-paper" : "text-ink/60 hover:text-ink"}`}
+              className={`relative z-10 rounded-full px-4 py-1.5 font-medium transition-colors ${active ? "text-paper" : "text-ink/60 hover:text-ink"}`}
             >
-              {active && <motion.span layoutId="billing-pill" className="absolute inset-0 rounded-full bg-ink" transition={{ type: "spring", stiffness: 400, damping: 32 }} />}
               <span className="relative flex items-center">
                 {label}
                 {key === "yearly" && (
