@@ -61,6 +61,7 @@ export function GetStartedFlow({
   buildDesigns = {},
   groupDesigns = {},
   groupPhotos = {},
+  typePhotos = {},
   typeDesigns = {},
   turnstileKey,
   error,
@@ -75,6 +76,8 @@ export function GetStartedFlow({
   groupDesigns?: Record<string, string[]>;
   /** On-theme photo ids per group so each design card shows a different photo. */
   groupPhotos?: Record<string, string[]>;
+  /** Per-type photo ids that override the group pool (e.g. driving_school -> cars). */
+  typePhotos?: Record<string, string[]>;
   /** Per-type design sets (e.g. driving_school -> 5 driving designs). */
   typeDesigns?: Record<string, string[]>;
   turnstileKey?: string;
@@ -178,7 +181,9 @@ export function GetStartedFlow({
     if (!selected) return [];
     const all = groupDesigns[selected.group] ?? [];
     if (all.length === 0) return [];
-    const photos = groupPhotos[selected.group] ?? [];
+    // A per-type photo pool (e.g. driving school -> cars) overrides the group's
+    // pool so these cards never show off-theme imagery (classrooms for a car).
+    const photos = (typePhotos[preset]?.length ? typePhotos[preset] : groupPhotos[selected.group]) ?? [];
     const recommended = buildDesigns[preset] ?? all[0];
 
     let list: string[];
@@ -191,7 +196,7 @@ export function GetStartedFlow({
       list = [recommended];
     }
     return list.map((design, i) => ({ design, img: photos[i % Math.max(photos.length, 1)] ?? "" }));
-  }, [selected, preset, groupDesigns, buildDesigns, groupPhotos, typeDesigns]);
+  }, [selected, preset, groupDesigns, buildDesigns, groupPhotos, typePhotos, typeDesigns]);
 
   return (
     <form ref={formRef} action={action} className="flex min-h-[calc(100vh-6rem)] flex-col overflow-hidden rounded-3xl border border-ink/10 bg-ink/[0.02] shadow-[0_40px_140px_-80px_rgba(16,185,129,0.9)]">

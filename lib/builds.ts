@@ -114,6 +114,13 @@ const GALLERY_BY_KEY: Record<string, string[]> = {
   ],
 };
 
+// Per-type photo pool for the get-started DESIGN picker (and the hero of a site
+// created through it). Without this, driving-school designs would draw from the
+// Education group pool (classrooms/books). Hero pin first, then the gallery set.
+export const TYPE_PHOTOS: Record<string, string[]> = {
+  driving_school: ["1503376780353-7e6692767b70", ...GALLERY_BY_KEY.driving_school],
+};
+
 // heroFor + the unique-assignment precompute live at the end of this file,
 // after sampleGroups/buildGroups are defined.
 

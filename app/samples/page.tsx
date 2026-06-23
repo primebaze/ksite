@@ -47,18 +47,39 @@ const POPULAR_DESIGNS: BrowserItem[] = [
   { key: "driving_school", design: "ignition", label: "Driving school", sublabel: "Education", style: "bold" },
 ];
 
+// Driving school has five bespoke designs, so it gets its own category (rather
+// than a single card buried inside Education).
+const DRIVING_DESIGNS: BrowserItem[] = [
+  { key: "driving_school", design: "ignition", label: "Ignition", sublabel: "Bright & friendly", style: "bold" },
+  { key: "driving_school", design: "clutch", label: "Clutch", sublabel: "Modern & clean", style: "minimal" },
+  { key: "driving_school", design: "roadcraft", label: "Roadcraft", sublabel: "Bold & results-led", style: "bold" },
+  { key: "driving_school", design: "milestone", label: "Milestone", sublabel: "Warm & reassuring", style: "warm" },
+  { key: "driving_school", design: "junction", label: "Junction", sublabel: "Premium intensive", style: "luxe" },
+];
+
 export default function SamplesIndex() {
-  const groups: BrowserGroup[] = sampleGroups(10).map((g) => ({
+  const rawGroups: BrowserGroup[] = sampleGroups(10).map((g) => ({
     group: g.group,
     builds: g.builds.map((b) => ({ ...b, style: styleOf(b.key) })),
   }));
+
+  // Driving school is its own category; remove its single build from Education
+  // so it isn't shown in both places.
+  const groups = rawGroups.map((g) =>
+    g.group === "Education" ? { ...g, builds: g.builds.filter((b) => b.key !== "driving_school") } : g,
+  );
 
   const popular: BrowserGroup = {
     group: "Popular designs",
     builds: POPULAR_DESIGNS,
   };
+  const driving: BrowserGroup = { group: "Driving school", builds: DRIVING_DESIGNS };
 
-  const all = [popular, ...groups];
+  // Slot the Driving school category right after Education in the sidebar.
+  const eduIdx = groups.findIndex((g) => g.group === "Education");
+  const ordered = eduIdx >= 0 ? [...groups.slice(0, eduIdx + 1), driving, ...groups.slice(eduIdx + 1)] : [...groups, driving];
+
+  const all = [popular, ...ordered];
 
   return (
     <div className="min-h-screen bg-paper font-sans text-ink antialiased">

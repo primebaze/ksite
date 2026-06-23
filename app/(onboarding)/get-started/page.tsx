@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { VISIBLE_BUILDS, GROUP_PHOTOS, buildGroups, buildFor } from "@/lib/builds";
+import { VISIBLE_BUILDS, GROUP_PHOTOS, TYPE_PHOTOS, buildGroups, buildFor } from "@/lib/builds";
 import { BUILD_DESIGN, GROUP_DESIGNS, TYPE_DESIGNS } from "@/lib/sample-site";
 import { GetStartedFlow } from "@/components/GetStartedFlow";
 import { startOnboarding } from "./actions";
@@ -40,6 +40,7 @@ export default async function GetStartedPage({
         buildDesigns={BUILD_DESIGN}
         groupDesigns={GROUP_DESIGNS}
         groupPhotos={GROUP_PHOTOS}
+        typePhotos={TYPE_PHOTOS}
         typeDesigns={TYPE_DESIGNS}
         turnstileKey={TURNSTILE_KEY}
         error={error}
