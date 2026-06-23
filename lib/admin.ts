@@ -409,16 +409,13 @@ export async function deleteTenantAccount(tenantId: string): Promise<void> {
   const { error } = await c.from("tenants").delete().eq("id", tenantId);
   if (error) throw new Error(error.message);
 
-  // Delete the owner's auth login, but only if they own no other site and
-  // aren't staff.
+  // Delete the owner's auth login (one email = one site, so there's nothing
+  // else of theirs to keep) — but never a staff login.
   if (ownerId) {
-    const { data: others } = await c.from("tenants").select("id").eq("owner_id", ownerId).limit(1);
-    if (!others || others.length === 0) {
-      const { data: u } = await c.auth.admin.getUserById(ownerId);
-      const email = u?.user?.email ?? null;
-      const staff = email ? await isStaff(email) : false;
-      if (!staff) await c.auth.admin.deleteUser(ownerId).catch(() => {});
-    }
+    const { data: u } = await c.auth.admin.getUserById(ownerId);
+    const email = u?.user?.email ?? null;
+    const staff = email ? await isStaff(email) : false;
+    if (!staff) await c.auth.admin.deleteUser(ownerId).catch(() => {});
   }
 }
 
@@ -442,7 +439,13 @@ export async function resolveOwnerId(email: string): Promise<{ id: string; creat
   const e = email.trim().toLowerCase();
   if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e)) throw new Error("Enter a valid owner email.");
   const existing = await findUserIdByEmail(e);
-  if (existing) return { id: existing, created: false };
+  if (existing) {
+    // One email = one site. If this account already owns a site, don't link a
+    // second one.
+    const { data: owned } = await client().from("tenants").select("id").eq("owner_id", existing).limit(1);
+    if (owned && owned.length) throw new Error("That email already has a site — each account can have one.");
+    return { id: existing, created: false };
+  }
   const { data, error } = await client().auth.admin.createUser({
     email: e,
     email_confirm: true,
