@@ -35,7 +35,13 @@ function defaultHours(archetype: BuildArchetype): SiteContent["hours"] {
       { day: "Sun and Mon", open: "Closed" },
     ];
   }
-  return undefined;
+  // services (trades, professional, etc.) — never leave hours empty, or owners
+  // fill the gap with a vague single line. Clean, structured day ranges.
+  return [
+    { day: "Mon to Fri", open: "08:00 to 18:00" },
+    { day: "Saturday", open: "09:00 to 13:00" },
+    { day: "Sunday", open: "Closed" },
+  ];
 }
 
 export function starterContent(preset: string): Starter {
