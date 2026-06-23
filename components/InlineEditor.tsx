@@ -139,7 +139,7 @@ export function InlineEditor({
         del.setAttribute("aria-label", "Delete this item");
         del.textContent = "✕";
         del.style.cssText =
-          "position:absolute;top:50%;right:-6px;transform:translateY(-50%);z-index:60;width:22px;height:22px;display:flex;align-items:center;justify-content:center;border-radius:9999px;background:#dc2626;color:#fff;font-size:11px;line-height:1;border:2px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.35);cursor:pointer;";
+          "position:absolute;top:50%;right:-30px;transform:translateY(-50%);z-index:60;width:22px;height:22px;display:flex;align-items:center;justify-content:center;border-radius:9999px;background:#dc2626;color:#fff;font-size:11px;line-height:1;border:2px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.35);cursor:pointer;";
         const onDel = async (ev: Event) => {
           ev.preventDefault();
           ev.stopPropagation();
