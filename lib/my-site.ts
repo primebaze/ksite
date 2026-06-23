@@ -1,5 +1,6 @@
 import "server-only";
 import { createSupabaseServerClient } from "./supabase-server";
+import { getServiceClient } from "./supabase";
 import { revalidateSiteHost, revalidateTenant } from "./tenant";
 import { addProjectDomain, createApexDnsRecord, isDomainLive, isVercelConfigured } from "./vercel";
 import { sendAdminDomainLiveNotification, sendAdminLifecycleAlert, sendCancellationScheduledEmail, sendDomainLiveEmail } from "./email";
@@ -389,8 +390,13 @@ export async function cancelMySubscription(): Promise<void> {
   const stripe = getStripe();
   if (!stripe || !subscriptionId) throw new Error("No active subscription found.");
   const sub = await stripe.subscriptions.update(subscriptionId, { cancel_at_period_end: true });
-  // tenant_billing.cancel_at is persisted by the webhook (subscription.updated);
-  // here we just trigger Stripe and send the confirmation emails.
+  // Persist cancel_at NOW so the billing page shows "Cancelling" on the very
+  // next render. The subscription.updated webhook writes the same value, but
+  // async — relying on it alone made the UI lag a click behind.
+  const endIso = sub.cancel_at ? new Date(sub.cancel_at * 1000).toISOString() : null;
+  const ref = await myRef();
+  const svc = getServiceClient();
+  if (svc && ref?.id) await svc.from("tenant_billing").update({ cancel_at: endIso }).eq("tenant_id", ref.id);
   const endDate = sub.cancel_at ? new Date(sub.cancel_at * 1000).toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" }) : null;
   const supabase = await db();
   const { data: { user } } = await supabase.auth.getUser();
@@ -405,6 +411,11 @@ export async function resumeMySubscription(): Promise<void> {
   const stripe = getStripe();
   if (!stripe || !subscriptionId) throw new Error("No subscription found.");
   await stripe.subscriptions.update(subscriptionId, { cancel_at_period_end: false });
+  // Clear cancel_at immediately so the page shows "Active" right away (webhook
+  // also confirms this async).
+  const ref = await myRef();
+  const svc = getServiceClient();
+  if (svc && ref?.id) await svc.from("tenant_billing").update({ cancel_at: null }).eq("tenant_id", ref.id);
 }
 
 // --- KYC (self-serve) -------------------------------------------------------
