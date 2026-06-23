@@ -126,11 +126,11 @@ export default function IndigoDesign({ site, page = "home", basePath = "" }: Pre
   );
 
   // Page banner clears the fixed header on sub-pages.
-  const banner = (kicker: string, title: string, color: string) => (
+  const banner = (kicker: string, title: string, color: string, editKey?: string) => (
     <section style={{ background: PAPER }}>
       <div className="mx-auto max-w-7xl px-6 pb-12 pt-32 sm:px-8 sm:pt-36">
         <Chip color={color}>{kicker}</Chip>
-        <h1 className="mt-5 max-w-4xl text-4xl font-extrabold leading-[1.02] tracking-tight sm:text-6xl" style={{ color: INK }}>{title}</h1>
+        <h1 {...(editKey ? { "data-edit": editKey } : {})} className="mt-5 max-w-4xl text-4xl font-extrabold leading-[1.02] tracking-tight sm:text-6xl" style={{ color: INK }}>{title}</h1>
       </div>
     </section>
   );
@@ -242,7 +242,7 @@ export default function IndigoDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "about") {
     return shell(
       <>
-        {banner("About", "It is not just about hair", PINK)}
+        {banner("About", content.about_heading ?? "It is not just about hair", PINK, "content.about_heading")}
         <section className="mx-auto max-w-3xl px-6 pb-24 pt-8 sm:px-8">
           {content.about ? (
             <p data-edit="content.about" className="text-2xl font-medium leading-[1.5] tracking-tight text-neutral-800 sm:text-3xl">{content.about}</p>
@@ -408,7 +408,7 @@ export default function IndigoDesign({ site, page = "home", basePath = "" }: Pre
       {/* closing call to action band */}
       <section style={{ background: INK }}>
         <div className="mx-auto flex max-w-7xl flex-col items-start gap-7 px-6 py-20 sm:px-8 lg:flex-row lg:items-center lg:justify-between">
-          <h2 className="max-w-2xl text-3xl font-extrabold leading-tight tracking-tight text-white sm:text-4xl">Ready when you are.</h2>
+          <h2 data-edit="content.cta_heading" className="max-w-2xl text-3xl font-extrabold leading-tight tracking-tight text-white sm:text-4xl">{content.cta_heading ?? "Ready when you are."}</h2>
           <a href={book} className="inline-flex rounded-full px-9 py-4 text-sm font-bold transition hover:opacity-85" style={{ background: MINT, color: INK }}>Book appointment</a>
         </div>
       </section>

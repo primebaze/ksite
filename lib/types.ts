@@ -46,6 +46,10 @@ export interface SiteContent {
    *  editable image in the live editor. See `editImg` in presets/shared. */
   images?: Record<string, string>;
   about?: string;
+  /** Optional overrides for a design's baked headlines (about-page title and
+   *  closing call-to-action), so owners can reword them inline. */
+  about_heading?: string;
+  cta_heading?: string;
   cuisine_type?: string; // restaurant
   hours?: { day: string; open: string }[];
   address?: string;
