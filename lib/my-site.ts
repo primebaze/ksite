@@ -235,6 +235,26 @@ export async function upsertMyCatalogItem(item: Partial<CatalogItem> & { id?: st
   await bust(ref);
 }
 
+// Update ONLY the named fields of one catalog item. Used by inline editing,
+// where a single-field edit (e.g. just the name) must never wipe the item's
+// other columns — unlike upsertMyCatalogItem, which rebuilds the whole row.
+export async function patchMyCatalogItem(
+  id: string,
+  fields: Partial<Pick<CatalogItem, "name" | "description" | "price">>,
+) {
+  const supabase = await db();
+  const ref = await myRef();
+  if (!ref || !id) return;
+  const patch: Record<string, string | null> = {};
+  if (fields.name !== undefined) patch.name = fields.name;
+  if (fields.description !== undefined) patch.description = fields.description;
+  if (fields.price !== undefined) patch.price = fields.price;
+  if (Object.keys(patch).length === 0) return;
+  // RLS scopes to the owner; the extra tenant_id filter is belt-and-braces.
+  await supabase.from("catalog_items").update(patch).eq("id", id).eq("tenant_id", ref.id);
+  await bust(ref);
+}
+
 export async function deleteMyCatalogItem(itemId: string) {
   const supabase = await db();
   const ref = await myRef();

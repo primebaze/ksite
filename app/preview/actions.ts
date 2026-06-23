@@ -4,12 +4,13 @@ import { revalidatePath } from "next/cache";
 import {
   deleteMyCatalogItem,
   getMyTenantFull,
+  patchMyCatalogItem,
   updateMyContent,
   updateMyTenant,
   updateMyTheme,
   upsertMyCatalogItem,
 } from "@/lib/my-site";
-import type { CatalogItem, SiteContent, Theme } from "@/lib/types";
+import type { SiteContent, Theme } from "@/lib/types";
 import { isHexColor } from "@/lib/palettes";
 
 const STYLES = ["editorial", "bold", "minimal", "warm", "luxe", "classic"];
@@ -79,8 +80,10 @@ export async function saveInline(changes: Record<string, string>): Promise<{ ok:
       }
     } else if (key.startsWith("item:")) {
       const [, id, field] = key.split(":");
-      if (id && ["name", "description", "price"].includes(field)) {
-        await upsertMyCatalogItem({ id, [field]: val } as Partial<CatalogItem> & { id: string });
+      if (id && (field === "name" || field === "description" || field === "price")) {
+        // Patch ONLY the edited field — upserting a partial would null out the
+        // item's other columns (price, description, section).
+        await patchMyCatalogItem(id, { [field]: val });
       }
     }
   }

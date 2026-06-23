@@ -121,6 +121,13 @@ export function InlineEditor({
     // with data-edit="item:<id>:name", so we anchor off that.
     let itemCount = 0;
     let lastRow: HTMLElement | null = null;
+    // On phones there's no room to float the delete control outside the row, so
+    // tuck it into the top-right corner; on wider screens it hangs just off the
+    // right edge where it never overlaps the price.
+    const isMobile = window.matchMedia("(max-width: 640px)").matches;
+    const delPos = isMobile
+      ? "top:2px;right:2px;"
+      : "top:50%;right:-30px;transform:translateY(-50%);";
     if (deleteItem) {
       const seen = new Set<string>();
       for (const el of Array.from(root.querySelectorAll<HTMLElement>("[data-edit]"))) {
@@ -139,7 +146,7 @@ export function InlineEditor({
         del.setAttribute("aria-label", "Delete this item");
         del.textContent = "✕";
         del.style.cssText =
-          "position:absolute;top:50%;right:-30px;transform:translateY(-50%);z-index:60;width:22px;height:22px;display:flex;align-items:center;justify-content:center;border-radius:9999px;background:#dc2626;color:#fff;font-size:11px;line-height:1;border:2px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.35);cursor:pointer;";
+          `position:absolute;${delPos}z-index:60;width:22px;height:22px;display:flex;align-items:center;justify-content:center;border-radius:9999px;background:#dc2626;color:#fff;font-size:11px;line-height:1;border:2px solid #fff;box-shadow:0 2px 8px rgba(0,0,0,.35);cursor:pointer;`;
         const onDel = async (ev: Event) => {
           ev.preventDefault();
           ev.stopPropagation();
@@ -254,46 +261,47 @@ export function InlineEditor({
         </div>
       )}
 
-      {/* Edit dock — one responsive bar for status + design + photo + done */}
+      {/* Edit dock — status + actions + Done. "Done" stays pinned and the action
+          row scrolls horizontally if it can't all fit (small phones), so no
+          control is ever clipped off-screen. */}
       <div className="pointer-events-none fixed inset-x-0 bottom-0 z-[200] flex justify-center px-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
-        <div className="pointer-events-auto flex max-w-[calc(100vw-1.5rem)] items-center gap-1.5 rounded-full border border-white/10 bg-black/85 p-1.5 pl-3.5 text-sm text-white shadow-2xl backdrop-blur">
-          <span className="flex shrink-0 items-center gap-2 pr-0.5">
+        <div className="pointer-events-auto flex max-w-[calc(100vw-1.5rem)] items-center gap-1.5 rounded-full border border-white/10 bg-black/85 p-1.5 pl-3 text-sm text-white shadow-2xl backdrop-blur">
+          <span className="flex shrink-0 items-center gap-2">
             <span className={`h-2 w-2 rounded-full ${status === "saving" ? "animate-pulse bg-amber-400" : status === "error" ? "bg-red-400" : "bg-emerald-400"}`} />
-            <span className="text-white/65">
-              <span className="sm:hidden">{status === "saving" ? "Saving" : status === "saved" ? "Saved" : status === "error" ? "Error" : "Editing"}</span>
-              <span className="hidden sm:inline">{status === "saving" ? "Saving…" : status === "saved" ? "Saved ✓" : status === "error" ? "Couldn’t save" : "Tap text or a photo to edit"}</span>
-            </span>
+            <span className="hidden text-white/65 sm:inline">{status === "saving" ? "Saving…" : status === "saved" ? "Saved ✓" : status === "error" ? "Couldn’t save" : "Tap text or a photo to edit"}</span>
           </span>
 
-          {design && (
+          <div className="flex min-w-0 flex-1 items-center gap-1.5 overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+            {design && (
+              <button
+                type="button"
+                onClick={() => setDesignOpen(true)}
+                className="flex shrink-0 items-center gap-1.5 rounded-full border border-white/20 px-3 py-1.5 font-medium text-white transition hover:bg-white/10"
+              >
+                <span aria-hidden>🎨</span> Design
+              </button>
+            )}
+
             <button
               type="button"
-              onClick={() => setDesignOpen(true)}
+              data-tour="cover"
+              onClick={() => pickImage("hero")}
               className="flex shrink-0 items-center gap-1.5 rounded-full border border-white/20 px-3 py-1.5 font-medium text-white transition hover:bg-white/10"
             >
-              <span aria-hidden>🎨</span> Design
+              <span aria-hidden>🖼️</span> Photo
             </button>
-          )}
 
-          <button
-            type="button"
-            data-tour="cover"
-            onClick={() => pickImage("hero")}
-            className="flex shrink-0 items-center gap-1.5 rounded-full border border-white/20 px-3 py-1.5 font-medium text-white transition hover:bg-white/10"
-          >
-            <span aria-hidden>🖼️</span> Photo
-          </button>
-
-          {hasCatalog && addItem && (
-            <button
-              type="button"
-              onClick={onAddItem}
-              disabled={busy}
-              className="flex shrink-0 items-center gap-1.5 rounded-full border border-white/20 px-3 py-1.5 font-medium text-white transition hover:bg-white/10 disabled:opacity-60"
-            >
-              <span aria-hidden>＋</span> {busy ? "Adding…" : "Add item"}
-            </button>
-          )}
+            {hasCatalog && addItem && (
+              <button
+                type="button"
+                onClick={onAddItem}
+                disabled={busy}
+                className="flex shrink-0 items-center gap-1.5 rounded-full border border-white/20 px-3 py-1.5 font-medium text-white transition hover:bg-white/10 disabled:opacity-60"
+              >
+                <span aria-hidden>＋</span> {busy ? "Adding…" : "Add item"}
+              </button>
+            )}
+          </div>
 
           <a href="/dashboard" data-tour="done" className="shrink-0 rounded-full bg-white px-4 py-1.5 font-semibold text-black transition hover:bg-white/90">Done</a>
         </div>
