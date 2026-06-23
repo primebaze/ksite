@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { createTenant, deleteTenantAccount, requireStaff, resolveOwnerId, sendOwnerWelcome } from "@/lib/admin";
 import { isVertical } from "@/lib/verticals";
+import { cleanBusinessName } from "@/lib/business-name";
 
 // Bulk-delete selected accounts from the clients list. Irreversible.
 export async function deleteTenantsAction(formData: FormData) {
@@ -22,7 +23,6 @@ export async function deleteTenantsAction(formData: FormData) {
 
 export async function createTenantAction(formData: FormData) {
   await requireStaff();
-  const business_name = String(formData.get("business_name") ?? "").trim();
   const preset = String(formData.get("preset") ?? "");
   const ownerEmail = String(formData.get("owner_email") ?? "").trim();
   const subdomain = String(formData.get("subdomain") ?? "")
@@ -30,7 +30,14 @@ export async function createTenantAction(formData: FormData) {
     .toLowerCase()
     .replace(/[^a-z0-9-]/g, "");
 
-  if (!business_name || !subdomain || !isVertical(preset)) {
+  let business_name: string;
+  try {
+    business_name = cleanBusinessName(String(formData.get("business_name") ?? ""));
+  } catch (e) {
+    redirect(`/kmanageradmin/new?error=${encodeURIComponent(e instanceof Error ? e.message : "Enter a valid business name")}`);
+  }
+
+  if (!subdomain || !isVertical(preset)) {
     redirect("/kmanageradmin/new?error=Please+fill+in+all+fields");
   }
 

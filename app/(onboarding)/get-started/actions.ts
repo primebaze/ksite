@@ -8,6 +8,7 @@ import { buildFor } from "@/lib/builds";
 import { moderate } from "@/lib/moderation";
 import { rateLimit, ipFromHeaders } from "@/lib/rate-limit";
 import { verifyTurnstile } from "@/lib/turnstile";
+import { cleanBusinessName } from "@/lib/business-name";
 
 function err(msg: string): never {
   redirect(`/get-started?error=${encodeURIComponent(msg)}`);
@@ -37,7 +38,12 @@ async function uniqueSubdomain(base: string): Promise<string> {
 // confirmation is on, so we stash the business details in the user's signup
 // metadata and create the site after they confirm (see app/auth/confirm).
 export async function startOnboarding(formData: FormData) {
-  const business_name = String(formData.get("business_name") ?? "").trim();
+  let business_name: string;
+  try {
+    business_name = cleanBusinessName(String(formData.get("business_name") ?? ""));
+  } catch (e) {
+    err(e instanceof Error ? e.message : "Please add your business name.");
+  }
   const preset = String(formData.get("preset") ?? "");
   const email = String(formData.get("email") ?? "").trim();
   const phone = String(formData.get("phone") ?? "").trim();
@@ -46,7 +52,6 @@ export async function startOnboarding(formData: FormData) {
   const selectedStyle = String(formData.get("selected_style") ?? "").trim();
   const designKey = String(formData.get("design") ?? "").trim();
 
-  if (!business_name) err("Please add your business name.");
   if (!email || password.length < 8) err("Enter an email and a password of at least 8 characters.");
   if (!phone) err("Please add a phone number.");
   // Terms must be explicitly accepted (the checkbox sends "on" when ticked).

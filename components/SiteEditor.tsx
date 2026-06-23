@@ -1,5 +1,6 @@
 import type { TenantSite } from "@/lib/types";
 import { catalogLabelFor } from "@/lib/verticals";
+import { BUSINESS_NAME_PATTERN, BUSINESS_NAME_HINT } from "@/lib/business-name";
 import { ListEditor } from "./ListEditor";
 
 // Dark, client-facing editor. Reused on the self-serve dashboard AND the staff
@@ -89,7 +90,7 @@ export function SiteEditor({ site, actions }: { site: TenantSite; actions: Edito
         <form action={actions.saveBasics} className="space-y-5">
           <input type="hidden" name="id" value={id} />
           <Field label="Business name">
-            <input name="business_name" defaultValue={tenant.business_name} className={input} />
+            <input name="business_name" defaultValue={tenant.business_name} pattern={BUSINESS_NAME_PATTERN} title={BUSINESS_NAME_HINT} className={input} />
           </Field>
           <div className="grid gap-4 sm:grid-cols-3">
             <Field label="Primary colour">

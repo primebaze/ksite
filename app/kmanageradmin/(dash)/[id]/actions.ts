@@ -23,6 +23,7 @@ import {
   upsertGalleryImage,
   upsertTeamMember,
 } from "@/lib/admin";
+import { cleanBusinessName } from "@/lib/business-name";
 import type { AccountStatus } from "@/lib/types";
 import { isVertical } from "@/lib/verticals";
 import type { SiteContent, Tenant } from "@/lib/types";
@@ -59,8 +60,14 @@ function zipRows(formData: FormData, cols: string[]): Record<string, string>[] {
 export async function saveBasics(formData: FormData) {
   await requireStaff();
   const id = String(formData.get("id"));
+  let business_name: string;
+  try {
+    business_name = cleanBusinessName(String(formData.get("business_name") ?? ""));
+  } catch (e) {
+    redirect(`/kmanageradmin/${id}?error=${encodeURIComponent(e instanceof Error ? e.message : "Invalid business name")}`);
+  }
   await updateTenantFields(id, {
-    business_name: String(formData.get("business_name") ?? "").trim(),
+    business_name,
     meta_title: str(formData, "meta_title"),
     meta_description: str(formData, "meta_description"),
   });

@@ -5,6 +5,7 @@ import { useMemo, useRef, useState } from "react";
 import { TemplateThumb } from "./TemplateThumb";
 import { SubmitButton } from "./SubmitButton";
 import { Turnstile } from "./Turnstile";
+import { BUSINESS_NAME_PATTERN, BUSINESS_NAME_HINT } from "@/lib/business-name";
 
 interface BuildOption {
   key: string;
@@ -450,7 +451,7 @@ export function GetStartedFlow({
             <div className="mt-6 grid gap-4 lg:grid-cols-2">
               <div>
                 <label className="text-sm font-medium">Business name</label>
-                <input name="business_name" required className={input} placeholder="Tamara Cosmetics" />
+                <input name="business_name" required pattern={BUSINESS_NAME_PATTERN} title={BUSINESS_NAME_HINT} className={input} placeholder="Tamara Cosmetics" />
               </div>
               {preset === "other" && (
                 <div>

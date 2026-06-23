@@ -20,6 +20,7 @@ import {
   upsertMyTeamMember,
 } from "@/lib/my-site";
 import { getStripe, priceForBilling, type BillingPeriod, type Plan } from "@/lib/stripe";
+import { cleanBusinessName } from "@/lib/business-name";
 import type { SiteContent } from "@/lib/types";
 
 const trimOrNull = (f: FormData, k: string) => {
@@ -67,8 +68,14 @@ const str = (f: FormData, k: string) => {
 const refresh = () => revalidatePath("/dashboard/edit");
 
 export async function saveBasics(formData: FormData) {
+  let business_name: string;
+  try {
+    business_name = cleanBusinessName(String(formData.get("business_name") ?? ""));
+  } catch (e) {
+    redirect(`/dashboard/edit?error=${encodeURIComponent(e instanceof Error ? e.message : "Invalid business name")}`);
+  }
   await updateMyTenant({
-    business_name: String(formData.get("business_name") ?? "").trim(),
+    business_name,
     meta_title: str(formData, "meta_title"),
     meta_description: str(formData, "meta_description"),
   });

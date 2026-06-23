@@ -2,6 +2,7 @@ import Link from "next/link";
 import { VERTICALS } from "@/lib/verticals";
 import { SITE_BASE } from "@/lib/marketing";
 import { createTenantAction } from "../actions";
+import { BUSINESS_NAME_PATTERN, BUSINESS_NAME_HINT } from "@/lib/business-name";
 
 export default async function NewClientPage({
   searchParams,
@@ -20,7 +21,7 @@ export default async function NewClientPage({
       <form action={createTenantAction} className="mt-6 space-y-4 rounded-xl border border-ink/10 bg-ink/[0.03] p-6">
         <div>
           <label className="block text-sm font-medium">Business name</label>
-          <input name="business_name" required className="mt-1 w-full rounded-md border border-ink/10 bg-ink/5 px-3 py-2 text-sm text-ink placeholder-ink/30 outline-none focus:border-ink/30" />
+          <input name="business_name" required pattern={BUSINESS_NAME_PATTERN} title={BUSINESS_NAME_HINT} className="mt-1 w-full rounded-md border border-ink/10 bg-ink/5 px-3 py-2 text-sm text-ink placeholder-ink/30 outline-none focus:border-ink/30" />
         </div>
 
         <div>
