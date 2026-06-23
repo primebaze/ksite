@@ -1,12 +1,16 @@
 "use client";
 
-import { motion } from "motion/react";
-import type { ReactNode } from "react";
-
-const EASE = [0.21, 0.47, 0.32, 0.98] as const;
+import { useEffect, useRef, useState, type ReactNode } from "react";
 
 // Fade + rise into view on scroll. Used across the marketing pages for a
 // high-end, composed feel.
+//
+// Implemented with IntersectionObserver + a CSS transition rather than a motion
+// library: this is the most-used wrapper on the marketing site, so keeping it
+// dependency-free keeps those pages' JS tiny and their navigation instant. The
+// API (children, delay, y, className) is unchanged.
+const EASE = "cubic-bezier(0.21, 0.47, 0.32, 0.98)";
+
 export function Reveal({
   children,
   delay = 0,
@@ -18,15 +22,44 @@ export function Reveal({
   y?: number;
   className?: string;
 }) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [shown, setShown] = useState(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (typeof IntersectionObserver === "undefined") {
+      setShown(true);
+      return;
+    }
+    const io = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          if (entry.isIntersecting) {
+            setShown(true);
+            io.disconnect();
+            break;
+          }
+        }
+      },
+      { rootMargin: "-80px" },
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
   return (
-    <motion.div
+    <div
+      ref={ref}
       className={className}
-      initial={{ opacity: 0.7, y }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.6, delay, ease: EASE }}
+      style={{
+        opacity: shown ? 1 : 0.7,
+        transform: shown ? "none" : `translateY(${y}px)`,
+        transition: `opacity 0.6s ${EASE} ${delay}s, transform 0.6s ${EASE} ${delay}s`,
+        willChange: "opacity, transform",
+      }}
     >
       {children}
-    </motion.div>
+    </div>
   );
 }
