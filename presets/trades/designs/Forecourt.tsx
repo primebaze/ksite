@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { ForecourtHeader } from "./ForecourtHeader";
 import { TradesSocialIcon } from "./TradesMobileNav";
@@ -114,7 +114,7 @@ export default function ForecourtDesign({ site, page = "home", basePath = "" }: 
           )}
         </div>
         <div>
-          <h4 style={display} className="text-xs font-bold uppercase tracking-[0.2em]" >Showroom</h4>
+          <h4 style={display} className="text-xs font-bold uppercase tracking-[0.2em]" {...editCopy(content, "footer_showroom", "Showroom")} />
           <ul className="mt-5 space-y-3 text-sm" style={{ color: STEEL }}>
             {nav.map((l) => (
               <li key={l.label}><a href={l.href} className="transition hover:text-white">{l.label}</a></li>
@@ -122,7 +122,7 @@ export default function ForecourtDesign({ site, page = "home", basePath = "" }: 
           </ul>
         </div>
         <div>
-          <h4 style={display} className="text-xs font-bold uppercase tracking-[0.2em]">Visit us</h4>
+          <h4 style={display} className="text-xs font-bold uppercase tracking-[0.2em]" {...editCopy(content, "footer_visit", "Visit us")} />
           <div className="mt-5 space-y-3 text-sm" style={{ color: STEEL }}>
             {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -130,7 +130,7 @@ export default function ForecourtDesign({ site, page = "home", basePath = "" }: 
           </div>
         </div>
         <div>
-          <h4 style={display} className="text-xs font-bold uppercase tracking-[0.2em]">Opening hours</h4>
+          <h4 style={display} className="text-xs font-bold uppercase tracking-[0.2em]" {...editCopy(content, "footer_hours", "Opening hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm" style={{ color: STEEL }}>
               {content.hours.map((h, i) => (
@@ -155,11 +155,11 @@ export default function ForecourtDesign({ site, page = "home", basePath = "" }: 
     </div>
   );
 
-  const banner = (kicker: string, title: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string) => (
     <section style={{ background: `linear-gradient(160deg, ${NAVY} 0%, ${NAVY_DEEP} 100%)` }}>
       <div className="mx-auto max-w-7xl px-8 pb-14 pt-32 sm:pt-40">
-        <Eyebrow on="dark">{kicker}</Eyebrow>
-        <h1 style={{ ...display, color: WHITE }} className="mt-4 text-4xl font-bold leading-[1.02] tracking-tight sm:text-6xl">{title}</h1>
+        <Eyebrow on="dark"><span {...editCopy(content, kickerKey, kicker)} /></Eyebrow>
+        <h1 style={{ ...display, color: WHITE }} className="mt-4 text-4xl font-bold leading-[1.02] tracking-tight sm:text-6xl" {...editCopy(content, titleKey, title)} />
       </div>
     </section>
   );
@@ -168,7 +168,7 @@ export default function ForecourtDesign({ site, page = "home", basePath = "" }: 
   if (page === "services") {
     return shell(
       <>
-        {banner("Browse the stock", "Our Current Stock")}
+        {banner("Browse the stock", "svc_kicker", "Our Current Stock", "svc_title")}
         <section className="mx-auto max-w-5xl px-8 py-20">
           {services.length > 0 ? (
             stockList(services)
@@ -183,7 +183,7 @@ export default function ForecourtDesign({ site, page = "home", basePath = "" }: 
   if (page === "about") {
     return shell(
       <>
-        {banner("About the dealership", "Buy With Confidence")}
+        {banner("About the dealership", "about_kicker", "Buy With Confidence", "about_title")}
         <section className="mx-auto max-w-3xl px-8 py-20">
           {content.about ? <p data-edit="content.about" className="text-[17px] leading-[1.9]" style={{ color: INK_MUTE }}>{content.about}</p> : <p style={{ color: INK_MUTE }}>Our story is coming soon.</p>}
           <div className="mt-12 grid gap-5 sm:grid-cols-2">
@@ -196,7 +196,7 @@ export default function ForecourtDesign({ site, page = "home", basePath = "" }: 
           </div>
           {content.accreditations && content.accreditations.length > 0 && (
             <>
-              <h3 style={{ ...display, color: INK }} className="mt-12 text-xs font-bold uppercase tracking-[0.2em]">Approved &amp; accredited</h3>
+              <h3 style={{ ...display, color: INK }} className="mt-12 text-xs font-bold uppercase tracking-[0.2em]" {...editCopy(content, "about_approved_heading", "Approved & accredited")} />
               <div className="mt-5 flex flex-wrap gap-3">
                 {content.accreditations.map((a) => (
                   <span key={a} className="rounded-full border px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.12em]" style={{ borderColor: `${GOLD}88`, color: INK }}>{a}</span>
@@ -206,7 +206,7 @@ export default function ForecourtDesign({ site, page = "home", basePath = "" }: 
           )}
           {content.service_areas && content.service_areas.length > 0 && (
             <>
-              <h3 style={{ ...display, color: INK }} className="mt-12 text-xs font-bold uppercase tracking-[0.2em]">Areas we cover</h3>
+              <h3 style={{ ...display, color: INK }} className="mt-12 text-xs font-bold uppercase tracking-[0.2em]" {...editCopy(content, "about_areas_heading", "Areas we cover")} />
               <p className="mt-4 text-[15px] leading-relaxed" style={{ color: INK_MUTE }}>{content.service_areas.join(" · ")}</p>
             </>
           )}
@@ -220,10 +220,10 @@ export default function ForecourtDesign({ site, page = "home", basePath = "" }: 
   if (page === "contact") {
     return shell(
       <>
-        {banner("Get in touch", "Enquire About A Car")}
+        {banner("Get in touch", "contact_kicker", "Enquire About A Car", "contact_title")}
         <section className="mx-auto grid max-w-7xl gap-12 px-8 py-20 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={{ ...display, color: INK }} className="text-2xl font-bold tracking-tight">Visit the forecourt</h2>
+            <h2 style={{ ...display, color: INK }} className="text-2xl font-bold tracking-tight" {...editCopy(content, "contact_heading", "Visit the forecourt")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: INK_MUTE }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-[#14233B]">{content.phone}</a>}
@@ -262,7 +262,7 @@ export default function ForecourtDesign({ site, page = "home", basePath = "" }: 
   if (page === "gallery") {
     return shell(
       <>
-        {banner("The forecourt", "Gallery")}
+        {banner("The forecourt", "gallery_kicker", "Gallery", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-7xl px-2 py-12 sm:px-4">
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
@@ -303,9 +303,9 @@ export default function ForecourtDesign({ site, page = "home", basePath = "" }: 
           <div className="mt-9 max-w-2xl rounded-2xl border bg-white/[0.06] p-2 backdrop-blur-sm sm:flex sm:items-center sm:gap-2" style={{ borderColor: "#ffffff22" }}>
             <div className="flex flex-1 items-center gap-3 px-4 py-3 text-sm" style={{ color: STEEL }}>
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden><circle cx="11" cy="11" r="7" /><path d="m20 20-3.5-3.5" /></svg>
-              <span>Search the stock — make, model or budget</span>
+              <span {...editCopy(content, "hero_search_placeholder", "Search the stock — make, model or budget")} />
             </div>
-            <a href={services.length > 0 ? href("services") : cta} className="mt-2 block rounded-xl px-7 py-3 text-center text-[12px] font-bold uppercase tracking-[0.14em] transition hover:brightness-105 sm:mt-0" style={{ background: GOLD, color: NAVY }}>Browse stock</a>
+            <a href={services.length > 0 ? href("services") : cta} className="mt-2 block rounded-xl px-7 py-3 text-center text-[12px] font-bold uppercase tracking-[0.14em] transition hover:brightness-105 sm:mt-0" style={{ background: GOLD, color: NAVY }} {...editCopy(content, "hero_search_cta", "Browse stock")} />
           </div>
           <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:gap-4">
             {goldBtn(ctaLabel, cta)}
@@ -334,10 +334,10 @@ export default function ForecourtDesign({ site, page = "home", basePath = "" }: 
         <section className="mx-auto max-w-7xl px-8 py-24">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
-              <Eyebrow>Featured stock</Eyebrow>
-              <h2 style={{ ...display, color: INK }} className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl">This week&apos;s pick of the forecourt</h2>
+              <Eyebrow><span {...editCopy(content, "home_featured_kicker", "Featured stock")} /></Eyebrow>
+              <h2 style={{ ...display, color: INK }} className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl" {...editCopy(content, "home_featured_heading", "This week's pick of the forecourt")} />
             </div>
-            {services.length > 0 && <a href={href("services")} className="text-[12px] font-bold uppercase tracking-[0.16em]" style={{ color: NAVY }}>View all stock →</a>}
+            {services.length > 0 && <a href={href("services")} className="text-[12px] font-bold uppercase tracking-[0.16em]" style={{ color: NAVY }} {...editCopy(content, "home_featured_link", "View all stock →")} />}
           </div>
           <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {featured.map((s, i) => (
@@ -371,8 +371,8 @@ export default function ForecourtDesign({ site, page = "home", basePath = "" }: 
       {services.length > 3 && (
         <section style={{ background: "#FFFFFF", borderTop: `1px solid ${LINE}`, borderBottom: `1px solid ${LINE}` }}>
           <div className="mx-auto max-w-5xl px-8 py-24">
-            <Eyebrow>The full forecourt</Eyebrow>
-            <h2 style={{ ...display, color: INK }} className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl">All current stock</h2>
+            <Eyebrow><span {...editCopy(content, "home_fullstock_kicker", "The full forecourt")} /></Eyebrow>
+            <h2 style={{ ...display, color: INK }} className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl" {...editCopy(content, "home_fullstock_heading", "All current stock")} />
             <div className="mt-10">{stockList(services)}</div>
             <div className="mt-12">{ghostBtn("View stock page", href("services"))}</div>
           </div>
@@ -383,9 +383,9 @@ export default function ForecourtDesign({ site, page = "home", basePath = "" }: 
       <section style={{ background: `linear-gradient(150deg, ${NAVY} 0%, ${NAVY_DEEP} 100%)` }}>
         <div className="mx-auto grid max-w-7xl items-center gap-12 px-8 py-20 lg:grid-cols-2 lg:gap-16">
           <div>
-            <Eyebrow on="dark">Part-exchange &amp; finance</Eyebrow>
-            <h2 style={{ ...display, color: WHITE }} className="mt-4 text-4xl font-bold leading-[1.02] tracking-tight sm:text-5xl">Value your car. Spread the cost.</h2>
-            <p className="mt-5 text-[16px] leading-[1.9]" style={{ color: STEEL }}>Bring your current car in for a fair, no-obligation valuation and put it straight towards your next one. Representative finance from competitive monthly rates, with a quick decision and clear terms.</p>
+            <Eyebrow on="dark"><span {...editCopy(content, "home_finance_kicker", "Part-exchange & finance")} /></Eyebrow>
+            <h2 style={{ ...display, color: WHITE }} className="mt-4 text-4xl font-bold leading-[1.02] tracking-tight sm:text-5xl" {...editCopy(content, "home_finance_heading", "Value your car. Spread the cost.")} />
+            <p className="mt-5 text-[16px] leading-[1.9]" style={{ color: STEEL }} {...editCopy(content, "home_finance_body", "Bring your current car in for a fair, no-obligation valuation and put it straight towards your next one. Representative finance from competitive monthly rates, with a quick decision and clear terms.")} />
             <div className="mt-8 flex flex-wrap gap-3">
               {goldBtn("Value my car", cta)}
               {ghostBtn("Finance options", cta, "dark")}
@@ -420,10 +420,10 @@ export default function ForecourtDesign({ site, page = "home", basePath = "" }: 
             <span className="pointer-events-none absolute -bottom-3 -left-3 h-20 w-20 rounded-bl-2xl" style={{ borderBottom: `3px solid ${GOLD}`, borderLeft: `3px solid ${GOLD}` }} />
           </div>
           <div>
-            <Eyebrow>Why buy from us</Eyebrow>
-            <h2 style={{ ...display, color: INK }} className="mt-4 text-4xl font-bold leading-[1.02] tracking-tight sm:text-5xl">A dealership you can trust</h2>
+            <Eyebrow><span {...editCopy(content, "home_why_kicker", "Why buy from us")} /></Eyebrow>
+            <h2 style={{ ...display, color: INK }} className="mt-4 text-4xl font-bold leading-[1.02] tracking-tight sm:text-5xl" {...editCopy(content, "home_why_heading", "A dealership you can trust")} />
             <p data-edit="content.about" className="mt-6 text-[16px] leading-[1.9]" style={{ color: INK_MUTE }}>{content.about}</p>
-            <a href={href("about")} className="mt-6 inline-flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.16em]" style={{ color: NAVY }}>More about us →</a>
+            <a href={href("about")} className="mt-6 inline-flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.16em]" style={{ color: NAVY }} {...editCopy(content, "home_why_link", "More about us →")} />
           </div>
         </section>
       )}
@@ -432,8 +432,8 @@ export default function ForecourtDesign({ site, page = "home", basePath = "" }: 
       {gallery.length > 0 && (
         <section style={{ background: "#FFFFFF", borderTop: `1px solid ${LINE}` }}>
           <div className="mx-auto max-w-7xl px-8 py-24">
-            <Eyebrow>From the forecourt</Eyebrow>
-            <h2 style={{ ...display, color: INK }} className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl">Recently sold &amp; in stock</h2>
+            <Eyebrow><span {...editCopy(content, "home_gallery_kicker", "From the forecourt")} /></Eyebrow>
+            <h2 style={{ ...display, color: INK }} className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl" {...editCopy(content, "home_gallery_heading", "Recently sold & in stock")} />
             <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
               {gallery.slice(0, 4).map((g) => (
                 // eslint-disable-next-line @next/next/no-img-element
@@ -449,8 +449,8 @@ export default function ForecourtDesign({ site, page = "home", basePath = "" }: 
       <section style={{ background: GOLD }}>
         <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 px-8 py-16 sm:flex-row sm:items-center" style={{ color: NAVY }}>
           <div>
-            <h2 style={display} className="text-3xl font-bold leading-[1.02] tracking-tight sm:text-4xl">Found your next car?</h2>
-            <p className="mt-2 text-sm font-semibold uppercase tracking-[0.12em]" style={{ color: NAVY_DEEP }}>Reserve it, part-exchange yours, drive away today.</p>
+            <h2 style={display} className="text-3xl font-bold leading-[1.02] tracking-tight sm:text-4xl" {...editCopy(content, "cta_heading", "Found your next car?")} />
+            <p className="mt-2 text-sm font-semibold uppercase tracking-[0.12em]" style={{ color: NAVY_DEEP }} {...editCopy(content, "cta_sub", "Reserve it, part-exchange yours, drive away today.")} />
           </div>
           <a href={phone ? `tel:${phone}` : cta} className="rounded-full px-9 py-4 text-[12px] font-bold uppercase tracking-[0.16em] text-white transition hover:brightness-110" style={{ background: NAVY }}>
             {phone ? `Call ${phone}` : ctaLabel}

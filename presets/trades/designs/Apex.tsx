@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { ApexHeader } from "./ApexHeader";
 import { TradesSocialIcon } from "./TradesMobileNav";
@@ -80,7 +80,7 @@ export default function ApexDesign({ site, page = "home", basePath = "" }: Prese
           )}
         </div>
         <div>
-          <h4 style={display} className="text-xs font-bold uppercase tracking-[0.2em] text-white/45">Workshop</h4>
+          <h4 style={display} className="text-xs font-bold uppercase tracking-[0.2em] text-white/45" {...editCopy(content, "footer_workshop", "Workshop")} />
           <ul className="mt-5 space-y-3 text-sm" style={{ color: MUTE }}>
             {nav.map((l) => (
               <li key={l.label}><a href={l.href} className="transition hover:text-white">{l.label}</a></li>
@@ -88,7 +88,7 @@ export default function ApexDesign({ site, page = "home", basePath = "" }: Prese
           </ul>
         </div>
         <div>
-          <h4 style={display} className="text-xs font-bold uppercase tracking-[0.2em] text-white/45">Contact</h4>
+          <h4 style={display} className="text-xs font-bold uppercase tracking-[0.2em] text-white/45" {...editCopy(content, "footer_contact", "Contact")} />
           <div className="mt-5 space-y-3 text-sm" style={{ color: MUTE }}>
             {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -96,7 +96,7 @@ export default function ApexDesign({ site, page = "home", basePath = "" }: Prese
           </div>
         </div>
         <div>
-          <h4 style={display} className="text-xs font-bold uppercase tracking-[0.2em] text-white/45">Hours</h4>
+          <h4 style={display} className="text-xs font-bold uppercase tracking-[0.2em] text-white/45" {...editCopy(content, "footer_hours", "Hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm" style={{ color: MUTE }}>
               {content.hours.map((h, i) => (
@@ -165,7 +165,7 @@ export default function ApexDesign({ site, page = "home", basePath = "" }: Prese
           {content.about ? <p data-edit="content.about" className="text-[17px] leading-[1.9]" style={{ color: MUTE }}>{content.about}</p> : <p style={{ color: MUTE }}>Our story is coming soon.</p>}
           {content.accreditations && content.accreditations.length > 0 && (
             <>
-              <h3 style={{ ...display, color: TEXT }} className="mt-12 text-xs font-bold uppercase tracking-[0.2em]">Certified</h3>
+              <h3 style={{ ...display, color: TEXT }} className="mt-12 text-xs font-bold uppercase tracking-[0.2em]" {...editCopy(content, "about_certified_heading", "Certified")} />
               <div className="mt-5 flex flex-wrap gap-3">
                 {content.accreditations.map((a) => (
                   <span key={a} className="-skew-x-12 border px-4 py-2 text-[11px] font-bold uppercase tracking-[0.12em]" style={{ borderColor: `${RED}66`, color: TEXT }}><span className="inline-block skew-x-12">{a}</span></span>
@@ -175,7 +175,7 @@ export default function ApexDesign({ site, page = "home", basePath = "" }: Prese
           )}
           {content.service_areas && content.service_areas.length > 0 && (
             <>
-              <h3 style={{ ...display, color: TEXT }} className="mt-12 text-xs font-bold uppercase tracking-[0.2em]">Areas covered</h3>
+              <h3 style={{ ...display, color: TEXT }} className="mt-12 text-xs font-bold uppercase tracking-[0.2em]" {...editCopy(content, "about_areas_heading", "Areas covered")} />
               <p className="mt-4 text-[15px] leading-relaxed" style={{ color: MUTE }}>{content.service_areas.join(" · ")}</p>
             </>
           )}
@@ -192,7 +192,7 @@ export default function ApexDesign({ site, page = "home", basePath = "" }: Prese
         {banner("Book in", "Get In Touch")}
         <section className="mx-auto grid max-w-7xl gap-12 px-8 py-20 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={{ ...display, color: TEXT }} className="text-2xl font-bold uppercase italic tracking-tight">Find the workshop</h2>
+            <h2 style={{ ...display, color: TEXT }} className="text-2xl font-bold uppercase italic tracking-tight" {...editCopy(content, "contact_heading", "Find the workshop")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: MUTE }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -302,10 +302,10 @@ export default function ApexDesign({ site, page = "home", basePath = "" }: Prese
             <span className="pointer-events-none absolute -bottom-2 -right-2 h-16 w-16" style={{ borderBottom: `4px solid ${RED}`, borderRight: `4px solid ${RED}` }} />
           </div>
           <div>
-            <Kicker>The team</Kicker>
-            <h2 style={{ ...display, color: TEXT }} className="mt-4 text-4xl font-bold uppercase italic leading-[0.95] tracking-tight sm:text-5xl">Precision in every detail</h2>
+            <Kicker><span {...editCopy(content, "about_kicker", "The team")} /></Kicker>
+            <h2 style={{ ...display, color: TEXT }} className="mt-4 text-4xl font-bold uppercase italic leading-[0.95] tracking-tight sm:text-5xl" {...editCopy(content, "about_heading", "Precision in every detail")} />
             <p data-edit="content.about" className="mt-6 text-[16px] leading-[1.9]" style={{ color: MUTE }}>{content.about}</p>
-            <a href={href("about")} className="mt-6 inline-flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.18em]" style={{ color: RED }}>About the workshop →</a>
+            <a href={href("about")} className="mt-6 inline-flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.18em]" style={{ color: RED }} {...editCopy(content, "about_link", "About the workshop →")} />
           </div>
         </section>
       )}
@@ -314,8 +314,8 @@ export default function ApexDesign({ site, page = "home", basePath = "" }: Prese
       {services.length > 0 && (
         <section style={{ background: PANEL, borderTop: "1px solid #ffffff12", borderBottom: "1px solid #ffffff12" }}>
           <div className="mx-auto max-w-7xl px-8 py-24">
-            <Kicker>Workshop</Kicker>
-            <h2 style={{ ...display, color: TEXT }} className="mt-4 text-4xl font-bold uppercase italic tracking-tight sm:text-5xl">Services</h2>
+            <Kicker><span {...editCopy(content, "home_services_kicker", "Workshop")} /></Kicker>
+            <h2 style={{ ...display, color: TEXT }} className="mt-4 text-4xl font-bold uppercase italic tracking-tight sm:text-5xl" {...editCopy(content, "home_services_heading", "Services")} />
             <div className="mt-12 divide-y" style={{ borderColor: "#ffffff14" }}>
               {services.slice(0, 6).map((s, i) => (
                 <div key={s.id} className="flex flex-col gap-3 py-6 sm:flex-row sm:items-center sm:gap-8" style={{ borderColor: "#ffffff14" }}>
@@ -336,8 +336,8 @@ export default function ApexDesign({ site, page = "home", basePath = "" }: Prese
       {/* gallery */}
       {gallery.length > 0 && (
         <section className="mx-auto max-w-7xl px-8 py-24">
-          <Kicker>The work</Kicker>
-          <h2 style={{ ...display, color: TEXT }} className="mt-4 text-4xl font-bold uppercase italic tracking-tight sm:text-5xl">Recent jobs</h2>
+          <Kicker><span {...editCopy(content, "home_gallery_kicker", "The work")} /></Kicker>
+          <h2 style={{ ...display, color: TEXT }} className="mt-4 text-4xl font-bold uppercase italic tracking-tight sm:text-5xl" {...editCopy(content, "home_gallery_heading", "Recent jobs")} />
           <div className="mt-10 grid grid-cols-2 gap-2 sm:grid-cols-4">
             {gallery.slice(0, 4).map((g) => (
               // eslint-disable-next-line @next/next/no-img-element
@@ -351,7 +351,7 @@ export default function ApexDesign({ site, page = "home", basePath = "" }: Prese
       {/* closing CTA */}
       <section className="relative overflow-hidden" style={{ background: RED }}>
         <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 px-8 py-16 text-white sm:flex-row sm:items-center">
-          <h2 style={display} className="text-3xl font-bold uppercase italic leading-[0.95] tracking-tight sm:text-4xl">Book your vehicle in today</h2>
+          <h2 style={display} className="text-3xl font-bold uppercase italic leading-[0.95] tracking-tight sm:text-4xl" {...editCopy(content, "cta_heading", "Book your vehicle in today")} />
           <a href={phone ? `tel:${phone}` : cta} className="-skew-x-12 bg-black px-9 py-4 text-[12px] font-bold uppercase tracking-[0.16em] text-white transition hover:brightness-125">
             <span className="inline-block skew-x-12">{phone ? `Call ${phone}` : ctaLabel}</span>
           </a>

@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { DecantHeader } from "./DecantHeader";
 import { TradesSocialIcon } from "./TradesMobileNav";
@@ -141,7 +141,7 @@ export default function DecantDesign({ site, page = "home", basePath = "" }: Pre
           )}
         </div>
         <div>
-          <h4 style={{ ...display, color: AMBER }} className="text-[11px] font-semibold uppercase tracking-[0.24em]">Shop</h4>
+          <h4 style={{ ...display, color: AMBER }} className="text-[11px] font-semibold uppercase tracking-[0.24em]" {...editCopy(content, "footer_shop", "Shop")} />
           <ul className="mt-5 space-y-3 text-sm" style={{ color: `${OAT}b0` }}>
             {nav.map((l) => (
               <li key={l.label}><a href={l.href} className="transition hover:text-white">{l.label}</a></li>
@@ -149,7 +149,7 @@ export default function DecantDesign({ site, page = "home", basePath = "" }: Pre
           </ul>
         </div>
         <div>
-          <h4 style={{ ...display, color: AMBER }} className="text-[11px] font-semibold uppercase tracking-[0.24em]">Find the shop</h4>
+          <h4 style={{ ...display, color: AMBER }} className="text-[11px] font-semibold uppercase tracking-[0.24em]" {...editCopy(content, "footer_find", "Find the shop")} />
           <div className="mt-5 space-y-3 text-sm" style={{ color: `${OAT}b0` }}>
             {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -157,7 +157,7 @@ export default function DecantDesign({ site, page = "home", basePath = "" }: Pre
           </div>
         </div>
         <div>
-          <h4 style={{ ...display, color: AMBER }} className="text-[11px] font-semibold uppercase tracking-[0.24em]">Opening hours</h4>
+          <h4 style={{ ...display, color: AMBER }} className="text-[11px] font-semibold uppercase tracking-[0.24em]" {...editCopy(content, "footer_hours", "Opening hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm" style={{ color: `${OAT}b0` }}>
               {content.hours.map((h, i) => (
@@ -182,11 +182,11 @@ export default function DecantDesign({ site, page = "home", basePath = "" }: Pre
     </div>
   );
 
-  const banner = (kicker: string, title: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string) => (
     <section style={{ background: BURG_DEEP, borderBottom: `1px solid ${AMBER}33` }}>
       <div className="mx-auto max-w-7xl px-8 pb-16 pt-36 sm:pt-44">
-        <Cartouche>{kicker}</Cartouche>
-        <h1 style={{ ...display, color: OAT }} className="mt-5 text-4xl font-medium tracking-tight sm:text-6xl">{title}</h1>
+        <Cartouche><span {...editCopy(content, kickerKey, kicker)} /></Cartouche>
+        <h1 style={{ ...display, color: OAT }} className="mt-5 text-4xl font-medium tracking-tight sm:text-6xl" {...editCopy(content, titleKey, title)} />
       </div>
     </section>
   );
@@ -195,7 +195,7 @@ export default function DecantDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "services") {
     return shell(
       <>
-        {banner("The cellar", "Hand-picked bottles")}
+        {banner("The cellar", "cellar_kicker", "Hand-picked bottles", "cellar_title")}
         <section className="mx-auto max-w-4xl px-8 py-20">
           {groups.length > 0 ? (
             <div className="space-y-16">
@@ -240,12 +240,12 @@ export default function DecantDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "about") {
     return shell(
       <>
-        {banner("Independent & hand-picked", "Our shop")}
+        {banner("Independent & hand-picked", "about_kicker", "Our shop", "about_title")}
         <section className="mx-auto max-w-3xl px-8 py-20">
           {content.about ? <p data-edit="content.about" className="text-[17px] leading-[1.95]" style={{ color: `${OAT}d9` }}>{content.about}</p> : <p style={{ color: `${OAT}99` }}>Our story is coming soon.</p>}
           {content.accreditations && content.accreditations.length > 0 && (
             <>
-              <h3 style={{ ...display, color: AMBER }} className="mt-12 text-[11px] font-semibold uppercase tracking-[0.26em]">Licensed &amp; trusted</h3>
+              <h3 style={{ ...display, color: AMBER }} className="mt-12 text-[11px] font-semibold uppercase tracking-[0.26em]" {...editCopy(content, "about_licensed_heading", "Licensed & trusted")} />
               <div className="mt-5 flex flex-wrap gap-3">
                 {content.accreditations.map((a) => (
                   <span key={a} className="border px-4 py-2 text-[11px] font-medium uppercase tracking-[0.14em]" style={{ borderColor: `${AMBER}66`, color: OAT }}>{a}</span>
@@ -255,7 +255,7 @@ export default function DecantDesign({ site, page = "home", basePath = "" }: Pre
           )}
           {content.service_areas && content.service_areas.length > 0 && (
             <>
-              <h3 style={{ ...display, color: AMBER }} className="mt-12 text-[11px] font-semibold uppercase tracking-[0.26em]">Local delivery</h3>
+              <h3 style={{ ...display, color: AMBER }} className="mt-12 text-[11px] font-semibold uppercase tracking-[0.26em]" {...editCopy(content, "about_delivery_heading", "Local delivery")} />
               <p className="mt-4 text-[15px] leading-relaxed" style={{ color: `${OAT}b0` }}>{content.service_areas.join(" · ")}</p>
             </>
           )}
@@ -272,7 +272,7 @@ export default function DecantDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "gallery") {
     return shell(
       <>
-        {banner("In store", "On the shelves")}
+        {banner("In store", "instore_kicker", "On the shelves", "instore_title")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-7xl px-2 py-12 sm:px-4">
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
@@ -291,11 +291,11 @@ export default function DecantDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "contact") {
     return shell(
       <>
-        {banner("Visit us", "Find the shop")}
+        {banner("Visit us", "visit_kicker", "Find the shop", "visit_title")}
         <section className="mx-auto grid max-w-7xl gap-12 px-8 py-20 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={{ ...display, color: OAT }} className="text-2xl font-medium tracking-tight">Pop in &amp; say hello</h2>
-            <p className="mt-4 max-w-md text-[15px] leading-relaxed" style={{ color: `${OAT}99` }}>Reserve a bottle, plan a tasting or ask us to put together a gift or case. We&apos;re always happy to point you to something good.</p>
+            <h2 style={{ ...display, color: OAT }} className="text-2xl font-medium tracking-tight" {...editCopy(content, "visit_heading", "Pop in & say hello")} />
+            <p className="mt-4 max-w-md text-[15px] leading-relaxed" style={{ color: `${OAT}99` }} {...editCopy(content, "visit_blurb", "Reserve a bottle, plan a tasting or ask us to put together a gift or case. We're always happy to point you to something good.")} />
             <div className="mt-7 space-y-4 text-[15px] leading-relaxed" style={{ color: `${OAT}d9` }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -361,7 +361,7 @@ export default function DecantDesign({ site, page = "home", basePath = "" }: Pre
           <h1 style={display} className="mt-6 max-w-3xl text-5xl font-medium leading-[1.04] tracking-tight [text-shadow:0_2px_24px_rgba(0,0,0,0.4)] sm:text-7xl">
             <span data-edit="content.tagline" className="block">{content.tagline ?? "Hand-picked bottles, expert advice."}</span>
           </h1>
-          <p className="mt-6 max-w-md text-[15px] leading-relaxed" style={{ color: `${OAT}cc` }}>A small, independent bottle shop — wine, craft beer & spirits chosen by hand, with someone on the floor who&apos;s actually tasted them.</p>
+          <p className="mt-6 max-w-md text-[15px] leading-relaxed" style={{ color: `${OAT}cc` }} {...editCopy(content, "hero_blurb", "A small, independent bottle shop — wine, craft beer & spirits chosen by hand, with someone on the floor who's actually tasted them.")} />
           <p data-edit="tenant.business_name" className="mt-7 text-[11px] font-semibold uppercase tracking-[0.3em]" style={{ color: `${OAT}99` }}>{name}</p>
           <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:gap-4">
             {amberBtn(ctaLabel, cta)}
@@ -391,10 +391,10 @@ export default function DecantDesign({ site, page = "home", basePath = "" }: Pre
       <section className="mx-auto max-w-7xl px-8 py-24">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
-            <Cartouche>The cellar</Cartouche>
-            <h2 style={{ ...display, color: OAT }} className="mt-4 text-4xl font-medium tracking-tight sm:text-5xl">What&apos;s on the shelves</h2>
+            <Cartouche><span {...editCopy(content, "home_cellar_kicker", "The cellar")} /></Cartouche>
+            <h2 style={{ ...display, color: OAT }} className="mt-4 text-4xl font-medium tracking-tight sm:text-5xl" {...editCopy(content, "home_cellar_heading", "What's on the shelves")} />
           </div>
-          {bottles.length > 0 && <a href={href("services")} className="text-[12px] font-semibold uppercase tracking-[0.2em] transition hover:text-white" style={{ color: AMBER }}>The full range →</a>}
+          {bottles.length > 0 && <a href={href("services")} className="text-[12px] font-semibold uppercase tracking-[0.2em] transition hover:text-white" style={{ color: AMBER }} {...editCopy(content, "home_cellar_link", "The full range →")} />}
         </div>
         <div className="mt-12 grid grid-cols-2 gap-px sm:grid-cols-3" style={{ background: `${OAT}1f` }}>
           {rangeLabels.slice(0, 6).map((r, i) => (
@@ -420,10 +420,10 @@ export default function DecantDesign({ site, page = "home", basePath = "" }: Pre
           <div className="mx-auto max-w-4xl px-8 py-24">
             <div className="flex flex-wrap items-end justify-between gap-4">
               <div>
-                <Cartouche>Staff selections</Cartouche>
-                <h2 style={{ ...display, color: OAT }} className="mt-4 text-4xl font-medium tracking-tight sm:text-5xl">This month&apos;s shelf</h2>
+                <Cartouche><span {...editCopy(content, "home_staff_kicker", "Staff selections")} /></Cartouche>
+                <h2 style={{ ...display, color: OAT }} className="mt-4 text-4xl font-medium tracking-tight sm:text-5xl" {...editCopy(content, "home_staff_heading", "This month's shelf")} />
               </div>
-              <a href={href("services")} className="text-[12px] font-semibold uppercase tracking-[0.2em] transition hover:text-white" style={{ color: AMBER }}>See all →</a>
+              <a href={href("services")} className="text-[12px] font-semibold uppercase tracking-[0.2em] transition hover:text-white" style={{ color: AMBER }} {...editCopy(content, "home_staff_link", "See all →")} />
             </div>
             <ul className="mt-12 divide-y" style={{ borderColor: `${OAT}1f` }}>
               {featured.map((item) => (
@@ -444,10 +444,10 @@ export default function DecantDesign({ site, page = "home", basePath = "" }: Pre
       {content.about && (
         <section className="mx-auto grid max-w-7xl items-center gap-12 px-8 py-24 lg:grid-cols-2 lg:gap-16">
           <div>
-            <Cartouche>Independent &amp; hand-picked</Cartouche>
-            <h2 style={{ ...display, color: OAT }} className="mt-4 text-3xl font-medium leading-tight tracking-tight sm:text-4xl">A proper bottle shop, run by people who care</h2>
+            <Cartouche><span {...editCopy(content, "home_about_kicker", "Independent & hand-picked")} /></Cartouche>
+            <h2 style={{ ...display, color: OAT }} className="mt-4 text-3xl font-medium leading-tight tracking-tight sm:text-4xl" {...editCopy(content, "home_about_heading", "A proper bottle shop, run by people who care")} />
             <p data-edit="content.about" className="mt-6 text-[16px] leading-[1.95]" style={{ color: `${OAT}cc` }}>{content.about}</p>
-            <a href={href("about")} className="mt-7 inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-[0.2em]" style={{ color: AMBER }}>More about us →</a>
+            <a href={href("about")} className="mt-7 inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-[0.2em]" style={{ color: AMBER }} {...editCopy(content, "home_about_link", "More about us →")} />
           </div>
           <div className="relative">
             {gallery[0] ? (
@@ -467,9 +467,9 @@ export default function DecantDesign({ site, page = "home", basePath = "" }: Pre
       <section style={{ background: GREEN }}>
         <div className="mx-auto grid max-w-7xl items-center gap-8 px-8 py-16 sm:grid-cols-[1.4fr_1fr]" style={{ color: OAT }}>
           <div>
-            <Cartouche>Tastings &amp; gifting</Cartouche>
-            <h2 style={{ ...display, color: OAT }} className="mt-4 text-3xl font-medium tracking-tight sm:text-4xl">Gifts, cases &amp; tasting nights</h2>
-            <p className="mt-3 max-w-lg text-[15px] leading-relaxed" style={{ color: `${OAT}cc` }}>Made-to-order gift boxes and mixed cases, plus regular evening tastings in the shop. Tell us the occasion — we&apos;ll handle the rest.</p>
+            <Cartouche><span {...editCopy(content, "home_tastings_kicker", "Tastings & gifting")} /></Cartouche>
+            <h2 style={{ ...display, color: OAT }} className="mt-4 text-3xl font-medium tracking-tight sm:text-4xl" {...editCopy(content, "home_tastings_heading", "Gifts, cases & tasting nights")} />
+            <p className="mt-3 max-w-lg text-[15px] leading-relaxed" style={{ color: `${OAT}cc` }} {...editCopy(content, "home_tastings_body", "Made-to-order gift boxes and mixed cases, plus regular evening tastings in the shop. Tell us the occasion — we'll handle the rest.")} />
           </div>
           <div className="flex sm:justify-end">{amberBtn(ctaLabel, cta)}</div>
         </div>
@@ -478,8 +478,8 @@ export default function DecantDesign({ site, page = "home", basePath = "" }: Pre
       {/* in-store strip */}
       {gallery.length > 0 && (
         <section className="mx-auto max-w-7xl px-8 py-24">
-          <Cartouche>In store</Cartouche>
-          <h2 style={{ ...display, color: OAT }} className="mt-4 text-4xl font-medium tracking-tight sm:text-5xl">Come and have a look</h2>
+          <Cartouche><span {...editCopy(content, "home_instore_kicker", "In store")} /></Cartouche>
+          <h2 style={{ ...display, color: OAT }} className="mt-4 text-4xl font-medium tracking-tight sm:text-5xl" {...editCopy(content, "home_instore_heading", "Come and have a look")} />
           <div className="mt-10 grid grid-cols-2 gap-2 sm:grid-cols-4">
             {gallery.slice(0, 4).map((g) => (
               // eslint-disable-next-line @next/next/no-img-element
@@ -494,8 +494,8 @@ export default function DecantDesign({ site, page = "home", basePath = "" }: Pre
       <section style={{ background: BURG_DEEP, borderTop: `1px solid ${AMBER}26` }}>
         <div className="mx-auto grid max-w-7xl gap-12 px-8 py-20 lg:grid-cols-[1fr_1fr]">
           <div>
-            <Cartouche>Visit us</Cartouche>
-            <h2 style={{ ...display, color: OAT }} className="mt-4 text-3xl font-medium tracking-tight sm:text-4xl">Find the shop</h2>
+            <Cartouche><span {...editCopy(content, "home_visit_kicker", "Visit us")} /></Cartouche>
+            <h2 style={{ ...display, color: OAT }} className="mt-4 text-3xl font-medium tracking-tight sm:text-4xl" {...editCopy(content, "home_visit_heading", "Find the shop")} />
             {content.address && <p data-edit="content.address" className="mt-6 whitespace-pre-line text-[15px] leading-relaxed" style={{ color: `${OAT}cc` }}>{content.address}</p>}
             <div className="mt-3 space-y-1.5 text-[15px]" style={{ color: `${OAT}cc` }}>
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -504,7 +504,7 @@ export default function DecantDesign({ site, page = "home", basePath = "" }: Pre
             <div className="mt-7">{ageNote}</div>
           </div>
           <div>
-            <h3 style={{ ...display, color: AMBER }} className="text-[11px] font-semibold uppercase tracking-[0.26em]">Opening hours</h3>
+            <h3 style={{ ...display, color: AMBER }} className="text-[11px] font-semibold uppercase tracking-[0.26em]" {...editCopy(content, "home_hours_heading", "Opening hours")} />
             {content.hours && content.hours.length > 0 ? (
               <ul className="mt-5 max-w-sm space-y-2 text-[15px]" style={{ color: `${OAT}cc` }}>
                 {content.hours.map((h, i) => (
@@ -521,8 +521,8 @@ export default function DecantDesign({ site, page = "home", basePath = "" }: Pre
       <section style={{ background: AMBER }}>
         <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 px-8 py-16 sm:flex-row sm:items-center" style={{ color: INK }}>
           <div>
-            <h2 style={display} className="text-3xl font-semibold tracking-tight sm:text-4xl">Found something you fancy?</h2>
-            <p className="mt-2 text-sm font-medium uppercase tracking-[0.14em]" style={{ color: `${INK}b3` }}>Reserve it and collect in store · 18+ only.</p>
+            <h2 style={display} className="text-3xl font-semibold tracking-tight sm:text-4xl" {...editCopy(content, "cta_heading", "Found something you fancy?")} />
+            <p className="mt-2 text-sm font-medium uppercase tracking-[0.14em]" style={{ color: `${INK}b3` }} {...editCopy(content, "cta_sub", "Reserve it and collect in store · 18+ only.")} />
           </div>
           <a href={cta} className="rounded-full px-9 py-4 text-[12px] font-semibold uppercase tracking-[0.18em] transition hover:brightness-110" style={{ background: INK, color: OAT }}>
             {ctaLabel}

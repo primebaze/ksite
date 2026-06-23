@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { AmplifyHeader } from "./AmplifyHeader";
 import { TradesSocialIcon } from "./TradesMobileNav";
@@ -127,7 +127,7 @@ export default function AmplifyDesign({ site, page = "home", basePath = "" }: Pr
           )}
         </div>
         <div>
-          <h4 style={display} className="text-xs font-black uppercase tracking-[0.2em]" >Agency</h4>
+          <h4 style={display} className="text-xs font-black uppercase tracking-[0.2em]" {...editCopy(content, "footer_agency", "Agency")} />
           <ul className="mt-5 space-y-3 text-sm" style={{ color: MUTE }}>
             {nav.map((l) => (
               <li key={l.label}><a href={l.href} className="transition hover:text-[#C6F24E]">{l.label}</a></li>
@@ -135,7 +135,7 @@ export default function AmplifyDesign({ site, page = "home", basePath = "" }: Pr
           </ul>
         </div>
         <div>
-          <h4 style={display} className="text-xs font-black uppercase tracking-[0.2em]">Contact</h4>
+          <h4 style={display} className="text-xs font-black uppercase tracking-[0.2em]" {...editCopy(content, "footer_contact", "Contact")} />
           <div className="mt-5 space-y-3 text-sm" style={{ color: MUTE }}>
             {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-[#C6F24E]">{content.phone}</a>}
@@ -143,7 +143,7 @@ export default function AmplifyDesign({ site, page = "home", basePath = "" }: Pr
           </div>
         </div>
         <div>
-          <h4 style={display} className="text-xs font-black uppercase tracking-[0.2em]">Hours</h4>
+          <h4 style={display} className="text-xs font-black uppercase tracking-[0.2em]" {...editCopy(content, "footer_hours", "Hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm" style={{ color: MUTE }}>
               {content.hours.map((h, i) => (
@@ -212,7 +212,7 @@ export default function AmplifyDesign({ site, page = "home", basePath = "" }: Pr
           {content.about ? <p data-edit="content.about" className="text-[18px] leading-[1.9]" style={{ color: MUTE }}>{content.about}</p> : <p style={{ color: MUTE }}>Our story is coming soon.</p>}
           {content.accreditations && content.accreditations.length > 0 && (
             <>
-              <h3 style={display} className="mt-12 text-xs font-black uppercase tracking-[0.2em]">Award-winning &amp; certified</h3>
+              <h3 style={display} className="mt-12 text-xs font-black uppercase tracking-[0.2em]" {...editCopy(content, "about_awards_heading", "Award-winning & certified")} />
               <div className="mt-5 flex flex-wrap gap-3">
                 {content.accreditations.map((a) => (
                   <span key={a} className="rounded-full border-2 px-4 py-2 text-[11px] font-black uppercase tracking-[0.12em]" style={{ borderColor: `${MAGENTA}66`, color: OFF }}>{a}</span>
@@ -222,7 +222,7 @@ export default function AmplifyDesign({ site, page = "home", basePath = "" }: Pr
           )}
           {content.service_areas && content.service_areas.length > 0 && (
             <>
-              <h3 style={display} className="mt-12 text-xs font-black uppercase tracking-[0.2em]" >We work with</h3>
+              <h3 style={display} className="mt-12 text-xs font-black uppercase tracking-[0.2em]" {...editCopy(content, "about_clients_heading", "We work with")} />
               <p className="mt-4 text-[15px] leading-relaxed" style={{ color: MUTE }}>{content.service_areas.join(" · ")}</p>
             </>
           )}
@@ -239,8 +239,8 @@ export default function AmplifyDesign({ site, page = "home", basePath = "" }: Pr
         {banner("Let's talk", <>Start a<br /><span style={{ color: MAGENTA }}>project</span></>)}
         <section className="mx-auto grid max-w-7xl gap-12 px-8 py-20 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={{ ...display, color: OFF }} className="text-3xl font-black uppercase tracking-[-0.02em]" >Book a strategy call</h2>
-            <p className="mt-3 text-[15px] leading-relaxed" style={{ color: MUTE }}>Free, no-obligation. Tell us where you want to grow and we&apos;ll bring a plan.</p>
+            <h2 style={{ ...display, color: OFF }} className="text-3xl font-black uppercase tracking-[-0.02em]" {...editCopy(content, "contact_heading", "Book a strategy call")} />
+            <p className="mt-3 text-[15px] leading-relaxed" style={{ color: MUTE }} {...editCopy(content, "contact_blurb", "Free, no-obligation. Tell us where you want to grow and we'll bring a plan.")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: MUTE }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-[#C6F24E]">{content.phone}</a>}
@@ -360,7 +360,7 @@ export default function AmplifyDesign({ site, page = "home", basePath = "" }: Pr
       {/* trusted-by logo wall */}
       {(content.accreditations && content.accreditations.length > 0) || (content.service_areas && content.service_areas.length > 0) ? (
         <section className="mx-auto max-w-7xl px-8 py-16">
-          <p className="text-center text-[11px] font-black uppercase tracking-[0.24em]" style={{ color: "rgba(247,245,255,0.5)" }}>Trusted by ambitious brands</p>
+          <p className="text-center text-[11px] font-black uppercase tracking-[0.24em]" style={{ color: "rgba(247,245,255,0.5)" }} {...editCopy(content, "trusted_label", "Trusted by ambitious brands")} />
           <div className="mt-8 grid grid-cols-2 gap-px overflow-hidden rounded-2xl sm:grid-cols-3 lg:grid-cols-6" style={{ background: "rgba(247,245,255,0.12)" }}>
             {(content.accreditations && content.accreditations.length > 0
               ? content.accreditations
@@ -376,10 +376,10 @@ export default function AmplifyDesign({ site, page = "home", basePath = "" }: Pr
       {content.about && (
         <section style={{ background: PANEL, borderTop: `2px solid ${MAGENTA}`, borderBottom: `2px solid ${MAGENTA}` }}>
           <div className="mx-auto grid max-w-7xl items-center gap-12 px-8 py-24 lg:grid-cols-[auto_1fr] lg:gap-16">
-            <div className="lg:pt-2"><Pill>Who we are</Pill></div>
+            <div className="lg:pt-2"><Pill><span {...editCopy(content, "about_pill", "Who we are")} /></Pill></div>
             <div>
               <p data-edit="content.about" style={{ ...display, color: OFF }} className="max-w-3xl text-3xl font-black uppercase leading-[1.05] tracking-[-0.02em] sm:text-4xl">{content.about}</p>
-              <a href={href("about")} className="mt-7 inline-flex items-center gap-2 text-[13px] font-black uppercase tracking-[0.12em]" style={{ color: LIME }}>More about us →</a>
+              <a href={href("about")} className="mt-7 inline-flex items-center gap-2 text-[13px] font-black uppercase tracking-[0.12em]" style={{ color: LIME }} {...editCopy(content, "about_link", "More about us →")} />
             </div>
           </div>
         </section>
@@ -388,7 +388,7 @@ export default function AmplifyDesign({ site, page = "home", basePath = "" }: Pr
       {/* what we do — clean divide-y list */}
       {services.length > 0 && (
         <section className="mx-auto max-w-7xl px-8 py-24">
-          <Pill tone="lime">What we do</Pill>
+          <Pill tone="lime"><span {...editCopy(content, "services_pill", "What we do")} /></Pill>
           <h2 style={{ ...display, color: OFF }} className="mt-5 text-4xl font-black uppercase leading-[0.92] tracking-[-0.03em] sm:text-6xl">Everything you need<br />to grow</h2>
           <div className="mt-12 divide-y" style={{ borderColor: "rgba(247,245,255,0.12)" }}>
             {services.slice(0, 6).map((s, i) => (
@@ -414,10 +414,10 @@ export default function AmplifyDesign({ site, page = "home", basePath = "" }: Pr
         <section className="mx-auto max-w-7xl px-8 py-24">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
-              <Pill>Selected work</Pill>
-              <h2 style={{ ...display, color: OFF }} className="mt-5 text-4xl font-black uppercase tracking-[-0.03em] sm:text-6xl">Recent campaigns</h2>
+              <Pill><span {...editCopy(content, "work_pill", "Selected work")} /></Pill>
+              <h2 style={{ ...display, color: OFF }} className="mt-5 text-4xl font-black uppercase tracking-[-0.03em] sm:text-6xl" {...editCopy(content, "work_heading", "Recent campaigns")} />
             </div>
-            <a href={href("gallery")} className="text-[13px] font-black uppercase tracking-[0.12em]" style={{ color: LIME }}>All work →</a>
+            <a href={href("gallery")} className="text-[13px] font-black uppercase tracking-[0.12em]" style={{ color: LIME }} {...editCopy(content, "work_link", "All work →")} />
           </div>
           <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {gallery.slice(0, 3).map((g, i) => (
@@ -438,8 +438,8 @@ export default function AmplifyDesign({ site, page = "home", basePath = "" }: Pr
       <section style={{ background: MAGENTA }}>
         <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 px-8 py-20 sm:flex-row sm:items-center" style={{ color: OFF }}>
           <div>
-            <h2 style={display} className="text-4xl font-black uppercase leading-[0.92] tracking-[-0.03em] sm:text-5xl">Ready to amplify?</h2>
-            <p className="mt-3 text-sm font-black uppercase tracking-[0.12em]" style={{ color: "rgba(247,245,255,0.85)" }}>Free strategy call. No pitch decks, just a plan.</p>
+            <h2 style={display} className="text-4xl font-black uppercase leading-[0.92] tracking-[-0.03em] sm:text-5xl" {...editCopy(content, "cta_heading", "Ready to amplify?")} />
+            <p className="mt-3 text-sm font-black uppercase tracking-[0.12em]" style={{ color: "rgba(247,245,255,0.85)" }} {...editCopy(content, "cta_blurb", "Free strategy call. No pitch decks, just a plan.")} />
           </div>
           <a href={cta} className="inline-flex rounded-full px-9 py-4 text-[13px] font-black uppercase tracking-[0.08em] transition hover:brightness-105" style={{ background: LIME, color: INK }}>{ctaLabel}</a>
         </div>

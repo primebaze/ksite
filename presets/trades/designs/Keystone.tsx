@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { KeystoneHeader } from "./KeystoneHeader";
 import { TradesSocialIcon } from "./TradesMobileNav";
@@ -133,7 +133,7 @@ export default function KeystoneDesign({ site, page = "home", basePath = "" }: P
           )}
         </div>
         <div>
-          <h4 style={display} className="text-xs font-semibold uppercase tracking-[0.2em] text-white/45">Explore</h4>
+          <h4 style={display} className="text-xs font-semibold uppercase tracking-[0.2em] text-white/45" {...editCopy(content, "footer_explore", "Explore")} />
           <ul className="mt-5 space-y-3 text-sm text-white/70">
             {nav.map((l) => (
               <li key={l.label}><a href={l.href} className="transition hover:text-white">{l.label}</a></li>
@@ -141,7 +141,7 @@ export default function KeystoneDesign({ site, page = "home", basePath = "" }: P
           </ul>
         </div>
         <div>
-          <h4 style={display} className="text-xs font-semibold uppercase tracking-[0.2em] text-white/45">Contact</h4>
+          <h4 style={display} className="text-xs font-semibold uppercase tracking-[0.2em] text-white/45" {...editCopy(content, "footer_contact", "Contact")} />
           <div className="mt-5 space-y-3 text-sm text-white/70">
             {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -149,7 +149,7 @@ export default function KeystoneDesign({ site, page = "home", basePath = "" }: P
           </div>
         </div>
         <div>
-          <h4 style={display} className="text-xs font-semibold uppercase tracking-[0.2em] text-white/45">Opening hours</h4>
+          <h4 style={display} className="text-xs font-semibold uppercase tracking-[0.2em] text-white/45" {...editCopy(content, "footer_hours", "Opening hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm text-white/70">
               {content.hours.map((h, i) => (
@@ -174,15 +174,15 @@ export default function KeystoneDesign({ site, page = "home", basePath = "" }: P
     </div>
   );
 
-  const banner = (kicker: string, title: string, blurb?: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string, blurb?: string, blurbKey?: string) => (
     <section style={{ background: SLATE }} className="relative overflow-hidden">
       <div className="pointer-events-none absolute -right-10 top-1/2 hidden h-72 w-72 -translate-y-1/2 opacity-25 sm:block">
         <ArchMotif className="h-full w-full" stroke={SAGE} keyStroke={CREAM} />
       </div>
       <div className="relative mx-auto max-w-6xl px-8 pb-16 pt-32 sm:pt-40">
-        <Kicker light>{kicker}</Kicker>
-        <h1 style={{ ...display, color: CREAM }} className="mt-4 max-w-3xl text-4xl font-semibold leading-[1.05] tracking-tight sm:text-6xl">{title}</h1>
-        {blurb && <p className="mt-5 max-w-xl text-[16px] leading-relaxed text-white/70">{blurb}</p>}
+        <Kicker light><span {...editCopy(content, kickerKey, kicker)} /></Kicker>
+        <h1 style={{ ...display, color: CREAM }} className="mt-4 max-w-3xl text-4xl font-semibold leading-[1.05] tracking-tight sm:text-6xl" {...editCopy(content, titleKey, title)} />
+        {blurb && blurbKey && <p className="mt-5 max-w-xl text-[16px] leading-relaxed text-white/70" {...editCopy(content, blurbKey, blurb)} />}
       </div>
     </section>
   );
@@ -191,7 +191,7 @@ export default function KeystoneDesign({ site, page = "home", basePath = "" }: P
   if (page === "services") {
     return shell(
       <>
-        {banner("What we do", "Mortgage advice for every move", "From your very first home to your next buy-to-let — whole-of-market advice, clearly explained, with your interests first.")}
+        {banner("What we do", "svc_kicker", "Mortgage advice for every move", "svc_title", "From your very first home to your next buy-to-let — whole-of-market advice, clearly explained, with your interests first.", "svc_blurb")}
         <section className="mx-auto max-w-5xl px-8 py-20">
           {services.length > 0 ? (
             <div className="divide-y" style={{ borderColor: LINE }}>
@@ -229,13 +229,13 @@ export default function KeystoneDesign({ site, page = "home", basePath = "" }: P
   if (page === "about") {
     return shell(
       <>
-        {banner("About us", "Friendly experts, on your side")}
+        {banner("About us", "about_kicker", "Friendly experts, on your side", "about_title")}
         <section className="mx-auto grid max-w-6xl gap-12 px-8 py-20 lg:grid-cols-[1.4fr_1fr]">
           <div>
             {content.about ? <p data-edit="content.about" className="text-[17px] leading-[1.9]" style={{ color: MUTE }}>{content.about}</p> : <p style={{ color: MUTE }}>Our story is coming soon.</p>}
             {content.service_areas && content.service_areas.length > 0 && (
               <>
-                <h3 style={{ ...display, color: INK }} className="mt-12 text-2xl font-semibold">Where we help</h3>
+                <h3 style={{ ...display, color: INK }} className="mt-12 text-2xl font-semibold" {...editCopy(content, "about_where_heading", "Where we help")} />
                 <div className="mt-5 flex flex-wrap gap-2">
                   {content.service_areas.map((a) => (
                     <span key={a} className="rounded-full border px-4 py-1.5 text-sm" style={{ borderColor: LINE, color: MUTE }}>{a}</span>
@@ -245,7 +245,7 @@ export default function KeystoneDesign({ site, page = "home", basePath = "" }: P
             )}
           </div>
           <aside className="h-fit rounded-2xl p-7" style={{ background: SAGE_TINT, border: `1px solid ${LINE}` }}>
-            <h4 style={{ ...display, color: "#b06a40" }} className="text-xs font-semibold uppercase tracking-[0.2em]">Why buyers trust us</h4>
+            <h4 style={{ ...display, color: "#b06a40" }} className="text-xs font-semibold uppercase tracking-[0.2em]" {...editCopy(content, "about_trust_heading", "Why buyers trust us")} />
             <ul className="mt-4 space-y-3 text-sm" style={{ color: INK }}>
               {trust.map((a) => (
                 <li key={a} className="flex items-start gap-2.5"><KeyTick /><span>{a}</span></li>
@@ -266,10 +266,10 @@ export default function KeystoneDesign({ site, page = "home", basePath = "" }: P
   if (page === "contact") {
     return shell(
       <>
-        {banner("Get in touch", "Book your free chat", "A relaxed, no-obligation conversation — tell us where you're at and we'll show you what's possible.")}
+        {banner("Get in touch", "contact_kicker", "Book your free chat", "contact_title", "A relaxed, no-obligation conversation — tell us where you're at and we'll show you what's possible.", "contact_blurb")}
         <section className="mx-auto grid max-w-6xl gap-12 px-8 py-20 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={{ ...display, color: INK }} className="text-2xl font-semibold tracking-tight">Talk to an adviser</h2>
+            <h2 style={{ ...display, color: INK }} className="text-2xl font-semibold tracking-tight" {...editCopy(content, "contact_form_heading", "Talk to an adviser")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: MUTE }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-[#2F4A63]">{content.phone}</a>}
@@ -313,7 +313,7 @@ export default function KeystoneDesign({ site, page = "home", basePath = "" }: P
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Stories", "Homes we've helped open")}
+        {banner("Stories", "gallery_kicker", "Homes we've helped open", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-6xl px-8 py-16">
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
@@ -395,10 +395,10 @@ export default function KeystoneDesign({ site, page = "home", basePath = "" }: P
             <span className="pointer-events-none absolute -bottom-3 -right-3 h-20 w-20 rounded-br-2xl" style={{ borderBottom: `3px solid ${TERRA}`, borderRight: `3px solid ${TERRA}` }} />
           </div>
           <div>
-            <Kicker>Who we are</Kicker>
-            <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-semibold leading-[1.1] tracking-tight sm:text-4xl">Warm, expert advice — never any pressure</h2>
+            <Kicker><span {...editCopy(content, "home_about_kicker", "Who we are")} /></Kicker>
+            <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-semibold leading-[1.1] tracking-tight sm:text-4xl" {...editCopy(content, "home_about_heading", "Warm, expert advice — never any pressure")} />
             <p data-edit="content.about" className="mt-6 text-[16px] leading-[1.9]" style={{ color: MUTE }}>{content.about}</p>
-            <a href={href("about")} className="mt-7 inline-flex items-center gap-2 text-[13px] font-semibold uppercase tracking-[0.12em]" style={{ color: "#b06a40" }}>More about us →</a>
+            <a href={href("about")} className="mt-7 inline-flex items-center gap-2 text-[13px] font-semibold uppercase tracking-[0.12em]" style={{ color: "#b06a40" }} {...editCopy(content, "home_about_link", "More about us →")} />
           </div>
         </section>
       )}
@@ -409,10 +409,10 @@ export default function KeystoneDesign({ site, page = "home", basePath = "" }: P
           <div className="mx-auto max-w-6xl px-8 py-24">
             <div className="flex flex-wrap items-end justify-between gap-4">
               <div>
-                <Kicker>What we do</Kicker>
-                <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl">How we help</h2>
+                <Kicker><span {...editCopy(content, "home_services_kicker", "What we do")} /></Kicker>
+                <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl" {...editCopy(content, "home_services_heading", "How we help")} />
               </div>
-              <a href={href("services")} className="text-sm font-semibold underline-offset-4 hover:underline" style={{ color: "#b06a40" }}>All services →</a>
+              <a href={href("services")} className="text-sm font-semibold underline-offset-4 hover:underline" style={{ color: "#b06a40" }} {...editCopy(content, "home_services_link", "All services →")} />
             </div>
             <div className="mt-12 divide-y" style={{ borderColor: LINE }}>
               {services.slice(0, 6).map((s, i) => (
@@ -431,8 +431,8 @@ export default function KeystoneDesign({ site, page = "home", basePath = "" }: P
       ) : (
         <section style={{ background: "#ffffff", borderTop: `1px solid ${LINE}`, borderBottom: `1px solid ${LINE}` }}>
           <div className="mx-auto max-w-6xl px-8 py-24">
-            <Kicker>What we do</Kicker>
-            <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl">How we help</h2>
+            <Kicker><span {...editCopy(content, "home_help_kicker", "What we do")} /></Kicker>
+            <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl" {...editCopy(content, "home_help_heading", "How we help")} />
             <div className="mt-12 divide-y" style={{ borderColor: LINE }}>
               {helpAreas.map((h, i) => (
                 <div key={h.t} className="grid gap-3 py-7 sm:grid-cols-[auto_1fr] sm:items-baseline sm:gap-8">
@@ -451,8 +451,8 @@ export default function KeystoneDesign({ site, page = "home", basePath = "" }: P
       {/* how it works — Chat → Compare → Complete */}
       <section className="mx-auto max-w-6xl px-8 py-24">
         <div className="text-center">
-          <div className="flex justify-center"><Kicker>How it works</Kicker></div>
-          <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl">Three calm steps to your keys</h2>
+          <div className="flex justify-center"><Kicker><span {...editCopy(content, "home_how_kicker", "How it works")} /></Kicker></div>
+          <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl" {...editCopy(content, "home_how_heading", "Three calm steps to your keys")} />
         </div>
         <div className="relative mt-14 grid gap-8 sm:grid-cols-3">
           <div className="pointer-events-none absolute left-0 right-0 top-7 hidden h-px sm:block" style={{ background: `linear-gradient(90deg, transparent, ${TERRA}66, transparent)` }} />
@@ -473,8 +473,8 @@ export default function KeystoneDesign({ site, page = "home", basePath = "" }: P
         </div>
         <div className="relative mx-auto grid max-w-6xl items-center gap-10 px-8 py-20 lg:grid-cols-[1.2fr_1fr]">
           <div>
-            <Kicker light>Whole of market</Kicker>
-            <h2 style={{ ...display, color: CREAM }} className="mt-4 text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">Fee-free options and lenders the high street can&apos;t reach</h2>
+            <Kicker light><span {...editCopy(content, "home_market_kicker", "Whole of market")} /></Kicker>
+            <h2 style={{ ...display, color: CREAM }} className="mt-4 text-3xl font-semibold leading-tight tracking-tight sm:text-4xl" {...editCopy(content, "home_market_heading", "Fee-free options and lenders the high street can't reach")} />
             <p className="mt-5 max-w-xl text-[16px] leading-relaxed text-white/75">We search the whole market — including specialist lenders for the self-employed, first-time buyers and trickier cases — and we&apos;ll always tell you up front exactly how we&apos;re paid.</p>
             <div className="mt-8">{btnTerra(ctaLabel, cta)}</div>
           </div>
@@ -494,10 +494,10 @@ export default function KeystoneDesign({ site, page = "home", basePath = "" }: P
         <section className="mx-auto max-w-6xl px-8 py-24">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
-              <Kicker>Stories</Kicker>
-              <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl">Homes we&apos;ve helped open</h2>
+              <Kicker><span {...editCopy(content, "home_stories_kicker", "Stories")} /></Kicker>
+              <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl" {...editCopy(content, "home_stories_heading", "Homes we've helped open")} />
             </div>
-            <a href={href("gallery")} className="text-sm font-semibold underline-offset-4 hover:underline" style={{ color: "#b06a40" }}>View all →</a>
+            <a href={href("gallery")} className="text-sm font-semibold underline-offset-4 hover:underline" style={{ color: "#b06a40" }} {...editCopy(content, "home_stories_link", "View all →")} />
           </div>
           <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
             {gallery.slice(0, 4).map((g) => (
@@ -511,8 +511,8 @@ export default function KeystoneDesign({ site, page = "home", basePath = "" }: P
       {/* closing free-chat CTA */}
       <section style={{ background: SAGE_TINT, borderTop: `1px solid ${LINE}` }}>
         <div className="mx-auto max-w-4xl px-8 py-24 text-center">
-          <div className="flex justify-center"><Kicker>Free, no-obligation</Kicker></div>
-          <h2 style={{ ...display, color: SLATE }} className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl">Let&apos;s get you the keys</h2>
+          <div className="flex justify-center"><Kicker><span {...editCopy(content, "cta_kicker", "Free, no-obligation")} /></Kicker></div>
+          <h2 style={{ ...display, color: SLATE }} className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl" {...editCopy(content, "cta_heading", "Let's get you the keys")} />
           <p className="mx-auto mt-4 max-w-lg text-[16px] leading-relaxed" style={{ color: MUTE }}>Book a relaxed chat with a friendly adviser. We&apos;ll listen first, then show you a clear, achievable path to your new home.</p>
           <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
             {btnTerra(ctaLabel, cta)}

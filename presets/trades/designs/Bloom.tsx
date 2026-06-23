@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { BloomHeader } from "./BloomHeader";
 import { TradesSocialIcon } from "./TradesMobileNav";
@@ -68,13 +68,13 @@ export default function BloomDesign({ site, page = "home", basePath = "" }: Pres
           )}
         </div>
         <div>
-          <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-[#eef2ea]/55">Shop</h4>
+          <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-[#eef2ea]/55" {...editCopy(content, "footer_shop", "Shop")} />
           <ul className="mt-5 space-y-3 text-sm text-[#eef2ea]/75">
             {nav.map((l) => (<li key={l.label}><a href={l.href} className="transition hover:text-white">{l.label}</a></li>))}
           </ul>
         </div>
         <div>
-          <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-[#eef2ea]/55">Visit</h4>
+          <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-[#eef2ea]/55" {...editCopy(content, "footer_visit", "Visit")} />
           <div className="mt-5 space-y-3 text-sm text-[#eef2ea]/75">
             {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -82,7 +82,7 @@ export default function BloomDesign({ site, page = "home", basePath = "" }: Pres
           </div>
         </div>
         <div>
-          <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-[#eef2ea]/55">Opening hours</h4>
+          <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-[#eef2ea]/55" {...editCopy(content, "footer_hours", "Opening hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm text-[#eef2ea]/75">
               {content.hours.map((h, i) => (<li key={i} className="flex justify-between gap-5"><span data-edit={`hours:${i}:day`}>{h.day}</span><span data-edit={`hours:${i}:open`} className="text-[#eef2ea]/50">{h.open}</span></li>))}
@@ -92,7 +92,7 @@ export default function BloomDesign({ site, page = "home", basePath = "" }: Pres
       </div>
       <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 border-t px-6 py-7 text-xs sm:flex-row" style={{ borderColor: "#ffffff1f", color: "#eef2ea99" }}>
         <p>© {new Date().getFullYear()} {name}. All rights reserved.</p>
-        <a href={href("contact")} className="uppercase tracking-[0.16em] transition hover:text-white">Weddings &amp; events</a>
+        <a href={href("contact")} className="uppercase tracking-[0.16em] transition hover:text-white" {...editCopy(content, "footer_weddings_link", "Weddings & events")} />
       </div>
     </footer>
   );
@@ -162,7 +162,7 @@ export default function BloomDesign({ site, page = "home", basePath = "" }: Pres
           {content.about ? <p data-edit="content.about" className="text-[18px] leading-[1.95]" style={{ color: SAGE }}>{content.about}</p> : <p style={{ color: SAGE }}>Our story is coming soon.</p>}
           {content.service_areas && content.service_areas.length > 0 && (
             <>
-              <h3 style={{ ...serif, color: GREEN }} className="mt-12 text-2xl font-medium">Delivery &amp; areas</h3>
+              <h3 style={{ ...serif, color: GREEN }} className="mt-12 text-2xl font-medium" {...editCopy(content, "about_delivery_heading", "Delivery & areas")} />
               <p className="mt-4 text-[16px] leading-relaxed" style={{ color: SAGE }}>We deliver across {content.service_areas.join(", ")}.</p>
             </>
           )}
@@ -200,7 +200,7 @@ export default function BloomDesign({ site, page = "home", basePath = "" }: Pres
         {banner("Say hello", "Visit & enquiries")}
         <section className="mx-auto grid max-w-6xl gap-12 px-6 py-20 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={{ ...serif, color: GREEN }} className="text-2xl font-medium">Come and see us</h2>
+            <h2 style={{ ...serif, color: GREEN }} className="text-2xl font-medium" {...editCopy(content, "contact_heading", "Come and see us")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: SAGE }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-[#3f5d44]">{content.phone}</a>}
@@ -212,7 +212,7 @@ export default function BloomDesign({ site, page = "home", basePath = "" }: Pres
               </ul>
             )}
             {content.map_url && (
-              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex rounded-full border px-6 py-3 text-[12px] font-semibold uppercase tracking-[0.12em] transition hover:bg-white" style={{ borderColor: GREEN, color: GREEN }}>Get directions</a>
+              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex rounded-full border px-6 py-3 text-[12px] font-semibold uppercase tracking-[0.12em] transition hover:bg-white" style={{ borderColor: GREEN, color: GREEN }} {...editCopy(content, "contact_directions_cta", "Get directions")} />
             )}
           </div>
           {(bookingOn || contactOn) && (
@@ -250,7 +250,7 @@ export default function BloomDesign({ site, page = "home", basePath = "" }: Pres
           <h1 data-edit="content.tagline" style={{ ...serif, color: GREEN }} className="mt-5 max-w-2xl text-5xl font-medium leading-[1.02] tracking-tight sm:text-7xl">{content.tagline ?? "Seasonal flowers, gathered fresh."}</h1>
           <div className="mt-9 flex flex-wrap gap-3">
             <a href={cta} className="inline-flex rounded-full px-8 py-4 text-[12px] font-semibold uppercase tracking-[0.14em] text-white transition hover:opacity-90" style={{ background: GREEN }}>{ctaLabel}</a>
-            {products.length > 0 && <a href={href("services")} className="inline-flex rounded-full border px-8 py-4 text-[12px] font-semibold uppercase tracking-[0.14em] transition hover:bg-white/60" style={{ borderColor: GREEN, color: GREEN }}>Browse the shop</a>}
+            {products.length > 0 && <a href={href("services")} className="inline-flex rounded-full border px-8 py-4 text-[12px] font-semibold uppercase tracking-[0.14em] transition hover:bg-white/60" style={{ borderColor: GREEN, color: GREEN }} {...editCopy(content, "hero_browse_cta", "Browse the shop")} />}
           </div>
         </div>
       </section>
@@ -258,9 +258,9 @@ export default function BloomDesign({ site, page = "home", basePath = "" }: Pres
       {/* about */}
       {content.about && (
         <section className="mx-auto max-w-3xl px-6 py-24 text-center">
-          <Kicker center>Our story</Kicker>
+          <Kicker center><span {...editCopy(content, "about_kicker", "Our story")} /></Kicker>
           <p data-edit="content.about" style={{ ...serif, color: GREEN }} className="mt-6 text-2xl font-medium leading-[1.5] sm:text-[2rem]">{content.about}</p>
-          <a href={href("about")} className="mt-7 inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-[0.16em]" style={{ color: BLUSH }}>Read more →</a>
+          <a href={href("about")} className="mt-7 inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-[0.16em]" style={{ color: BLUSH }} {...editCopy(content, "about_link", "Read more →")} />
         </section>
       )}
 
@@ -269,14 +269,14 @@ export default function BloomDesign({ site, page = "home", basePath = "" }: Pres
         <section style={{ background: PETAL, borderTop: `1px solid ${LINE}`, borderBottom: `1px solid ${LINE}` }}>
           <div className="mx-auto max-w-6xl px-6 py-24">
             <div className="text-center">
-              <Kicker center>Fresh today</Kicker>
-              <h2 style={{ ...serif, color: GREEN }} className="mt-3 text-3xl font-medium tracking-tight sm:text-4xl">From the shop</h2>
+              <Kicker center><span {...editCopy(content, "shop_kicker", "Fresh today")} /></Kicker>
+              <h2 style={{ ...serif, color: GREEN }} className="mt-3 text-3xl font-medium tracking-tight sm:text-4xl" {...editCopy(content, "shop_heading", "From the shop")} />
             </div>
             <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {products.slice(0, 6).map((s, i) => <ProductCard key={s.id} s={s} img={gallery[i % Math.max(gallery.length, 1)]?.image_url} />)}
             </div>
             <div className="mt-12 text-center">
-              <a href={href("services")} className="inline-flex rounded-full border px-7 py-3 text-[12px] font-semibold uppercase tracking-[0.14em] transition hover:bg-white" style={{ borderColor: GREEN, color: GREEN }}>View the full shop</a>
+              <a href={href("services")} className="inline-flex rounded-full border px-7 py-3 text-[12px] font-semibold uppercase tracking-[0.14em] transition hover:bg-white" style={{ borderColor: GREEN, color: GREEN }} {...editCopy(content, "shop_full_cta", "View the full shop")} />
             </div>
           </div>
         </section>
@@ -286,8 +286,8 @@ export default function BloomDesign({ site, page = "home", basePath = "" }: Pres
       {gallery.length > 0 && (
         <section className="mx-auto max-w-6xl px-6 py-24">
           <div className="text-center">
-            <Kicker center>In bloom</Kicker>
-            <h2 style={{ ...serif, color: GREEN }} className="mt-3 text-3xl font-medium tracking-tight sm:text-4xl">A little colour for every occasion</h2>
+            <Kicker center><span {...editCopy(content, "gallery_kicker", "In bloom")} /></Kicker>
+            <h2 style={{ ...serif, color: GREEN }} className="mt-3 text-3xl font-medium tracking-tight sm:text-4xl" {...editCopy(content, "gallery_heading", "A little colour for every occasion")} />
           </div>
           <div className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-4">
             {gallery.slice(0, 4).map((g) => (
@@ -296,7 +296,7 @@ export default function BloomDesign({ site, page = "home", basePath = "" }: Pres
             ))}
           </div>
           <div className="mt-10 text-center">
-            <a href={href("gallery")} className="inline-flex rounded-full border px-7 py-3 text-[12px] font-semibold uppercase tracking-[0.14em] transition hover:bg-white" style={{ borderColor: GREEN, color: GREEN }}>View gallery</a>
+            <a href={href("gallery")} className="inline-flex rounded-full border px-7 py-3 text-[12px] font-semibold uppercase tracking-[0.14em] transition hover:bg-white" style={{ borderColor: GREEN, color: GREEN }} {...editCopy(content, "gallery_cta", "View gallery")} />
           </div>
         </section>
       )}
@@ -304,9 +304,9 @@ export default function BloomDesign({ site, page = "home", basePath = "" }: Pres
       {/* closing band */}
       <section style={{ background: GREEN }} className="text-[#eef2ea]">
         <div className="mx-auto max-w-2xl px-6 py-20 text-center">
-          <h2 style={serif} className="text-3xl font-medium tracking-tight sm:text-4xl">Weddings &amp; events</h2>
-          <p className="mx-auto mt-4 max-w-md text-[15px] leading-relaxed text-[#eef2ea]/75">From intimate ceremonies to grand celebrations, let us bring your day into bloom.</p>
-          <a href={cta} className="mt-8 inline-flex rounded-full px-8 py-3.5 text-[12px] font-semibold uppercase tracking-[0.14em] transition hover:opacity-90" style={{ background: BLUSH, color: "#fff" }}>Enquire now</a>
+          <h2 style={serif} className="text-3xl font-medium tracking-tight sm:text-4xl" {...editCopy(content, "closing_heading", "Weddings & events")} />
+          <p className="mx-auto mt-4 max-w-md text-[15px] leading-relaxed text-[#eef2ea]/75" {...editCopy(content, "closing_blurb", "From intimate ceremonies to grand celebrations, let us bring your day into bloom.")} />
+          <a href={cta} className="mt-8 inline-flex rounded-full px-8 py-3.5 text-[12px] font-semibold uppercase tracking-[0.14em] transition hover:opacity-90" style={{ background: BLUSH, color: "#fff" }} {...editCopy(content, "closing_cta", "Enquire now")} />
         </div>
       </section>
     </>,

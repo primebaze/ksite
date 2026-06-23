@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { AssuredHeader } from "./AssuredHeader";
 import { TradesSocialIcon } from "./TradesMobileNav";
@@ -128,7 +128,7 @@ export default function AssuredDesign({ site, page = "home", basePath = "" }: Pr
           )}
         </div>
         <div>
-          <h4 style={{ ...display, color: AMBER }} className="text-[11px] font-bold uppercase tracking-[0.22em]">Brokerage</h4>
+          <h4 style={{ ...display, color: AMBER }} className="text-[11px] font-bold uppercase tracking-[0.22em]" {...editCopy(content, "footer_brokerage", "Brokerage")} />
           <ul className="mt-5 space-y-3 text-sm" style={{ color: CLOUDMUTE }}>
             {nav.map((l) => (
               <li key={l.label}><a href={l.href} className="transition hover:text-white">{l.label}</a></li>
@@ -136,7 +136,7 @@ export default function AssuredDesign({ site, page = "home", basePath = "" }: Pr
           </ul>
         </div>
         <div>
-          <h4 style={{ ...display, color: AMBER }} className="text-[11px] font-bold uppercase tracking-[0.22em]">Contact</h4>
+          <h4 style={{ ...display, color: AMBER }} className="text-[11px] font-bold uppercase tracking-[0.22em]" {...editCopy(content, "footer_contact", "Contact")} />
           <div className="mt-5 space-y-3 text-sm" style={{ color: CLOUDMUTE }}>
             {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -144,7 +144,7 @@ export default function AssuredDesign({ site, page = "home", basePath = "" }: Pr
           </div>
         </div>
         <div>
-          <h4 style={{ ...display, color: AMBER }} className="text-[11px] font-bold uppercase tracking-[0.22em]">Office hours</h4>
+          <h4 style={{ ...display, color: AMBER }} className="text-[11px] font-bold uppercase tracking-[0.22em]" {...editCopy(content, "footer_hours", "Office hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm" style={{ color: CLOUDMUTE }}>
               {content.hours.map((h, i) => (
@@ -222,7 +222,7 @@ export default function AssuredDesign({ site, page = "home", basePath = "" }: Pr
             {content.about ? <p data-edit="content.about" className="text-[17px] leading-[1.9]" style={{ color: MUTE }}>{content.about}</p> : <p style={{ color: MUTE }}>Our story is coming soon.</p>}
             {content.service_areas && content.service_areas.length > 0 && (
               <>
-                <h3 style={{ ...display, color: INK }} className="mt-12 text-2xl font-bold tracking-tight">Who we look after</h3>
+                <h3 style={{ ...display, color: INK }} className="mt-12 text-2xl font-bold tracking-tight" {...editCopy(content, "about_audience_heading", "Who we look after")} />
                 <div className="mt-5 flex flex-wrap gap-2">
                   {content.service_areas.map((a) => (
                     <span key={a} className="rounded-full border px-4 py-1.5 text-sm" style={{ borderColor: LINE, color: MUTE }}>{a}</span>
@@ -232,7 +232,7 @@ export default function AssuredDesign({ site, page = "home", basePath = "" }: Pr
             )}
           </div>
           <aside className="h-fit rounded-2xl p-7" style={{ background: PANEL, border: `1px solid ${LINE}` }}>
-            <h4 style={{ ...display, color: BLUE }} className="text-xs font-bold uppercase tracking-[0.2em]">Why use a broker</h4>
+            <h4 style={{ ...display, color: BLUE }} className="text-xs font-bold uppercase tracking-[0.2em]" {...editCopy(content, "about_whybroker_heading", "Why use a broker")} />
             <ul className="mt-4 space-y-3 text-sm" style={{ color: INK }}>
               {trust.map((a) => (
                 <li key={a} className="flex items-start gap-2.5"><span className="mt-0.5 shrink-0"><ShieldMark size={15} stroke={2} /></span><span>{a}</span></li>
@@ -256,7 +256,7 @@ export default function AssuredDesign({ site, page = "home", basePath = "" }: Pr
         {banner("Get in touch", "Get a quote", "Tell us a little about what you need cover for and we'll search the whole market for the right policy at the right price.")}
         <section className="mx-auto grid max-w-6xl gap-12 px-8 py-20 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={{ ...display, color: BLUE }} className="text-2xl font-bold tracking-tight">Speak to a broker</h2>
+            <h2 style={{ ...display, color: BLUE }} className="text-2xl font-bold tracking-tight" {...editCopy(content, "contact_heading", "Speak to a broker")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: MUTE }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-[#173A6B]">{content.phone}</a>}
@@ -274,7 +274,7 @@ export default function AssuredDesign({ site, page = "home", basePath = "" }: Pr
                 <span key={a} className="rounded-full px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.1em]" style={{ background: PANEL, color: BLUE }}>{a}</span>
               ))}
             </div>
-            <p className="mt-8 max-w-xs text-xs leading-relaxed" style={{ color: MUTE }}>If you ever need to claim, we handle it for you — one call and we are on your side.</p>
+            <p className="mt-8 max-w-xs text-xs leading-relaxed" style={{ color: MUTE }} {...editCopy(content, "contact_claims_note", "If you ever need to claim, we handle it for you — one call and we are on your side.")} />
             {content.map_url && (
               <div className="mt-7">{btnOutline("Get directions", content.map_url)}</div>
             )}
@@ -354,7 +354,7 @@ export default function AssuredDesign({ site, page = "home", basePath = "" }: Pr
             <span data-edit="content.tagline" className="block">{content.tagline ?? "Cover you can count on."}</span>
           </h1>
           <p data-edit="tenant.business_name" className="mt-5 text-sm font-semibold uppercase tracking-[0.22em] text-white/65">{name}</p>
-          <p className="mt-5 max-w-xl text-[17px] leading-relaxed text-white/80">Independent, whole-of-market insurance broking — the right protection, expert advice and a real person on your side when you need to claim.</p>
+          <p className="mt-5 max-w-xl text-[17px] leading-relaxed text-white/80" {...editCopy(content, "hero_blurb", "Independent, whole-of-market insurance broking — the right protection, expert advice and a real person on your side when you need to claim.")} />
           <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:gap-4">
             {btnAmber(ctaLabel, cta)}
             {phone ? btnOutline(`Call ${phone}`, `tel:${phone}`, true) : btnOutline("Our cover", href("services"), true)}
@@ -387,10 +387,10 @@ export default function AssuredDesign({ site, page = "home", basePath = "" }: Pr
             <span className="pointer-events-none absolute -bottom-3 -right-3 h-20 w-20 rounded-br-2xl" style={{ borderBottom: `3px solid ${AMBER}`, borderRight: `3px solid ${AMBER}` }} />
           </div>
           <div>
-            <Kicker>About the brokerage</Kicker>
-            <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-bold leading-[1.1] tracking-tight sm:text-4xl">An independent broker that puts you first</h2>
+            <Kicker><span {...editCopy(content, "about_kicker", "About the brokerage")} /></Kicker>
+            <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-bold leading-[1.1] tracking-tight sm:text-4xl" {...editCopy(content, "about_heading", "An independent broker that puts you first")} />
             <p data-edit="content.about" className="mt-6 text-[16px] leading-[1.9]" style={{ color: MUTE }}>{content.about}</p>
-            <a href={href("about")} className="mt-7 inline-flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.16em]" style={{ color: BLUE }}>More about us →</a>
+            <a href={href("about")} className="mt-7 inline-flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.16em]" style={{ color: BLUE }} {...editCopy(content, "about_link", "More about us →")} />
           </div>
         </section>
       )}
@@ -401,10 +401,10 @@ export default function AssuredDesign({ site, page = "home", basePath = "" }: Pr
           <div className="mx-auto max-w-6xl px-8 py-24">
             <div className="flex flex-wrap items-end justify-between gap-4">
               <div>
-                <Kicker>What we cover</Kicker>
-                <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-bold tracking-tight sm:text-4xl">Cover for what matters</h2>
+                <Kicker><span {...editCopy(content, "cover_kicker", "What we cover")} /></Kicker>
+                <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-bold tracking-tight sm:text-4xl" {...editCopy(content, "cover_heading", "Cover for what matters")} />
               </div>
-              <a href={href("services")} className="text-sm font-semibold underline-offset-4 hover:underline" style={{ color: BLUE }}>All cover →</a>
+              <a href={href("services")} className="text-sm font-semibold underline-offset-4 hover:underline" style={{ color: BLUE }} {...editCopy(content, "cover_link", "All cover →")} />
             </div>
             <p className="mt-4 text-[15px]" style={{ color: MUTE }}>{coverFallback.join(" · ")}.</p>
             <div className="mt-12">{coverList(6)}</div>
@@ -413,8 +413,8 @@ export default function AssuredDesign({ site, page = "home", basePath = "" }: Pr
       ) : (
         <section style={{ background: "#ffffff", borderTop: `1px solid ${LINE}`, borderBottom: `1px solid ${LINE}` }}>
           <div className="mx-auto max-w-6xl px-8 py-24">
-            <Kicker>What we cover</Kicker>
-            <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-bold tracking-tight sm:text-4xl">Cover for what matters</h2>
+            <Kicker><span {...editCopy(content, "cover_empty_kicker", "What we cover")} /></Kicker>
+            <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-bold tracking-tight sm:text-4xl" {...editCopy(content, "cover_empty_heading", "Cover for what matters")} />
             <div className="mt-12 grid gap-px overflow-hidden rounded-2xl sm:grid-cols-2 lg:grid-cols-3" style={{ background: LINE }}>
               {coverFallback.map((c) => (
                 <div key={c} className="flex items-center gap-3 p-7" style={{ background: "#ffffff" }}>
@@ -430,8 +430,8 @@ export default function AssuredDesign({ site, page = "home", basePath = "" }: Pr
       {/* why use a broker band */}
       <section className="mx-auto max-w-6xl px-8 py-24">
         <div className="text-center">
-          <div className="flex justify-center"><Kicker>Why use a broker</Kicker></div>
-          <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-bold tracking-tight sm:text-4xl">Advice on your side, not the insurer&apos;s</h2>
+          <div className="flex justify-center"><Kicker><span {...editCopy(content, "whybroker_kicker", "Why use a broker")} /></Kicker></div>
+          <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-bold tracking-tight sm:text-4xl" {...editCopy(content, "whybroker_heading", "Advice on your side, not the insurer's")} />
         </div>
         <div className="mt-14 grid gap-px overflow-hidden rounded-2xl sm:grid-cols-3" style={{ background: LINE }}>
           {whyBroker.map((c) => (
@@ -468,9 +468,9 @@ export default function AssuredDesign({ site, page = "home", basePath = "" }: Pr
             </div>
           </div>
           <div>
-            <Kicker>Here when you claim</Kicker>
-            <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-bold tracking-tight sm:text-4xl">We are with you when it matters most</h2>
-            <p className="mt-4 max-w-2xl text-[16px] leading-relaxed" style={{ color: MUTE }}>A policy is only worth as much as the support behind it. When you need to claim, you speak to us — we know your cover, manage the process and fight your corner until it&apos;s settled fairly.</p>
+            <Kicker><span {...editCopy(content, "claims_kicker", "Here when you claim")} /></Kicker>
+            <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-bold tracking-tight sm:text-4xl" {...editCopy(content, "claims_heading", "We are with you when it matters most")} />
+            <p className="mt-4 max-w-2xl text-[16px] leading-relaxed" style={{ color: MUTE }} {...editCopy(content, "claims_body", "A policy is only worth as much as the support behind it. When you need to claim, you speak to us — we know your cover, manage the process and fight your corner until it's settled fairly.")} />
             {phone && <div className="mt-7">{btnOutline(`Claims line · ${phone}`, `tel:${phone}`)}</div>}
           </div>
         </div>
@@ -481,10 +481,10 @@ export default function AssuredDesign({ site, page = "home", basePath = "" }: Pr
         <section className="mx-auto max-w-6xl px-8 py-24">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
-              <Kicker>Our brokerage</Kicker>
-              <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-bold tracking-tight sm:text-4xl">The people behind your cover</h2>
+              <Kicker><span {...editCopy(content, "gallery_kicker", "Our brokerage")} /></Kicker>
+              <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-bold tracking-tight sm:text-4xl" {...editCopy(content, "gallery_heading", "The people behind your cover")} />
             </div>
-            <a href={href("gallery")} className="text-sm font-semibold underline-offset-4 hover:underline" style={{ color: BLUE }}>View all →</a>
+            <a href={href("gallery")} className="text-sm font-semibold underline-offset-4 hover:underline" style={{ color: BLUE }} {...editCopy(content, "gallery_link", "View all →")} />
           </div>
           <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
             {gallery.slice(0, 4).map((g) => (
@@ -501,9 +501,9 @@ export default function AssuredDesign({ site, page = "home", basePath = "" }: Pr
           <CoverArc className="h-full w-full" stroke={AMBER} />
         </div>
         <div className="relative mx-auto max-w-4xl px-8 py-24 text-center">
-          <div className="flex justify-center"><Kicker light>Get a quote</Kicker></div>
-          <h2 style={{ ...display, color: CLOUD }} className="mt-4 text-3xl font-bold tracking-tight sm:text-4xl">Let&apos;s find you the right cover</h2>
-          <p className="mx-auto mt-4 max-w-lg text-[16px] leading-relaxed" style={{ color: CLOUDMUTE }}>Tell us what you need to protect. We&apos;ll search the whole market and come back with clear, no-obligation advice.</p>
+          <div className="flex justify-center"><Kicker light><span {...editCopy(content, "cta_kicker", "Get a quote")} /></Kicker></div>
+          <h2 style={{ ...display, color: CLOUD }} className="mt-4 text-3xl font-bold tracking-tight sm:text-4xl" {...editCopy(content, "cta_heading", "Let's find you the right cover")} />
+          <p className="mx-auto mt-4 max-w-lg text-[16px] leading-relaxed" style={{ color: CLOUDMUTE }} {...editCopy(content, "cta_blurb", "Tell us what you need to protect. We'll search the whole market and come back with clear, no-obligation advice.")} />
           <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
             {btnAmber(ctaLabel, cta)}
             {phone && btnOutline(`Call ${phone}`, `tel:${phone}`, true)}

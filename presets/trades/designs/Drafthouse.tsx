@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { DrafthouseHeader } from "./DrafthouseHeader";
 import { TradesSocialIcon } from "./TradesMobileNav";
@@ -53,7 +53,7 @@ export default function DrafthouseDesign({ site, page = "home", basePath = "" }:
         <div>
           <a href={href("home")} className="block">
             <span data-edit="tenant.business_name" style={serif} className="text-2xl tracking-[0.04em] text-[#f3efe7]">{name}</span>
-            <span className="mt-1 block text-[8px] uppercase tracking-[0.42em] text-white/40">Architecture &amp; Design Studio</span>
+            <span className="mt-1 block text-[8px] uppercase tracking-[0.42em] text-white/40" {...editCopy(content, "footer_sublabel", "Architecture & Design Studio")} />
           </a>
           {content.tagline && <p data-edit="content.tagline" className="mt-5 max-w-xs text-sm leading-relaxed text-white/55">{content.tagline}</p>}
           {content.socials && content.socials.length > 0 && (
@@ -65,7 +65,7 @@ export default function DrafthouseDesign({ site, page = "home", basePath = "" }:
           )}
         </div>
         <div>
-          <h4 className="text-[11px] font-semibold uppercase tracking-[0.24em] text-white/40">Studio</h4>
+          <h4 className="text-[11px] font-semibold uppercase tracking-[0.24em] text-white/40" {...editCopy(content, "footer_studio", "Studio")} />
           <ul className="mt-5 space-y-3 text-sm text-white/65">
             {nav.map((l) => (
               <li key={l.label}><a href={l.href} className="transition hover:text-white">{l.label}</a></li>
@@ -73,7 +73,7 @@ export default function DrafthouseDesign({ site, page = "home", basePath = "" }:
           </ul>
         </div>
         <div>
-          <h4 className="text-[11px] font-semibold uppercase tracking-[0.24em] text-white/40">Contact</h4>
+          <h4 className="text-[11px] font-semibold uppercase tracking-[0.24em] text-white/40" {...editCopy(content, "footer_contact", "Contact")} />
           <div className="mt-5 space-y-3 text-sm text-white/65">
             {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -81,7 +81,7 @@ export default function DrafthouseDesign({ site, page = "home", basePath = "" }:
           </div>
         </div>
         <div>
-          <h4 className="text-[11px] font-semibold uppercase tracking-[0.24em] text-white/40">Hours</h4>
+          <h4 className="text-[11px] font-semibold uppercase tracking-[0.24em] text-white/40" {...editCopy(content, "footer_hours", "Hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm text-white/65">
               {content.hours.map((h, i) => (
@@ -106,12 +106,12 @@ export default function DrafthouseDesign({ site, page = "home", basePath = "" }:
     </div>
   );
 
-  const banner = (kicker: string, title: string, blurb?: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string, blurb?: string, blurbKey?: string) => (
     <section style={{ borderBottom: `1px solid ${LINE}` }}>
       <div className="mx-auto max-w-6xl px-6 py-20 sm:py-24">
-        <Kicker>{kicker}</Kicker>
-        <h1 style={{ ...serif, color: INK }} className="mt-5 max-w-3xl text-4xl leading-[1.08] tracking-tight sm:text-6xl">{title}</h1>
-        {blurb && <p className="mt-6 max-w-xl text-[16px] leading-relaxed" style={{ color: STONE }}>{blurb}</p>}
+        <Kicker><span {...editCopy(content, kickerKey, kicker)} /></Kicker>
+        <h1 style={{ ...serif, color: INK }} className="mt-5 max-w-3xl text-4xl leading-[1.08] tracking-tight sm:text-6xl" {...editCopy(content, titleKey, title)} />
+        {blurb && blurbKey && <p className="mt-6 max-w-xl text-[16px] leading-relaxed" style={{ color: STONE }} {...editCopy(content, blurbKey, blurb)} />}
       </div>
     </section>
   );
@@ -120,7 +120,7 @@ export default function DrafthouseDesign({ site, page = "home", basePath = "" }:
   if (page === "services") {
     return shell(
       <>
-        {banner("Capabilities", "What we offer", "From first sketch to final detail — considered design, carefully delivered.")}
+        {banner("Capabilities", "svc_kicker", "What we offer", "svc_title", "From first sketch to final detail — considered design, carefully delivered.", "svc_blurb")}
         <section className="mx-auto max-w-4xl px-6 py-20">
           {services.length > 0 ? (
             <ul className="divide-y" style={{ borderColor: LINE }}>
@@ -150,13 +150,13 @@ export default function DrafthouseDesign({ site, page = "home", basePath = "" }:
   if (page === "about") {
     return shell(
       <>
-        {banner("The studio", "A practice built on detail")}
+        {banner("The studio", "about_kicker", "A practice built on detail", "about_title")}
         <section className="mx-auto grid max-w-6xl gap-12 px-6 py-20 lg:grid-cols-[1.5fr_1fr] lg:gap-16">
           <div>
             {content.about ? <p data-edit="content.about" className="text-[18px] leading-[1.95]" style={{ color: STONE }}>{content.about}</p> : <p style={{ color: STONE }}>Our story is coming soon.</p>}
             {content.service_areas && content.service_areas.length > 0 && (
               <>
-                <h3 style={{ ...serif, color: INK }} className="mt-12 text-2xl">Where we work</h3>
+                <h3 style={{ ...serif, color: INK }} className="mt-12 text-2xl" {...editCopy(content, "about_where_heading", "Where we work")} />
                 <p className="mt-4 text-[15px] leading-relaxed" style={{ color: STONE }}>{content.service_areas.join(" · ")}</p>
               </>
             )}
@@ -164,7 +164,7 @@ export default function DrafthouseDesign({ site, page = "home", basePath = "" }:
           <aside className="h-fit p-7" style={{ background: PANEL, border: `1px solid ${LINE}` }}>
             {content.accreditations && content.accreditations.length > 0 && (
               <>
-                <h4 className="text-[11px] font-semibold uppercase tracking-[0.24em]" style={{ color: STONE }}>Credentials</h4>
+                <h4 className="text-[11px] font-semibold uppercase tracking-[0.24em]" style={{ color: STONE }} {...editCopy(content, "about_credentials_heading", "Credentials")} />
                 <ul className="mt-4 space-y-3 text-sm" style={{ color: INK }}>
                   {content.accreditations.map((a) => (
                     <li key={a} className="border-b pb-3 last:border-0" style={{ borderColor: LINE }}>{a}</li>
@@ -187,10 +187,10 @@ export default function DrafthouseDesign({ site, page = "home", basePath = "" }:
   if (page === "contact") {
     return shell(
       <>
-        {banner("Enquiries", "Start a project", "Tell us about your site, brief and timeline — we'll arrange an initial consultation.")}
+        {banner("Enquiries", "contact_kicker", "Start a project", "contact_title", "Tell us about your site, brief and timeline — we'll arrange an initial consultation.", "contact_blurb")}
         <section className="mx-auto grid max-w-6xl gap-12 px-6 py-20 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={{ ...serif, color: INK }} className="text-2xl">Visit the studio</h2>
+            <h2 style={{ ...serif, color: INK }} className="text-2xl" {...editCopy(content, "contact_heading", "Visit the studio")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: STONE }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-black">{content.phone}</a>}
@@ -229,7 +229,7 @@ export default function DrafthouseDesign({ site, page = "home", basePath = "" }:
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Selected work", "Projects")}
+        {banner("Selected work", "work_kicker", "Projects", "work_title")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-6xl px-6 py-16">
             <div className="grid gap-4 sm:grid-cols-2">
@@ -274,10 +274,10 @@ export default function DrafthouseDesign({ site, page = "home", basePath = "" }:
       {content.about && (
         <section style={{ background: PANEL, borderTop: `1px solid ${LINE}`, borderBottom: `1px solid ${LINE}` }}>
           <div className="mx-auto grid max-w-6xl gap-6 px-6 py-24 lg:grid-cols-[auto_1fr] lg:gap-16">
-            <div className="lg:pt-2"><Kicker>The studio</Kicker></div>
+            <div className="lg:pt-2"><Kicker><span {...editCopy(content, "home_about_kicker", "The studio")} /></Kicker></div>
             <div>
               <p data-edit="content.about" style={{ ...serif, color: INK }} className="max-w-3xl text-3xl leading-[1.3] sm:text-[2.4rem]">{content.about}</p>
-              <a href={href("about")} className="mt-7 inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em]" style={{ color: STONE }}>About the studio →</a>
+              <a href={href("about")} className="mt-7 inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em]" style={{ color: STONE }} {...editCopy(content, "home_about_link", "About the studio →")} />
             </div>
           </div>
         </section>
@@ -286,8 +286,8 @@ export default function DrafthouseDesign({ site, page = "home", basePath = "" }:
       {/* services — numbered list */}
       {services.length > 0 && (
         <section className="mx-auto max-w-4xl px-6 py-24">
-          <Kicker>Capabilities</Kicker>
-          <h2 style={{ ...serif, color: INK }} className="mt-5 text-4xl tracking-tight sm:text-5xl">What we offer</h2>
+          <Kicker><span {...editCopy(content, "home_svc_kicker", "Capabilities")} /></Kicker>
+          <h2 style={{ ...serif, color: INK }} className="mt-5 text-4xl tracking-tight sm:text-5xl" {...editCopy(content, "home_svc_heading", "What we offer")} />
           <ul className="mt-12 divide-y" style={{ borderColor: LINE }}>
             {services.slice(0, 6).map((s, i) => (
               <li key={s.id} className="flex items-baseline justify-between gap-8 py-6">
@@ -302,7 +302,7 @@ export default function DrafthouseDesign({ site, page = "home", basePath = "" }:
               </li>
             ))}
           </ul>
-          <a href={href("services")} className="mt-10 inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em]" style={{ color: STONE }}>All services →</a>
+          <a href={href("services")} className="mt-10 inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em]" style={{ color: STONE }} {...editCopy(content, "home_svc_link", "All services →")} />
         </section>
       )}
 
@@ -310,24 +310,24 @@ export default function DrafthouseDesign({ site, page = "home", basePath = "" }:
       {gallery.length > 0 && (
         <section style={{ background: INK }}>
           <div className="mx-auto max-w-6xl px-6 py-24">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.34em] text-white/45">Selected work</p>
-            <h2 style={serif} className="mt-5 max-w-2xl text-4xl leading-tight tracking-tight text-[#f3efe7] sm:text-5xl">Projects we&apos;re proud of</h2>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.34em] text-white/45" {...editCopy(content, "home_work_kicker", "Selected work")} />
+            <h2 style={serif} className="mt-5 max-w-2xl text-4xl leading-tight tracking-tight text-[#f3efe7] sm:text-5xl" {...editCopy(content, "home_work_heading", "Projects we're proud of")} />
             <div className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-4">
               {gallery.slice(0, 4).map((g) => (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img loading="lazy" decoding="async" key={g.id} src={g.image_url} alt={g.caption ?? ""} className="aspect-[3/4] w-full object-cover" />
               ))}
             </div>
-            <a href={href("gallery")} className="mt-10 inline-flex border px-8 py-3.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#f3efe7] transition hover:bg-white/10" style={{ borderColor: "#ffffff44" }}>View all work</a>
+            <a href={href("gallery")} className="mt-10 inline-flex border px-8 py-3.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#f3efe7] transition hover:bg-white/10" style={{ borderColor: "#ffffff44" }} {...editCopy(content, "home_work_link", "View all work")} />
           </div>
         </section>
       )}
 
       {/* closing CTA */}
       <section className="mx-auto max-w-4xl px-6 py-24 text-center">
-        <Kicker>Enquiries</Kicker>
-        <h2 style={{ ...serif, color: INK }} className="mt-5 text-4xl tracking-tight sm:text-5xl">Let&apos;s design something enduring</h2>
-        <p className="mx-auto mt-5 max-w-lg text-[16px] leading-relaxed" style={{ color: STONE }}>Tell us about your project and we&apos;ll arrange an initial consultation.</p>
+        <Kicker><span {...editCopy(content, "cta_kicker", "Enquiries")} /></Kicker>
+        <h2 style={{ ...serif, color: INK }} className="mt-5 text-4xl tracking-tight sm:text-5xl" {...editCopy(content, "cta_heading", "Let's design something enduring")} />
+        <p className="mx-auto mt-5 max-w-lg text-[16px] leading-relaxed" style={{ color: STONE }} {...editCopy(content, "cta_blurb", "Tell us about your project and we'll arrange an initial consultation.")} />
         <a href={cta} className="mt-8 inline-flex bg-[#1a1a17] px-9 py-4 text-[11px] font-semibold uppercase tracking-[0.2em] text-[#f3efe7] transition hover:opacity-90">{ctaLabel}</a>
       </section>
     </>,

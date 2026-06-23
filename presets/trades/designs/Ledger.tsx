@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { LedgerHeader } from "./LedgerHeader";
 import { TradesSocialIcon } from "./TradesMobileNav";
@@ -68,7 +68,7 @@ export default function LedgerDesign({ site, page = "home", basePath = "" }: Pre
           )}
         </div>
         <div>
-          <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-white/45">Firm</h4>
+          <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-white/45" {...editCopy(content, "footer_firm", "Firm")} />
           <ul className="mt-5 space-y-3 text-sm text-white/70">
             {nav.map((l) => (
               <li key={l.label}><a href={l.href} className="transition hover:text-white">{l.label}</a></li>
@@ -76,7 +76,7 @@ export default function LedgerDesign({ site, page = "home", basePath = "" }: Pre
           </ul>
         </div>
         <div>
-          <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-white/45">Contact</h4>
+          <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-white/45" {...editCopy(content, "footer_contact", "Contact")} />
           <div className="mt-5 space-y-3 text-sm text-white/70">
             {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -84,7 +84,7 @@ export default function LedgerDesign({ site, page = "home", basePath = "" }: Pre
           </div>
         </div>
         <div>
-          <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-white/45">Office hours</h4>
+          <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-white/45" {...editCopy(content, "footer_hours", "Office hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm text-white/70">
               {content.hours.map((h, i) => (
@@ -111,12 +111,12 @@ export default function LedgerDesign({ site, page = "home", basePath = "" }: Pre
     </div>
   );
 
-  const banner = (kicker: string, title: string, blurb?: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string, blurb?: string, blurbKey?: string) => (
     <section style={{ background: MIST, borderBottom: `1px solid ${LINE}` }}>
       <div className="mx-auto max-w-6xl px-6 py-16 sm:py-20">
-        <Kicker>{kicker}</Kicker>
-        <h1 style={{ ...serif, color: NAVY }} className="mt-4 max-w-3xl text-4xl font-semibold leading-[1.08] tracking-tight sm:text-5xl">{title}</h1>
-        {blurb && <p className="mt-5 max-w-xl text-[16px] leading-relaxed" style={{ color: SLATE }}>{blurb}</p>}
+        <Kicker><span {...editCopy(content, kickerKey, kicker)} /></Kicker>
+        <h1 style={{ ...serif, color: NAVY }} className="mt-4 max-w-3xl text-4xl font-semibold leading-[1.08] tracking-tight sm:text-5xl" {...editCopy(content, titleKey, title)} />
+        {blurb && blurbKey && <p className="mt-5 max-w-xl text-[16px] leading-relaxed" style={{ color: SLATE }} {...editCopy(content, blurbKey, blurb)} />}
       </div>
     </section>
   );
@@ -125,7 +125,7 @@ export default function LedgerDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "services") {
     return shell(
       <>
-        {banner("What we do", "Services built around your goals", "Practical, partner-led advice — clearly scoped and fairly priced.")}
+        {banner("What we do", "svc_kicker", "Services built around your goals", "svc_title", "Practical, partner-led advice — clearly scoped and fairly priced.", "svc_blurb")}
         <section className="mx-auto max-w-6xl px-6 py-20">
           {services.length > 0 ? (
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
@@ -151,13 +151,13 @@ export default function LedgerDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "about") {
     return shell(
       <>
-        {banner("About the firm", "Trusted advisers, on your side")}
+        {banner("About the firm", "about_kicker", "Trusted advisers, on your side", "about_title")}
         <section className="mx-auto grid max-w-6xl gap-12 px-6 py-20 lg:grid-cols-[1.4fr_1fr]">
           <div>
             {content.about ? <p data-edit="content.about" className="text-[17px] leading-[1.9]" style={{ color: SLATE }}>{content.about}</p> : <p style={{ color: SLATE }}>Our story is coming soon.</p>}
             {content.service_areas && content.service_areas.length > 0 && (
               <>
-                <h3 style={{ ...serif, color: INK }} className="mt-12 text-2xl font-semibold">Who we work with</h3>
+                <h3 style={{ ...serif, color: INK }} className="mt-12 text-2xl font-semibold" {...editCopy(content, "about_who_heading", "Who we work with")} />
                 <div className="mt-5 flex flex-wrap gap-2">
                   {content.service_areas.map((a) => (
                     <span key={a} className="rounded-full border px-4 py-1.5 text-sm" style={{ borderColor: LINE, color: SLATE }}>{a}</span>
@@ -169,7 +169,7 @@ export default function LedgerDesign({ site, page = "home", basePath = "" }: Pre
           <aside className="h-fit rounded-2xl p-7" style={{ background: MIST, border: `1px solid ${LINE}` }}>
             {content.accreditations && content.accreditations.length > 0 && (
               <>
-                <h4 className="text-xs font-semibold uppercase tracking-[0.2em]" style={{ color: BLUE }}>Credentials</h4>
+                <h4 className="text-xs font-semibold uppercase tracking-[0.2em]" style={{ color: BLUE }} {...editCopy(content, "about_credentials_heading", "Credentials")} />
                 <ul className="mt-4 space-y-3 text-sm" style={{ color: INK }}>
                   {content.accreditations.map((a) => (
                     <li key={a} className="flex items-start gap-2"><span style={{ color: BLUE }}>✓</span><span>{a}</span></li>
@@ -192,10 +192,10 @@ export default function LedgerDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "contact") {
     return shell(
       <>
-        {banner("Get in touch", "Book a consultation", "Tell us what you need and we'll arrange a no-obligation conversation.")}
+        {banner("Get in touch", "contact_kicker", "Book a consultation", "contact_title", "Tell us what you need and we'll arrange a no-obligation conversation.", "contact_blurb")}
         <section className="mx-auto grid max-w-6xl gap-12 px-6 py-20 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={{ ...serif, color: INK }} className="text-2xl font-semibold">Our office</h2>
+            <h2 style={{ ...serif, color: INK }} className="text-2xl font-semibold" {...editCopy(content, "contact_office_heading", "Our office")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: SLATE }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-[#1f6feb]">{content.phone}</a>}
@@ -209,7 +209,7 @@ export default function LedgerDesign({ site, page = "home", basePath = "" }: Pre
               </ul>
             )}
             {content.map_url && (
-              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex rounded-md border px-6 py-3 text-sm font-semibold transition hover:bg-neutral-50" style={{ borderColor: LINE, color: NAVY }}>Get directions</a>
+              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex rounded-md border px-6 py-3 text-sm font-semibold transition hover:bg-neutral-50" style={{ borderColor: LINE, color: NAVY }} {...editCopy(content, "contact_directions_cta", "Get directions")} />
             )}
           </div>
           {(bookingOn || contactOn) && (
@@ -234,7 +234,7 @@ export default function LedgerDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Inside the firm", "Our work & insights")}
+        {banner("Inside the firm", "gallery_kicker", "Our work & insights", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-6xl px-6 py-16">
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
@@ -298,10 +298,10 @@ export default function LedgerDesign({ site, page = "home", basePath = "" }: Pre
         <section className="mx-auto max-w-6xl px-6 py-24">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
-              <Kicker>What we do</Kicker>
-              <h2 style={{ ...serif, color: NAVY }} className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl">Our services</h2>
+              <Kicker><span {...editCopy(content, "home_services_kicker", "What we do")} /></Kicker>
+              <h2 style={{ ...serif, color: NAVY }} className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl" {...editCopy(content, "home_services_heading", "Our services")} />
             </div>
-            <a href={href("services")} className="text-sm font-semibold underline-offset-4 hover:underline" style={{ color: BLUE }}>All services →</a>
+            <a href={href("services")} className="text-sm font-semibold underline-offset-4 hover:underline" style={{ color: BLUE }} {...editCopy(content, "home_services_link", "All services →")} />
           </div>
           <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {services.slice(0, 6).map((s) => (
@@ -320,10 +320,10 @@ export default function LedgerDesign({ site, page = "home", basePath = "" }: Pre
       {content.about && (
         <section style={{ background: MIST, borderTop: `1px solid ${LINE}`, borderBottom: `1px solid ${LINE}` }}>
           <div className="mx-auto grid max-w-6xl items-center gap-12 px-6 py-24 lg:grid-cols-[auto_1fr] lg:gap-16">
-            <div className="lg:pt-2"><Kicker>About us</Kicker></div>
+            <div className="lg:pt-2"><Kicker><span {...editCopy(content, "home_about_kicker", "About us")} /></Kicker></div>
             <div>
               <p data-edit="content.about" style={{ ...serif, color: NAVY }} className="max-w-3xl text-2xl font-medium leading-[1.4] sm:text-[2rem]">{content.about}</p>
-              <a href={href("about")} className="mt-7 inline-flex items-center gap-2 text-sm font-semibold" style={{ color: BLUE }}>Read more →</a>
+              <a href={href("about")} className="mt-7 inline-flex items-center gap-2 text-sm font-semibold" style={{ color: BLUE }} {...editCopy(content, "home_about_link", "Read more →")} />
             </div>
           </div>
         </section>
@@ -331,8 +331,8 @@ export default function LedgerDesign({ site, page = "home", basePath = "" }: Pre
 
       {/* closing CTA */}
       <section className="mx-auto max-w-4xl px-6 py-24 text-center">
-        <h2 style={{ ...serif, color: NAVY }} className="text-3xl font-semibold tracking-tight sm:text-4xl">Let&apos;s talk about what&apos;s next</h2>
-        <p className="mx-auto mt-4 max-w-lg text-[16px] leading-relaxed" style={{ color: SLATE }}>Book a no-obligation consultation and we&apos;ll help you find the clearest way forward.</p>
+        <h2 style={{ ...serif, color: NAVY }} className="text-3xl font-semibold tracking-tight sm:text-4xl" {...editCopy(content, "cta_heading", "Let's talk about what's next")} />
+        <p className="mx-auto mt-4 max-w-lg text-[16px] leading-relaxed" style={{ color: SLATE }} {...editCopy(content, "cta_sub", "Book a no-obligation consultation and we'll help you find the clearest way forward.")} />
         <a href={cta} className="mt-8 inline-flex rounded-md px-8 py-4 text-sm font-semibold text-white transition hover:opacity-90" style={{ background: BLUE }}>{ctaLabel}</a>
       </section>
     </>,

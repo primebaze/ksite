@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { LagoonHeader } from "./LagoonHeader";
 import { TradesSocialIcon } from "./TradesMobileNav";
@@ -112,7 +112,7 @@ export default function LagoonDesign({ site, page = "home", basePath = "" }: Pre
           )}
         </div>
         <div>
-          <h4 style={display} className="text-xs font-semibold uppercase tracking-[0.24em]" >Studio</h4>
+          <h4 style={display} className="text-xs font-semibold uppercase tracking-[0.24em]" {...editCopy(content, "footer_studio", "Studio")} />
           <ul className="mt-5 space-y-3 text-sm text-white/65">
             {nav.map((l) => (
               <li key={l.label}><a href={l.href} className="transition hover:text-white">{l.label}</a></li>
@@ -120,7 +120,7 @@ export default function LagoonDesign({ site, page = "home", basePath = "" }: Pre
           </ul>
         </div>
         <div>
-          <h4 style={display} className="text-xs font-semibold uppercase tracking-[0.24em]">Contact</h4>
+          <h4 style={display} className="text-xs font-semibold uppercase tracking-[0.24em]" {...editCopy(content, "footer_contact", "Contact")} />
           <div className="mt-5 space-y-3 text-sm text-white/65">
             {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -128,7 +128,7 @@ export default function LagoonDesign({ site, page = "home", basePath = "" }: Pre
           </div>
         </div>
         <div>
-          <h4 style={display} className="text-xs font-semibold uppercase tracking-[0.24em]">Hours</h4>
+          <h4 style={display} className="text-xs font-semibold uppercase tracking-[0.24em]" {...editCopy(content, "footer_hours", "Hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm text-white/65">
               {content.hours.map((h, i) => (
@@ -153,12 +153,12 @@ export default function LagoonDesign({ site, page = "home", basePath = "" }: Pre
     </div>
   );
 
-  const banner = (kicker: string, title: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string) => (
     <section className="relative overflow-hidden" style={{ background: SEAFOAM }}>
       <div className="pointer-events-none absolute inset-0 opacity-90" style={{ backgroundImage: RIPPLE }} />
       <div className="relative mx-auto max-w-6xl px-8 pb-16 pt-36 sm:pt-44">
-        <Kicker color={SLATE}>{kicker}</Kicker>
-        <h1 className="mt-4 text-4xl font-semibold leading-[1.02] tracking-tight sm:text-6xl" style={{ ...display, color: SLATE }}>{title}</h1>
+        <Kicker color={SLATE}><span {...editCopy(content, kickerKey, kicker)} /></Kicker>
+        <h1 className="mt-4 text-4xl font-semibold leading-[1.02] tracking-tight sm:text-6xl" style={{ ...display, color: SLATE }} {...editCopy(content, titleKey, title)} />
       </div>
     </section>
   );
@@ -167,7 +167,7 @@ export default function LagoonDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "services") {
     return shell(
       <>
-        {banner("What we do", "Bathrooms, start to finish")}
+        {banner("What we do", "svc_kicker", "Bathrooms, start to finish", "svc_title")}
         <section className="mx-auto max-w-4xl px-8 py-20">
           {services.length > 0 ? (
             <ul className="divide-y" style={{ borderColor: `${SLATE}1f` }}>
@@ -192,7 +192,7 @@ export default function LagoonDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "about") {
     return shell(
       <>
-        {banner("Our studio", "Designed to relax in")}
+        {banner("Our studio", "about_kicker", "Designed to relax in", "about_title")}
         <section className="mx-auto max-w-3xl px-8 py-20">
           {content.about ? <p data-edit="content.about" className="text-[17px] leading-[1.9]" style={{ color: MUTE }}>{content.about}</p> : <p style={{ color: MUTE }}>Our story is coming soon.</p>}
           <div className="mt-12 grid gap-px overflow-hidden rounded-2xl sm:grid-cols-2" style={{ background: `${SLATE}14` }}>
@@ -210,7 +210,7 @@ export default function LagoonDesign({ site, page = "home", basePath = "" }: Pre
           </div>
           {content.accreditations && content.accreditations.length > 0 && (
             <>
-              <h3 style={display} className="mt-12 text-xs font-semibold uppercase tracking-[0.24em]" >Accredited &amp; insured</h3>
+              <h3 style={display} className="mt-12 text-xs font-semibold uppercase tracking-[0.24em]" {...editCopy(content, "about_accred_heading", "Accredited & insured")} />
               <div className="mt-5 flex flex-wrap gap-3">
                 {content.accreditations.map((a) => (
                   <span key={a} className="rounded-full px-4 py-2 text-[11px] font-medium uppercase tracking-[0.14em]" style={{ border: `1px solid ${BRASS}`, color: SLATE }}>{a}</span>
@@ -220,7 +220,7 @@ export default function LagoonDesign({ site, page = "home", basePath = "" }: Pre
           )}
           {content.service_areas && content.service_areas.length > 0 && (
             <>
-              <h3 style={display} className="mt-12 text-xs font-semibold uppercase tracking-[0.24em]" >Areas we cover</h3>
+              <h3 style={display} className="mt-12 text-xs font-semibold uppercase tracking-[0.24em]" {...editCopy(content, "about_areas_heading", "Areas we cover")} />
               <p className="mt-4 text-[15px] leading-relaxed" style={{ color: MUTE }}>{content.service_areas.join(" · ")}</p>
             </>
           )}
@@ -234,10 +234,10 @@ export default function LagoonDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "contact") {
     return shell(
       <>
-        {banner("Let's begin", "Book your free design")}
+        {banner("Let's begin", "contact_kicker", "Book your free design", "contact_title")}
         <section className="mx-auto grid max-w-6xl gap-12 px-8 py-20 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={display} className="text-2xl font-semibold tracking-tight" >Visit the studio</h2>
+            <h2 style={display} className="text-2xl font-semibold tracking-tight" {...editCopy(content, "contact_form_heading", "Visit the studio")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: MUTE }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-[#2F4A4D]">{content.phone}</a>}
@@ -276,7 +276,7 @@ export default function LagoonDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Portfolio", "Bathrooms we've created")}
+        {banner("Portfolio", "gallery_kicker", "Bathrooms we've created", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-6xl px-4 py-14 sm:px-8">
             <div className="columns-1 gap-4 sm:columns-2 lg:columns-3">
@@ -351,8 +351,8 @@ export default function LagoonDesign({ site, page = "home", basePath = "" }: Pre
       {/* journey band — design → supply → fit → enjoy */}
       <section style={{ background: SAND }}>
         <div className="mx-auto max-w-6xl px-8 py-24">
-          <Kicker>Your bathroom, start to finish</Kicker>
-          <h2 style={{ ...display, color: SLATE }} className="mt-4 max-w-2xl text-4xl font-semibold leading-tight tracking-tight sm:text-5xl">One studio, four calm steps</h2>
+          <Kicker><span {...editCopy(content, "home_journey_kicker", "Your bathroom, start to finish")} /></Kicker>
+          <h2 style={{ ...display, color: SLATE }} className="mt-4 max-w-2xl text-4xl font-semibold leading-tight tracking-tight sm:text-5xl" {...editCopy(content, "home_journey_heading", "One studio, four calm steps")} />
           <div className="mt-14 grid gap-px overflow-hidden rounded-2xl sm:grid-cols-2 lg:grid-cols-4" style={{ background: `${SLATE}1a` }}>
             {journey.map((j) => (
               <div key={j.n} className="p-8" style={{ background: OFFWHITE }}>
@@ -380,10 +380,10 @@ export default function LagoonDesign({ site, page = "home", basePath = "" }: Pre
             <span className="pointer-events-none absolute -bottom-4 -right-4 -z-10 h-28 w-28 rounded-[1.5rem]" style={{ background: BRASS, opacity: 0.35 }} />
           </div>
           <div className="order-1 lg:order-2">
-            <Kicker>Our studio</Kicker>
-            <h2 style={{ ...display, color: SLATE }} className="mt-4 text-4xl font-semibold leading-tight tracking-tight sm:text-5xl">Design-led, beautifully fitted</h2>
+            <Kicker><span {...editCopy(content, "home_about_kicker", "Our studio")} /></Kicker>
+            <h2 style={{ ...display, color: SLATE }} className="mt-4 text-4xl font-semibold leading-tight tracking-tight sm:text-5xl" {...editCopy(content, "home_about_heading", "Design-led, beautifully fitted")} />
             <p data-edit="content.about" className="mt-6 text-[16px] leading-[1.9]" style={{ color: MUTE }}>{content.about}</p>
-            <a href={href("about")} className="mt-6 inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-[0.18em]" style={{ color: BRASS }}>More about us →</a>
+            <a href={href("about")} className="mt-6 inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-[0.18em]" style={{ color: BRASS }} {...editCopy(content, "home_about_link", "More about us →")} />
           </div>
         </section>
       )}
@@ -392,8 +392,8 @@ export default function LagoonDesign({ site, page = "home", basePath = "" }: Pre
       {services.length > 0 && (
         <section style={{ background: OFFWHITE, borderTop: `1px solid ${SLATE}14`, borderBottom: `1px solid ${SLATE}14` }}>
           <div className="mx-auto max-w-4xl px-8 py-24">
-            <Kicker>What we do</Kicker>
-            <h2 style={{ ...display, color: SLATE }} className="mt-4 text-4xl font-semibold tracking-tight sm:text-5xl">Bathrooms &amp; wet rooms</h2>
+            <Kicker><span {...editCopy(content, "home_services_kicker", "What we do")} /></Kicker>
+            <h2 style={{ ...display, color: SLATE }} className="mt-4 text-4xl font-semibold tracking-tight sm:text-5xl" {...editCopy(content, "home_services_heading", "Bathrooms & wet rooms")} />
             <ul className="mt-12 divide-y" style={{ borderColor: `${SLATE}1f` }}>
               {services.slice(0, 6).map((s) => (
                 <li key={s.id} className="flex items-baseline justify-between gap-8 py-7">
@@ -413,8 +413,8 @@ export default function LagoonDesign({ site, page = "home", basePath = "" }: Pre
       {/* work — before/after portfolio strip */}
       {gallery.length > 0 && (
         <section className="mx-auto max-w-6xl px-8 py-24">
-          <Kicker>Portfolio</Kicker>
-          <h2 style={{ ...display, color: SLATE }} className="mt-4 text-4xl font-semibold tracking-tight sm:text-5xl">Recently completed</h2>
+          <Kicker><span {...editCopy(content, "home_portfolio_kicker", "Portfolio")} /></Kicker>
+          <h2 style={{ ...display, color: SLATE }} className="mt-4 text-4xl font-semibold tracking-tight sm:text-5xl" {...editCopy(content, "home_portfolio_heading", "Recently completed")} />
           <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
             {gallery.slice(0, 4).map((g) => (
               <div key={g.id} className="overflow-hidden rounded-2xl" style={{ border: `1px solid ${SLATE}14` }}>
@@ -432,8 +432,8 @@ export default function LagoonDesign({ site, page = "home", basePath = "" }: Pre
         <div className="pointer-events-none absolute inset-0 opacity-40" style={{ backgroundImage: `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='none' stroke='%239CC6BE' stroke-opacity='0.18' stroke-width='1'%3E%3Cpath d='M0 40c20 0 20-20 40-20s20 20 40 20'/%3E%3Cpath d='M0 60c20 0 20-20 40-20s20 20 40 20'/%3E%3C/g%3E%3C/svg%3E")` }} />
         <div className="relative mx-auto grid max-w-6xl gap-12 px-8 py-20 text-white lg:grid-cols-[1fr_1fr] lg:gap-16">
           <div>
-            <Kicker color={SEAFOAM}>Peace of mind</Kicker>
-            <h2 style={display} className="mt-4 text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">Guaranteed, top to bottom</h2>
+            <Kicker color={SEAFOAM}><span {...editCopy(content, "home_guarantee_kicker", "Peace of mind")} /></Kicker>
+            <h2 style={display} className="mt-4 text-3xl font-semibold leading-tight tracking-tight sm:text-4xl" {...editCopy(content, "home_guarantee_heading", "Guaranteed, top to bottom")} />
             <p className="mt-5 max-w-md text-[15px] leading-relaxed text-white/70">
               Every Lagoon bathroom is fully project-managed, fitted by our own trusted team and backed by a written workmanship guarantee. Free design, fixed quote, no surprises.
             </p>
@@ -442,7 +442,7 @@ export default function LagoonDesign({ site, page = "home", basePath = "" }: Pre
             </div>
           </div>
           <div className="lg:pl-8 lg:border-l" style={{ borderColor: "#ffffff1f" }}>
-            <h3 style={display} className="text-xs font-semibold uppercase tracking-[0.24em] text-white/80">Areas we cover</h3>
+            <h3 style={display} className="text-xs font-semibold uppercase tracking-[0.24em] text-white/80" {...editCopy(content, "home_guarantee_areas", "Areas we cover")} />
             {content.service_areas && content.service_areas.length > 0 ? (
               <div className="mt-5 flex flex-wrap gap-2.5">
                 {content.service_areas.map((a) => (
@@ -454,7 +454,7 @@ export default function LagoonDesign({ site, page = "home", basePath = "" }: Pre
             )}
             {content.accreditations && content.accreditations.length > 0 && (
               <>
-                <h3 style={display} className="mt-10 text-xs font-semibold uppercase tracking-[0.24em] text-white/80">Accredited &amp; insured</h3>
+                <h3 style={display} className="mt-10 text-xs font-semibold uppercase tracking-[0.24em] text-white/80" {...editCopy(content, "home_guarantee_accred", "Accredited & insured")} />
                 <div className="mt-5 flex flex-wrap gap-2.5">
                   {content.accreditations.map((a) => (
                     <span key={a} className="rounded-full px-4 py-2 text-[11px] font-medium uppercase tracking-[0.12em]" style={{ border: `1px solid ${BRASS}`, color: SEAFOAM }}>{a}</span>
@@ -471,8 +471,8 @@ export default function LagoonDesign({ site, page = "home", basePath = "" }: Pre
         <div className="pointer-events-none absolute inset-0 opacity-90" style={{ backgroundImage: RIPPLE }} />
         <div className="relative mx-auto flex max-w-6xl flex-col items-start justify-between gap-6 px-8 py-20 sm:flex-row sm:items-center" style={{ color: SLATE }}>
           <div>
-            <h2 style={display} className="text-3xl font-semibold leading-tight tracking-tight sm:text-4xl">Ready to design your bathroom?</h2>
-            <p className="mt-2 text-sm font-medium uppercase tracking-[0.14em]" style={{ color: `${SLATE}b3` }}>Free design visit · fixed quote · full supply &amp; fit.</p>
+            <h2 style={display} className="text-3xl font-semibold leading-tight tracking-tight sm:text-4xl" {...editCopy(content, "cta_heading", "Ready to design your bathroom?")} />
+            <p className="mt-2 text-sm font-medium uppercase tracking-[0.14em]" style={{ color: `${SLATE}b3` }} {...editCopy(content, "cta_sub", "Free design visit · fixed quote · full supply & fit.")} />
           </div>
           {btnSolid(phone ? `Call ${phone}` : ctaLabel, phone ? `tel:${phone}` : cta)}
         </div>

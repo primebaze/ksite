@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { AtelierHeader } from "./AtelierHeader";
 import { TradesSocialIcon } from "./TradesMobileNav";
@@ -63,13 +63,13 @@ export default function AtelierDesign({ site, page = "home", basePath = "" }: Pr
           )}
         </div>
         <div>
-          <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-[#f4ede2]/45">Shop</h4>
+          <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-[#f4ede2]/45" {...editCopy(content, "footer_shop", "Shop")} />
           <ul className="mt-5 space-y-3 text-sm text-[#f4ede2]/70">
             {nav.map((l) => (<li key={l.label}><a href={l.href} className="transition hover:text-white">{l.label}</a></li>))}
           </ul>
         </div>
         <div>
-          <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-[#f4ede2]/45">Find us</h4>
+          <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-[#f4ede2]/45" {...editCopy(content, "footer_findus", "Find us")} />
           <div className="mt-5 space-y-3 text-sm text-[#f4ede2]/70">
             {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -77,7 +77,7 @@ export default function AtelierDesign({ site, page = "home", basePath = "" }: Pr
           </div>
         </div>
         <div>
-          <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-[#f4ede2]/45">Opening hours</h4>
+          <h4 className="text-xs font-semibold uppercase tracking-[0.2em] text-[#f4ede2]/45" {...editCopy(content, "footer_hours", "Opening hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm text-[#f4ede2]/70">
               {content.hours.map((h, i) => (<li key={i} className="flex justify-between gap-5"><span data-edit={`hours:${i}:day`}>{h.day}</span><span data-edit={`hours:${i}:open`} className="text-[#f4ede2]/40">{h.open}</span></li>))}
@@ -87,7 +87,7 @@ export default function AtelierDesign({ site, page = "home", basePath = "" }: Pr
       </div>
       <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 border-t px-6 py-7 text-xs sm:flex-row" style={{ borderColor: "#ffffff1a", color: "#f4ede299" }}>
         <p>© {new Date().getFullYear()} {name}. All rights reserved.</p>
-        <a href={href("contact")} className="uppercase tracking-[0.16em] transition hover:text-white">Stockists &amp; enquiries</a>
+        <a href={href("contact")} className="uppercase tracking-[0.16em] transition hover:text-white" {...editCopy(content, "footer_stockists_link", "Stockists & enquiries")} />
       </div>
     </footer>
   );
@@ -155,7 +155,7 @@ export default function AtelierDesign({ site, page = "home", basePath = "" }: Pr
           {content.about ? <p data-edit="content.about" className="text-[18px] leading-[1.95]" style={{ color: TAUPE }}>{content.about}</p> : <p style={{ color: TAUPE }}>Our story is coming soon.</p>}
           {content.service_areas && content.service_areas.length > 0 && (
             <>
-              <h3 style={{ ...serif, color: INK }} className="mt-12 text-2xl font-medium">Where to find us</h3>
+              <h3 style={{ ...serif, color: INK }} className="mt-12 text-2xl font-medium" {...editCopy(content, "about_findus_heading", "Where to find us")} />
               <p className="mt-4 text-[16px] leading-relaxed" style={{ color: TAUPE }}>{content.service_areas.join(" · ")}</p>
             </>
           )}
@@ -193,7 +193,7 @@ export default function AtelierDesign({ site, page = "home", basePath = "" }: Pr
         {banner("Visit us", "Say hello")}
         <section className="mx-auto grid max-w-6xl gap-12 px-6 py-20 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={{ ...serif, color: INK }} className="text-2xl font-medium">Find the shop</h2>
+            <h2 style={{ ...serif, color: INK }} className="text-2xl font-medium" {...editCopy(content, "contact_heading", "Find the shop")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: TAUPE }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-[#a8643c]">{content.phone}</a>}
@@ -205,7 +205,7 @@ export default function AtelierDesign({ site, page = "home", basePath = "" }: Pr
               </ul>
             )}
             {content.map_url && (
-              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex rounded-full border px-6 py-3 text-[12px] font-semibold uppercase tracking-[0.12em] transition hover:bg-white" style={{ borderColor: CLAY, color: CLAY }}>Get directions</a>
+              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex rounded-full border px-6 py-3 text-[12px] font-semibold uppercase tracking-[0.12em] transition hover:bg-white" style={{ borderColor: CLAY, color: CLAY }} {...editCopy(content, "contact_directions_cta", "Get directions")} />
             )}
           </div>
           {(bookingOn || contactOn) && (
@@ -243,7 +243,7 @@ export default function AtelierDesign({ site, page = "home", basePath = "" }: Pr
           <Kicker center>{name}</Kicker>
           <h1 data-edit="content.tagline" style={{ ...serif, color: INK }} className="mt-3 text-4xl font-medium leading-[1.05] tracking-tight sm:text-5xl">{content.tagline ?? "Considered pieces, beautifully made."}</h1>
           <div className="mt-7 flex flex-wrap justify-center gap-3">
-            {products.length > 0 && <a href={href("services")} className="inline-flex rounded-full px-7 py-3 text-[12px] font-semibold uppercase tracking-[0.14em] text-white transition hover:opacity-90" style={{ background: CLAY }}>Shop the collection</a>}
+            {products.length > 0 && <a href={href("services")} className="inline-flex rounded-full px-7 py-3 text-[12px] font-semibold uppercase tracking-[0.14em] text-white transition hover:opacity-90" style={{ background: CLAY }} {...editCopy(content, "hero_shop_cta", "Shop the collection")} />}
             <a href={cta} className="inline-flex rounded-full border px-7 py-3 text-[12px] font-semibold uppercase tracking-[0.14em] transition hover:bg-white" style={{ borderColor: INK, color: INK }}>{ctaLabel}</a>
           </div>
         </div>
@@ -252,9 +252,9 @@ export default function AtelierDesign({ site, page = "home", basePath = "" }: Pr
       {/* about statement */}
       {content.about && (
         <section className="mx-auto max-w-3xl px-6 py-24 text-center">
-          <Kicker center>Our story</Kicker>
+          <Kicker center><span {...editCopy(content, "about_kicker", "Our story")} /></Kicker>
           <p data-edit="content.about" style={{ ...serif, color: INK }} className="mt-6 text-2xl font-medium leading-[1.5] sm:text-[2rem]">{content.about}</p>
-          <a href={href("about")} className="mt-7 inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-[0.16em]" style={{ color: CLAY }}>Read more →</a>
+          <a href={href("about")} className="mt-7 inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-[0.16em]" style={{ color: CLAY }} {...editCopy(content, "about_link", "Read more →")} />
         </section>
       )}
 
@@ -264,10 +264,10 @@ export default function AtelierDesign({ site, page = "home", basePath = "" }: Pr
           <div className="mx-auto max-w-6xl px-6 py-24">
             <div className="flex flex-wrap items-end justify-between gap-4">
               <div>
-                <Kicker>The collection</Kicker>
-                <h2 style={{ ...serif, color: INK }} className="mt-3 text-3xl font-medium tracking-tight sm:text-4xl">Pieces we love</h2>
+                <Kicker><span {...editCopy(content, "collection_kicker", "The collection")} /></Kicker>
+                <h2 style={{ ...serif, color: INK }} className="mt-3 text-3xl font-medium tracking-tight sm:text-4xl" {...editCopy(content, "collection_heading", "Pieces we love")} />
               </div>
-              <a href={href("services")} className="text-sm font-medium underline-offset-4 hover:underline" style={{ color: CLAY }}>View all →</a>
+              <a href={href("services")} className="text-sm font-medium underline-offset-4 hover:underline" style={{ color: CLAY }} {...editCopy(content, "collection_link", "View all →")} />
             </div>
             <div className="mt-12 grid gap-x-6 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">
               {products.slice(0, 6).map((s, i) => <ProductCard key={s.id} s={s} img={gallery[i % Math.max(gallery.length, 1)]?.image_url} />)}
@@ -279,8 +279,8 @@ export default function AtelierDesign({ site, page = "home", basePath = "" }: Pr
       {/* lookbook strip */}
       {gallery.length > 0 && (
         <section className="mx-auto max-w-6xl px-6 py-24">
-          <Kicker center>Lookbook</Kicker>
-          <h2 style={{ ...serif, color: INK }} className="mx-auto mt-3 max-w-2xl text-center text-3xl font-medium leading-snug tracking-tight sm:text-4xl">A space made for slow, considered shopping.</h2>
+          <Kicker center><span {...editCopy(content, "lookbook_kicker", "Lookbook")} /></Kicker>
+          <h2 style={{ ...serif, color: INK }} className="mx-auto mt-3 max-w-2xl text-center text-3xl font-medium leading-snug tracking-tight sm:text-4xl" {...editCopy(content, "lookbook_heading", "A space made for slow, considered shopping.")} />
           <div className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-4">
             {gallery.slice(0, 4).map((g) => (
               // eslint-disable-next-line @next/next/no-img-element
@@ -288,7 +288,7 @@ export default function AtelierDesign({ site, page = "home", basePath = "" }: Pr
             ))}
           </div>
           <div className="mt-10 text-center">
-            <a href={href("gallery")} className="inline-flex rounded-full border px-7 py-3 text-[12px] font-semibold uppercase tracking-[0.14em] transition hover:bg-white" style={{ borderColor: INK, color: INK }}>View lookbook</a>
+            <a href={href("gallery")} className="inline-flex rounded-full border px-7 py-3 text-[12px] font-semibold uppercase tracking-[0.14em] transition hover:bg-white" style={{ borderColor: INK, color: INK }} {...editCopy(content, "lookbook_cta", "View lookbook")} />
           </div>
         </section>
       )}
@@ -296,8 +296,8 @@ export default function AtelierDesign({ site, page = "home", basePath = "" }: Pr
       {/* closing band */}
       <section style={{ background: INK }} className="text-[#f4ede2]">
         <div className="mx-auto max-w-2xl px-6 py-20 text-center">
-          <h2 style={serif} className="text-3xl font-medium tracking-tight sm:text-4xl">Come and visit us</h2>
-          <p className="mx-auto mt-4 max-w-md text-[15px] leading-relaxed text-[#f4ede2]/70">Pop into the shop, or get in touch about bespoke orders, gifting and stockists.</p>
+          <h2 style={serif} className="text-3xl font-medium tracking-tight sm:text-4xl" {...editCopy(content, "closing_heading", "Come and visit us")} />
+          <p className="mx-auto mt-4 max-w-md text-[15px] leading-relaxed text-[#f4ede2]/70" {...editCopy(content, "closing_blurb", "Pop into the shop, or get in touch about bespoke orders, gifting and stockists.")} />
           <a href={cta} className="mt-8 inline-flex rounded-full px-8 py-3.5 text-[12px] font-semibold uppercase tracking-[0.16em] text-white transition hover:opacity-90" style={{ background: CLAY }}>{ctaLabel}</a>
         </div>
       </section>

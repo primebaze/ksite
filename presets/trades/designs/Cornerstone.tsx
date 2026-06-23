@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { CSSProperties, ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { CornerstoneHeader } from "./CornerstoneHeader";
 import { TradesSocialIcon } from "./TradesMobileNav";
@@ -125,7 +125,7 @@ export default function CornerstoneDesign({ site, page = "home", basePath = "" }
           )}
         </div>
         <div>
-          <h4 style={display} className="text-xs font-extrabold uppercase tracking-[0.22em]">Company</h4>
+          <h4 style={display} className="text-xs font-extrabold uppercase tracking-[0.22em]" {...editCopy(content, "footer_company", "Company")} />
           <ul className="mt-5 space-y-3 text-sm" style={{ color: "#b7b3ab" }}>
             {nav.map((l) => (
               <li key={l.label}><a href={l.href} className="transition hover:text-white">{l.label}</a></li>
@@ -133,7 +133,7 @@ export default function CornerstoneDesign({ site, page = "home", basePath = "" }
           </ul>
         </div>
         <div>
-          <h4 style={display} className="text-xs font-extrabold uppercase tracking-[0.22em]">Contact</h4>
+          <h4 style={display} className="text-xs font-extrabold uppercase tracking-[0.22em]" {...editCopy(content, "footer_contact", "Contact")} />
           <div className="mt-5 space-y-3 text-sm" style={{ color: "#b7b3ab" }}>
             {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -141,7 +141,7 @@ export default function CornerstoneDesign({ site, page = "home", basePath = "" }
           </div>
         </div>
         <div>
-          <h4 style={display} className="text-xs font-extrabold uppercase tracking-[0.22em]">Hours</h4>
+          <h4 style={display} className="text-xs font-extrabold uppercase tracking-[0.22em]" {...editCopy(content, "footer_hours", "Hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm" style={{ color: "#b7b3ab" }}>
               {content.hours.map((h, i) => (
@@ -167,13 +167,13 @@ export default function CornerstoneDesign({ site, page = "home", basePath = "" }
   );
 
   // Dark, blueprint-grid sub-page banner.
-  const banner = (kicker: string, title: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string) => (
     <section className="relative overflow-hidden" style={{ background: CHARCOAL }}>
       <div className="pointer-events-none absolute inset-0" style={blueprintGrid} />
       <span className="absolute bottom-0 left-0 h-1 w-40" style={{ background: ORANGE }} />
       <div className="relative mx-auto max-w-7xl px-8 pb-16 pt-32 sm:pt-40">
-        <Kicker light>{kicker}</Kicker>
-        <h1 style={display} className="mt-5 text-4xl font-extrabold uppercase leading-[0.95] tracking-tight text-white sm:text-6xl">{title}</h1>
+        <Kicker light><span {...editCopy(content, kickerKey, kicker)} /></Kicker>
+        <h1 style={display} className="mt-5 text-4xl font-extrabold uppercase leading-[0.95] tracking-tight text-white sm:text-6xl" {...editCopy(content, titleKey, title)} />
       </div>
     </section>
   );
@@ -201,7 +201,7 @@ export default function CornerstoneDesign({ site, page = "home", basePath = "" }
   if (page === "services") {
     return shell(
       <>
-        {banner("What we build", "Our Services")}
+        {banner("What we build", "svc_kicker", "Our Services", "svc_title")}
         <section className="mx-auto max-w-5xl px-8 py-20">
           {services.length > 0 ? servicesList : <p style={{ color: CONCRETE }}>Services coming soon.</p>}
           <div className="mt-12">{btnPrimary(ctaLabel, cta)}</div>
@@ -214,12 +214,12 @@ export default function CornerstoneDesign({ site, page = "home", basePath = "" }
   if (page === "about") {
     return shell(
       <>
-        {banner("Who we are", "Built To Last")}
+        {banner("Who we are", "about_kicker", "Built To Last", "about_title")}
         <section className="mx-auto max-w-3xl px-8 py-20">
           {content.about ? <p data-edit="content.about" className="text-[17px] leading-[1.9]" style={{ color: CONCRETE }}>{content.about}</p> : <p style={{ color: CONCRETE }}>Our story is coming soon.</p>}
           {content.accreditations && content.accreditations.length > 0 && (
             <>
-              <h3 style={{ ...display, color: CHARCOAL }} className="mt-12 text-xs font-extrabold uppercase tracking-[0.22em]">Accredited &amp; insured</h3>
+              <h3 style={{ ...display, color: CHARCOAL }} className="mt-12 text-xs font-extrabold uppercase tracking-[0.22em]" {...editCopy(content, "about_accred_heading", "Accredited & insured")} />
               <div className="mt-5 flex flex-wrap gap-3">
                 {content.accreditations.map((a) => (
                   <span key={a} className="border-2 px-4 py-2 text-[11px] font-bold uppercase tracking-[0.14em]" style={{ borderColor: `${ORANGE}66`, color: CHARCOAL }}>{a}</span>
@@ -229,7 +229,7 @@ export default function CornerstoneDesign({ site, page = "home", basePath = "" }
           )}
           {content.service_areas && content.service_areas.length > 0 && (
             <>
-              <h3 style={{ ...display, color: CHARCOAL }} className="mt-12 text-xs font-extrabold uppercase tracking-[0.22em]">Areas we cover</h3>
+              <h3 style={{ ...display, color: CHARCOAL }} className="mt-12 text-xs font-extrabold uppercase tracking-[0.22em]" {...editCopy(content, "about_areas_heading", "Areas we cover")} />
               <p className="mt-4 text-[15px] leading-relaxed" style={{ color: CONCRETE }}>{content.service_areas.join(" · ")}</p>
             </>
           )}
@@ -243,10 +243,10 @@ export default function CornerstoneDesign({ site, page = "home", basePath = "" }
   if (page === "contact") {
     return shell(
       <>
-        {banner("Start your project", "Request A Quote")}
+        {banner("Start your project", "contact_kicker", "Request A Quote", "contact_title")}
         <section className="mx-auto grid max-w-7xl gap-12 px-8 py-20 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={{ ...display, color: CHARCOAL }} className="text-2xl font-extrabold uppercase tracking-tight">Speak to the team</h2>
+            <h2 style={{ ...display, color: CHARCOAL }} className="text-2xl font-extrabold uppercase tracking-tight" {...editCopy(content, "contact_heading", "Speak to the team")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: CONCRETE }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-[#F26A1B]">{content.phone}</a>}
@@ -283,7 +283,7 @@ export default function CornerstoneDesign({ site, page = "home", basePath = "" }
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Recent projects", "Our Work")}
+        {banner("Recent projects", "work_kicker", "Our Work", "work_title")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-7xl px-2 py-12 sm:px-4">
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
@@ -370,10 +370,10 @@ export default function CornerstoneDesign({ site, page = "home", basePath = "" }
             <span className="pointer-events-none absolute -bottom-3 -right-3 h-20 w-20" style={{ borderBottom: `5px solid ${ORANGE}`, borderRight: `5px solid ${ORANGE}` }} />
           </div>
           <div>
-            <Kicker>Who we are</Kicker>
-            <h2 style={{ ...display, color: CHARCOAL }} className="mt-4 text-4xl font-extrabold uppercase leading-[0.95] tracking-tight sm:text-5xl">A dependable name in building</h2>
+            <Kicker><span {...editCopy(content, "home_about_kicker", "Who we are")} /></Kicker>
+            <h2 style={{ ...display, color: CHARCOAL }} className="mt-4 text-4xl font-extrabold uppercase leading-[0.95] tracking-tight sm:text-5xl" {...editCopy(content, "home_about_heading", "A dependable name in building")} />
             <p data-edit="content.about" className="mt-6 text-[16px] leading-[1.9]" style={{ color: CONCRETE }}>{content.about}</p>
-            <a href={href("about")} className="mt-6 inline-flex items-center gap-2 text-[12px] font-extrabold uppercase tracking-[0.18em]" style={{ color: ORANGE }}>More about us →</a>
+            <a href={href("about")} className="mt-6 inline-flex items-center gap-2 text-[12px] font-extrabold uppercase tracking-[0.18em]" style={{ color: ORANGE }} {...editCopy(content, "home_about_link", "More about us →")} />
           </div>
         </section>
       )}
@@ -382,8 +382,8 @@ export default function CornerstoneDesign({ site, page = "home", basePath = "" }
       {services.length > 0 && (
         <section style={{ background: SAND, borderTop: `1px solid #23222012`, borderBottom: `1px solid #23222012` }}>
           <div className="mx-auto max-w-5xl px-8 py-24">
-            <Kicker>What we build</Kicker>
-            <h2 style={{ ...display, color: CHARCOAL }} className="mt-4 text-4xl font-extrabold uppercase tracking-tight sm:text-5xl">Our services</h2>
+            <Kicker><span {...editCopy(content, "home_build_kicker", "What we build")} /></Kicker>
+            <h2 style={{ ...display, color: CHARCOAL }} className="mt-4 text-4xl font-extrabold uppercase tracking-tight sm:text-5xl" {...editCopy(content, "home_build_heading", "Our services")} />
             <ul className="mt-12 divide-y" style={{ borderColor: "#23222018" }}>
               {buildTypes.map((s, i) => (
                 <li key={s.id} className="flex items-start justify-between gap-8 py-6">
@@ -407,8 +407,8 @@ export default function CornerstoneDesign({ site, page = "home", basePath = "" }
       <section className="relative overflow-hidden" style={{ background: CHARCOAL }}>
         <div className="pointer-events-none absolute inset-0 opacity-70" style={blueprintGrid} />
         <div className="relative mx-auto max-w-7xl px-8 py-24">
-          <Kicker light>How we work</Kicker>
-          <h2 style={display} className="mt-4 text-4xl font-extrabold uppercase tracking-tight text-white sm:text-5xl">Design → Build → Handover</h2>
+          <Kicker light><span {...editCopy(content, "home_process_kicker", "How we work")} /></Kicker>
+          <h2 style={display} className="mt-4 text-4xl font-extrabold uppercase tracking-tight text-white sm:text-5xl" {...editCopy(content, "home_process_heading", "Design → Build → Handover")} />
           <div className="mt-12 grid gap-px sm:grid-cols-3" style={{ background: "#ffffff14" }}>
             {stages.map((s) => (
               <div key={s.k} className="p-8" style={{ background: CHARCOAL }}>
@@ -426,8 +426,8 @@ export default function CornerstoneDesign({ site, page = "home", basePath = "" }
       {/* work / projects */}
       {gallery.length > 0 && (
         <section className="mx-auto max-w-7xl px-8 py-24">
-          <Kicker>Recent projects</Kicker>
-          <h2 style={{ ...display, color: CHARCOAL }} className="mt-4 text-4xl font-extrabold uppercase tracking-tight sm:text-5xl">Our work</h2>
+          <Kicker><span {...editCopy(content, "home_work_kicker", "Recent projects")} /></Kicker>
+          <h2 style={{ ...display, color: CHARCOAL }} className="mt-4 text-4xl font-extrabold uppercase tracking-tight sm:text-5xl" {...editCopy(content, "home_work_heading", "Our work")} />
           <div className="mt-10 grid grid-cols-2 gap-2 sm:grid-cols-4">
             {gallery.slice(0, 4).map((g) => (
               // eslint-disable-next-line @next/next/no-img-element
@@ -444,7 +444,7 @@ export default function CornerstoneDesign({ site, page = "home", basePath = "" }
           <div className="mx-auto grid max-w-7xl gap-12 px-8 py-16 lg:grid-cols-2">
             {content.accreditations && content.accreditations.length > 0 && (
               <div>
-                <h3 style={{ ...display, color: CHARCOAL }} className="text-xs font-extrabold uppercase tracking-[0.22em]">Accredited &amp; insured</h3>
+                <h3 style={{ ...display, color: CHARCOAL }} className="text-xs font-extrabold uppercase tracking-[0.22em]" {...editCopy(content, "band_accred_heading", "Accredited & insured")} />
                 <div className="mt-5 flex flex-wrap gap-3">
                   {content.accreditations.map((a) => (
                     <span key={a} className="border-2 bg-white px-4 py-2 text-[11px] font-bold uppercase tracking-[0.14em]" style={{ borderColor: `${ORANGE}55`, color: CHARCOAL }}>{a}</span>
@@ -454,7 +454,7 @@ export default function CornerstoneDesign({ site, page = "home", basePath = "" }
             )}
             {content.service_areas && content.service_areas.length > 0 && (
               <div>
-                <h3 style={{ ...display, color: CHARCOAL }} className="text-xs font-extrabold uppercase tracking-[0.22em]">Areas we cover</h3>
+                <h3 style={{ ...display, color: CHARCOAL }} className="text-xs font-extrabold uppercase tracking-[0.22em]" {...editCopy(content, "band_areas_heading", "Areas we cover")} />
                 <p className="mt-5 text-[15px] leading-relaxed" style={{ color: CONCRETE }}>{content.service_areas.join(" · ")}</p>
               </div>
             )}
@@ -467,8 +467,8 @@ export default function CornerstoneDesign({ site, page = "home", basePath = "" }
         <span className="absolute inset-x-0 top-0 h-1" style={{ background: ORANGE }} />
         <div className="relative mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 px-8 py-16 sm:flex-row sm:items-center">
           <div>
-            <h2 style={display} className="text-3xl font-extrabold uppercase leading-[0.95] tracking-tight text-white sm:text-4xl">Planning a build? Let&apos;s talk.</h2>
-            <p className="mt-2 text-sm font-bold uppercase tracking-[0.14em] text-white/60">Free, no-obligation quotes — fixed prices, clear timelines.</p>
+            <h2 style={display} className="text-3xl font-extrabold uppercase leading-[0.95] tracking-tight text-white sm:text-4xl" {...editCopy(content, "cta_heading", "Planning a build? Let's talk.")} />
+            <p className="mt-2 text-sm font-bold uppercase tracking-[0.14em] text-white/60" {...editCopy(content, "cta_sub", "Free, no-obligation quotes — fixed prices, clear timelines.")} />
           </div>
           <a href={phone ? `tel:${phone}` : cta} className="px-9 py-4 text-[12px] font-extrabold uppercase tracking-[0.16em] text-white transition hover:brightness-110" style={{ background: ORANGE }}>
             {phone ? `Call ${phone}` : ctaLabel}

@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { HarvestHeader } from "./HarvestHeader";
 import { TradesSocialIcon } from "./TradesMobileNav";
@@ -115,13 +115,13 @@ export default function HarvestDesign({ site, page = "home", basePath = "" }: Pr
           )}
         </div>
         <div>
-          <h4 style={display} className="text-[11px] font-extrabold uppercase tracking-[0.22em] text-[#eef3e6]/55">The Shop</h4>
+          <h4 style={display} className="text-[11px] font-extrabold uppercase tracking-[0.22em] text-[#eef3e6]/55" {...editCopy(content, "footer_shop", "The Shop")} />
           <ul className="mt-5 space-y-3 text-sm text-[#eef3e6]/75">
             {nav.map((l) => (<li key={l.label}><a href={l.href} className="transition hover:text-white">{l.label}</a></li>))}
           </ul>
         </div>
         <div>
-          <h4 style={display} className="text-[11px] font-extrabold uppercase tracking-[0.22em] text-[#eef3e6]/55">Find us</h4>
+          <h4 style={display} className="text-[11px] font-extrabold uppercase tracking-[0.22em] text-[#eef3e6]/55" {...editCopy(content, "footer_findus", "Find us")} />
           <div className="mt-5 space-y-3 text-sm text-[#eef3e6]/75">
             {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -129,7 +129,7 @@ export default function HarvestDesign({ site, page = "home", basePath = "" }: Pr
           </div>
         </div>
         <div>
-          <h4 style={display} className="text-[11px] font-extrabold uppercase tracking-[0.22em] text-[#eef3e6]/55">Opening hours</h4>
+          <h4 style={display} className="text-[11px] font-extrabold uppercase tracking-[0.22em] text-[#eef3e6]/55" {...editCopy(content, "footer_hours", "Opening hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm text-[#eef3e6]/75">
               {content.hours.map((h, i) => (<li key={i} className="flex justify-between gap-5"><span data-edit={`hours:${i}:day`}>{h.day}</span><span data-edit={`hours:${i}:open`} className="text-[#eef3e6]/50">{h.open}</span></li>))}
@@ -152,13 +152,13 @@ export default function HarvestDesign({ site, page = "home", basePath = "" }: Pr
     </div>
   );
 
-  const banner = (kicker: string, title: string, blurb?: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string, blurb?: string, blurbKey?: string) => (
     <section className="relative overflow-hidden" style={{ background: PAPER, borderBottom: `1px solid ${LINE}` }}>
       <Awning className="absolute inset-x-0 top-0 h-3" />
       <div className="mx-auto max-w-7xl px-8 pb-14 pt-32 sm:pt-40">
-        <Kicker>{kicker}</Kicker>
-        <h1 style={{ ...display, color: BROWN }} className="mt-4 max-w-4xl text-4xl font-extrabold leading-[0.98] tracking-tight sm:text-6xl">{title}</h1>
-        {blurb && <p className="mt-5 max-w-2xl text-[16px] leading-relaxed" style={{ color: MUTE }}>{blurb}</p>}
+        <Kicker><span {...editCopy(content, kickerKey, kicker)} /></Kicker>
+        <h1 style={{ ...display, color: BROWN }} className="mt-4 max-w-4xl text-4xl font-extrabold leading-[0.98] tracking-tight sm:text-6xl" {...editCopy(content, titleKey, title)} />
+        {blurb && blurbKey && <p className="mt-5 max-w-2xl text-[16px] leading-relaxed" style={{ color: MUTE }} {...editCopy(content, blurbKey, blurb)} />}
       </div>
     </section>
   );
@@ -185,7 +185,7 @@ export default function HarvestDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "services") {
     return shell(
       <>
-        {banner("On the shelves", "Our produce", "Seasonal fruit and veg, salads and herbs, local and organic lines, plus made-up veg boxes — all in fresh every day.")}
+        {banner("On the shelves", "produce_kicker", "Our produce", "produce_title", "Seasonal fruit and veg, salads and herbs, local and organic lines, plus made-up veg boxes — all in fresh every day.", "produce_blurb")}
         <section className="mx-auto max-w-4xl px-8 py-20">
           {produce.length > 0 ? (
             <ProduceList items={produce} />
@@ -200,12 +200,12 @@ export default function HarvestDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "about") {
     return shell(
       <>
-        {banner("Our story", "Locally grown, fresh daily")}
+        {banner("Our story", "about_kicker", "Locally grown, fresh daily", "about_title")}
         <section className="mx-auto max-w-3xl px-8 py-20">
           {content.about ? <p data-edit="content.about" className="text-[17px] leading-[1.9]" style={{ color: MUTE }}>{content.about}</p> : <p style={{ color: MUTE }}>Our story is coming soon.</p>}
           {content.accreditations && content.accreditations.length > 0 && (
             <>
-              <h3 style={{ ...display, color: BROWN }} className="mt-12 text-xs font-extrabold uppercase tracking-[0.22em]">Grown &amp; graded well</h3>
+              <h3 style={{ ...display, color: BROWN }} className="mt-12 text-xs font-extrabold uppercase tracking-[0.22em]" {...editCopy(content, "about_accred_heading", "Grown & graded well")} />
               <div className="mt-5 flex flex-wrap gap-3">
                 {content.accreditations.map((a) => (
                   <span key={a} className="rounded-full border-2 px-4 py-2 text-[11px] font-bold uppercase tracking-[0.12em]" style={{ borderColor: `${GREEN}80`, color: BROWN }}>{a}</span>
@@ -215,7 +215,7 @@ export default function HarvestDesign({ site, page = "home", basePath = "" }: Pr
           )}
           {content.service_areas && content.service_areas.length > 0 && (
             <>
-              <h3 style={{ ...display, color: BROWN }} className="mt-12 text-xs font-extrabold uppercase tracking-[0.22em]">Where our produce comes from</h3>
+              <h3 style={{ ...display, color: BROWN }} className="mt-12 text-xs font-extrabold uppercase tracking-[0.22em]" {...editCopy(content, "about_areas_heading", "Where our produce comes from")} />
               <p className="mt-4 text-[15px] leading-relaxed" style={{ color: MUTE }}>{content.service_areas.join(" · ")}</p>
             </>
           )}
@@ -229,7 +229,7 @@ export default function HarvestDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "gallery") {
     return shell(
       <>
-        {banner("The shop", "Around the market")}
+        {banner("The shop", "gallery_kicker", "Around the market", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
@@ -248,10 +248,10 @@ export default function HarvestDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "contact") {
     return shell(
       <>
-        {banner("Visit us", "Come to the shop", "Pop in for your fruit and veg, or order a veg box for collection or local delivery — just tell us what you need.")}
+        {banner("Visit us", "contact_kicker", "Come to the shop", "contact_title", "Pop in for your fruit and veg, or order a veg box for collection or local delivery — just tell us what you need.", "contact_blurb")}
         <section className="mx-auto grid max-w-7xl gap-12 px-8 py-20 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={{ ...display, color: BROWN }} className="text-2xl font-extrabold tracking-tight">Find the shop</h2>
+            <h2 style={{ ...display, color: BROWN }} className="text-2xl font-extrabold tracking-tight" {...editCopy(content, "contact_heading", "Find the shop")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: MUTE }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-[#3E8E41]">{content.phone}</a>}
@@ -338,8 +338,8 @@ export default function HarvestDesign({ site, page = "home", basePath = "" }: Pr
       {produce.length > 0 && (
         <section className="mx-auto max-w-7xl px-8 py-24">
           <div className="text-center">
-            <Kicker>What&apos;s in season</Kicker>
-            <h2 style={{ ...display, color: BROWN }} className="mt-4 text-4xl font-extrabold tracking-tight sm:text-5xl">Fresh in this week</h2>
+            <Kicker><span {...editCopy(content, "home_season_kicker", "What's in season")} /></Kicker>
+            <h2 style={{ ...display, color: BROWN }} className="mt-4 text-4xl font-extrabold tracking-tight sm:text-5xl" {...editCopy(content, "home_season_heading", "Fresh in this week")} />
           </div>
           <div className="mx-auto mt-12 grid max-w-5xl gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {produce.slice(0, 6).map((s, i) => (
@@ -361,8 +361,8 @@ export default function HarvestDesign({ site, page = "home", basePath = "" }: Pr
       <section style={{ background: PAPER, borderTop: `1px solid ${LINE}`, borderBottom: `1px solid ${LINE}` }}>
         <div className="mx-auto max-w-7xl px-8 py-24">
           <div className="text-center">
-            <Kicker>What we stock</Kicker>
-            <h2 style={{ ...display, color: BROWN }} className="mt-4 text-4xl font-extrabold tracking-tight sm:text-5xl">From the crates to your kitchen</h2>
+            <Kicker><span {...editCopy(content, "home_stock_kicker", "What we stock")} /></Kicker>
+            <h2 style={{ ...display, color: BROWN }} className="mt-4 text-4xl font-extrabold tracking-tight sm:text-5xl" {...editCopy(content, "home_stock_heading", "From the crates to your kitchen")} />
           </div>
           <ul className="mx-auto mt-12 max-w-3xl divide-y" style={{ borderColor: LINE }}>
             {ranges.map((r, i) => (
@@ -388,8 +388,8 @@ export default function HarvestDesign({ site, page = "home", basePath = "" }: Pr
             <Awning className="absolute -bottom-3 -left-3 h-12 w-24 rounded-[10px]" a={SUN} b={TOMATO} />
           </div>
           <div>
-            <Kicker>Our story</Kicker>
-            <h2 style={{ ...display, color: BROWN }} className="mt-4 text-4xl font-extrabold leading-[0.96] tracking-tight sm:text-5xl">A proper greengrocer you can trust</h2>
+            <Kicker><span {...editCopy(content, "home_about_kicker", "Our story")} /></Kicker>
+            <h2 style={{ ...display, color: BROWN }} className="mt-4 text-4xl font-extrabold leading-[0.96] tracking-tight sm:text-5xl" {...editCopy(content, "home_about_heading", "A proper greengrocer you can trust")} />
             <p data-edit="content.about" className="mt-6 text-[16px] leading-[1.9]" style={{ color: MUTE }}>{content.about}</p>
             <a href={href("about")} className="mt-6 inline-flex items-center gap-2 text-[12px] font-extrabold uppercase tracking-[0.16em]" style={{ color: TOMATO }}>More about us →</a>
           </div>
@@ -400,8 +400,8 @@ export default function HarvestDesign({ site, page = "home", basePath = "" }: Pr
       <section style={{ background: DEEP }} className="text-[#eef3e6]">
         <div className="mx-auto grid max-w-7xl items-center gap-10 px-8 py-20 lg:grid-cols-[1fr_1.1fr]">
           <div>
-            <Kicker light>Locally grown</Kicker>
-            <h2 style={display} className="mt-4 text-3xl font-extrabold leading-[0.98] tracking-tight sm:text-4xl">Picked nearby, on the shelves the same day</h2>
+            <Kicker light><span {...editCopy(content, "home_local_kicker", "Locally grown")} /></Kicker>
+            <h2 style={display} className="mt-4 text-3xl font-extrabold leading-[0.98] tracking-tight sm:text-4xl" {...editCopy(content, "home_local_heading", "Picked nearby, on the shelves the same day")} />
             <p className="mt-5 max-w-md text-[15px] leading-relaxed text-[#eef3e6]/75">
               {content.service_areas && content.service_areas.length > 0
                 ? `We buy from growers and farms across ${content.service_areas.join(", ")} — short journeys, peak ripeness, proper flavour.`
@@ -430,8 +430,8 @@ export default function HarvestDesign({ site, page = "home", basePath = "" }: Pr
       {gallery.length > 0 && (
         <section className="mx-auto max-w-7xl px-8 py-24">
           <div className="text-center">
-            <Kicker>The shop</Kicker>
-            <h2 style={{ ...display, color: BROWN }} className="mt-4 text-4xl font-extrabold tracking-tight sm:text-5xl">Around the market</h2>
+            <Kicker><span {...editCopy(content, "home_shop_kicker", "The shop")} /></Kicker>
+            <h2 style={{ ...display, color: BROWN }} className="mt-4 text-4xl font-extrabold tracking-tight sm:text-5xl" {...editCopy(content, "home_shop_heading", "Around the market")} />
           </div>
           <div className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-4">
             {gallery.slice(0, 4).map((g) => (
@@ -450,8 +450,8 @@ export default function HarvestDesign({ site, page = "home", basePath = "" }: Pr
         <section style={{ background: PAPER, borderTop: `1px solid ${LINE}`, borderBottom: `1px solid ${LINE}` }}>
           <div className="mx-auto max-w-5xl px-8 py-20">
             <div className="text-center">
-              <Kicker>Visit us</Kicker>
-              <h2 style={{ ...display, color: BROWN }} className="mt-4 text-3xl font-extrabold tracking-tight sm:text-4xl">Opening hours</h2>
+              <Kicker><span {...editCopy(content, "home_hours_kicker", "Visit us")} /></Kicker>
+              <h2 style={{ ...display, color: BROWN }} className="mt-4 text-3xl font-extrabold tracking-tight sm:text-4xl" {...editCopy(content, "home_hours_heading", "Opening hours")} />
             </div>
             <ul className="mx-auto mt-10 max-w-lg divide-y" style={{ borderColor: LINE }}>
               {content.hours.map((h, i) => (
@@ -471,8 +471,8 @@ export default function HarvestDesign({ site, page = "home", basePath = "" }: Pr
         <Awning className="absolute inset-x-0 top-0 h-3" a={DEEP} b={SUN} />
         <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 px-8 py-16 text-white sm:flex-row sm:items-center">
           <div>
-            <h2 style={display} className="text-3xl font-extrabold leading-[0.96] tracking-tight sm:text-4xl">Order a veg box, or just come and browse</h2>
-            <p className="mt-2 text-sm font-bold uppercase tracking-[0.12em] text-white/80">Collection or local delivery. Fresh when you are.</p>
+            <h2 style={display} className="text-3xl font-extrabold leading-[0.96] tracking-tight sm:text-4xl" {...editCopy(content, "cta_heading", "Order a veg box, or just come and browse")} />
+            <p className="mt-2 text-sm font-bold uppercase tracking-[0.12em] text-white/80" {...editCopy(content, "cta_sub", "Collection or local delivery. Fresh when you are.")} />
           </div>
           <a href={phone ? `tel:${phone}` : cta} className="rounded-full bg-white px-9 py-4 text-[12px] font-extrabold uppercase tracking-[0.14em] transition hover:brightness-95" style={{ color: TOMATO }}>
             {phone ? `Call ${phone}` : ctaLabel}

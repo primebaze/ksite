@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { CleaverHeader } from "./CleaverHeader";
 import { TradesSocialIcon } from "./TradesMobileNav";
@@ -108,13 +108,13 @@ export default function CleaverDesign({ site, page = "home", basePath = "" }: Pr
           )}
         </div>
         <div>
-          <h4 style={display} className="text-[11px] font-extrabold uppercase tracking-[0.22em] text-[#f2e9da]/45">The Shop</h4>
+          <h4 style={display} className="text-[11px] font-extrabold uppercase tracking-[0.22em] text-[#f2e9da]/45" {...editCopy(content, "footer_shop", "The Shop")} />
           <ul className="mt-5 space-y-3 text-sm text-[#f2e9da]/70">
             {nav.map((l) => (<li key={l.label}><a href={l.href} className="transition hover:text-white">{l.label}</a></li>))}
           </ul>
         </div>
         <div>
-          <h4 style={display} className="text-[11px] font-extrabold uppercase tracking-[0.22em] text-[#f2e9da]/45">Find us</h4>
+          <h4 style={display} className="text-[11px] font-extrabold uppercase tracking-[0.22em] text-[#f2e9da]/45" {...editCopy(content, "footer_findus", "Find us")} />
           <div className="mt-5 space-y-3 text-sm text-[#f2e9da]/70">
             {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -122,7 +122,7 @@ export default function CleaverDesign({ site, page = "home", basePath = "" }: Pr
           </div>
         </div>
         <div>
-          <h4 style={display} className="text-[11px] font-extrabold uppercase tracking-[0.22em] text-[#f2e9da]/45">Opening hours</h4>
+          <h4 style={display} className="text-[11px] font-extrabold uppercase tracking-[0.22em] text-[#f2e9da]/45" {...editCopy(content, "footer_hours", "Opening hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm text-[#f2e9da]/70">
               {content.hours.map((h, i) => (<li key={i} className="flex justify-between gap-5"><span data-edit={`hours:${i}:day`}>{h.day}</span><span data-edit={`hours:${i}:open`} className="text-[#f2e9da]/40">{h.open}</span></li>))}
@@ -145,13 +145,13 @@ export default function CleaverDesign({ site, page = "home", basePath = "" }: Pr
     </div>
   );
 
-  const banner = (kicker: string, title: string, blurb?: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string, blurb?: string, blurbKey?: string) => (
     <section className="relative overflow-hidden" style={{ background: PAPER, borderBottom: `1px solid ${LINE}` }}>
       <Stripe className="absolute inset-x-0 top-0 h-2.5" />
       <div className="mx-auto max-w-7xl px-8 pb-14 pt-32 sm:pt-40">
-        <Kicker>{kicker}</Kicker>
-        <h1 style={{ ...display, color: CHAR }} className="mt-4 max-w-4xl text-4xl font-extrabold uppercase leading-[0.98] tracking-tight sm:text-6xl">{title}</h1>
-        {blurb && <p className="mt-5 max-w-2xl text-[16px] leading-relaxed" style={{ color: MUTE }}>{blurb}</p>}
+        <Kicker><span {...editCopy(content, kickerKey, kicker)} /></Kicker>
+        <h1 style={{ ...display, color: CHAR }} className="mt-4 max-w-4xl text-4xl font-extrabold uppercase leading-[0.98] tracking-tight sm:text-6xl" {...editCopy(content, titleKey, title)} />
+        {blurb && <p className="mt-5 max-w-2xl text-[16px] leading-relaxed" style={{ color: MUTE }} {...editCopy(content, blurbKey ?? "", blurb)} />}
       </div>
     </section>
   );
@@ -160,7 +160,7 @@ export default function CleaverDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "services") {
     return shell(
       <>
-        {banner("At the counter", "Today's cuts", "Beef, lamb, pork and poultry — plus our own sausages, burgers and BBQ packs. Ask and we'll cut to order.")}
+        {banner("At the counter", "svc_kicker", "Today's cuts", "svc_title", "Beef, lamb, pork and poultry — plus our own sausages, burgers and BBQ packs. Ask and we'll cut to order.", "svc_blurb")}
         <section className="mx-auto max-w-4xl px-8 py-20">
           {cuts.length > 0 ? (
             <Board>
@@ -187,12 +187,12 @@ export default function CleaverDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "about") {
     return shell(
       <>
-        {banner("Our trade", "Proper butchers, properly trained")}
+        {banner("Our trade", "about_kicker", "Proper butchers, properly trained", "about_title")}
         <section className="mx-auto max-w-3xl px-8 py-20">
           {content.about ? <p data-edit="content.about" className="text-[17px] leading-[1.9]" style={{ color: MUTE }}>{content.about}</p> : <p style={{ color: MUTE }}>Our story is coming soon.</p>}
           {content.accreditations && content.accreditations.length > 0 && (
             <>
-              <h3 style={{ ...display, color: CHAR }} className="mt-12 text-xs font-extrabold uppercase tracking-[0.22em]">Quality &amp; provenance</h3>
+              <h3 style={{ ...display, color: CHAR }} className="mt-12 text-xs font-extrabold uppercase tracking-[0.22em]" {...editCopy(content, "about_quality_heading", "Quality & provenance")} />
               <div className="mt-5 flex flex-wrap gap-3">
                 {content.accreditations.map((a) => (
                   <span key={a} className="rounded-full border-2 px-4 py-2 text-[11px] font-bold uppercase tracking-[0.12em]" style={{ borderColor: `${BRASS}99`, color: CHAR }}>{a}</span>
@@ -202,7 +202,7 @@ export default function CleaverDesign({ site, page = "home", basePath = "" }: Pr
           )}
           {content.service_areas && content.service_areas.length > 0 && (
             <>
-              <h3 style={{ ...display, color: CHAR }} className="mt-12 text-xs font-extrabold uppercase tracking-[0.22em]">Where our meat comes from</h3>
+              <h3 style={{ ...display, color: CHAR }} className="mt-12 text-xs font-extrabold uppercase tracking-[0.22em]" {...editCopy(content, "about_provenance_heading", "Where our meat comes from")} />
               <p className="mt-4 text-[15px] leading-relaxed" style={{ color: MUTE }}>{content.service_areas.join(" · ")}</p>
             </>
           )}
@@ -216,7 +216,7 @@ export default function CleaverDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "gallery") {
     return shell(
       <>
-        {banner("The shop", "Behind the counter")}
+        {banner("The shop", "gallery_kicker", "Behind the counter", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-7xl px-4 py-12 sm:px-6">
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
@@ -235,10 +235,10 @@ export default function CleaverDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "contact") {
     return shell(
       <>
-        {banner("Visit us", "Place an order", "Drop in, give us a ring, or send your order for collection — BBQ packs and bulk orders welcome.")}
+        {banner("Visit us", "contact_kicker", "Place an order", "contact_title", "Drop in, give us a ring, or send your order for collection — BBQ packs and bulk orders welcome.", "contact_blurb")}
         <section className="mx-auto grid max-w-7xl gap-12 px-8 py-20 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={{ ...display, color: CHAR }} className="text-2xl font-extrabold uppercase tracking-tight">Find the shop</h2>
+            <h2 style={{ ...display, color: CHAR }} className="text-2xl font-extrabold uppercase tracking-tight" {...editCopy(content, "contact_heading", "Find the shop")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: MUTE }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-[#8E2B2B]">{content.phone}</a>}
@@ -292,7 +292,7 @@ export default function CleaverDesign({ site, page = "home", basePath = "" }: Pr
             <span data-edit="content.tagline" className="block">{content.tagline ?? "Proper meat, properly butchered."}</span>
           </h1>
           <p data-edit="tenant.business_name" className="mt-5 text-sm font-bold uppercase tracking-[0.25em] text-white/70">{name}</p>
-          <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-white/75">Locally sourced, expertly cut. Beef, lamb and pork, our own sausages and burgers, and BBQ boxes made to order.</p>
+          <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-white/75" {...editCopy(content, "hero_sub", "Locally sourced, expertly cut. Beef, lamb and pork, our own sausages and burgers, and BBQ boxes made to order.")} />
           <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:gap-4">
             {btnRed(ctaLabel, cta)}
             {phone && <a href={`tel:${phone}`} className="inline-flex rounded-full border-2 px-8 py-4 text-center text-[12px] font-extrabold uppercase tracking-[0.16em] text-white transition hover:bg-white/10" style={{ borderColor: "#ffffff66" }}>{`Call ${phone}`}</a>}
@@ -334,10 +334,10 @@ export default function CleaverDesign({ site, page = "home", basePath = "" }: Pr
             <Stripe className="absolute -bottom-3 -left-3 h-12 w-12 rounded-[8px]" />
           </div>
           <div>
-            <Kicker>Our trade</Kicker>
-            <h2 style={{ ...display, color: CHAR }} className="mt-4 text-4xl font-extrabold uppercase leading-[0.95] tracking-tight sm:text-5xl">A proper butcher you can trust</h2>
+            <Kicker><span {...editCopy(content, "about_kicker_home", "Our trade")} /></Kicker>
+            <h2 style={{ ...display, color: CHAR }} className="mt-4 text-4xl font-extrabold uppercase leading-[0.95] tracking-tight sm:text-5xl" {...editCopy(content, "about_heading_home", "A proper butcher you can trust")} />
             <p data-edit="content.about" className="mt-6 text-[16px] leading-[1.9]" style={{ color: MUTE }}>{content.about}</p>
-            <a href={href("about")} className="mt-6 inline-flex items-center gap-2 text-[12px] font-extrabold uppercase tracking-[0.18em]" style={{ color: RED }}>More about us →</a>
+            <a href={href("about")} className="mt-6 inline-flex items-center gap-2 text-[12px] font-extrabold uppercase tracking-[0.18em]" style={{ color: RED }} {...editCopy(content, "about_link_home", "More about us →")} />
           </div>
         </section>
       )}
@@ -347,8 +347,8 @@ export default function CleaverDesign({ site, page = "home", basePath = "" }: Pr
         <section style={{ background: PAPER, borderTop: `1px solid ${LINE}`, borderBottom: `1px solid ${LINE}` }}>
           <div className="mx-auto max-w-4xl px-8 py-24">
             <div className="text-center">
-              <Kicker>At the counter</Kicker>
-              <h2 style={{ ...display, color: CHAR }} className="mt-4 text-4xl font-extrabold uppercase tracking-tight sm:text-5xl">Today&apos;s cuts</h2>
+              <Kicker><span {...editCopy(content, "counter_kicker", "At the counter")} /></Kicker>
+              <h2 style={{ ...display, color: CHAR }} className="mt-4 text-4xl font-extrabold uppercase tracking-tight sm:text-5xl" {...editCopy(content, "counter_heading", "Today's cuts")} />
             </div>
             <div className="mt-12">
               <Board>
@@ -366,7 +366,7 @@ export default function CleaverDesign({ site, page = "home", basePath = "" }: Pr
               </Board>
             </div>
             <div className="mt-10 text-center">
-              <a href={href("services")} className="text-[12px] font-extrabold uppercase tracking-[0.18em] underline-offset-4 hover:underline" style={{ color: RED }}>See the full counter →</a>
+              <a href={href("services")} className="text-[12px] font-extrabold uppercase tracking-[0.18em] underline-offset-4 hover:underline" style={{ color: RED }} {...editCopy(content, "counter_link", "See the full counter →")} />
             </div>
           </div>
         </section>
@@ -376,8 +376,8 @@ export default function CleaverDesign({ site, page = "home", basePath = "" }: Pr
       <section style={{ background: CHAR }} className="text-[#f2e9da]">
         <div className="mx-auto grid max-w-7xl items-center gap-10 px-8 py-20 lg:grid-cols-[1fr_1.1fr]">
           <div>
-            <Kicker light>Where our meat comes from</Kicker>
-            <h2 style={display} className="mt-4 text-3xl font-extrabold uppercase leading-[0.98] tracking-tight sm:text-4xl">Known farms, named fields, full provenance</h2>
+            <Kicker light><span {...editCopy(content, "provenance_kicker", "Where our meat comes from")} /></Kicker>
+            <h2 style={display} className="mt-4 text-3xl font-extrabold uppercase leading-[0.98] tracking-tight sm:text-4xl" {...editCopy(content, "provenance_heading", "Known farms, named fields, full provenance")} />
             <p className="mt-5 max-w-md text-[15px] leading-relaxed text-[#f2e9da]/70">
               {content.service_areas && content.service_areas.length > 0
                 ? `We work with trusted farms across ${content.service_areas.join(", ")} — short journeys, high welfare, proper flavour.`
@@ -406,8 +406,8 @@ export default function CleaverDesign({ site, page = "home", basePath = "" }: Pr
       {gallery.length > 0 && (
         <section className="mx-auto max-w-7xl px-8 py-24">
           <div className="text-center">
-            <Kicker>The shop</Kicker>
-            <h2 style={{ ...display, color: CHAR }} className="mt-4 text-4xl font-extrabold uppercase tracking-tight sm:text-5xl">Behind the counter</h2>
+            <Kicker><span {...editCopy(content, "shop_kicker", "The shop")} /></Kicker>
+            <h2 style={{ ...display, color: CHAR }} className="mt-4 text-4xl font-extrabold uppercase tracking-tight sm:text-5xl" {...editCopy(content, "shop_heading", "Behind the counter")} />
           </div>
           <div className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-4">
             {gallery.slice(0, 4).map((g) => (
@@ -416,7 +416,7 @@ export default function CleaverDesign({ site, page = "home", basePath = "" }: Pr
             ))}
           </div>
           <div className="mt-10 text-center">
-            <a href={href("gallery")} className="text-[12px] font-extrabold uppercase tracking-[0.18em] underline-offset-4 hover:underline" style={{ color: RED }}>Look around the shop →</a>
+            <a href={href("gallery")} className="text-[12px] font-extrabold uppercase tracking-[0.18em] underline-offset-4 hover:underline" style={{ color: RED }} {...editCopy(content, "shop_link", "Look around the shop →")} />
           </div>
         </section>
       )}
@@ -426,8 +426,8 @@ export default function CleaverDesign({ site, page = "home", basePath = "" }: Pr
         <section style={{ background: PAPER, borderTop: `1px solid ${LINE}`, borderBottom: `1px solid ${LINE}` }}>
           <div className="mx-auto max-w-5xl px-8 py-20">
             <div className="text-center">
-              <Kicker>Visit us</Kicker>
-              <h2 style={{ ...display, color: CHAR }} className="mt-4 text-3xl font-extrabold uppercase tracking-tight sm:text-4xl">Opening hours</h2>
+              <Kicker><span {...editCopy(content, "visit_kicker", "Visit us")} /></Kicker>
+              <h2 style={{ ...display, color: CHAR }} className="mt-4 text-3xl font-extrabold uppercase tracking-tight sm:text-4xl" {...editCopy(content, "visit_heading", "Opening hours")} />
             </div>
             <ul className="mx-auto mt-10 max-w-lg divide-y" style={{ borderColor: LINE }}>
               {content.hours.map((h, i) => (
@@ -447,8 +447,8 @@ export default function CleaverDesign({ site, page = "home", basePath = "" }: Pr
         <Stripe className="absolute inset-x-0 top-0 h-2.5" color={CHAR} />
         <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 px-8 py-16 text-white sm:flex-row sm:items-center">
           <div>
-            <h2 style={display} className="text-3xl font-extrabold uppercase leading-[0.95] tracking-tight sm:text-4xl">Order for collection or a BBQ pack</h2>
-            <p className="mt-2 text-sm font-bold uppercase tracking-[0.14em] text-white/75">Cut to order. Ready when you are.</p>
+            <h2 style={display} className="text-3xl font-extrabold uppercase leading-[0.95] tracking-tight sm:text-4xl" {...editCopy(content, "cta_heading", "Order for collection or a BBQ pack")} />
+            <p className="mt-2 text-sm font-bold uppercase tracking-[0.14em] text-white/75" {...editCopy(content, "cta_sub", "Cut to order. Ready when you are.")} />
           </div>
           <a href={phone ? `tel:${phone}` : cta} className="rounded-full bg-white px-9 py-4 text-[12px] font-extrabold uppercase tracking-[0.16em] transition hover:brightness-95" style={{ color: RED }}>
             {phone ? `Call ${phone}` : ctaLabel}

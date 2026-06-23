@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { CSSProperties, ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { CanopyHeader } from "./CanopyHeader";
 import { TradesSocialIcon } from "./TradesMobileNav";
@@ -123,7 +123,7 @@ export default function CanopyDesign({ site, page = "home", basePath = "" }: Pre
           )}
         </div>
         <div>
-          <h4 style={display} className="text-xs font-bold uppercase tracking-[0.22em]" >Explore</h4>
+          <h4 style={display} className="text-xs font-bold uppercase tracking-[0.22em]" {...editCopy(content, "footer_explore", "Explore")} />
           <ul className="mt-5 space-y-3 text-sm text-white/70">
             {nav.map((l) => (
               <li key={l.label}><a href={l.href} className="transition hover:text-white">{l.label}</a></li>
@@ -131,7 +131,7 @@ export default function CanopyDesign({ site, page = "home", basePath = "" }: Pre
           </ul>
         </div>
         <div>
-          <h4 style={display} className="text-xs font-bold uppercase tracking-[0.22em]">Get in touch</h4>
+          <h4 style={display} className="text-xs font-bold uppercase tracking-[0.22em]" {...editCopy(content, "footer_contact", "Get in touch")} />
           <div className="mt-5 space-y-3 text-sm text-white/70">
             {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -139,7 +139,7 @@ export default function CanopyDesign({ site, page = "home", basePath = "" }: Pre
           </div>
         </div>
         <div>
-          <h4 style={display} className="text-xs font-bold uppercase tracking-[0.22em]">Hours</h4>
+          <h4 style={display} className="text-xs font-bold uppercase tracking-[0.22em]" {...editCopy(content, "footer_hours", "Hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm text-white/70">
               {content.hours.map((h, i) => (
@@ -164,12 +164,12 @@ export default function CanopyDesign({ site, page = "home", basePath = "" }: Pre
     </div>
   );
 
-  const banner = (kicker: string, title: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string) => (
     <section className="relative overflow-hidden" style={{ background: FOREST }}>
       <TreeRings size={360} color={MOSS} opacity={0.1} style={{ position: "absolute", right: -90, bottom: -120 }} />
       <div className="relative mx-auto max-w-7xl px-8 pb-16 pt-32 text-white sm:pt-40">
-        <Kicker light>{kicker}</Kicker>
-        <h1 style={display} className="mt-4 text-4xl font-semibold leading-[1.0] tracking-tight sm:text-6xl" >{title}</h1>
+        <Kicker light><span {...editCopy(content, kickerKey, kicker)} /></Kicker>
+        <h1 style={display} className="mt-4 text-4xl font-semibold leading-[1.0] tracking-tight sm:text-6xl" {...editCopy(content, titleKey, title)} />
       </div>
     </section>
   );
@@ -178,7 +178,7 @@ export default function CanopyDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "services") {
     return shell(
       <>
-        {banner("What we do", "Tree care services")}
+        {banner("What we do", "svc_kicker", "Tree care services", "svc_title")}
         <section className="mx-auto max-w-4xl px-8 py-20">
           {services.length > 0 ? (
             <ul className="divide-y" style={{ borderColor: LINE }}>
@@ -203,10 +203,10 @@ export default function CanopyDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "about") {
     return shell(
       <>
-        {banner("Who we are", "Care for every tree")}
+        {banner("Who we are", "about_kicker", "Care for every tree", "about_title")}
         <section className="mx-auto max-w-3xl px-8 py-20">
           {content.about ? <p data-edit="content.about" className="text-[17px] leading-[1.9]" style={{ color: INK }}>{content.about}</p> : <p style={{ color: INK }}>Our story is coming soon.</p>}
-          <h3 style={display} className="mt-12 text-xs font-bold uppercase tracking-[0.22em]" >Qualified &amp; insured</h3>
+          <h3 style={display} className="mt-12 text-xs font-bold uppercase tracking-[0.22em]" {...editCopy(content, "about_qualified_heading", "Qualified & insured")} />
           <div className="mt-5 flex flex-wrap gap-3">
             {trust.map((a) => (
               <span key={a} className="rounded-full border px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.14em]" style={{ borderColor: `${MOSS}`, color: FOREST }}>{a}</span>
@@ -214,7 +214,7 @@ export default function CanopyDesign({ site, page = "home", basePath = "" }: Pre
           </div>
           {content.service_areas && content.service_areas.length > 0 && (
             <>
-              <h3 style={display} className="mt-12 text-xs font-bold uppercase tracking-[0.22em]" >Areas we cover</h3>
+              <h3 style={display} className="mt-12 text-xs font-bold uppercase tracking-[0.22em]" {...editCopy(content, "about_areas_heading", "Areas we cover")} />
               <p className="mt-4 text-[15px] leading-relaxed" style={{ color: INK }}>{content.service_areas.join(" · ")}</p>
             </>
           )}
@@ -228,11 +228,11 @@ export default function CanopyDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "contact") {
     return shell(
       <>
-        {banner("Get in touch", "Request a quote")}
+        {banner("Get in touch", "contact_kicker", "Request a quote", "contact_title")}
         <section className="mx-auto grid max-w-7xl gap-12 px-8 py-20 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={display} className="text-2xl font-semibold tracking-tight" >Talk to an arborist</h2>
-            <p className="mt-3 text-[15px] leading-relaxed" style={{ color: INK }}>Tell us about the tree and the access, and we&apos;ll arrange a free site visit and quote.</p>
+            <h2 style={display} className="text-2xl font-semibold tracking-tight" {...editCopy(content, "contact_heading", "Talk to an arborist")} />
+            <p className="mt-3 text-[15px] leading-relaxed" style={{ color: INK }} {...editCopy(content, "contact_sub", "Tell us about the tree and the access, and we'll arrange a free site visit and quote.")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: INK }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-[color:var(--forest)]" style={{ color: FOREST }}>{content.phone}</a>}
@@ -271,7 +271,7 @@ export default function CanopyDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Recent jobs", "Our work")}
+        {banner("Recent jobs", "gallery_kicker", "Our work", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-7xl px-2 py-12 sm:px-4">
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
@@ -331,13 +331,13 @@ export default function CanopyDesign({ site, page = "home", basePath = "" }: Pre
       {/* safety / trust strip */}
       <section style={{ background: BARK }}>
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-center gap-x-10 gap-y-3 px-8 py-5 text-center text-[12px] font-semibold uppercase tracking-[0.2em] text-white/90">
-          <span>NPTC-qualified climbers</span>
+          <span {...editCopy(content, "safety_1", "NPTC-qualified climbers")} />
           <span className="hidden h-1 w-1 rounded-full bg-white/40 sm:inline-block" />
-          <span>£5m public liability</span>
+          <span {...editCopy(content, "safety_2", "£5m public liability")} />
           <span className="hidden h-1 w-1 rounded-full bg-white/40 sm:inline-block" />
-          <span>All waste chipped &amp; removed</span>
+          <span {...editCopy(content, "safety_3", "All waste chipped & removed")} />
           <span className="hidden h-1 w-1 rounded-full bg-white/40 sm:inline-block" />
-          <span>Free no-obligation quotes</span>
+          <span {...editCopy(content, "safety_4", "Free no-obligation quotes")} />
         </div>
       </section>
 
@@ -345,10 +345,10 @@ export default function CanopyDesign({ site, page = "home", basePath = "" }: Pre
       {content.about && (
         <section className="relative mx-auto grid max-w-7xl items-center gap-12 px-8 py-24 lg:grid-cols-2 lg:gap-16">
           <div>
-            <Kicker>Who we are</Kicker>
-            <h2 style={{ ...display, color: FOREST }} className="mt-4 text-4xl font-semibold leading-[1.04] tracking-tight sm:text-5xl">Rooted in safe, careful work</h2>
+            <Kicker><span {...editCopy(content, "about_kicker_home", "Who we are")} /></Kicker>
+            <h2 style={{ ...display, color: FOREST }} className="mt-4 text-4xl font-semibold leading-[1.04] tracking-tight sm:text-5xl" {...editCopy(content, "about_heading_home", "Rooted in safe, careful work")} />
             <p data-edit="content.about" className="mt-6 text-[16px] leading-[1.9]" style={{ color: INK }}>{content.about}</p>
-            <a href={href("about")} className="mt-6 inline-flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.18em]" style={{ color: BARK }}>More about us →</a>
+            <a href={href("about")} className="mt-6 inline-flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.18em]" style={{ color: BARK }} {...editCopy(content, "about_link_home", "More about us →")} />
           </div>
           <div className="relative">
             {gallery[0] ? (
@@ -367,8 +367,8 @@ export default function CanopyDesign({ site, page = "home", basePath = "" }: Pre
         <div className="mx-auto max-w-7xl px-8 py-24">
           <div className="flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <Kicker>What we do</Kicker>
-              <h2 style={{ ...display, color: FOREST }} className="mt-4 text-4xl font-semibold tracking-tight sm:text-5xl">Complete tree surgery</h2>
+              <Kicker><span {...editCopy(content, "whatwedo_kicker", "What we do")} /></Kicker>
+              <h2 style={{ ...display, color: FOREST }} className="mt-4 text-4xl font-semibold tracking-tight sm:text-5xl" {...editCopy(content, "whatwedo_heading", "Complete tree surgery")} />
             </div>
             {services.length > 0 && <div className="shrink-0">{btnOutline("View all services", href("services"))}</div>}
           </div>
@@ -388,8 +388,8 @@ export default function CanopyDesign({ site, page = "home", basePath = "" }: Pre
 
       {/* seasonal tree-care angle */}
       <section className="mx-auto max-w-7xl px-8 py-24">
-        <Kicker>Through the seasons</Kicker>
-        <h2 style={{ ...display, color: FOREST }} className="mt-4 max-w-2xl text-3xl font-semibold leading-[1.1] tracking-tight sm:text-4xl">The right work at the right time of year</h2>
+        <Kicker><span {...editCopy(content, "seasons_kicker", "Through the seasons")} /></Kicker>
+        <h2 style={{ ...display, color: FOREST }} className="mt-4 max-w-2xl text-3xl font-semibold leading-[1.1] tracking-tight sm:text-4xl" {...editCopy(content, "seasons_heading", "The right work at the right time of year")} />
         <div className="mt-12 grid gap-px overflow-hidden rounded-2xl border sm:grid-cols-2 lg:grid-cols-4" style={{ borderColor: LINE, background: LINE }}>
           {[
             { s: "Winter", t: "Major felling & dismantling", d: "Dormant trees and bare canopies make heavy work cleaner and safer." },
@@ -412,8 +412,8 @@ export default function CanopyDesign({ site, page = "home", basePath = "" }: Pre
         <section style={{ background: FOREST }} className="relative overflow-hidden text-white">
           <TreeRings size={380} color={MOSS} opacity={0.07} style={{ position: "absolute", left: -110, top: -110 }} />
           <div className="relative mx-auto max-w-7xl px-8 py-24">
-            <Kicker light>Recent jobs</Kicker>
-            <h2 style={display} className="mt-4 text-4xl font-semibold tracking-tight sm:text-5xl">Our work</h2>
+            <Kicker light><span {...editCopy(content, "work_kicker", "Recent jobs")} /></Kicker>
+            <h2 style={display} className="mt-4 text-4xl font-semibold tracking-tight sm:text-5xl" {...editCopy(content, "work_heading", "Our work")} />
             <div className="mt-10 grid grid-cols-2 gap-2 sm:grid-cols-4">
               {gallery.slice(0, 4).map((g) => (
                 // eslint-disable-next-line @next/next/no-img-element
@@ -429,7 +429,7 @@ export default function CanopyDesign({ site, page = "home", basePath = "" }: Pre
       {content.service_areas && content.service_areas.length > 0 && (
         <section style={{ background: PANEL }}>
           <div className="mx-auto max-w-7xl px-8 py-16">
-            <Kicker>Areas we cover</Kicker>
+            <Kicker><span {...editCopy(content, "areas_kicker", "Areas we cover")} /></Kicker>
             <div className="mt-6 flex flex-wrap gap-2.5">
               {content.service_areas.map((a) => (
                 <span key={a} className="rounded-full border bg-white px-4 py-2 text-sm font-medium" style={{ borderColor: LINE, color: FOREST }}>{a}</span>
@@ -444,8 +444,8 @@ export default function CanopyDesign({ site, page = "home", basePath = "" }: Pre
         <TreeRings size={300} color={FOREST} opacity={0.1} style={{ position: "absolute", right: -70, top: -90 }} />
         <div className="relative mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 px-8 py-16 sm:flex-row sm:items-center" style={{ color: FOREST }}>
           <div>
-            <h2 style={display} className="text-3xl font-semibold leading-[1.05] tracking-tight sm:text-4xl">Got a tree that needs looking at?</h2>
-            <p className="mt-2 text-sm font-semibold uppercase tracking-[0.14em]" style={{ color: `${FOREST}b3` }}>Free site visit · honest advice · fixed quotes.</p>
+            <h2 style={display} className="text-3xl font-semibold leading-[1.05] tracking-tight sm:text-4xl" {...editCopy(content, "cta_heading", "Got a tree that needs looking at?")} />
+            <p className="mt-2 text-sm font-semibold uppercase tracking-[0.14em]" style={{ color: `${FOREST}b3` }} {...editCopy(content, "cta_sub", "Free site visit · honest advice · fixed quotes.")} />
           </div>
           <a href={phone ? `tel:${phone}` : cta} className="rounded-full px-9 py-4 text-[12px] font-bold uppercase tracking-[0.16em] text-white transition hover:brightness-110" style={{ background: FOREST }}>
             {phone ? `Call ${phone}` : ctaLabel}

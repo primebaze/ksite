@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { ChambersHeader } from "./ChambersHeader";
 import { TradesSocialIcon } from "./TradesMobileNav";
@@ -87,7 +87,7 @@ export default function ChambersDesign({ site, page = "home", basePath = "" }: P
         <div>
           <a href={href("home")} className="block">
             <span data-edit="tenant.business_name" style={serif} className="text-2xl font-medium tracking-[0.01em]" >{name}</span>
-            <span className="mt-1 block text-[9px] font-semibold uppercase tracking-[0.42em]" style={{ color: BRASS }}>Solicitors &amp; Legal Advisers</span>
+            <span className="mt-1 block text-[9px] font-semibold uppercase tracking-[0.42em]" style={{ color: BRASS }} {...editCopy(content, "footer_subtitle", "Solicitors & Legal Advisers")} />
           </a>
           {content.tagline && <p data-edit="content.tagline" className="mt-5 max-w-xs text-sm leading-relaxed" style={{ color: PARCHMUTE }}>{content.tagline}</p>}
           <div className="mt-6 flex flex-wrap gap-2">
@@ -104,7 +104,7 @@ export default function ChambersDesign({ site, page = "home", basePath = "" }: P
           )}
         </div>
         <div>
-          <h4 style={{ ...display, color: BRASS }} className="text-[11px] font-bold uppercase tracking-[0.24em]">The firm</h4>
+          <h4 style={{ ...display, color: BRASS }} className="text-[11px] font-bold uppercase tracking-[0.24em]" {...editCopy(content, "footer_firm", "The firm")} />
           <ul className="mt-5 space-y-3 text-sm" style={{ color: PARCHMUTE }}>
             {nav.map((l) => (
               <li key={l.label}><a href={l.href} className="transition hover:text-white">{l.label}</a></li>
@@ -112,7 +112,7 @@ export default function ChambersDesign({ site, page = "home", basePath = "" }: P
           </ul>
         </div>
         <div>
-          <h4 style={{ ...display, color: BRASS }} className="text-[11px] font-bold uppercase tracking-[0.24em]">Contact</h4>
+          <h4 style={{ ...display, color: BRASS }} className="text-[11px] font-bold uppercase tracking-[0.24em]" {...editCopy(content, "footer_contact", "Contact")} />
           <div className="mt-5 space-y-3 text-sm" style={{ color: PARCHMUTE }}>
             {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -120,7 +120,7 @@ export default function ChambersDesign({ site, page = "home", basePath = "" }: P
           </div>
         </div>
         <div>
-          <h4 style={{ ...display, color: BRASS }} className="text-[11px] font-bold uppercase tracking-[0.24em]">Office hours</h4>
+          <h4 style={{ ...display, color: BRASS }} className="text-[11px] font-bold uppercase tracking-[0.24em]" {...editCopy(content, "footer_hours", "Office hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm" style={{ color: PARCHMUTE }}>
               {content.hours.map((h, i) => (
@@ -132,7 +132,7 @@ export default function ChambersDesign({ site, page = "home", basePath = "" }: P
       </div>
       <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 border-t px-8 py-7 text-xs sm:flex-row" style={{ borderColor: "#ffffff1a", color: "#ffffff66" }}>
         <p>© {new Date().getFullYear()} {name}. All rights reserved.</p>
-        <p className="text-white/55">Authorised &amp; regulated by the Solicitors Regulation Authority.</p>
+        <p className="text-white/55" {...editCopy(content, "footer_regulated", "Authorised & regulated by the Solicitors Regulation Authority.")} />
       </div>
     </footer>
   );
@@ -145,12 +145,12 @@ export default function ChambersDesign({ site, page = "home", basePath = "" }: P
     </div>
   );
 
-  const banner = (kicker: string, title: string, blurb?: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string, blurb?: string, blurbKey?: string) => (
     <section style={{ background: NAVY }}>
       <div className="mx-auto max-w-7xl px-8 pb-16 pt-32 sm:pt-40">
-        <Kicker light>{kicker}</Kicker>
-        <h1 style={{ ...serif, color: PARCH }} className="mt-5 max-w-3xl text-4xl font-medium leading-[1.08] tracking-tight sm:text-6xl">{title}</h1>
-        {blurb && <p className="mt-6 max-w-xl text-[16px] leading-relaxed" style={{ color: PARCHMUTE }}>{blurb}</p>}
+        <Kicker light><span {...editCopy(content, kickerKey, kicker)} /></Kicker>
+        <h1 style={{ ...serif, color: PARCH }} className="mt-5 max-w-3xl text-4xl font-medium leading-[1.08] tracking-tight sm:text-6xl" {...editCopy(content, titleKey, title)} />
+        {blurb && <p className="mt-6 max-w-xl text-[16px] leading-relaxed" style={{ color: PARCHMUTE }} {...editCopy(content, blurbKey ?? "", blurb)} />}
       </div>
     </section>
   );
@@ -178,7 +178,7 @@ export default function ChambersDesign({ site, page = "home", basePath = "" }: P
   if (page === "services") {
     return shell(
       <>
-        {banner("Practice areas", "Expert counsel across every matter", "Senior, partner-led advice — clearly scoped, sensitively handled and fairly priced.")}
+        {banner("Practice areas", "svc_kicker", "Expert counsel across every matter", "svc_title", "Senior, partner-led advice — clearly scoped, sensitively handled and fairly priced.", "svc_blurb")}
         <section className="mx-auto max-w-4xl px-8 py-20">
           {services.length > 0 ? practiceList() : <p style={{ color: MUTE }}>Our practice areas will be listed here shortly.</p>}
           <div className="mt-12">{btnSolid(ctaLabel, cta)}</div>
@@ -191,19 +191,19 @@ export default function ChambersDesign({ site, page = "home", basePath = "" }: P
   if (page === "about") {
     return shell(
       <>
-        {banner("The firm", "Established counsel you can trust")}
+        {banner("The firm", "about_kicker", "Established counsel you can trust", "about_title")}
         <section className="mx-auto grid max-w-6xl gap-12 px-8 py-20 lg:grid-cols-[1.5fr_1fr] lg:gap-16">
           <div>
             {content.about ? <p data-edit="content.about" className="text-[17px] leading-[1.95]" style={{ color: MUTE }}>{content.about}</p> : <p style={{ color: MUTE }}>Our story is coming soon.</p>}
             {content.service_areas && content.service_areas.length > 0 && (
               <>
-                <h3 style={{ ...serif, color: NAVY }} className="mt-12 text-2xl font-medium">Where we act</h3>
+                <h3 style={{ ...serif, color: NAVY }} className="mt-12 text-2xl font-medium" {...editCopy(content, "about_whereweact_heading", "Where we act")} />
                 <p className="mt-4 text-[15px] leading-relaxed" style={{ color: MUTE }}>{content.service_areas.join(" · ")}</p>
               </>
             )}
           </div>
           <aside className="h-fit p-7" style={{ background: PANEL, border: `1px solid ${LINE}` }}>
-            <h4 className="text-[11px] font-semibold uppercase tracking-[0.24em]" style={{ color: BURGUNDY }}>Why instruct us</h4>
+            <h4 className="text-[11px] font-semibold uppercase tracking-[0.24em]" style={{ color: BURGUNDY }} {...editCopy(content, "about_whyinstruct_heading", "Why instruct us")} />
             <ul className="mt-4 space-y-3 text-sm" style={{ color: INK }}>
               {credentials.map((a) => (
                 <li key={a} className="flex items-start gap-2 border-b pb-3 last:border-0" style={{ borderColor: LINE }}><span style={{ color: BRASS }}>—</span><span>{a}</span></li>
@@ -224,10 +224,10 @@ export default function ChambersDesign({ site, page = "home", basePath = "" }: P
   if (page === "contact") {
     return shell(
       <>
-        {banner("Enquiries", "Request a consultation", "Tell us about your matter in confidence and we'll arrange a free initial consultation.")}
+        {banner("Enquiries", "contact_kicker", "Request a consultation", "contact_title", "Tell us about your matter in confidence and we'll arrange a free initial consultation.", "contact_blurb")}
         <section className="mx-auto grid max-w-7xl gap-12 px-8 py-20 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={{ ...serif, color: NAVY }} className="text-2xl font-medium">Our chambers</h2>
+            <h2 style={{ ...serif, color: NAVY }} className="text-2xl font-medium" {...editCopy(content, "contact_heading", "Our chambers")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: MUTE }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-[#16263F]">{content.phone}</a>}
@@ -240,7 +240,7 @@ export default function ChambersDesign({ site, page = "home", basePath = "" }: P
                 ))}
               </ul>
             )}
-            <p className="mt-8 max-w-xs text-xs leading-relaxed" style={{ color: MUTE }}>All enquiries are treated in the strictest confidence and protected by legal privilege.</p>
+            <p className="mt-8 max-w-xs text-xs leading-relaxed" style={{ color: MUTE }} {...editCopy(content, "contact_privilege", "All enquiries are treated in the strictest confidence and protected by legal privilege.")} />
             {content.map_url && (
               <div className="mt-7">{btnOutlineDark("Get directions", content.map_url)}</div>
             )}
@@ -267,7 +267,7 @@ export default function ChambersDesign({ site, page = "home", basePath = "" }: P
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Selected matters", "Cases & outcomes", "A discreet selection of the work we are proud to have delivered for our clients.")}
+        {banner("Selected matters", "gallery_kicker", "Cases & outcomes", "gallery_title", "A discreet selection of the work we are proud to have delivered for our clients.", "gallery_blurb")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-7xl px-8 py-16">
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -332,9 +332,9 @@ export default function ChambersDesign({ site, page = "home", basePath = "" }: P
       <section className="mx-auto max-w-7xl px-8 py-24">
         <div className="grid gap-12 lg:grid-cols-[auto_1fr] lg:gap-16">
           <div className="lg:max-w-xs">
-            <Kicker>Why instruct us</Kicker>
-            <h2 style={{ ...serif, color: NAVY }} className="mt-4 text-3xl font-medium leading-[1.1] tracking-tight sm:text-4xl">A firm built on judgement and discretion</h2>
-            <p className="mt-5 text-[15px] leading-relaxed" style={{ color: MUTE }}>For decades our solicitors have guided clients through their most important decisions — with clarity, candour and complete confidentiality.</p>
+            <Kicker><span {...editCopy(content, "why_kicker", "Why instruct us")} /></Kicker>
+            <h2 style={{ ...serif, color: NAVY }} className="mt-4 text-3xl font-medium leading-[1.1] tracking-tight sm:text-4xl" {...editCopy(content, "why_heading", "A firm built on judgement and discretion")} />
+            <p className="mt-5 text-[15px] leading-relaxed" style={{ color: MUTE }} {...editCopy(content, "why_sub", "For decades our solicitors have guided clients through their most important decisions — with clarity, candour and complete confidentiality.")} />
           </div>
           <div className="grid gap-px sm:grid-cols-2" style={{ background: LINE }}>
             {[
@@ -370,11 +370,11 @@ export default function ChambersDesign({ site, page = "home", basePath = "" }: P
       {services.length > 0 && (
         <section style={{ background: PANEL, borderTop: `1px solid ${LINE}`, borderBottom: `1px solid ${LINE}` }}>
           <div className="mx-auto max-w-4xl px-8 py-24">
-            <Kicker>Practice areas</Kicker>
-            <h2 style={{ ...serif, color: NAVY }} className="mt-4 text-3xl font-medium tracking-tight sm:text-4xl">Areas in which we act</h2>
+            <Kicker><span {...editCopy(content, "practice_kicker", "Practice areas")} /></Kicker>
+            <h2 style={{ ...serif, color: NAVY }} className="mt-4 text-3xl font-medium tracking-tight sm:text-4xl" {...editCopy(content, "practice_heading", "Areas in which we act")} />
             <p className="mt-4 text-[15px]" style={{ color: MUTE }}>{PRACTICE_FALLBACK.join(" · ")}.</p>
             <div className="mt-12">{practiceList(6)}</div>
-            <a href={href("services")} className="mt-10 inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em]" style={{ color: BURGUNDY }}>All practice areas →</a>
+            <a href={href("services")} className="mt-10 inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em]" style={{ color: BURGUNDY }} {...editCopy(content, "practice_link", "All practice areas →")} />
           </div>
         </section>
       )}
@@ -392,10 +392,10 @@ export default function ChambersDesign({ site, page = "home", basePath = "" }: P
             <span className="pointer-events-none absolute -bottom-3 -right-3 hidden h-20 w-20 lg:block" style={{ borderBottom: `2px solid ${BRASS}`, borderRight: `2px solid ${BRASS}` }} />
           </div>
           <div>
-            <Kicker>An experienced team</Kicker>
-            <h2 style={{ ...serif, color: NAVY }} className="mt-4 text-3xl font-medium leading-[1.1] tracking-tight sm:text-4xl">Solicitors who have seen it before</h2>
+            <Kicker><span {...editCopy(content, "team_kicker", "An experienced team")} /></Kicker>
+            <h2 style={{ ...serif, color: NAVY }} className="mt-4 text-3xl font-medium leading-[1.1] tracking-tight sm:text-4xl" {...editCopy(content, "team_heading", "Solicitors who have seen it before")} />
             <p data-edit="content.about" className="mt-6 text-[16px] leading-[1.9]" style={{ color: MUTE }}>{content.about}</p>
-            <a href={href("about")} className="mt-6 inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em]" style={{ color: BURGUNDY }}>About the firm →</a>
+            <a href={href("about")} className="mt-6 inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em]" style={{ color: BURGUNDY }} {...editCopy(content, "team_link", "About the firm →")} />
           </div>
         </section>
       )}
@@ -404,8 +404,8 @@ export default function ChambersDesign({ site, page = "home", basePath = "" }: P
       {gallery.length > 0 && (
         <section style={{ background: NAVY }}>
           <div className="mx-auto max-w-7xl px-8 py-24">
-            <Kicker light>Selected matters</Kicker>
-            <h2 style={{ ...serif, color: PARCH }} className="mt-4 text-3xl font-medium tracking-tight sm:text-4xl">Cases we are proud of</h2>
+            <Kicker light><span {...editCopy(content, "cases_kicker", "Selected matters")} /></Kicker>
+            <h2 style={{ ...serif, color: PARCH }} className="mt-4 text-3xl font-medium tracking-tight sm:text-4xl" {...editCopy(content, "cases_heading", "Cases we are proud of")} />
             <div className="mt-12 grid grid-cols-2 gap-4 sm:grid-cols-4">
               {gallery.slice(0, 4).map((g) => (
                 // eslint-disable-next-line @next/next/no-img-element
@@ -420,9 +420,9 @@ export default function ChambersDesign({ site, page = "home", basePath = "" }: P
       {/* confidential-enquiry CTA */}
       <section style={{ background: PARCH }}>
         <div className="mx-auto max-w-4xl px-8 py-24 text-center">
-          <Kicker>In confidence</Kicker>
-          <h2 style={{ ...serif, color: NAVY }} className="mt-5 text-4xl font-medium tracking-tight sm:text-5xl">Discuss your matter in confidence</h2>
-          <p className="mx-auto mt-5 max-w-lg text-[16px] leading-relaxed" style={{ color: MUTE }}>Arrange a free, no-obligation initial consultation. Every conversation is private and protected by legal privilege.</p>
+          <Kicker><span {...editCopy(content, "cta_kicker", "In confidence")} /></Kicker>
+          <h2 style={{ ...serif, color: NAVY }} className="mt-5 text-4xl font-medium tracking-tight sm:text-5xl" {...editCopy(content, "cta_heading", "Discuss your matter in confidence")} />
+          <p className="mx-auto mt-5 max-w-lg text-[16px] leading-relaxed" style={{ color: MUTE }} {...editCopy(content, "cta_sub", "Arrange a free, no-obligation initial consultation. Every conversation is private and protected by legal privilege.")} />
           <div className="mt-9 flex flex-col items-center justify-center gap-3 sm:flex-row sm:gap-4">
             {btnSolid(ctaLabel, cta)}
             {phone && btnOutlineDark(`Call ${phone}`, `tel:${phone}`)}

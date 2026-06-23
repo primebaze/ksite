@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { CulinaHeader } from "./CulinaHeader";
 import { TradesSocialIcon } from "./TradesMobileNav";
@@ -99,7 +99,7 @@ export default function CulinaDesign({ site, page = "home", basePath = "" }: Pre
           )}
         </div>
         <div>
-          <h4 style={display} className="text-[11px] font-semibold uppercase tracking-[0.24em] text-white">Studio</h4>
+          <h4 style={display} className="text-[11px] font-semibold uppercase tracking-[0.24em] text-white" {...editCopy(content, "footer_studio", "Studio")} />
           <ul className="mt-5 space-y-3 text-sm" style={{ color: "#bcc4bd" }}>
             {nav.map((l) => (
               <li key={l.label}><a href={l.href} className="transition hover:text-white">{l.label}</a></li>
@@ -107,7 +107,7 @@ export default function CulinaDesign({ site, page = "home", basePath = "" }: Pre
           </ul>
         </div>
         <div>
-          <h4 style={display} className="text-[11px] font-semibold uppercase tracking-[0.24em] text-white">Visit &amp; call</h4>
+          <h4 style={display} className="text-[11px] font-semibold uppercase tracking-[0.24em] text-white" {...editCopy(content, "footer_visit", "Visit & call")} />
           <div className="mt-5 space-y-3 text-sm" style={{ color: "#bcc4bd" }}>
             {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -115,7 +115,7 @@ export default function CulinaDesign({ site, page = "home", basePath = "" }: Pre
           </div>
         </div>
         <div>
-          <h4 style={display} className="text-[11px] font-semibold uppercase tracking-[0.24em] text-white">Showroom hours</h4>
+          <h4 style={display} className="text-[11px] font-semibold uppercase tracking-[0.24em] text-white" {...editCopy(content, "footer_hours", "Showroom hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm" style={{ color: "#bcc4bd" }}>
               {content.hours.map((h, i) => (
@@ -143,11 +143,11 @@ export default function CulinaDesign({ site, page = "home", basePath = "" }: Pre
   );
 
   // Subpage banner — forest ground with a brass kicker, marble headline.
-  const banner = (kicker: string, title: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string) => (
     <section style={{ background: FOREST }}>
       <div className="mx-auto max-w-7xl px-8 pb-16 pt-36 sm:pt-44">
-        <Kicker light>{kicker}</Kicker>
-        <h1 style={display} className="mt-5 max-w-3xl text-4xl font-medium leading-[1.05] tracking-[-0.01em] text-white sm:text-6xl">{title}</h1>
+        <Kicker light><span {...editCopy(content, kickerKey, kicker)} /></Kicker>
+        <h1 style={display} className="mt-5 max-w-3xl text-4xl font-medium leading-[1.05] tracking-[-0.01em] text-white sm:text-6xl" {...editCopy(content, titleKey, title)} />
       </div>
     </section>
   );
@@ -173,7 +173,7 @@ export default function CulinaDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "services") {
     return shell(
       <>
-        {banner("What we offer", "Kitchens, made to measure")}
+        {banner("What we offer", "svc_kicker", "Kitchens, made to measure", "svc_title")}
         <section className="mx-auto max-w-5xl px-8 py-20">
           {services.length > 0 ? (
             <>
@@ -193,12 +193,12 @@ export default function CulinaDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "about") {
     return shell(
       <>
-        {banner("The studio", "The heart of the home, beautifully made")}
+        {banner("The studio", "about_kicker", "The heart of the home, beautifully made", "about_title")}
         <section className="mx-auto max-w-3xl px-8 py-20">
           {content.about ? <p data-edit="content.about" className="text-[18px] leading-[1.9]" style={{ color: INK }}>{content.about}</p> : <p style={{ color: MUTE }}>Our story is coming soon.</p>}
           {content.accreditations && content.accreditations.length > 0 && (
             <>
-              <h3 style={{ ...display, color: FOREST }} className="mt-14 text-[11px] font-semibold uppercase tracking-[0.24em]">Guaranteed &amp; accredited</h3>
+              <h3 style={{ ...display, color: FOREST }} className="mt-14 text-[11px] font-semibold uppercase tracking-[0.24em]" {...editCopy(content, "about_accred_heading", "Guaranteed & accredited")} />
               <div className="mt-5 flex flex-wrap gap-3">
                 {content.accreditations.map((a) => (
                   <span key={a} className="rounded-full border px-4 py-2 text-[11px] font-semibold uppercase tracking-[0.14em]" style={{ borderColor: `${BRASS}80`, color: INK }}>{a}</span>
@@ -208,7 +208,7 @@ export default function CulinaDesign({ site, page = "home", basePath = "" }: Pre
           )}
           {content.service_areas && content.service_areas.length > 0 && (
             <>
-              <h3 style={{ ...display, color: FOREST }} className="mt-14 text-[11px] font-semibold uppercase tracking-[0.24em]">Areas we cover</h3>
+              <h3 style={{ ...display, color: FOREST }} className="mt-14 text-[11px] font-semibold uppercase tracking-[0.24em]" {...editCopy(content, "about_areas_heading", "Areas we cover")} />
               <p className="mt-4 text-[15px] leading-relaxed" style={{ color: MUTE }}>{content.service_areas.join(" · ")}</p>
             </>
           )}
@@ -222,13 +222,11 @@ export default function CulinaDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "contact") {
     return shell(
       <>
-        {banner("Let's begin", "Request a quote")}
+        {banner("Let's begin", "contact_kicker", "Request a quote", "contact_title")}
         <section className="mx-auto grid max-w-7xl gap-12 px-8 py-20 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={{ ...display, color: FOREST }} className="text-2xl font-medium tracking-[-0.01em] sm:text-3xl">Book a free design consultation</h2>
-            <p className="mt-4 max-w-md text-[15px] leading-relaxed" style={{ color: MUTE }}>
-              Tell us about your space and how you cook. We&apos;ll arrange a visit, take measurements and prepare a no-obligation design and quote.
-            </p>
+            <h2 style={{ ...display, color: FOREST }} className="text-2xl font-medium tracking-[-0.01em] sm:text-3xl" {...editCopy(content, "contact_heading", "Book a free design consultation")} />
+            <p className="mt-4 max-w-md text-[15px] leading-relaxed" style={{ color: MUTE }} {...editCopy(content, "contact_blurb", "Tell us about your space and how you cook. We'll arrange a visit, take measurements and prepare a no-obligation design and quote.")} />
             <div className="mt-8 space-y-4 text-[15px] leading-relaxed" style={{ color: INK }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-[var(--accent)]" style={{ color: CLAY }}>{content.phone}</a>}
@@ -267,7 +265,7 @@ export default function CulinaDesign({ site, page = "home", basePath = "" }: Pre
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Recent kitchens", "Our work")}
+        {banner("Recent kitchens", "work_kicker", "Our work", "work_title")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-7xl px-8 py-16">
             <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -317,11 +315,11 @@ export default function CulinaDesign({ site, page = "home", basePath = "" }: Pre
             {gallery.length > 0 && btnOutlineLight("View our kitchens", href("gallery"))}
           </div>
           <div className="mt-12 flex flex-wrap gap-x-8 gap-y-2 text-[12px] font-medium uppercase tracking-[0.18em] text-white/70">
-            <span>Free design consultation</span>
+            <span {...editCopy(content, "hero_pill_1", "Free design consultation")} />
             <span style={{ color: BRASS }}>·</span>
-            <span>Made-to-measure</span>
+            <span {...editCopy(content, "hero_pill_2", "Made-to-measure")} />
             <span style={{ color: BRASS }}>·</span>
-            <span>Supplied &amp; fitted</span>
+            <span {...editCopy(content, "hero_pill_3", "Supplied & fitted")} />
           </div>
         </div>
       </section>
@@ -355,10 +353,10 @@ export default function CulinaDesign({ site, page = "home", basePath = "" }: Pre
             <span className="pointer-events-none absolute -right-3 -top-3 h-20 w-20 rounded-tr-[1.5rem]" style={{ borderTop: `2px solid ${BRASS}`, borderRight: `2px solid ${BRASS}` }} />
           </div>
           <div>
-            <Kicker>The studio</Kicker>
-            <h2 style={{ ...display, color: FOREST }} className="mt-5 text-4xl font-medium leading-[1.08] tracking-[-0.015em] sm:text-5xl">Designed to be lived in</h2>
+            <Kicker><span {...editCopy(content, "home_about_kicker", "The studio")} /></Kicker>
+            <h2 style={{ ...display, color: FOREST }} className="mt-5 text-4xl font-medium leading-[1.08] tracking-[-0.015em] sm:text-5xl" {...editCopy(content, "home_about_heading", "Designed to be lived in")} />
             <p data-edit="content.about" className="mt-6 text-[17px] leading-[1.9]" style={{ color: INK }}>{content.about}</p>
-            <a href={href("about")} className="mt-7 inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-[0.2em]" style={{ color: BRASS }}>More about the studio →</a>
+            <a href={href("about")} className="mt-7 inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-[0.2em]" style={{ color: BRASS }} {...editCopy(content, "home_about_link", "More about the studio →")} />
           </div>
         </section>
       )}
@@ -366,8 +364,8 @@ export default function CulinaDesign({ site, page = "home", basePath = "" }: Pre
       {/* your kitchen journey — forest band, 4-step timeline */}
       <section style={{ background: FOREST }}>
         <div className="mx-auto max-w-7xl px-8 py-24">
-          <Kicker light>Your kitchen journey</Kicker>
-          <h2 style={display} className="mt-5 max-w-2xl text-4xl font-medium leading-[1.08] tracking-[-0.015em] text-white sm:text-5xl">From first sketch to the heart of the home</h2>
+          <Kicker light><span {...editCopy(content, "home_journey_kicker", "Your kitchen journey")} /></Kicker>
+          <h2 style={display} className="mt-5 max-w-2xl text-4xl font-medium leading-[1.08] tracking-[-0.015em] text-white sm:text-5xl" {...editCopy(content, "home_journey_heading", "From first sketch to the heart of the home")} />
           <div className="mt-14 grid gap-px sm:grid-cols-2 lg:grid-cols-4" style={{ background: "#ffffff14" }}>
             {journey.map((s) => (
               <div key={s.k} className="px-6 py-8" style={{ background: FOREST }}>
@@ -383,8 +381,8 @@ export default function CulinaDesign({ site, page = "home", basePath = "" }: Pre
       {/* what we offer — clean divider-row services list */}
       {services.length > 0 && (
         <section className="mx-auto max-w-5xl px-8 py-24">
-          <Kicker>What we offer</Kicker>
-          <h2 style={{ ...display, color: FOREST }} className="mt-5 text-4xl font-medium tracking-[-0.015em] sm:text-5xl">Our kitchens</h2>
+          <Kicker><span {...editCopy(content, "home_offer_kicker", "What we offer")} /></Kicker>
+          <h2 style={{ ...display, color: FOREST }} className="mt-5 text-4xl font-medium tracking-[-0.015em] sm:text-5xl" {...editCopy(content, "home_offer_heading", "Our kitchens")} />
           <div className="mt-12">{serviceList(services.slice(0, 6))}</div>
           <div className="mt-12">{btnOutlineDark("View all kitchens", href("services"))}</div>
         </section>
@@ -396,10 +394,10 @@ export default function CulinaDesign({ site, page = "home", basePath = "" }: Pre
           <div className="mx-auto max-w-7xl px-8 py-24">
             <div className="flex flex-wrap items-end justify-between gap-4">
               <div>
-                <Kicker>Recent kitchens</Kicker>
-                <h2 style={{ ...display, color: FOREST }} className="mt-5 text-4xl font-medium tracking-[-0.015em] sm:text-5xl">Our work</h2>
+                <Kicker><span {...editCopy(content, "home_work_kicker", "Recent kitchens")} /></Kicker>
+                <h2 style={{ ...display, color: FOREST }} className="mt-5 text-4xl font-medium tracking-[-0.015em] sm:text-5xl" {...editCopy(content, "home_work_heading", "Our work")} />
               </div>
-              <a href={href("gallery")} className="text-[12px] font-semibold uppercase tracking-[0.2em]" style={{ color: BRASS }}>See the portfolio →</a>
+              <a href={href("gallery")} className="text-[12px] font-semibold uppercase tracking-[0.2em]" style={{ color: BRASS }} {...editCopy(content, "home_work_link", "See the portfolio →")} />
             </div>
             <div className="mt-12 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
               {gallery.slice(0, 3).map((g) => (
@@ -419,15 +417,15 @@ export default function CulinaDesign({ site, page = "home", basePath = "" }: Pre
         <div className="mx-auto max-w-7xl px-8 py-20">
           <div className="grid gap-12 lg:grid-cols-3">
             <div className="rounded-2xl p-7" style={{ background: "#ffffff0a", border: "1px solid #ffffff14" }}>
-              <h3 style={{ ...display, color: "#fff" }} className="text-lg font-medium tracking-[-0.01em]">Finance available</h3>
-              <p className="mt-3 text-sm leading-relaxed" style={{ color: "#bcc4bd" }}>Spread the cost of your dream kitchen with flexible, interest-free finance options.</p>
+              <h3 style={{ ...display, color: "#fff" }} className="text-lg font-medium tracking-[-0.01em]" {...editCopy(content, "home_finance_heading", "Finance available")} />
+              <p className="mt-3 text-sm leading-relaxed" style={{ color: "#bcc4bd" }} {...editCopy(content, "home_finance_body", "Spread the cost of your dream kitchen with flexible, interest-free finance options.")} />
             </div>
             <div className="rounded-2xl p-7" style={{ background: "#ffffff0a", border: "1px solid #ffffff14" }}>
-              <h3 style={{ ...display, color: "#fff" }} className="text-lg font-medium tracking-[-0.01em]">Our guarantee</h3>
-              <p className="mt-3 text-sm leading-relaxed" style={{ color: "#bcc4bd" }}>Designed, supplied and fitted by us — and backed by a workmanship guarantee.</p>
+              <h3 style={{ ...display, color: "#fff" }} className="text-lg font-medium tracking-[-0.01em]" {...editCopy(content, "home_guarantee_heading", "Our guarantee")} />
+              <p className="mt-3 text-sm leading-relaxed" style={{ color: "#bcc4bd" }} {...editCopy(content, "home_guarantee_body", "Designed, supplied and fitted by us — and backed by a workmanship guarantee.")} />
             </div>
             <div className="rounded-2xl p-7" style={{ background: "#ffffff0a", border: "1px solid #ffffff14" }}>
-              <h3 style={{ ...display, color: "#fff" }} className="text-lg font-medium tracking-[-0.01em]">Areas we cover</h3>
+              <h3 style={{ ...display, color: "#fff" }} className="text-lg font-medium tracking-[-0.01em]" {...editCopy(content, "home_areas_heading", "Areas we cover")} />
               <p className="mt-3 text-sm leading-relaxed" style={{ color: "#bcc4bd" }}>
                 {content.service_areas && content.service_areas.length > 0 ? content.service_areas.join(" · ") : "Get in touch to see if we cover your area."}
               </p>
@@ -440,8 +438,8 @@ export default function CulinaDesign({ site, page = "home", basePath = "" }: Pre
       <section style={{ background: STONE }}>
         <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-7 px-8 py-20 sm:flex-row sm:items-center" style={{ color: FOREST }}>
           <div>
-            <h2 style={display} className="text-3xl font-medium leading-[1.08] tracking-[-0.015em] sm:text-4xl">Let&apos;s design your kitchen.</h2>
-            <p className="mt-3 text-sm" style={{ color: "#5d6a62" }}>Free, no-obligation design consultation and quote.</p>
+            <h2 style={display} className="text-3xl font-medium leading-[1.08] tracking-[-0.015em] sm:text-4xl" {...editCopy(content, "cta_heading", "Let's design your kitchen.")} />
+            <p className="mt-3 text-sm" style={{ color: "#5d6a62" }} {...editCopy(content, "cta_sub", "Free, no-obligation design consultation and quote.")} />
           </div>
           <div className="flex flex-col gap-3 sm:flex-row sm:gap-4">
             {btnBrass(ctaLabel, cta)}

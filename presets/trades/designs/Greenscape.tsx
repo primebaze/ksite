@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { GreenscapeHeader } from "./GreenscapeHeader";
 import { TradesSocialIcon } from "./TradesMobileNav";
@@ -113,7 +113,7 @@ export default function GreenscapeDesign({ site, page = "home", basePath = "" }:
           )}
         </div>
         <div>
-          <h4 style={{ ...display, color: GRASS }} className="text-xs font-extrabold uppercase tracking-[0.2em]">Explore</h4>
+          <h4 style={{ ...display, color: GRASS }} className="text-xs font-extrabold uppercase tracking-[0.2em]" {...editCopy(content, "footer_explore", "Explore")} />
           <ul className="mt-5 space-y-3 text-sm text-white/75">
             {nav.map((l) => (
               <li key={l.label}><a href={l.href} className="transition hover:text-white">{l.label}</a></li>
@@ -121,7 +121,7 @@ export default function GreenscapeDesign({ site, page = "home", basePath = "" }:
           </ul>
         </div>
         <div>
-          <h4 style={{ ...display, color: GRASS }} className="text-xs font-extrabold uppercase tracking-[0.2em]">Get in touch</h4>
+          <h4 style={{ ...display, color: GRASS }} className="text-xs font-extrabold uppercase tracking-[0.2em]" {...editCopy(content, "footer_contact", "Get in touch")} />
           <div className="mt-5 space-y-3 text-sm text-white/75">
             {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -129,7 +129,7 @@ export default function GreenscapeDesign({ site, page = "home", basePath = "" }:
           </div>
         </div>
         <div>
-          <h4 style={{ ...display, color: GRASS }} className="text-xs font-extrabold uppercase tracking-[0.2em]">Visiting hours</h4>
+          <h4 style={{ ...display, color: GRASS }} className="text-xs font-extrabold uppercase tracking-[0.2em]" {...editCopy(content, "footer_hours", "Visiting hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm text-white/75">
               {content.hours.map((h, i) => (
@@ -154,12 +154,12 @@ export default function GreenscapeDesign({ site, page = "home", basePath = "" }:
     </div>
   );
 
-  const banner = (kicker: string, title: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string) => (
     <section style={{ background: GARDEN }} className="relative overflow-hidden">
       <div className="pointer-events-none absolute -right-16 -top-10 h-48 w-48 opacity-15" style={{ color: GRASS }}><LeafMark color={GRASS} size={192} /></div>
       <div className="relative mx-auto max-w-7xl px-8 pb-14 pt-32 sm:pt-40">
-        <Kicker light>{kicker}</Kicker>
-        <h1 style={display} className="mt-4 text-4xl font-extrabold leading-[1.0] tracking-tight text-white sm:text-6xl">{title}</h1>
+        <Kicker light><span {...editCopy(content, kickerKey, kicker)} /></Kicker>
+        <h1 style={display} className="mt-4 text-4xl font-extrabold leading-[1.0] tracking-tight text-white sm:text-6xl" {...editCopy(content, titleKey, title)} />
       </div>
       <div className="h-2 w-full" style={{ background: lawnStripes() }} />
     </section>
@@ -187,7 +187,7 @@ export default function GreenscapeDesign({ site, page = "home", basePath = "" }:
   if (page === "services") {
     return shell(
       <>
-        {banner("What we do", "Garden services")}
+        {banner("What we do", "svc_kicker", "Garden services", "svc_title")}
         <section className="mx-auto max-w-4xl px-8 py-20">
           <p className="max-w-2xl text-[17px] leading-relaxed" style={{ color: INK }}>
             From a weekly lawn cut to a full seasonal tidy-up — regular rounds or one-off jobs, all done with care and cleared away after.
@@ -203,12 +203,12 @@ export default function GreenscapeDesign({ site, page = "home", basePath = "" }:
   if (page === "about") {
     return shell(
       <>
-        {banner("Who we are", "Rooted in good work")}
+        {banner("Who we are", "about_kicker", "Rooted in good work", "about_title")}
         <section className="mx-auto max-w-3xl px-8 py-20">
           {content.about ? <p data-edit="content.about" className="text-[17px] leading-[1.9]" style={{ color: INK }}>{content.about}</p> : <p style={{ color: INK }}>Our story is coming soon.</p>}
           {content.accreditations && content.accreditations.length > 0 && (
             <>
-              <h3 style={{ ...display, color: GARDEN }} className="mt-12 text-xs font-extrabold uppercase tracking-[0.2em]">Insured &amp; accredited</h3>
+              <h3 style={{ ...display, color: GARDEN }} className="mt-12 text-xs font-extrabold uppercase tracking-[0.2em]" {...editCopy(content, "about_accred_heading", "Insured & accredited")} />
               <div className="mt-5 flex flex-wrap gap-3">
                 {content.accreditations.map((a) => (
                   <span key={a} className="rounded-full border-2 px-4 py-2 text-[11px] font-bold uppercase tracking-[0.12em]" style={{ borderColor: GRASS, color: GARDEN }}>{a}</span>
@@ -218,7 +218,7 @@ export default function GreenscapeDesign({ site, page = "home", basePath = "" }:
           )}
           {content.service_areas && content.service_areas.length > 0 && (
             <>
-              <h3 style={{ ...display, color: GARDEN }} className="mt-12 text-xs font-extrabold uppercase tracking-[0.2em]">Areas we cover</h3>
+              <h3 style={{ ...display, color: GARDEN }} className="mt-12 text-xs font-extrabold uppercase tracking-[0.2em]" {...editCopy(content, "about_areas_heading", "Areas we cover")} />
               <p className="mt-4 text-[15px] leading-relaxed" style={{ color: INK }}>{content.service_areas.join(" · ")}</p>
             </>
           )}
@@ -232,11 +232,11 @@ export default function GreenscapeDesign({ site, page = "home", basePath = "" }:
   if (page === "contact") {
     return shell(
       <>
-        {banner("Get a price", "Request a quote")}
+        {banner("Get a price", "contact_kicker", "Request a quote", "contact_title")}
         <section className="mx-auto grid max-w-7xl gap-12 px-8 py-20 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={{ ...display, color: GARDEN }} className="text-2xl font-extrabold tracking-tight">Tell us about your garden</h2>
-            <p className="mt-3 max-w-md text-[15px] leading-relaxed" style={{ color: INK }}>Regular visits or a one-off — send the details and we&apos;ll come back with a free, no-obligation price.</p>
+            <h2 style={{ ...display, color: GARDEN }} className="text-2xl font-extrabold tracking-tight" {...editCopy(content, "contact_heading", "Tell us about your garden")} />
+            <p className="mt-3 max-w-md text-[15px] leading-relaxed" style={{ color: INK }} {...editCopy(content, "contact_blurb", "Regular visits or a one-off — send the details and we'll come back with a free, no-obligation price.")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: INK }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block font-semibold transition hover:text-[#234B30]">{content.phone}</a>}
@@ -275,7 +275,7 @@ export default function GreenscapeDesign({ site, page = "home", basePath = "" }:
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Before & after", "Gardens we keep")}
+        {banner("Before & after", "gallery_kicker", "Gardens we keep", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-7xl px-2 py-12 sm:px-4">
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
@@ -353,8 +353,8 @@ export default function GreenscapeDesign({ site, page = "home", basePath = "" }:
             <span className="absolute -bottom-3 -left-3 grid h-16 w-16 place-items-center rounded-2xl shadow-lg" style={{ background: GRASS }}><LeafMark color={GARDEN} size={28} /></span>
           </div>
           <div>
-            <Kicker>Who we are</Kicker>
-            <h2 style={{ ...display, color: GARDEN }} className="mt-4 text-4xl font-extrabold leading-[1.02] tracking-tight sm:text-5xl">A friendly, reliable garden team</h2>
+            <Kicker><span {...editCopy(content, "home_about_kicker", "Who we are")} /></Kicker>
+            <h2 style={{ ...display, color: GARDEN }} className="mt-4 text-4xl font-extrabold leading-[1.02] tracking-tight sm:text-5xl" {...editCopy(content, "home_about_heading", "A friendly, reliable garden team")} />
             <p data-edit="content.about" className="mt-6 text-[16px] leading-[1.9]" style={{ color: INK }}>{content.about}</p>
             <a href={href("about")} className="mt-6 inline-flex items-center gap-2 text-[12px] font-extrabold uppercase tracking-[0.16em]" style={{ color: SOIL }}>More about us →</a>
           </div>
@@ -365,9 +365,9 @@ export default function GreenscapeDesign({ site, page = "home", basePath = "" }:
       {services.length > 0 && (
         <section style={{ background: PANEL, borderTop: `1px solid ${LINE}`, borderBottom: `1px solid ${LINE}` }}>
           <div className="mx-auto max-w-4xl px-8 py-24">
-            <Kicker>What we do</Kicker>
-            <h2 style={{ ...display, color: GARDEN }} className="mt-4 text-4xl font-extrabold tracking-tight sm:text-5xl">Garden services</h2>
-            <p className="mt-4 max-w-2xl text-[16px] leading-relaxed" style={{ color: INK }}>Mowing, hedges, planting, clearance and seasonal tidy-ups — booked as a regular round or a one-off.</p>
+            <Kicker><span {...editCopy(content, "home_services_kicker", "What we do")} /></Kicker>
+            <h2 style={{ ...display, color: GARDEN }} className="mt-4 text-4xl font-extrabold tracking-tight sm:text-5xl" {...editCopy(content, "home_services_heading", "Garden services")} />
+            <p className="mt-4 max-w-2xl text-[16px] leading-relaxed" style={{ color: INK }} {...editCopy(content, "home_services_blurb", "Mowing, hedges, planting, clearance and seasonal tidy-ups — booked as a regular round or a one-off.")} />
             <div className="mt-10">{servicesList}</div>
             <div className="mt-10">{btnGhost("See all services", href("services"))}</div>
           </div>
@@ -377,8 +377,8 @@ export default function GreenscapeDesign({ site, page = "home", basePath = "" }:
       {/* regular or one-off plan strip */}
       <section className="mx-auto max-w-7xl px-8 py-24">
         <div className="text-center">
-          <Kicker>Regular or one-off</Kicker>
-          <h2 style={{ ...display, color: GARDEN }} className="mx-auto mt-4 max-w-2xl text-4xl font-extrabold leading-[1.02] tracking-tight sm:text-5xl">However your garden needs us</h2>
+          <Kicker><span {...editCopy(content, "home_plans_kicker", "Regular or one-off")} /></Kicker>
+          <h2 style={{ ...display, color: GARDEN }} className="mx-auto mt-4 max-w-2xl text-4xl font-extrabold leading-[1.02] tracking-tight sm:text-5xl" {...editCopy(content, "home_plans_heading", "However your garden needs us")} />
         </div>
         <div className="mt-12 grid gap-6 md:grid-cols-3">
           {plans.map((p, i) => (
@@ -396,8 +396,8 @@ export default function GreenscapeDesign({ site, page = "home", basePath = "" }:
       {gallery.length > 0 && (
         <section style={{ background: SKY }}>
           <div className="mx-auto max-w-7xl px-8 py-24">
-            <Kicker>Before &amp; after</Kicker>
-            <h2 style={{ ...display, color: GARDEN }} className="mt-4 text-4xl font-extrabold tracking-tight sm:text-5xl">Gardens we keep</h2>
+            <Kicker><span {...editCopy(content, "home_work_kicker", "Before & after")} /></Kicker>
+            <h2 style={{ ...display, color: GARDEN }} className="mt-4 text-4xl font-extrabold tracking-tight sm:text-5xl" {...editCopy(content, "home_work_heading", "Gardens we keep")} />
             <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
               {gallery.slice(0, 4).map((g) => (
                 // eslint-disable-next-line @next/next/no-img-element
@@ -414,8 +414,8 @@ export default function GreenscapeDesign({ site, page = "home", basePath = "" }:
         <div className="h-2 w-full" style={{ background: lawnStripes() }} />
         <div className="relative mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 px-8 py-16 text-white sm:flex-row sm:items-center">
           <div>
-            <h2 style={display} className="text-3xl font-extrabold leading-[1.02] tracking-tight sm:text-4xl">Ready for a tidier garden?</h2>
-            <p className="mt-2 text-sm font-bold uppercase tracking-[0.12em] text-white/70">Free quotes · insured · regular or one-off.</p>
+            <h2 style={display} className="text-3xl font-extrabold leading-[1.02] tracking-tight sm:text-4xl" {...editCopy(content, "cta_heading", "Ready for a tidier garden?")} />
+            <p className="mt-2 text-sm font-bold uppercase tracking-[0.12em] text-white/70" {...editCopy(content, "cta_sub", "Free quotes · insured · regular or one-off.")} />
           </div>
           <a href={phone ? `tel:${phone}` : cta} className="rounded-full px-9 py-4 text-[12px] font-extrabold uppercase tracking-[0.14em] transition hover:brightness-105" style={{ background: GRASS, color: GARDEN }}>
             {phone ? `Call ${phone}` : ctaLabel}

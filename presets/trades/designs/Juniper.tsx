@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { JuniperHeader } from "./JuniperHeader";
 import { TradesSocialIcon } from "./TradesMobileNav";
@@ -54,7 +54,7 @@ export default function JuniperDesign({ site, page = "home", basePath = "" }: Pr
         <div>
           <a href={href("home")} className="block">
             <span data-edit="tenant.business_name" style={serif} className="text-2xl tracking-[0.04em] text-[#fbf6ee]">{name}</span>
-            <span className="mt-1 block text-[8px] uppercase tracking-[0.42em] text-white/40">Concept Shop</span>
+            <span className="mt-1 block text-[8px] uppercase tracking-[0.42em] text-white/40" {...editCopy(content, "footer_subtitle", "Concept Shop")} />
           </a>
           {content.tagline && <p data-edit="content.tagline" className="mt-5 max-w-xs text-sm leading-relaxed text-white/55">{content.tagline}</p>}
           {content.socials && content.socials.length > 0 && (
@@ -66,7 +66,7 @@ export default function JuniperDesign({ site, page = "home", basePath = "" }: Pr
           )}
         </div>
         <div>
-          <h4 className="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/40">Explore</h4>
+          <h4 className="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/40" {...editCopy(content, "footer_explore", "Explore")} />
           <ul className="mt-5 space-y-3 text-sm text-white/65">
             {nav.map((l) => (
               <li key={l.label}><a href={l.href} className="transition hover:text-white">{l.label}</a></li>
@@ -74,7 +74,7 @@ export default function JuniperDesign({ site, page = "home", basePath = "" }: Pr
           </ul>
         </div>
         <div>
-          <h4 className="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/40">Find us</h4>
+          <h4 className="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/40" {...editCopy(content, "footer_findus", "Find us")} />
           <div className="mt-5 space-y-3 text-sm text-white/65">
             {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -82,7 +82,7 @@ export default function JuniperDesign({ site, page = "home", basePath = "" }: Pr
           </div>
         </div>
         <div>
-          <h4 className="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/40">Opening times</h4>
+          <h4 className="text-[11px] font-semibold uppercase tracking-[0.22em] text-white/40" {...editCopy(content, "footer_hours", "Opening times")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm text-white/65">
               {content.hours.map((h, i) => (
@@ -107,12 +107,12 @@ export default function JuniperDesign({ site, page = "home", basePath = "" }: Pr
     </div>
   );
 
-  const banner = (kicker: string, title: string, blurb?: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string, blurb?: string, blurbKey?: string) => (
     <section style={{ background: PANEL, borderBottom: `1px solid ${LINE}` }}>
       <div className="mx-auto max-w-6xl px-6 py-16 text-center sm:py-20">
-        <Kicker>{kicker}</Kicker>
-        <h1 style={{ ...serif, color: COCOA }} className="mx-auto mt-4 max-w-3xl text-4xl leading-[1.06] tracking-tight sm:text-5xl">{title}</h1>
-        {blurb && <p className="mx-auto mt-5 max-w-xl text-[16px] leading-relaxed" style={{ color: TAUPE }}>{blurb}</p>}
+        <Kicker><span {...editCopy(content, kickerKey, kicker)} /></Kicker>
+        <h1 style={{ ...serif, color: COCOA }} className="mx-auto mt-4 max-w-3xl text-4xl leading-[1.06] tracking-tight sm:text-5xl" {...editCopy(content, titleKey, title)} />
+        {blurb && blurbKey && <p className="mx-auto mt-5 max-w-xl text-[16px] leading-relaxed" style={{ color: TAUPE }} {...editCopy(content, blurbKey, blurb)} />}
       </div>
     </section>
   );
@@ -121,7 +121,7 @@ export default function JuniperDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "services") {
     return shell(
       <>
-        {banner("In store", "What you'll find", "A carefully curated collection — drop in and discover something you'll love.")}
+        {banner("In store", "shop_kicker", "What you'll find", "shop_title", "A carefully curated collection — drop in and discover something you'll love.", "shop_blurb")}
         <section className="mx-auto max-w-4xl px-6 py-20">
           {services.length > 0 ? (
             <ul className="divide-y" style={{ borderColor: LINE }}>
@@ -148,7 +148,7 @@ export default function JuniperDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "about") {
     return shell(
       <>
-        {banner("Our story", "A little shop with a lot of heart")}
+        {banner("Our story", "about_kicker", "A little shop with a lot of heart", "about_title")}
         <section className="mx-auto max-w-3xl px-6 py-20">
           {content.about ? <p data-edit="content.about" className="text-[18px] leading-[1.95]" style={{ color: TAUPE }}>{content.about}</p> : <p style={{ color: TAUPE }}>Our story is coming soon.</p>}
           {content.accreditations && content.accreditations.length > 0 && (
@@ -160,7 +160,7 @@ export default function JuniperDesign({ site, page = "home", basePath = "" }: Pr
           )}
           {content.service_areas && content.service_areas.length > 0 && (
             <>
-              <h3 style={{ ...serif, color: COCOA }} className="mt-12 text-2xl">Find us around</h3>
+              <h3 style={{ ...serif, color: COCOA }} className="mt-12 text-2xl" {...editCopy(content, "about_areas_heading", "Find us around")} />
               <p className="mt-3 text-[15px] leading-relaxed" style={{ color: TAUPE }}>{content.service_areas.join(" · ")}</p>
             </>
           )}
@@ -176,10 +176,10 @@ export default function JuniperDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "contact") {
     return shell(
       <>
-        {banner("Come say hello", "Visit the shop", "Pop in to browse, or send us a message — we'd love to hear from you.")}
+        {banner("Come say hello", "contact_kicker", "Visit the shop", "contact_title", "Pop in to browse, or send us a message — we'd love to hear from you.", "contact_blurb")}
         <section className="mx-auto grid max-w-6xl gap-12 px-6 py-20 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={{ ...serif, color: COCOA }} className="text-2xl">Where to find us</h2>
+            <h2 style={{ ...serif, color: COCOA }} className="text-2xl" {...editCopy(content, "contact_heading", "Where to find us")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: TAUPE }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-[#bd5b3d]">{content.phone}</a>}
@@ -218,7 +218,7 @@ export default function JuniperDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Inside the shop", "A look around")}
+        {banner("Inside the shop", "gallery_kicker", "A look around", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-6xl px-6 py-16">
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
@@ -264,7 +264,7 @@ export default function JuniperDesign({ site, page = "home", basePath = "" }: Pr
       {/* about statement */}
       {content.about && (
         <section className="mx-auto max-w-3xl px-6 py-24 text-center">
-          <Kicker>Our story</Kicker>
+          <Kicker><span {...editCopy(content, "home_about_kicker", "Our story")} /></Kicker>
           <p data-edit="content.about" style={{ ...serif, color: COCOA }} className="mt-6 text-2xl leading-[1.5] sm:text-[2rem]">{content.about}</p>
           <a href={href("about")} className="mt-7 inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-[0.16em]" style={{ color: CLAY }}>Read more →</a>
         </section>
@@ -275,8 +275,8 @@ export default function JuniperDesign({ site, page = "home", basePath = "" }: Pr
         <section style={{ background: PANEL, borderTop: `1px solid ${LINE}`, borderBottom: `1px solid ${LINE}` }}>
           <div className="mx-auto max-w-4xl px-6 py-24">
             <div className="text-center">
-              <Kicker>In store</Kicker>
-              <h2 style={{ ...serif, color: COCOA }} className="mt-4 text-3xl tracking-tight sm:text-4xl">What you&apos;ll find</h2>
+              <Kicker><span {...editCopy(content, "home_shop_kicker", "In store")} /></Kicker>
+              <h2 style={{ ...serif, color: COCOA }} className="mt-4 text-3xl tracking-tight sm:text-4xl" {...editCopy(content, "home_shop_heading", "What you'll find")} />
             </div>
             <ul className="mt-12 divide-y" style={{ borderColor: LINE }}>
               {services.slice(0, 6).map((s) => (
@@ -300,8 +300,8 @@ export default function JuniperDesign({ site, page = "home", basePath = "" }: Pr
       {gallery.length > 0 && (
         <section className="mx-auto max-w-6xl px-6 py-24">
           <div className="text-center">
-            <Kicker>Inside the shop</Kicker>
-            <h2 style={{ ...serif, color: COCOA }} className="mt-4 text-3xl tracking-tight sm:text-4xl">A look around</h2>
+            <Kicker><span {...editCopy(content, "home_gallery_kicker", "Inside the shop")} /></Kicker>
+            <h2 style={{ ...serif, color: COCOA }} className="mt-4 text-3xl tracking-tight sm:text-4xl" {...editCopy(content, "home_gallery_heading", "A look around")} />
           </div>
           <div className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-4">
             {gallery.slice(0, 4).map((g) => (
@@ -318,8 +318,8 @@ export default function JuniperDesign({ site, page = "home", basePath = "" }: Pr
       {/* closing CTA */}
       <section style={{ background: CLAY }}>
         <div className="mx-auto max-w-2xl px-6 py-20 text-center text-white">
-          <h2 style={serif} className="text-3xl tracking-tight sm:text-4xl">Come and say hello</h2>
-          <p className="mx-auto mt-4 max-w-md text-[15px] leading-relaxed text-white/85">Whether you&apos;re after the perfect gift or just a browse, you&apos;re always welcome.</p>
+          <h2 style={serif} className="text-3xl tracking-tight sm:text-4xl" {...editCopy(content, "cta_heading", "Come and say hello")} />
+          <p className="mx-auto mt-4 max-w-md text-[15px] leading-relaxed text-white/85" {...editCopy(content, "cta_sub", "Whether you're after the perfect gift or just a browse, you're always welcome.")} />
           <a href={cta} className="mt-8 inline-flex rounded-full bg-white px-8 py-4 text-[12px] font-semibold uppercase tracking-[0.16em] transition hover:opacity-90" style={{ color: CLAY }}>{ctaLabel}</a>
         </div>
       </section>

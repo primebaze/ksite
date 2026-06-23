@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { CSSProperties, ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { KerbsideHeader } from "./KerbsideHeader";
 import { TradesSocialIcon } from "./TradesMobileNav";
@@ -133,7 +133,7 @@ export default function KerbsideDesign({ site, page = "home", basePath = "" }: P
           )}
         </div>
         <div>
-          <h4 style={display} className="text-xs font-bold uppercase tracking-[0.22em]" >Explore</h4>
+          <h4 style={display} className="text-xs font-bold uppercase tracking-[0.22em]" {...editCopy(content, "footer_explore", "Explore")} />
           <ul className="mt-5 space-y-3 text-sm" style={{ color: "#c9ccd0" }}>
             {nav.map((l) => (
               <li key={l.label}><a href={l.href} className="transition hover:text-white">{l.label}</a></li>
@@ -141,7 +141,7 @@ export default function KerbsideDesign({ site, page = "home", basePath = "" }: P
           </ul>
         </div>
         <div>
-          <h4 style={display} className="text-xs font-bold uppercase tracking-[0.22em]">Contact</h4>
+          <h4 style={display} className="text-xs font-bold uppercase tracking-[0.22em]" {...editCopy(content, "footer_contact", "Contact")} />
           <div className="mt-5 space-y-3 text-sm" style={{ color: "#c9ccd0" }}>
             {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -156,7 +156,7 @@ export default function KerbsideDesign({ site, page = "home", basePath = "" }: P
           )}
         </div>
         <div>
-          <h4 style={display} className="text-xs font-bold uppercase tracking-[0.22em]">Hours</h4>
+          <h4 style={display} className="text-xs font-bold uppercase tracking-[0.22em]" {...editCopy(content, "footer_hours", "Hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm" style={{ color: "#c9ccd0" }}>
               {content.hours.map((h, i) => (
@@ -182,12 +182,12 @@ export default function KerbsideDesign({ site, page = "home", basePath = "" }: P
   );
 
   // Dark asphalt page banner with a faint herringbone texture.
-  const banner = (kicker: string, title: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string) => (
     <section className="relative overflow-hidden" style={{ background: ASPHALT }}>
       <div aria-hidden className="absolute inset-0" style={herringbone(SAND, 0.07)} />
       <div className="relative mx-auto max-w-7xl px-8 pb-16 pt-32 sm:pt-40">
-        <Kicker on="dark">{kicker}</Kicker>
-        <h1 style={display} className="mt-4 text-4xl font-bold uppercase leading-[0.95] tracking-tight text-white sm:text-6xl">{title}</h1>
+        <Kicker on="dark"><span {...editCopy(content, kickerKey, kicker)} /></Kicker>
+        <h1 style={display} className="mt-4 text-4xl font-bold uppercase leading-[0.95] tracking-tight text-white sm:text-6xl" {...editCopy(content, titleKey, title)} />
       </div>
       <div className="h-1.5 w-full" style={{ background: `linear-gradient(90deg, ${SAND} 0%, ${SAND} 50%, ${TEAL} 50%, ${TEAL} 100%)` }} />
     </section>
@@ -197,7 +197,7 @@ export default function KerbsideDesign({ site, page = "home", basePath = "" }: P
   if (page === "services") {
     return shell(
       <>
-        {banner("What we lay", "Driveways & paving services")}
+        {banner("What we lay", "svc_kicker", "Driveways & paving services", "svc_title")}
         <section className="mx-auto max-w-4xl px-8 py-20">
           {services.length > 0 ? (
             <ul className="divide-y" style={{ borderColor: `${SLATE}33` }}>
@@ -225,12 +225,12 @@ export default function KerbsideDesign({ site, page = "home", basePath = "" }: P
   if (page === "about") {
     return shell(
       <>
-        {banner("Who we are", "Kerb appeal that lasts")}
+        {banner("Who we are", "about_kicker", "Kerb appeal that lasts", "about_title")}
         <section className="mx-auto max-w-3xl px-8 py-20">
           {content.about ? <p data-edit="content.about" className="text-[17px] leading-[1.9]" style={{ color: INK }}>{content.about}</p> : <p style={{ color: SLATE }}>Our story is coming soon.</p>}
           {content.accreditations && content.accreditations.length > 0 && (
             <>
-              <h3 style={{ ...display, color: ASPHALT }} className="mt-12 text-xs font-bold uppercase tracking-[0.22em]">Accredited &amp; insured</h3>
+              <h3 style={{ ...display, color: ASPHALT }} className="mt-12 text-xs font-bold uppercase tracking-[0.22em]" {...editCopy(content, "about_accred_heading", "Accredited & insured")} />
               <div className="mt-5 flex flex-wrap gap-3">
                 {content.accreditations.map((a) => (
                   <span key={a} className="rounded-full border px-4 py-2 text-[11px] font-bold uppercase tracking-[0.12em]" style={{ borderColor: SAND, color: ASPHALT, background: "#ffffff" }}>{a}</span>
@@ -240,7 +240,7 @@ export default function KerbsideDesign({ site, page = "home", basePath = "" }: P
           )}
           {content.service_areas && content.service_areas.length > 0 && (
             <>
-              <h3 style={{ ...display, color: ASPHALT }} className="mt-12 text-xs font-bold uppercase tracking-[0.22em]">Areas we cover</h3>
+              <h3 style={{ ...display, color: ASPHALT }} className="mt-12 text-xs font-bold uppercase tracking-[0.22em]" {...editCopy(content, "about_areas_heading", "Areas we cover")} />
               <p className="mt-4 text-[15px] leading-relaxed" style={{ color: SLATE }}>{content.service_areas.join(" · ")}</p>
             </>
           )}
@@ -254,10 +254,10 @@ export default function KerbsideDesign({ site, page = "home", basePath = "" }: P
   if (page === "contact") {
     return shell(
       <>
-        {banner("Free site survey", "Request a quote")}
+        {banner("Free site survey", "contact_kicker", "Request a quote", "contact_title")}
         <section className="mx-auto grid max-w-7xl gap-12 px-8 py-20 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={{ ...display, color: ASPHALT }} className="text-2xl font-bold uppercase tracking-tight">Tell us about your driveway</h2>
+            <h2 style={{ ...display, color: ASPHALT }} className="text-2xl font-bold uppercase tracking-tight" {...editCopy(content, "contact_form_heading", "Tell us about your driveway")} />
             <p className="mt-3 text-[15px] leading-relaxed" style={{ color: SLATE }}>Free, no-obligation quote with a site survey. We&apos;ll measure up, talk through finishes and give you a clear fixed price.</p>
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: INK }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
@@ -297,7 +297,7 @@ export default function KerbsideDesign({ site, page = "home", basePath = "" }: P
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Transformations", "Our work")}
+        {banner("Transformations", "gallery_kicker", "Our work", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-7xl px-2 py-12 sm:px-4">
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
@@ -394,10 +394,10 @@ export default function KerbsideDesign({ site, page = "home", basePath = "" }: P
             <span className="pointer-events-none absolute -bottom-3 -right-3 h-20 w-20 rounded-2xl" style={{ border: `3px solid ${TEAL}` }} />
           </div>
           <div>
-            <Kicker>Who we are</Kicker>
-            <h2 style={{ ...display, color: ASPHALT }} className="mt-4 text-4xl font-bold uppercase leading-[0.97] tracking-tight sm:text-5xl">Driveways laid to last</h2>
+            <Kicker><span {...editCopy(content, "home_about_kicker", "Who we are")} /></Kicker>
+            <h2 style={{ ...display, color: ASPHALT }} className="mt-4 text-4xl font-bold uppercase leading-[0.97] tracking-tight sm:text-5xl" {...editCopy(content, "home_about_heading", "Driveways laid to last")} />
             <p data-edit="content.about" className="mt-6 text-[16px] leading-[1.9]" style={{ color: SLATE }}>{content.about}</p>
-            <a href={href("about")} className="mt-6 inline-flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.18em]" style={{ color: TEAL }}>More about us →</a>
+            <a href={href("about")} className="mt-6 inline-flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.18em]" style={{ color: TEAL }} {...editCopy(content, "home_about_link", "More about us →")} />
           </div>
         </section>
       )}
@@ -407,8 +407,8 @@ export default function KerbsideDesign({ site, page = "home", basePath = "" }: P
       {/* what we lay — finishes chips on asphalt */}
       <section style={{ background: ASPHALT }} className="text-white">
         <div className="mx-auto max-w-7xl px-8 py-20">
-          <Kicker on="dark">What we lay</Kicker>
-          <h2 style={display} className="mt-4 text-3xl font-bold uppercase tracking-tight sm:text-4xl">Every surface, one team</h2>
+          <Kicker on="dark"><span {...editCopy(content, "home_lay_kicker", "What we lay")} /></Kicker>
+          <h2 style={display} className="mt-4 text-3xl font-bold uppercase tracking-tight sm:text-4xl" {...editCopy(content, "home_lay_heading", "Every surface, one team")} />
           <div className="mt-10 flex flex-wrap gap-3">
             {finishes.map((f) => (
               <span key={f} className="rounded-full px-5 py-3 text-[13px] font-semibold uppercase tracking-[0.08em]" style={{ background: ASPHALT_2, color: "#e7e9eb", border: `1px solid ${SAND}33` }}>{f}</span>
@@ -419,8 +419,8 @@ export default function KerbsideDesign({ site, page = "home", basePath = "" }: P
 
       {/* materials & finishes showcase */}
       <section className="mx-auto max-w-7xl px-8 py-24">
-        <Kicker>Materials & finishes</Kicker>
-        <h2 style={{ ...display, color: ASPHALT }} className="mt-4 text-3xl font-bold uppercase tracking-tight sm:text-4xl">Choose your finish</h2>
+        <Kicker><span {...editCopy(content, "home_materials_kicker", "Materials & finishes")} /></Kicker>
+        <h2 style={{ ...display, color: ASPHALT }} className="mt-4 text-3xl font-bold uppercase tracking-tight sm:text-4xl" {...editCopy(content, "home_materials_heading", "Choose your finish")} />
         <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {materials.map((m) => (
             <div key={m.name} className="overflow-hidden rounded-2xl bg-white shadow-[0_1px_3px_rgba(42,45,49,0.08)]" style={{ border: `1px solid ${SAND}40` }}>
@@ -440,8 +440,8 @@ export default function KerbsideDesign({ site, page = "home", basePath = "" }: P
       {services.length > 0 && (
         <section style={{ background: "#ffffff", borderTop: `1px solid ${SAND}40`, borderBottom: `1px solid ${SAND}40` }}>
           <div className="mx-auto max-w-4xl px-8 py-24">
-            <Kicker>Our services</Kicker>
-            <h2 style={{ ...display, color: ASPHALT }} className="mt-4 text-3xl font-bold uppercase tracking-tight sm:text-4xl">What we do</h2>
+            <Kicker><span {...editCopy(content, "home_services_kicker", "Our services")} /></Kicker>
+            <h2 style={{ ...display, color: ASPHALT }} className="mt-4 text-3xl font-bold uppercase tracking-tight sm:text-4xl" {...editCopy(content, "home_services_heading", "What we do")} />
             <ul className="mt-10 divide-y" style={{ borderColor: `${SLATE}33` }}>
               {services.slice(0, 6).map((s, i) => (
                 <li key={s.id} className="flex items-baseline justify-between gap-8 py-5">
@@ -464,8 +464,8 @@ export default function KerbsideDesign({ site, page = "home", basePath = "" }: P
       {/* before/after work strip */}
       {gallery.length > 0 && (
         <section className="mx-auto max-w-7xl px-8 py-24">
-          <Kicker>Transformations</Kicker>
-          <h2 style={{ ...display, color: ASPHALT }} className="mt-4 text-3xl font-bold uppercase tracking-tight sm:text-4xl">Before & after</h2>
+          <Kicker><span {...editCopy(content, "home_work_kicker", "Transformations")} /></Kicker>
+          <h2 style={{ ...display, color: ASPHALT }} className="mt-4 text-3xl font-bold uppercase tracking-tight sm:text-4xl" {...editCopy(content, "home_work_heading", "Before & after")} />
           <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
             {gallery.slice(0, 4).map((g) => (
               // eslint-disable-next-line @next/next/no-img-element
@@ -480,7 +480,7 @@ export default function KerbsideDesign({ site, page = "home", basePath = "" }: P
       {content.service_areas && content.service_areas.length > 0 && (
         <section style={{ background: SAND }}>
           <div className="mx-auto max-w-7xl px-8 py-12" style={{ color: ASPHALT }}>
-            <Kicker>Areas covered</Kicker>
+            <Kicker><span {...editCopy(content, "home_areas_kicker", "Areas covered")} /></Kicker>
             <div className="mt-5 flex flex-wrap gap-x-3 gap-y-2 text-[15px] font-semibold">
               {content.service_areas.map((a, i) => (
                 <span key={a} className="inline-flex items-center gap-3">
@@ -498,8 +498,8 @@ export default function KerbsideDesign({ site, page = "home", basePath = "" }: P
         <div aria-hidden className="absolute inset-0" style={herringbone(SAND, 0.08)} />
         <div className="relative mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 px-8 py-16 text-white sm:flex-row sm:items-center">
           <div>
-            <h2 style={display} className="text-3xl font-bold uppercase leading-[0.97] tracking-tight sm:text-4xl">Ready to transform your driveway?</h2>
-            <p className="mt-2 text-sm font-semibold uppercase tracking-[0.12em]" style={{ color: SAND }}>Free site survey & no-obligation quote.</p>
+            <h2 style={display} className="text-3xl font-bold uppercase leading-[0.97] tracking-tight sm:text-4xl" {...editCopy(content, "cta_heading", "Ready to transform your driveway?")} />
+            <p className="mt-2 text-sm font-semibold uppercase tracking-[0.12em]" style={{ color: SAND }} {...editCopy(content, "cta_sub", "Free site survey & no-obligation quote.")} />
           </div>
           <a href={cta} className="rounded-full px-9 py-4 text-[12px] font-bold uppercase tracking-[0.14em] text-white transition hover:brightness-110" style={{ background: TEAL }}>
             {ctaLabel}

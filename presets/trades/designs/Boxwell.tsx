@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { BoxwellHeader } from "./BoxwellHeader";
 import { TradesSocialIcon } from "./TradesMobileNav";
@@ -162,7 +162,7 @@ export default function BoxwellDesign({ site, page = "home", basePath = "" }: Pr
           )}
         </div>
         <div>
-          <h4 style={display} className="text-xs font-bold uppercase tracking-[0.18em]" >Company</h4>
+          <h4 style={display} className="text-xs font-bold uppercase tracking-[0.18em]" {...editCopy(content, "footer_company", "Company")} />
           <ul className="mt-5 space-y-3 text-sm text-white/65">
             {nav.map((l) => (
               <li key={l.label}><a href={l.href} className="transition hover:text-white">{l.label}</a></li>
@@ -170,7 +170,7 @@ export default function BoxwellDesign({ site, page = "home", basePath = "" }: Pr
           </ul>
         </div>
         <div>
-          <h4 style={display} className="text-xs font-bold uppercase tracking-[0.18em]">Get in touch</h4>
+          <h4 style={display} className="text-xs font-bold uppercase tracking-[0.18em]" {...editCopy(content, "footer_contact", "Get in touch")} />
           <div className="mt-5 space-y-3 text-sm text-white/65">
             {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -178,7 +178,7 @@ export default function BoxwellDesign({ site, page = "home", basePath = "" }: Pr
           </div>
         </div>
         <div>
-          <h4 style={display} className="text-xs font-bold uppercase tracking-[0.18em]">Hours</h4>
+          <h4 style={display} className="text-xs font-bold uppercase tracking-[0.18em]" {...editCopy(content, "footer_hours", "Hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm text-white/65">
               {content.hours.map((h, i) => (
@@ -205,12 +205,12 @@ export default function BoxwellDesign({ site, page = "home", basePath = "" }: Pr
 
   // Inner-page banner: a compact navy header band so sub-pages share the hero
   // register without repeating the full motif.
-  const banner = (kicker: string, title: string, lead?: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string, lead?: string, leadKey?: string) => (
     <section style={{ background: NAVY }} className="text-white">
       <div className="mx-auto max-w-7xl px-8 pb-16 pt-32 sm:pt-40">
-        <Kicker onDark>{kicker}</Kicker>
-        <h1 style={display} className="mt-4 max-w-3xl text-4xl font-bold leading-[1.02] tracking-tight sm:text-6xl">{title}</h1>
-        {lead && <p className="mt-5 max-w-xl text-[16px] leading-relaxed text-white/70">{lead}</p>}
+        <Kicker onDark><span {...editCopy(content, kickerKey, kicker)} /></Kicker>
+        <h1 style={display} className="mt-4 max-w-3xl text-4xl font-bold leading-[1.02] tracking-tight sm:text-6xl" {...editCopy(content, titleKey, title)} />
+        {lead && <p className="mt-5 max-w-xl text-[16px] leading-relaxed text-white/70" {...editCopy(content, leadKey ?? "", lead)} />}
       </div>
     </section>
   );
@@ -219,7 +219,7 @@ export default function BoxwellDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "services") {
     return shell(
       <>
-        {banner("What we do", "Removals & storage, sorted", "From a single sofa to a full five-bed house — pick what you need and we'll handle the rest.")}
+        {banner("What we do", "svc_kicker", "Removals & storage, sorted", "svc_title", "From a single sofa to a full five-bed house — pick what you need and we'll handle the rest.", "svc_lead")}
         <section className="mx-auto max-w-4xl px-8 py-20">
           {services.length > 0 ? (
             <ul className="divide-y" style={{ borderColor: "rgba(31,58,95,0.12)" }}>
@@ -244,12 +244,12 @@ export default function BoxwellDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "about") {
     return shell(
       <>
-        {banner("Who we are", "Safe hands on moving day")}
+        {banner("Who we are", "about_kicker", "Safe hands on moving day", "about_title")}
         <section className="mx-auto max-w-3xl px-8 py-20">
           {content.about ? <p data-edit="content.about" className="text-[17px] leading-[1.9]" style={{ color: SLATE }}>{content.about}</p> : <p style={{ color: SLATE }}>Our story is coming soon.</p>}
           {content.accreditations && content.accreditations.length > 0 && (
             <>
-              <h3 style={display} className="mt-12 text-xs font-bold uppercase tracking-[0.18em]" >Insured &amp; accredited</h3>
+              <h3 style={display} className="mt-12 text-xs font-bold uppercase tracking-[0.18em]" {...editCopy(content, "about_accredited_heading", "Insured & accredited")} />
               <div className="mt-5 flex flex-wrap gap-3">
                 {content.accreditations.map((a) => (
                   <span key={a} className="rounded-full border px-4 py-2 text-[12px] font-semibold tracking-[0.03em]" style={{ borderColor: KRAFT, color: INK }}>{a}</span>
@@ -259,7 +259,7 @@ export default function BoxwellDesign({ site, page = "home", basePath = "" }: Pr
           )}
           {content.service_areas && content.service_areas.length > 0 && (
             <>
-              <h3 style={display} className="mt-12 text-xs font-bold uppercase tracking-[0.18em]" >Areas we cover</h3>
+              <h3 style={display} className="mt-12 text-xs font-bold uppercase tracking-[0.18em]" {...editCopy(content, "about_areas_heading", "Areas we cover")} />
               <p className="mt-4 text-[15px] leading-relaxed" style={{ color: SLATE }}>{content.service_areas.join(" · ")}</p>
             </>
           )}
@@ -273,10 +273,10 @@ export default function BoxwellDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "contact") {
     return shell(
       <>
-        {banner("Get a price", "Let's plan your move")}
+        {banner("Get a price", "contact_kicker", "Let's plan your move", "contact_title")}
         <section className="mx-auto grid max-w-7xl gap-12 px-8 py-20 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={display} className="text-2xl font-bold tracking-tight">Speak to the team</h2>
+            <h2 style={display} className="text-2xl font-bold tracking-tight" {...editCopy(content, "contact_heading", "Speak to the team")} />
             <p className="mt-4 max-w-md text-[15px] leading-relaxed" style={{ color: SLATE }}>
               Tell us where you&apos;re moving from and to. We&apos;ll arrange a free home survey and come back with a fixed, no-obligation price.
             </p>
@@ -320,7 +320,7 @@ export default function BoxwellDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "gallery") {
     return shell(
       <>
-        {banner("On the road", "Recent moves")}
+        {banner("On the road", "gallery_kicker", "Recent moves", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-7xl px-3 py-12 sm:px-6">
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
@@ -352,9 +352,7 @@ export default function BoxwellDesign({ site, page = "home", basePath = "" }: Pr
         <div className="relative z-10 mx-auto grid max-w-7xl items-center gap-12 px-8 pb-20 pt-36 text-white sm:pt-44 lg:grid-cols-[1.05fr_0.95fr] lg:gap-10">
           <div>
             <Kicker onDark>{content.service_areas?.[0] ? `Removals across ${content.service_areas[0]}` : "Friendly local removals & storage"}</Kicker>
-            <h1 style={display} className="mt-5 max-w-2xl text-5xl font-bold leading-[0.98] tracking-tight [text-shadow:0_2px_24px_rgba(0,0,0,0.35)] sm:text-7xl">
-              Moving day, made easy
-            </h1>
+            <h1 style={display} className="mt-5 max-w-2xl text-5xl font-bold leading-[0.98] tracking-tight [text-shadow:0_2px_24px_rgba(0,0,0,0.35)] sm:text-7xl" {...editCopy(content, "hero_headline", "Moving day, made easy")} />
             <p data-edit="content.tagline" className="mt-5 max-w-lg text-[17px] leading-relaxed text-white/75">
               {content.tagline ?? "Careful packing, safe transport and a crew you can trust — so your move feels calm from the first box to the last."}
             </p>
@@ -402,9 +400,9 @@ export default function BoxwellDesign({ site, page = "home", basePath = "" }: Pr
       {/* how it works — survey → pack → move → unpack */}
       <section className="mx-auto max-w-7xl px-8 py-24">
         <div className="max-w-2xl">
-          <Kicker>How it works</Kicker>
-          <h2 style={{ ...display, color: INK }} className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl">Four calm steps</h2>
-          <p className="mt-4 text-[16px] leading-relaxed" style={{ color: SLATE }}>No surprises and no chaos — just a clear plan from your first call to the last box unpacked.</p>
+          <Kicker><span {...editCopy(content, "steps_kicker", "How it works")} /></Kicker>
+          <h2 style={{ ...display, color: INK }} className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl" {...editCopy(content, "steps_heading", "Four calm steps")} />
+          <p className="mt-4 text-[16px] leading-relaxed" style={{ color: SLATE }} {...editCopy(content, "steps_sub", "No surprises and no chaos — just a clear plan from your first call to the last box unpacked.")} />
         </div>
         <ol className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {steps.map((s) => (
@@ -423,10 +421,10 @@ export default function BoxwellDesign({ site, page = "home", basePath = "" }: Pr
         <section style={{ background: "#ffffff", borderTop: "1px solid rgba(31,58,95,0.08)", borderBottom: "1px solid rgba(31,58,95,0.08)" }}>
           <div className="mx-auto grid max-w-7xl items-center gap-12 px-8 py-24 lg:grid-cols-2 lg:gap-16">
             <div>
-              <Kicker>Who we are</Kicker>
-              <h2 style={{ ...display, color: INK }} className="mt-4 text-4xl font-bold leading-[1.02] tracking-tight sm:text-5xl">Careful people, the right kit</h2>
+              <Kicker><span {...editCopy(content, "about_kicker_home", "Who we are")} /></Kicker>
+              <h2 style={{ ...display, color: INK }} className="mt-4 text-4xl font-bold leading-[1.02] tracking-tight sm:text-5xl" {...editCopy(content, "about_heading_home", "Careful people, the right kit")} />
               <p data-edit="content.about" className="mt-6 text-[16px] leading-[1.9]" style={{ color: SLATE }}>{content.about}</p>
-              <a href={href("about")} className="mt-6 inline-flex items-center gap-2 text-[13px] font-bold tracking-[0.03em]" style={{ color: CORAL }}>More about us →</a>
+              <a href={href("about")} className="mt-6 inline-flex items-center gap-2 text-[13px] font-bold tracking-[0.03em]" style={{ color: CORAL }} {...editCopy(content, "about_link_home", "More about us →")} />
             </div>
             <div className="relative">
               {gallery[0] ? (
@@ -448,10 +446,10 @@ export default function BoxwellDesign({ site, page = "home", basePath = "" }: Pr
         <section className="mx-auto max-w-4xl px-8 py-24">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
-              <Kicker>What we do</Kicker>
-              <h2 style={{ ...display, color: INK }} className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl">Our services</h2>
+              <Kicker><span {...editCopy(content, "services_kicker", "What we do")} /></Kicker>
+              <h2 style={{ ...display, color: INK }} className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl" {...editCopy(content, "services_heading", "Our services")} />
             </div>
-            <a href={href("services")} className="text-[13px] font-bold tracking-[0.03em]" style={{ color: CORAL }}>View all →</a>
+            <a href={href("services")} className="text-[13px] font-bold tracking-[0.03em]" style={{ color: CORAL }} {...editCopy(content, "services_viewall", "View all →")} />
           </div>
           <ul className="mt-10 divide-y" style={{ borderColor: "rgba(31,58,95,0.12)" }}>
             {services.slice(0, 6).map((s) => (
@@ -470,8 +468,8 @@ export default function BoxwellDesign({ site, page = "home", basePath = "" }: Pr
       {/* trust strip — fully insured & careful */}
       <section style={{ background: NAVY }} className="text-white">
         <div className="mx-auto max-w-7xl px-8 py-20">
-          <Kicker onDark>Why book us</Kicker>
-          <h2 style={display} className="mt-4 text-3xl font-bold tracking-tight sm:text-4xl">Safe hands, start to finish</h2>
+          <Kicker onDark><span {...editCopy(content, "trust_kicker", "Why book us")} /></Kicker>
+          <h2 style={display} className="mt-4 text-3xl font-bold tracking-tight sm:text-4xl" {...editCopy(content, "trust_heading", "Safe hands, start to finish")} />
           <div className="mt-12 grid gap-6 sm:grid-cols-3">
             {trust.map((it) => (
               <div key={it.t} className="rounded-2xl p-7" style={{ background: NAVY_DEEP, border: "1px solid rgba(246,241,232,0.12)" }}>
@@ -496,8 +494,8 @@ export default function BoxwellDesign({ site, page = "home", basePath = "" }: Pr
       {/* work strip */}
       {gallery.length > 0 && (
         <section className="mx-auto max-w-7xl px-8 py-24">
-          <Kicker>On the road</Kicker>
-          <h2 style={{ ...display, color: INK }} className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl">Recent moves</h2>
+          <Kicker><span {...editCopy(content, "work_kicker", "On the road")} /></Kicker>
+          <h2 style={{ ...display, color: INK }} className="mt-4 text-4xl font-bold tracking-tight sm:text-5xl" {...editCopy(content, "work_heading", "Recent moves")} />
           <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
             {gallery.slice(0, 4).map((g) => (
               // eslint-disable-next-line @next/next/no-img-element
@@ -512,7 +510,7 @@ export default function BoxwellDesign({ site, page = "home", basePath = "" }: Pr
       {content.service_areas && content.service_areas.length > 0 && (
         <section style={{ background: "#ffffff", borderTop: "1px solid rgba(31,58,95,0.08)" }}>
           <div className="mx-auto max-w-7xl px-8 py-16">
-            <Kicker>Areas we cover</Kicker>
+            <Kicker><span {...editCopy(content, "areas_kicker", "Areas we cover")} /></Kicker>
             <div className="mt-6 flex flex-wrap gap-2.5">
               {content.service_areas.map((a) => (
                 <span key={a} className="rounded-full px-4 py-2 text-[13px] font-semibold tracking-[0.02em]" style={{ background: CREAM, border: `1px solid ${KRAFT}`, color: INK }}>{a}</span>
@@ -527,8 +525,8 @@ export default function BoxwellDesign({ site, page = "home", basePath = "" }: Pr
       <section style={{ background: CORAL }}>
         <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 px-8 py-16 text-white sm:flex-row sm:items-center">
           <div>
-            <h2 style={display} className="text-3xl font-bold leading-[1.02] tracking-tight sm:text-4xl">Ready to plan your move?</h2>
-            <p className="mt-2 text-[15px] font-semibold text-white/85">Free home survey · fixed price · no obligation.</p>
+            <h2 style={display} className="text-3xl font-bold leading-[1.02] tracking-tight sm:text-4xl" {...editCopy(content, "cta_heading", "Ready to plan your move?")} />
+            <p className="mt-2 text-[15px] font-semibold text-white/85" {...editCopy(content, "cta_sub", "Free home survey · fixed price · no obligation.")} />
           </div>
           <a href={phone ? `tel:${phone}` : cta} className="rounded-full px-9 py-4 text-[13px] font-bold tracking-[0.03em] text-white transition hover:brightness-110" style={{ background: NAVY }}>
             {phone ? `Call ${phone}` : ctaLabel}

@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { FacetHeader } from "./FacetHeader";
 import { TradesSocialIcon } from "./TradesMobileNav";
@@ -117,7 +117,7 @@ export default function FacetDesign({ site, page = "home", basePath = "" }: Pres
           )}
         </div>
         <div>
-          <h4 style={{ ...display, color: GOLD }} className="text-[11px] font-medium uppercase tracking-[0.26em]">Explore</h4>
+          <h4 style={{ ...display, color: GOLD }} className="text-[11px] font-medium uppercase tracking-[0.26em]" {...editCopy(content, "footer_explore", "Explore")} />
           <ul className="mt-5 space-y-3 text-sm" style={{ color: MUTE }}>
             {nav.map((l) => (
               <li key={l.label}><a href={l.href} className="transition hover:text-white">{l.label}</a></li>
@@ -125,7 +125,7 @@ export default function FacetDesign({ site, page = "home", basePath = "" }: Pres
           </ul>
         </div>
         <div>
-          <h4 style={{ ...display, color: GOLD }} className="text-[11px] font-medium uppercase tracking-[0.26em]">The atelier</h4>
+          <h4 style={{ ...display, color: GOLD }} className="text-[11px] font-medium uppercase tracking-[0.26em]" {...editCopy(content, "footer_atelier", "The atelier")} />
           <div className="mt-5 space-y-3 text-sm" style={{ color: MUTE }}>
             {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -133,7 +133,7 @@ export default function FacetDesign({ site, page = "home", basePath = "" }: Pres
           </div>
         </div>
         <div>
-          <h4 style={{ ...display, color: GOLD }} className="text-[11px] font-medium uppercase tracking-[0.26em]">By appointment</h4>
+          <h4 style={{ ...display, color: GOLD }} className="text-[11px] font-medium uppercase tracking-[0.26em]" {...editCopy(content, "footer_appointment", "By appointment")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm" style={{ color: MUTE }}>
               {content.hours.map((h, i) => (
@@ -158,11 +158,11 @@ export default function FacetDesign({ site, page = "home", basePath = "" }: Pres
     </div>
   );
 
-  const banner = (kicker: string, title: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string) => (
     <section style={{ background: INK, borderBottom: `1px solid ${GOLD}33` }}>
       <div className="mx-auto max-w-7xl px-8 pb-16 pt-36 text-center sm:pt-44">
-        <Kicker center>{kicker}</Kicker>
-        <h1 style={{ ...display, color: IVORY }} className="mt-5 text-4xl font-medium tracking-[0.02em] sm:text-6xl">{title}</h1>
+        <Kicker center><span {...editCopy(content, kickerKey, kicker)} /></Kicker>
+        <h1 style={{ ...display, color: IVORY }} className="mt-5 text-4xl font-medium tracking-[0.02em] sm:text-6xl" {...editCopy(content, titleKey, title)} />
       </div>
     </section>
   );
@@ -171,7 +171,7 @@ export default function FacetDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "services") {
     return shell(
       <>
-        {banner("The collections", "Pieces to treasure")}
+        {banner("The collections", "svc_kicker", "Pieces to treasure", "svc_title")}
         <section className="mx-auto max-w-7xl px-8 py-20">
           {pieces.length > 0 ? (
             <div className="divide-y" style={{ borderColor: HAIR }}>
@@ -197,12 +197,12 @@ export default function FacetDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "about") {
     return shell(
       <>
-        {banner("The house", "Our craft & heritage")}
+        {banner("The house", "about_kicker", "Our craft & heritage", "about_title")}
         <section className="mx-auto max-w-3xl px-8 py-20">
           {content.about ? <p data-edit="content.about" className="text-[17px] leading-[1.95]" style={{ color: PLAT }}>{content.about}</p> : <p style={{ color: MUTE }}>Our story is coming soon.</p>}
           {content.accreditations && content.accreditations.length > 0 && (
             <>
-              <h3 style={{ ...display, color: GOLD }} className="mt-12 text-[11px] font-medium uppercase tracking-[0.28em]">Hallmarks &amp; memberships</h3>
+              <h3 style={{ ...display, color: GOLD }} className="mt-12 text-[11px] font-medium uppercase tracking-[0.28em]" {...editCopy(content, "about_hallmarks_heading", "Hallmarks & memberships")} />
               <div className="mt-5 flex flex-wrap gap-3">
                 {content.accreditations.map((a) => (
                   <span key={a} className="border px-4 py-2 text-[11px] font-medium uppercase tracking-[0.16em]" style={{ borderColor: `${GOLD}55`, color: IVORY }}>{a}</span>
@@ -212,7 +212,7 @@ export default function FacetDesign({ site, page = "home", basePath = "" }: Pres
           )}
           {content.service_areas && content.service_areas.length > 0 && (
             <>
-              <h3 style={{ ...display, color: GOLD }} className="mt-12 text-[11px] font-medium uppercase tracking-[0.28em]">Serving</h3>
+              <h3 style={{ ...display, color: GOLD }} className="mt-12 text-[11px] font-medium uppercase tracking-[0.28em]" {...editCopy(content, "about_serving_heading", "Serving")} />
               <p className="mt-4 text-[15px] leading-relaxed" style={{ color: MUTE }}>{content.service_areas.join(" · ")}</p>
             </>
           )}
@@ -226,7 +226,7 @@ export default function FacetDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "gallery") {
     return shell(
       <>
-        {banner("The showcase", "A gallery of fine pieces")}
+        {banner("The showcase", "showcase_kicker", "A gallery of fine pieces", "showcase_title")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-7xl px-2 py-12 sm:px-4">
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
@@ -245,11 +245,11 @@ export default function FacetDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "contact") {
     return shell(
       <>
-        {banner("By appointment", "Visit the atelier")}
+        {banner("By appointment", "contact_kicker", "Visit the atelier", "contact_title")}
         <section className="mx-auto grid max-w-7xl gap-12 px-8 py-20 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={{ ...display, color: IVORY }} className="text-2xl font-medium tracking-[0.02em]">Private appointments</h2>
-            <p className="mt-4 max-w-md text-[15px] leading-relaxed" style={{ color: MUTE }}>Sit with one of our goldsmiths over a glass of something to discuss engagement rings, bespoke commissions or a treasured repair.</p>
+            <h2 style={{ ...display, color: IVORY }} className="text-2xl font-medium tracking-[0.02em]" {...editCopy(content, "contact_heading", "Private appointments")} />
+            <p className="mt-4 max-w-md text-[15px] leading-relaxed" style={{ color: MUTE }} {...editCopy(content, "contact_blurb", "Sit with one of our goldsmiths over a glass of something to discuss engagement rings, bespoke commissions or a treasured repair.")} />
             <div className="mt-7 space-y-4 text-[15px] leading-relaxed" style={{ color: PLAT }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -320,7 +320,7 @@ export default function FacetDesign({ site, page = "home", basePath = "" }: Pres
           <h1 style={display} className="mt-6 max-w-3xl text-5xl font-medium leading-[1.05] tracking-[0.01em] [text-shadow:0_2px_30px_rgba(0,0,0,0.5)] sm:text-7xl">
             <span data-edit="content.tagline" className="block">{content.tagline ?? "Made to be treasured."}</span>
           </h1>
-          <p className="mt-6 max-w-md text-[15px] leading-relaxed" style={{ color: PLAT }}>Engagement rings, bespoke commissions and timeless pieces, crafted by hand in our atelier.</p>
+          <p className="mt-6 max-w-md text-[15px] leading-relaxed" style={{ color: PLAT }} {...editCopy(content, "hero_blurb", "Engagement rings, bespoke commissions and timeless pieces, crafted by hand in our atelier.")} />
           <p data-edit="tenant.business_name" className="mt-7 text-[11px] font-medium uppercase tracking-[0.34em]" style={{ color: `${IVORY}99` }}>{name}</p>
           <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:gap-4">
             {goldBtn(ctaLabel, cta)}
@@ -345,8 +345,8 @@ export default function FacetDesign({ site, page = "home", basePath = "" }: Pres
       {/* collections presentation */}
       <section className="mx-auto max-w-7xl px-8 py-24">
         <div className="text-center">
-          <Kicker center>The collections</Kicker>
-          <h2 style={{ ...display, color: IVORY }} className="mt-4 text-4xl font-medium tracking-[0.02em] sm:text-5xl">Explore the house</h2>
+          <Kicker center><span {...editCopy(content, "home_collections_kicker", "The collections")} /></Kicker>
+          <h2 style={{ ...display, color: IVORY }} className="mt-4 text-4xl font-medium tracking-[0.02em] sm:text-5xl" {...editCopy(content, "home_collections_heading", "Explore the house")} />
         </div>
         <div className="mt-12 grid grid-cols-2 gap-px sm:grid-cols-3" style={{ background: HAIR }}>
           {collectionLabels.slice(0, 6).map((c, i) => (
@@ -371,10 +371,10 @@ export default function FacetDesign({ site, page = "home", basePath = "" }: Pres
         <section style={{ background: INK, borderTop: `1px solid ${HAIR}`, borderBottom: `1px solid ${HAIR}` }}>
           <div className="mx-auto grid max-w-7xl items-center gap-12 px-8 py-24 lg:grid-cols-2 lg:gap-16">
             <div>
-              <Kicker>The house</Kicker>
-              <h2 style={{ ...display, color: IVORY }} className="mt-4 text-3xl font-medium leading-tight tracking-[0.02em] sm:text-4xl">Crafted at the bench, since the beginning</h2>
+              <Kicker><span {...editCopy(content, "home_house_kicker", "The house")} /></Kicker>
+              <h2 style={{ ...display, color: IVORY }} className="mt-4 text-3xl font-medium leading-tight tracking-[0.02em] sm:text-4xl" {...editCopy(content, "home_house_heading", "Crafted at the bench, since the beginning")} />
               <p data-edit="content.about" className="mt-6 text-[16px] leading-[1.95]" style={{ color: PLAT }}>{content.about}</p>
-              <a href={href("about")} className="mt-7 inline-flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.24em]" style={{ color: GOLD }}>Our craft &amp; heritage →</a>
+              <a href={href("about")} className="mt-7 inline-flex items-center gap-2 text-[11px] font-medium uppercase tracking-[0.24em]" style={{ color: GOLD }} {...editCopy(content, "home_house_link", "Our craft & heritage →")} />
             </div>
             <div className="relative">
               {gallery[0] ? (
@@ -393,8 +393,8 @@ export default function FacetDesign({ site, page = "home", basePath = "" }: Pres
       {/* bespoke commission process band */}
       <section className="mx-auto max-w-7xl px-8 py-24">
         <div className="text-center">
-          <Kicker center>Bespoke commissions</Kicker>
-          <h2 style={{ ...display, color: IVORY }} className="mt-4 text-4xl font-medium tracking-[0.02em] sm:text-5xl">From idea to heirloom</h2>
+          <Kicker center><span {...editCopy(content, "home_bespoke_kicker", "Bespoke commissions")} /></Kicker>
+          <h2 style={{ ...display, color: IVORY }} className="mt-4 text-4xl font-medium tracking-[0.02em] sm:text-5xl" {...editCopy(content, "home_bespoke_heading", "From idea to heirloom")} />
         </div>
         <div className="mt-14 grid gap-px sm:grid-cols-2 lg:grid-cols-4" style={{ background: HAIR }}>
           {process.map((p) => (
@@ -413,8 +413,8 @@ export default function FacetDesign({ site, page = "home", basePath = "" }: Pres
         <section style={{ background: INK, borderTop: `1px solid ${HAIR}` }}>
           <div className="mx-auto max-w-7xl px-8 py-24">
             <div className="text-center">
-              <Kicker center>The showcase</Kicker>
-              <h2 style={{ ...display, color: IVORY }} className="mt-4 text-4xl font-medium tracking-[0.02em] sm:text-5xl">Pieces in the light</h2>
+              <Kicker center><span {...editCopy(content, "home_showcase_kicker", "The showcase")} /></Kicker>
+              <h2 style={{ ...display, color: IVORY }} className="mt-4 text-4xl font-medium tracking-[0.02em] sm:text-5xl" {...editCopy(content, "home_showcase_heading", "Pieces in the light")} />
             </div>
             <div className="mt-12 grid grid-cols-2 gap-2 sm:grid-cols-4">
               {gallery.slice(0, 4).map((g) => (
@@ -431,8 +431,8 @@ export default function FacetDesign({ site, page = "home", basePath = "" }: Pres
       <section style={{ background: GOLD }}>
         <div className="mx-auto flex max-w-7xl flex-col items-center gap-6 px-8 py-20 text-center" style={{ color: INK }}>
           <Sparkle color={INK} />
-          <h2 style={display} className="max-w-2xl text-3xl font-medium tracking-[0.02em] sm:text-4xl">Book a private appointment</h2>
-          <p className="max-w-md text-sm leading-relaxed" style={{ color: "#0B0B0Dcc" }}>Let us help you find — or create — a piece made to be treasured for a lifetime.</p>
+          <h2 style={display} className="max-w-2xl text-3xl font-medium tracking-[0.02em] sm:text-4xl" {...editCopy(content, "cta_heading", "Book a private appointment")} />
+          <p className="max-w-md text-sm leading-relaxed" style={{ color: "#0B0B0Dcc" }} {...editCopy(content, "cta_blurb", "Let us help you find — or create — a piece made to be treasured for a lifetime.")} />
           <a href={cta} className="mt-2 inline-flex px-9 py-4 text-[11px] font-medium uppercase tracking-[0.22em] text-[#F4F1EA] transition hover:brightness-125" style={{ background: INK }}>
             {ctaLabel}
           </a>

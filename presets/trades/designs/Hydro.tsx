@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { HydroHeader } from "./HydroHeader";
 import { TradesSocialIcon } from "./TradesMobileNav";
@@ -132,7 +132,7 @@ export default function HydroDesign({ site, page = "home", basePath = "" }: Pres
           )}
         </div>
         <div>
-          <h4 style={display} className="text-xs font-extrabold uppercase tracking-[0.2em] text-white/50">Explore</h4>
+          <h4 style={display} className="text-xs font-extrabold uppercase tracking-[0.2em] text-white/50" {...editCopy(content, "footer_explore", "Explore")} />
           <ul className="mt-5 space-y-3 text-sm text-white/75">
             {nav.map((l) => (
               <li key={l.label}><a href={l.href} className="transition hover:text-white">{l.label}</a></li>
@@ -140,7 +140,7 @@ export default function HydroDesign({ site, page = "home", basePath = "" }: Pres
           </ul>
         </div>
         <div>
-          <h4 style={display} className="text-xs font-extrabold uppercase tracking-[0.2em] text-white/50">Find us</h4>
+          <h4 style={display} className="text-xs font-extrabold uppercase tracking-[0.2em] text-white/50" {...editCopy(content, "footer_findus", "Find us")} />
           <div className="mt-5 space-y-3 text-sm text-white/75">
             {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -148,7 +148,7 @@ export default function HydroDesign({ site, page = "home", basePath = "" }: Pres
           </div>
         </div>
         <div>
-          <h4 style={display} className="text-xs font-extrabold uppercase tracking-[0.2em] text-white/50">Open</h4>
+          <h4 style={display} className="text-xs font-extrabold uppercase tracking-[0.2em] text-white/50" {...editCopy(content, "footer_open", "Open")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm text-white/75">
               {content.hours.map((h, i) => (
@@ -174,14 +174,14 @@ export default function HydroDesign({ site, page = "home", basePath = "" }: Pres
   );
 
   // Bright splashy banner used on sub-pages (mirrors the home hero register).
-  const banner = (kicker: string, title: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string) => (
     <section className="relative isolate overflow-hidden" style={{ background: `linear-gradient(135deg, ${BLUE} 0%, ${AQUA} 100%)` }}>
       <Bubbles className="pointer-events-none absolute inset-x-0 bottom-0 h-24 w-full" />
       <Sparkle className="pointer-events-none absolute right-[12%] top-16 h-6 w-6 opacity-80" color={LEMON} />
       <Sparkle className="pointer-events-none absolute right-[28%] top-28 h-4 w-4 opacity-60" />
       <div className="relative mx-auto max-w-7xl px-8 pb-16 pt-32 text-white sm:pt-40">
-        <Pill>{kicker}</Pill>
-        <h1 style={display} className="mt-4 text-4xl font-extrabold leading-[0.98] tracking-tight sm:text-6xl">{title}</h1>
+        <Pill><span {...editCopy(content, kickerKey, kicker)} /></Pill>
+        <h1 style={display} className="mt-4 text-4xl font-extrabold leading-[0.98] tracking-tight sm:text-6xl" {...editCopy(content, titleKey, title)} />
       </div>
     </section>
   );
@@ -190,9 +190,9 @@ export default function HydroDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "services") {
     return shell(
       <>
-        {banner("Pick your wash", "The Wash Menu")}
+        {banner("Pick your wash", "svc_kicker", "The Wash Menu", "svc_title")}
         <section className="mx-auto max-w-4xl px-8 py-20">
-          <p className="text-[15px] leading-relaxed" style={{ color: MUTE }}>Mini, Full or Deluxe — every wash is done by hand with care. No appointment needed, just drive in.</p>
+          <p className="text-[15px] leading-relaxed" style={{ color: MUTE }} {...editCopy(content, "svc_blurb", "Mini, Full or Deluxe — every wash is done by hand with care. No appointment needed, just drive in.")} />
           {services.length > 0 ? (
             <ul className="mt-10 divide-y" style={{ borderColor: "#dceaf1" }}>
               {services.map((s) => (
@@ -216,12 +216,12 @@ export default function HydroDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "about") {
     return shell(
       <>
-        {banner("Hello there", "Your Friendly Local Wash")}
+        {banner("Hello there", "about_kicker", "Your Friendly Local Wash", "about_title")}
         <section className="mx-auto max-w-3xl px-8 py-20">
           {content.about ? <p data-edit="content.about" className="text-[17px] leading-[1.9]" style={{ color: MUTE }}>{content.about}</p> : <p style={{ color: MUTE }}>Our story is coming soon.</p>}
           {content.accreditations && content.accreditations.length > 0 && (
             <>
-              <h3 style={{ ...display, color: NAVY }} className="mt-12 text-xs font-extrabold uppercase tracking-[0.2em]">Trusted &amp; certified</h3>
+              <h3 style={{ ...display, color: NAVY }} className="mt-12 text-xs font-extrabold uppercase tracking-[0.2em]" {...editCopy(content, "about_accred_heading", "Trusted & certified")} />
               <div className="mt-5 flex flex-wrap gap-3">
                 {content.accreditations.map((a) => (
                   <span key={a} className="rounded-full px-4 py-2 text-[11px] font-bold uppercase tracking-[0.1em]" style={{ background: "#e7f4fa", color: BLUE }}>{a}</span>
@@ -231,7 +231,7 @@ export default function HydroDesign({ site, page = "home", basePath = "" }: Pres
           )}
           {content.service_areas && content.service_areas.length > 0 && (
             <>
-              <h3 style={{ ...display, color: NAVY }} className="mt-12 text-xs font-extrabold uppercase tracking-[0.2em]">Areas we cover</h3>
+              <h3 style={{ ...display, color: NAVY }} className="mt-12 text-xs font-extrabold uppercase tracking-[0.2em]" {...editCopy(content, "about_areas_heading", "Areas we cover")} />
               <p className="mt-4 text-[15px] leading-relaxed" style={{ color: MUTE }}>{content.service_areas.join(" · ")}</p>
             </>
           )}
@@ -245,10 +245,10 @@ export default function HydroDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "contact") {
     return shell(
       <>
-        {banner("Come on in", "Book Your Wash")}
+        {banner("Come on in", "contact_kicker", "Book Your Wash", "contact_title")}
         <section className="mx-auto grid max-w-7xl gap-12 px-8 py-20 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={{ ...display, color: NAVY }} className="text-2xl font-extrabold tracking-tight">Drive in or drop us a line</h2>
+            <h2 style={{ ...display, color: NAVY }} className="text-2xl font-extrabold tracking-tight" {...editCopy(content, "contact_heading", "Drive in or drop us a line")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: MUTE }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-[#1FA2E0]">{content.phone}</a>}
@@ -285,7 +285,7 @@ export default function HydroDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Shiny results", "Before & After")}
+        {banner("Shiny results", "gallery_kicker", "Before & After", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-7xl px-2 py-12 sm:px-4">
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
@@ -357,7 +357,7 @@ export default function HydroDesign({ site, page = "home", basePath = "" }: Pres
       <section className="mx-auto max-w-7xl px-8 py-24">
         <div className="text-center">
           <span className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-[12px] font-bold uppercase tracking-[0.16em]" style={{ background: "#e7f4fa", color: BLUE }}><Sparkle className="h-3.5 w-3.5" color={BLUE} /> Quick &amp; easy</span>
-          <h2 style={{ ...display, color: NAVY }} className="mx-auto mt-4 max-w-2xl text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl">Three splashes to a spotless car</h2>
+          <h2 style={{ ...display, color: NAVY }} className="mx-auto mt-4 max-w-2xl text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl" {...editCopy(content, "home_steps_heading", "Three splashes to a spotless car")} />
         </div>
         <div className="mt-14 grid gap-6 md:grid-cols-3">
           {steps.map((s, i) => (
@@ -376,8 +376,8 @@ export default function HydroDesign({ site, page = "home", basePath = "" }: Pres
           <div className="mx-auto max-w-4xl px-8 py-24">
             <div className="flex items-end justify-between gap-6">
               <div>
-                <span className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-[12px] font-bold uppercase tracking-[0.16em]" style={{ background: "#ffffff", color: BLUE }}>Pick your wash</span>
-                <h2 style={{ ...display, color: NAVY }} className="mt-4 text-4xl font-extrabold tracking-tight sm:text-5xl">The wash menu</h2>
+                <span className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-[12px] font-bold uppercase tracking-[0.16em]" style={{ background: "#ffffff", color: BLUE }} {...editCopy(content, "home_menu_kicker", "Pick your wash")} />
+                <h2 style={{ ...display, color: NAVY }} className="mt-4 text-4xl font-extrabold tracking-tight sm:text-5xl" {...editCopy(content, "home_menu_heading", "The wash menu")} />
               </div>
             </div>
             <ul className="mt-10 divide-y" style={{ borderColor: "#d4e8f1" }}>
@@ -411,8 +411,8 @@ export default function HydroDesign({ site, page = "home", basePath = "" }: Pres
             </span>
           </div>
           <div>
-            <span className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-[12px] font-bold uppercase tracking-[0.16em]" style={{ background: "#e7f4fa", color: BLUE }}>About us</span>
-            <h2 style={{ ...display, color: NAVY }} className="mt-4 text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl">A wash that&apos;s kind to your car &amp; the planet</h2>
+            <span className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-[12px] font-bold uppercase tracking-[0.16em]" style={{ background: "#e7f4fa", color: BLUE }} {...editCopy(content, "home_about_kicker", "About us")} />
+            <h2 style={{ ...display, color: NAVY }} className="mt-4 text-4xl font-extrabold leading-tight tracking-tight sm:text-5xl" {...editCopy(content, "home_about_heading", "A wash that's kind to your car & the planet")} />
             <p data-edit="content.about" className="mt-6 text-[16px] leading-[1.9]" style={{ color: MUTE }}>{content.about}</p>
             <a href={href("about")} className="mt-6 inline-flex items-center gap-2 text-[13px] font-extrabold uppercase tracking-[0.14em]" style={{ color: BLUE }}>More about us →</a>
           </div>
@@ -424,9 +424,9 @@ export default function HydroDesign({ site, page = "home", basePath = "" }: Pres
         <div className="relative overflow-hidden rounded-[32px] px-8 py-14 text-center sm:px-16" style={{ background: `linear-gradient(135deg, ${BLUE}, ${AQUA})` }}>
           <Sparkle className="pointer-events-none absolute left-[10%] top-8 h-6 w-6 opacity-80" color={LEMON} />
           <Sparkle className="pointer-events-none absolute right-[12%] bottom-8 h-5 w-5 opacity-70" />
-          <span className="inline-flex items-center gap-2 rounded-full bg-white/20 px-4 py-1.5 text-[12px] font-bold uppercase tracking-[0.16em] text-white backdrop-blur">Loyalty card</span>
-          <h2 style={display} className="mx-auto mt-4 max-w-2xl text-3xl font-extrabold leading-tight tracking-tight text-white sm:text-4xl">Every fifth wash is on us</h2>
-          <p className="mx-auto mt-3 max-w-xl text-white/90">Collect a stamp each visit. Great value washes, even better when they&apos;re free.</p>
+          <span className="inline-flex items-center gap-2 rounded-full bg-white/20 px-4 py-1.5 text-[12px] font-bold uppercase tracking-[0.16em] text-white backdrop-blur" {...editCopy(content, "home_loyalty_kicker", "Loyalty card")} />
+          <h2 style={display} className="mx-auto mt-4 max-w-2xl text-3xl font-extrabold leading-tight tracking-tight text-white sm:text-4xl" {...editCopy(content, "home_loyalty_heading", "Every fifth wash is on us")} />
+          <p className="mx-auto mt-3 max-w-xl text-white/90" {...editCopy(content, "home_loyalty_sub", "Collect a stamp each visit. Great value washes, even better when they're free.")} />
           <div className="mt-8 flex justify-center">{lemonBtn(ctaLabel, cta)}</div>
         </div>
       </section>
@@ -435,8 +435,8 @@ export default function HydroDesign({ site, page = "home", basePath = "" }: Pres
       {gallery.length > 0 && (
         <section className="mx-auto max-w-7xl px-8 pb-24">
           <div className="text-center">
-            <span className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-[12px] font-bold uppercase tracking-[0.16em]" style={{ background: "#e7f4fa", color: BLUE }}>Shiny results</span>
-            <h2 style={{ ...display, color: NAVY }} className="mt-4 text-4xl font-extrabold tracking-tight sm:text-5xl">Sparkling clean, every time</h2>
+            <span className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-[12px] font-bold uppercase tracking-[0.16em]" style={{ background: "#e7f4fa", color: BLUE }} {...editCopy(content, "home_gallery_kicker", "Shiny results")} />
+            <h2 style={{ ...display, color: NAVY }} className="mt-4 text-4xl font-extrabold tracking-tight sm:text-5xl" {...editCopy(content, "home_gallery_heading", "Sparkling clean, every time")} />
           </div>
           <div className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-4">
             {gallery.slice(0, 4).map((g) => (
@@ -452,7 +452,7 @@ export default function HydroDesign({ site, page = "home", basePath = "" }: Pres
       <section style={{ background: NAVY }}>
         <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-8 px-8 py-16 text-white lg:flex-row lg:items-center">
           <div>
-            <h2 style={display} className="text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl">Open 7 days — just drive in</h2>
+            <h2 style={display} className="text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl" {...editCopy(content, "home_hours_heading", "Open 7 days — just drive in")} />
             {content.hours && content.hours.length > 0 ? (
               <ul className="mt-6 grid max-w-md grid-cols-2 gap-x-10 gap-y-1.5 text-sm text-white/75">
                 {content.hours.map((h, i) => (

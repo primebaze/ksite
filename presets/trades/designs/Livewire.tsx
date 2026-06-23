@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { LivewireHeader } from "./LivewireHeader";
 import { TradesSocialIcon } from "./TradesMobileNav";
@@ -111,7 +111,7 @@ export default function LivewireDesign({ site, page = "home", basePath = "" }: P
           )}
         </div>
         <div>
-          <h4 style={display} className="text-xs font-extrabold uppercase tracking-[0.22em]">Company</h4>
+          <h4 style={display} className="text-xs font-extrabold uppercase tracking-[0.22em]" {...editCopy(content, "footer_company", "Company")} />
           <ul className="mt-5 space-y-3 text-sm" style={{ color: MUTE }}>
             {nav.map((l) => (
               <li key={l.label}><a href={l.href} className="transition hover:text-white">{l.label}</a></li>
@@ -119,7 +119,7 @@ export default function LivewireDesign({ site, page = "home", basePath = "" }: P
           </ul>
         </div>
         <div>
-          <h4 style={display} className="text-xs font-extrabold uppercase tracking-[0.22em]">Contact</h4>
+          <h4 style={display} className="text-xs font-extrabold uppercase tracking-[0.22em]" {...editCopy(content, "footer_contact", "Contact")} />
           <div className="mt-5 space-y-3 text-sm" style={{ color: MUTE }}>
             {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -127,7 +127,7 @@ export default function LivewireDesign({ site, page = "home", basePath = "" }: P
           </div>
         </div>
         <div>
-          <h4 style={display} className="text-xs font-extrabold uppercase tracking-[0.22em]">Hours</h4>
+          <h4 style={display} className="text-xs font-extrabold uppercase tracking-[0.22em]" {...editCopy(content, "footer_hours", "Hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm" style={{ color: MUTE }}>
               {content.hours.map((h, i) => (
@@ -152,12 +152,12 @@ export default function LivewireDesign({ site, page = "home", basePath = "" }: P
     </div>
   );
 
-  const banner = (kicker: string, title: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string) => (
     <section style={{ background: INK }} className="relative overflow-hidden">
       <div className="pointer-events-none absolute inset-0 opacity-[0.16]" style={{ backgroundImage: `linear-gradient(${YELLOW}22 1px, transparent 1px), linear-gradient(90deg, ${YELLOW}22 1px, transparent 1px)`, backgroundSize: "44px 44px" }} />
       <div className="relative mx-auto max-w-7xl px-8 pb-16 pt-32 sm:pt-40">
-        <Kicker on="light">{kicker}</Kicker>
-        <h1 style={display} className="mt-4 text-4xl font-extrabold uppercase leading-[0.95] tracking-tight text-white sm:text-6xl">{title}</h1>
+        <Kicker on="light"><span {...editCopy(content, kickerKey, kicker)} /></Kicker>
+        <h1 style={display} className="mt-4 text-4xl font-extrabold uppercase leading-[0.95] tracking-tight text-white sm:text-6xl" {...editCopy(content, titleKey, title)} />
         <div className="mt-6"><CircuitRule /></div>
       </div>
     </section>
@@ -185,7 +185,7 @@ export default function LivewireDesign({ site, page = "home", basePath = "" }: P
   if (page === "services") {
     return shell(
       <>
-        {banner("What we do", "Our Services")}
+        {banner("What we do", "svc_kicker", "Our Services", "svc_title")}
         <section className="mx-auto max-w-4xl px-8 py-20">
           {services.length > 0 ? serviceList(services) : <p style={{ color: MUTE2 }}>Services coming soon.</p>}
           <div className="mt-12">{btnDark(ctaLabel, cta)}</div>
@@ -198,12 +198,12 @@ export default function LivewireDesign({ site, page = "home", basePath = "" }: P
   if (page === "about") {
     return shell(
       <>
-        {banner("Who we are", "Wired For Trust")}
+        {banner("Who we are", "about_kicker", "Wired For Trust", "about_title")}
         <section className="mx-auto max-w-3xl px-8 py-20">
           {content.about ? <p data-edit="content.about" className="text-[17px] leading-[1.9]" style={{ color: MUTE2 }}>{content.about}</p> : <p style={{ color: MUTE2 }}>Our story is coming soon.</p>}
           {content.accreditations && content.accreditations.length > 0 && (
             <>
-              <h3 style={display} className="mt-12 text-xs font-extrabold uppercase tracking-[0.22em]" >Certified &amp; insured</h3>
+              <h3 style={display} className="mt-12 text-xs font-extrabold uppercase tracking-[0.22em]" {...editCopy(content, "about_certified_heading", "Certified & insured")} />
               <div className="mt-5 flex flex-wrap gap-3">
                 {content.accreditations.map((a) => (
                   <span key={a} className="rounded-full border-2 px-4 py-2 text-[11px] font-bold uppercase tracking-[0.14em]" style={{ borderColor: BLUE, color: TEXT }}>{a}</span>
@@ -213,7 +213,7 @@ export default function LivewireDesign({ site, page = "home", basePath = "" }: P
           )}
           {content.service_areas && content.service_areas.length > 0 && (
             <>
-              <h3 style={display} className="mt-12 text-xs font-extrabold uppercase tracking-[0.22em]" >Areas we cover</h3>
+              <h3 style={display} className="mt-12 text-xs font-extrabold uppercase tracking-[0.22em]" {...editCopy(content, "about_areas_heading", "Areas we cover")} />
               <p className="mt-4 text-[15px] leading-relaxed" style={{ color: MUTE2 }}>{content.service_areas.join(" · ")}</p>
             </>
           )}
@@ -227,10 +227,10 @@ export default function LivewireDesign({ site, page = "home", basePath = "" }: P
   if (page === "contact") {
     return shell(
       <>
-        {banner("Get in touch", "Request A Quote")}
+        {banner("Get in touch", "contact_kicker", "Request A Quote", "contact_title")}
         <section className="mx-auto grid max-w-7xl gap-12 px-8 py-20 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={display} className="text-2xl font-extrabold uppercase tracking-tight" >Speak to a sparky</h2>
+            <h2 style={display} className="text-2xl font-extrabold uppercase tracking-tight" {...editCopy(content, "contact_form_heading", "Speak to a sparky")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: MUTE2 }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-[#16181D]">{content.phone}</a>}
@@ -269,7 +269,7 @@ export default function LivewireDesign({ site, page = "home", basePath = "" }: P
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Recent jobs", "Our Work")}
+        {banner("Recent jobs", "gallery_kicker", "Our Work", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-7xl px-2 py-12 sm:px-4">
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
@@ -375,11 +375,11 @@ export default function LivewireDesign({ site, page = "home", basePath = "" }: P
       {content.about && (
         <section className="mx-auto grid max-w-7xl items-center gap-12 px-8 py-24 lg:grid-cols-2 lg:gap-16">
           <div>
-            <Kicker>Who we are</Kicker>
-            <h2 style={{ ...display, color: TEXT }} className="mt-4 text-4xl font-extrabold uppercase leading-[0.95] tracking-tight sm:text-5xl">Safe, certified, on time</h2>
+            <Kicker><span {...editCopy(content, "home_about_kicker", "Who we are")} /></Kicker>
+            <h2 style={{ ...display, color: TEXT }} className="mt-4 text-4xl font-extrabold uppercase leading-[0.95] tracking-tight sm:text-5xl" {...editCopy(content, "home_about_heading", "Safe, certified, on time")} />
             <p data-edit="content.about" className="mt-6 text-[16px] leading-[1.9]" style={{ color: MUTE2 }}>{content.about}</p>
             <div className="mt-6"><CircuitRule color={BLUE} /></div>
-            <a href={href("about")} className="mt-6 inline-flex items-center gap-2 text-[12px] font-extrabold uppercase tracking-[0.18em]" style={{ color: "#B98A0E" }}>More about us →</a>
+            <a href={href("about")} className="mt-6 inline-flex items-center gap-2 text-[12px] font-extrabold uppercase tracking-[0.18em]" style={{ color: "#B98A0E" }} {...editCopy(content, "home_about_link", "More about us →")} />
           </div>
           <div className="relative">
             {gallery[0] ? (
@@ -399,8 +399,8 @@ export default function LivewireDesign({ site, page = "home", basePath = "" }: P
       {services.length > 0 && (
         <section style={{ background: "#ffffff", borderTop: `1px solid ${GREY}`, borderBottom: `1px solid ${GREY}` }}>
           <div className="mx-auto max-w-4xl px-8 py-24">
-            <Kicker>What we do</Kicker>
-            <h2 style={{ ...display, color: TEXT }} className="mt-4 text-4xl font-extrabold uppercase tracking-tight sm:text-5xl">Our services</h2>
+            <Kicker><span {...editCopy(content, "home_services_kicker", "What we do")} /></Kicker>
+            <h2 style={{ ...display, color: TEXT }} className="mt-4 text-4xl font-extrabold uppercase tracking-tight sm:text-5xl" {...editCopy(content, "home_services_heading", "Our services")} />
             <div className="mt-10">{serviceList(services.slice(0, 7))}</div>
             <div className="mt-12">{btnDark("View all services", href("services"))}</div>
           </div>
@@ -410,8 +410,8 @@ export default function LivewireDesign({ site, page = "home", basePath = "" }: P
       {/* work strip */}
       {gallery.length > 0 && (
         <section className="mx-auto max-w-7xl px-8 py-24">
-          <Kicker>Recent jobs</Kicker>
-          <h2 style={{ ...display, color: TEXT }} className="mt-4 text-4xl font-extrabold uppercase tracking-tight sm:text-5xl">Our work</h2>
+          <Kicker><span {...editCopy(content, "home_work_kicker", "Recent jobs")} /></Kicker>
+          <h2 style={{ ...display, color: TEXT }} className="mt-4 text-4xl font-extrabold uppercase tracking-tight sm:text-5xl" {...editCopy(content, "home_work_heading", "Our work")} />
           <div className="mt-10 grid grid-cols-2 gap-2 sm:grid-cols-4">
             {gallery.slice(0, 4).map((g) => (
               // eslint-disable-next-line @next/next/no-img-element
@@ -426,7 +426,7 @@ export default function LivewireDesign({ site, page = "home", basePath = "" }: P
       {content.service_areas && content.service_areas.length > 0 && (
         <section style={{ background: BLUE }}>
           <div className="mx-auto max-w-7xl px-8 py-14 text-white">
-            <Kicker on="light">Areas we cover</Kicker>
+            <Kicker on="light"><span {...editCopy(content, "home_areas_kicker", "Areas we cover")} /></Kicker>
             <div className="mt-5 flex flex-wrap gap-x-7 gap-y-3">
               {content.service_areas.map((a) => (
                 <span key={a} style={display} className="text-xl font-extrabold uppercase tracking-tight sm:text-2xl">{a}</span>
@@ -441,8 +441,8 @@ export default function LivewireDesign({ site, page = "home", basePath = "" }: P
         <div className="pointer-events-none absolute inset-0 opacity-[0.16]" style={{ backgroundImage: `linear-gradient(${YELLOW}22 1px, transparent 1px), linear-gradient(90deg, ${YELLOW}22 1px, transparent 1px)`, backgroundSize: "44px 44px" }} />
         <div className="relative mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 px-8 py-16 sm:flex-row sm:items-center">
           <div>
-            <h2 style={{ ...display, color: "#fff" }} className="text-3xl font-extrabold uppercase leading-[0.95] tracking-tight sm:text-4xl">Need an electrician? Let&apos;s talk.</h2>
-            <p className="mt-2 text-sm font-bold uppercase tracking-[0.14em]" style={{ color: MUTE }}>Free, no-obligation quotes · 24/7 call-out.</p>
+            <h2 style={{ ...display, color: "#fff" }} className="text-3xl font-extrabold uppercase leading-[0.95] tracking-tight sm:text-4xl" {...editCopy(content, "cta_heading", "Need an electrician? Let's talk.")} />
+            <p className="mt-2 text-sm font-bold uppercase tracking-[0.14em]" style={{ color: MUTE }} {...editCopy(content, "cta_sub", "Free, no-obligation quotes · 24/7 call-out.")} />
           </div>
           <a href={phone ? `tel:${phone}` : cta} className="rounded-full px-9 py-4 text-[12px] font-extrabold uppercase tracking-[0.16em] text-[#16181D] transition hover:brightness-110" style={{ background: YELLOW }}>
             {phone ? `Call ${phone}` : ctaLabel}

@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { HeartwoodHeader } from "./HeartwoodHeader";
 import { TradesSocialIcon } from "./TradesMobileNav";
@@ -110,7 +110,7 @@ export default function HeartwoodDesign({ site, page = "home", basePath = "" }: 
           )}
         </div>
         <div>
-          <h4 style={display} className="text-xs font-semibold uppercase tracking-[0.24em]">Workshop</h4>
+          <h4 style={display} className="text-xs font-semibold uppercase tracking-[0.24em]" {...editCopy(content, "footer_workshop", "Workshop")} />
           <ul className="mt-5 space-y-3 text-sm" style={{ color: `${CREAM}aa` }}>
             {nav.map((l) => (
               <li key={l.label}><a href={l.href} className="transition hover:text-[#EFE6D6]">{l.label}</a></li>
@@ -118,7 +118,7 @@ export default function HeartwoodDesign({ site, page = "home", basePath = "" }: 
           </ul>
         </div>
         <div>
-          <h4 style={display} className="text-xs font-semibold uppercase tracking-[0.24em]">Contact</h4>
+          <h4 style={display} className="text-xs font-semibold uppercase tracking-[0.24em]" {...editCopy(content, "footer_contact", "Contact")} />
           <div className="mt-5 space-y-3 text-sm" style={{ color: `${CREAM}aa` }}>
             {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-[#EFE6D6]">{content.phone}</a>}
@@ -126,7 +126,7 @@ export default function HeartwoodDesign({ site, page = "home", basePath = "" }: 
           </div>
         </div>
         <div>
-          <h4 style={display} className="text-xs font-semibold uppercase tracking-[0.24em]">Hours</h4>
+          <h4 style={display} className="text-xs font-semibold uppercase tracking-[0.24em]" {...editCopy(content, "footer_hours", "Hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm" style={{ color: `${CREAM}aa` }}>
               {content.hours.map((h, i) => (
@@ -151,11 +151,11 @@ export default function HeartwoodDesign({ site, page = "home", basePath = "" }: 
     </div>
   );
 
-  const banner = (kicker: string, title: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string) => (
     <section style={{ background: WALNUT, color: CREAM }} className="relative overflow-hidden">
       <div className="mx-auto max-w-6xl px-8 pb-16 pt-36 sm:pt-44">
-        <Kicker color={OAK}>{kicker}</Kicker>
-        <h1 style={display} className="mt-5 text-4xl font-semibold leading-[1.02] tracking-tight sm:text-6xl">{title}</h1>
+        <Kicker color={OAK}><span {...editCopy(content, kickerKey, kicker)} /></Kicker>
+        <h1 style={display} className="mt-5 text-4xl font-semibold leading-[1.02] tracking-tight sm:text-6xl" {...editCopy(content, titleKey, title)} />
       </div>
       <Grain color={`${CREAM}55`} className="absolute bottom-5 right-8 w-56 opacity-60" />
     </section>
@@ -165,7 +165,7 @@ export default function HeartwoodDesign({ site, page = "home", basePath = "" }: 
   if (page === "services") {
     return shell(
       <>
-        {banner("What we make", "Our craft")}
+        {banner("What we make", "svc_kicker", "Our craft", "svc_title")}
         <section className="mx-auto max-w-4xl px-8 py-20">
           {services.length > 0 ? (
             <ul className="divide-y" style={{ borderColor: `${WALNUT}22` }}>
@@ -190,12 +190,12 @@ export default function HeartwoodDesign({ site, page = "home", basePath = "" }: 
   if (page === "about") {
     return shell(
       <>
-        {banner("The maker", "Made by hand")}
+        {banner("The maker", "about_kicker", "Made by hand", "about_title")}
         <section className="mx-auto max-w-3xl px-8 py-20">
           {content.about ? <p data-edit="content.about" className="text-[17px] leading-[1.95]" style={{ color: MUTE }}>{content.about}</p> : <p style={{ color: MUTE }}>Our story is coming soon.</p>}
           {content.accreditations && content.accreditations.length > 0 && (
             <>
-              <h3 style={display} className="mt-12 text-xs font-semibold uppercase tracking-[0.26em]" >Accredited &amp; insured</h3>
+              <h3 style={display} className="mt-12 text-xs font-semibold uppercase tracking-[0.26em]" {...editCopy(content, "about_accred_heading", "Accredited & insured")} />
               <div className="mt-5 flex flex-wrap gap-3">
                 {content.accreditations.map((a) => (
                   <span key={a} className="rounded-full border px-4 py-2 text-[11px] font-medium uppercase tracking-[0.14em]" style={{ borderColor: `${WALNUT}55`, color: WALNUT }}>{a}</span>
@@ -205,7 +205,7 @@ export default function HeartwoodDesign({ site, page = "home", basePath = "" }: 
           )}
           {content.service_areas && content.service_areas.length > 0 && (
             <>
-              <h3 style={display} className="mt-12 text-xs font-semibold uppercase tracking-[0.26em]" >Areas we cover</h3>
+              <h3 style={display} className="mt-12 text-xs font-semibold uppercase tracking-[0.26em]" {...editCopy(content, "about_areas_heading", "Areas we cover")} />
               <p className="mt-4 text-[15px] leading-relaxed" style={{ color: MUTE }}>{content.service_areas.join(" · ")}</p>
             </>
           )}
@@ -219,10 +219,10 @@ export default function HeartwoodDesign({ site, page = "home", basePath = "" }: 
   if (page === "contact") {
     return shell(
       <>
-        {banner("Start a project", "Request a quote")}
+        {banner("Start a project", "contact_kicker", "Request a quote", "contact_title")}
         <section className="mx-auto grid max-w-6xl gap-12 px-8 py-20 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={display} className="text-2xl font-semibold tracking-tight" >Talk to the workshop</h2>
+            <h2 style={display} className="text-2xl font-semibold tracking-tight" {...editCopy(content, "contact_heading", "Talk to the workshop")} />
             <Grain color={OAK} className="mt-4" />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: MUTE }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
@@ -262,7 +262,7 @@ export default function HeartwoodDesign({ site, page = "home", basePath = "" }: 
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Portfolio", "Recent work")}
+        {banner("Portfolio", "gallery_kicker", "Recent work", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-6xl px-2 py-12 sm:px-4">
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
@@ -320,8 +320,8 @@ export default function HeartwoodDesign({ site, page = "home", basePath = "" }: 
       {content.about && (
         <section className="mx-auto grid max-w-6xl items-center gap-12 px-8 py-24 lg:grid-cols-2 lg:gap-16">
           <div>
-            <Kicker>The workshop</Kicker>
-            <h2 style={{ ...display, color: INK }} className="mt-4 text-4xl font-semibold leading-[1.05] tracking-tight sm:text-5xl">Fine timber, finished by hand</h2>
+            <Kicker><span {...editCopy(content, "home_about_kicker", "The workshop")} /></Kicker>
+            <h2 style={{ ...display, color: INK }} className="mt-4 text-4xl font-semibold leading-[1.05] tracking-tight sm:text-5xl" {...editCopy(content, "home_about_heading", "Fine timber, finished by hand")} />
             <p data-edit="content.about" className="mt-6 text-[16px] leading-[1.95]" style={{ color: MUTE }}>{content.about}</p>
             <a href={href("about")} className="mt-7 inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-[0.18em]" style={{ color: WALNUT }}>More about us →</a>
           </div>
@@ -341,8 +341,8 @@ export default function HeartwoodDesign({ site, page = "home", basePath = "" }: 
       {services.length > 0 && (
         <section style={{ background: PAPER, borderTop: `1px solid ${WALNUT}1a`, borderBottom: `1px solid ${WALNUT}1a` }}>
           <div className="mx-auto max-w-4xl px-8 py-24">
-            <Kicker>What we make</Kicker>
-            <h2 style={{ ...display, color: INK }} className="mt-4 text-4xl font-semibold tracking-tight sm:text-5xl">From a single shelf to a whole home</h2>
+            <Kicker><span {...editCopy(content, "home_make_kicker", "What we make")} /></Kicker>
+            <h2 style={{ ...display, color: INK }} className="mt-4 text-4xl font-semibold tracking-tight sm:text-5xl" {...editCopy(content, "home_make_heading", "From a single shelf to a whole home")} />
             <ul className="mt-12 divide-y" style={{ borderColor: `${WALNUT}22` }}>
               {services.slice(0, 6).map((s) => (
                 <li key={s.id} className="flex items-baseline justify-between gap-8 py-7">
@@ -362,8 +362,8 @@ export default function HeartwoodDesign({ site, page = "home", basePath = "" }: 
       {/* craft & process band */}
       <section style={{ background: WALNUT, color: CREAM }}>
         <div className="mx-auto max-w-6xl px-8 py-24">
-          <Kicker color={OAK}>Craft &amp; process</Kicker>
-          <h2 style={display} className="mt-4 text-4xl font-semibold tracking-tight sm:text-5xl">Design → handcraft → install</h2>
+          <Kicker color={OAK}><span {...editCopy(content, "home_process_kicker", "Craft & process")} /></Kicker>
+          <h2 style={display} className="mt-4 text-4xl font-semibold tracking-tight sm:text-5xl" {...editCopy(content, "home_process_heading", "Design → handcraft → install")} />
           <div className="mt-12 grid gap-px sm:grid-cols-3" style={{ background: `${CREAM}1f` }}>
             {process.map((p) => (
               <div key={p.n} className="p-8" style={{ background: WALNUT }}>
@@ -380,8 +380,8 @@ export default function HeartwoodDesign({ site, page = "home", basePath = "" }: 
       {/* work / portfolio */}
       {gallery.length > 0 && (
         <section className="mx-auto max-w-6xl px-8 py-24">
-          <Kicker>Portfolio</Kicker>
-          <h2 style={{ ...display, color: INK }} className="mt-4 text-4xl font-semibold tracking-tight sm:text-5xl">Recent work</h2>
+          <Kicker><span {...editCopy(content, "home_portfolio_kicker", "Portfolio")} /></Kicker>
+          <h2 style={{ ...display, color: INK }} className="mt-4 text-4xl font-semibold tracking-tight sm:text-5xl" {...editCopy(content, "home_portfolio_heading", "Recent work")} />
           <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
             {gallery.slice(0, 4).map((g) => (
               // eslint-disable-next-line @next/next/no-img-element
@@ -398,7 +398,7 @@ export default function HeartwoodDesign({ site, page = "home", basePath = "" }: 
           <div className="mx-auto grid max-w-6xl gap-12 px-8 py-20 sm:grid-cols-2">
             {content.accreditations && content.accreditations.length > 0 && (
               <div>
-                <Kicker color={SAGE}>Accredited &amp; insured</Kicker>
+                <Kicker color={SAGE}><span {...editCopy(content, "home_accred_kicker", "Accredited & insured")} /></Kicker>
                 <div className="mt-5 flex flex-wrap gap-3">
                   {content.accreditations.map((a) => (
                     <span key={a} className="rounded-full border px-4 py-2 text-[11px] font-medium uppercase tracking-[0.14em]" style={{ borderColor: `${WALNUT}55`, color: WALNUT }}>{a}</span>
@@ -408,7 +408,7 @@ export default function HeartwoodDesign({ site, page = "home", basePath = "" }: 
             )}
             {content.service_areas && content.service_areas.length > 0 && (
               <div>
-                <Kicker color={SAGE}>Areas we cover</Kicker>
+                <Kicker color={SAGE}><span {...editCopy(content, "home_areas_kicker", "Areas we cover")} /></Kicker>
                 <p className="mt-5 text-[15px] leading-relaxed" style={{ color: MUTE }}>{content.service_areas.join(" · ")}</p>
               </div>
             )}
@@ -420,8 +420,8 @@ export default function HeartwoodDesign({ site, page = "home", basePath = "" }: 
       <section style={{ background: INK, color: CREAM }}>
         <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-6 px-8 py-16 sm:flex-row sm:items-center">
           <div>
-            <h2 style={display} className="text-3xl font-semibold leading-[1.05] tracking-tight sm:text-4xl">Got a project in mind? Let&apos;s make it.</h2>
-            <p className="mt-2 text-sm font-medium uppercase tracking-[0.14em]" style={{ color: `${CREAM}99` }}>Free, no-obligation quotes.</p>
+            <h2 style={display} className="text-3xl font-semibold leading-[1.05] tracking-tight sm:text-4xl" {...editCopy(content, "cta_heading", "Got a project in mind? Let's make it.")} />
+            <p className="mt-2 text-sm font-medium uppercase tracking-[0.14em]" style={{ color: `${CREAM}99` }} {...editCopy(content, "cta_sub", "Free, no-obligation quotes.")} />
           </div>
           <a href={phone ? `tel:${phone}` : cta} className="rounded-full px-9 py-4 text-[12px] font-semibold uppercase tracking-[0.16em] transition hover:brightness-105" style={{ background: OAK, color: INK }}>
             {phone ? `Call ${phone}` : ctaLabel}

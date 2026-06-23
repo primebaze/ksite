@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { ConcoursHeader } from "./ConcoursHeader";
 import { TradesSocialIcon } from "./TradesMobileNav";
@@ -142,7 +142,7 @@ export default function ConcoursDesign({ site, page = "home", basePath = "" }: P
           )}
         </div>
         <div>
-          <h4 style={display} className="text-[10px] font-semibold uppercase tracking-[0.3em] text-white/45">Studio</h4>
+          <h4 style={display} className="text-[10px] font-semibold uppercase tracking-[0.3em] text-white/45" {...editCopy(content, "footer_studio", "Studio")} />
           <ul className="mt-5 space-y-3 text-sm" style={{ color: MUTE }}>
             {nav.map((l) => (
               <li key={l.label}><a href={l.href} className="transition hover:text-[#C9A24A]">{l.label}</a></li>
@@ -150,7 +150,7 @@ export default function ConcoursDesign({ site, page = "home", basePath = "" }: P
           </ul>
         </div>
         <div>
-          <h4 style={display} className="text-[10px] font-semibold uppercase tracking-[0.3em] text-white/45">Contact</h4>
+          <h4 style={display} className="text-[10px] font-semibold uppercase tracking-[0.3em] text-white/45" {...editCopy(content, "footer_contact", "Contact")} />
           <div className="mt-5 space-y-3 text-sm" style={{ color: MUTE }}>
             {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -158,7 +158,7 @@ export default function ConcoursDesign({ site, page = "home", basePath = "" }: P
           </div>
         </div>
         <div>
-          <h4 style={display} className="text-[10px] font-semibold uppercase tracking-[0.3em] text-white/45">Hours</h4>
+          <h4 style={display} className="text-[10px] font-semibold uppercase tracking-[0.3em] text-white/45" {...editCopy(content, "footer_hours", "Hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm" style={{ color: MUTE }}>
               {content.hours.map((h, i) => (
@@ -170,7 +170,7 @@ export default function ConcoursDesign({ site, page = "home", basePath = "" }: P
       </div>
       <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 border-t px-8 py-7 text-xs sm:flex-row" style={{ borderColor: "#ffffff12", color: "#ffffff5c" }}>
         <p>© {new Date().getFullYear()} {name}. Detailed to perfection.</p>
-        <p className="uppercase tracking-[0.2em] text-white/40">Ceramic coating · Paint correction</p>
+        <p className="uppercase tracking-[0.2em] text-white/40" {...editCopy(content, "footer_tagline", "Ceramic coating · Paint correction")} />
       </div>
     </footer>
   );
@@ -183,12 +183,12 @@ export default function ConcoursDesign({ site, page = "home", basePath = "" }: P
     </div>
   );
 
-  const banner = (kicker: string, title: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string) => (
     <section className="relative overflow-hidden" style={{ background: `linear-gradient(160deg, ${PANEL}, ${GLOSS})` }}>
       <div className="pointer-events-none absolute -right-32 top-0 h-full w-1/2 opacity-40" style={{ background: `radial-gradient(ellipse at top right, ${GOLD}22, transparent 60%)` }} />
       <div className="relative mx-auto max-w-7xl px-8 pb-16 pt-36 sm:pt-44">
-        <Kicker>{kicker}</Kicker>
-        <h1 style={{ ...display, color: PEARL }} className="mt-5 text-4xl font-semibold uppercase leading-[1.02] tracking-[0.02em] sm:text-6xl">{title}</h1>
+        <Kicker><span {...editCopy(content, kickerKey, kicker)} /></Kicker>
+        <h1 style={{ ...display, color: PEARL }} className="mt-5 text-4xl font-semibold uppercase leading-[1.02] tracking-[0.02em] sm:text-6xl" {...editCopy(content, titleKey, title)} />
       </div>
     </section>
   );
@@ -215,12 +215,10 @@ export default function ConcoursDesign({ site, page = "home", basePath = "" }: P
   if (page === "services") {
     return shell(
       <>
-        {banner("Detailing menu", "The Packages")}
+        {banner("Detailing menu", "svc_kicker", "The Packages", "svc_title")}
         <section className="mx-auto max-w-5xl px-8 py-20">
           {services.length > 0 ? packageList(services) : <p style={{ color: MUTE }}>Packages coming soon.</p>}
-          <p className="mt-10 max-w-xl text-sm leading-relaxed" style={{ color: MUTE }}>
-            Every package is bespoke to your paintwork. We assess finish, swirls and protection on arrival and tailor the work to your vehicle.
-          </p>
+          <p className="mt-10 max-w-xl text-sm leading-relaxed" style={{ color: MUTE }} {...editCopy(content, "svc_note", "Every package is bespoke to your paintwork. We assess finish, swirls and protection on arrival and tailor the work to your vehicle.")} />
           <div className="mt-10">{goldBtn(ctaLabel, cta)}</div>
         </section>
       </>,
@@ -231,7 +229,7 @@ export default function ConcoursDesign({ site, page = "home", basePath = "" }: P
   if (page === "about") {
     return shell(
       <>
-        {banner("Inside the studio", "Obsessed With Finish")}
+        {banner("Inside the studio", "about_kicker", "Obsessed With Finish", "about_title")}
         <section className="mx-auto max-w-3xl px-8 py-20">
           {content.about ? <p data-edit="content.about" className="text-[17px] leading-[1.95]" style={{ color: MUTE }}>{content.about}</p> : <p style={{ color: MUTE }}>Our story is coming soon.</p>}
           <div className="mt-12 grid gap-4 sm:grid-cols-2">
@@ -244,7 +242,7 @@ export default function ConcoursDesign({ site, page = "home", basePath = "" }: P
           </div>
           {content.accreditations && content.accreditations.length > 0 && (
             <>
-              <h3 style={{ ...display, color: PEARL }} className="mt-14 text-[11px] font-semibold uppercase tracking-[0.3em]">Certified &amp; approved</h3>
+              <h3 style={{ ...display, color: PEARL }} className="mt-14 text-[11px] font-semibold uppercase tracking-[0.3em]" {...editCopy(content, "about_certified_heading", "Certified & approved")} />
               <div className="mt-5 flex flex-wrap gap-3">
                 {content.accreditations.map((a) => (
                   <span key={a} className="rounded-full border px-4 py-2 text-[11px] font-medium uppercase tracking-[0.16em]" style={{ borderColor: `${GOLD}55`, color: PEARL }}>{a}</span>
@@ -254,7 +252,7 @@ export default function ConcoursDesign({ site, page = "home", basePath = "" }: P
           )}
           {content.service_areas && content.service_areas.length > 0 && (
             <>
-              <h3 style={{ ...display, color: PEARL }} className="mt-12 text-[11px] font-semibold uppercase tracking-[0.3em]">Areas we cover</h3>
+              <h3 style={{ ...display, color: PEARL }} className="mt-12 text-[11px] font-semibold uppercase tracking-[0.3em]" {...editCopy(content, "about_areas_heading", "Areas we cover")} />
               <p className="mt-4 text-[15px] leading-relaxed" style={{ color: MUTE }}>{content.service_areas.join(" · ")}</p>
             </>
           )}
@@ -268,10 +266,10 @@ export default function ConcoursDesign({ site, page = "home", basePath = "" }: P
   if (page === "contact") {
     return shell(
       <>
-        {banner("Reserve a slot", "Book Your Detail")}
+        {banner("Reserve a slot", "contact_kicker", "Book Your Detail", "contact_title")}
         <section className="mx-auto grid max-w-7xl gap-12 px-8 py-20 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={{ ...display, color: PEARL }} className="text-2xl font-semibold uppercase tracking-[0.04em]">Visit the studio</h2>
+            <h2 style={{ ...display, color: PEARL }} className="text-2xl font-semibold uppercase tracking-[0.04em]" {...editCopy(content, "contact_heading", "Visit the studio")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: MUTE }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -313,7 +311,7 @@ export default function ConcoursDesign({ site, page = "home", basePath = "" }: P
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Gloss transforms", "The Work")}
+        {banner("Gloss transforms", "gallery_kicker", "The Work", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-7xl px-2 py-12 sm:px-4">
             <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:grid-cols-4">
@@ -393,10 +391,10 @@ export default function ConcoursDesign({ site, page = "home", basePath = "" }: P
             <span className="pointer-events-none absolute inset-0 rounded-2xl" style={{ boxShadow: `inset 0 1px 0 ${GOLD}33, inset 0 0 60px rgba(0,0,0,0.5)` }} />
           </div>
           <div>
-            <Kicker>Inside the studio</Kicker>
-            <h2 style={{ ...display, color: PEARL }} className="mt-5 text-4xl font-semibold uppercase leading-[1.05] tracking-[0.02em] sm:text-5xl">Protection you can see</h2>
+            <Kicker><span {...editCopy(content, "about_kicker_home", "Inside the studio")} /></Kicker>
+            <h2 style={{ ...display, color: PEARL }} className="mt-5 text-4xl font-semibold uppercase leading-[1.05] tracking-[0.02em] sm:text-5xl" {...editCopy(content, "about_heading_home", "Protection you can see")} />
             <p data-edit="content.about" className="mt-6 text-[16px] leading-[1.95]" style={{ color: MUTE }}>{content.about}</p>
-            <a href={href("about")} className="mt-7 inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.26em]" style={{ color: GOLD }}>About the studio →</a>
+            <a href={href("about")} className="mt-7 inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.26em]" style={{ color: GOLD }} {...editCopy(content, "about_link_home", "About the studio →")} />
           </div>
         </section>
       )}
@@ -405,9 +403,9 @@ export default function ConcoursDesign({ site, page = "home", basePath = "" }: P
       {services.length > 0 && (
         <section style={{ background: PANEL, borderTop: "1px solid #ffffff10", borderBottom: "1px solid #ffffff10" }}>
           <div className="mx-auto max-w-5xl px-8 py-24">
-            <Kicker>Detailing menu</Kicker>
-            <h2 style={{ ...display, color: PEARL }} className="mt-5 text-4xl font-semibold uppercase tracking-[0.02em] sm:text-5xl">The packages</h2>
-            <p className="mt-4 max-w-xl text-sm leading-relaxed" style={{ color: MUTE }}>From a refreshing maintenance wash to full multi-stage paint correction and ceramic protection.</p>
+            <Kicker><span {...editCopy(content, "packages_kicker", "Detailing menu")} /></Kicker>
+            <h2 style={{ ...display, color: PEARL }} className="mt-5 text-4xl font-semibold uppercase tracking-[0.02em] sm:text-5xl" {...editCopy(content, "packages_heading", "The packages")} />
+            <p className="mt-4 max-w-xl text-sm leading-relaxed" style={{ color: MUTE }} {...editCopy(content, "packages_sub", "From a refreshing maintenance wash to full multi-stage paint correction and ceramic protection.")} />
             <div className="mt-12">{packageList(services, 6)}</div>
             <div className="mt-12">{ghostBtn("View all packages", href("services"))}</div>
           </div>
@@ -419,8 +417,8 @@ export default function ConcoursDesign({ site, page = "home", basePath = "" }: P
         <div className="pointer-events-none absolute right-0 top-0 h-full w-1/2 opacity-30" style={{ background: `radial-gradient(ellipse at top right, ${TEAL}33, transparent 60%)` }} />
         <div className="relative mx-auto grid max-w-7xl gap-10 px-8 py-24 lg:grid-cols-3">
           <div className="lg:col-span-1">
-            <Kicker tone={TEAL}>Ceramic protection</Kicker>
-            <h2 style={{ ...display, color: PEARL }} className="mt-5 text-3xl font-semibold uppercase leading-[1.05] tracking-[0.02em] sm:text-4xl">A coating that lasts years, not weeks</h2>
+            <Kicker tone={TEAL}><span {...editCopy(content, "ceramic_kicker", "Ceramic protection")} /></Kicker>
+            <h2 style={{ ...display, color: PEARL }} className="mt-5 text-3xl font-semibold uppercase leading-[1.05] tracking-[0.02em] sm:text-4xl" {...editCopy(content, "ceramic_heading", "A coating that lasts years, not weeks")} />
           </div>
           <div className="grid gap-5 sm:grid-cols-2 lg:col-span-2">
             {[
@@ -441,8 +439,8 @@ export default function ConcoursDesign({ site, page = "home", basePath = "" }: P
       {/* work — before/after gloss transforms */}
       {gallery.length > 0 && (
         <section className="mx-auto max-w-7xl px-8 py-24">
-          <Kicker>Gloss transforms</Kicker>
-          <h2 style={{ ...display, color: PEARL }} className="mt-5 text-4xl font-semibold uppercase tracking-[0.02em] sm:text-5xl">Before &amp; after</h2>
+          <Kicker><span {...editCopy(content, "work_kicker", "Gloss transforms")} /></Kicker>
+          <h2 style={{ ...display, color: PEARL }} className="mt-5 text-4xl font-semibold uppercase tracking-[0.02em] sm:text-5xl" {...editCopy(content, "work_heading", "Before & after")} />
           <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
             {gallery.slice(0, 4).map((g) => (
               <figure key={g.id} className="group relative overflow-hidden rounded-xl">
@@ -460,8 +458,8 @@ export default function ConcoursDesign({ site, page = "home", basePath = "" }: P
       <section className="relative overflow-hidden" style={{ background: `linear-gradient(120deg, ${GOLD}, #E4C66F)` }}>
         <div className="mx-auto flex max-w-7xl flex-col items-start justify-between gap-6 px-8 py-16 sm:flex-row sm:items-center" style={{ color: GLOSS }}>
           <div>
-            <h2 style={display} className="text-3xl font-semibold uppercase leading-[1.05] tracking-[0.02em] sm:text-4xl">Give your car the concours treatment</h2>
-            <p className="mt-2 text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: "#0E0F12aa" }}>Studio & mobile · By appointment</p>
+            <h2 style={display} className="text-3xl font-semibold uppercase leading-[1.05] tracking-[0.02em] sm:text-4xl" {...editCopy(content, "cta_heading", "Give your car the concours treatment")} />
+            <p className="mt-2 text-[11px] font-semibold uppercase tracking-[0.22em]" style={{ color: "#0E0F12aa" }} {...editCopy(content, "cta_sub", "Studio & mobile · By appointment")} />
           </div>
           <a href={phone ? `tel:${phone}` : cta} className="rounded-full px-9 py-3.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-white transition hover:brightness-125" style={{ background: GLOSS, ...display }}>
             {phone ? `Call ${phone}` : ctaLabel}

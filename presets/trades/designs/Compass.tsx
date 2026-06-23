@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { CompassHeader } from "./CompassHeader";
 import { TradesSocialIcon } from "./TradesMobileNav";
@@ -115,7 +115,7 @@ export default function CompassDesign({ site, page = "home", basePath = "" }: Pr
           )}
         </div>
         <div>
-          <h4 style={display} className="text-xs font-semibold uppercase tracking-[0.2em] text-white/45">Firm</h4>
+          <h4 style={display} className="text-xs font-semibold uppercase tracking-[0.2em] text-white/45" {...editCopy(content, "footer_firm", "Firm")} />
           <ul className="mt-5 space-y-3 text-sm text-white/70">
             {nav.map((l) => (
               <li key={l.label}><a href={l.href} className="transition hover:text-white">{l.label}</a></li>
@@ -123,7 +123,7 @@ export default function CompassDesign({ site, page = "home", basePath = "" }: Pr
           </ul>
         </div>
         <div>
-          <h4 style={display} className="text-xs font-semibold uppercase tracking-[0.2em] text-white/45">Contact</h4>
+          <h4 style={display} className="text-xs font-semibold uppercase tracking-[0.2em] text-white/45" {...editCopy(content, "footer_contact", "Contact")} />
           <div className="mt-5 space-y-3 text-sm text-white/70">
             {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -131,7 +131,7 @@ export default function CompassDesign({ site, page = "home", basePath = "" }: Pr
           </div>
         </div>
         <div>
-          <h4 style={display} className="text-xs font-semibold uppercase tracking-[0.2em] text-white/45">Office hours</h4>
+          <h4 style={display} className="text-xs font-semibold uppercase tracking-[0.2em] text-white/45" {...editCopy(content, "footer_hours", "Office hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm text-white/70">
               {content.hours.map((h, i) => (
@@ -156,15 +156,15 @@ export default function CompassDesign({ site, page = "home", basePath = "" }: Pr
     </div>
   );
 
-  const banner = (kicker: string, title: string, blurb?: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string, blurb?: string, blurbKey?: string) => (
     <section style={{ background: TEAL }} className="relative overflow-hidden">
       <div className="pointer-events-none absolute inset-y-0 right-0 w-1/2 opacity-30">
         <HorizonLine className="absolute bottom-0 h-40 w-full" stroke={SAGE} />
       </div>
       <div className="relative mx-auto max-w-6xl px-8 pb-16 pt-32 sm:pt-40">
-        <Kicker light>{kicker}</Kicker>
-        <h1 style={{ ...display, color: CREAM }} className="mt-4 max-w-3xl text-4xl font-semibold leading-[1.05] tracking-tight sm:text-6xl">{title}</h1>
-        {blurb && <p className="mt-5 max-w-xl text-[16px] leading-relaxed text-white/70">{blurb}</p>}
+        <Kicker light><span {...editCopy(content, kickerKey, kicker)} /></Kicker>
+        <h1 style={{ ...display, color: CREAM }} className="mt-4 max-w-3xl text-4xl font-semibold leading-[1.05] tracking-tight sm:text-6xl" {...editCopy(content, titleKey, title)} />
+        {blurb && <p className="mt-5 max-w-xl text-[16px] leading-relaxed text-white/70" {...editCopy(content, blurbKey ?? "", blurb)} />}
       </div>
     </section>
   );
@@ -173,7 +173,7 @@ export default function CompassDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "services") {
     return shell(
       <>
-        {banner("How we help", "Advice for every stage of your financial life", "Considered, whole-of-market planning — clearly explained and built entirely around your goals.")}
+        {banner("How we help", "svc_kicker", "Advice for every stage of your financial life", "svc_title", "Considered, whole-of-market planning — clearly explained and built entirely around your goals.", "svc_blurb")}
         <section className="mx-auto max-w-5xl px-8 py-20">
           {services.length > 0 ? (
             <div className="divide-y" style={{ borderColor: LINE }}>
@@ -199,13 +199,13 @@ export default function CompassDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "about") {
     return shell(
       <>
-        {banner("About the firm", "Your future, planned with confidence")}
+        {banner("About the firm", "about_kicker", "Your future, planned with confidence", "about_title")}
         <section className="mx-auto grid max-w-6xl gap-12 px-8 py-20 lg:grid-cols-[1.4fr_1fr]">
           <div>
             {content.about ? <p data-edit="content.about" className="text-[17px] leading-[1.9]" style={{ color: MUTE }}>{content.about}</p> : <p style={{ color: MUTE }}>Our story is coming soon.</p>}
             {content.service_areas && content.service_areas.length > 0 && (
               <>
-                <h3 style={{ ...display, color: INK }} className="mt-12 text-2xl font-semibold">Who we work with</h3>
+                <h3 style={{ ...display, color: INK }} className="mt-12 text-2xl font-semibold" {...editCopy(content, "about_whoweworkwith_heading", "Who we work with")} />
                 <div className="mt-5 flex flex-wrap gap-2">
                   {content.service_areas.map((a) => (
                     <span key={a} className="rounded-full border px-4 py-1.5 text-sm" style={{ borderColor: LINE, color: MUTE }}>{a}</span>
@@ -215,7 +215,7 @@ export default function CompassDesign({ site, page = "home", basePath = "" }: Pr
             )}
           </div>
           <aside className="h-fit rounded-2xl p-7" style={{ background: SAGE_TINT, border: `1px solid ${LINE}` }}>
-            <h4 style={{ ...display, color: "#9a8336" }} className="text-xs font-semibold uppercase tracking-[0.2em]">Why clients trust us</h4>
+            <h4 style={{ ...display, color: "#9a8336" }} className="text-xs font-semibold uppercase tracking-[0.2em]" {...editCopy(content, "about_whytrust_heading", "Why clients trust us")} />
             <ul className="mt-4 space-y-3 text-sm" style={{ color: INK }}>
               {trust.map((a) => (
                 <li key={a} className="flex items-start gap-2.5"><span style={{ color: GOLD }}>◆</span><span>{a}</span></li>
@@ -236,10 +236,10 @@ export default function CompassDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "contact") {
     return shell(
       <>
-        {banner("Get in touch", "Book your free initial review", "A relaxed, no-obligation conversation about where you are and where you'd like to be.")}
+        {banner("Get in touch", "contact_kicker", "Book your free initial review", "contact_title", "A relaxed, no-obligation conversation about where you are and where you'd like to be.", "contact_blurb")}
         <section className="mx-auto grid max-w-6xl gap-12 px-8 py-20 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={{ ...display, color: INK }} className="text-2xl font-semibold tracking-tight">Speak to an adviser</h2>
+            <h2 style={{ ...display, color: INK }} className="text-2xl font-semibold tracking-tight" {...editCopy(content, "contact_heading", "Speak to an adviser")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: MUTE }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-[#14463E]">{content.phone}</a>}
@@ -283,7 +283,7 @@ export default function CompassDesign({ site, page = "home", basePath = "" }: Pr
   if (page === "gallery") {
     return shell(
       <>
-        {banner("Insights", "Perspectives & planning notes")}
+        {banner("Insights", "gallery_kicker", "Perspectives & planning notes", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-6xl px-8 py-16">
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
@@ -346,7 +346,7 @@ export default function CompassDesign({ site, page = "home", basePath = "" }: Pr
             <span data-edit="content.tagline" className="block">{content.tagline ?? "Plan for the life you want."}</span>
           </h1>
           <p data-edit="tenant.business_name" className="mt-5 text-sm font-semibold uppercase tracking-[0.22em] text-white/65">{name}</p>
-          <p className="mt-5 max-w-xl text-[17px] leading-relaxed text-white/75">Independent, chartered financial planning — long-term advice that brings clarity, confidence and a clear path to your goals.</p>
+          <p className="mt-5 max-w-xl text-[17px] leading-relaxed text-white/75" {...editCopy(content, "hero_sub", "Independent, chartered financial planning — long-term advice that brings clarity, confidence and a clear path to your goals.")} />
           <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:gap-4">
             {btnGold(ctaLabel, cta)}
             {phone ? btnOutline(`Call ${phone}`, `tel:${phone}`, true) : btnOutline("Our services", href("services"), true)}
@@ -379,10 +379,10 @@ export default function CompassDesign({ site, page = "home", basePath = "" }: Pr
             <span className="pointer-events-none absolute -bottom-3 -right-3 h-20 w-20 rounded-br-2xl" style={{ borderBottom: `3px solid ${GOLD}`, borderRight: `3px solid ${GOLD}` }} />
           </div>
           <div>
-            <Kicker>Who we are</Kicker>
-            <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-semibold leading-[1.1] tracking-tight sm:text-4xl">Calm, independent advice you can build a life around</h2>
+            <Kicker><span {...editCopy(content, "about_kicker_home", "Who we are")} /></Kicker>
+            <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-semibold leading-[1.1] tracking-tight sm:text-4xl" {...editCopy(content, "about_heading_home", "Calm, independent advice you can build a life around")} />
             <p data-edit="content.about" className="mt-6 text-[16px] leading-[1.9]" style={{ color: MUTE }}>{content.about}</p>
-            <a href={href("about")} className="mt-7 inline-flex items-center gap-2 text-[13px] font-semibold uppercase tracking-[0.14em]" style={{ color: "#9a8336" }}>More about the firm →</a>
+            <a href={href("about")} className="mt-7 inline-flex items-center gap-2 text-[13px] font-semibold uppercase tracking-[0.14em]" style={{ color: "#9a8336" }} {...editCopy(content, "about_link_home", "More about the firm →")} />
           </div>
         </section>
       )}
@@ -393,10 +393,10 @@ export default function CompassDesign({ site, page = "home", basePath = "" }: Pr
           <div className="mx-auto max-w-6xl px-8 py-24">
             <div className="flex flex-wrap items-end justify-between gap-4">
               <div>
-                <Kicker>How we help</Kicker>
-                <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl">Our advice</h2>
+                <Kicker><span {...editCopy(content, "help_kicker", "How we help")} /></Kicker>
+                <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl" {...editCopy(content, "help_heading", "Our advice")} />
               </div>
-              <a href={href("services")} className="text-sm font-semibold underline-offset-4 hover:underline" style={{ color: "#9a8336" }}>All services →</a>
+              <a href={href("services")} className="text-sm font-semibold underline-offset-4 hover:underline" style={{ color: "#9a8336" }} {...editCopy(content, "help_link", "All services →")} />
             </div>
             <div className="mt-12 divide-y" style={{ borderColor: LINE }}>
               {services.slice(0, 6).map((s, i) => (
@@ -415,8 +415,8 @@ export default function CompassDesign({ site, page = "home", basePath = "" }: Pr
       ) : (
         <section style={{ background: "#ffffff", borderTop: `1px solid ${LINE}`, borderBottom: `1px solid ${LINE}` }}>
           <div className="mx-auto max-w-6xl px-8 py-24">
-            <Kicker>How we help</Kicker>
-            <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl">Areas of advice</h2>
+            <Kicker><span {...editCopy(content, "help_kicker_alt", "How we help")} /></Kicker>
+            <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl" {...editCopy(content, "help_heading_alt", "Areas of advice")} />
             <div className="mt-12 grid gap-px overflow-hidden rounded-2xl sm:grid-cols-2 lg:grid-cols-3" style={{ background: LINE }}>
               {helpAreas.map((h) => (
                 <div key={h.t} className="p-7" style={{ background: "#ffffff" }}>
@@ -432,8 +432,8 @@ export default function CompassDesign({ site, page = "home", basePath = "" }: Pr
       {/* our advice process — 4 steps */}
       <section className="mx-auto max-w-6xl px-8 py-24">
         <div className="text-center">
-          <div className="flex justify-center"><Kicker>Our advice process</Kicker></div>
-          <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl">A clear path, every step of the way</h2>
+          <div className="flex justify-center"><Kicker><span {...editCopy(content, "process_kicker", "Our advice process")} /></Kicker></div>
+          <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl" {...editCopy(content, "process_heading", "A clear path, every step of the way")} />
         </div>
         <div className="relative mt-14 grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
           <div className="pointer-events-none absolute left-0 right-0 top-7 hidden h-px lg:block" style={{ background: `linear-gradient(90deg, transparent, ${GOLD}66, transparent)` }} />
@@ -467,10 +467,10 @@ export default function CompassDesign({ site, page = "home", basePath = "" }: Pr
         <section className="mx-auto max-w-6xl px-8 py-24">
           <div className="flex flex-wrap items-end justify-between gap-4">
             <div>
-              <Kicker>Insights</Kicker>
-              <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl">Perspectives</h2>
+              <Kicker><span {...editCopy(content, "insights_kicker", "Insights")} /></Kicker>
+              <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl" {...editCopy(content, "insights_heading", "Perspectives")} />
             </div>
-            <a href={href("gallery")} className="text-sm font-semibold underline-offset-4 hover:underline" style={{ color: "#9a8336" }}>View all →</a>
+            <a href={href("gallery")} className="text-sm font-semibold underline-offset-4 hover:underline" style={{ color: "#9a8336" }} {...editCopy(content, "insights_link", "View all →")} />
           </div>
           <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
             {gallery.slice(0, 4).map((g) => (
@@ -484,9 +484,9 @@ export default function CompassDesign({ site, page = "home", basePath = "" }: Pr
       {/* closing consultation CTA */}
       <section style={{ background: SAGE_TINT, borderTop: `1px solid ${LINE}` }}>
         <div className="mx-auto max-w-4xl px-8 py-24 text-center">
-          <div className="flex justify-center"><Kicker>Free initial review</Kicker></div>
-          <h2 style={{ ...display, color: TEAL }} className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl">Let&apos;s plan the next chapter together</h2>
-          <p className="mx-auto mt-4 max-w-lg text-[16px] leading-relaxed" style={{ color: MUTE }}>Book a relaxed, no-obligation conversation. We&apos;ll listen first, then show you a clear path forward.</p>
+          <div className="flex justify-center"><Kicker><span {...editCopy(content, "cta_kicker", "Free initial review")} /></Kicker></div>
+          <h2 style={{ ...display, color: TEAL }} className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl" {...editCopy(content, "cta_heading", "Let's plan the next chapter together")} />
+          <p className="mx-auto mt-4 max-w-lg text-[16px] leading-relaxed" style={{ color: MUTE }} {...editCopy(content, "cta_sub", "Book a relaxed, no-obligation conversation. We'll listen first, then show you a clear path forward.")} />
           <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
             {btnGold(ctaLabel, cta)}
             {phone && btnOutline(`Call ${phone}`, `tel:${phone}`)}

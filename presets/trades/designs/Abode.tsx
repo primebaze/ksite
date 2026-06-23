@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { AbodeHeader } from "./AbodeHeader";
 import { TradesSocialIcon } from "./TradesMobileNav";
@@ -90,7 +90,7 @@ export default function AbodeDesign({ site, page = "home", basePath = "" }: Pres
         <div>
           <a href={href("home")} className="block">
             <span data-edit="tenant.business_name" style={display} className="text-2xl font-medium tracking-[0.02em] text-[#F3EFE8]">{name}</span>
-            <span className="mt-1 block text-[9px] uppercase tracking-[0.42em] text-[#efe7d8]/45">Homeware &amp; Interiors</span>
+            <span className="mt-1 block text-[9px] uppercase tracking-[0.42em] text-[#efe7d8]/45" {...editCopy(content, "footer_subtitle", "Homeware & Interiors")} />
           </a>
           {content.tagline && <p data-edit="content.tagline" className="mt-5 max-w-xs text-sm leading-relaxed text-[#efe7d8]/65">{content.tagline}</p>}
           {content.accreditations && content.accreditations.length > 0 && (
@@ -109,13 +109,13 @@ export default function AbodeDesign({ site, page = "home", basePath = "" }: Pres
           )}
         </div>
         <div>
-          <h4 style={display} className="text-xs font-medium uppercase tracking-[0.22em] text-[#efe7d8]/50">Shop</h4>
+          <h4 style={display} className="text-xs font-medium uppercase tracking-[0.22em] text-[#efe7d8]/50" {...editCopy(content, "footer_shop", "Shop")} />
           <ul className="mt-5 space-y-3 text-sm text-[#efe7d8]/75">
             {nav.map((l) => (<li key={l.label}><a href={l.href} className="transition hover:text-white">{l.label}</a></li>))}
           </ul>
         </div>
         <div>
-          <h4 style={display} className="text-xs font-medium uppercase tracking-[0.22em] text-[#efe7d8]/50">Visit</h4>
+          <h4 style={display} className="text-xs font-medium uppercase tracking-[0.22em] text-[#efe7d8]/50" {...editCopy(content, "footer_visit", "Visit")} />
           <div className="mt-5 space-y-3 text-sm text-[#efe7d8]/75">
             {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -123,7 +123,7 @@ export default function AbodeDesign({ site, page = "home", basePath = "" }: Pres
           </div>
         </div>
         <div>
-          <h4 style={display} className="text-xs font-medium uppercase tracking-[0.22em] text-[#efe7d8]/50">Opening hours</h4>
+          <h4 style={display} className="text-xs font-medium uppercase tracking-[0.22em] text-[#efe7d8]/50" {...editCopy(content, "footer_hours", "Opening hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm text-[#efe7d8]/75">
               {content.hours.map((h, i) => (<li key={i} className="flex justify-between gap-5"><span data-edit={`hours:${i}:day`}>{h.day}</span><span data-edit={`hours:${i}:open`} className="text-[#efe7d8]/45">{h.open}</span></li>))}
@@ -133,7 +133,7 @@ export default function AbodeDesign({ site, page = "home", basePath = "" }: Pres
       </div>
       <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 border-t px-6 py-7 text-xs sm:flex-row" style={{ borderColor: "#ffffff1a", color: "#efe7d899" }}>
         <p>© {new Date().getFullYear()} {name}. All rights reserved.</p>
-        <a href={href("contact")} className="uppercase tracking-[0.16em] transition hover:text-white">Gift wrapping &amp; styling</a>
+        <a href={href("contact")} className="uppercase tracking-[0.16em] transition hover:text-white" {...editCopy(content, "footer_giftwrap_link", "Gift wrapping & styling")} />
       </div>
     </footer>
   );
@@ -206,17 +206,17 @@ export default function AbodeDesign({ site, page = "home", basePath = "" }: Pres
           {content.about ? <p data-edit="content.about" className="text-[18px] leading-[1.95]" style={{ color: TAUPE }}>{content.about}</p> : <p style={{ color: TAUPE }}>Our story is coming soon.</p>}
           <div className="mt-12 grid gap-6 sm:grid-cols-2">
             <div className="rounded-2xl p-6" style={{ background: LINEN }}>
-              <h3 style={{ ...display, color: WALNUT }} className="text-lg font-medium">Gift wrapping</h3>
-              <p className="mt-2 text-sm leading-relaxed" style={{ color: TAUPE }}>Every piece can be wrapped by hand — ask in store or note it with your enquiry.</p>
+              <h3 style={{ ...display, color: WALNUT }} className="text-lg font-medium" {...editCopy(content, "about_giftwrap_heading", "Gift wrapping")} />
+              <p className="mt-2 text-sm leading-relaxed" style={{ color: TAUPE }} {...editCopy(content, "about_giftwrap_body", "Every piece can be wrapped by hand — ask in store or note it with your enquiry.")} />
             </div>
             <div className="rounded-2xl p-6" style={{ background: LINEN }}>
-              <h3 style={{ ...display, color: WALNUT }} className="text-lg font-medium">Interior styling</h3>
-              <p className="mt-2 text-sm leading-relaxed" style={{ color: TAUPE }}>From a single corner to a whole room — we&apos;ll help you choose pieces that work together.</p>
+              <h3 style={{ ...display, color: WALNUT }} className="text-lg font-medium" {...editCopy(content, "about_styling_heading", "Interior styling")} />
+              <p className="mt-2 text-sm leading-relaxed" style={{ color: TAUPE }} {...editCopy(content, "about_styling_body", "From a single corner to a whole room — we'll help you choose pieces that work together.")} />
             </div>
           </div>
           {content.service_areas && content.service_areas.length > 0 && (
             <>
-              <h3 style={{ ...display, color: WALNUT }} className="mt-12 text-2xl font-medium">Where to find us</h3>
+              <h3 style={{ ...display, color: WALNUT }} className="mt-12 text-2xl font-medium" {...editCopy(content, "about_findus_heading", "Where to find us")} />
               <p className="mt-4 text-[16px] leading-relaxed" style={{ color: TAUPE }}>{content.service_areas.join(" · ")}</p>
             </>
           )}
@@ -252,7 +252,7 @@ export default function AbodeDesign({ site, page = "home", basePath = "" }: Pres
         {banner("Come and visit", "Reserve or enquire")}
         <section className="mx-auto grid max-w-6xl gap-12 px-6 py-20 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={{ ...display, color: WALNUT }} className="text-2xl font-medium tracking-tight">Find the shop</h2>
+            <h2 style={{ ...display, color: WALNUT }} className="text-2xl font-medium tracking-tight" {...editCopy(content, "contact_findshop_heading", "Find the shop")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: TAUPE }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-[#C08763]">{content.phone}</a>}
@@ -301,17 +301,15 @@ export default function AbodeDesign({ site, page = "home", basePath = "" }: Pres
           <h1 style={{ ...display, color: WALNUT }} className="mt-5 text-5xl font-medium leading-[1.02] tracking-tight sm:text-6xl">
             <span data-edit="content.tagline" className="block">{content.tagline ?? "Beautiful things for every room."}</span>
           </h1>
-          <p className="mt-6 max-w-md text-[16px] leading-relaxed" style={{ color: TAUPE }}>
-            An independent, carefully curated homeware shop — considered design, warm materials and pieces made to be lived with.
-          </p>
+          <p className="mt-6 max-w-md text-[16px] leading-relaxed" style={{ color: TAUPE }} {...editCopy(content, "hero_blurb", "An independent, carefully curated homeware shop — considered design, warm materials and pieces made to be lived with.")} />
           <div className="mt-9 flex flex-wrap gap-3">
             {products.length > 0 && pill("Shop the collection", href("services"), true)}
             {pill(ctaLabel, cta)}
           </div>
           <div className="mt-9 flex flex-wrap gap-x-6 gap-y-2 text-[11px] uppercase tracking-[0.2em]" style={{ color: SAGE }}>
-            <span>Independent &amp; curated</span>
-            <span>Gift wrapping</span>
-            <span>Interior styling</span>
+            <span {...editCopy(content, "hero_tag_1", "Independent & curated")} />
+            <span {...editCopy(content, "hero_tag_2", "Gift wrapping")} />
+            <span {...editCopy(content, "hero_tag_3", "Interior styling")} />
           </div>
         </div>
 
@@ -343,8 +341,8 @@ export default function AbodeDesign({ site, page = "home", basePath = "" }: Pres
         <section style={{ background: LINEN, borderTop: `1px solid ${LINE}`, borderBottom: `1px solid ${LINE}` }}>
           <div className="mx-auto max-w-6xl px-6 py-24">
             <div className="text-center">
-              <Eyebrow center>Shop by room or category</Eyebrow>
-              <h2 style={{ ...display, color: WALNUT }} className="mt-4 text-3xl font-medium tracking-tight sm:text-4xl">Beautiful things for every room</h2>
+              <Eyebrow center><span {...editCopy(content, "rooms_eyebrow", "Shop by room or category")} /></Eyebrow>
+              <h2 style={{ ...display, color: WALNUT }} className="mt-4 text-3xl font-medium tracking-tight sm:text-4xl" {...editCopy(content, "rooms_heading", "Beautiful things for every room")} />
             </div>
             <div className="mt-12 grid gap-3 sm:grid-cols-3">
               {ROOMS.map((room, i) => (
@@ -361,9 +359,9 @@ export default function AbodeDesign({ site, page = "home", basePath = "" }: Pres
       {/* about statement */}
       {content.about && (
         <section className="mx-auto max-w-3xl px-6 py-24 text-center">
-          <Eyebrow center>Independent &amp; curated</Eyebrow>
+          <Eyebrow center><span {...editCopy(content, "about_eyebrow", "Independent & curated")} /></Eyebrow>
           <p data-edit="content.about" style={{ ...display, color: WALNUT }} className="mt-6 text-2xl font-medium leading-[1.5] sm:text-[2rem]">{content.about}</p>
-          <a href={href("about")} className="mt-7 inline-flex items-center gap-2 text-[12px] font-medium uppercase tracking-[0.16em]" style={{ color: CLAY }}>Our story →</a>
+          <a href={href("about")} className="mt-7 inline-flex items-center gap-2 text-[12px] font-medium uppercase tracking-[0.16em]" style={{ color: CLAY }} {...editCopy(content, "about_link", "Our story →")} />
         </section>
       )}
 
@@ -372,10 +370,10 @@ export default function AbodeDesign({ site, page = "home", basePath = "" }: Pres
         <section className="mx-auto max-w-5xl px-6 pb-8">
           <div className="flex flex-wrap items-end justify-between gap-4 border-b pb-4" style={{ borderColor: LINE }}>
             <div>
-              <Eyebrow>This week&apos;s edit</Eyebrow>
-              <h2 style={{ ...display, color: WALNUT }} className="mt-3 text-3xl font-medium tracking-tight sm:text-4xl">Pieces we love</h2>
+              <Eyebrow><span {...editCopy(content, "edit_eyebrow", "This week's edit")} /></Eyebrow>
+              <h2 style={{ ...display, color: WALNUT }} className="mt-3 text-3xl font-medium tracking-tight sm:text-4xl" {...editCopy(content, "edit_heading", "Pieces we love")} />
             </div>
-            <a href={href("services")} className="text-sm font-medium underline-offset-4 hover:underline" style={{ color: CLAY }}>View the collection →</a>
+            <a href={href("services")} className="text-sm font-medium underline-offset-4 hover:underline" style={{ color: CLAY }} {...editCopy(content, "edit_link", "View the collection →")} />
           </div>
           <div className="divide-y" style={{ borderColor: LINE }}>
             {products.slice(0, 6).map((s, i) => <ItemRow key={s.id} s={s} n={i + 1} />)}
@@ -387,8 +385,8 @@ export default function AbodeDesign({ site, page = "home", basePath = "" }: Pres
       {gallery.length > 0 && (
         <section className="mx-auto max-w-6xl px-6 py-24">
           <div className="text-center">
-            <Eyebrow center>Styled by us</Eyebrow>
-            <h2 style={{ ...display, color: WALNUT }} className="mx-auto mt-4 max-w-2xl text-3xl font-medium leading-snug tracking-tight sm:text-4xl">Rooms put together with care</h2>
+            <Eyebrow center><span {...editCopy(content, "lookbook_eyebrow", "Styled by us")} /></Eyebrow>
+            <h2 style={{ ...display, color: WALNUT }} className="mx-auto mt-4 max-w-2xl text-3xl font-medium leading-snug tracking-tight sm:text-4xl" {...editCopy(content, "lookbook_heading", "Rooms put together with care")} />
           </div>
           <div className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-4">
             {gallery.slice(0, 4).map((g) => (
@@ -404,16 +402,16 @@ export default function AbodeDesign({ site, page = "home", basePath = "" }: Pres
       <section style={{ background: SAGE }} className="text-[#f4f1e8]">
         <div className="mx-auto grid max-w-6xl items-center gap-8 px-6 py-16 sm:grid-cols-3">
           <div>
-            <h3 style={display} className="text-xl font-medium tracking-tight">Gift wrapping</h3>
-            <p className="mt-2 text-sm leading-relaxed text-[#f4f1e8]/80">Wrapped by hand, ready to give — just ask.</p>
+            <h3 style={display} className="text-xl font-medium tracking-tight" {...editCopy(content, "band_giftwrap_heading", "Gift wrapping")} />
+            <p className="mt-2 text-sm leading-relaxed text-[#f4f1e8]/80" {...editCopy(content, "band_giftwrap_body", "Wrapped by hand, ready to give — just ask.")} />
           </div>
           <div className="sm:border-x sm:px-8" style={{ borderColor: "#ffffff2e" }}>
-            <h3 style={display} className="text-xl font-medium tracking-tight">Interior styling</h3>
-            <p className="mt-2 text-sm leading-relaxed text-[#f4f1e8]/80">A little help choosing pieces that belong together.</p>
+            <h3 style={display} className="text-xl font-medium tracking-tight" {...editCopy(content, "band_styling_heading", "Interior styling")} />
+            <p className="mt-2 text-sm leading-relaxed text-[#f4f1e8]/80" {...editCopy(content, "band_styling_body", "A little help choosing pieces that belong together.")} />
           </div>
           <div>
-            <h3 style={display} className="text-xl font-medium tracking-tight">Independent</h3>
-            <p className="mt-2 text-sm leading-relaxed text-[#f4f1e8]/80">A small shop, every piece chosen by hand.</p>
+            <h3 style={display} className="text-xl font-medium tracking-tight" {...editCopy(content, "band_independent_heading", "Independent")} />
+            <p className="mt-2 text-sm leading-relaxed text-[#f4f1e8]/80" {...editCopy(content, "band_independent_body", "A small shop, every piece chosen by hand.")} />
           </div>
         </div>
       </section>
@@ -422,8 +420,8 @@ export default function AbodeDesign({ site, page = "home", basePath = "" }: Pres
       <section style={{ background: LINEN, borderTop: `1px solid ${LINE}`, borderBottom: `1px solid ${LINE}` }}>
         <div className="mx-auto grid max-w-6xl items-center gap-10 px-6 py-20 lg:grid-cols-2">
           <div>
-            <Eyebrow>Visit us</Eyebrow>
-            <h2 style={{ ...display, color: WALNUT }} className="mt-4 text-3xl font-medium tracking-tight sm:text-4xl">Come and have a browse</h2>
+            <Eyebrow><span {...editCopy(content, "visit_eyebrow", "Visit us")} /></Eyebrow>
+            <h2 style={{ ...display, color: WALNUT }} className="mt-4 text-3xl font-medium tracking-tight sm:text-4xl" {...editCopy(content, "visit_heading", "Come and have a browse")} />
             <div className="mt-6 space-y-2 text-[15px] leading-relaxed" style={{ color: TAUPE }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-[#C08763]">{content.phone}</a>}
