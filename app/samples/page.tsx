@@ -50,11 +50,11 @@ const POPULAR_DESIGNS: BrowserItem[] = [
 // Driving school has five bespoke designs, so it gets its own category (rather
 // than a single card buried inside Education).
 const DRIVING_DESIGNS: BrowserItem[] = [
-  { key: "driving_school", design: "ignition", label: "Ignition", sublabel: "Bright & friendly", style: "bold" },
-  { key: "driving_school", design: "clutch", label: "Clutch", sublabel: "Modern & clean", style: "minimal" },
-  { key: "driving_school", design: "roadcraft", label: "Roadcraft", sublabel: "Bold & results-led", style: "bold" },
-  { key: "driving_school", design: "milestone", label: "Milestone", sublabel: "Warm & reassuring", style: "warm" },
-  { key: "driving_school", design: "junction", label: "Junction", sublabel: "Premium intensive", style: "luxe" },
+  { key: "driving_school", design: "ignition", label: "Ignition", style: "bold", hideLabel: true },
+  { key: "driving_school", design: "clutch", label: "Clutch", style: "minimal", hideLabel: true },
+  { key: "driving_school", design: "roadcraft", label: "Roadcraft", style: "bold", hideLabel: true },
+  { key: "driving_school", design: "milestone", label: "Milestone", style: "warm", hideLabel: true },
+  { key: "driving_school", design: "junction", label: "Junction", style: "luxe", hideLabel: true },
 ];
 
 export default function SamplesIndex() {

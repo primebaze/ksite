@@ -14,6 +14,8 @@ export interface BrowserItem {
   name?: string;
   /** Short descriptor shown under the design name on the card. */
   sublabel?: string;
+  /** Suppress the visible name/sublabel caption (card shows the thumbnail only). */
+  hideLabel?: boolean;
 }
 export interface BrowserGroup {
   group: string;
@@ -96,7 +98,7 @@ export function SamplesBrowser({ groups }: { groups: BrowserGroup[] }) {
                 className="group block overflow-hidden rounded-2xl border border-ink/10 bg-ink/[0.02] transition duration-300 hover:-translate-y-1 hover:border-ink/25 hover:shadow-[0_28px_70px_-18px_rgba(0,0,0,0.75)]"
               >
                 <TemplateThumb src={`/samples/${b.key}?embed=1${extra}`} />
-                {b.design && (
+                {b.design && !b.hideLabel && (
                   <div className="flex items-baseline justify-between gap-3 px-5 pb-4 pt-3.5">
                     <span className="text-base font-semibold tracking-tight text-ink">{b.label}</span>
                     {b.sublabel && <span className="shrink-0 text-xs text-ink/45">{b.sublabel}</span>}
