@@ -1,5 +1,5 @@
 import type { TenantSite } from "@/lib/types";
-import { catalogLabelFor } from "@/lib/verticals";
+import { catalogLabelFor, archetypeFor } from "@/lib/verticals";
 import { BUSINESS_NAME_PATTERN, BUSINESS_NAME_HINT } from "@/lib/business-name";
 import { ListEditor } from "./ListEditor";
 
@@ -82,6 +82,11 @@ export function SiteEditor({ site, actions }: { site: TenantSite; actions: Edito
   const { tenant, theme, content, catalog, gallery, team } = site;
   const id = tenant.id;
   const catalogLabel = catalogLabelFor(tenant.preset);
+  // Bespoke designs bake their own palette, type and layout, so the colour /
+  // font / design-style controls do nothing for them — hide those.
+  const bespoke = Boolean(content.design);
+  // Ordering / delivery links only render on menu (restaurant) designs.
+  const showOrdering = archetypeFor(tenant.preset) === "menu";
 
   return (
     <div className="space-y-6">
@@ -92,31 +97,49 @@ export function SiteEditor({ site, actions }: { site: TenantSite; actions: Edito
           <Field label="Business name">
             <input name="business_name" defaultValue={tenant.business_name} pattern={BUSINESS_NAME_PATTERN} title={BUSINESS_NAME_HINT} className={input} />
           </Field>
-          <div className="grid gap-4 sm:grid-cols-3">
-            <Field label="Primary colour">
-              <input name="primary_color" type="color" defaultValue={theme.primary_color} className="h-11 w-full cursor-pointer rounded-xl border border-white/10 bg-transparent" />
-            </Field>
-            <Field label="Accent colour">
-              <input name="accent_color" type="color" defaultValue={theme.accent_color} className="h-11 w-full cursor-pointer rounded-xl border border-white/10 bg-transparent" />
-            </Field>
-            <Field label="Font">
-              <select name="font" defaultValue={theme.font ?? "sans-serif"} className={`${input} [&>option]:bg-neutral-900`}>
-                <option value="sans-serif">Sans-serif</option>
-                <option value="serif">Serif</option>
-              </select>
-            </Field>
-          </div>
-          <Field label="Design style">
-            <select name="style" defaultValue={content.style ?? "classic"} className={`${input} [&>option]:bg-neutral-900`}>
-              <option value="classic">Classic — balanced &amp; timeless</option>
-              <option value="editorial">Editorial — elegant, magazine</option>
-              <option value="bold">Bold — big &amp; high-energy</option>
-              <option value="minimal">Minimal — clean &amp; calm</option>
-              <option value="warm">Warm — soft &amp; welcoming</option>
-              <option value="luxe">Luxe — dark &amp; premium</option>
-            </select>
-            <p className="mt-1.5 text-xs text-white/35">Changes the whole layout &amp; hero. Preview it with “Edit site”.</p>
-          </Field>
+          {bespoke ? (
+            <>
+              {/* This design bakes its own palette, type and layout, so colour /
+                  font / style controls would do nothing — preserve the stored
+                  values via hidden inputs (so saving never wipes them) and tell
+                  the owner why the pickers aren't here. */}
+              <input type="hidden" name="primary_color" value={theme.primary_color} />
+              <input type="hidden" name="accent_color" value={theme.accent_color} />
+              <input type="hidden" name="font" value={theme.font ?? "sans-serif"} />
+              <input type="hidden" name="style" value={content.style ?? "classic"} />
+              <p className="rounded-xl border border-white/[0.08] bg-white/[0.02] px-3.5 py-3 text-xs text-white/40">
+                This design comes with its own curated colours, type and layout. To change the overall look, pick a different design from “Edit site”.
+              </p>
+            </>
+          ) : (
+            <>
+              <div className="grid gap-4 sm:grid-cols-3">
+                <Field label="Primary colour">
+                  <input name="primary_color" type="color" defaultValue={theme.primary_color} className="h-11 w-full cursor-pointer rounded-xl border border-white/10 bg-transparent" />
+                </Field>
+                <Field label="Accent colour">
+                  <input name="accent_color" type="color" defaultValue={theme.accent_color} className="h-11 w-full cursor-pointer rounded-xl border border-white/10 bg-transparent" />
+                </Field>
+                <Field label="Font">
+                  <select name="font" defaultValue={theme.font ?? "sans-serif"} className={`${input} [&>option]:bg-neutral-900`}>
+                    <option value="sans-serif">Sans-serif</option>
+                    <option value="serif">Serif</option>
+                  </select>
+                </Field>
+              </div>
+              <Field label="Design style">
+                <select name="style" defaultValue={content.style ?? "classic"} className={`${input} [&>option]:bg-neutral-900`}>
+                  <option value="classic">Classic — balanced &amp; timeless</option>
+                  <option value="editorial">Editorial — elegant, magazine</option>
+                  <option value="bold">Bold — big &amp; high-energy</option>
+                  <option value="minimal">Minimal — clean &amp; calm</option>
+                  <option value="warm">Warm — soft &amp; welcoming</option>
+                  <option value="luxe">Luxe — dark &amp; premium</option>
+                </select>
+                <p className="mt-1.5 text-xs text-white/35">Changes the whole layout &amp; hero. Preview it with “Edit site”.</p>
+              </Field>
+            </>
+          )}
           <div className="grid gap-4 sm:grid-cols-2">
             <Field label="SEO title"><input name="meta_title" defaultValue={tenant.meta_title ?? ""} className={input} /></Field>
             <Field label="SEO description"><input name="meta_description" defaultValue={tenant.meta_description ?? ""} className={input} /></Field>
@@ -163,12 +186,14 @@ export function SiteEditor({ site, actions }: { site: TenantSite; actions: Edito
               columns={[{ name: "label", label: "Label (e.g. Instagram)" }, { name: "url", label: "URL (https://…)" }]}
               initial={(content.socials ?? []).map((s) => ({ label: s.label ?? "", url: s.url ?? "" }))} />
           </div>
-          <div>
-            <h3 className="mb-3 text-sm font-medium text-white/70">Ordering &amp; delivery links</h3>
-            <ListEditor tenantId={id} action={actions.saveOrderingLinks} addLabel="+ Add link"
-              columns={[{ name: "label", label: "Label (e.g. Order on Deliveroo)" }, { name: "url", label: "URL (https://…)" }]}
-              initial={(content.ordering_links ?? []).map((o) => ({ label: o.label ?? "", url: o.url ?? "" }))} />
-          </div>
+          {showOrdering && (
+            <div>
+              <h3 className="mb-3 text-sm font-medium text-white/70">Ordering &amp; delivery links</h3>
+              <ListEditor tenantId={id} action={actions.saveOrderingLinks} addLabel="+ Add link"
+                columns={[{ name: "label", label: "Label (e.g. Order on Deliveroo)" }, { name: "url", label: "URL (https://…)" }]}
+                initial={(content.ordering_links ?? []).map((o) => ({ label: o.label ?? "", url: o.url ?? "" }))} />
+            </div>
+          )}
           <div>
             <h3 className="mb-1 text-sm font-medium text-white/70">Reviews</h3>
             <p className="mb-3 text-xs text-white/40">Real customer reviews. Leave empty to hide the reviews section on your site.</p>
