@@ -31,7 +31,8 @@ export function IndigoBooking({ tenantId, name }: { tenantId: string; name: stri
       token: String(data.get("cf-turnstile-response") ?? ""),
       fields: {
         name: data.get("cust_name") ?? "",
-        contact: data.get("contact") ?? "",
+        phone: data.get("phone") ?? "",
+        email: data.get("email") ?? "",
         date: data.get("date") ?? "",
         time: data.get("time") ?? "",
         party: data.get("party") ?? "",
@@ -66,12 +67,12 @@ export function IndigoBooking({ tenantId, name }: { tenantId: string; name: stri
         Request an appointment
       </h3>
       <p className="mt-1.5 text-sm text-neutral-500">
-        Tell us what you are after and when. We will confirm by phone or email.
+        Tell us what you are after and when. We&apos;ll email you a confirmation and be in touch to finalise.
       </p>
 
       {status === "sent" ? (
         <p className="mt-6 rounded-2xl border border-emerald-300/60 bg-emerald-50 px-5 py-5 text-sm font-medium leading-relaxed text-emerald-700">
-          Thanks, your request is in. We will be in touch shortly to confirm.
+          Thanks, your request is in. We&apos;ve sent a confirmation to your email and will be in touch shortly.
         </p>
       ) : (
         <form onSubmit={onSubmit} className="mt-6 space-y-5">
@@ -79,14 +80,18 @@ export function IndigoBooking({ tenantId, name }: { tenantId: string; name: stri
             <span className="text-xs font-semibold uppercase tracking-wider text-neutral-500">Salon</span>
             <input className={fieldCls} value={name} readOnly />
           </label>
+          <label className="block">
+            <span className="text-xs font-semibold uppercase tracking-wider text-neutral-500">Your name</span>
+            <input name="cust_name" required className={fieldCls} />
+          </label>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <label className="block">
-              <span className="text-xs font-semibold uppercase tracking-wider text-neutral-500">Your name</span>
-              <input name="cust_name" required className={fieldCls} />
+              <span className="text-xs font-semibold uppercase tracking-wider text-neutral-500">Email</span>
+              <input name="email" type="email" required autoComplete="email" placeholder="you@example.com" className={fieldCls} />
             </label>
             <label className="block">
-              <span className="text-xs font-semibold uppercase tracking-wider text-neutral-500">Phone or email</span>
-              <input name="contact" required className={fieldCls} />
+              <span className="text-xs font-semibold uppercase tracking-wider text-neutral-500">Phone</span>
+              <input name="phone" type="tel" autoComplete="tel" placeholder="Optional" className={fieldCls} />
             </label>
           </div>
           <div className="grid grid-cols-2 gap-4">

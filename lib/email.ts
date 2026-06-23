@@ -366,6 +366,28 @@ export async function sendPasswordResetEmail({ to, link }: { to: string; link: s
   });
 }
 
+// Confirmation to a CUSTOMER who just submitted a booking request on a tenant
+// site — reassures them it landed. Sent on the business's behalf (branded with
+// the business name), best-effort so it never blocks the booking.
+export async function sendBookingReceivedEmail({ to, businessName }: { to: string; businessName: string }) {
+  const safeName = escapeHtml(businessName);
+  await sendTransactionalEmail({
+    to: [to],
+    subject: `We've received your booking — ${businessName}`,
+    html: `<!doctype html><html><body style="margin:0;background:#000;color:#fff;font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#000;padding:40px 16px;"><tr><td align="center">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:520px;background:#0a0a0a;border:1px solid rgba(16,185,129,0.35);border-radius:20px;padding:32px;"><tr><td>
+          <div style="font-weight:700;font-size:16px;color:#fff;">${safeName}</div>
+          <p style="margin:28px 0 0;color:#34d399;font-size:11px;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;">Booking received</p>
+          <h1 style="font-size:28px;line-height:1.15;font-weight:650;margin:12px 0 12px;color:#fff;">Thanks, we've got your request</h1>
+          <p style="font-size:14px;line-height:1.65;color:rgba(255,255,255,0.62);margin:0 0 8px;">We've received your booking request and can't wait to see you. We'll be in touch shortly to confirm the details.</p>
+          <p style="font-size:13px;line-height:1.6;color:rgba(255,255,255,0.38);margin:26px 0 0;">If you didn't make this request, you can safely ignore this email.</p>
+        </td></tr></table>
+        <p style="font-size:11px;color:rgba(255,255,255,0.25);margin:20px 0 0;">Sent by ${safeName} via Kovasite</p>
+      </td></tr></table></body></html>`,
+  });
+}
+
 // Ask a client to complete identity / business verification.
 export async function sendKycRequestEmail({ to, businessName }: { to: string; businessName: string }) {
   const base = (process.env.NEXT_PUBLIC_SITE_URL || "https://kovasite.com").replace(/\/$/, "");

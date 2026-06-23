@@ -1,5 +1,5 @@
 import { getServiceClient } from "@/lib/supabase";
-import { sendFormSubmission } from "@/lib/email";
+import { sendFormSubmission, sendBookingReceivedEmail } from "@/lib/email";
 import { rateLimit, clientIp } from "@/lib/rate-limit";
 import { verifyTurnstile } from "@/lib/turnstile";
 
@@ -12,6 +12,9 @@ export const runtime = "nodejs";
 const FIELDS: Record<"booking" | "contact", { key: string; label: string; contact?: boolean }[]> = {
   booking: [
     { key: "name", label: "Name" },
+    { key: "email", label: "Email", contact: true },
+    { key: "phone", label: "Phone" },
+    // Legacy single field (older widgets that haven't split phone/email yet).
     { key: "contact", label: "Phone / email", contact: true },
     { key: "date", label: "Date" },
     { key: "time", label: "Time" },
@@ -116,6 +119,20 @@ export async function POST(req: Request) {
 
   if (!stored && !emailed) {
     return Response.json({ ok: false, error: "Couldn't send right now. Please try again." }, { status: 500 });
+  }
+
+  // Acknowledge the CUSTOMER by email when we have a valid address (a booking's
+  // own email field, or a legacy "contact" that happens to be an email).
+  if (kind === "booking") {
+    const emailRe = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+    const candidate = clean(fields.email) || clean(fields.contact);
+    if (emailRe.test(candidate)) {
+      try {
+        await sendBookingReceivedEmail({ to: candidate, businessName: tenant.business_name ?? "the team" });
+      } catch (error) {
+        console.error("booking confirmation send failed", error);
+      }
+    }
   }
 
   return Response.json({ ok: true });
