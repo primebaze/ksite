@@ -1,6 +1,7 @@
 import { getServiceClient } from "@/lib/supabase";
 import { sendFormSubmission } from "@/lib/email";
 import { rateLimit, clientIp } from "@/lib/rate-limit";
+import { verifyTurnstile } from "@/lib/turnstile";
 
 export const runtime = "nodejs";
 
@@ -49,6 +50,14 @@ export async function POST(req: Request) {
 
   // Sample / preview sites have no real owner — show the success state without sending.
   if (tenantId.startsWith("sample-")) return Response.json({ ok: true, demo: true });
+
+  // Bot check (Cloudflare Turnstile). This is what stops the lead-gen / SEO
+  // form spam a honeypot can't: a targeted bot leaves the honeypot empty.
+  // Skips automatically when no Turnstile secret is configured.
+  const token = typeof body.token === "string" ? body.token : "";
+  if (!(await verifyTurnstile(token))) {
+    return Response.json({ ok: false, error: "Couldn't verify you're human. Please try again." }, { status: 400 });
+  }
 
   const fields = (body.fields ?? {}) as Record<string, unknown>;
   const lines = FIELDS[kind]

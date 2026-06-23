@@ -1,6 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { Turnstile } from "./Turnstile";
+
+const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
 interface Field {
   key: string;
@@ -87,6 +90,8 @@ function LeadForm({
       tenantId,
       kind,
       fields: Object.fromEntries(fields.map((f) => [f.key, data.get(f.key) ?? ""])),
+      // Cloudflare Turnstile token (the widget injects this hidden field).
+      token: String(data.get("cf-turnstile-response") ?? ""),
     };
     setStatus("sending");
     setError("");
@@ -138,6 +143,12 @@ function LeadForm({
           </div>
           {/* honeypot */}
           <input type="text" name="company" tabIndex={-1} autoComplete="off" className="absolute left-[-9999px] h-0 w-0 opacity-0" aria-hidden />
+          {/* Bot check — stops form spam. Renders nothing if no site key is set. */}
+          {TURNSTILE_SITE_KEY && (
+            <div className="mt-4">
+              <Turnstile siteKey={TURNSTILE_SITE_KEY} />
+            </div>
+          )}
           {status === "error" && <p className="mt-3 text-sm text-red-600">{error}</p>}
           <button
             type="submit"

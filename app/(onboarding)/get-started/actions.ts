@@ -7,27 +7,10 @@ import { isVertical } from "@/lib/verticals";
 import { buildFor } from "@/lib/builds";
 import { moderate } from "@/lib/moderation";
 import { rateLimit, ipFromHeaders } from "@/lib/rate-limit";
+import { verifyTurnstile } from "@/lib/turnstile";
 
 function err(msg: string): never {
   redirect(`/get-started?error=${encodeURIComponent(msg)}`);
-}
-
-// Verify the Cloudflare Turnstile token (skips if no secret configured).
-async function verifyTurnstile(token: string): Promise<boolean> {
-  const secret = process.env.TURNSTILE_SECRET_KEY;
-  if (!secret) return true;
-  if (!token) return false;
-  try {
-    const r = await fetch("https://challenges.cloudflare.com/turnstile/v0/siteverify", {
-      method: "POST",
-      headers: { "content-type": "application/x-www-form-urlencoded" },
-      body: new URLSearchParams({ secret, response: token }),
-    });
-    const data = (await r.json()) as { success?: boolean };
-    return data.success === true;
-  } catch {
-    return false;
-  }
 }
 
 function slugify(s: string): string {
