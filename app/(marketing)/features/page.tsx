@@ -4,7 +4,7 @@ import { PageHero } from "@/components/PageHero";
 import { CTASection } from "@/components/CTASection";
 import { FeatureIcon } from "@/components/FeatureIcon";
 import { Reveal } from "@/components/motion/Reveal";
-import { DesignWindow, ShieldWindow, BookingWindow, SpeedWindow } from "@/components/FeatureBento";
+import { DesignWindow, ShieldWindow, BookingWindow, SpeedWindow } from "@/components/feature-windows";
 import { FEATURES } from "@/lib/marketing";
 
 export const metadata: Metadata = {

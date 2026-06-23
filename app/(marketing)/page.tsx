@@ -3,8 +3,8 @@ import { Reveal } from "@/components/motion/Reveal";
 import { BusinessesRotator } from "@/components/motion/BusinessesRotator";
 import { HeroShowcase } from "@/components/HeroShowcase";
 import { ScrollZoom } from "@/components/ScrollZoom";
-import { LiveExamples } from "@/components/LiveExamples";
-import { FeatureBento } from "@/components/FeatureBento";
+import { LazyLiveExamples } from "@/components/LazyLiveExamples";
+import { LazyFeatureBento } from "@/components/LazyFeatureBento";
 import { ROTATING_WORDS } from "@/lib/marketing";
 import { JsonLd } from "@/components/JsonLd";
 import { SITE_URL, SITE_NAME, SITE_DESCRIPTION } from "@/lib/seo";
@@ -97,12 +97,12 @@ export default function Home() {
           </div>
         </Reveal>
         <Reveal delay={0.06}>
-          <FeatureBento />
+          <LazyFeatureBento />
         </Reveal>
       </section>
 
       {/* Live examples: cards part on scroll to reveal the pricing panel */}
-      <LiveExamples />
+      <LazyLiveExamples />
 
       {/* Final CTA — the section above drapes its rounded edge over this one */}
       <section className="relative -mt-12 bg-panel sm:-mt-16">
