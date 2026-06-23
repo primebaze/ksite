@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { PetHeader, type PetHeaderTheme, type PetLink } from "../PetChrome";
 
@@ -132,13 +132,13 @@ export default function HeelDesign({ site, page = "home", basePath = "" }: Prese
           )}
         </div>
         <div>
-          <h4 className="text-[11px] font-bold uppercase tracking-[0.2em]" style={{ color: AMBER }}>Explore</h4>
+          <h4 className="text-[11px] font-bold uppercase tracking-[0.2em]" style={{ color: AMBER }} {...editCopy(content, "footer_explore", "Explore")} />
           <ul className="mt-4 space-y-2.5 text-sm text-white/75">
             {nav.map((l) => <li key={l.href}><a href={l.href} className="transition hover:text-white">{l.label}</a></li>)}
           </ul>
         </div>
         <div>
-          <h4 className="text-[11px] font-bold uppercase tracking-[0.2em]" style={{ color: AMBER }}>Get in touch</h4>
+          <h4 className="text-[11px] font-bold uppercase tracking-[0.2em]" style={{ color: AMBER }} {...editCopy(content, "footer_contact", "Get in touch")} />
           <div className="mt-4 space-y-2.5 text-sm text-white/75">
             {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -146,7 +146,7 @@ export default function HeelDesign({ site, page = "home", basePath = "" }: Prese
           </div>
         </div>
         <div>
-          <h4 className="text-[11px] font-bold uppercase tracking-[0.2em]" style={{ color: AMBER }}>Availability</h4>
+          <h4 className="text-[11px] font-bold uppercase tracking-[0.2em]" style={{ color: AMBER }} {...editCopy(content, "footer_availability", "Availability")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-4 space-y-2 text-sm text-white/75">
               {content.hours.map((h, i) => (
@@ -158,7 +158,7 @@ export default function HeelDesign({ site, page = "home", basePath = "" }: Prese
       </div>
       <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 border-t px-8 py-6 text-xs text-white/45 sm:flex-row" style={{ borderColor: "rgba(255,255,255,0.12)" }}>
         <p>© {new Date().getFullYear()} {name}. Force-free, results-led training.</p>
-        <a href={href("contact")} className="transition hover:text-white">Book a discovery call</a>
+        <a href={href("contact")} className="transition hover:text-white" {...editCopy(content, "footer_cta", "Book a discovery call")} />
       </div>
     </footer>
   );
@@ -276,7 +276,7 @@ export default function HeelDesign({ site, page = "home", basePath = "" }: Prese
         {banner("Get started", "Book a discovery call", "Tell us about your dog and what you're working on — we'll come back with a plan and the next step.")}
         <section className="mx-auto grid max-w-6xl gap-12 px-6 py-20 sm:px-8 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={{ ...display, color: NAVY }} className="text-2xl font-extrabold tracking-tight">Where we work</h2>
+            <h2 style={{ ...display, color: NAVY }} className="text-2xl font-extrabold tracking-tight" {...editCopy(content, "contact_findus_heading", "Where we work")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: BODY }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block font-semibold transition hover:opacity-70" style={{ color: NAVY }}>{content.phone}</a>}
@@ -290,7 +290,7 @@ export default function HeelDesign({ site, page = "home", basePath = "" }: Prese
               </ul>
             )}
             {content.map_url && (
-              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex px-7 py-3 text-sm font-bold transition hover:opacity-90" style={{ background: NAVY, color: "#ffffff", borderRadius: "0.4rem" }}>Get directions</a>
+              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex px-7 py-3 text-sm font-bold transition hover:opacity-90" style={{ background: NAVY, color: "#ffffff", borderRadius: "0.4rem" }} {...editCopy(content, "directions_cta", "Get directions")} />
             )}
           </div>
           <div>
@@ -327,16 +327,14 @@ export default function HeelDesign({ site, page = "home", basePath = "" }: Prese
         <div className="relative mx-auto max-w-6xl px-6 pb-20 pt-36 sm:px-8 sm:pt-44 lg:pb-28">
           <div className="max-w-2xl">
             <Kicker on="dark">A calmer, happier dog</Kicker>
-            <h1 style={{ ...display, color: "#ffffff" }} className="mt-6 text-5xl font-extrabold leading-[0.98] tracking-tight sm:text-7xl">
-              Training that sticks.
-            </h1>
+            <h1 style={{ ...display, color: "#ffffff" }} className="mt-6 text-5xl font-extrabold leading-[0.98] tracking-tight sm:text-7xl" {...editCopy(content, "hero_headline", "Training that sticks.")} />
             <p className="mt-5 max-w-xl text-[17px] leading-relaxed text-white/75">
               <span data-edit="content.tagline">{content.tagline || `Force-free, results-led training and behaviour support from ${name}. Real change you can keep up at home.`}</span>
             </p>
             <div className="mt-9 flex flex-wrap gap-3">
               <a href={book} className="inline-flex px-8 py-4 text-sm font-bold shadow-lg transition hover:opacity-90" style={{ background: AMBER, color: NAVY, borderRadius: "0.4rem" }}>{cta.label}</a>
               {groups.length > 0 && (
-                <a href={href("services")} className="inline-flex px-8 py-4 text-sm font-bold text-white transition hover:bg-white/10" style={{ border: "1px solid rgba(255,255,255,0.35)", borderRadius: "0.4rem" }}>What we help with</a>
+                <a href={href("services")} className="inline-flex px-8 py-4 text-sm font-bold text-white transition hover:bg-white/10" style={{ border: "1px solid rgba(255,255,255,0.35)", borderRadius: "0.4rem" }} {...editCopy(content, "hero_services_cta", "What we help with")} />
               )}
             </div>
             <div className="mt-10 flex flex-wrap items-center gap-x-7 gap-y-3 text-[12px] font-semibold uppercase tracking-[0.14em] text-white/55">
@@ -369,8 +367,8 @@ export default function HeelDesign({ site, page = "home", basePath = "" }: Prese
         <section className="mx-auto max-w-3xl px-6 py-20 sm:px-8">
           <div className="text-center">
             <div className="flex justify-center"><Kicker>What we help with</Kicker></div>
-            <h2 style={{ ...display, color: NAVY }} className="mt-5 text-3xl font-extrabold tracking-tight sm:text-4xl">Every dog, every challenge</h2>
-            <p className="mx-auto mt-3 max-w-md text-[15px] leading-relaxed" style={{ color: BODY }}>Puppies, recall, reactivity and the tricky stuff — a clear plan for each.</p>
+            <h2 style={{ ...display, color: NAVY }} className="mt-5 text-3xl font-extrabold tracking-tight sm:text-4xl" {...editCopy(content, "home_help_heading", "Every dog, every challenge")} />
+            <p className="mx-auto mt-3 max-w-md text-[15px] leading-relaxed" style={{ color: BODY }} {...editCopy(content, "home_help_sub", "Puppies, recall, reactivity and the tricky stuff — a clear plan for each.")} />
           </div>
           <ul className="mt-12 divide-y" style={{ borderColor: HAIR }}>
             {featured.map((item) => (
@@ -384,7 +382,7 @@ export default function HeelDesign({ site, page = "home", basePath = "" }: Prese
             ))}
           </ul>
           <div className="mt-12 text-center">
-            <a href={href("services")} className="inline-flex px-9 py-4 text-sm font-bold text-white transition hover:opacity-90" style={{ background: NAVY, borderRadius: "0.4rem" }}>See every programme</a>
+            <a href={href("services")} className="inline-flex px-9 py-4 text-sm font-bold text-white transition hover:opacity-90" style={{ background: NAVY, borderRadius: "0.4rem" }} {...editCopy(content, "home_help_cta", "See every programme")} />
           </div>
         </section>
       ) : (
@@ -408,7 +406,7 @@ export default function HeelDesign({ site, page = "home", basePath = "" }: Prese
         <div className="relative mx-auto max-w-6xl px-6 py-20 sm:px-8">
           <div className="text-center">
             <div className="flex justify-center"><Kicker on="dark">How it works</Kicker></div>
-            <h2 style={{ ...display, color: "#ffffff" }} className="mt-5 text-3xl font-extrabold tracking-tight sm:text-4xl">Three steps to calmer</h2>
+            <h2 style={{ ...display, color: "#ffffff" }} className="mt-5 text-3xl font-extrabold tracking-tight sm:text-4xl" {...editCopy(content, "home_steps_heading", "Three steps to calmer")} />
           </div>
           <div className="mt-12 grid gap-5 sm:grid-cols-3">
             {[
@@ -443,7 +441,7 @@ export default function HeelDesign({ site, page = "home", basePath = "" }: Prese
             </div>
             <div>
               <Kicker>About</Kicker>
-              <h2 style={{ ...display, color: NAVY }} className="mt-5 text-3xl font-extrabold tracking-tight sm:text-4xl">Expert help, kindly given</h2>
+              <h2 style={{ ...display, color: NAVY }} className="mt-5 text-3xl font-extrabold tracking-tight sm:text-4xl" {...editCopy(content, "home_about_heading", "Expert help, kindly given")} />
               <p data-edit="content.about" className="mt-5 text-[16px] leading-[1.9]" style={{ color: BODY }}>{content.about}</p>
               <a href={href("about")} className="mt-6 inline-flex items-center gap-2 text-sm font-bold" style={{ color: AMBER }}>More about us →</a>
             </div>
@@ -456,7 +454,7 @@ export default function HeelDesign({ site, page = "home", basePath = "" }: Prese
         <div className="mx-auto max-w-5xl px-6 py-20 sm:px-8">
           <div className="text-center">
             <div className="flex justify-center"><Kicker>The results</Kicker></div>
-            <h2 style={{ ...display, color: NAVY }} className="mt-5 text-3xl font-extrabold tracking-tight sm:text-4xl">What owners tell us</h2>
+            <h2 style={{ ...display, color: NAVY }} className="mt-5 text-3xl font-extrabold tracking-tight sm:text-4xl" {...editCopy(content, "home_results_heading", "What owners tell us")} />
           </div>
           <div className="mt-12 grid gap-5 sm:grid-cols-3">
             {[
@@ -484,7 +482,7 @@ export default function HeelDesign({ site, page = "home", basePath = "" }: Prese
           <div className="mx-auto max-w-6xl px-6 py-20 sm:px-8">
             <div className="text-center">
               <div className="flex justify-center"><Kicker>Results</Kicker></div>
-              <h2 style={{ ...display, color: NAVY }} className="mt-5 text-3xl font-extrabold tracking-tight sm:text-4xl">Happy dogs, happy homes</h2>
+              <h2 style={{ ...display, color: NAVY }} className="mt-5 text-3xl font-extrabold tracking-tight sm:text-4xl" {...editCopy(content, "home_gallery_heading", "Happy dogs, happy homes")} />
             </div>
             <div className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-4">
               {gallery.slice(0, 4).map((g) => (
@@ -493,7 +491,7 @@ export default function HeelDesign({ site, page = "home", basePath = "" }: Prese
               ))}
             </div>
             <div className="mt-10 text-center">
-              <a href={href("gallery")} className="inline-flex px-9 py-4 text-sm font-bold text-white transition hover:opacity-90" style={{ background: NAVY, borderRadius: "0.4rem" }}>See more results</a>
+              <a href={href("gallery")} className="inline-flex px-9 py-4 text-sm font-bold text-white transition hover:opacity-90" style={{ background: NAVY, borderRadius: "0.4rem" }} {...editCopy(content, "home_gallery_cta", "See more results")} />
             </div>
           </div>
         </section>
@@ -503,8 +501,8 @@ export default function HeelDesign({ site, page = "home", basePath = "" }: Prese
       <section className="mx-auto max-w-4xl px-6 py-20 sm:px-8">
         <div className="rounded-sm px-8 py-14 text-center sm:px-14" style={{ background: NAVY, border: `1px solid ${HAIR}` }}>
           <Mark className="mx-auto h-10 w-10" color={AMBER} ink="#ffffff" />
-          <h2 style={{ ...display, color: "#ffffff" }} className="mt-5 text-3xl font-extrabold tracking-tight sm:text-4xl">Book your free discovery call</h2>
-          <p className="mx-auto mt-4 max-w-md text-[15px] leading-relaxed text-white/70">A relaxed chat about your dog, no pressure — we'll tell you exactly how we'd help.</p>
+          <h2 style={{ ...display, color: "#ffffff" }} className="mt-5 text-3xl font-extrabold tracking-tight sm:text-4xl" {...editCopy(content, "cta_heading", "Book your free discovery call")} />
+          <p className="mx-auto mt-4 max-w-md text-[15px] leading-relaxed text-white/70" {...editCopy(content, "cta_sub", "A relaxed chat about your dog, no pressure — we'll tell you exactly how we'd help.")} />
           <a href={book} className="mt-8 inline-flex px-9 py-4 text-sm font-bold transition hover:opacity-90" style={{ background: AMBER, color: NAVY, borderRadius: "0.4rem" }}>{cta.label}</a>
         </div>
       </section>

@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { EduMobileNav } from "./EduMobileNav";
 
@@ -93,7 +93,7 @@ export default function ConservatoireDesign({ site, page = "home", basePath = ""
         </div>
         {(content.address || content.phone || content.email) && (
           <div>
-            <h4 style={serif} className="text-lg">Contact</h4>
+            <h4 style={serif} className="text-lg" {...editCopy(content, "footer_contact_heading", "Contact")} />
             <div className="mt-4 space-y-2 text-sm text-white/70">
               {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -103,7 +103,7 @@ export default function ConservatoireDesign({ site, page = "home", basePath = ""
         )}
         {content.hours && content.hours.length > 0 && (
           <div>
-            <h4 style={serif} className="text-lg">Studio hours</h4>
+            <h4 style={serif} className="text-lg" {...editCopy(content, "footer_hours_heading", "Studio hours")} />
             <ul className="mt-4 space-y-2 text-sm text-white/70">
               {content.hours.map((h, i) => (
                 <li key={i} className="flex justify-between gap-5"><span data-edit={`hours:${i}:day`}>{h.day}</span><span data-edit={`hours:${i}:open`} className="text-white/45">{h.open}</span></li>
@@ -112,7 +112,7 @@ export default function ConservatoireDesign({ site, page = "home", basePath = ""
           </div>
         )}
         <div>
-          <h4 style={serif} className="text-lg">Explore</h4>
+          <h4 style={serif} className="text-lg" {...editCopy(content, "footer_explore_heading", "Explore")} />
           <ul className="mt-4 space-y-2 text-sm text-white/70">
             {nav.map((l) => (
               <li key={l.href}><a href={l.href} className="transition hover:text-white">{l.label}</a></li>
@@ -259,7 +259,7 @@ export default function ConservatoireDesign({ site, page = "home", basePath = ""
         {banner("Get in touch", "Book a trial lesson", "Tell us a little about the student and the instrument or discipline, and we will arrange a trial.")}
         <section className="mx-auto grid max-w-5xl gap-12 px-6 py-16 sm:py-20 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={{ ...serif, color: INK }} className="text-2xl font-medium">Find us</h2>
+            <h2 style={{ ...serif, color: INK }} className="text-2xl font-medium" {...editCopy(content, "contact_panel_heading", "Find us")} />
             <Rule />
             <div className="mt-5 space-y-3 text-[15px] leading-relaxed" style={{ color: MUTE }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
@@ -307,7 +307,7 @@ export default function ConservatoireDesign({ site, page = "home", basePath = ""
         )}
         <div className="pointer-events-none absolute inset-0" style={{ background: "linear-gradient(to top, rgba(28,16,26,0.7), rgba(28,16,26,0.35))" }} />
         <div className="relative z-10 mx-auto max-w-3xl px-6 py-28 text-center text-white">
-          <Kicker center>Music &amp; arts tuition</Kicker>
+          <Kicker center><span {...editCopy(content, "hero_kicker", "Music & arts tuition")} /></Kicker>
           <Rule center />
           <h1 style={serif} className="mt-6 text-5xl font-medium leading-[1.05] [text-shadow:0_2px_24px_rgba(0,0,0,0.45)] sm:text-7xl">
             <span data-edit="tenant.business_name">{name}</span>
@@ -316,7 +316,7 @@ export default function ConservatoireDesign({ site, page = "home", basePath = ""
           <div className="mt-9 flex flex-wrap justify-center gap-3">
             <a href={cta} className="px-9 py-4 text-[12px] font-semibold uppercase tracking-[0.18em] transition hover:opacity-90" style={{ background: GOLD, color: "#231019" }}>{ctaLabel}</a>
             {groups.length > 0 && (
-              <a href={href("services")} className="px-9 py-4 text-[12px] font-semibold uppercase tracking-[0.18em] text-white backdrop-blur-sm transition hover:bg-white hover:text-[#231019]" style={{ border: "1px solid rgba(255,255,255,0.5)" }}>Explore lessons</a>
+              <a href={href("services")} className="px-9 py-4 text-[12px] font-semibold uppercase tracking-[0.18em] text-white backdrop-blur-sm transition hover:bg-white hover:text-[#231019]" style={{ border: "1px solid rgba(255,255,255,0.5)" }} {...editCopy(content, "hero_services_cta", "Explore lessons")} />
             )}
           </div>
         </div>
@@ -335,9 +335,9 @@ export default function ConservatoireDesign({ site, page = "home", basePath = ""
             <span className="pointer-events-none absolute -bottom-3 -right-3 h-20 w-20 border-b border-r" style={{ borderColor: GOLD }} />
           </div>
           <div>
-            <Kicker>Our ethos</Kicker>
+            <Kicker><span {...editCopy(content, "ethos_kicker", "Our ethos")} /></Kicker>
             <Rule />
-            <h2 style={{ ...serif, color: INK }} className="mt-5 text-4xl font-medium leading-tight sm:text-5xl">Where discipline meets delight</h2>
+            <h2 style={{ ...serif, color: INK }} className="mt-5 text-4xl font-medium leading-tight sm:text-5xl" {...editCopy(content, "ethos_heading", "Where discipline meets delight")} />
             {content.about && <p data-edit="content.about" className="mt-6 text-[16px] leading-[1.9]" style={{ color: MUTE }}>{content.about}</p>}
             {content.about && (
               <a href={href("about")} className="mt-7 inline-flex items-center gap-2 text-[12px] font-semibold uppercase tracking-[0.16em]" style={{ color: GOLD }}>Read more →</a>
@@ -350,7 +350,7 @@ export default function ConservatoireDesign({ site, page = "home", basePath = ""
       <section style={{ background: GOLD_SOFT, borderTop: `1px solid ${GOLD}33`, borderBottom: `1px solid ${GOLD}33` }}>
         <div className="mx-auto max-w-6xl px-6 py-20">
           <div className="text-center">
-            <Kicker center>What we offer</Kicker>
+            <Kicker center><span {...editCopy(content, "offer_kicker", "What we offer")} /></Kicker>
             <Rule center />
           </div>
           <div className="mt-10 grid gap-6 sm:grid-cols-3">
@@ -373,9 +373,9 @@ export default function ConservatoireDesign({ site, page = "home", basePath = ""
       {featuredCount > 0 && (
         <section className="mx-auto max-w-3xl px-6 py-24">
           <div className="text-center">
-            <Kicker center>Lessons</Kicker>
+            <Kicker center><span {...editCopy(content, "lessons_kicker", "Lessons")} /></Kicker>
             <Rule center />
-            <h2 style={{ ...serif, color: INK }} className="mt-5 text-4xl font-medium sm:text-5xl">A repertoire of lessons</h2>
+            <h2 style={{ ...serif, color: INK }} className="mt-5 text-4xl font-medium sm:text-5xl" {...editCopy(content, "lessons_heading", "A repertoire of lessons")} />
           </div>
           <div className="relative mt-12 px-6 py-10 sm:px-10" style={{ background: PAPER, border: `1px solid ${GOLD}40` }}>
             <span className="pointer-events-none absolute left-3 top-3 h-6 w-6 border-l border-t" style={{ borderColor: GOLD }} />
@@ -383,7 +383,7 @@ export default function ConservatoireDesign({ site, page = "home", basePath = ""
             {lessonList(6)}
           </div>
           <div className="mt-12 text-center">
-            <a href={href("services")} className="inline-flex px-9 py-3.5 text-[12px] font-semibold uppercase tracking-[0.18em] transition hover:bg-[#3a2436] hover:text-white" style={{ border: `1px solid ${AUBERGINE}`, color: AUBERGINE }}>View all lessons</a>
+            <a href={href("services")} className="inline-flex px-9 py-3.5 text-[12px] font-semibold uppercase tracking-[0.18em] transition hover:bg-[#3a2436] hover:text-white" style={{ border: `1px solid ${AUBERGINE}`, color: AUBERGINE }} {...editCopy(content, "lessons_link", "View all lessons")} />
           </div>
         </section>
       )}
@@ -392,9 +392,9 @@ export default function ConservatoireDesign({ site, page = "home", basePath = ""
       {gallery.length > 0 && (
         <section className="py-20">
           <div className="mx-auto max-w-6xl px-6 text-center">
-            <Kicker center>Performances</Kicker>
+            <Kicker center><span {...editCopy(content, "gallery_kicker", "Performances")} /></Kicker>
             <Rule center />
-            <h2 style={{ ...serif, color: INK }} className="mx-auto mt-5 max-w-2xl text-3xl font-medium leading-snug sm:text-4xl">Moments from our recitals and studios.</h2>
+            <h2 style={{ ...serif, color: INK }} className="mx-auto mt-5 max-w-2xl text-3xl font-medium leading-snug sm:text-4xl" {...editCopy(content, "gallery_heading", "Moments from our recitals and studios.")} />
           </div>
           <div className="mx-auto mt-12 grid max-w-6xl grid-cols-2 gap-2 px-4 sm:grid-cols-4">
             {gallery.slice(0, 4).map((g) => (
@@ -403,7 +403,7 @@ export default function ConservatoireDesign({ site, page = "home", basePath = ""
             ))}
           </div>
           <div className="mt-10 text-center">
-            <a href={href("gallery")} className="inline-flex px-9 py-3.5 text-[12px] font-semibold uppercase tracking-[0.18em] transition hover:bg-[#3a2436] hover:text-white" style={{ border: `1px solid ${AUBERGINE}`, color: AUBERGINE }}>View gallery</a>
+            <a href={href("gallery")} className="inline-flex px-9 py-3.5 text-[12px] font-semibold uppercase tracking-[0.18em] transition hover:bg-[#3a2436] hover:text-white" style={{ border: `1px solid ${AUBERGINE}`, color: AUBERGINE }} {...editCopy(content, "gallery_link", "View gallery")} />
           </div>
         </section>
       )}
@@ -411,7 +411,7 @@ export default function ConservatoireDesign({ site, page = "home", basePath = ""
       {/* closing CTA */}
       <section style={{ background: AUBERGINE }} className="text-white">
         <div className="mx-auto max-w-2xl px-6 py-20 text-center">
-          <h2 style={serif} className="text-3xl font-medium sm:text-4xl">Begin your journey</h2>
+          <h2 style={serif} className="text-3xl font-medium sm:text-4xl" {...editCopy(content, "cta_heading", "Begin your journey")} />
           <p className="mx-auto mt-5 max-w-md text-[15px] leading-relaxed text-white/70">Book a relaxed trial lesson and discover the joy of learning with us.</p>
           <a href={cta} className="mt-8 inline-flex px-10 py-4 text-[12px] font-semibold uppercase tracking-[0.18em] transition hover:opacity-90" style={{ background: GOLD, color: "#231019" }}>{ctaLabel}</a>
         </div>

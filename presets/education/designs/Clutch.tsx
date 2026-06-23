@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { EduMobileNav } from "./EduMobileNav";
 
@@ -115,7 +115,7 @@ export default function ClutchDesign({ site, page = "home", basePath = "" }: Pre
         </div>
         {(content.address || content.phone || content.email) && (
           <div>
-            <h4 className="text-xs font-extrabold uppercase tracking-[0.16em] text-white/40">Get in touch</h4>
+            <h4 className="text-xs font-extrabold uppercase tracking-[0.16em] text-white/40" {...editCopy(content, "footer_contact_heading", "Get in touch")} />
             <div className="mt-4 space-y-2 text-sm text-white/75">
               {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -125,7 +125,7 @@ export default function ClutchDesign({ site, page = "home", basePath = "" }: Pre
         )}
         {content.hours && content.hours.length > 0 && (
           <div>
-            <h4 className="text-xs font-extrabold uppercase tracking-[0.16em] text-white/40">Hours</h4>
+            <h4 className="text-xs font-extrabold uppercase tracking-[0.16em] text-white/40" {...editCopy(content, "footer_hours_heading", "Hours")} />
             <ul className="mt-4 space-y-2 text-sm text-white/75">
               {content.hours.map((h, i) => (
                 <li key={i} className="flex justify-between gap-5"><span data-edit={`hours:${i}:day`}>{h.day}</span><span data-edit={`hours:${i}:open`} className="text-white/45">{h.open}</span></li>
@@ -134,7 +134,7 @@ export default function ClutchDesign({ site, page = "home", basePath = "" }: Pre
           </div>
         )}
         <div>
-          <h4 className="text-xs font-extrabold uppercase tracking-[0.16em] text-white/40">Explore</h4>
+          <h4 className="text-xs font-extrabold uppercase tracking-[0.16em] text-white/40" {...editCopy(content, "footer_explore_heading", "Explore")} />
           <ul className="mt-4 space-y-2 text-sm text-white/75">
             {nav.map((l) => (
               <li key={l.href}><a href={l.href} className="transition hover:text-white">{l.label}</a></li>
@@ -273,7 +273,7 @@ export default function ClutchDesign({ site, page = "home", basePath = "" }: Pre
         {banner("Contact", "Book your first lesson", "Tell us where you are and when suits — we will get you booked in and out on the road.")}
         <section className="mx-auto grid max-w-5xl gap-12 px-6 py-16 lg:grid-cols-[1fr_1.1fr]">
           <div className="rounded-3xl p-8" style={{ background: "#e3f6f4" }}>
-            <h2 className="text-xl font-extrabold tracking-tight" style={{ color: INK }}>Get in touch</h2>
+            <h2 className="text-xl font-extrabold tracking-tight" style={{ color: INK }} {...editCopy(content, "contact_panel_heading", "Get in touch")} />
             <div className="mt-5 space-y-3 text-[15px] leading-relaxed" style={{ color: MUTE }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block font-extrabold transition hover:opacity-70" style={{ color: TEAL }}>{content.phone}</a>}
@@ -324,7 +324,7 @@ export default function ClutchDesign({ site, page = "home", basePath = "" }: Pre
         </div>
         <div className="relative mx-auto grid max-w-6xl items-center gap-10 px-6 pb-16 pt-28 lg:grid-cols-2 lg:gap-14 lg:pb-24 lg:pt-36">
           <div>
-            <p className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-[12px] font-extrabold uppercase tracking-[0.14em]" style={{ background: LIME, color: INK }}>Driving lessons made easy</p>
+            <p className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-[12px] font-extrabold uppercase tracking-[0.14em]" style={{ background: LIME, color: INK }} {...editCopy(content, "hero_eyebrow", "Driving lessons made easy")} />
             <h1 className="mt-5 text-5xl font-extrabold leading-[1.02] tracking-tight text-white sm:text-6xl">
               Pass with <span style={{ color: LIME }}>confidence</span>
             </h1>
@@ -365,8 +365,8 @@ export default function ClutchDesign({ site, page = "home", basePath = "" }: Pre
       {/* how it works — Book → Learn → Pass route band */}
       <section className="mx-auto max-w-6xl px-6 py-20">
         <div className="max-w-2xl">
-          <p className="text-[12px] font-extrabold uppercase tracking-[0.18em]" style={{ color: TEAL }}>How it works</p>
-          <h2 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl" style={{ color: INK }}>Book → Learn → Pass</h2>
+          <p className="text-[12px] font-extrabold uppercase tracking-[0.18em]" style={{ color: TEAL }} {...editCopy(content, "how_eyebrow", "How it works")} />
+          <h2 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl" style={{ color: INK }} {...editCopy(content, "how_heading", "Book → Learn → Pass")} />
         </div>
         <div className="relative mt-12">
           {/* connecting route line */}
@@ -391,7 +391,7 @@ export default function ClutchDesign({ site, page = "home", basePath = "" }: Pre
       {content.about && (
         <section style={{ background: "#e3f6f4" }}>
           <div className="mx-auto max-w-4xl px-6 py-20">
-            <p className="text-[12px] font-extrabold uppercase tracking-[0.18em]" style={{ color: TEAL }}>About us</p>
+            <p className="text-[12px] font-extrabold uppercase tracking-[0.18em]" style={{ color: TEAL }} {...editCopy(content, "about_eyebrow", "About us")} />
             <p data-edit="content.about" className="mt-5 text-2xl font-bold leading-[1.5] tracking-tight sm:text-[1.7rem]" style={{ color: INK }}>{content.about}</p>
             <a href={href("about")} className="mt-7 inline-flex text-sm font-extrabold transition hover:opacity-80" style={{ color: TEAL }}>More about us →</a>
           </div>
@@ -421,14 +421,14 @@ export default function ClutchDesign({ site, page = "home", basePath = "" }: Pre
       {featuredCount > 0 && (
         <section className="mx-auto max-w-3xl px-6 py-20">
           <div>
-            <p className="text-[12px] font-extrabold uppercase tracking-[0.18em]" style={{ color: TEAL }}>Lessons & packages</p>
-            <h2 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl" style={{ color: INK }}>Clear prices, no surprises</h2>
+            <p className="text-[12px] font-extrabold uppercase tracking-[0.18em]" style={{ color: TEAL }} {...editCopy(content, "lessons_eyebrow", "Lessons & packages")} />
+            <h2 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl" style={{ color: INK }} {...editCopy(content, "lessons_heading", "Clear prices, no surprises")} />
           </div>
           <div className="mt-10 rounded-3xl border bg-white p-7 sm:p-9" style={{ borderColor: LINE }}>
             {lessonList(6)}
           </div>
           <div className="mt-10">
-            <a href={href("services")} className="inline-flex rounded-full px-7 py-3.5 text-sm font-extrabold text-white transition hover:opacity-90" style={{ background: TEAL }}>See all lessons & packages</a>
+            <a href={href("services")} className="inline-flex rounded-full px-7 py-3.5 text-sm font-extrabold text-white transition hover:opacity-90" style={{ background: TEAL }} {...editCopy(content, "lessons_link", "See all lessons & packages")} />
           </div>
         </section>
       )}
@@ -438,8 +438,8 @@ export default function ClutchDesign({ site, page = "home", basePath = "" }: Pre
       <section style={{ background: "#e3f6f4" }}>
         <div className="mx-auto max-w-6xl px-6 py-20">
           <div className="max-w-2xl">
-            <p className="text-[12px] font-extrabold uppercase tracking-[0.18em]" style={{ color: TEAL }}>Learner reviews</p>
-            <h2 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl" style={{ color: INK }}>Passed first time</h2>
+            <p className="text-[12px] font-extrabold uppercase tracking-[0.18em]" style={{ color: TEAL }} {...editCopy(content, "reviews_eyebrow", "Learner reviews")} />
+            <h2 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl" style={{ color: INK }} {...editCopy(content, "reviews_heading", "Passed first time")} />
           </div>
           <div className="mt-10 grid gap-5 sm:grid-cols-3">
             {reviews.map((r, i) => (
@@ -461,8 +461,8 @@ export default function ClutchDesign({ site, page = "home", basePath = "" }: Pre
       {gallery.length > 0 && (
         <section className="mx-auto max-w-6xl px-6 py-20">
           <div className="max-w-2xl">
-            <p className="text-[12px] font-extrabold uppercase tracking-[0.18em]" style={{ color: TEAL }}>Recent passes</p>
-            <h2 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl" style={{ color: INK }}>Another one through</h2>
+            <p className="text-[12px] font-extrabold uppercase tracking-[0.18em]" style={{ color: TEAL }} {...editCopy(content, "gallery_eyebrow", "Recent passes")} />
+            <h2 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl" style={{ color: INK }} {...editCopy(content, "gallery_heading", "Another one through")} />
           </div>
           <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
             {gallery.slice(0, 4).map((g) => (
@@ -472,7 +472,7 @@ export default function ClutchDesign({ site, page = "home", basePath = "" }: Pre
           </div>
           {gallery.length > 4 && (
             <div className="mt-8">
-              <a href={href("gallery")} className="inline-flex text-sm font-extrabold transition hover:opacity-70" style={{ color: TEAL }}>See the gallery →</a>
+              <a href={href("gallery")} className="inline-flex text-sm font-extrabold transition hover:opacity-70" style={{ color: TEAL }} {...editCopy(content, "gallery_link", "See the gallery →")} />
             </div>
           )}
         </section>
@@ -483,8 +483,8 @@ export default function ClutchDesign({ site, page = "home", basePath = "" }: Pre
         <section className="mx-auto max-w-5xl px-6 py-20">
           <div className="grid items-start gap-10 lg:grid-cols-[1fr_1.1fr]">
             <div>
-              <p className="text-[12px] font-extrabold uppercase tracking-[0.18em]" style={{ color: TEAL }}>Get started</p>
-              <h2 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl" style={{ color: INK }}>Book your first lesson</h2>
+              <p className="text-[12px] font-extrabold uppercase tracking-[0.18em]" style={{ color: TEAL }} {...editCopy(content, "getstarted_eyebrow", "Get started")} />
+              <h2 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl" style={{ color: INK }} {...editCopy(content, "getstarted_heading", "Book your first lesson")} />
               <p className="mt-4 max-w-sm text-[16px] leading-relaxed" style={{ color: MUTE }}>Pop in your details and we will confirm your first lesson by phone or text. No deposit needed to enquire.</p>
               <div className="mt-7 hidden lg:block">
                 <Wheel size={150} stroke={TEAL} spoke={LIME} />
@@ -509,7 +509,7 @@ export default function ClutchDesign({ site, page = "home", basePath = "" }: Pre
           <div aria-hidden className="pointer-events-none absolute -right-10 -top-12">
             <Wheel size={220} stroke="#ffffff2e" spoke="#ffffff2e" />
           </div>
-          <h2 className="relative text-3xl font-extrabold tracking-tight text-white sm:text-4xl">Ready to get on the road?</h2>
+          <h2 className="relative text-3xl font-extrabold tracking-tight text-white sm:text-4xl" {...editCopy(content, "cta_heading", "Ready to get on the road?")} />
           <p className="relative mx-auto mt-4 max-w-md text-[16px] leading-relaxed text-white/85">Book your first lesson today and take the first step towards passing with confidence.</p>
           <a href={cta} className="relative mt-8 inline-flex rounded-full px-9 py-4 text-sm font-extrabold transition hover:opacity-90" style={{ background: LIME, color: INK }}>{ctaLabel}</a>
         </div>

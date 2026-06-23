@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { PetHeader, type PetHeaderTheme, type PetLink } from "../PetChrome";
 
@@ -91,13 +91,13 @@ export default function Hollow({ site, page = "home", basePath = "" }: PresetPro
           )}
         </div>
         <div>
-          <h4 style={{ ...serif }} className="text-lg text-white">Discover</h4>
+          <h4 style={{ ...serif }} className="text-lg text-white" {...editCopy(content, "footer_discover", "Discover")} />
           <ul className="mt-5 space-y-3 text-sm text-white/65">
             {nav.map((l) => <li key={l.href}><a href={l.href} className="uppercase tracking-[0.12em] transition hover:text-white">{l.label}</a></li>)}
           </ul>
         </div>
         <div>
-          <h4 style={{ ...serif }} className="text-lg text-white">Contact</h4>
+          <h4 style={{ ...serif }} className="text-lg text-white" {...editCopy(content, "footer_contact", "Contact")} />
           <div className="mt-5 space-y-3 text-sm text-white/65">
             {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -105,7 +105,7 @@ export default function Hollow({ site, page = "home", basePath = "" }: PresetPro
           </div>
         </div>
         <div>
-          <h4 style={{ ...serif }} className="text-lg text-white">Reception Hours</h4>
+          <h4 style={{ ...serif }} className="text-lg text-white" {...editCopy(content, "footer_hours", "Reception Hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm text-white/65">
               {content.hours.map((h, i) => (
@@ -232,7 +232,7 @@ export default function Hollow({ site, page = "home", basePath = "" }: PresetPro
         {banner("Reservations", "Reserve a stay", "Tell us your dates and we will confirm availability and a tailored stay for your companion.")}
         <section className="mx-auto grid max-w-6xl gap-12 px-6 py-20 sm:px-8 lg:grid-cols-2 lg:gap-20">
           <div>
-            <h2 style={{ ...serif, color: INK }} className="text-2xl font-medium">Find us</h2>
+            <h2 style={{ ...serif, color: INK }} className="text-2xl font-medium" {...editCopy(content, "contact_findus_heading", "Find us")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: BODY }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:opacity-70" style={{ color: SAND }}>{content.phone}</a>}
@@ -246,7 +246,7 @@ export default function Hollow({ site, page = "home", basePath = "" }: PresetPro
               </ul>
             )}
             {content.map_url && (
-              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex px-7 py-3 text-[11px] font-semibold uppercase tracking-[0.18em] transition hover:opacity-90" style={{ border: `1px solid ${INK}`, color: INK }}>Get directions</a>
+              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex px-7 py-3 text-[11px] font-semibold uppercase tracking-[0.18em] transition hover:opacity-90" style={{ border: `1px solid ${INK}`, color: INK }} {...editCopy(content, "directions_cta", "Get directions")} />
             )}
           </div>
           <div>
@@ -290,7 +290,7 @@ export default function Hollow({ site, page = "home", basePath = "" }: PresetPro
           <div className="mt-9 flex flex-col items-center gap-3 sm:flex-row sm:justify-center sm:gap-4">
             <a href={book} className="w-full px-9 py-4 text-center text-[11px] font-semibold uppercase tracking-[0.2em] shadow-2xl transition hover:opacity-90 sm:w-auto" style={{ background: SAND, color: "#1c160e" }}>{cta.label}</a>
             {groups.length > 0 && (
-              <a href={href("services")} className="w-full px-9 py-4 text-center text-[11px] font-semibold uppercase tracking-[0.2em] text-white backdrop-blur-sm transition hover:bg-white hover:text-neutral-900 sm:w-auto" style={{ border: "1px solid rgba(255,255,255,0.6)" }}>View stays</a>
+              <a href={href("services")} className="w-full px-9 py-4 text-center text-[11px] font-semibold uppercase tracking-[0.2em] text-white backdrop-blur-sm transition hover:bg-white hover:text-neutral-900 sm:w-auto" style={{ border: "1px solid rgba(255,255,255,0.6)" }} {...editCopy(content, "hero_services_cta", "View stays")} />
             )}
           </div>
         </div>
@@ -310,7 +310,7 @@ export default function Hollow({ site, page = "home", basePath = "" }: PresetPro
           </div>
           <div>
             <Kicker center={false}>Welcome</Kicker>
-            <h2 style={{ ...serif, color: INK }} className="mt-4 text-4xl font-medium leading-tight sm:text-5xl">A serene retreat for cherished pets</h2>
+            <h2 style={{ ...serif, color: INK }} className="mt-4 text-4xl font-medium leading-tight sm:text-5xl" {...editCopy(content, "home_welcome_heading", "A serene retreat for cherished pets")} />
             {content.about && <p data-edit="content.about" className="mt-6 text-[16px] leading-[1.9]" style={{ color: BODY }}>{content.about}</p>}
             {content.about && <a href={href("about")} className="mt-7 inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.18em]" style={{ color: SAND }}>Our ethos →</a>}
           </div>
@@ -352,7 +352,7 @@ export default function Hollow({ site, page = "home", basePath = "" }: PresetPro
             ))}
           </ul>
           <div className="mt-14 text-center">
-            <a href={href("services")} className="inline-flex px-9 py-3.5 text-[11px] font-semibold uppercase tracking-[0.2em] transition hover:opacity-90" style={{ border: `1px solid ${INK}`, color: INK }}>View all stays</a>
+            <a href={href("services")} className="inline-flex px-9 py-3.5 text-[11px] font-semibold uppercase tracking-[0.2em] transition hover:opacity-90" style={{ border: `1px solid ${INK}`, color: INK }} {...editCopy(content, "home_stays_cta", "View all stays")} />
           </div>
         </section>
       )}
@@ -362,7 +362,7 @@ export default function Hollow({ site, page = "home", basePath = "" }: PresetPro
         <section className="py-24" style={{ background: STONE, borderTop: `1px solid ${HAIR}` }}>
           <div className="mx-auto max-w-6xl px-8 text-center">
             <Kicker>The Retreat</Kicker>
-            <h2 style={{ ...serif, color: INK }} className="mx-auto mt-4 max-w-2xl text-3xl font-medium leading-snug sm:text-4xl">Calm, comfortable spaces designed around your pet.</h2>
+            <h2 style={{ ...serif, color: INK }} className="mx-auto mt-4 max-w-2xl text-3xl font-medium leading-snug sm:text-4xl" {...editCopy(content, "home_gallery_heading", "Calm, comfortable spaces designed around your pet.")} />
           </div>
           <div className="mx-auto mt-12 grid max-w-6xl grid-cols-2 gap-2 px-2 sm:grid-cols-4 sm:px-4">
             {gallery.slice(0, 4).map((g) => (
@@ -371,7 +371,7 @@ export default function Hollow({ site, page = "home", basePath = "" }: PresetPro
             ))}
           </div>
           <div className="mt-10 text-center">
-            <a href={href("gallery")} className="inline-flex px-9 py-3.5 text-[11px] font-semibold uppercase tracking-[0.2em] transition hover:opacity-90" style={{ border: `1px solid ${INK}`, color: INK }}>View gallery</a>
+            <a href={href("gallery")} className="inline-flex px-9 py-3.5 text-[11px] font-semibold uppercase tracking-[0.2em] transition hover:opacity-90" style={{ border: `1px solid ${INK}`, color: INK }} {...editCopy(content, "home_gallery_cta", "View gallery")} />
           </div>
         </section>
       )}
@@ -380,8 +380,8 @@ export default function Hollow({ site, page = "home", basePath = "" }: PresetPro
       <section style={{ background: INK }}>
         <div className="mx-auto max-w-2xl px-8 py-24 text-center">
           <Kicker light>Reservations</Kicker>
-          <h2 style={{ ...serif, color: "#fff" }} className="mt-4 text-3xl font-medium sm:text-4xl">Reserve their stay</h2>
-          <p className="mx-auto mt-5 max-w-md text-[15px] leading-relaxed text-white/70">Give your companion a restful, attentive retreat while you are away. Enquire today and we will take care of the rest.</p>
+          <h2 style={{ ...serif, color: "#fff" }} className="mt-4 text-3xl font-medium sm:text-4xl" {...editCopy(content, "cta_heading", "Reserve their stay")} />
+          <p className="mx-auto mt-5 max-w-md text-[15px] leading-relaxed text-white/70" {...editCopy(content, "cta_sub", "Give your companion a restful, attentive retreat while you are away. Enquire today and we will take care of the rest.")} />
           <a href={book} className="mt-8 inline-flex px-10 py-4 text-[11px] font-semibold uppercase tracking-[0.2em] transition hover:opacity-90" style={{ background: SAND, color: "#1c160e" }}>{cta.label}</a>
         </div>
       </section>

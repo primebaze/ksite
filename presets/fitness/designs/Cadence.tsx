@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { CadenceHeader } from "./CadenceHeader";
 import { FitnessBooking, type BookingSkin } from "./FitnessBooking";
@@ -85,7 +85,7 @@ export default function Cadence({ site, page = "home", basePath = "" }: PresetPr
         <div>
           <a href={href("home")} className="block">
             <span data-edit="tenant.business_name" style={serif} className="text-2xl italic tracking-[0.01em]">{name}</span>
-            <span className="mt-1 block text-[8px] uppercase tracking-[0.4em]" style={{ color: BLUSH }}>Movement Studio</span>
+            <span className="mt-1 block text-[8px] uppercase tracking-[0.4em]" style={{ color: BLUSH }} {...editCopy(content, "footer_subtitle", "Movement Studio")} />
           </a>
           {content.tagline && <p data-edit="content.tagline" className="mt-5 max-w-xs text-sm leading-relaxed" style={{ color: MUTE }}>{content.tagline}</p>}
           {content.socials && content.socials.length > 0 && (
@@ -97,7 +97,7 @@ export default function Cadence({ site, page = "home", basePath = "" }: PresetPr
           )}
         </div>
         <div>
-          <h4 style={{ ...serif, color: INK }} className="text-lg italic">Dance</h4>
+          <h4 style={{ ...serif, color: INK }} className="text-lg italic" {...editCopy(content, "footer_dance", "Dance")} />
           <ul className="mt-5 space-y-3 text-sm" style={{ color: MUTE }}>
             {([
               groups.length > 0 && { label: "Classes", href: href("services") },
@@ -110,7 +110,7 @@ export default function Cadence({ site, page = "home", basePath = "" }: PresetPr
           </ul>
         </div>
         <div>
-          <h4 style={{ ...serif, color: INK }} className="text-lg italic">Contact</h4>
+          <h4 style={{ ...serif, color: INK }} className="text-lg italic" {...editCopy(content, "footer_contact", "Contact")} />
           <div className="mt-5 space-y-3 text-sm" style={{ color: MUTE }}>
             {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:opacity-70">{content.phone}</a>}
@@ -118,7 +118,7 @@ export default function Cadence({ site, page = "home", basePath = "" }: PresetPr
           </div>
         </div>
         <div>
-          <h4 style={{ ...serif, color: INK }} className="text-lg italic">Studio Hours</h4>
+          <h4 style={{ ...serif, color: INK }} className="text-lg italic" {...editCopy(content, "footer_hours", "Studio Hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm" style={{ color: MUTE }}>
               {content.hours.map((h, i) => (
@@ -293,7 +293,7 @@ export default function Cadence({ site, page = "home", basePath = "" }: PresetPr
             <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:gap-4">
               <a href={join} className="rounded-full px-9 py-3.5 text-center text-[11px] font-semibold uppercase tracking-[0.2em] text-white transition hover:opacity-90" style={{ background: BLUSH }}>{ctaLabel}</a>
               {groups.length > 0 && (
-                <a href={href("services")} className="rounded-full px-9 py-3.5 text-center text-[11px] font-semibold uppercase tracking-[0.2em] transition hover:opacity-90" style={{ border: `1px solid ${INK}33`, color: INK }}>View classes</a>
+                <a href={href("services")} className="rounded-full px-9 py-3.5 text-center text-[11px] font-semibold uppercase tracking-[0.2em] transition hover:opacity-90" style={{ border: `1px solid ${INK}33`, color: INK }} {...editCopy(content, "hero_classes_cta", "View classes")} />
               )}
             </div>
           </div>
@@ -322,10 +322,10 @@ export default function Cadence({ site, page = "home", basePath = "" }: PresetPr
             )}
           </div>
           <div>
-            <Kicker>Our studio</Kicker>
-            <h2 style={{ ...serif, color: INK }} className="mt-4 text-4xl font-medium italic leading-tight sm:text-5xl">Where Movement Finds You</h2>
+            <Kicker><span {...editCopy(content, "home_about_kicker", "Our studio")} /></Kicker>
+            <h2 style={{ ...serif, color: INK }} className="mt-4 text-4xl font-medium italic leading-tight sm:text-5xl" {...editCopy(content, "home_about_heading", "Where Movement Finds You")} />
             {content.about && <p data-edit="content.about" className="mt-6 text-[16px] leading-[1.9]" style={{ color: MUTE }}>{content.about}</p>}
-            <a href={href("about")} className="mt-7 inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em]" style={{ color: BLUSH }}>Read more →</a>
+            <a href={href("about")} className="mt-7 inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em]" style={{ color: BLUSH }} {...editCopy(content, "home_about_link", "Read more →")} />
           </div>
         </section>
       )}
@@ -335,8 +335,8 @@ export default function Cadence({ site, page = "home", basePath = "" }: PresetPr
         <section style={{ background: PANEL, borderTop: `1px solid ${LINE}`, borderBottom: `1px solid ${LINE}` }}>
           <div className="mx-auto max-w-3xl px-8 py-24">
             <div className="text-center">
-              <Kicker center>The schedule</Kicker>
-              <h2 style={{ ...serif, color: INK }} className="mt-4 text-4xl font-medium italic sm:text-5xl">Classes & Passes</h2>
+              <Kicker center><span {...editCopy(content, "home_schedule_kicker", "The schedule")} /></Kicker>
+              <h2 style={{ ...serif, color: INK }} className="mt-4 text-4xl font-medium italic sm:text-5xl" {...editCopy(content, "home_schedule_heading", "Classes & Passes")} />
             </div>
             <ul className="mx-auto mt-12 divide-y" style={{ borderColor: LINE }}>
               {featured.map((item) => (
@@ -350,7 +350,7 @@ export default function Cadence({ site, page = "home", basePath = "" }: PresetPr
               ))}
             </ul>
             <div className="mt-12 text-center">
-              <a href={href("services")} className="inline-flex rounded-full px-9 py-3.5 text-[11px] font-semibold uppercase tracking-[0.22em] transition hover:opacity-90" style={{ border: `1px solid ${BLUSH}`, color: BLUSH }}>View full schedule</a>
+              <a href={href("services")} className="inline-flex rounded-full px-9 py-3.5 text-[11px] font-semibold uppercase tracking-[0.22em] transition hover:opacity-90" style={{ border: `1px solid ${BLUSH}`, color: BLUSH }} {...editCopy(content, "home_schedule_cta", "View full schedule")} />
             </div>
           </div>
         </section>
@@ -360,8 +360,8 @@ export default function Cadence({ site, page = "home", basePath = "" }: PresetPr
       {gallery.length > 0 && (
         <section className="py-24">
           <div className="mx-auto max-w-6xl px-8 text-center">
-            <Kicker center>In motion</Kicker>
-            <h2 style={{ ...serif, color: INK }} className="mx-auto mt-4 max-w-2xl text-3xl font-medium italic leading-snug sm:text-4xl">A floor for every body and every style.</h2>
+            <Kicker center><span {...editCopy(content, "home_gallery_kicker", "In motion")} /></Kicker>
+            <h2 style={{ ...serif, color: INK }} className="mx-auto mt-4 max-w-2xl text-3xl font-medium italic leading-snug sm:text-4xl" {...editCopy(content, "home_gallery_heading", "A floor for every body and every style.")} />
           </div>
           <div className="mx-auto mt-12 grid max-w-6xl grid-cols-2 gap-2 px-2 sm:grid-cols-4 sm:px-4">
             {gallery.slice(0, 4).map((g) => (
@@ -370,7 +370,7 @@ export default function Cadence({ site, page = "home", basePath = "" }: PresetPr
             ))}
           </div>
           <div className="mt-10 text-center">
-            <a href={href("gallery")} className="inline-flex rounded-full px-9 py-3.5 text-[11px] font-semibold uppercase tracking-[0.22em] transition hover:opacity-90" style={{ border: `1px solid ${BLUSH}`, color: BLUSH }}>View gallery</a>
+            <a href={href("gallery")} className="inline-flex rounded-full px-9 py-3.5 text-[11px] font-semibold uppercase tracking-[0.22em] transition hover:opacity-90" style={{ border: `1px solid ${BLUSH}`, color: BLUSH }} {...editCopy(content, "home_gallery_cta", "View gallery")} />
           </div>
         </section>
       )}
@@ -378,8 +378,8 @@ export default function Cadence({ site, page = "home", basePath = "" }: PresetPr
       {/* closing CTA band */}
       <section style={{ background: BLUSH }}>
         <div className="mx-auto max-w-2xl px-8 py-20 text-center text-white">
-          <h2 style={serif} className="text-4xl font-medium italic sm:text-5xl">Your first class is waiting.</h2>
-          <p className="mx-auto mt-5 max-w-md text-[15px] leading-relaxed text-white/85">No experience needed — just bring yourself. Book a class and find your rhythm.</p>
+          <h2 style={serif} className="text-4xl font-medium italic sm:text-5xl" {...editCopy(content, "cta_heading", "Your first class is waiting.")} />
+          <p className="mx-auto mt-5 max-w-md text-[15px] leading-relaxed text-white/85" {...editCopy(content, "cta_sub", "No experience needed — just bring yourself. Book a class and find your rhythm.")} />
           <a href={join} className="mt-8 inline-flex rounded-full bg-white px-10 py-4 text-[11px] font-semibold uppercase tracking-[0.22em] transition hover:opacity-90" style={{ color: BLUSH }}>{ctaLabel}</a>
         </div>
       </section>

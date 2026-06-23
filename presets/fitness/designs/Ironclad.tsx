@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { IroncladHeader } from "./IroncladHeader";
 import { FitnessBooking, type BookingSkin } from "./FitnessBooking";
@@ -98,7 +98,7 @@ export default function Ironclad({ site, page = "home", basePath = "" }: PresetP
           )}
         </div>
         <div>
-          <h4 style={{ color: TEXT }} className="text-xs font-bold uppercase tracking-[0.2em]">Train</h4>
+          <h4 style={{ color: TEXT }} className="text-xs font-bold uppercase tracking-[0.2em]" {...editCopy(content, "footer_train", "Train")} />
           <ul className="mt-5 space-y-3 text-sm" style={{ color: MUTE }}>
             {([
               groups.length > 0 && { label: "Programs", href: href("services") },
@@ -111,7 +111,7 @@ export default function Ironclad({ site, page = "home", basePath = "" }: PresetP
           </ul>
         </div>
         <div>
-          <h4 style={{ color: TEXT }} className="text-xs font-bold uppercase tracking-[0.2em]">Contact</h4>
+          <h4 style={{ color: TEXT }} className="text-xs font-bold uppercase tracking-[0.2em]" {...editCopy(content, "footer_contact", "Contact")} />
           <div className="mt-5 space-y-3 text-sm" style={{ color: MUTE }}>
             {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -119,7 +119,7 @@ export default function Ironclad({ site, page = "home", basePath = "" }: PresetP
           </div>
         </div>
         <div>
-          <h4 style={{ color: TEXT }} className="text-xs font-bold uppercase tracking-[0.2em]">Mat Hours</h4>
+          <h4 style={{ color: TEXT }} className="text-xs font-bold uppercase tracking-[0.2em]" {...editCopy(content, "footer_hours", "Mat Hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm" style={{ color: MUTE }}>
               {content.hours.map((h, i) => (
@@ -131,7 +131,7 @@ export default function Ironclad({ site, page = "home", basePath = "" }: PresetP
       </div>
       <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 border-t px-8 py-7 text-xs sm:flex-row" style={{ borderColor: LINE, color: "#ffffff66" }}>
         <p>© {new Date().getFullYear()} {name}. All rights reserved.</p>
-        <a href={href("contact")} className="font-semibold uppercase tracking-[0.16em] transition hover:text-white">Book a trial class</a>
+        <a href={href("contact")} className="font-semibold uppercase tracking-[0.16em] transition hover:text-white" {...editCopy(content, "footer_trial_cta", "Book a trial class")} />
       </div>
     </footer>
   );
@@ -237,7 +237,7 @@ export default function Ironclad({ site, page = "home", basePath = "" }: PresetP
         {banner("Step in", "Book Your Trial")}
         <section className="mx-auto grid max-w-6xl gap-12 px-6 py-20 sm:px-8 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={{ ...display, color: TEXT }} className="text-2xl font-bold uppercase tracking-[0.02em]">Find the gym</h2>
+            <h2 style={{ ...display, color: TEXT }} className="text-2xl font-bold uppercase tracking-[0.02em]" {...editCopy(content, "contact_heading", "Find the gym")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: MUTE }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -304,7 +304,7 @@ export default function Ironclad({ site, page = "home", basePath = "" }: PresetP
           <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:gap-4">
             <a href={join} className="px-9 py-4 text-center text-[12px] font-bold uppercase tracking-[0.2em] transition hover:opacity-90" style={{ background: BRASS, color: INK }}>{ctaLabel}</a>
             {groups.length > 0 && (
-              <a href={href("services")} className="px-9 py-4 text-center text-[12px] font-bold uppercase tracking-[0.2em] text-white backdrop-blur-sm transition hover:bg-white/10" style={{ border: "1px solid rgba(255,255,255,0.5)" }}>See programs</a>
+              <a href={href("services")} className="px-9 py-4 text-center text-[12px] font-bold uppercase tracking-[0.2em] text-white backdrop-blur-sm transition hover:bg-white/10" style={{ border: "1px solid rgba(255,255,255,0.5)" }} {...editCopy(content, "hero_programs_cta", "See programs")} />
             )}
           </div>
         </div>
@@ -326,10 +326,10 @@ export default function Ironclad({ site, page = "home", basePath = "" }: PresetP
       {(content.about || gallery[0]) && (
         <section className="mx-auto grid max-w-7xl items-center gap-12 px-8 py-24 lg:grid-cols-2 lg:gap-16">
           <div>
-            <Kicker>The code</Kicker>
-            <h2 style={{ ...display, color: TEXT }} className="mt-4 text-4xl font-bold uppercase leading-[0.95] tracking-[0.01em] sm:text-5xl">Discipline Over Motivation</h2>
+            <Kicker><span {...editCopy(content, "home_about_kicker", "The code")} /></Kicker>
+            <h2 style={{ ...display, color: TEXT }} className="mt-4 text-4xl font-bold uppercase leading-[0.95] tracking-[0.01em] sm:text-5xl" {...editCopy(content, "home_about_heading", "Discipline Over Motivation")} />
             {content.about && <p data-edit="content.about" className="mt-6 text-[16px] leading-[1.9]" style={{ color: MUTE }}>{content.about}</p>}
-            <a href={href("about")} className="mt-7 inline-flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.2em]" style={{ color: BRASS }}>More about us →</a>
+            <a href={href("about")} className="mt-7 inline-flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.2em]" style={{ color: BRASS }} {...editCopy(content, "home_about_link", "More about us →")} />
           </div>
           <div className="relative">
             {gallery[0] ? (
@@ -349,10 +349,10 @@ export default function Ironclad({ site, page = "home", basePath = "" }: PresetP
           <div className="mx-auto max-w-4xl px-8 py-24">
             <div className="flex flex-wrap items-end justify-between gap-4">
               <div>
-                <Kicker>On the mat</Kicker>
-                <h2 style={{ ...display, color: TEXT }} className="mt-4 text-4xl font-bold uppercase tracking-[0.01em] sm:text-5xl">Programs & Memberships</h2>
+                <Kicker><span {...editCopy(content, "home_programs_kicker", "On the mat")} /></Kicker>
+                <h2 style={{ ...display, color: TEXT }} className="mt-4 text-4xl font-bold uppercase tracking-[0.01em] sm:text-5xl" {...editCopy(content, "home_programs_heading", "Programs & Memberships")} />
               </div>
-              <a href={href("services")} className="text-[12px] font-bold uppercase tracking-[0.18em] transition hover:text-white" style={{ color: BRASS }}>View all →</a>
+              <a href={href("services")} className="text-[12px] font-bold uppercase tracking-[0.18em] transition hover:text-white" style={{ color: BRASS }} {...editCopy(content, "home_programs_link", "View all →")} />
             </div>
             <ul className="mt-12 divide-y" style={{ borderColor: LINE }}>
               {featured.map((item) => (
@@ -373,8 +373,8 @@ export default function Ironclad({ site, page = "home", basePath = "" }: PresetP
       {gallery.length > 0 && (
         <section className="py-24">
           <div className="mx-auto max-w-7xl px-8">
-            <Kicker>The gym</Kicker>
-            <h2 style={{ ...display, color: TEXT }} className="mt-4 max-w-2xl text-3xl font-bold uppercase leading-[0.95] tracking-[0.01em] sm:text-4xl">Ring, bags, mats — and people who push you</h2>
+            <Kicker><span {...editCopy(content, "home_gallery_kicker", "The gym")} /></Kicker>
+            <h2 style={{ ...display, color: TEXT }} className="mt-4 max-w-2xl text-3xl font-bold uppercase leading-[0.95] tracking-[0.01em] sm:text-4xl" {...editCopy(content, "home_gallery_heading", "Ring, bags, mats — and people who push you")} />
           </div>
           <div className="mx-auto mt-12 grid max-w-7xl grid-cols-2 gap-2 px-2 sm:grid-cols-4 sm:px-4">
             {gallery.slice(0, 4).map((g) => (
@@ -383,7 +383,7 @@ export default function Ironclad({ site, page = "home", basePath = "" }: PresetP
             ))}
           </div>
           <div className="mx-auto mt-10 max-w-7xl px-8">
-            <a href={href("gallery")} className="inline-flex px-9 py-3.5 text-[11px] font-bold uppercase tracking-[0.2em] transition hover:opacity-90" style={{ border: `1px solid ${BRASS}`, color: BRASS }}>View gallery</a>
+            <a href={href("gallery")} className="inline-flex px-9 py-3.5 text-[11px] font-bold uppercase tracking-[0.2em] transition hover:opacity-90" style={{ border: `1px solid ${BRASS}`, color: BRASS }} {...editCopy(content, "home_gallery_cta", "View gallery")} />
           </div>
         </section>
       )}
@@ -391,7 +391,7 @@ export default function Ironclad({ site, page = "home", basePath = "" }: PresetP
       {/* closing CTA */}
       <section style={{ background: BRASS }}>
         <div className="mx-auto max-w-4xl px-8 py-20 text-center">
-          <h2 className="text-4xl font-bold uppercase leading-[0.95] tracking-[0.01em] sm:text-6xl" style={{ ...display, color: INK }}>Earn every round.</h2>
+          <h2 className="text-4xl font-bold uppercase leading-[0.95] tracking-[0.01em] sm:text-6xl" style={{ ...display, color: INK }} {...editCopy(content, "cta_heading", "Earn every round.")} />
           <p className="mx-auto mt-5 max-w-md text-[15px] font-medium leading-relaxed" style={{ color: "#2a1409" }}>No egos, all levels welcome. Book a trial class and learn from coaches who&apos;ve been there.</p>
           <a href={join} className="mt-8 inline-flex px-12 py-4 text-[12px] font-bold uppercase tracking-[0.22em] text-white transition hover:opacity-90" style={{ background: INK }}>{ctaLabel}</a>
         </div>

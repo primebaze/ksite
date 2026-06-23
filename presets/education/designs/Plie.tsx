@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { EduMobileNav } from "./EduMobileNav";
 
@@ -369,7 +369,7 @@ export default function PlieDesign({ site, page = "home", basePath = "" }: Prese
             <div className="mt-8 flex flex-wrap gap-3">
               <a href={cta} className="rounded-full px-7 py-3.5 text-sm font-semibold text-white shadow-lg transition hover:opacity-90" style={{ background: CORAL }}>{ctaLabel}</a>
               {groups.length > 0 && (
-                <a href={href("services")} className="rounded-full px-7 py-3.5 text-sm font-semibold transition hover:opacity-90" style={{ background: CARD, color: INK, border: `1px solid ${INK}14` }}>See classes</a>
+                <a href={href("services")} className="rounded-full px-7 py-3.5 text-sm font-semibold transition hover:opacity-90" style={{ background: CARD, color: INK, border: `1px solid ${INK}14` }} {...editCopy(content, "hero_classes_cta", "See classes")} />
               )}
             </div>
           </div>
@@ -417,7 +417,7 @@ export default function PlieDesign({ site, page = "home", basePath = "" }: Prese
       <section className="mx-auto max-w-6xl px-6 py-20">
         <div className="text-center">
           <Pill bg={PEACH_SOFT} color={PEACH}>Classes by age</Pill>
-          <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-semibold sm:text-4xl">A class for every little dancer</h2>
+          <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-semibold sm:text-4xl" {...editCopy(content, "ages_heading", "A class for every little dancer")} />
         </div>
         <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {ageClasses.map((c) => (
@@ -440,8 +440,8 @@ export default function PlieDesign({ site, page = "home", basePath = "" }: Prese
         <div className="mx-auto max-w-6xl px-6 py-20 text-white">
           <div className="text-center">
             <Pill bg="#ffffff22" color="#ffffff">Grades &amp; exams</Pill>
-            <h2 style={{ ...display }} className="mt-4 text-3xl font-semibold sm:text-4xl">A clear path through ISTD &amp; RAD</h2>
-            <p className="mx-auto mt-3 max-w-xl text-[15px] text-white/85">Every dancer progresses at their own pace, with medals and certificates to celebrate each milestone.</p>
+            <h2 style={{ ...display }} className="mt-4 text-3xl font-semibold sm:text-4xl" {...editCopy(content, "grades_heading", "A clear path through ISTD & RAD")} />
+            <p className="mx-auto mt-3 max-w-xl text-[15px] text-white/85" {...editCopy(content, "grades_sub", "Every dancer progresses at their own pace, with medals and certificates to celebrate each milestone.")} />
           </div>
           <div className="mt-10 flex flex-wrap items-center justify-center gap-2.5">
             {grades.map((g, i) => (
@@ -471,13 +471,13 @@ export default function PlieDesign({ site, page = "home", basePath = "" }: Prese
           <div className="mx-auto max-w-3xl px-6 py-20">
             <div className="text-center">
               <Pill>This term&apos;s timetable</Pill>
-              <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-semibold sm:text-4xl">Popular classes</h2>
+              <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-semibold sm:text-4xl" {...editCopy(content, "classes_preview_heading", "Popular classes")} />
             </div>
             <div className="mt-10 rounded-[2rem] p-7 sm:p-9" style={{ background: CARD }}>
               {classList(6)}
             </div>
             <div className="mt-10 text-center">
-              <a href={href("services")} className="inline-flex rounded-full px-8 py-3.5 text-sm font-semibold text-white transition hover:opacity-90" style={{ background: CORAL }}>View all classes</a>
+              <a href={href("services")} className="inline-flex rounded-full px-8 py-3.5 text-sm font-semibold text-white transition hover:opacity-90" style={{ background: CORAL }} {...editCopy(content, "classes_preview_cta", "View all classes")} />
             </div>
           </div>
         </section>
@@ -488,7 +488,7 @@ export default function PlieDesign({ site, page = "home", basePath = "" }: Prese
         <section className="mx-auto max-w-6xl px-6 py-20">
           <div className="text-center">
             <Pill bg={PEACH_SOFT} color={PEACH}>Shows &amp; recitals</Pill>
-            <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-semibold sm:text-4xl">Lights, music, applause</h2>
+            <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-semibold sm:text-4xl" {...editCopy(content, "shows_heading", "Lights, music, applause")} />
           </div>
           <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
             {gallery.slice(0, 4).map((g) => (
@@ -509,8 +509,8 @@ export default function PlieDesign({ site, page = "home", basePath = "" }: Prese
         <div className="relative overflow-hidden rounded-[2.5rem] px-8 py-16 text-center" style={{ background: CORAL }}>
           <Burst className="absolute -left-16 -top-20 h-72 w-72 opacity-25" color="#fff" />
           <Star className="absolute right-[12%] top-10 h-8 w-8 opacity-80" color={PEACH} />
-          <h2 style={{ ...display, color: "#fff" }} className="relative text-3xl font-semibold sm:text-4xl">Come and try a free taster</h2>
-          <p className="relative mx-auto mt-4 max-w-md text-[16px] leading-relaxed text-white/90">Bring your dancer along for a fun, no-pressure first class and meet our friendly teachers.</p>
+          <h2 style={{ ...display, color: "#fff" }} className="relative text-3xl font-semibold sm:text-4xl" {...editCopy(content, "cta_heading", "Come and try a free taster")} />
+          <p className="relative mx-auto mt-4 max-w-md text-[16px] leading-relaxed text-white/90" {...editCopy(content, "cta_sub", "Bring your dancer along for a fun, no-pressure first class and meet our friendly teachers.")} />
           <a href={cta} className="relative mt-8 inline-flex rounded-full px-9 py-4 text-sm font-semibold transition hover:opacity-90" style={{ background: "#fff", color: CORAL }}>{ctaLabel}</a>
         </div>
       </section>

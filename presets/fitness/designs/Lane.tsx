@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { LaneHeader } from "./LaneHeader";
 import { FitnessBooking, type BookingSkin } from "./FitnessBooking";
@@ -141,7 +141,7 @@ export default function LaneDesign({ site, page = "home", basePath = "" }: Prese
           )}
         </div>
         <div>
-          <h4 className="text-xs font-bold uppercase tracking-[0.16em]" style={{ color: AQUA }}>Swim</h4>
+          <h4 className="text-xs font-bold uppercase tracking-[0.16em]" style={{ color: AQUA }} {...editCopy(content, "footer_swim", "Swim")} />
           <ul className="mt-5 space-y-3 text-sm" style={{ color: "#cfe6f3" }}>
             {([
               groups.length > 0 && { label: "Lessons", href: href("services") },
@@ -154,7 +154,7 @@ export default function LaneDesign({ site, page = "home", basePath = "" }: Prese
           </ul>
         </div>
         <div>
-          <h4 className="text-xs font-bold uppercase tracking-[0.16em]" style={{ color: AQUA }}>Contact</h4>
+          <h4 className="text-xs font-bold uppercase tracking-[0.16em]" style={{ color: AQUA }} {...editCopy(content, "footer_contact", "Contact")} />
           <div className="mt-5 space-y-3 text-sm" style={{ color: "#cfe6f3" }}>
             {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -162,7 +162,7 @@ export default function LaneDesign({ site, page = "home", basePath = "" }: Prese
           </div>
         </div>
         <div>
-          <h4 className="text-xs font-bold uppercase tracking-[0.16em]" style={{ color: AQUA }}>Pool Hours</h4>
+          <h4 className="text-xs font-bold uppercase tracking-[0.16em]" style={{ color: AQUA }} {...editCopy(content, "footer_hours", "Pool Hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm" style={{ color: "#cfe6f3" }}>
               {content.hours.map((h, i) => (
@@ -174,7 +174,7 @@ export default function LaneDesign({ site, page = "home", basePath = "" }: Prese
       </div>
       <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-3 border-t px-8 py-7 text-xs sm:flex-row" style={{ borderColor: "#ffffff1f", color: "#a9c9da" }}>
         <p>© {new Date().getFullYear()} {name}. All rights reserved.</p>
-        <a href={href("contact")} className="font-semibold transition hover:text-white">Book your first lesson</a>
+        <a href={href("contact")} className="font-semibold transition hover:text-white" {...editCopy(content, "footer_first_cta", "Book your first lesson")} />
       </div>
     </footer>
   );
@@ -284,7 +284,7 @@ export default function LaneDesign({ site, page = "home", basePath = "" }: Prese
         {banner("Get started", "Book a lesson")}
         <section className="mx-auto grid max-w-6xl gap-12 px-6 py-20 sm:px-8 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={{ ...display, color: NAVY }} className="text-2xl font-bold tracking-[-0.01em]">Find the pool</h2>
+            <h2 style={{ ...display, color: NAVY }} className="text-2xl font-bold tracking-[-0.01em]" {...editCopy(content, "contact_heading", "Find the pool")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: MUTE }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:opacity-70" style={{ color: POOL }}>{content.phone}</a>}

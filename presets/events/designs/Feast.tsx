@@ -4,7 +4,7 @@ import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
 import { useEffect, useState } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { EventsMobileNav } from "./EventsMobileNav";
 
@@ -121,13 +121,13 @@ export default function FeastDesign({ site, page = "home", basePath = "" }: Pres
           )}
         </div>
         <div>
-          <h4 style={{ ...serif, color: CREAM }} className="text-lg">Explore</h4>
+          <h4 style={{ ...serif, color: CREAM }} className="text-lg" {...editCopy(content, "footer_explore", "Explore")} />
           <ul className="mt-5 space-y-3 text-sm" style={{ color: "#dfe0d3" }}>
             {nav.map((l) => <li key={l.label}><a href={l.href} className="uppercase tracking-[0.14em] transition hover:text-white">{l.label}</a></li>)}
           </ul>
         </div>
         <div>
-          <h4 style={{ ...serif, color: CREAM }} className="text-lg">The kitchen</h4>
+          <h4 style={{ ...serif, color: CREAM }} className="text-lg" {...editCopy(content, "footer_kitchen", "The kitchen")} />
           <div className="mt-5 space-y-3 text-sm" style={{ color: "#dfe0d3" }}>
             {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -137,7 +137,7 @@ export default function FeastDesign({ site, page = "home", basePath = "" }: Pres
       </div>
       <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-3 border-t px-8 py-7 text-xs sm:flex-row" style={{ borderColor: "#ffffff1f", color: "#c7c9ba" }}>
         <p>© {new Date().getFullYear()} {name}. Beautifully catered.</p>
-        <a href={enquire} className="uppercase tracking-[0.16em] transition hover:text-white">Book a tasting</a>
+        <a href={enquire} className="uppercase tracking-[0.16em] transition hover:text-white" {...editCopy(content, "footer_cta", "Book a tasting")} />
       </div>
     </footer>
   );
@@ -150,14 +150,14 @@ export default function FeastDesign({ site, page = "home", basePath = "" }: Pres
     </div>
   );
 
-  const banner = (kicker: string, title: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string) => (
     <section style={{ background: FOREST }}>
       <div className="mx-auto max-w-6xl px-8 pb-16 pt-32 sm:pt-40">
         <div className="flex items-center gap-3">
           <Sprig className="h-6 w-auto" color={SAGE} />
-          <p className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: COPPER }}>{kicker}</p>
+          <p className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: COPPER }} {...editCopy(content, kickerKey, kicker)} />
         </div>
-        <h1 style={{ ...serif, color: CREAM }} className="mt-4 text-4xl font-medium leading-[1.05] sm:text-6xl">{title}</h1>
+        <h1 style={{ ...serif, color: CREAM }} className="mt-4 text-4xl font-medium leading-[1.05] sm:text-6xl" {...editCopy(content, titleKey, title)} />
       </div>
     </section>
   );
@@ -166,7 +166,7 @@ export default function FeastDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "services") {
     return shell(
       <>
-        {banner("What We Cater", "Our Menus")}
+        {banner("What We Cater", "menus_kicker", "Our Menus", "menus_title")}
         <section className="mx-auto max-w-3xl px-6 py-16 sm:px-8 sm:py-20">
           {groups.length > 0 ? (
             <>
@@ -192,9 +192,9 @@ export default function FeastDesign({ site, page = "home", basePath = "" }: Pres
                 </div>
               ))}
               <div className="mt-12 rounded-2xl px-7 py-7" style={{ background: "#ecf0e4", border: `1px solid ${LINE}` }}>
-                <p className="text-[11px] font-semibold uppercase tracking-[0.24em]" style={{ color: COPPER }}>Seasonal &amp; local</p>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.24em]" style={{ color: COPPER }} {...editCopy(content, "menus_seasonal_label", "Seasonal & local")} />
                 <p className="mt-2 text-[15px] leading-relaxed" style={{ color: SUB }}>Every menu is built around what&apos;s in season and sourced close to home — we&apos;ll happily tailor a bespoke menu around your guests, dietaries and the story of your day.</p>
-                <a href={enquire} className="mt-5 inline-flex rounded-full px-9 py-3.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-white transition hover:opacity-90" style={{ background: FOREST }}>Book a tasting</a>
+                <a href={enquire} className="mt-5 inline-flex rounded-full px-9 py-3.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-white transition hover:opacity-90" style={{ background: FOREST }} {...editCopy(content, "menus_seasonal_cta", "Book a tasting")} />
               </div>
             </>
           ) : <p style={{ color: SUB }}>Menus coming soon.</p>}
@@ -207,7 +207,7 @@ export default function FeastDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "about") {
     return shell(
       <>
-        {banner("Our Story", "About the kitchen")}
+        {banner("Our Story", "about_kicker", "About the kitchen", "about_title")}
         <section className="mx-auto grid max-w-6xl items-start gap-12 px-6 py-16 sm:px-8 sm:py-20 lg:grid-cols-[1fr_1.1fr] lg:gap-16">
           {gallery[0] ? (
             // eslint-disable-next-line @next/next/no-img-element
@@ -215,7 +215,7 @@ export default function FeastDesign({ site, page = "home", basePath = "" }: Pres
           ) : <div className="aspect-[4/5] w-full rounded-3xl" style={{ background: "#dfe6d4" }} />}
           <div>
             {content.about ? <p data-edit="content.about" className="text-[17px] leading-[1.9]" style={{ color: SUB }}>{content.about}</p> : <p style={{ color: SUB }}>Our story is coming soon.</p>}
-            <a href={enquire} className="mt-9 inline-flex rounded-full px-9 py-3.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-white transition hover:opacity-90" style={{ background: COPPER }}>Book a tasting</a>
+            <a href={enquire} className="mt-9 inline-flex rounded-full px-9 py-3.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-white transition hover:opacity-90" style={{ background: COPPER }} {...editCopy(content, "about_cta", "Book a tasting")} />
           </div>
         </section>
       </>,
@@ -226,7 +226,7 @@ export default function FeastDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "gallery") {
     return shell(
       <>
-        {banner("On the Table", "Gallery")}
+        {banner("On the Table", "gallery_kicker", "Gallery", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-6xl px-3 py-12 sm:px-6">
             <div className="columns-1 gap-3 sm:columns-2 lg:columns-3 [&>*]:mb-3">
@@ -245,10 +245,10 @@ export default function FeastDesign({ site, page = "home", basePath = "" }: Pres
   if (page === "contact") {
     return shell(
       <>
-        {banner("Let's Talk Food", "Book a tasting")}
+        {banner("Let's Talk Food", "contact_kicker", "Book a tasting", "contact_title")}
         <section className="mx-auto grid max-w-6xl gap-12 px-6 py-16 sm:px-8 sm:py-20 lg:grid-cols-2 lg:gap-20">
           <div>
-            <h2 style={{ ...serif, color: FOREST }} className="text-2xl">The kitchen</h2>
+            <h2 style={{ ...serif, color: FOREST }} className="text-2xl" {...editCopy(content, "contact_kitchen_heading", "The kitchen")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: SUB }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-[#28392E]">{content.phone}</a>}
@@ -308,18 +308,16 @@ export default function FeastDesign({ site, page = "home", basePath = "" }: Pres
         <div className="relative z-10 mx-auto mt-auto w-full max-w-6xl px-6 pb-16 sm:px-8 sm:pb-20">
           <div className="flex items-center gap-3">
             <span className="h-px w-10" style={{ background: COPPER }} />
-            <p className="text-[11px] font-semibold uppercase tracking-[0.4em]" style={{ color: "#e7d8c6" }}>Event &amp; Wedding Catering</p>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.4em]" style={{ color: "#e7d8c6" }} {...editCopy(content, "hero_eyebrow", "Event & Wedding Catering")} />
           </div>
-          <h1 style={{ ...serif, color: CREAM }} className="mt-5 max-w-4xl text-5xl font-medium leading-[1.02] [text-shadow:0_2px_24px_rgba(0,0,0,0.4)] sm:text-7xl">
-            Beautiful food for unforgettable events
-          </h1>
+          <h1 style={{ ...serif, color: CREAM }} className="mt-5 max-w-4xl text-5xl font-medium leading-[1.02] [text-shadow:0_2px_24px_rgba(0,0,0,0.4)] sm:text-7xl" {...editCopy(content, "hero_headline", "Beautiful food for unforgettable events")} />
           <p className="mt-5 max-w-xl text-[15px] leading-relaxed sm:text-base" style={{ color: "#e9e3d4" }}>
             <span data-edit="tenant.business_name" style={{ ...serif, color: COPPER }} className="font-medium">{name}</span>
             {content.tagline ? <span data-edit="content.tagline"> — {content.tagline}</span> : <> — seasonal, abundant catering for weddings, parties &amp; gatherings.</>}
           </p>
           <div className="mt-8 flex flex-wrap gap-4">
-            <a href={enquire} className="rounded-full px-9 py-4 text-[11px] font-semibold uppercase tracking-[0.22em] text-white transition hover:opacity-90" style={{ background: COPPER }}>Book a tasting</a>
-            {groups.length > 0 && <a href={href("services")} className="rounded-full border border-white/50 px-9 py-4 text-[11px] font-semibold uppercase tracking-[0.22em] text-white backdrop-blur-sm transition hover:bg-white hover:text-[#28392E]">View our menus</a>}
+            <a href={enquire} className="rounded-full px-9 py-4 text-[11px] font-semibold uppercase tracking-[0.22em] text-white transition hover:opacity-90" style={{ background: COPPER }} {...editCopy(content, "hero_cta", "Book a tasting")} />
+            {groups.length > 0 && <a href={href("services")} className="rounded-full border border-white/50 px-9 py-4 text-[11px] font-semibold uppercase tracking-[0.22em] text-white backdrop-blur-sm transition hover:bg-white hover:text-[#28392E]" {...editCopy(content, "hero_menus_cta", "View our menus")} />}
           </div>
         </div>
       </section>
@@ -329,7 +327,7 @@ export default function FeastDesign({ site, page = "home", basePath = "" }: Pres
         <section className="mx-auto max-w-4xl px-8 py-24 text-center">
           <Sprig className="mx-auto h-9 w-auto" color={COPPER} />
           <p data-edit="content.about" style={{ ...serif, color: FOREST }} className="mt-6 text-2xl font-medium leading-[1.45] sm:text-[2rem]">{content.about}</p>
-          <a href={href("about")} className="mt-8 inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em]" style={{ color: COPPER }}>Our story &rarr;</a>
+          <a href={href("about")} className="mt-8 inline-flex items-center gap-2 text-[11px] font-semibold uppercase tracking-[0.2em]" style={{ color: COPPER }} {...editCopy(content, "home_about_link", "Our story →")} />
         </section>
       )}
 
@@ -337,8 +335,8 @@ export default function FeastDesign({ site, page = "home", basePath = "" }: Pres
       <section style={{ background: FOREST }}>
         <div className="mx-auto max-w-6xl px-8 py-20 sm:py-24">
           <div className="text-center">
-            <p className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: COPPER }}>How it works</p>
-            <h2 style={{ ...serif, color: CREAM }} className="mt-3 text-3xl font-medium sm:text-4xl">Taste, plan, celebrate</h2>
+            <p className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: COPPER }} {...editCopy(content, "home_how_label", "How it works")} />
+            <h2 style={{ ...serif, color: CREAM }} className="mt-3 text-3xl font-medium sm:text-4xl" {...editCopy(content, "home_how_heading", "Taste, plan, celebrate")} />
           </div>
           <div className="mt-14 grid gap-px overflow-hidden rounded-3xl sm:grid-cols-3" style={{ background: "#ffffff1a" }}>
             {steps.map((s) => (
@@ -354,8 +352,8 @@ export default function FeastDesign({ site, page = "home", basePath = "" }: Pres
 
       {/* what we cater — sage chip band */}
       <section className="mx-auto max-w-5xl px-8 py-20 text-center sm:py-24">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: COPPER }}>What we cater</p>
-        <h2 style={{ ...serif, color: FOREST }} className="mt-3 text-3xl font-medium sm:text-4xl">From canapés to sharing feasts</h2>
+        <p className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: COPPER }} {...editCopy(content, "home_cater_label", "What we cater")} />
+        <h2 style={{ ...serif, color: FOREST }} className="mt-3 text-3xl font-medium sm:text-4xl" {...editCopy(content, "home_cater_heading", "From canapés to sharing feasts")} />
         <div className="mt-10 flex flex-wrap justify-center gap-3">
           {cater.map((c) => (
             <span key={c} className="rounded-full px-5 py-2.5 text-sm" style={{ background: "#ecf0e4", color: FOREST, border: `1px solid ${LINE}` }}>{c}</span>
@@ -368,8 +366,8 @@ export default function FeastDesign({ site, page = "home", basePath = "" }: Pres
         <section style={{ background: "#ecf0e4", borderTop: `1px solid ${LINE}`, borderBottom: `1px solid ${LINE}` }}>
           <div className="mx-auto max-w-3xl px-8 py-24">
             <div className="text-center">
-              <p className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: COPPER }}>On the menu</p>
-              <h2 style={{ ...serif, color: FOREST }} className="mt-3 text-3xl font-medium sm:text-4xl">A taste of our seasonal menus</h2>
+              <p className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: COPPER }} {...editCopy(content, "home_menu_label", "On the menu")} />
+              <h2 style={{ ...serif, color: FOREST }} className="mt-3 text-3xl font-medium sm:text-4xl" {...editCopy(content, "home_menu_heading", "A taste of our seasonal menus")} />
             </div>
             <ul className="mx-auto mt-12 max-w-xl divide-y" style={{ borderColor: LINE }}>
               {featured.map((item) => (
@@ -383,7 +381,7 @@ export default function FeastDesign({ site, page = "home", basePath = "" }: Pres
               ))}
             </ul>
             <div className="mt-12 text-center">
-              <a href={href("services")} className="inline-flex rounded-full px-9 py-3.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-white transition hover:opacity-90" style={{ background: FOREST }}>See all menus</a>
+              <a href={href("services")} className="inline-flex rounded-full px-9 py-3.5 text-[11px] font-semibold uppercase tracking-[0.22em] text-white transition hover:opacity-90" style={{ background: FOREST }} {...editCopy(content, "home_menu_cta", "See all menus")} />
             </div>
           </div>
         </section>
@@ -395,10 +393,10 @@ export default function FeastDesign({ site, page = "home", basePath = "" }: Pres
           <div className="mx-auto max-w-6xl px-8">
             <div className="flex flex-wrap items-end justify-between gap-4">
               <div>
-                <p className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: COPPER }}>On the table</p>
-                <h2 style={{ ...serif, color: FOREST }} className="mt-3 text-3xl font-medium sm:text-4xl">Recent feasts</h2>
+                <p className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: COPPER }} {...editCopy(content, "home_gallery_label", "On the table")} />
+                <h2 style={{ ...serif, color: FOREST }} className="mt-3 text-3xl font-medium sm:text-4xl" {...editCopy(content, "home_gallery_heading", "Recent feasts")} />
               </div>
-              <a href={href("gallery")} className="text-[11px] font-semibold uppercase tracking-[0.2em]" style={{ color: FOREST }}>Full gallery &rarr;</a>
+              <a href={href("gallery")} className="text-[11px] font-semibold uppercase tracking-[0.2em]" style={{ color: FOREST }} {...editCopy(content, "home_gallery_link", "Full gallery →")} />
             </div>
           </div>
           <div className="mx-auto mt-12 grid max-w-6xl grid-cols-2 gap-3 px-3 sm:grid-cols-3 sm:px-6">
@@ -414,9 +412,9 @@ export default function FeastDesign({ site, page = "home", basePath = "" }: Pres
       <section style={{ background: COPPER }}>
         <div className="mx-auto max-w-2xl px-8 py-24 text-center">
           <Sprig className="mx-auto h-9 w-auto" color={CREAM} />
-          <h2 style={{ ...serif, color: CREAM }} className="mt-5 text-3xl font-medium sm:text-4xl">Let&apos;s plan your feast</h2>
+          <h2 style={{ ...serif, color: CREAM }} className="mt-5 text-3xl font-medium sm:text-4xl" {...editCopy(content, "cta_heading", "Let's plan your feast")} />
           <p className="mx-auto mt-5 max-w-md text-[15px] leading-relaxed" style={{ color: "#fbf3e8" }}>Tell us about your day and your guests — we&apos;d love to cook for you.</p>
-          <a href={enquire} className="mt-8 inline-flex rounded-full px-10 py-4 text-[11px] font-semibold uppercase tracking-[0.22em] transition hover:opacity-90" style={{ background: FOREST, color: CREAM }}>Book a tasting</a>
+          <a href={enquire} className="mt-8 inline-flex rounded-full px-10 py-4 text-[11px] font-semibold uppercase tracking-[0.22em] transition hover:opacity-90" style={{ background: FOREST, color: CREAM }} {...editCopy(content, "cta_button", "Book a tasting")} />
         </div>
       </section>
     </>,

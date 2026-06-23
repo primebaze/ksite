@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { PetHeader, type PetHeaderTheme, type PetLink } from "../PetChrome";
 
@@ -105,13 +105,13 @@ export default function Romp({ site, page = "home", basePath = "" }: PresetProps
           )}
         </div>
         <div>
-          <h4 className="text-[11px] font-bold uppercase tracking-[0.2em]" style={{ color: SUN }}>Explore</h4>
+          <h4 className="text-[11px] font-bold uppercase tracking-[0.2em]" style={{ color: SUN }} {...editCopy(content, "footer_explore", "Explore")} />
           <ul className="mt-4 space-y-2.5 text-sm text-white/75">
             {nav.map((l) => <li key={l.href}><a href={l.href} className="transition hover:text-white">{l.label}</a></li>)}
           </ul>
         </div>
         <div>
-          <h4 className="text-[11px] font-bold uppercase tracking-[0.2em]" style={{ color: SUN }}>Say hello</h4>
+          <h4 className="text-[11px] font-bold uppercase tracking-[0.2em]" style={{ color: SUN }} {...editCopy(content, "footer_sayhello", "Say hello")} />
           <div className="mt-4 space-y-2.5 text-sm text-white/75">
             {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -119,7 +119,7 @@ export default function Romp({ site, page = "home", basePath = "" }: PresetProps
           </div>
         </div>
         <div>
-          <h4 className="text-[11px] font-bold uppercase tracking-[0.2em]" style={{ color: SUN }}>Open hours</h4>
+          <h4 className="text-[11px] font-bold uppercase tracking-[0.2em]" style={{ color: SUN }} {...editCopy(content, "footer_hours", "Open hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-4 space-y-2 text-sm text-white/75">
               {content.hours.map((h, i) => (
@@ -242,7 +242,7 @@ export default function Romp({ site, page = "home", basePath = "" }: PresetProps
         {banner("Let's chat", "Book your pup in", SKY, "Drop us a line and we'll get back to you with a wagging welcome.")}
         <section className="mx-auto grid max-w-6xl gap-12 px-6 py-20 sm:px-8 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={{ ...display, color: INK }} className="text-2xl font-extrabold tracking-tight">Find us</h2>
+            <h2 style={{ ...display, color: INK }} className="text-2xl font-extrabold tracking-tight" {...editCopy(content, "contact_findus_heading", "Find us")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: BODY }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block font-semibold transition hover:opacity-70" style={{ color: CORAL }}>{content.phone}</a>}
@@ -256,7 +256,7 @@ export default function Romp({ site, page = "home", basePath = "" }: PresetProps
               </ul>
             )}
             {content.map_url && (
-              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex px-7 py-3 text-sm font-bold transition hover:opacity-90" style={{ background: SUN, color: INK, borderRadius: "9999px" }}>Get directions</a>
+              <a href={content.map_url} target="_blank" rel="noreferrer" className="mt-7 inline-flex px-7 py-3 text-sm font-bold transition hover:opacity-90" style={{ background: SUN, color: INK, borderRadius: "9999px" }} {...editCopy(content, "directions_cta", "Get directions")} />
             )}
           </div>
           <div>
@@ -294,7 +294,7 @@ export default function Romp({ site, page = "home", basePath = "" }: PresetProps
             <div className="mt-8 flex flex-wrap gap-3">
               <a href={book} className="inline-flex px-8 py-4 text-sm font-bold text-white shadow-lg transition hover:opacity-90" style={{ background: CORAL, borderRadius: "9999px" }}>{cta.label}</a>
               {groups.length > 0 && (
-                <a href={href("services")} className="inline-flex px-8 py-4 text-sm font-bold transition hover:opacity-90" style={{ background: SUN, color: INK, borderRadius: "9999px" }}>See services</a>
+                <a href={href("services")} className="inline-flex px-8 py-4 text-sm font-bold transition hover:opacity-90" style={{ background: SUN, color: INK, borderRadius: "9999px" }} {...editCopy(content, "hero_services_cta", "See services")} />
               )}
             </div>
           </div>
@@ -345,7 +345,7 @@ export default function Romp({ site, page = "home", basePath = "" }: PresetProps
             </div>
             <div>
               <Pill color={SUN}>About us</Pill>
-              <h2 style={{ ...display, color: INK }} className="mt-5 text-3xl font-extrabold tracking-tight sm:text-4xl">Pups are family here</h2>
+              <h2 style={{ ...display, color: INK }} className="mt-5 text-3xl font-extrabold tracking-tight sm:text-4xl" {...editCopy(content, "home_about_heading", "Pups are family here")} />
               <p data-edit="content.about" className="mt-5 text-[16px] leading-[1.9]" style={{ color: BODY }}>{content.about}</p>
               <a href={href("about")} className="mt-6 inline-flex items-center gap-2 text-sm font-bold" style={{ color: CORAL }}>Meet the pack →</a>
             </div>
@@ -358,7 +358,7 @@ export default function Romp({ site, page = "home", basePath = "" }: PresetProps
         <section className="mx-auto max-w-3xl px-6 py-20 sm:px-8">
           <div className="text-center">
             <div className="flex justify-center"><Pill color={SKY}>Pick a treat</Pill></div>
-            <h2 style={{ ...display, color: INK }} className="mt-5 text-3xl font-extrabold tracking-tight sm:text-4xl">Our services</h2>
+            <h2 style={{ ...display, color: INK }} className="mt-5 text-3xl font-extrabold tracking-tight sm:text-4xl" {...editCopy(content, "home_services_heading", "Our services")} />
           </div>
           <ul className="mt-12 divide-y" style={{ borderColor: HAIR }}>
             {featured.map((item) => (
@@ -372,7 +372,7 @@ export default function Romp({ site, page = "home", basePath = "" }: PresetProps
             ))}
           </ul>
           <div className="mt-12 text-center">
-            <a href={href("services")} className="inline-flex px-9 py-4 text-sm font-bold transition hover:opacity-90" style={{ background: SUN, color: INK, borderRadius: "9999px" }}>See everything</a>
+            <a href={href("services")} className="inline-flex px-9 py-4 text-sm font-bold transition hover:opacity-90" style={{ background: SUN, color: INK, borderRadius: "9999px" }} {...editCopy(content, "home_services_cta", "See everything")} />
           </div>
         </section>
       )}
@@ -383,7 +383,7 @@ export default function Romp({ site, page = "home", basePath = "" }: PresetProps
           <div className="mx-auto max-w-6xl px-6 py-20 sm:px-8">
             <div className="text-center">
               <div className="flex justify-center"><Pill color={MINT}>Wall of fame</Pill></div>
-              <h2 style={{ ...display, color: INK }} className="mt-5 text-3xl font-extrabold tracking-tight sm:text-4xl">Our happy regulars</h2>
+              <h2 style={{ ...display, color: INK }} className="mt-5 text-3xl font-extrabold tracking-tight sm:text-4xl" {...editCopy(content, "home_gallery_heading", "Our happy regulars")} />
             </div>
             <div className="mt-12 grid grid-cols-2 gap-3 sm:grid-cols-4">
               {gallery.slice(0, 4).map((g, i) => (
@@ -392,7 +392,7 @@ export default function Romp({ site, page = "home", basePath = "" }: PresetProps
               ))}
             </div>
             <div className="mt-10 text-center">
-              <a href={href("gallery")} className="inline-flex px-9 py-4 text-sm font-bold transition hover:opacity-90" style={{ background: SKY, color: "#fff", borderRadius: "9999px" }}>See the gallery</a>
+              <a href={href("gallery")} className="inline-flex px-9 py-4 text-sm font-bold transition hover:opacity-90" style={{ background: SKY, color: "#fff", borderRadius: "9999px" }} {...editCopy(content, "home_gallery_cta", "See the gallery")} />
             </div>
           </div>
         </section>
@@ -402,8 +402,8 @@ export default function Romp({ site, page = "home", basePath = "" }: PresetProps
       <section className="mx-auto max-w-3xl px-6 py-20 text-center sm:px-8">
         <div className="rounded-[2.5rem] px-8 py-14" style={{ background: `linear-gradient(140deg, ${CORAL}, ${SUN})` }}>
           <Paw className="mx-auto h-9 w-9" color="#fff" />
-          <h2 style={{ ...display, color: "#fff" }} className="mt-4 text-3xl font-extrabold tracking-tight sm:text-4xl">Ready for a fabulous day?</h2>
-          <p className="mx-auto mt-4 max-w-md text-[15px] leading-relaxed text-white/85">Book your pup in and let the zoomies begin.</p>
+          <h2 style={{ ...display, color: "#fff" }} className="mt-4 text-3xl font-extrabold tracking-tight sm:text-4xl" {...editCopy(content, "cta_heading", "Ready for a fabulous day?")} />
+          <p className="mx-auto mt-4 max-w-md text-[15px] leading-relaxed text-white/85" {...editCopy(content, "cta_sub", "Book your pup in and let the zoomies begin.")} />
           <a href={book} className="mt-8 inline-flex px-9 py-4 text-sm font-bold transition hover:opacity-90" style={{ background: "#fff", color: CORAL, borderRadius: "9999px" }}>{cta.label}</a>
         </div>
       </section>

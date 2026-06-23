@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { EduMobileNav } from "./EduMobileNav";
 
@@ -131,7 +131,7 @@ export default function IgnitionDesign({ site, page = "home", basePath = "" }: P
         </div>
         {(content.address || content.phone || content.email) && (
           <div>
-            <h4 className="text-xs font-extrabold uppercase tracking-[0.16em] text-white/40">Get in touch</h4>
+            <h4 className="text-xs font-extrabold uppercase tracking-[0.16em] text-white/40" {...editCopy(content, "footer_contact_heading", "Get in touch")} />
             <div className="mt-4 space-y-2 text-sm text-white/75">
               {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -141,7 +141,7 @@ export default function IgnitionDesign({ site, page = "home", basePath = "" }: P
         )}
         {content.hours && content.hours.length > 0 && (
           <div>
-            <h4 className="text-xs font-extrabold uppercase tracking-[0.16em] text-white/40">Hours</h4>
+            <h4 className="text-xs font-extrabold uppercase tracking-[0.16em] text-white/40" {...editCopy(content, "footer_hours_heading", "Hours")} />
             <ul className="mt-4 space-y-2 text-sm text-white/75">
               {content.hours.map((h, i) => (
                 <li key={i} className="flex justify-between gap-5"><span data-edit={`hours:${i}:day`}>{h.day}</span><span data-edit={`hours:${i}:open`} className="text-white/45">{h.open}</span></li>
@@ -150,7 +150,7 @@ export default function IgnitionDesign({ site, page = "home", basePath = "" }: P
           </div>
         )}
         <div>
-          <h4 className="text-xs font-extrabold uppercase tracking-[0.16em] text-white/40">Explore</h4>
+          <h4 className="text-xs font-extrabold uppercase tracking-[0.16em] text-white/40" {...editCopy(content, "footer_explore_heading", "Explore")} />
           <ul className="mt-4 space-y-2 text-sm text-white/75">
             {nav.map((l) => (
               <li key={l.href}><a href={l.href} className="transition hover:text-white">{l.label}</a></li>
@@ -286,7 +286,7 @@ export default function IgnitionDesign({ site, page = "home", basePath = "" }: P
         {banner("Contact", "Book your first lesson", "Tell us where you are and when suits — we will get you booked in and on the road.")}
         <section className="mx-auto grid max-w-5xl gap-12 px-6 py-16 lg:grid-cols-[1fr_1.1fr]">
           <div className="rounded-2xl p-8" style={{ background: MINT }}>
-            <h2 className="text-xl font-extrabold tracking-tight" style={{ color: INK }}>Get in touch</h2>
+            <h2 className="text-xl font-extrabold tracking-tight" style={{ color: INK }} {...editCopy(content, "contact_panel_heading", "Get in touch")} />
             <div className="mt-5 space-y-3 text-[15px] leading-relaxed" style={{ color: MUTE }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block font-extrabold transition hover:opacity-70" style={{ color: GREEN }}>{content.phone}</a>}
@@ -331,7 +331,7 @@ export default function IgnitionDesign({ site, page = "home", basePath = "" }: P
       <section className="relative overflow-hidden" style={{ background: MINT }}>
         <div className="mx-auto grid max-w-6xl items-center gap-10 px-6 py-16 lg:grid-cols-2 lg:gap-14 lg:py-24">
           <div>
-            <p className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-[12px] font-extrabold uppercase tracking-[0.14em]" style={{ background: GREEN, color: "#fff" }}>Pass with confidence</p>
+            <p className="inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-[12px] font-extrabold uppercase tracking-[0.14em]" style={{ background: GREEN, color: "#fff" }} {...editCopy(content, "hero_eyebrow", "Pass with confidence")} />
             <h1 className="mt-5 text-5xl font-extrabold leading-[1.0] tracking-tight sm:text-6xl" style={{ color: INK }}>
               <span data-edit="tenant.business_name">{name}</span>
             </h1>
@@ -370,8 +370,8 @@ export default function IgnitionDesign({ site, page = "home", basePath = "" }: P
       {/* how it works */}
       <section className="mx-auto max-w-6xl px-6 py-20">
         <div className="max-w-2xl">
-          <p className="text-[12px] font-extrabold uppercase tracking-[0.18em]" style={{ color: GREEN }}>How it works</p>
-          <h2 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl" style={{ color: INK }}>From first lesson to full licence</h2>
+          <p className="text-[12px] font-extrabold uppercase tracking-[0.18em]" style={{ color: GREEN }} {...editCopy(content, "how_eyebrow", "How it works")} />
+          <h2 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl" style={{ color: INK }} {...editCopy(content, "how_heading", "From first lesson to full licence")} />
         </div>
         <div className="mt-12 grid gap-5 sm:grid-cols-3">
           <Step n="1" title="Get booked in" body="Call or message and we will find a slot that fits around school, work or college." />
@@ -384,7 +384,7 @@ export default function IgnitionDesign({ site, page = "home", basePath = "" }: P
       {content.about && (
         <section style={{ background: INK }} className="text-white">
           <div className="mx-auto max-w-4xl px-6 py-20">
-            <p className="text-[12px] font-extrabold uppercase tracking-[0.18em]" style={{ color: YELLOW }}>About us</p>
+            <p className="text-[12px] font-extrabold uppercase tracking-[0.18em]" style={{ color: YELLOW }} {...editCopy(content, "about_eyebrow", "About us")} />
             <p data-edit="content.about" className="mt-5 text-2xl font-bold leading-[1.5] tracking-tight sm:text-[1.7rem]">{content.about}</p>
             <a href={href("about")} className="mt-7 inline-flex text-sm font-extrabold transition hover:opacity-80" style={{ color: YELLOW }}>More about us →</a>
           </div>
@@ -395,14 +395,14 @@ export default function IgnitionDesign({ site, page = "home", basePath = "" }: P
       {featuredCount > 0 && (
         <section className="mx-auto max-w-3xl px-6 py-20">
           <div>
-            <p className="text-[12px] font-extrabold uppercase tracking-[0.18em]" style={{ color: GREEN }}>Lessons & prices</p>
-            <h2 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl" style={{ color: INK }}>Clear prices, no surprises</h2>
+            <p className="text-[12px] font-extrabold uppercase tracking-[0.18em]" style={{ color: GREEN }} {...editCopy(content, "lessons_eyebrow", "Lessons & prices")} />
+            <h2 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl" style={{ color: INK }} {...editCopy(content, "lessons_heading", "Clear prices, no surprises")} />
           </div>
           <div className="mt-10 rounded-2xl border p-7 sm:p-9" style={{ borderColor: LINE }}>
             {lessonList(6)}
           </div>
           <div className="mt-10">
-            <a href={href("services")} className="inline-flex rounded-lg px-7 py-3.5 text-sm font-extrabold text-white transition hover:opacity-90" style={{ background: GREEN }}>See all lessons & prices</a>
+            <a href={href("services")} className="inline-flex rounded-lg px-7 py-3.5 text-sm font-extrabold text-white transition hover:opacity-90" style={{ background: GREEN }} {...editCopy(content, "lessons_link", "See all lessons & prices")} />
           </div>
         </section>
       )}
@@ -412,8 +412,8 @@ export default function IgnitionDesign({ site, page = "home", basePath = "" }: P
         <section style={{ background: MINT }}>
           <div className="mx-auto max-w-6xl px-6 py-20">
             <div className="max-w-2xl">
-              <p className="text-[12px] font-extrabold uppercase tracking-[0.18em]" style={{ color: GREEN }}>Recent passes</p>
-              <h2 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl" style={{ color: INK }}>Another one through</h2>
+              <p className="text-[12px] font-extrabold uppercase tracking-[0.18em]" style={{ color: GREEN }} {...editCopy(content, "gallery_eyebrow", "Recent passes")} />
+              <h2 className="mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl" style={{ color: INK }} {...editCopy(content, "gallery_heading", "Another one through")} />
             </div>
             <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
               {gallery.slice(0, 4).map((g) => (
@@ -423,7 +423,7 @@ export default function IgnitionDesign({ site, page = "home", basePath = "" }: P
             </div>
             {gallery.length > 4 && (
               <div className="mt-8">
-                <a href={href("gallery")} className="inline-flex text-sm font-extrabold transition hover:opacity-70" style={{ color: GREEN }}>See the gallery →</a>
+                <a href={href("gallery")} className="inline-flex text-sm font-extrabold transition hover:opacity-70" style={{ color: GREEN }} {...editCopy(content, "gallery_link", "See the gallery →")} />
               </div>
             )}
           </div>
@@ -433,7 +433,7 @@ export default function IgnitionDesign({ site, page = "home", basePath = "" }: P
       {/* closing CTA */}
       <section className="mx-auto max-w-5xl px-6 py-24">
         <div className="rounded-3xl px-8 py-16 text-center" style={{ background: GREEN }}>
-          <h2 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl">Ready to get on the road?</h2>
+          <h2 className="text-3xl font-extrabold tracking-tight text-white sm:text-4xl" {...editCopy(content, "cta_heading", "Ready to get on the road?")} />
           <p className="mx-auto mt-4 max-w-md text-[16px] leading-relaxed text-white/85">Book your first lesson today and take the first step towards passing.</p>
           <a href={cta} className="mt-8 inline-flex rounded-lg px-9 py-4 text-sm font-extrabold transition hover:opacity-90" style={{ background: YELLOW, color: INK }}>{ctaLabel}</a>
         </div>

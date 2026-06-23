@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { EduMobileNav } from "./EduMobileNav";
 
@@ -266,7 +266,7 @@ export default function RoadcraftDesign({ site, page = "home", basePath = "" }: 
         {banner("Contact", "Book your first lesson", "Tell us where you are and when suits — we will get you booked in and test-ready fast.")}
         <section className="mx-auto grid max-w-5xl gap-12 px-6 py-16 lg:grid-cols-[1fr_1.1fr]">
           <div className="rounded-lg p-8" style={{ background: CHARCOAL, color: "#fff" }}>
-            <h2 className="text-xl font-black uppercase tracking-tight">Get in touch</h2>
+            <h2 className="text-xl font-black uppercase tracking-tight" {...editCopy(content, "contact_heading", "Get in touch")} />
             <div className="mt-5 space-y-3 text-[15px] leading-relaxed text-white/70">
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block font-black transition hover:opacity-80" style={{ color: AMBER }}>{content.phone}</a>}
@@ -274,7 +274,7 @@ export default function RoadcraftDesign({ site, page = "home", basePath = "" }: 
             </div>
             {content.service_areas && content.service_areas.length > 0 && (
               <div className="mt-6 border-t border-white/10 pt-5">
-                <p className="text-xs font-black uppercase tracking-[0.18em]" style={{ color: AMBER }}>Areas covered</p>
+                <p className="text-xs font-black uppercase tracking-[0.18em]" style={{ color: AMBER }} {...editCopy(content, "areas_label", "Areas covered")} />
                 <p className="mt-2 text-sm text-white/70">{content.service_areas.join(" · ")}</p>
               </div>
             )}
@@ -328,7 +328,7 @@ export default function RoadcraftDesign({ site, page = "home", basePath = "" }: 
         <div aria-hidden className="absolute inset-y-0 left-1/2 hidden w-px -translate-x-1/2 lg:block" style={{ backgroundImage: `repeating-linear-gradient(180deg, ${AMBER}33 0 36px, transparent 36px 70px)` }} />
         <div className="mx-auto grid max-w-6xl items-center gap-10 px-6 pb-16 pt-28 lg:grid-cols-[1.15fr_0.85fr] lg:gap-14 lg:pb-24 lg:pt-32">
           <div>
-            <p className="inline-flex items-center gap-2 rounded-sm px-3 py-1 text-[11px] font-black uppercase tracking-[0.2em]" style={{ background: RED, color: "#fff" }}>High pass rate · Test-ready fast</p>
+            <p className="inline-flex items-center gap-2 rounded-sm px-3 py-1 text-[11px] font-black uppercase tracking-[0.2em]" style={{ background: RED, color: "#fff" }} {...editCopy(content, "hero_kicker", "High pass rate · Test-ready fast")} />
             <h1 className="mt-5 text-5xl font-black uppercase leading-[0.9] tracking-tight text-white sm:text-7xl">
               Pass faster.<br /><span style={{ color: AMBER }}>Drive for life.</span>
             </h1>
@@ -343,9 +343,9 @@ export default function RoadcraftDesign({ site, page = "home", basePath = "" }: 
               )}
             </div>
             <div className="mt-8 flex flex-wrap gap-x-6 gap-y-2 text-[13px] font-bold uppercase tracking-[0.06em]" style={{ color: AMBER }}>
-              <span>Manual &amp; automatic</span>
-              <span>Intensive courses</span>
-              <span>Door-to-door pick-up</span>
+              <span {...editCopy(content, "hero_feat_1", "Manual & automatic")} />
+              <span {...editCopy(content, "hero_feat_2", "Intensive courses")} />
+              <span {...editCopy(content, "hero_feat_3", "Door-to-door pick-up")} />
             </div>
           </div>
           <div className="relative">
@@ -386,8 +386,8 @@ export default function RoadcraftDesign({ site, page = "home", basePath = "" }: 
       {/* why we get results */}
       <section className="mx-auto max-w-6xl px-6 py-20">
         <div className="max-w-2xl">
-          <p className="text-[12px] font-black uppercase tracking-[0.18em]" style={{ color: RED }}>Why we get results</p>
-          <h2 className="mt-3 text-3xl font-black uppercase tracking-tight sm:text-5xl" style={{ color: CHARCOAL }}>No nonsense. Just passes.</h2>
+          <p className="text-[12px] font-black uppercase tracking-[0.18em]" style={{ color: RED }} {...editCopy(content, "reasons_kicker", "Why we get results")} />
+          <h2 className="mt-3 text-3xl font-black uppercase tracking-tight sm:text-5xl" style={{ color: CHARCOAL }} {...editCopy(content, "reasons_heading", "No nonsense. Just passes.")} />
         </div>
         <div className="mt-12 grid gap-px overflow-hidden rounded-lg sm:grid-cols-3" style={{ background: LINE }}>
           {reasons.map((r, i) => (
@@ -405,7 +405,7 @@ export default function RoadcraftDesign({ site, page = "home", basePath = "" }: 
         <section style={{ background: CHARCOAL }} className="text-white">
           <Lane color={AMBER} />
           <div className="mx-auto max-w-4xl px-6 py-20">
-            <p className="text-[12px] font-black uppercase tracking-[0.18em]" style={{ color: AMBER }}>About us</p>
+            <p className="text-[12px] font-black uppercase tracking-[0.18em]" style={{ color: AMBER }} {...editCopy(content, "about_kicker", "About us")} />
             <p data-edit="content.about" className="mt-5 text-2xl font-bold leading-[1.5] tracking-tight sm:text-[1.7rem]">{content.about}</p>
             <a href={href("about")} className="mt-7 inline-flex text-sm font-black uppercase tracking-[0.06em] transition hover:opacity-80" style={{ color: AMBER }}>More about us →</a>
           </div>
@@ -416,14 +416,14 @@ export default function RoadcraftDesign({ site, page = "home", basePath = "" }: 
       {featuredCount > 0 && (
         <section className="mx-auto max-w-3xl px-6 py-20">
           <div>
-            <p className="text-[12px] font-black uppercase tracking-[0.18em]" style={{ color: RED }}>Lessons & courses</p>
-            <h2 className="mt-3 text-3xl font-black uppercase tracking-tight sm:text-5xl" style={{ color: CHARCOAL }}>Straight prices</h2>
+            <p className="text-[12px] font-black uppercase tracking-[0.18em]" style={{ color: RED }} {...editCopy(content, "lessons_preview_kicker", "Lessons & courses")} />
+            <h2 className="mt-3 text-3xl font-black uppercase tracking-tight sm:text-5xl" style={{ color: CHARCOAL }} {...editCopy(content, "lessons_preview_heading", "Straight prices")} />
           </div>
           <div className="mt-10">
             {lessonList(6)}
           </div>
           <div className="mt-10">
-            <a href={href("services")} className="inline-flex rounded-md px-7 py-3.5 text-sm font-black uppercase tracking-[0.06em] transition hover:opacity-90" style={{ background: AMBER, color: CHARCOAL }}>See all lessons & courses</a>
+            <a href={href("services")} className="inline-flex rounded-md px-7 py-3.5 text-sm font-black uppercase tracking-[0.06em] transition hover:opacity-90" style={{ background: AMBER, color: CHARCOAL }} {...editCopy(content, "lessons_preview_cta", "See all lessons & courses")} />
           </div>
         </section>
       )}
@@ -433,8 +433,8 @@ export default function RoadcraftDesign({ site, page = "home", basePath = "" }: 
       <section style={{ background: PAPER, borderTop: `1px solid ${LINE}` }}>
         <div className="mx-auto max-w-6xl px-6 py-20">
           <div className="max-w-2xl">
-            <p className="text-[12px] font-black uppercase tracking-[0.18em]" style={{ color: RED }}>Learner reviews</p>
-            <h2 className="mt-3 text-3xl font-black uppercase tracking-tight sm:text-5xl" style={{ color: CHARCOAL }}>Passed first time</h2>
+            <p className="text-[12px] font-black uppercase tracking-[0.18em]" style={{ color: RED }} {...editCopy(content, "reviews_kicker", "Learner reviews")} />
+            <h2 className="mt-3 text-3xl font-black uppercase tracking-tight sm:text-5xl" style={{ color: CHARCOAL }} {...editCopy(content, "reviews_heading", "Passed first time")} />
           </div>
           <div className="mt-12 grid gap-5 sm:grid-cols-3">
             {reviews.map((r, i) => (
@@ -453,8 +453,8 @@ export default function RoadcraftDesign({ site, page = "home", basePath = "" }: 
       {gallery.length > 0 && (
         <section className="mx-auto max-w-6xl px-6 py-20">
           <div className="max-w-2xl">
-            <p className="text-[12px] font-black uppercase tracking-[0.18em]" style={{ color: RED }}>Recent passes</p>
-            <h2 className="mt-3 text-3xl font-black uppercase tracking-tight sm:text-5xl" style={{ color: CHARCOAL }}>Another one through</h2>
+            <p className="text-[12px] font-black uppercase tracking-[0.18em]" style={{ color: RED }} {...editCopy(content, "gallery_kicker", "Recent passes")} />
+            <h2 className="mt-3 text-3xl font-black uppercase tracking-tight sm:text-5xl" style={{ color: CHARCOAL }} {...editCopy(content, "gallery_heading", "Another one through")} />
           </div>
           <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
             {gallery.slice(0, 4).map((g) => (
@@ -477,7 +477,7 @@ export default function RoadcraftDesign({ site, page = "home", basePath = "" }: 
           <div className="grid items-start gap-10 px-8 py-14 lg:grid-cols-[0.9fr_1.1fr] lg:px-12 lg:py-16">
             <div className="text-white">
               <h2 className="text-3xl font-black uppercase leading-[0.95] tracking-tight sm:text-5xl">Ready to<br /><span style={{ color: AMBER }}>get test-ready?</span></h2>
-              <p className="mt-5 max-w-sm text-[16px] leading-relaxed text-white/65">Book your first lesson today and take the fast lane to your full licence.</p>
+              <p className="mt-5 max-w-sm text-[16px] leading-relaxed text-white/65" {...editCopy(content, "cta_sub", "Book your first lesson today and take the fast lane to your full licence.")} />
               {content.phone && (
                 <a data-edit="content.phone" href={`tel:${content.phone}`} className="mt-7 inline-flex text-lg font-black" style={{ color: AMBER }}>{content.phone}</a>
               )}

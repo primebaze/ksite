@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { CSSProperties, ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { CragHeader } from "./CragHeader";
 import { FitnessBooking, type BookingSkin } from "./FitnessBooking";
@@ -142,7 +142,7 @@ export default function CragDesign({ site, page = "home", basePath = "" }: Prese
           )}
         </div>
         <div>
-          <h4 style={{ color: CHALK }} className="text-xs font-bold uppercase tracking-[0.2em]">Climb</h4>
+          <h4 style={{ color: CHALK }} className="text-xs font-bold uppercase tracking-[0.2em]" {...editCopy(content, "footer_climb", "Climb")} />
           <ul className="mt-5 space-y-3 text-sm" style={{ color: MUTE }}>
             {([
               groups.length > 0 && { label: "Sessions & passes", href: href("services") },
@@ -155,7 +155,7 @@ export default function CragDesign({ site, page = "home", basePath = "" }: Prese
           </ul>
         </div>
         <div>
-          <h4 style={{ color: CHALK }} className="text-xs font-bold uppercase tracking-[0.2em]">Find us</h4>
+          <h4 style={{ color: CHALK }} className="text-xs font-bold uppercase tracking-[0.2em]" {...editCopy(content, "footer_findus", "Find us")} />
           <div className="mt-5 space-y-3 text-sm" style={{ color: MUTE }}>
             {content.address && <p data-edit="content.address" className="whitespace-pre-line leading-relaxed">{content.address}</p>}
             {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -163,7 +163,7 @@ export default function CragDesign({ site, page = "home", basePath = "" }: Prese
           </div>
         </div>
         <div>
-          <h4 style={{ color: CHALK }} className="text-xs font-bold uppercase tracking-[0.2em]">Opening hours</h4>
+          <h4 style={{ color: CHALK }} className="text-xs font-bold uppercase tracking-[0.2em]" {...editCopy(content, "footer_hours", "Opening hours")} />
           {content.hours && content.hours.length > 0 ? (
             <ul className="mt-5 space-y-2 text-sm" style={{ color: MUTE }}>
               {content.hours.map((h, i) => (
@@ -295,7 +295,7 @@ export default function CragDesign({ site, page = "home", basePath = "" }: Prese
         {banner("Get started", "Drop In & Climb", TEAL)}
         <section className="mx-auto grid max-w-6xl gap-12 px-6 py-20 sm:px-8 lg:grid-cols-2 lg:gap-16">
           <div>
-            <h2 style={{ ...display, color: CHALK }} className="text-2xl font-bold uppercase tracking-[0.02em]">Find the gym</h2>
+            <h2 style={{ ...display, color: CHALK }} className="text-2xl font-bold uppercase tracking-[0.02em]" {...editCopy(content, "contact_heading", "Find the gym")} />
             <div className="mt-6 space-y-4 text-[15px] leading-relaxed" style={{ color: MUTE }}>
               {content.address && <p data-edit="content.address" className="whitespace-pre-line">{content.address}</p>}
               {content.phone && <a data-edit="content.phone" href={`tel:${content.phone}`} className="block transition hover:text-white">{content.phone}</a>}
@@ -369,7 +369,7 @@ export default function CragDesign({ site, page = "home", basePath = "" }: Prese
           <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:gap-4">
             <a href={join} className="rounded-full px-9 py-4 text-center text-[12px] font-extrabold uppercase tracking-[0.2em] transition hover:opacity-90" style={{ background: ORANGE, color: SLATE }}>{ctaLabel}</a>
             {groups.length > 0 && (
-              <a href={href("services")} className="rounded-full px-9 py-4 text-center text-[12px] font-extrabold uppercase tracking-[0.2em] text-white backdrop-blur-sm transition hover:bg-white/10" style={{ border: "1px solid rgba(255,255,255,0.5)" }}>See sessions</a>
+              <a href={href("services")} className="rounded-full px-9 py-4 text-center text-[12px] font-extrabold uppercase tracking-[0.2em] text-white backdrop-blur-sm transition hover:bg-white/10" style={{ border: "1px solid rgba(255,255,255,0.5)" }} {...editCopy(content, "hero_sessions_cta", "See sessions")} />
             )}
           </div>
         </div>
@@ -378,8 +378,8 @@ export default function CragDesign({ site, page = "home", basePath = "" }: Prese
       {/* what's here — areas list */}
       <section style={{ background: DEEP }}>
         <div className="mx-auto max-w-7xl px-8 py-24">
-          <Kicker color={TEAL}>What&apos;s here</Kicker>
-          <h2 style={{ ...display, color: CHALK }} className="mt-4 max-w-2xl text-4xl font-extrabold uppercase leading-[0.95] tracking-[-0.01em] sm:text-5xl">Everything to send your best</h2>
+          <Kicker color={TEAL}><span {...editCopy(content, "home_areas_kicker", "What's here")} /></Kicker>
+          <h2 style={{ ...display, color: CHALK }} className="mt-4 max-w-2xl text-4xl font-extrabold uppercase leading-[0.95] tracking-[-0.01em] sm:text-5xl" {...editCopy(content, "home_areas_heading", "Everything to send your best")} />
           <div className="mt-12 grid gap-px overflow-hidden rounded-3xl sm:grid-cols-2 lg:grid-cols-3" style={{ background: LINE }}>
             {areas.map((a, i) => (
               <div key={a.t} className="p-8" style={{ background: PANEL }}>
@@ -398,7 +398,7 @@ export default function CragDesign({ site, page = "home", basePath = "" }: Prese
       <section style={{ background: ORANGE }}>
         <div className="mx-auto max-w-7xl px-8 py-12">
           <div className="flex flex-col items-start justify-between gap-6 sm:flex-row sm:items-center">
-            <h2 style={{ ...display, color: SLATE }} className="max-w-md text-2xl font-extrabold uppercase leading-[0.95] tracking-[-0.01em] sm:text-3xl">From your first V0 to project sends</h2>
+            <h2 style={{ ...display, color: SLATE }} className="max-w-md text-2xl font-extrabold uppercase leading-[0.95] tracking-[-0.01em] sm:text-3xl" {...editCopy(content, "home_grades_heading", "From your first V0 to project sends")} />
             <div className="flex flex-wrap gap-2">
               {GRADES.map((g) => (
                 <span key={g} className="inline-flex items-center rounded-full px-3.5 py-1.5 text-sm font-extrabold uppercase tracking-[0.1em]" style={{ background: SLATE, color: CHALK }}>{g}</span>
@@ -412,10 +412,10 @@ export default function CragDesign({ site, page = "home", basePath = "" }: Prese
       {(content.about || gallery[0]) && (
         <section className="mx-auto grid max-w-7xl items-center gap-12 px-8 py-24 lg:grid-cols-2 lg:gap-16">
           <div>
-            <Kicker color={MAGENTA}>Who we are</Kicker>
-            <h2 style={{ ...display, color: CHALK }} className="mt-4 text-4xl font-extrabold uppercase leading-[0.95] tracking-[-0.01em] sm:text-5xl">All levels. One crew.</h2>
+            <Kicker color={MAGENTA}><span {...editCopy(content, "home_about_kicker", "Who we are")} /></Kicker>
+            <h2 style={{ ...display, color: CHALK }} className="mt-4 text-4xl font-extrabold uppercase leading-[0.95] tracking-[-0.01em] sm:text-5xl" {...editCopy(content, "home_about_heading", "All levels. One crew.")} />
             {content.about && <p data-edit="content.about" className="mt-6 text-[16px] leading-[1.9]" style={{ color: MUTE }}>{content.about}</p>}
-            <a href={href("about")} className="mt-7 inline-flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.2em]" style={{ color: TEAL }}>More about us →</a>
+            <a href={href("about")} className="mt-7 inline-flex items-center gap-2 text-[12px] font-bold uppercase tracking-[0.2em]" style={{ color: TEAL }} {...editCopy(content, "home_about_link", "More about us →")} />
           </div>
           <div className="relative">
             {gallery[0] ? (
@@ -436,10 +436,10 @@ export default function CragDesign({ site, page = "home", basePath = "" }: Prese
           <div className="mx-auto max-w-4xl px-8 py-24">
             <div className="flex flex-wrap items-end justify-between gap-4">
               <div>
-                <Kicker>Sessions & passes</Kicker>
-                <h2 style={{ ...display, color: CHALK }} className="mt-4 text-4xl font-extrabold uppercase tracking-[-0.01em] sm:text-5xl">Pick your way up</h2>
+                <Kicker><span {...editCopy(content, "home_sessions_kicker", "Sessions & passes")} /></Kicker>
+                <h2 style={{ ...display, color: CHALK }} className="mt-4 text-4xl font-extrabold uppercase tracking-[-0.01em] sm:text-5xl" {...editCopy(content, "home_sessions_heading", "Pick your way up")} />
               </div>
-              <a href={href("services")} className="text-[12px] font-bold uppercase tracking-[0.18em] transition hover:text-white" style={{ color: ORANGE }}>View all →</a>
+              <a href={href("services")} className="text-[12px] font-bold uppercase tracking-[0.18em] transition hover:text-white" style={{ color: ORANGE }} {...editCopy(content, "home_sessions_link", "View all →")} />
             </div>
             <div className="mt-12">{catalogList(featured)}</div>
           </div>
@@ -467,8 +467,8 @@ export default function CragDesign({ site, page = "home", basePath = "" }: Prese
       {gallery.length > 0 && (
         <section style={{ background: DEEP }} className="py-24">
           <div className="mx-auto max-w-7xl px-8">
-            <Kicker color={MAGENTA}>Our walls</Kicker>
-            <h2 style={{ ...display, color: CHALK }} className="mt-4 max-w-2xl text-3xl font-extrabold uppercase leading-[0.95] tracking-[-0.01em] sm:text-4xl">Chalk, colour and a wall for every grade</h2>
+            <Kicker color={MAGENTA}><span {...editCopy(content, "home_gallery_kicker", "Our walls")} /></Kicker>
+            <h2 style={{ ...display, color: CHALK }} className="mt-4 max-w-2xl text-3xl font-extrabold uppercase leading-[0.95] tracking-[-0.01em] sm:text-4xl" {...editCopy(content, "home_gallery_heading", "Chalk, colour and a wall for every grade")} />
           </div>
           <div className="mx-auto mt-12 grid max-w-7xl grid-cols-2 gap-2 px-2 sm:grid-cols-4 sm:px-4">
             {gallery.slice(0, 4).map((g) => (
@@ -477,7 +477,7 @@ export default function CragDesign({ site, page = "home", basePath = "" }: Prese
             ))}
           </div>
           <div className="mx-auto mt-10 max-w-7xl px-8">
-            <a href={href("gallery")} className="inline-flex rounded-full px-9 py-3.5 text-[11px] font-bold uppercase tracking-[0.2em] transition hover:opacity-90" style={{ border: `1px solid ${MAGENTA}`, color: MAGENTA }}>View gallery</a>
+            <a href={href("gallery")} className="inline-flex rounded-full px-9 py-3.5 text-[11px] font-bold uppercase tracking-[0.2em] transition hover:opacity-90" style={{ border: `1px solid ${MAGENTA}`, color: MAGENTA }} {...editCopy(content, "home_gallery_cta", "View gallery")} />
           </div>
         </section>
       )}

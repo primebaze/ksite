@@ -1,7 +1,7 @@
 import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { EduMobileNav } from "./EduMobileNav";
 
@@ -311,7 +311,7 @@ export default function SproutDesign({ site, page = "home", basePath = "" }: Pre
             <div className="mt-8 flex flex-wrap gap-3">
               <a href={cta} className="rounded-full px-7 py-3.5 text-sm font-semibold text-white shadow-lg transition hover:opacity-90" style={{ background: GREEN }}>{ctaLabel}</a>
               {groups.length > 0 && (
-                <a href={href("services")} className="rounded-full px-7 py-3.5 text-sm font-semibold transition hover:opacity-90" style={{ background: CARD, color: INK, border: `1px solid ${INK}14` }}>See programmes</a>
+                <a href={href("services")} className="rounded-full px-7 py-3.5 text-sm font-semibold transition hover:opacity-90" style={{ background: CARD, color: INK, border: `1px solid ${INK}14` }} {...editCopy(content, "hero_programmes_cta", "See programmes")} />
               )}
             </div>
           </div>
@@ -363,13 +363,13 @@ export default function SproutDesign({ site, page = "home", basePath = "" }: Pre
           <div className="mx-auto max-w-3xl px-6 py-20">
             <div className="text-center">
               <Pill>Programmes</Pill>
-              <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-semibold sm:text-4xl">Rooms for every age</h2>
+              <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-semibold sm:text-4xl" {...editCopy(content, "programmes_preview_heading", "Rooms for every age")} />
             </div>
             <div className="mt-10 rounded-[2rem] p-7 sm:p-9" style={{ background: CARD }}>
               {programmeList(6)}
             </div>
             <div className="mt-10 text-center">
-              <a href={href("services")} className="inline-flex rounded-full px-8 py-3.5 text-sm font-semibold text-white transition hover:opacity-90" style={{ background: GREEN }}>View all programmes</a>
+              <a href={href("services")} className="inline-flex rounded-full px-8 py-3.5 text-sm font-semibold text-white transition hover:opacity-90" style={{ background: GREEN }} {...editCopy(content, "programmes_preview_cta", "View all programmes")} />
             </div>
           </div>
         </section>
@@ -380,7 +380,7 @@ export default function SproutDesign({ site, page = "home", basePath = "" }: Pre
         <section className="mx-auto max-w-6xl px-6 py-20">
           <div className="text-center">
             <Pill>Our days</Pill>
-            <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-semibold sm:text-4xl">Happy faces, busy hands</h2>
+            <h2 style={{ ...display, color: INK }} className="mt-4 text-3xl font-semibold sm:text-4xl" {...editCopy(content, "gallery_heading", "Happy faces, busy hands")} />
           </div>
           <div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4">
             {gallery.slice(0, 4).map((g) => (

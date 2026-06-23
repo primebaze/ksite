@@ -4,7 +4,7 @@ import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
 import { useEffect, useState } from "react";
-import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { EventsMobileNav } from "./EventsMobileNav";
 
@@ -134,11 +134,11 @@ export default function Pavilion({ site, page = "home", basePath = "" }: PresetP
     </div>
   );
 
-  const banner = (kicker: string, title: string) => (
+  const banner = (kicker: string, kickerKey: string, title: string, titleKey: string) => (
     <section style={{ borderBottom: `1px solid ${LINE}` }}>
       <div className="mx-auto max-w-6xl px-8 pb-16 pt-32 sm:pt-40">
-        <p className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: SAGE }}>{kicker}</p>
-        <h1 style={{ ...sans, color: INK }} className="mt-3 text-4xl font-semibold leading-[1.04] tracking-[-0.01em] sm:text-6xl">{title}</h1>
+        <p className="text-[11px] font-semibold uppercase tracking-[0.34em]" style={{ color: SAGE }} {...editCopy(content, kickerKey, kicker)} />
+        <h1 style={{ ...sans, color: INK }} className="mt-3 text-4xl font-semibold leading-[1.04] tracking-[-0.01em] sm:text-6xl" {...editCopy(content, titleKey, title)} />
       </div>
     </section>
   );
@@ -147,7 +147,7 @@ export default function Pavilion({ site, page = "home", basePath = "" }: PresetP
   if (page === "services") {
     return shell(
       <>
-        {banner("Hire Options", "Our Spaces")}
+        {banner("Hire Options", "spaces_kicker", "Our Spaces", "spaces_title")}
         <section className="mx-auto max-w-3xl px-6 py-16 sm:px-8 sm:py-20">
           {groups.length > 0 ? (
             <>
@@ -186,7 +186,7 @@ export default function Pavilion({ site, page = "home", basePath = "" }: PresetP
   if (page === "gallery") {
     return shell(
       <>
-        {banner("The Spaces", "Gallery")}
+        {banner("The Spaces", "gallery_kicker", "Gallery", "gallery_title")}
         {gallery.length > 0 ? (
           <section className="mx-auto max-w-6xl px-3 py-12 sm:px-6">
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
@@ -205,7 +205,7 @@ export default function Pavilion({ site, page = "home", basePath = "" }: PresetP
   if (page === "about") {
     return shell(
       <>
-        {banner("The Venue", "About")}
+        {banner("The Venue", "about_kicker", "About", "about_title")}
         <section className="mx-auto grid max-w-6xl items-center gap-12 px-6 py-16 sm:px-8 sm:py-20 lg:grid-cols-2 lg:gap-16">
           {gallery[0] ? (
             // eslint-disable-next-line @next/next/no-img-element
@@ -224,7 +224,7 @@ export default function Pavilion({ site, page = "home", basePath = "" }: PresetP
   if (page === "contact") {
     return shell(
       <>
-        {banner("Plan Your Event", "Get in Touch")}
+        {banner("Plan Your Event", "contact_kicker", "Get in Touch", "contact_title")}
         <section className="mx-auto grid max-w-6xl gap-12 px-6 py-16 sm:px-8 sm:py-20 lg:grid-cols-2 lg:gap-20">
           <div>
             <h2 style={{ ...sans, color: INK }} className="text-2xl font-semibold">Visit us</h2>
