@@ -12,11 +12,10 @@ export default async function BillingPage({ searchParams }: { searchParams: Prom
   const tenant = await getMyTenant();
   if (!tenant) redirect("/get-started");
   const billing = await getMyBilling();
-  // A real, cancellable subscription requires a Stripe subscription on file.
+  // Subscription status is driven purely by whether a Stripe subscription is on
+  // file — Inactive until a plan is purchased, Active after. (A site can be live
+  // without one, but billing reflects the subscription, not the publish state.)
   const hasSubscription = !!billing.subscriptionId;
-  // The site can be live (published) without a paid subscription (e.g. comped
-  // or admin-published) — that's "live", but there's nothing to cancel.
-  const live = tenant.published || tenant.plan_status === "active" || tenant.plan_status === "trialing";
   const planLabel = tenant.plan ? tenant.plan[0].toUpperCase() + tenant.plan.slice(1) : "Subscription";
 
   return (
@@ -41,29 +40,23 @@ export default async function BillingPage({ searchParams }: { searchParams: Prom
       )}
 
       <div className="mt-6 rounded-2xl border border-ink/[0.08] bg-ink/[0.02] p-6">
-        {!hasSubscription && !live ? (
-          <>
-            <h2 className="text-lg font-semibold">No active subscription</h2>
-            <p className="mt-1 text-sm text-ink/50">Publish your site to take it live on your subdomain.</p>
-            <Link href="/dashboard/publish" className="mt-4 inline-block rounded-xl bg-ink px-5 py-2.5 text-sm font-semibold text-paper transition hover:bg-ink/90">
-              Choose a plan
-            </Link>
-          </>
-        ) : !hasSubscription ? (
-          // Live, but no Stripe subscription to manage (comped / admin-published).
+        {!hasSubscription ? (
+          // No paid subscription yet — Inactive, with a buy-a-plan CTA.
           <>
             <div className="flex items-center justify-between gap-3">
               <div>
-                <h2 className="text-lg font-semibold">Your site is live</h2>
-                <p className="mt-0.5 text-sm text-ink/50">No subscription is billed to this account.</p>
+                <h2 className="text-lg font-semibold">Subscription</h2>
+                <p className="mt-0.5 text-sm text-ink/50">You don’t have an active subscription yet.</p>
               </div>
-              <span className="rounded-full bg-emerald-400/15 px-2.5 py-0.5 text-xs font-medium text-accent">Live</span>
+              <span className="rounded-full bg-ink/10 px-2.5 py-0.5 text-xs font-medium text-ink/55">Inactive</span>
             </div>
             <div className="mt-6 border-t border-ink/[0.08] pt-5">
-              <p className="text-sm text-ink/50">
-                This site is managed for you. To make billing changes, contact{" "}
-                <a href="mailto:hello@kovasite.com" className="text-accent hover:underline">hello@kovasite.com</a>.
+              <p className="mb-3 text-sm text-ink/50">
+                Choose a plan to activate your subscription and keep your site live on your domain.
               </p>
+              <Link href="/dashboard/publish" className="inline-block rounded-xl bg-ink px-5 py-2.5 text-sm font-semibold text-paper transition hover:bg-ink/90">
+                Choose a plan
+              </Link>
             </div>
           </>
         ) : (
