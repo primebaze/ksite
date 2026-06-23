@@ -175,7 +175,7 @@ export default function RoadcraftDesign({ site, page = "home", basePath = "" }: 
         <p data-edit={`item:${item.id}:name`} className="text-[17px] font-black uppercase tracking-tight" style={{ color: CHARCOAL }}>{item.name}</p>
         {item.description && <p data-edit={`item:${item.id}:description`} className="mt-1 text-sm leading-relaxed" style={{ color: ASPHALT }}>{item.description}</p>}
       </div>
-      {item.price && <span data-edit={`item:${item.id}:price`} className="shrink-0 rounded-md px-3 py-1 text-sm font-black" style={{ background: CHARCOAL, color: AMBER }}>{item.price}</span>}
+      {item.price && <span data-edit={`item:${item.id}:price`} className="shrink-0 whitespace-nowrap text-sm font-black" style={{ color: CHARCOAL }}>{item.price}</span>}
     </li>
   );
 

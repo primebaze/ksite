@@ -194,7 +194,7 @@ export default function IgnitionDesign({ site, page = "home", basePath = "" }: P
                 <p data-edit={`item:${item.id}:name`} className="text-[17px] font-extrabold tracking-tight" style={{ color: INK }}>{item.name}</p>
                 {item.description && <p data-edit={`item:${item.id}:description`} className="mt-1 text-sm leading-relaxed" style={{ color: MUTE }}>{item.description}</p>}
               </div>
-              {item.price && <span data-edit={`item:${item.id}:price`} className="shrink-0 rounded-lg px-3 py-1 text-sm font-extrabold" style={{ background: MINT, color: GREEN_DK }}>{item.price}</span>}
+              {item.price && <span data-edit={`item:${item.id}:price`} className="shrink-0 whitespace-nowrap text-sm font-extrabold" style={{ color: GREEN_DK }}>{item.price}</span>}
             </li>
           ))}
         </ul>
@@ -215,7 +215,7 @@ export default function IgnitionDesign({ site, page = "home", basePath = "" }: P
                         <p data-edit={`item:${item.id}:name`} className="text-[17px] font-extrabold tracking-tight" style={{ color: INK }}>{item.name}</p>
                         {item.description && <p data-edit={`item:${item.id}:description`} className="mt-1 text-sm leading-relaxed" style={{ color: MUTE }}>{item.description}</p>}
                       </div>
-                      {item.price && <span data-edit={`item:${item.id}:price`} className="shrink-0 rounded-lg px-3 py-1 text-sm font-extrabold" style={{ background: MINT, color: GREEN_DK }}>{item.price}</span>}
+                      {item.price && <span data-edit={`item:${item.id}:price`} className="shrink-0 whitespace-nowrap text-sm font-extrabold" style={{ color: GREEN_DK }}>{item.price}</span>}
                     </li>
                   ))}
                 </ul>

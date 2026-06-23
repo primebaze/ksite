@@ -133,7 +133,7 @@ export default function MarigoldDesign({ site, page = "home", basePath = "" }: P
                     <p data-edit={`item:${s.id}:name`} style={{ color: INK }} className="text-lg font-bold tracking-tight">{s.name}</p>
                     {s.description && <p data-edit={`item:${s.id}:description`} className="mt-1 text-sm leading-relaxed" style={{ color: SLATE }}>{s.description}</p>}
                   </div>
-                  {s.price && <span data-edit={`item:${s.id}:price`} className="shrink-0 rounded-full px-3.5 py-1 text-sm font-bold" style={{ background: MINT, color: DEEP }}>{s.price}</span>}
+                  {s.price && <span data-edit={`item:${s.id}:price`} className="shrink-0 whitespace-nowrap text-sm font-bold" style={{ color: DEEP }}>{s.price}</span>}
                 </li>
               ))}
             </ul>
@@ -308,7 +308,7 @@ export default function MarigoldDesign({ site, page = "home", basePath = "" }: P
                   <p data-edit={`item:${s.id}:name`} style={{ color: INK }} className="text-lg font-bold tracking-tight">{s.name}</p>
                   {s.description && <p data-edit={`item:${s.id}:description`} className="mt-1 text-sm leading-relaxed" style={{ color: SLATE }}>{s.description}</p>}
                 </div>
-                {s.price && <span data-edit={`item:${s.id}:price`} className="shrink-0 rounded-full px-3.5 py-1 text-sm font-bold" style={{ background: MINT, color: DEEP }}>{s.price}</span>}
+                {s.price && <span data-edit={`item:${s.id}:price`} className="shrink-0 whitespace-nowrap text-sm font-bold" style={{ color: DEEP }}>{s.price}</span>}
               </li>
             ))}
           </ul>

@@ -189,7 +189,7 @@ export default function LinguaDesign({ site, page = "home", basePath = "" }: Pre
                 <p data-edit={`item:${item.id}:name`} style={{ ...display, color: INK }} className="text-lg font-semibold">{item.name}</p>
                 {item.description && <p data-edit={`item:${item.id}:description`} className="mt-1 text-sm leading-relaxed" style={{ color: MUTE }}>{item.description}</p>}
               </div>
-              {item.price && <span data-edit={`item:${item.id}:price`} className="shrink-0 rounded-full px-3 py-1 text-sm font-semibold" style={{ background: TEAL_SOFT, color: TEAL_DEEP }}>{item.price}</span>}
+              {item.price && <span data-edit={`item:${item.id}:price`} className="shrink-0 whitespace-nowrap text-sm font-semibold" style={{ color: TEAL_DEEP }}>{item.price}</span>}
             </li>
           ))}
         </ul>
@@ -210,7 +210,7 @@ export default function LinguaDesign({ site, page = "home", basePath = "" }: Pre
                         <p data-edit={`item:${item.id}:name`} style={{ ...display, color: INK }} className="text-lg font-semibold">{item.name}</p>
                         {item.description && <p data-edit={`item:${item.id}:description`} className="mt-1 text-sm leading-relaxed" style={{ color: MUTE }}>{item.description}</p>}
                       </div>
-                      {item.price && <span data-edit={`item:${item.id}:price`} className="shrink-0 rounded-full px-3 py-1 text-sm font-semibold" style={{ background: TEAL_SOFT, color: TEAL_DEEP }}>{item.price}</span>}
+                      {item.price && <span data-edit={`item:${item.id}:price`} className="shrink-0 whitespace-nowrap text-sm font-semibold" style={{ color: TEAL_DEEP }}>{item.price}</span>}
                     </li>
                   ))}
                 </ul>

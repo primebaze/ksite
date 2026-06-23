@@ -165,7 +165,7 @@ export default function Pulse({ site, page = "home", basePath = "" }: PresetProp
                       <div key={item.id} className="flex flex-col rounded-3xl p-7 transition hover:-translate-y-1" style={{ background: PANEL, border: "1px solid #ffffff1a" }}>
                         <div className="flex items-baseline justify-between gap-3">
                           <h3 data-edit={`item:${item.id}:name`} className="text-lg font-bold" style={{ color: TEXT }}>{item.name}</h3>
-                          {item.price && <span data-edit={`item:${item.id}:price`} className="whitespace-nowrap rounded-full px-3 py-1 text-xs font-bold text-white" style={{ background: GRAD }}>{item.price}</span>}
+                          {item.price && <span data-edit={`item:${item.id}:price`} className="whitespace-nowrap text-sm font-bold" style={{ color: PINK }}>{item.price}</span>}
                         </div>
                         {item.description && <p data-edit={`item:${item.id}:description`} className="mt-2 text-sm leading-relaxed" style={{ color: MUTE }}>{item.description}</p>}
                       </div>
@@ -328,7 +328,7 @@ export default function Pulse({ site, page = "home", basePath = "" }: PresetProp
                 <div key={item.id} className="flex flex-col rounded-3xl p-7" style={{ background: PLUM, border: "1px solid #ffffff1a" }}>
                   <div className="flex items-baseline justify-between gap-3">
                     <h3 data-edit={`item:${item.id}:name`} className="text-lg font-bold" style={{ color: TEXT }}>{item.name}</h3>
-                    {item.price && <span data-edit={`item:${item.id}:price`} className="whitespace-nowrap rounded-full px-3 py-1 text-xs font-bold text-white" style={{ background: GRAD }}>{item.price}</span>}
+                    {item.price && <span data-edit={`item:${item.id}:price`} className="whitespace-nowrap text-sm font-bold" style={{ color: PINK }}>{item.price}</span>}
                   </div>
                   {item.description && <p data-edit={`item:${item.id}:description`} className="mt-2 text-sm leading-relaxed" style={{ color: MUTE }}>{item.description}</p>}
                 </div>

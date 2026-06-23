@@ -208,7 +208,7 @@ export default function MilestoneDesign({ site, page = "home", basePath = "" }: 
                 <p data-edit={`item:${item.id}:name`} style={{ ...display, color: NAVY }} className="text-[17px] font-semibold">{item.name}</p>
                 {item.description && <p data-edit={`item:${item.id}:description`} className="mt-1 text-sm leading-relaxed" style={{ color: MUTE }}>{item.description}</p>}
               </div>
-              {item.price && <span data-edit={`item:${item.id}:price`} className="shrink-0 rounded-full px-3 py-1 text-sm font-semibold" style={{ background: PEACH_SOFT, color: CORAL_DK }}>{item.price}</span>}
+              {item.price && <span data-edit={`item:${item.id}:price`} className="shrink-0 whitespace-nowrap text-sm font-semibold" style={{ color: CORAL_DK }}>{item.price}</span>}
             </li>
           ))}
         </ul>
@@ -229,7 +229,7 @@ export default function MilestoneDesign({ site, page = "home", basePath = "" }: 
                         <p data-edit={`item:${item.id}:name`} style={{ ...display, color: NAVY }} className="text-[17px] font-semibold">{item.name}</p>
                         {item.description && <p data-edit={`item:${item.id}:description`} className="mt-1 text-sm leading-relaxed" style={{ color: MUTE }}>{item.description}</p>}
                       </div>
-                      {item.price && <span data-edit={`item:${item.id}:price`} className="shrink-0 rounded-full px-3 py-1 text-sm font-semibold" style={{ background: PEACH_SOFT, color: CORAL_DK }}>{item.price}</span>}
+                      {item.price && <span data-edit={`item:${item.id}:price`} className="shrink-0 whitespace-nowrap text-sm font-semibold" style={{ color: CORAL_DK }}>{item.price}</span>}
                     </li>
                   ))}
                 </ul>

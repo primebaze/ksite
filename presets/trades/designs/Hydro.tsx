@@ -201,7 +201,7 @@ export default function HydroDesign({ site, page = "home", basePath = "" }: Pres
                     <p data-edit={`item:${s.id}:name`} style={{ ...display, color: NAVY }} className="text-lg font-extrabold tracking-tight">{s.name}</p>
                     {s.description && <p data-edit={`item:${s.id}:description`} className="mt-1.5 text-sm leading-relaxed" style={{ color: MUTE }}>{s.description}</p>}
                   </div>
-                  {s.price && <span data-edit={`item:${s.id}:price`} className="shrink-0 rounded-full px-4 py-1.5 text-base font-extrabold text-white" style={{ background: BLUE }}>{s.price}</span>}
+                  {s.price && <span data-edit={`item:${s.id}:price`} className="shrink-0 whitespace-nowrap text-base font-extrabold" style={{ color: BLUE }}>{s.price}</span>}
                 </li>
               ))}
             </ul>
@@ -387,7 +387,7 @@ export default function HydroDesign({ site, page = "home", basePath = "" }: Pres
                     <p data-edit={`item:${s.id}:name`} style={{ ...display, color: NAVY }} className="text-lg font-extrabold tracking-tight">{s.name}</p>
                     {s.description && <p data-edit={`item:${s.id}:description`} className="mt-1 text-sm leading-relaxed" style={{ color: MUTE }}>{s.description}</p>}
                   </div>
-                  {s.price && <span data-edit={`item:${s.id}:price`} className="shrink-0 rounded-full px-4 py-1.5 text-base font-extrabold text-white" style={{ background: BLUE }}>{s.price}</span>}
+                  {s.price && <span data-edit={`item:${s.id}:price`} className="shrink-0 whitespace-nowrap text-base font-extrabold" style={{ color: BLUE }}>{s.price}</span>}
                 </li>
               ))}
             </ul>
