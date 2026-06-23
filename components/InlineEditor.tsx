@@ -24,6 +24,7 @@ export function InlineEditor({
   const fieldRef = useRef<string>("hero");
   const [status, setStatus] = useState<"idle" | "saving" | "saved" | "error">("idle");
   const [designOpen, setDesignOpen] = useState(false);
+  const [uploadingImg, setUploadingImg] = useState(false);
 
   const flash = (s: "saved" | "error") => {
     setStatus(s);
@@ -105,6 +106,15 @@ export function InlineEditor({
     input.value = "";
     if (!file) return;
     const field = fieldRef.current;
+    // Dim the photo(s) being replaced so it's obvious where the new image lands.
+    const targets = Array.from(ref.current?.querySelectorAll<HTMLImageElement>(`[data-edit-image="${field}"]`) ?? []);
+    const prev = targets.map((t) => ({ opacity: t.style.opacity, filter: t.style.filter, transition: t.style.transition }));
+    targets.forEach((t) => {
+      t.style.transition = "opacity .2s, filter .2s";
+      t.style.opacity = "0.4";
+      t.style.filter = "blur(2px)";
+    });
+    setUploadingImg(true);
     setStatus("saving");
     try {
       const fd = new FormData();
@@ -113,8 +123,7 @@ export function InlineEditor({
       const res = await fetch("/api/upload", { method: "POST", body: fd });
       const data = (await res.json()) as { ok?: boolean; url?: string; error?: string };
       if (data.ok && data.url) {
-        const imgs = ref.current?.querySelectorAll<HTMLImageElement>(`[data-edit-image="${field}"]`);
-        if (imgs && imgs.length) imgs.forEach((img) => (img.src = data.url!));
+        if (targets.length) targets.forEach((img) => (img.src = data.url!));
         else window.location.reload();
         flash("saved");
       } else {
@@ -122,6 +131,13 @@ export function InlineEditor({
       }
     } catch {
       flash("error");
+    } finally {
+      targets.forEach((t, i) => {
+        t.style.opacity = prev[i].opacity;
+        t.style.filter = prev[i].filter;
+        t.style.transition = prev[i].transition;
+      });
+      setUploadingImg(false);
     }
   };
 
@@ -137,6 +153,16 @@ export function InlineEditor({
 
       <EditOnboarding />
       <input ref={fileRef} type="file" accept="image/*" hidden onChange={onFile} />
+
+      {/* Photo-upload feedback — unmissable while the file uploads + resizes. */}
+      {uploadingImg && (
+        <div className="pointer-events-none fixed inset-0 z-[300] flex items-center justify-center px-4">
+          <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-black/85 px-5 py-3.5 text-sm font-semibold text-white shadow-2xl backdrop-blur">
+            <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+            Uploading photo…
+          </div>
+        </div>
+      )}
 
       {/* Edit dock — one responsive bar for status + design + photo + done */}
       <div className="pointer-events-none fixed inset-x-0 bottom-0 z-[200] flex justify-center px-3 pb-[max(0.75rem,env(safe-area-inset-bottom))]">
