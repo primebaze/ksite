@@ -102,7 +102,9 @@ export async function addInlineItem(): Promise<{ ok: boolean }> {
   await upsertMyCatalogItem({
     name: "New item",
     description: "Add a short description",
-    price: "",
+    // A non-empty placeholder so the price element renders and is editable
+    // inline — designs only show the price when there is one.
+    price: "£0",
     section: first?.section ?? null,
     category: first?.category ?? null,
     sort_order: maxSort + 1,
