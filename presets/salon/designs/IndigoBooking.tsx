@@ -105,7 +105,7 @@ export function IndigoBooking({ tenantId, name }: { tenantId: string; name: stri
           </div>
           <label className="block">
             <span className="text-xs font-semibold uppercase tracking-wider text-neutral-500">Service or stylist</span>
-            <input name="party" placeholder="e.g. cut and colour, or a stylist name" className={fieldCls} />
+            <input name="party" autoComplete="off" className={fieldCls} />
           </label>
           <label className="block">
             <span className="text-xs font-semibold uppercase tracking-wider text-neutral-500">Anything else?</span>
