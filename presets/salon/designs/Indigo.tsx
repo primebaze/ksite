@@ -405,6 +405,30 @@ export default function IndigoDesign({ site, page = "home", basePath = "" }: Pre
         </section>
       )}
 
+      {/* reviews — owner-managed in the dashboard; hidden when none */}
+      {content.reviews && content.reviews.length > 0 && (
+        <section className="bg-white">
+          <div className="mx-auto max-w-7xl px-6 py-24 sm:px-8">
+            <h2 className="text-3xl font-extrabold tracking-tight sm:text-4xl" style={{ color: INK }}>
+              <span className="rounded-lg px-2" style={{ background: BLUE }} {...editCopy(content, "reviews_heading", "Kind words")} />
+            </h2>
+            <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+              {content.reviews.map((r, i) => (
+                <figure key={i} className="flex flex-col rounded-3xl border border-black/10 bg-neutral-50 p-7">
+                  <blockquote className="text-lg font-medium leading-relaxed" style={{ color: INK }}>&ldquo;{r.quote}&rdquo;</blockquote>
+                  {(r.name || r.meta) && (
+                    <figcaption className="mt-5 text-sm">
+                      {r.name && <span className="font-bold" style={{ color: INK }}>{r.name}</span>}
+                      {r.meta && <span className="text-neutral-500">{r.name ? " · " : ""}{r.meta}</span>}
+                    </figcaption>
+                  )}
+                </figure>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* closing call to action band */}
       <section style={{ background: INK }}>
         <div className="mx-auto flex max-w-7xl flex-col items-start gap-7 px-6 py-20 sm:px-8 lg:flex-row lg:items-center lg:justify-between">
