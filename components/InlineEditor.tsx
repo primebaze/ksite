@@ -120,6 +120,7 @@ export function InlineEditor({
     // has a list, so the dock can show "Add item"). Every design names items
     // with data-edit="item:<id>:name", so we anchor off that.
     let itemCount = 0;
+    let lastRow: HTMLElement | null = null;
     if (deleteItem) {
       const seen = new Set<string>();
       for (const el of Array.from(root.querySelectorAll<HTMLElement>("[data-edit]"))) {
@@ -130,6 +131,7 @@ export function InlineEditor({
         seen.add(id);
         const row = (el.closest("li,tr") as HTMLElement | null) ?? el.parentElement;
         if (!row) continue;
+        lastRow = row;
         if (getComputedStyle(row).position === "static") row.style.position = "relative";
         const del = document.createElement("button");
         del.type = "button";
@@ -160,8 +162,33 @@ export function InlineEditor({
     }
     setHasCatalog(itemCount > 0);
 
+    // Inline "Add item" at the end of the list (mirrors the per-row delete, and
+    // is more discoverable than the dock button). Inserted after the last row.
+    if (addItem && lastRow) {
+      const addBtn = document.createElement("button");
+      addBtn.type = "button";
+      addBtn.textContent = "＋ Add item";
+      addBtn.style.cssText =
+        "display:block;margin:18px auto 0;padding:9px 18px;border-radius:9999px;background:#059669;color:#fff;font-size:13px;font-weight:700;border:2px solid #fff;box-shadow:0 4px 14px rgba(0,0,0,.25);cursor:pointer;";
+      addBtn.addEventListener("click", async (ev) => {
+        ev.preventDefault();
+        ev.stopPropagation();
+        addBtn.disabled = true;
+        addBtn.textContent = "Adding…";
+        const res = await addItem();
+        if (res.ok) window.location.reload();
+        else {
+          addBtn.disabled = false;
+          addBtn.textContent = "＋ Add item";
+          window.alert("Couldn’t add an item. Please try again.");
+        }
+      });
+      (lastRow.parentElement ?? lastRow).appendChild(addBtn);
+      cleanups.push(() => addBtn.remove());
+    }
+
     return () => cleanups.forEach((c) => c());
-  }, [save, deleteItem]);
+  }, [save, deleteItem, addItem]);
 
   const onFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const input = e.currentTarget;
