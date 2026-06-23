@@ -30,7 +30,8 @@ export function VerveBooking({ tenantId, name }: { tenantId: string; name: strin
       token: String(data.get("cf-turnstile-response") ?? ""),
       fields: {
         name: data.get("cust_name") ?? "",
-        contact: data.get("contact") ?? "",
+        email: data.get("email") ?? "",
+        phone: data.get("phone") ?? "",
         date: data.get("date") ?? "",
         time: data.get("time") ?? "",
         party: data.get("party") ?? "",
@@ -97,8 +98,12 @@ export function VerveBooking({ tenantId, name }: { tenantId: string; name: strin
             <input name="cust_name" required className={fieldCls} />
           </label>
           <label className="block">
-            <span className="text-[11px] uppercase tracking-[0.2em] text-white/50">Phone or email</span>
-            <input name="contact" required className={fieldCls} />
+            <span className="text-[11px] uppercase tracking-[0.2em] text-white/50">Email</span>
+            <input name="email" type="email" required autoComplete="email" className={fieldCls} />
+          </label>
+          <label className="block">
+            <span className="text-[11px] uppercase tracking-[0.2em] text-white/50">Phone</span>
+            <input name="phone" type="tel" autoComplete="tel" className={fieldCls} />
           </label>
           <label className="block">
             <span className="text-[11px] uppercase tracking-[0.2em] text-white/50">Anything else?</span>

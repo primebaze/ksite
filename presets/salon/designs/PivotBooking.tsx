@@ -32,7 +32,8 @@ export function PivotBooking({ tenantId, name }: { tenantId: string; name: strin
       token: String(data.get("cf-turnstile-response") ?? ""),
       fields: {
         name: data.get("cust_name") ?? "",
-        contact: data.get("contact") ?? "",
+        email: data.get("email") ?? "",
+        phone: data.get("phone") ?? "",
         date: data.get("date") ?? "",
         time: data.get("time") ?? "",
         party: data.get("treatment") ?? "",
@@ -87,8 +88,12 @@ export function PivotBooking({ tenantId, name }: { tenantId: string; name: strin
               <input name="cust_name" required className={fieldCls} style={fieldStyle} placeholder="Full name" />
             </label>
             <label className="block text-xs font-semibold uppercase tracking-[0.12em]" style={{ color: OLIVE }}>
-              Phone or email
-              <input name="contact" required className={fieldCls} style={fieldStyle} placeholder="How to reach you" />
+              Email
+              <input name="email" type="email" required autoComplete="email" className={fieldCls} style={fieldStyle} placeholder="you@example.com" />
+            </label>
+            <label className="block text-xs font-semibold uppercase tracking-[0.12em]" style={{ color: OLIVE }}>
+              Phone
+              <input name="phone" type="tel" autoComplete="tel" className={fieldCls} style={fieldStyle} placeholder="Optional" />
             </label>
           </div>
           <label className="block text-xs font-semibold uppercase tracking-[0.12em]" style={{ color: OLIVE }}>

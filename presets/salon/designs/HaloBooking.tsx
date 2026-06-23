@@ -27,7 +27,8 @@ export function HaloBooking({ tenantId, name }: { tenantId: string; name: string
       token: String(data.get("cf-turnstile-response") ?? ""),
       fields: {
         name: data.get("cust_name") ?? "",
-        contact: data.get("contact") ?? "",
+        email: data.get("email") ?? "",
+        phone: data.get("phone") ?? "",
         date: data.get("date") ?? "",
         time: data.get("time") ?? "",
         party: data.get("party") ?? "",
@@ -89,10 +90,16 @@ export function HaloBooking({ tenantId, name }: { tenantId: string; name: string
             <span className="text-[11px] uppercase tracking-[0.2em] text-neutral-500">Your name</span>
             <input name="cust_name" required className={fieldCls} />
           </label>
-          <label className="block">
-            <span className="text-[11px] uppercase tracking-[0.2em] text-neutral-500">Phone or email</span>
-            <input name="contact" required className={fieldCls} />
-          </label>
+          <div className="grid grid-cols-2 gap-5">
+            <label className="block">
+              <span className="text-[11px] uppercase tracking-[0.2em] text-neutral-500">Email</span>
+              <input name="email" type="email" required autoComplete="email" className={fieldCls} />
+            </label>
+            <label className="block">
+              <span className="text-[11px] uppercase tracking-[0.2em] text-neutral-500">Phone</span>
+              <input name="phone" type="tel" autoComplete="tel" className={fieldCls} />
+            </label>
+          </div>
           <label className="block">
             <span className="text-[11px] uppercase tracking-[0.2em] text-neutral-500">Anything else?</span>
             <textarea name="notes" rows={2} className={fieldCls} />

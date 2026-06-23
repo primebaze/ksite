@@ -31,7 +31,8 @@ export function LuminaBooking({ tenantId, name }: { tenantId: string; name: stri
       token: String(data.get("cf-turnstile-response") ?? ""),
       fields: {
         name: data.get("cust_name") ?? "",
-        contact: data.get("contact") ?? "",
+        email: data.get("email") ?? "",
+        phone: data.get("phone") ?? "",
         date: data.get("date") ?? "",
         time: data.get("time") ?? "",
         party: data.get("party") ?? "",
@@ -98,8 +99,12 @@ export function LuminaBooking({ tenantId, name }: { tenantId: string; name: stri
             <input name="cust_name" required className={fieldCls} />
           </label>
           <label className="block">
-            <span className="text-[11px] font-medium uppercase tracking-[0.18em] text-neutral-500">Phone or email</span>
-            <input name="contact" required className={fieldCls} />
+            <span className="text-[11px] font-medium uppercase tracking-[0.18em] text-neutral-500">Email</span>
+            <input name="email" type="email" required autoComplete="email" className={fieldCls} />
+          </label>
+          <label className="block">
+            <span className="text-[11px] font-medium uppercase tracking-[0.18em] text-neutral-500">Phone</span>
+            <input name="phone" type="tel" autoComplete="tel" className={fieldCls} />
           </label>
           <label className="block">
             <span className="text-[11px] font-medium uppercase tracking-[0.18em] text-neutral-500">Anything else we should know?</span>

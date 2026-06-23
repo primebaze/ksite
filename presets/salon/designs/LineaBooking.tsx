@@ -34,7 +34,8 @@ export function LineaBooking({ tenantId, name }: { tenantId: string; name: strin
       token: String(data.get("cf-turnstile-response") ?? ""),
       fields: {
         name: data.get("cust_name") ?? "",
-        contact: data.get("contact") ?? "",
+        email: data.get("email") ?? "",
+        phone: data.get("phone") ?? "",
         date: data.get("date") ?? "",
         time: data.get("time") ?? "",
         party: data.get("party") ?? "",
@@ -105,8 +106,12 @@ export function LineaBooking({ tenantId, name }: { tenantId: string; name: strin
             <input name="cust_name" required className={fieldCls} />
           </label>
           <label className="block">
-            <span className={labelCls}>Phone or email</span>
-            <input name="contact" required className={fieldCls} />
+            <span className={labelCls}>Email</span>
+            <input name="email" type="email" required autoComplete="email" className={fieldCls} />
+          </label>
+          <label className="block">
+            <span className={labelCls}>Phone</span>
+            <input name="phone" type="tel" autoComplete="tel" className={fieldCls} />
           </label>
           <label className="block">
             <span className={labelCls}>Anything else?</span>

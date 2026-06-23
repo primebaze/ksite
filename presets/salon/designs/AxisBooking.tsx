@@ -31,7 +31,8 @@ export function AxisBooking({ tenantId, name }: { tenantId: string; name: string
       token: String(data.get("cf-turnstile-response") ?? ""),
       fields: {
         name: data.get("cust_name") ?? "",
-        contact: data.get("contact") ?? "",
+        email: data.get("email") ?? "",
+        phone: data.get("phone") ?? "",
         date: data.get("date") ?? "",
         time: data.get("time") ?? "",
         party: data.get("treatment") ?? "",
@@ -83,14 +84,18 @@ export function AxisBooking({ tenantId, name }: { tenantId: string; name: string
         </p>
       ) : (
         <form onSubmit={onSubmit} className="mt-6 space-y-4">
+          <label className="block text-[11px] font-medium uppercase tracking-[0.16em]" style={{ color: "rgba(239,234,225,0.7)" }}>
+            Your name
+            <input name="cust_name" required className={fieldCls} placeholder="Full name" />
+          </label>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <label className="block text-[11px] font-medium uppercase tracking-[0.16em]" style={{ color: "rgba(239,234,225,0.7)" }}>
-              Your name
-              <input name="cust_name" required className={fieldCls} placeholder="Full name" />
+              Email
+              <input name="email" type="email" required autoComplete="email" className={fieldCls} placeholder="you@example.com" />
             </label>
             <label className="block text-[11px] font-medium uppercase tracking-[0.16em]" style={{ color: "rgba(239,234,225,0.7)" }}>
-              Phone or email
-              <input name="contact" required className={fieldCls} placeholder="How to reach you" />
+              Phone
+              <input name="phone" type="tel" autoComplete="tel" className={fieldCls} placeholder="Optional" />
             </label>
           </div>
           <label className="block text-[11px] font-medium uppercase tracking-[0.16em]" style={{ color: "rgba(239,234,225,0.7)" }}>

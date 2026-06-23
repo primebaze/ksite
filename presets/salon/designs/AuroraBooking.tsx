@@ -31,7 +31,8 @@ export function AuroraBooking({ tenantId, name }: { tenantId: string; name: stri
       token: String(data.get("cf-turnstile-response") ?? ""),
       fields: {
         name: data.get("cust_name") ?? "",
-        contact: data.get("contact") ?? "",
+        email: data.get("email") ?? "",
+        phone: data.get("phone") ?? "",
         date: data.get("date") ?? "",
         time: data.get("time") ?? "",
         party: data.get("drip") ?? "",
@@ -104,8 +105,12 @@ export function AuroraBooking({ tenantId, name }: { tenantId: string; name: stri
                 <input name="cust_name" required className={fieldCls} placeholder="Full name" />
               </label>
               <label className="block text-[11px] font-medium uppercase tracking-[0.14em] text-white/70">
-                Phone or email
-                <input name="contact" required className={fieldCls} placeholder="How to reach you" />
+                Email
+                <input name="email" type="email" required autoComplete="email" className={fieldCls} placeholder="you@example.com" />
+              </label>
+              <label className="block text-[11px] font-medium uppercase tracking-[0.14em] text-white/70">
+                Phone
+                <input name="phone" type="tel" autoComplete="tel" className={fieldCls} placeholder="Optional" />
               </label>
             </div>
             <label className="block text-[11px] font-medium uppercase tracking-[0.14em] text-white/70">

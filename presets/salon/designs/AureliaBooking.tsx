@@ -46,7 +46,8 @@ export function AureliaBooking({
       token: String(data.get("cf-turnstile-response") ?? ""),
       fields: {
         name: data.get("cust_name") ?? "",
-        contact: data.get("contact") ?? "",
+        email: data.get("email") ?? "",
+        phone: data.get("phone") ?? "",
         date: data.get("date") ?? "",
         time: data.get("time") ?? "",
         party: service,
@@ -162,8 +163,12 @@ export function AureliaBooking({
             <input name="cust_name" required={step === 2} className={fieldCls} />
           </label>
           <label className="mt-5 block">
-            <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-neutral-500">Phone or email</span>
-            <input name="contact" required={step === 2} className={fieldCls} />
+            <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-neutral-500">Email</span>
+            <input name="email" type="email" required={step === 2} autoComplete="email" className={fieldCls} />
+          </label>
+          <label className="mt-5 block">
+            <span className="text-[11px] font-semibold uppercase tracking-[0.18em] text-neutral-500">Phone</span>
+            <input name="phone" type="tel" autoComplete="tel" className={fieldCls} />
           </label>
           <p className="mt-5 text-xs leading-relaxed text-neutral-400">
             By submitting this form you agree that we may contact you by email or phone to schedule your consultation.

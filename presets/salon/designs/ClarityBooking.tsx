@@ -35,7 +35,8 @@ export function ClarityBooking({ tenantId, name }: { tenantId: string; name: str
       token: String(data.get("cf-turnstile-response") ?? ""),
       fields: {
         name: data.get("cust_name") ?? "",
-        contact: data.get("contact") ?? "",
+        email: data.get("email") ?? "",
+        phone: data.get("phone") ?? "",
         date: data.get("date") ?? "",
         time: data.get("time") ?? "",
         party: data.get("service") ?? "",
@@ -103,8 +104,12 @@ export function ClarityBooking({ tenantId, name }: { tenantId: string; name: str
               <input name="cust_name" required className={fieldCls} placeholder="Full name" />
             </label>
             <label className={labelCls}>
-              Phone or email
-              <input name="contact" required className={fieldCls} placeholder="How to reach you" />
+              Email
+              <input name="email" type="email" required autoComplete="email" className={fieldCls} placeholder="you@example.com" />
+            </label>
+            <label className={labelCls}>
+              Phone
+              <input name="phone" type="tel" autoComplete="tel" className={fieldCls} placeholder="Optional" />
             </label>
           </div>
           <label className={labelCls}>

@@ -56,7 +56,8 @@ export function FitnessBooking({
       token: String(data.get("cf-turnstile-response") ?? ""),
       fields: {
         name: data.get("cust_name") ?? "",
-        contact: data.get("contact") ?? "",
+        email: data.get("email") ?? "",
+        phone: data.get("phone") ?? "",
         class: data.get("session") ?? "",
         date: data.get("date") ?? "",
         time: data.get("time") ?? "",
@@ -129,8 +130,12 @@ export function FitnessBooking({
             <input name="cust_name" required className={fieldCls} style={fieldStyle} />
           </label>
           <label className="block">
-            <span className={labelCls} style={{ color: skin.label }}>Phone or email</span>
-            <input name="contact" required className={fieldCls} style={fieldStyle} />
+            <span className={labelCls} style={{ color: skin.label }}>Email</span>
+            <input name="email" type="email" required autoComplete="email" className={fieldCls} style={fieldStyle} />
+          </label>
+          <label className="block">
+            <span className={labelCls} style={{ color: skin.label }}>Phone</span>
+            <input name="phone" type="tel" autoComplete="tel" className={fieldCls} style={fieldStyle} />
           </label>
           <label className="block">
             <span className={labelCls} style={{ color: skin.label }}>Goals or anything else?</span>

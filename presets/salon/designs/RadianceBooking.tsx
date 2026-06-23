@@ -41,7 +41,8 @@ export function RadianceBooking({
       token: String(data.get("cf-turnstile-response") ?? ""),
       fields: {
         name: data.get("cust_name") ?? "",
-        contact: data.get("contact") ?? "",
+        email: data.get("email") ?? "",
+        phone: data.get("phone") ?? "",
         date: data.get("date") ?? "",
         time: data.get("time") ?? "",
         party: treatment,
@@ -114,10 +115,16 @@ export function RadianceBooking({
             <span className={labelCls}>Your name</span>
             <input name="cust_name" required className={fieldCls} />
           </label>
-          <label className="block">
-            <span className={labelCls}>Phone or email</span>
-            <input name="contact" required className={fieldCls} />
-          </label>
+          <div className="grid grid-cols-2 gap-4">
+            <label className="block">
+              <span className={labelCls}>Email</span>
+              <input name="email" type="email" required autoComplete="email" className={fieldCls} />
+            </label>
+            <label className="block">
+              <span className={labelCls}>Phone</span>
+              <input name="phone" type="tel" autoComplete="tel" className={fieldCls} />
+            </label>
+          </div>
           <label className="block">
             <span className={labelCls}>Anything we should know?</span>
             <textarea name="notes" rows={3} className={fieldCls} />

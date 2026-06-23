@@ -33,7 +33,8 @@ export function ThermaeBooking({ tenantId, name }: { tenantId: string; name: str
       token: String(data.get("cf-turnstile-response") ?? ""),
       fields: {
         name: data.get("cust_name") ?? "",
-        contact: data.get("contact") ?? "",
+        email: data.get("email") ?? "",
+        phone: data.get("phone") ?? "",
         date: data.get("date") ?? "",
         time: data.get("time") ?? "",
         party: data.get("treatment") ?? "",
@@ -95,14 +96,18 @@ export function ThermaeBooking({ tenantId, name }: { tenantId: string; name: str
         </p>
       ) : (
         <form onSubmit={onSubmit} className="mt-6 space-y-4">
+          <label className={labelCls}>
+            Your name
+            <input name="cust_name" required className={fieldCls} style={fieldBorder} placeholder="Full name" />
+          </label>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <label className={labelCls}>
-              Your name
-              <input name="cust_name" required className={fieldCls} style={fieldBorder} placeholder="Full name" />
+              Email
+              <input name="email" type="email" required autoComplete="email" className={fieldCls} style={fieldBorder} placeholder="you@example.com" />
             </label>
             <label className={labelCls}>
-              Phone or email
-              <input name="contact" required className={fieldCls} style={fieldBorder} placeholder="How to reach you" />
+              Phone
+              <input name="phone" type="tel" autoComplete="tel" className={fieldCls} style={fieldBorder} placeholder="Optional" />
             </label>
           </div>
           <label className={labelCls}>
