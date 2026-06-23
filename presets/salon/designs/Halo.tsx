@@ -2,6 +2,7 @@ import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
 import { groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { ServiceCards } from "../../service-cards";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { HaloHeader } from "./HaloHeader";
 import { HaloBooking } from "./HaloBooking";
@@ -129,40 +130,18 @@ export default function HaloDesign({ site, page = "home", basePath = "" }: Prese
         {banner("The list", "Services & prices")}
         <section className="mx-auto max-w-3xl px-6 py-20">
           {groups.length > 0 ? (
-            <div className="space-y-16">
-              {groups.map((section) => (
-                <div key={section.section}>
-                  {section.section && (
-                    <h3 style={serif} className="mb-8 text-center text-2xl font-medium tracking-wide">{section.section}</h3>
-                  )}
-                  {section.categories.map((catg) => (
-                    <div key={catg.category ?? "_"} className="mt-8">
-                      {catg.category && (
-                        <h4 className="mb-3 text-[11px] font-semibold uppercase tracking-[0.24em] text-neutral-400">{catg.category}</h4>
-                      )}
-                      <ul className="divide-y divide-neutral-200">
-                        {catg.items.map((item) => (
-                          <li key={item.id} className="flex items-baseline justify-between gap-6 py-5">
-                            <div>
-                              <p data-edit={`item:${item.id}:name`} style={serif} className="text-lg">{item.name}</p>
-                              {item.description && (
-                                <p data-edit={`item:${item.id}:description`} className="mt-1 max-w-md text-sm leading-relaxed text-neutral-500">{item.description}</p>
-                              )}
-                            </div>
-                            {item.price && (
-                              <span data-edit={`item:${item.id}:price`} className="whitespace-nowrap text-sm font-medium text-neutral-600">{item.price}</span>
-                            )}
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  ))}
-                </div>
-              ))}
-              <div className="pt-4 text-center">
+            <>
+              <ServiceCards
+                groups={groups}
+                photos={gallery.map((g) => g.image_url)}
+                tone={{ ink: "#171717", muted: "#737373", price: "#525252", border: "#e5e5e5", cardBg: "#ffffff", placeholderBg: "#f5f5f5" }}
+                nameStyle={serif}
+                radius="0.6rem"
+              />
+              <div className="mt-16 text-center">
                 <a href={book} target={bookExternal ? "_blank" : undefined} rel={bookExternal ? "noreferrer" : undefined} className="inline-block border border-neutral-900 px-12 py-4 text-xs font-semibold uppercase tracking-[0.25em] text-neutral-900 transition hover:bg-neutral-900 hover:text-white">Book now</a>
               </div>
-            </div>
+            </>
           ) : (
             <p className="text-center text-neutral-500">Our service list is coming soon.</p>
           )}
