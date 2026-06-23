@@ -1,6 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { Turnstile } from "@/components/Turnstile";
+
+const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
 // Loud retro smash-burger palette for the order/booth widget.
 const MUSTARD = "#F2B705";
@@ -35,6 +38,7 @@ export function StackBooking({
     const payload = {
       tenantId,
       kind: "booking",
+      token: String(data.get("cf-turnstile-response") ?? ""),
       fields: {
         name: data.get("cust_name") ?? "",
         contact: data.get("contact") ?? "",
@@ -131,6 +135,7 @@ export function StackBooking({
           </label>
           {/* honeypot */}
           <input type="text" name="company" tabIndex={-1} autoComplete="off" className="absolute left-[-9999px] h-0 w-0 opacity-0" aria-hidden />
+          {TURNSTILE_SITE_KEY && <Turnstile siteKey={TURNSTILE_SITE_KEY} />}
           <button
             type="submit"
             disabled={status === "sending"}
@@ -188,6 +193,7 @@ export function StackBooking({
       </label>
       {/* honeypot */}
       <input type="text" name="company" tabIndex={-1} autoComplete="off" className="absolute left-[-9999px] h-0 w-0 opacity-0" aria-hidden />
+      {TURNSTILE_SITE_KEY && <Turnstile siteKey={TURNSTILE_SITE_KEY} />}
       {status === "error" && <p className="mt-3 text-sm font-bold text-[color:#D62828]">{error}</p>}
       <button
         type="submit"

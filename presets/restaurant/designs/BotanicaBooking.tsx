@@ -1,6 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { Turnstile } from "@/components/Turnstile";
+
+const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
 const GREEN = "#0d3b2e";
 const GOLD = "#c8a45c";
@@ -21,6 +24,7 @@ export function BotanicaBooking({ tenantId, name }: { tenantId: string; name: st
     const payload = {
       tenantId,
       kind: "booking",
+      token: String(data.get("cf-turnstile-response") ?? ""),
       fields: {
         name: data.get("cust_name") ?? "",
         contact: data.get("contact") ?? "",
@@ -112,6 +116,7 @@ export function BotanicaBooking({ tenantId, name }: { tenantId: string; name: st
           </label>
           {/* honeypot */}
           <input type="text" name="company" tabIndex={-1} autoComplete="off" className="absolute left-[-9999px] h-0 w-0 opacity-0" aria-hidden />
+          {TURNSTILE_SITE_KEY && <Turnstile siteKey={TURNSTILE_SITE_KEY} />}
           {status === "error" && <p className="text-sm text-red-600">{error}</p>}
           <button
             type="submit"

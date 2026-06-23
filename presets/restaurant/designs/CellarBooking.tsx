@@ -1,6 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { Turnstile } from "@/components/Turnstile";
+
+const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
 // Cellar palette — nocturnal natural-wine-bar identity for the booking widget.
 const PLUM = "#2A1B2E";
@@ -36,6 +39,7 @@ export function CellarBooking({
     const payload = {
       tenantId,
       kind: "booking",
+      token: String(data.get("cf-turnstile-response") ?? ""),
       fields: {
         name: data.get("cust_name") ?? "",
         contact: data.get("contact") ?? "",
@@ -134,6 +138,7 @@ export function CellarBooking({
         </div>
         {/* honeypot */}
         <input type="text" name="company" tabIndex={-1} autoComplete="off" className="absolute left-[-9999px] h-0 w-0 opacity-0" aria-hidden />
+        {TURNSTILE_SITE_KEY && <Turnstile siteKey={TURNSTILE_SITE_KEY} />}
         <button
           type="submit"
           disabled={status === "sending"}
@@ -191,6 +196,7 @@ export function CellarBooking({
       </label>
       {/* honeypot */}
       <input type="text" name="company" tabIndex={-1} autoComplete="off" className="absolute left-[-9999px] h-0 w-0 opacity-0" aria-hidden />
+      {TURNSTILE_SITE_KEY && <Turnstile siteKey={TURNSTILE_SITE_KEY} />}
       {status === "error" && <p className="mt-4 text-sm" style={{ color: ROSE }}>{error}</p>}
       <button
         type="submit"

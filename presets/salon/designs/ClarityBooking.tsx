@@ -1,6 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { Turnstile } from "@/components/Turnstile";
+
+const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
 const NAVY = "#243B53";
 const AMBER = "#E0A45E";
@@ -29,6 +32,7 @@ export function ClarityBooking({ tenantId, name }: { tenantId: string; name: str
     const payload = {
       tenantId,
       kind: "booking",
+      token: String(data.get("cf-turnstile-response") ?? ""),
       fields: {
         name: data.get("cust_name") ?? "",
         contact: data.get("contact") ?? "",
@@ -123,6 +127,7 @@ export function ClarityBooking({ tenantId, name }: { tenantId: string; name: str
           </label>
           {/* honeypot */}
           <input type="text" name="company" tabIndex={-1} autoComplete="off" className="absolute left-[-9999px] h-0 w-0 opacity-0" aria-hidden />
+          {TURNSTILE_SITE_KEY && <Turnstile siteKey={TURNSTILE_SITE_KEY} />}
           {status === "error" && <p className="text-base font-semibold text-red-700">{error}</p>}
           <button
             type="submit"

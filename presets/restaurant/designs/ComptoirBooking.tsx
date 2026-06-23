@@ -1,6 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { Turnstile } from "@/components/Turnstile";
+
+const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
 // Parisian bistro palette for the réservation widget.
 const RED = "#9E2B25";
@@ -36,6 +39,7 @@ export function ComptoirBooking({
     const payload = {
       tenantId,
       kind: "booking",
+      token: String(data.get("cf-turnstile-response") ?? ""),
       fields: {
         name: data.get("cust_name") ?? "",
         contact: data.get("contact") ?? "",
@@ -130,6 +134,7 @@ export function ComptoirBooking({
           </label>
           {/* honeypot */}
           <input type="text" name="company" tabIndex={-1} autoComplete="off" className="absolute left-[-9999px] h-0 w-0 opacity-0" aria-hidden />
+          {TURNSTILE_SITE_KEY && <Turnstile siteKey={TURNSTILE_SITE_KEY} />}
           <button
             type="submit"
             disabled={status === "sending"}
@@ -187,6 +192,7 @@ export function ComptoirBooking({
       </label>
       {/* honeypot */}
       <input type="text" name="company" tabIndex={-1} autoComplete="off" className="absolute left-[-9999px] h-0 w-0 opacity-0" aria-hidden />
+      {TURNSTILE_SITE_KEY && <Turnstile siteKey={TURNSTILE_SITE_KEY} />}
       {status === "error" && <p className="mt-3 text-sm text-[color:#9E2B25]">{error}</p>}
       <button
         type="submit"

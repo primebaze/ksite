@@ -1,6 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { Turnstile } from "@/components/Turnstile";
+
+const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
 const NIGHT = "#20235C";
 const AQUA = "#4FD1C5";
@@ -25,6 +28,7 @@ export function AuroraBooking({ tenantId, name }: { tenantId: string; name: stri
     const payload = {
       tenantId,
       kind: "booking",
+      token: String(data.get("cf-turnstile-response") ?? ""),
       fields: {
         name: data.get("cust_name") ?? "",
         contact: data.get("contact") ?? "",
@@ -124,6 +128,7 @@ export function AuroraBooking({ tenantId, name }: { tenantId: string; name: stri
             </label>
             {/* honeypot */}
             <input type="text" name="company" tabIndex={-1} autoComplete="off" className="absolute left-[-9999px] h-0 w-0 opacity-0" aria-hidden />
+            {TURNSTILE_SITE_KEY && <Turnstile siteKey={TURNSTILE_SITE_KEY} />}
             {status === "error" && <p className="text-sm text-[#E7A2B0]">{error}</p>}
             <button
               type="submit"

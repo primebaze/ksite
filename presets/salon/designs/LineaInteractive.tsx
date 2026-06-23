@@ -1,7 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { Turnstile } from "@/components/Turnstile";
 
+const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 const SAGE = "#8ba29c";
 const TAUPE = "#5c5048";
 const serif = { fontFamily: "var(--font-fraunces)" } as const;
@@ -124,6 +126,7 @@ export function LineaNewsletter({ tenantId }: { tenantId: string }) {
         body: JSON.stringify({
           tenantId,
           kind: "contact",
+          token: String(data.get("cf-turnstile-response") ?? ""),
           fields: { name: "Newsletter signup", email: data.get("email") ?? "", message: "Please add me to your newsletter." },
         }),
       });
@@ -149,6 +152,7 @@ export function LineaNewsletter({ tenantId }: { tenantId: string }) {
         className="flex-1 border border-white/40 bg-white/10 px-4 py-3.5 text-sm text-white placeholder:text-white/60 outline-none focus:border-white"
       />
       <input type="text" name="company" tabIndex={-1} autoComplete="off" className="absolute left-[-9999px] h-0 w-0 opacity-0" aria-hidden />
+      {TURNSTILE_SITE_KEY && <Turnstile siteKey={TURNSTILE_SITE_KEY} />}
       <button
         type="submit"
         disabled={status === "sending"}

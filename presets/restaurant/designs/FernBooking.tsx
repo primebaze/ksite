@@ -1,6 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { Turnstile } from "@/components/Turnstile";
+
+const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
 // Fern — warm-neutral plant-based palette for the booking widget. Charcoal ink
 // on oat, with a single deep forest-green accent used sparingly.
@@ -37,6 +40,7 @@ export function FernBooking({
     const payload = {
       tenantId,
       kind: "booking",
+      token: String(data.get("cf-turnstile-response") ?? ""),
       fields: {
         name: data.get("cust_name") ?? "",
         contact: data.get("contact") ?? "",
@@ -125,6 +129,7 @@ export function FernBooking({
           </label>
           {/* honeypot */}
           <input type="text" name="company" tabIndex={-1} autoComplete="off" className="absolute left-[-9999px] h-0 w-0 opacity-0" aria-hidden />
+          {TURNSTILE_SITE_KEY && <Turnstile siteKey={TURNSTILE_SITE_KEY} />}
           <button
             type="submit"
             disabled={status === "sending"}
@@ -178,6 +183,7 @@ export function FernBooking({
       </label>
       {/* honeypot */}
       <input type="text" name="company" tabIndex={-1} autoComplete="off" className="absolute left-[-9999px] h-0 w-0 opacity-0" aria-hidden />
+      {TURNSTILE_SITE_KEY && <Turnstile siteKey={TURNSTILE_SITE_KEY} />}
       {status === "error" && <p className="mt-4 text-sm" style={{ color: "#9a3535" }}>{error}</p>}
       <button
         type="submit"

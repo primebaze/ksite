@@ -1,6 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { Turnstile } from "@/components/Turnstile";
+
+const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
 const SKY = "#2e7cb8";
 const NAVY = "#15293a";
@@ -25,6 +28,7 @@ export function EnamelBooking({ tenantId, name }: { tenantId: string; name: stri
     const payload = {
       tenantId,
       kind: "booking",
+      token: String(data.get("cf-turnstile-response") ?? ""),
       fields: {
         name: data.get("cust_name") ?? "",
         contact: data.get("contact") ?? "",
@@ -106,6 +110,7 @@ export function EnamelBooking({ tenantId, name }: { tenantId: string; name: stri
           </label>
           {/* honeypot */}
           <input type="text" name="company" tabIndex={-1} autoComplete="off" className="absolute left-[-9999px] h-0 w-0 opacity-0" aria-hidden />
+          {TURNSTILE_SITE_KEY && <Turnstile siteKey={TURNSTILE_SITE_KEY} />}
           {status === "error" && <p className="text-sm text-[#c0392b]">{error}</p>}
           <button
             type="submit"
