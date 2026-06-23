@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { TemplateThumb } from "./TemplateThumb";
 
@@ -23,6 +23,7 @@ export interface BrowserGroup {
 export function SamplesBrowser({ groups }: { groups: BrowserGroup[] }) {
   const [selected, setSelected] = useState(groups[0]?.group);
   const active = groups.find((g) => g.group === selected) ?? groups[0];
+  const topRef = useRef<HTMLDivElement>(null);
 
   // Keep the chosen category in the URL (?cat=) so navigating into a sample and
   // coming Back restores the same section instead of resetting to Popular.
@@ -36,10 +37,22 @@ export function SamplesBrowser({ groups }: { groups: BrowserGroup[] }) {
     const url = new URL(window.location.href);
     url.searchParams.set("cat", group);
     window.history.replaceState(null, "", url);
+    // Switching category swaps the grid in place; scroll back to the top of the
+    // section so the new category's samples are viewed from the start. The
+    // section top sits just below the page hero (a stable position), and we
+    // offset by the sticky header. A direct window scroll is used because a
+    // smooth scrollIntoView gets cancelled as the grid reflows.
+    const el = topRef.current;
+    if (el) {
+      const top = el.getBoundingClientRect().top + window.scrollY - 96;
+      // Instant (not smooth): the grid reflows as its previews load, which
+      // cancels an in-flight smooth scroll and leaves the user mid-list.
+      window.scrollTo({ top: Math.max(0, top), behavior: "auto" });
+    }
   }
 
   return (
-    <div className="mx-auto flex max-w-6xl flex-col gap-8 px-6 py-12 lg:flex-row lg:gap-12">
+    <div ref={topRef} className="mx-auto flex max-w-6xl scroll-mt-24 flex-col gap-8 px-6 py-12 lg:flex-row lg:gap-12">
       {/* Sidebar / category filter */}
       <aside className="lg:sticky lg:top-24 lg:w-52 lg:shrink-0 lg:self-start">
         <p className="text-xs font-semibold uppercase tracking-[0.2em] text-ink/40">Category</p>
