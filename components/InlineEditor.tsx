@@ -134,10 +134,14 @@ export function InlineEditor({
         const m = /^item:([^:]+):name$/.exec(el.getAttribute("data-edit") || "");
         if (!m) continue;
         const id = m[1];
-        if (seen.has(id)) continue;
+        // Only manage add/delete for items that sit in a real list row. Home
+        // teasers and card grids are plain <div>s (a preview of the catalog, not
+        // the canonical list) — putting a delete ✕ / "Add item" there breaks the
+        // layout. Those stay edit-only; the Services page + dashboard manage the
+        // actual list.
+        const row = el.closest("li,tr") as HTMLElement | null;
+        if (!row || seen.has(id)) continue;
         seen.add(id);
-        const row = (el.closest("li,tr") as HTMLElement | null) ?? el.parentElement;
-        if (!row) continue;
         lastRow = row;
         if (getComputedStyle(row).position === "static") row.style.position = "relative";
         const del = document.createElement("button");
@@ -190,7 +194,9 @@ export function InlineEditor({
           window.alert("Couldn’t add an item. Please try again.");
         }
       });
-      (lastRow.parentElement ?? lastRow).appendChild(addBtn);
+      // Place it after the whole list (the row's parent), not inside it, so it
+      // never becomes a stray list item / grid cell.
+      (lastRow.parentElement ?? lastRow).insertAdjacentElement("afterend", addBtn);
       cleanups.push(() => addBtn.remove());
     }
 
