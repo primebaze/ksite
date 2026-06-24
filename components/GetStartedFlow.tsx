@@ -191,13 +191,17 @@ export function GetStartedFlow({
     if (typeDesigns[preset]?.length) {
       list = typeDesigns[preset];
     } else if (CATEGORY_PRESETS.has(preset)) {
-      const cap = Math.min(12, photos.length || 12);
+      // Salon (Hair & beauty) shows every bespoke design; other sectors cap at 12.
+      const cap = selected.group === "Hair & beauty" ? all.length : Math.min(12, photos.length || 12);
       list = [recommended, ...all.filter((d) => d !== recommended)].slice(0, cap);
     } else {
       list = [recommended];
     }
     return list.map((design, i) => ({ design, img: photos[i % Math.max(photos.length, 1)] ?? "" }));
   }, [selected, preset, groupDesigns, buildDesigns, groupPhotos, typePhotos, typeDesigns]);
+
+  // Salon shows its full set of designs at once (no "View more" pagination).
+  const salonSelected = selected?.group === "Hair & beauty";
 
   return (
     <form ref={formRef} action={action} className="flex min-h-[calc(100vh-6rem)] flex-col overflow-hidden rounded-3xl border border-ink/10 bg-ink/[0.02] shadow-[0_40px_140px_-80px_rgba(16,185,129,0.9)]">
@@ -332,7 +336,7 @@ export function GetStartedFlow({
               {designOptions.length > 0
                 ? // Bespoke designs exist for this sector: every card is a genuinely
                   // different full-page design with its own photo (never repeated).
-                  (showAllDesigns ? designOptions : designOptions.slice(0, DESIGNS_SHOWN)).map(({ design, img }, idx) => (
+                  (showAllDesigns || salonSelected ? designOptions : designOptions.slice(0, DESIGNS_SHOWN)).map(({ design, img }, idx) => (
                     <button
                       key={design}
                       type="button"
@@ -401,7 +405,7 @@ export function GetStartedFlow({
                 <span className="mt-6 rounded-full border border-ink/10 px-3 py-2 text-center text-xs text-ink/50">Start from scratch</span>
               </button>
             </div>
-            {designOptions.length > DESIGNS_SHOWN && !showAllDesigns && (
+            {designOptions.length > DESIGNS_SHOWN && !showAllDesigns && !salonSelected && (
               <button
                 type="button"
                 onClick={() => setShowAllDesigns(true)}
