@@ -34,7 +34,7 @@ const HOME_JSONLD = [
     description: SITE_DESCRIPTION,
     offers: {
       "@type": "Offer",
-      price: "99",
+      price: "49.99",
       priceCurrency: "GBP",
       url: `${SITE_URL}/pricing`,
     },
