@@ -415,6 +415,9 @@ export default function IndigoDesign({ site, page = "home", basePath = "" }: Pre
             <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
               {content.reviews.map((r, i) => (
                 <figure key={i} className="flex flex-col rounded-3xl border border-black/10 bg-neutral-50 p-7">
+                  <div className="mb-3 text-sm tracking-wide" style={{ color: INK }} aria-label={`${(r.rating ?? 5)} out of 5`}>
+                    {"★".repeat(r.rating && r.rating >= 1 && r.rating <= 5 ? r.rating : 5)}
+                  </div>
                   <blockquote className="text-lg font-medium leading-relaxed" style={{ color: INK }}>&ldquo;{r.quote}&rdquo;</blockquote>
                   {(r.name || r.meta) && (
                     <figcaption className="mt-5 text-sm">

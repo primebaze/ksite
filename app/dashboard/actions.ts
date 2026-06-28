@@ -149,7 +149,12 @@ export async function saveSocials(formData: FormData) {
 export async function saveReviews(formData: FormData) {
   const site = await getMyTenantFull();
   if (!site) return;
-  const reviews = zipRows(formData, ["quote", "name", "meta"]).filter((r) => r.quote) as { quote: string; name?: string; meta?: string }[];
+  const reviews = zipRows(formData, ["quote", "name", "meta", "rating"])
+    .filter((r) => r.quote)
+    .map((r) => {
+      const n = parseInt(r.rating ?? "", 10);
+      return { quote: r.quote, name: r.name || undefined, meta: r.meta || undefined, ...(n >= 1 && n <= 5 ? { rating: n } : {}) };
+    });
   await updateMyContent({ ...site.content, reviews });
   refresh();
 }

@@ -198,8 +198,8 @@ export function SiteEditor({ site, actions }: { site: TenantSite; actions: Edito
             <h3 className="mb-1 text-sm font-medium text-white/70">Reviews</h3>
             <p className="mb-3 text-xs text-white/40">Real customer reviews. Leave empty to hide the reviews section on your site.</p>
             <ListEditor tenantId={id} action={actions.saveReviews} addLabel="+ Add review"
-              columns={[{ name: "quote", label: "What they said" }, { name: "name", label: "Name" }, { name: "meta", label: "e.g. Passed first time" }]}
-              initial={(content.reviews ?? []).map((r) => ({ quote: r.quote ?? "", name: r.name ?? "", meta: r.meta ?? "" }))} />
+              columns={[{ name: "quote", label: "What they said" }, { name: "name", label: "Name" }, { name: "meta", label: "e.g. Passed first time" }, { name: "rating", label: "Stars 1–5" }]}
+              initial={(content.reviews ?? []).map((r) => ({ quote: r.quote ?? "", name: r.name ?? "", meta: r.meta ?? "", rating: String(r.rating ?? 5) }))} />
           </div>
         </div>
       </Card>

@@ -60,6 +60,33 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 // schema.org LocalBusiness for the tenant — strong signal for local search.
+// Convert free-text hours ("Tue to Fri" / "09:00 to 19:00") into valid
+// schema.org openingHours ("Tu-Fr 09:00-19:00"). Unparseable / "Closed" rows
+// are dropped rather than emitting invalid data Google silently ignores.
+const SCHEMA_DAY: Record<string, string> = {
+  mon: "Mo", monday: "Mo", tue: "Tu", tues: "Tu", tuesday: "Tu", wed: "We", weds: "We", wednesday: "We",
+  thu: "Th", thur: "Th", thurs: "Th", thursday: "Th", fri: "Fr", friday: "Fr", sat: "Sa", saturday: "Sa",
+  sun: "Su", sunday: "Su",
+};
+function schemaOpeningHours(hours: { day?: string; open?: string }[] | undefined): string[] {
+  if (!Array.isArray(hours)) return [];
+  const out: string[] = [];
+  for (const h of hours) {
+    const openRaw = String(h?.open ?? "").trim();
+    if (!openRaw || /closed/i.test(openRaw)) continue;
+    const tm = openRaw.match(/(\d{1,2}:\d{2})\s*(?:to|–|—|-)\s*(\d{1,2}:\d{2})/i);
+    if (!tm) continue;
+    const time = `${tm[1]}-${tm[2]}`;
+    const dayRaw = String(h?.day ?? "").toLowerCase().trim();
+    const tokens = dayRaw.split(/\s*(?:to|–|—|-|&|and|,|\/)\s*/).map((t) => t.trim()).filter(Boolean);
+    const days = tokens.map((t) => SCHEMA_DAY[t]).filter(Boolean);
+    if (!days.length) continue;
+    const isRange = /(\bto\b|–|—|-)/.test(dayRaw) && days.length === 2;
+    out.push(`${isRange ? `${days[0]}-${days[1]}` : days.join(",")} ${time}`);
+  }
+  return out;
+}
+
 function tenantJsonLd(site: TenantSite, base: string) {
   const { tenant, content } = site;
   const type = SCHEMA_TYPE[archetypeFor(tenant.preset)] ?? "LocalBusiness";
@@ -76,8 +103,30 @@ function tenantJsonLd(site: TenantSite, base: string) {
   if (content.phone) data.telephone = content.phone;
   if (content.email) data.email = content.email;
   if (content.address) data.address = { "@type": "PostalAddress", streetAddress: content.address };
-  if (Array.isArray(content.hours) && content.hours.length) {
-    data.openingHours = content.hours.map((h) => `${h.day} ${h.open}`.trim());
+  const oh = schemaOpeningHours(content.hours);
+  if (oh.length) data.openingHours = oh;
+  if (Array.isArray(content.service_areas) && content.service_areas.length) {
+    data.areaServed = content.service_areas.filter(Boolean).map((a) => ({ "@type": "Place", name: a }));
+  }
+  // Reviews → rich-snippet ratings. Owner-curated testimonials; rating defaults
+  // to 5 when the owner hasn't set one.
+  const revs = (Array.isArray(content.reviews) ? content.reviews : []).filter((r) => r?.quote);
+  if (revs.length) {
+    const ratingOf = (r: { rating?: number }) => (Number(r.rating) >= 1 && Number(r.rating) <= 5 ? Number(r.rating) : 5);
+    data.review = revs.map((r) => ({
+      "@type": "Review",
+      reviewRating: { "@type": "Rating", ratingValue: ratingOf(r), bestRating: 5, worstRating: 1 },
+      author: { "@type": "Person", name: r.name || "Customer" },
+      reviewBody: r.quote,
+    }));
+    const avg = revs.reduce((s, r) => s + ratingOf(r), 0) / revs.length;
+    data.aggregateRating = {
+      "@type": "AggregateRating",
+      ratingValue: Math.round(avg * 10) / 10,
+      reviewCount: revs.length,
+      bestRating: 5,
+      worstRating: 1,
+    };
   }
   if (sameAs.length) data.sameAs = sameAs;
   return data;

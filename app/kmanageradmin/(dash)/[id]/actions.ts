@@ -130,7 +130,12 @@ export async function saveReviews(formData: FormData) {
   const id = String(formData.get("id"));
   const site = await getTenantFull(id);
   if (!site) redirect("/kmanageradmin");
-  const reviews = zipRows(formData, ["quote", "name", "meta"]).filter((r) => r.quote) as { quote: string; name?: string; meta?: string }[];
+  const reviews = zipRows(formData, ["quote", "name", "meta", "rating"])
+    .filter((r) => r.quote)
+    .map((r) => {
+      const n = parseInt(r.rating ?? "", 10);
+      return { quote: r.quote, name: r.name || undefined, meta: r.meta || undefined, ...(n >= 1 && n <= 5 ? { rating: n } : {}) };
+    });
   await updateContent(id, { ...site.content, reviews });
   refresh(id);
 }
