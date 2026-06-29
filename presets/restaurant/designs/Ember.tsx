@@ -2,6 +2,7 @@ import type { PresetProps } from "@/lib/site-pages";
 import { pageHref } from "@/lib/site-pages";
 import type { ReactNode } from "react";
 import { editCopy, groupCatalog, siteRootStyle, tokensFor } from "../../shared";
+import { CatalogCards } from "../../catalog-layouts";
 import { SiteContactForms } from "@/components/SiteContactForms";
 import { EmberHeader } from "./EmberHeader";
 import { EmberBooking } from "./EmberBooking";
@@ -126,30 +127,11 @@ export default function EmberDesign({ site, page = "home", basePath = "" }: Pres
       <section className="mx-auto max-w-5xl px-8 py-20">
         {groups.length > 0 ? (
           <>
-            <div className="grid items-start gap-x-16 gap-y-14 md:grid-cols-2">
-              {groups.map((section) => (
-                <div key={section.section} className="break-inside-avoid">
-                  {section.section && <h3 data-edit={`section:${section.categories[0]?.items[0]?.id ?? ""}`} style={serif} className="mb-5 border-b border-neutral-200 pb-3 text-lg uppercase tracking-[0.16em]">{section.section}</h3>}
-                  {section.categories.map((catg) => (
-                    <ul key={catg.category ?? "_"} className="divide-y" style={{ borderColor: `${NAVY}1f` }}>
-                      {catg.items.map((item) => (
-                        <li key={item.id} className="flex items-baseline justify-between gap-8 py-5">
-                          <div className="min-w-0">
-                            <p data-edit={`item:${item.id}:name`} className="text-base font-medium" style={{ ...serif, color: NAVY }}>{item.name}</p>
-                            {item.description && (
-                              <p data-edit={`item:${item.id}:description`} className="mt-1 text-sm leading-relaxed text-neutral-500">{item.description}</p>
-                            )}
-                          </div>
-                          {item.price && (
-                            <span data-edit={`item:${item.id}:price`} className="shrink-0 text-sm font-semibold" style={{ color: OLIVE }}>{item.price}</span>
-                          )}
-                        </li>
-                      ))}
-                    </ul>
-                  ))}
-                </div>
-              ))}
-            </div>
+            <CatalogCards
+              groups={groups}
+              columns={3}
+              tone={{ ink: NAVY, muted: "#6b7280", accent: OLIVE, border: `${NAVY}1f`, cardBg: "#ffffff", nameStyle: serif, headingStyle: serif }}
+            />
             {content.ordering_links && content.ordering_links.length > 0 && (
               <div className="mt-16 flex flex-wrap justify-center gap-4">
                 {content.ordering_links.map((o) => (
