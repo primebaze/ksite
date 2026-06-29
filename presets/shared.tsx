@@ -210,16 +210,21 @@ export function SiteSmoothScroll() {
   );
 }
 
-/** Global form-control polish for every tenant site, sample and preview: drops
- *  the native <select> chevron (a clashing double-arrow on macOS) for a single
- *  neutral caret that reads on both light and dark fields. One rule covers every
- *  design's booking/time selects — current and future. */
+/** Global polish for every tenant site, sample and preview (one place, all
+ *  designs, current + future):
+ *   1. Native <select> chevron → a single neutral caret.
+ *   2. Menu/price-list rows: drop the heavy full-width divider under each item.
+ *      Catalog rows are the only <li>/<tr> carrying an `item:*` edit hook, so the
+ *      `:has()` selector hits exactly those — never headers, hours, nav, etc. The
+ *      bold item name + generous row spacing carries the separation instead. */
 export function SiteFieldStyles() {
   const caret =
     "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%23808080' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E";
-  return (
-    <style>{`select{-webkit-appearance:none;-moz-appearance:none;appearance:none;background-image:url("${caret}");background-repeat:no-repeat;background-position:right 0.85rem center;background-size:1.1rem;padding-right:2.5rem}select::-ms-expand{display:none}`}</style>
-  );
+  const css =
+    `select{-webkit-appearance:none;-moz-appearance:none;appearance:none;background-image:url("${caret}");background-repeat:no-repeat;background-position:right 0.85rem center;background-size:1.1rem;padding-right:2.5rem}` +
+    `select::-ms-expand{display:none}` +
+    `li:has([data-edit^="item:"]),tr:has([data-edit^="item:"]){border-top-width:0!important;border-bottom-width:0!important}`;
+  return <style>{css}</style>;
 }
 
 /** Small section label / kicker. */
