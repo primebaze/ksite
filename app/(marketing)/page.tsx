@@ -51,7 +51,7 @@ export default function Home() {
           <Reveal>
             <h1 className="font-semibold leading-[1.05] tracking-tight">
               <span className="block text-5xl sm:text-7xl">Website</span>
-              <span className="mt-1 block text-[1.6rem] leading-tight sm:mt-0 sm:text-7xl">
+              <span className="mt-1 block text-[clamp(1.25rem,6.2vw,3.5rem)] leading-tight sm:mt-0">
                 <BusinessesRotator words={ROTATING_WORDS} />
               </span>
             </h1>
