@@ -5,7 +5,7 @@ import { HeroShowcase } from "@/components/HeroShowcase";
 import { ScrollZoom } from "@/components/ScrollZoom";
 import { LazyLiveExamples } from "@/components/LazyLiveExamples";
 import { LazyFeatureBento } from "@/components/LazyFeatureBento";
-import { ROTATING_WORDS } from "@/lib/marketing";
+import { ROTATING_WORDS, PLAN } from "@/lib/marketing";
 import { JsonLd } from "@/components/JsonLd";
 import { SITE_URL, SITE_NAME, SITE_DESCRIPTION } from "@/lib/seo";
 
@@ -34,7 +34,7 @@ const HOME_JSONLD = [
     description: SITE_DESCRIPTION,
     offers: {
       "@type": "Offer",
-      price: "99",
+      price: String(PLAN.monthly),
       priceCurrency: "GBP",
       url: `${SITE_URL}/pricing`,
     },
