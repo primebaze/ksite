@@ -31,7 +31,7 @@ export default function Footer() {
               Kovasite
             </Link>
             <p className="mt-4 text-sm leading-relaxed text-ink/45">
-              Premium websites for local businesses, designed, hosted and managed for you.
+              Premium websites for businesses and companies, designed, hosted and managed for you.
             </p>
             <a
               href="mailto:hello@kovasite.com"

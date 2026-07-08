@@ -58,8 +58,8 @@ export default function Home() {
           </Reveal>
           <Reveal delay={0.1}>
             <p className="mx-auto mt-6 max-w-xl text-lg text-ink/55">
-              Create your own business website in under 5 minutes. Pick a design and go live on your own free
-              custom domain — hosting, booking, reviews and SEO all included, and built to convert.
+              Create your own business or company website in under 5 minutes. Pick a design and go live on your
+              own free custom domain — hosting, booking, reviews and SEO all included, and built to convert.
             </p>
           </Reveal>
           <Reveal delay={0.18}>

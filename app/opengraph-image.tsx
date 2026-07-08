@@ -3,7 +3,7 @@ import { SITE_NAME } from "@/lib/seo";
 
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
-export const alt = "Kovasite — Websites for local businesses";
+export const alt = "Kovasite — Business and company websites in 5 minutes";
 
 // Default social share image for the marketing site (per-tenant sites supply
 // their own og_image_url).
@@ -43,7 +43,7 @@ export default function OpengraphImage() {
           <div style={{ fontSize: 32, fontWeight: 600 }}>{SITE_NAME}</div>
         </div>
         <div style={{ marginTop: 48, fontSize: 76, fontWeight: 700, lineHeight: 1.04, letterSpacing: -2 }}>
-          Websites for local businesses
+          Business &amp; company websites
         </div>
         <div style={{ marginTop: 28, fontSize: 30, color: "rgba(255,255,255,0.6)" }}>
           Live in under 5 minutes · booking · free domain · £49.99/mo
